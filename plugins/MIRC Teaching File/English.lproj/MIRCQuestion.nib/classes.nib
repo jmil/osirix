@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = MIRCAnswerArrayController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSArrayController; 
+        }, 
+        {
+            ACTIONS = {answerAction = id; closeWindow = id; }; 
+            CLASS = MIRCQuestionWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {answerController = MIRCAnswerArrayController; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}

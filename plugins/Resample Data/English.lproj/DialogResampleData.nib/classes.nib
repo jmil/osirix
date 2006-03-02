@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = PluginFilter; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {endDialog = id; setForceRatio = id; setXYZValue = id; }; 
+            CLASS = ResampleDataFilter; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                ForceRatioCheck = NSButton; 
+                MemoryText = NSTextField; 
+                RatioText = NSTextField; 
+                XText = NSTextField; 
+                YText = NSTextField; 
+                ZText = NSTextField; 
+                oXText = NSTextField; 
+                oYText = NSTextField; 
+                oZText = NSTextField; 
+                window = NSWindow; 
+            }; 
+            SUPERCLASS = PluginFilter; 
+        }
+    ); 
+    IBVersion = 1; 
+}

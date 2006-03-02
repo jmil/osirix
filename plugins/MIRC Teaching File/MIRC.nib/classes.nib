@@ -1,0 +1,35 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {"" = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {choose = id; controlAction = id; }; 
+            CLASS = MIRCCaseController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mircController = MIRCController; tableView = id; }; 
+            SUPERCLASS = NSArrayController; 
+        }, 
+        {
+            ACTIONS = {
+                chooseFolder = id; 
+                connectToMIRC = id; 
+                controlAction = id; 
+                createCase = id; 
+                getInfo = id; 
+                selectCurrentImage = id; 
+            }; 
+            CLASS = MIRCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {tableView = NSTableView; titleField = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = MIRCFileTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {CLASS = ThanksController; LANGUAGE = ObjC; SUPERCLASS = NSWindowController; }
+    ); 
+    IBVersion = 1; 
+}
