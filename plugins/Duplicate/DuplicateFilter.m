@@ -12,7 +12,6 @@
 
 - (void) initPlugin
 {
-	NSLog( @"Init DuplicateFilter");
 }
 
 - (long) filterImage:(NSString*) menuName

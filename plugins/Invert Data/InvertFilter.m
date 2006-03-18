@@ -21,7 +21,7 @@
 	DCMPix		*curPix;
 	
 	// Display a waiting window
-	id waitWindow = [viewerController startWaitWindow:@"I'm working for you!"];
+	id waitWindow = [viewerController startWaitWindow:@"Inverting..."];
 	
 	// Loop through all images contained in the current series
 	for( i = 0; i < [pixList count]; i++)

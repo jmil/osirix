@@ -60,14 +60,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = AB1BC1C406834F460041F4A4 /* Ejection Fraction.plugin */;
+			remoteGlobalIDString = AB1BC1C406834F460041F4A4;
 			remoteInfo = EjectionFraction;
 		};
 		CE38EC800994E12D008E1A2D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* EjectionFraction */;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = EjectionFraction;
 		};
 		CE76EE2F0994DBAD007B9067 /* PBXContainerItemProxy */ = {
