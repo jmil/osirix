@@ -30,15 +30,17 @@ enum
 @class DCMView;
 @class DCMPix;
 @class StringTexture;
+@class DCMObject;
 
 @interface ROI : NSObject <NSCoding>
 {
-	int			textureWidth, oldTextureWidth, textureHeight, oldTextureHeight;
+	int				textureWidth, textureHeight;
+
 	unsigned char*	textureBuffer;
-	unsigned char* tempTextureBuffer;
-	GLuint textureName;
-	int textureUpLeftCornerX,textureUpLeftCornerY,textureDownRightCornerX,textureDownRightCornerY;
-	int textureFirstPoint;
+	GLuint			textureName;
+	int				textureUpLeftCornerX,textureUpLeftCornerY,textureDownRightCornerX,textureDownRightCornerY;
+	int				textureFirstPoint;
+	
 	NSMutableArray  *points;
 	NSRect			rect;
 	
@@ -63,9 +65,10 @@ enum
 	// **** **** **** **** **** **** **** **** **** **** TRACKING
 	
 	long			selectedModifyPoint;
-	NSPoint			clickPoint;
+	NSPoint			clickPoint, previousPoint;
 	long			fontListGL;
 	DCMView			*curView;
+	DCMPix			*pix;
 	
 	float			rmean, rmax, rmin, rdev, rtotal;
 	
@@ -73,6 +76,13 @@ enum
 	
 	StringTexture			*stringTex;
 	NSMutableDictionary		*stanStringAttrib;
+	
+	NSString		*_roiSeriesInstanceUID;
+	NSString		*_sopInstanceUID;
+	NSString		*_referencedSOPInstanceUID;
+	NSString		*_referencedSOPClassUID;
+	int				_frameNumber;
+	
 }
 
 // Create a new ROI, needs the current pixel resolution and image origin
@@ -82,13 +92,19 @@ enum
 - (id) initWithTexture: (unsigned char*)tBuff  textWidth:(int)tWidth textHeight:(int)tHeight textName:(NSString*)tName
 			 positionX:(int)posX positionY:(int)posY
 			  spacingX:(float) ipixelSpacingx spacingY:(float) ipixelSpacingy imageOrigin:(NSPoint) iimageOrigin;
-+ (int)brushSize;
-+ (int)eraserSize;
-+ (void)setBrushSize:(int)newInt;
-+ (void)setEraserSize:(int)newInt;
+
+/*
+ convert DICOM presentation state to ROI. 
+ Although the referenced values are in the presentation state. 
+ ROIs only point to a single image in OsiriX	
+*/
+
+- (id)initWithDICOMPresentationState:(DCMObject *)presentationState
+		referencedSOPInstanceUID:(NSString *)referencedSOPInstanceUID
+		referencedSOPClassUID:(NSString *)referencedSOPClassUID;
 
 - (int)textureDownRightCornerX;
--(int)textureDownRightCornerY;
+- (int)textureDownRightCornerY;
 - (int)textureUpLeftCornerX;
 - (int)textureUpLeftCornerY;
 
@@ -133,6 +149,7 @@ enum
 
 // To create a Rectangular ROI (tROI) or an Oval ROI (tOval)
 - (void) setROIRect:(NSRect) rect;
+- (NSRect) rect;
 
 - (float*) dataValuesAsFloatPointer :(long*) no;
 
@@ -171,4 +188,19 @@ enum
 - (void) recompute;
 - (void) rotate: (float) angle :(NSPoint) center;
 - (void) resize: (float) factor :(NSPoint) center;
+
+- (void) setPix: (DCMPix*) newPix;
+- (DCMPix*) pix;
+- (NSString *)roiSeriesInstanceUID;
+- (NSString *)sopInstanceUID;
+- (NSString *)referencedSOPInstanceUID;
+- (NSString *)referencedSOPClassUID;
+- (int) frameNumber;
+- (void)setRoiSeriesInstanceUID:(NSString *)roiSeriesInstanceUID;
+- (void)setSopInstanceUID:(NSString *)sopInstanceUID;
+- (void)setReferencedSOPInstanceUID:(NSString *)referencedSOPInstanceUID;
+- (void)setReferencedSOPClassUID:(NSString *)referencedSOPClassUID;
+- (void)setFrameNumber: (int)frameNumber;
+- (BOOL) reduceTextureIfPossible;
+- (void) addMarginToBuffer: (int) margin;
 @end

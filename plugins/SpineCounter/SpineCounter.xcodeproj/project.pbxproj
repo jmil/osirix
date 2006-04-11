@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0A4B6E09EA95EC007AB738 /* ROIPixelSpacing.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */; };
+		4F0A4B6F09EA95EC007AB738 /* ROIPixelSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */; };
 		4FAD27EA09CDCE77005A34B9 /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD27E909CDCE77005A34B9 /* AppController.h */; };
 		4FAD281B09CDD242005A34B9 /* AppControllerFiltersMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */; };
 		4FAD281F09CDD252005A34B9 /* AppControllerFiltersMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */; };
@@ -63,6 +65,8 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROIPixelSpacing.h; sourceTree = SOURCE_ROOT; };
+		4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROIPixelSpacing.m; sourceTree = SOURCE_ROOT; };
 		4FAD27E909CDCE77005A34B9 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppControllerFiltersMenu.m; sourceTree = "<group>"; };
 		4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppControllerFiltersMenu.h; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 		ABB76338067FB2A8000912C1 /* OsiriX Headers */ = {
 			isa = PBXGroup;
 			children = (
+				4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */,
+				4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */,
 				4FFBC7F009CEDC1200778BD1 /* stringNumericCompare.h */,
 				4FAD27E909CDCE77005A34B9 /* AppController.h */,
 				ABB7633D067FB2A8000912C1 /* PluginFilter.h */,
@@ -210,6 +216,7 @@
 				4FAD27EA09CDCE77005A34B9 /* AppController.h in Headers */,
 				4FAD281F09CDD252005A34B9 /* AppControllerFiltersMenu.h in Headers */,
 				4FFBC7F109CEDC1200778BD1 /* stringNumericCompare.h in Headers */,
+				4F0A4B6E09EA95EC007AB738 /* ROIPixelSpacing.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +315,7 @@
 			files = (
 				AB94F88106820C3100733F34 /* SpineCounterFilter.m in Sources */,
 				4FAD281B09CDD242005A34B9 /* AppControllerFiltersMenu.m in Sources */,
+				4F0A4B6F09EA95EC007AB738 /* ROIPixelSpacing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

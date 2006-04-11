@@ -21,6 +21,8 @@
 		<string>Switch Spine Type</string>
 		<string>Increment Count</string>
 		<string>Export Spines</string>
+		<string>Export Lengths</string>
+		<string>Export Distances</string>
 	</array>
 	<key>NSPrincipalClass</key>
 	<string>SpineCounterFilter</string>
