@@ -662,7 +662,7 @@
 		NSPoint transPoint = [self transformPoint: spinePoint: ori: ext];
 		
 		if (transPoint.y > 0 && transPoint.y < extSpan)
-			distance = transPoint.y;
+			distance = transPoint.x;
 		else if (transPoint.y < 0)
 			distance = sqrt((transPoint.x * transPoint.x) + (transPoint.y * transPoint.y));
 		else
