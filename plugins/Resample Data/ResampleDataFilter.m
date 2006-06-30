@@ -89,7 +89,11 @@
 			{
 				curPix = [pixList objectAtIndex: (originZ * z) / newZ];
 				
-				[newPixList addObject: [curPix copy]];
+				DCMPix	*copyPix = [curPix copy];
+				
+				[newPixList addObject: copyPix];
+				[copyPix release];
+				
 				[newDcmList addObject: [[viewerController fileList] objectAtIndex: (originZ * z) / newZ]];
 				
 				[[newPixList lastObject] setPwidth: newX];
