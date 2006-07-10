@@ -116,7 +116,9 @@
 			{
 				vImage_Buffer	srcVimage, dstVimage;
 				
-				srcImage = [[pixList objectAtIndex: (originZ * z) / newZ]  fImage];
+				curPix = [pixList objectAtIndex: (originZ * z) / newZ];
+				
+				srcImage = [curPix  fImage];
 				dstImage = emptyData + imageSize * z;
 				
 				srcVimage.data = srcImage;
@@ -129,7 +131,12 @@
 				dstVimage.width = newX;
 				dstVimage.rowBytes = newX*4;
 				
-				vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, 0);	//kvImageHighQualityResampling
+				if( [curPix isRGB])
+				{
+					vImageScale_ARGB8888( &srcVimage, &dstVimage, 0L, 0);
+				}
+				else
+					vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, 0);	//kvImageHighQualityResampling
 			}
 			
 			// CREATE A SERIES
