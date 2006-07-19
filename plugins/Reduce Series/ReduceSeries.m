@@ -40,13 +40,15 @@
 		
 		interval = [[form cellAtIndex: 2] intValue];
 		
+		if( start >= end) start = end-1;
+		
 		if( start < 0) start = 0;
 		if( start >= [pixList count]) start = [pixList count]-1;
 
 		if( end < 0) end = 0;
 		if( end >= [pixList count]) end = [pixList count];
 		
-		if( start > end) start = end;
+		if( start >= end) end = start+1;
 		
 		if( interval < 1) interval = 1;
 		
