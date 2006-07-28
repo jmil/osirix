@@ -18,24 +18,30 @@
 
 - (void) setMenus;
 
-- (void) switchTypes;
+- (void) switchTypes: (BOOL) PSD;
 - (void) incrementDefaultName;
 - (void) exportSpines;
+- (void) exportPSDs;
 - (void) exportLengths;
 - (void) exportDistances;
 
 - (NSString*) outputString:(NSString*) prevType: (NSString*) newType;
 
 
-- (void) rotateType:(ROI*) roi;
+- (void) rotateSpineType:(ROI*) roi;
+- (void) rotatePSDType:(ROI*) roi;
 
 
 - (void) endSavePanelSpines: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo;
+- (void) endSavePanelPSDs: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo;
 - (void) endSavePanelLengths: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo;
 - (void) endSavePanelDistances: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo;
 
 - (ROI*) findMeasureROIWithShortnameInController: (NSString *) prefix: (ViewerController*) controller;
 - (NSString *) shortname: (NSString *) name;
+- (NSString *) spineType: (NSString *) name;
+- (NSString *) PSDType: (NSString *) name;
+
 
 - (float)	spineDistance: (ROI*) spine: (ROI*) axis;
 - (NSPoint)	transformPoint: (NSPoint) point : (NSPoint) ori : (NSPoint) ext;

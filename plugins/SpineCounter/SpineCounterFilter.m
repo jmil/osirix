@@ -23,11 +23,15 @@
 {
 
 	if ([menuName isEqualToString:@"Switch Spine Type"])
-		[self switchTypes];
+		[self switchTypes: NO];
+	else if ([menuName isEqualToString:@"Switch PSD Type"])
+		[self switchTypes: YES];
 	else if ([menuName isEqualToString:@"Increment Count"])
 		[self incrementDefaultName];
 	else if ([menuName isEqualToString:@"Export Spines"])
 		[self exportSpines];
+	else if ([menuName isEqualToString:@"Export PSDs"])
+		[self exportPSDs];
 	else if ([menuName isEqualToString:@"Export Lengths"])
 		[self exportLengths];
 	else if ([menuName isEqualToString:@"Export Distances"])
@@ -41,6 +45,7 @@
 	AppController *appController = 0L;
 	NSMenuItem *spineMenu = 0L;
 	NSMenuItem *switchMenuItem = 0L;
+	NSMenuItem *switchPSDMenuItem = 0L;
 	NSMenuItem *countMenuItem = 0L;
 	
 	appController = [AppController sharedAppController];
@@ -52,17 +57,21 @@
 		spineSubMenu = [spineMenu submenu];
 		
 		switchMenuItem = [spineSubMenu itemWithTitle:@"Switch Spine Type"];
+		switchPSDMenuItem = [spineSubMenu itemWithTitle:@"Switch PSD Type"];
 		countMenuItem = [spineSubMenu itemWithTitle:@"Increment Count"];
 		
 		[switchMenuItem setKeyEquivalent:@"s"];
 		[switchMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+
+		[switchPSDMenuItem setKeyEquivalent:@"x"];
+		[switchPSDMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
 
 		[countMenuItem setKeyEquivalent:@"a"];
 		[countMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
 	}
 }
 
-- (void) switchTypes
+- (void) switchTypes: (BOOL) PSD
 {
 	NSMutableArray  *pixList;
 	NSMutableArray  *roiSeriesList;
@@ -89,7 +98,7 @@
 	{
 		if( [[roiImageList objectAtIndex: i] ROImode] == ROI_selected)
 		{
-			// We find it! What's his name?
+			// We found it! What's its name?
 			
 			roiName = [NSString stringWithString:[[roiImageList objectAtIndex: i] name]];
 			
@@ -110,7 +119,10 @@
 		
 		for( i = 0; i < [roiImageList count]; i++)
 			if( [[[roiImageList objectAtIndex: i] name] isEqualToString: roiName])
-				[self rotateType:[roiImageList objectAtIndex: i]];
+				if (PSD)
+					[self rotatePSDType:[roiImageList objectAtIndex: i]];
+				else
+					[self rotateSpineType:[roiImageList objectAtIndex: i]];
 	}
 	
 	[viewerController needsDisplayUpdate];
@@ -135,6 +147,15 @@
 
 	[ panel setRequiredFileType: nil ];
 	[ panel beginSheetForDirectory:nil file:nil modalForWindow: [ viewerController window ] modalDelegate:self didEndSelector: @selector(endSavePanelSpines:returnCode:contextInfo:) contextInfo: nil ];
+}
+
+- (void) exportPSDs
+{
+	NSSavePanel *panel = [ NSSavePanel savePanel ];
+	assert( panel != nil );
+
+	[ panel setRequiredFileType: nil ];
+	[ panel beginSheetForDirectory:nil file:nil modalForWindow: [ viewerController window ] modalDelegate:self didEndSelector: @selector(endSavePanelPSDs:returnCode:contextInfo:) contextInfo: nil ];
 }
 
 - (void) exportLengths
@@ -223,17 +244,62 @@
 {
 	NSString* shortName = 0L;
 	NSString* lastchars = @"";
-
-	if ([name length] > 2)
+	
+	shortName = [NSString stringWithString:name];
+	
+	while ([shortName length] > 2)
 	{
-		lastchars = [name substringFromIndex:([name length] - 2)];
-		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"])
-			if ([[name substringToIndex:([name length] - 2)] intValue] > 0)
-				shortName = [name substringToIndex:([name length] - 2)];
+		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
+		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"] || [lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
+			shortName = [shortName substringToIndex:([shortName length] - 2)];
+		else
+			break;
 	}
-	else if ([name intValue] > 0)
-		shortName = [NSString stringWithString:name];
-	return shortName;
+	
+	if ([shortName intValue] > 0)
+		return shortName;
+	else
+		return 0L;		
+}
+
+- (NSString *) spineType: (NSString *) name
+{
+	NSString* shortName = 0L;
+	NSString* lastchars = @"";
+	
+	shortName = [NSString stringWithString:name];
+	
+	while ([shortName length] > 2)
+	{
+		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
+		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"])
+			return lastchars;
+		else if ([lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
+			shortName = [shortName substringToIndex:([shortName length] - 2)];
+		else
+			break;
+	}
+	return [NSString stringWithString:@""];
+}
+
+- (NSString *) PSDType: (NSString *) name
+{
+	NSString* shortName = 0L;
+	NSString* lastchars = @"";
+	
+	shortName = [NSString stringWithString:name];
+	
+	while ([shortName length] > 2)
+	{
+		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
+		if ([lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
+			return lastchars;
+		else if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"])
+			shortName = [shortName substringToIndex:([shortName length] - 2)];
+		else
+			break;
+	}
+	return [NSString stringWithString:@""];
 }
 
 
@@ -426,6 +492,86 @@
 	NSData *data = [ NSData dataWithBytes: str length: strlen( str ) ];
 	[data writeToFile: fname atomically: YES];
 }
+
+- (void) endSavePanelPSDs: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo
+{
+	NSMutableArray	*roiList = 0L;
+	NSMutableArray	*roiShortNameList = 0L;
+	NSArray			*sortedShortNameList = 0L;
+	NSMutableArray  *pixList;
+	NSMutableArray  *roiSeriesList;
+	NSMutableArray  *roiImageList;
+	NSMutableString	*outputText = [NSMutableString stringWithCapacity: 1024];
+	
+	NSString		*shortName = 0L;
+	NSString		*roiName = 0L;
+	int i, j;
+	
+	if ( retCode != NSFileHandlingPanelOKButton ) return;
+
+	roiList = [NSMutableArray arrayWithCapacity:20];
+	roiShortNameList = [NSMutableArray arrayWithCapacity:20];
+
+	pixList = [viewerController pixList];
+	// All rois contained in the current series
+	roiSeriesList = [viewerController roiList];
+
+	for (i=0; i < [pixList count]; i++) // over the images in the viewer
+	{
+		roiImageList = [roiSeriesList objectAtIndex:i];
+		for (j=0; j < [roiImageList count]; j++) // over each roi
+		{
+			roiName = [[roiImageList objectAtIndex: j] name];
+			shortName = [self shortname:roiName];
+				
+			if (shortName)
+			{
+				if ([roiList indexOfObject:roiName] == NSNotFound)
+					[roiList addObject:[NSString stringWithString:roiName]];
+				
+				if ([roiShortNameList indexOfObject:shortName] == NSNotFound)
+					[roiShortNameList addObject:[NSString stringWithString:shortName]];
+			}
+		}
+	}
+	
+	sortedShortNameList = [roiShortNameList sortedArrayUsingSelector:@selector(numericCompare:)];
+	
+	for (i = 0; i < [sortedShortNameList count]; i++)
+	{
+		NSString* spineNumberString = [sortedShortNameList objectAtIndex:i];
+		
+		int spineNumber = [spineNumberString intValue];
+		[outputText appendFormat:@"%d", spineNumber];
+		
+		int roiFound = NO;
+		// find the right ROI
+		for (j = 0; j < [roiList count]; j++)
+		{
+			NSString* currentROIName = [roiList objectAtIndex:j];
+			if ([[self shortname:currentROIName] isEqualToString:spineNumberString])
+			{
+				roiFound = YES;
+				
+				NSString *spineType = [self spineType:currentROIName];
+				NSString *PSDType = [self PSDType:currentROIName];
+				
+				[outputText appendFormat:@"\t%@\t%@", spineType, PSDType];
+				break;
+			}
+		}
+		if (roiFound == NO) // this should never happen, but check just in case
+			[outputText appendString:@"\t\t"];
+		
+		[outputText appendFormat:@"\n"];
+	}
+	
+	NSMutableString *fname = [ NSMutableString stringWithString: [ sheet filename ] ];
+	
+	const char *str = [outputText cStringUsingEncoding: NSASCIIStringEncoding ];
+	NSData *data = [ NSData dataWithBytes: str length: strlen( str ) ];
+	[data writeToFile: fname atomically: YES];	
+}
 	
 - (void) endSavePanelSpines: (NSSavePanel *) sheet returnCode: (int) retCode contextInfo: (void *) contextInfo
 {
@@ -502,17 +648,20 @@
 //				if ([currentROIName hasPrefix:spineNumberString])
 				{
 					roiFound = YES;
-					if ([currentROIName hasSuffix:@"S"])
+					
+					NSString *spineType = [self spineType:currentROIName];
+					
+					if ([spineType isEqualToString:@" S"])
 					{
 						[outputText appendFormat:@"\t%@", [self outputString:prevType:@"S"]];
 						prevType = @"S";
 					}
-					else if ([currentROIName hasSuffix:@"M"])
+					else if ([spineType isEqualToString:@" M"])
 					{
 						[outputText appendFormat:@"\t%@", [self outputString:prevType:@"M"]];
 						prevType = @"M";
 					}
-					else if ([currentROIName hasSuffix:@"F"])
+					else if ([spineType isEqualToString:@" F"])
 					{
 						[outputText appendFormat:@"\t%@", [self outputString:prevType:@"F"]];
 						prevType = @"F";
@@ -560,10 +709,45 @@
 }
 
 
-- (void) rotateType:(ROI*) roi
+- (void) rotatePSDType:(ROI*) roi
 {
 	NSString* name;
 	NSString* newName;
+	NSString *spinetype;
+	NSString *PSDtype;
+	NSString *newPSDType = @"";
+	
+	name = [roi name];
+	
+	spinetype = [self spineType:name];
+	PSDtype = [self PSDType:name];
+	
+	newName = [NSString stringWithString:name];
+	if (![PSDtype isEqualToString:@""])
+		newName = [newName substringToIndex:([newName length] - 2)];
+	if (![spinetype isEqualToString:@""])
+		newName = [newName substringToIndex:([newName length] - 2)];
+		
+	if ([PSDtype isEqualToString:@""])
+		newPSDType = @" Y";
+	else if ([PSDtype isEqualToString:@" Y"])
+		newPSDType = @" N";
+	else if ([PSDtype isEqualToString:@" N"])
+		newPSDType = @" P";
+	else if ([PSDtype isEqualToString:@" P"])
+		newPSDType = @"";
+
+	[roi setName:[NSString stringWithFormat:@"%@%@%@", newName, spinetype, newPSDType]];
+}
+
+- (void) rotateSpineType:(ROI*) roi
+{
+	NSString* name;
+	NSString* newName;
+	NSString *spinetype;
+	NSString *PSDtype;
+	NSString *newSpineType = @"";
+
 	RGBColor green = {76, 255, 76};
 	RGBColor yellow = {255, 255, 64};
 	RGBColor red = {255, 0, 0};
@@ -587,39 +771,37 @@
 	
 	name = [roi name];
 	
-	NSString* lastchars = @"";
+	spinetype = [self spineType:name];
+	PSDtype = [self PSDType:name];
 	
-	if ([name length] > 2)
+	newName = [NSString stringWithString:name];
+	if (![PSDtype isEqualToString:@""])
+		newName = [newName substringToIndex:([newName length] - 2)];
+	if (![spinetype isEqualToString:@""])
+		newName = [newName substringToIndex:([newName length] - 2)];
+		
+	if ([spinetype isEqualToString:@""])
 	{
-		lastchars = [name substringFromIndex:([name length] - 2)];
-		if ([lastchars isEqualToString:@" S"])
-		{
-			newName = [[name substringToIndex:([name length] - 2)] stringByAppendingString:@" M"];
-			[roi setColor:red];
-		}
-		else if ([lastchars isEqualToString:@" M"])
-		{
-			newName = [[name substringToIndex:([name length] - 2)] stringByAppendingString:@" F"];
-			[roi setColor:blue];
-		}
-		else if ([lastchars isEqualToString:@" F"])
-		{
-			newName = [name substringToIndex:([name length] - 2)];
-			[roi setColor:green];
-		}
-		else
-		{
-			newName = [name stringByAppendingString:@" S"];
-			[roi setColor:yellow];
-		}
-	}
-	else
-	{
-		newName = [name stringByAppendingString:@" S"];
+		newSpineType = @" S";
 		[roi setColor:yellow];
 	}
+	else if ([spinetype isEqualToString:@" S"])
+	{
+		newSpineType = @" M";
+		[roi setColor:red];
+	}
+	else if ([spinetype isEqualToString:@" M"])
+	{
+		newSpineType = @" F";
+		[roi setColor:blue];
+	}
+	else if ([spinetype isEqualToString:@" F"])
+	{
+		newSpineType = @"";
+		[roi setColor:green];
+	}
 
-	[roi setName:newName];
+	[roi setName:[NSString stringWithFormat:@"%@%@%@", newName, newSpineType, PSDtype]];
 	
 	[[NSUserDefaults standardUserDefaults] setFloat:green.red forKey:@"ROIColorR"];
 	[[NSUserDefaults standardUserDefaults] setFloat:green.green forKey:@"ROIColorG"];

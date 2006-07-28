@@ -19,8 +19,10 @@
 	<key>MenuTitles</key>
 	<array>
 		<string>Switch Spine Type</string>
+		<string>Switch PSD Type</string>
 		<string>Increment Count</string>
 		<string>Export Spines</string>
+		<string>Export PSDs</string>
 		<string>Export Lengths</string>
 		<string>Export Distances</string>
 	</array>
