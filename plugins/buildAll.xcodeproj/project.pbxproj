@@ -12,9 +12,6 @@
 			buildConfigurationList = CE76EBFF0994DA71007B9067 /* Build configuration list for PBXAggregateTarget "plugins" */;
 			buildPhases = (
 			);
-			buildSettings = {
-				PRODUCT_NAME = plugins;
-			};
 			dependencies = (
 				CE76EE7D0994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE7F0994DBBD007B9067 /* PBXTargetDependency */,
@@ -37,23 +34,6 @@
 			productName = plugins;
 		};
 /* End PBXAggregateTarget section */
-
-/* Begin PBXBuildStyle section */
-		CE76EDC80994DB93007B9067 /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-			};
-			name = Development;
-		};
-		CE76EDC90994DB93007B9067 /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
 		CE38EC7E0994E11F008E1A2D /* PBXContainerItemProxy */ = {
@@ -611,12 +591,6 @@
 		CE76EBF20994DA4C007B9067 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE76EBF30994DA4C007B9067 /* Build configuration list for PBXProject "buildAll" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				CE76EDC80994DB93007B9067 /* Development */,
-				CE76EDC90994DB93007B9067 /* Deployment */,
-			);
 			hasScannedForEncodings = 0;
 			mainGroup = CE76EBF00994DA4C007B9067;
 			projectDirPath = "";
