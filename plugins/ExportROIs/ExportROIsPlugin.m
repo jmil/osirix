@@ -59,7 +59,7 @@
 	NSMutableArray			*imagesInSeries = [ NSMutableArray arrayWithCapacity: 0 ];
 
 	NSMutableString	*csvText = [ NSMutableString stringWithCapacity: 100 ];
-	[ csvText appendFormat: @"ImageNo,RoiNo,RoiName,RoiCenterX,RoiCenterY,RoiCenterZ,RoiType,NumOfPoints,mmX,mmY,mmZ,pxX,pxY,...%c", LF];
+	[ csvText appendFormat: @"ImageNo,RoiNo,RoiMean,RoiMin,RoiMax,RoiTotal,RoiDev,RoiName,RoiCenterX,RoiCenterY,RoiCenterZ,RoiType,NumOfPoints,mmX,mmY,mmZ,pxX,pxY,...%c", LF];
 	
 	NSMutableString *csvRoiPoints;
 	
@@ -90,6 +90,10 @@
 			ROI *roi = [ roiImageList objectAtIndex: j ];
 			
 			NSString *roiName = [ roi name ];
+			
+			float mean = 0, min = 0, max = 0, total = 0, dev = 0;
+			
+			[pix computeROI:roi :&mean :&total :&dev :&min :&max];
 			
 			// array of point in pix coordinate
 			NSMutableArray *roiPoints = [ roi points ];
@@ -136,8 +140,9 @@
 					numCsvPoints++;
 				}
 			}
+			
 			if ( fileType == FT_CSV ) {
-				[ csvText appendFormat: @"%d,%d,%c%@%c,%f,%f,%f,%d,%d,%@%c", i, j, DQUOTE, roiName, DQUOTE, clocs[0], clocs[1], clocs[2], [ roi type ], numCsvPoints, csvRoiPoints, LF ];
+				[ csvText appendFormat: @"%d,%d,%f,%f,%f,%f,%f,%c%@%c,%f,%f,%f,%d,%d,%@%c", i, j, mean, min, max, total, dev, DQUOTE, roiName, DQUOTE, clocs[0], clocs[1], clocs[2], [ roi type ], numCsvPoints, csvRoiPoints, LF ];
 			}
 						
 			// roiInfo stands for a ROI
@@ -149,6 +154,11 @@
 			//   Point_mm		: array of point (x,y,z) in mm unit
 			//   Point_px		: array of point (x,y) in pixel unit
 			[ roiInfo setObject: [ NSNumber numberWithLong: j ] forKey: @"IndexInImage" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: mean ] forKey: @"Mean" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: min ] forKey: @"Min" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: max ] forKey: @"Max" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: total ] forKey: @"Total" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: dev ] forKey: @"Dev" ];
 			[ roiInfo setObject: roiName forKey: @"Name" ];
 			[ roiInfo setObject: [ NSNumber numberWithLong: [ roi type ] ] forKey: @"Type" ];
 			[ roiInfo setObject: roiCenter forKey: @"Center" ];
