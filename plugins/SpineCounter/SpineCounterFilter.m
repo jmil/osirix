@@ -250,7 +250,7 @@
 	while ([shortName length] > 2)
 	{
 		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
-		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"] || [lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
+		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"] || [lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"] || [lastchars isEqualToString:@" H"])
 			shortName = [shortName substringToIndex:([shortName length] - 2)];
 		else
 			break;
@@ -272,7 +272,7 @@
 	while ([shortName length] > 2)
 	{
 		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
-		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"])
+		if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"] || [lastchars isEqualToString:@" H"])
 			return lastchars;
 		else if ([lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
 			shortName = [shortName substringToIndex:([shortName length] - 2)];
@@ -294,7 +294,7 @@
 		lastchars = [shortName substringFromIndex:([shortName length] - 2)];
 		if ([lastchars isEqualToString:@" Y"] || [lastchars isEqualToString:@" N"] || [lastchars isEqualToString:@" P"])
 			return lastchars;
-		else if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"])
+		else if ([lastchars isEqualToString:@" S"] || [lastchars isEqualToString:@" M"] || [lastchars isEqualToString:@" F"] || [lastchars isEqualToString:@" H"])
 			shortName = [shortName substringToIndex:([shortName length] - 2)];
 		else
 			break;
@@ -666,6 +666,11 @@
 						[outputText appendFormat:@"\t%@", [self outputString:prevType:@"F"]];
 						prevType = @"F";
 					}
+					else if ([spineType isEqualToString:@" H"])
+					{
+						[outputText appendFormat:@"\t%@", [self outputString:prevType:@"H"]];
+						prevType = @"H";
+					}
 					else
 					{
 						[outputText appendFormat:@"\t%@", [self outputString:prevType:@""]];
@@ -752,6 +757,7 @@
 	RGBColor yellow = {255, 255, 64};
 	RGBColor red = {255, 0, 0};
 	RGBColor blue = {0, 0, 255};
+	RGBColor orange = {255, 128, 0};
 	
 	green.red *= 256;
 	green.green *= 256;
@@ -768,6 +774,10 @@
 	blue.red *= 256;
 	blue.green *= 256;
 	blue.blue *= 256;
+	
+	orange.red *= 256;
+	orange.green *= 256;
+	orange.blue *= 256;
 	
 	name = [roi name];
 	
@@ -796,6 +806,11 @@
 		[roi setColor:blue];
 	}
 	else if ([spinetype isEqualToString:@" F"])
+	{
+		newSpineType = @" H";
+		[roi setColor:orange];
+	}
+	else if ([spinetype isEqualToString:@" H"])
 	{
 		newSpineType = @"";
 		[roi setColor:green];
