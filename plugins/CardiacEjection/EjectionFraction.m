@@ -106,7 +106,7 @@ static double cPipi	= 3.141592653589793238;
 
 	// HEMI ELLIPSE/CYLINDER
 	fShortAxisDias   = 0.0;
-	fShortAxisSys	   = 0.0;
+	fShortAxisSys	 = 0.0;
 
 	// SIMPSON (simplified)
 	fMitralDias	   = 0.0;
@@ -174,12 +174,12 @@ static double cPipi	= 3.141592653589793238;
 					case tMesure:
 						if( [[roi name] isEqualToString:@"DiasLength"] ||
 							[[roi name] isEqualToString:@"DiasDiam"])
-							fLengthDias = [roi MesureLength:0L]*10.;
+							fLengthDias = [roi MesureLength:0L];//*10.;
 							add = YES;
 							
 						if( [[roi name] isEqualToString:@"SystLength"] ||
 							[[roi name] isEqualToString:@"SystDiam"])
-							fLengthSys = [roi MesureLength:0L]*10.;
+							fLengthSys = [roi MesureLength:0L];//*10.;
 							add = YES;
 					break;
 					
