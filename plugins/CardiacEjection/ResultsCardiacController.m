@@ -27,13 +27,23 @@
 	return self;
 }
 
--(void) setDICOMElements: (NSMutableDictionary*) dE
+//-(void) setDICOMElements: (NSMutableDictionary*) dE
+-(void) setDICOMElements: (NSManagedObject*) dE;
 {
-	dicomElements = dE ;
+	//dicomElements = dE ;
 	NSString *ID, *name, *birthDate;
-	ID = ([dE objectForKey: @"PatientID"]==nil)?@"":[dE objectForKey: @"PatientID"];
-	name = ([dE objectForKey: @"PatientsName"]==nil)?@"":[dE objectForKey: @"PatientsName"];
-	birthDate = ([dE objectForKey: @"PatientsBirthDate"]==nil)?@"":[dE objectForKey: @"PatientsBirthDate"];
+	//ID = ([dE objectForKey: @"PatientID"]==nil)?@"":[dE objectForKey: @"PatientID"];
+	ID = [dE valueForKeyPath:@"series.study.patientID"];
+	if (!ID) ID = @"";
+	NSLog(@"ID : %@", ID);
+	//name = ([dE objectForKey: @"PatientsName"]==nil)?@"":[dE objectForKey: @"PatientsName"];
+	name = [dE valueForKeyPath:@"series.study.name"];
+	if (!name) name = @"";
+	NSLog(@"name : %@", name);
+	//birthDate = ([dE objectForKey: @"PatientsBirthDate"]==nil)?@"":[dE objectForKey: @"PatientsBirthDate"];
+	birthDate = [[dE valueForKeyPath:@"series.study.dateOfBirth"] descriptionWithCalendarFormat:[[NSUserDefaults standardUserDefaults] stringForKey: NSShortDateFormatString] timeZone:0L locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
+	if (!birthDate) birthDate = @"";
+	NSLog(@"birthDate : %@", birthDate);
 	[patientID setStringValue: ID];
 	[patientName setStringValue: name];
 	[patientBirthDate setStringValue: birthDate];
@@ -216,7 +226,7 @@
 	[self print:sender];
 }
 
-- (void)print:(id)sender
+- (void)print:(id)sender;
 {
 	NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
 	[printInfo setHorizontalPagination:NSFitPagination];

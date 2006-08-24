@@ -137,7 +137,8 @@ static double cPipi	= 3.141592653589793238;
 	originArray = [[NSMutableArray alloc] initWithCapacity:0];
 	
 	//patient info. Assuming that all images are from the same patient...
-	NSMutableDictionary *dicomElements = nil;
+	//NSMutableDictionary *dicomElements = nil;
+	NSManagedObject *dicomElements = nil;
 
 	// Get an array with ALL displayed 2D Viewer Windows
 	viewersArray = [self viewerControllersList];
@@ -153,6 +154,7 @@ static double cPipi	= 3.141592653589793238;
 		if (dicomElements==nil)
 		{
 			//dicomElements = [[[[viewersArray objectAtIndex: i] fileList] objectAtIndex: 0] dicomElements];
+			dicomElements = [[[viewersArray objectAtIndex: i] fileList] objectAtIndex: 0];
 		}
 		
 		for( j = 0 ; j < [pixList count]; j++)
@@ -342,7 +344,7 @@ static double cPipi	= 3.141592653589793238;
 
 	//Now create our results window
 	ResultsCardiacController* resultsWin = [[ResultsCardiacController alloc] init];
-	//[resultsWin setDICOMElements: dicomElements];
+	[resultsWin setDICOMElements: dicomElements];
 
 
 	switch( fMethod)

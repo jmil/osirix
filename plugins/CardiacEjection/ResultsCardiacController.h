@@ -27,13 +27,15 @@
 	IBOutlet	NSImageView		*diagram;
 	IBOutlet	ZoomMatrix		*thumbnails;
 
-	NSMutableDictionary			*dicomElements;
+	//NSMutableDictionary			*dicomElements;
 	IBOutlet	NSTextField		*patientInfos;
 	IBOutlet	NSTextField		*patientID;
 	IBOutlet	NSTextField		*patientName;
 	IBOutlet	NSTextField		*patientBirthDate;
 }
 
-- (void) setResults:(NSString*) m :(NSString*) d :(NSString*) vD :(NSString*) vS :(NSString*) ef : (NSString*) dia :(NSMutableArray*) imArray: (NSMutableArray*) roiArray: (float[]) scalesArray: (float[]) rotationArray: (NSMutableArray*) originArray;
+-(void) setResults:(NSString*) m :(NSString*) d :(NSString*) vD :(NSString*) vS :(NSString*) ef : (NSString*) dia :(NSMutableArray*) imArray: (NSMutableArray*) roiArray: (float[]) scalesArray: (float[]) rotationArray: (NSMutableArray*) originArray;
+-(void) setDICOMElements:(NSManagedObject*) dE;
+-(void) print:(id)sender;
 
 @end
