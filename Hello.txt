@@ -1,1 +1,68 @@
-Version 2.4 is now available !
+Web Site:
+http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
+
+DEFINE:
+
+#ifdef __LP64__
+#endif
+
+LIPO:
+
+lipo -create a64.lib b32.lib -output combined
+
+LIBTIFF 3.8.2:
+
+./configure CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" CXXFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" --host=ppc64
+
+make clean
+
+make
+
+Hidden folder:
+cd .libs
+
+Ensuite, utiliser lipo
+
+Pour changer le default path de la dylib:
+http://www.cocoadev.com/index.pl?ApplicationLinking
+
+JASPER:
+
+./configure CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" CXXFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64"
+
+make clean
+
+make
+
+Hidden folder:
+cd /Users/antoinerosset/jasper-1.701.0/src/libjasper/.libs
+
+Jasper, make: une seule architecture a la fois...
+
+Ensuite, utiliser lipo
+
+ITK/VTK:
+
+CMAKE_CXX_FLAGS -arch ppc64 -arch ppc -arch i386 -arch x86_64
+CMAKE_C_FLAGS -arch ppc64 -arch ppc -arch i386 -arch x86_64
+CMAKE_OSX_ARCHITECTURES ppc;ppc64;i386;x86_64
+CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk
+
+VTK:
+
+Les PPCIntrinsecs.h ont été ôtés
+
+FTMac.c pour les fonts: beaucoup de fonctions DEPRECATED.....
+
+OrientationWidget doesn't work
+
+ITK:
+
+__isnand dans vnl_math.cxx, remplacer avec __inline_isnand (voir math.h)
+
+OSIRIX:
+
+1) Le SDK à MacOS10.5
+2) Oter le 10.4usdk dans le framework path
+3) Header tiff: unsigned int au lieu de unsigned long
+4) Quicktime, only 32-bit... utiliser QTKit
