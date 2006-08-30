@@ -44,7 +44,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 		serverHost=[[NSString alloc] initWithString:RDNCHost];
 		serverPort=RDNCport;
 		lastModificationOfPersistentClientQueue = 0;
-		pathRDNotifationProperties=[[NSString alloc] initWithString:[[NSBundle mainBundle] pathForResource:@"RDNotification" ofType:@"plist"]];
+		pathRDNotifationProperties=[[NSString alloc] initWithString:[[NSBundle bundleForClass:[self class]] pathForResource:@"RDNotification" ofType:@"plist"]];
 		//fullPathPersitentQueue=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCPersitentNotificationsQueue.db"]];
 		fullPathPersitentQueue=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCPersitentNotificationsQueue.db"]];
 		

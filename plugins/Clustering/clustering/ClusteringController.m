@@ -137,7 +137,7 @@
 	NSString* ip=nil;
 	NSArray	*addresses = [[NSHost currentHost] addresses];
 	NSEnumerator *addressesEnumerator = [addresses objectEnumerator];
-	NSString *anAddress, *tempIp;
+	NSString *anAddress;
 	while (anAddress = [addressesEnumerator nextObject])
 	{
 		NSLog(@"anAddress : %@", anAddress);
@@ -164,7 +164,7 @@
 		//RDNCServer = [[RDNotificationServer alloc] initWithDefaultContainer];
 		RDNCServer = [[RDNotificationServer alloc] initWithTransactionalContainer];
 		//[self performSelectorOnMainThread:@selector(waitConnection) withObject:nil afterDelay:0];
-		NSTimer* timerServerStatus=[NSTimer scheduledTimerWithTimeInterval:5
+		timerServerStatus=[NSTimer scheduledTimerWithTimeInterval:5
 																	target:self
 																  selector:@selector(waitConnection)
 																  userInfo:nil

@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AC0EF110AA5D0C1002062F2 /* RDNotification.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AC0EF100AA5D0C1002062F2 /* RDNotification.plist */; };
 		8D5B49AE048680CD000E48DA /* Clustering_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF630370AF2F00C91783 /* Clustering_Prefix.pch */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		A9A90A7B0A75015E005A1CA7 /* Clustering.nib in Resources */ = {isa = PBXBuildFile; fileRef = A9A90A6F0A75015E005A1CA7 /* Clustering.nib */; };
-		A9A90A7C0A75015E005A1CA7 /* RDNotification.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9A90A700A75015E005A1CA7 /* RDNotification.plist */; };
 		A9A90A7D0A75015E005A1CA7 /* Observer.h in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A710A75015E005A1CA7 /* Observer.h */; };
 		A9A90A7E0A75015E005A1CA7 /* Observer.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A90A720A75015E005A1CA7 /* Observer.m */; };
 		A9A90A7F0A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */; };
@@ -35,15 +35,32 @@
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildStyle section */
+		3A986AC60A88C102000FE5BF /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Development;
+		};
+		3A986AC70A88C102000FE5BF /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* Clustering_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clustering_Prefix.pch; sourceTree = "<group>"; };
+		3AC0EF100AA5D0C1002062F2 /* RDNotification.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = RDNotification.plist; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9A90A6F0A75015E005A1CA7 /* Clustering.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Clustering.nib; sourceTree = "<group>"; };
-		A9A90A700A75015E005A1CA7 /* RDNotification.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = RDNotification.plist; sourceTree = "<group>"; };
 		A9A90A710A75015E005A1CA7 /* Observer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Observer.h; sourceTree = "<group>"; };
 		A9A90A720A75015E005A1CA7 /* Observer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Observer.m; sourceTree = "<group>"; };
 		A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RDNotificationCenter_Prefix.pch; sourceTree = "<group>"; };
@@ -105,6 +122,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3AC0EF100AA5D0C1002062F2 /* RDNotification.plist */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -158,7 +176,6 @@
 			children = (
 				A9A90A8B0A7501B8005A1CA7 /* ClusterIcon.tiff */,
 				A9A90A6F0A75015E005A1CA7 /* Clustering.nib */,
-				A9A90A700A75015E005A1CA7 /* RDNotification.plist */,
 				A9A90A710A75015E005A1CA7 /* Observer.h */,
 				A9A90A720A75015E005A1CA7 /* Observer.m */,
 				A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */,
@@ -252,6 +269,12 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Clustering" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				3A986AC60A88C102000FE5BF /* Development */,
+				3A986AC70A88C102000FE5BF /* Deployment */,
+			);
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Clustering */;
 			projectDirPath = "";
@@ -268,8 +291,8 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				A9A90A7B0A75015E005A1CA7 /* Clustering.nib in Resources */,
-				A9A90A7C0A75015E005A1CA7 /* RDNotification.plist in Resources */,
 				A9A90A8C0A7501B8005A1CA7 /* ClusterIcon.tiff in Resources */,
+				3AC0EF110AA5D0C1002062F2 /* RDNotification.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
