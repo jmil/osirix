@@ -5,7 +5,6 @@
 //  Created by Arnaud Garcia on 23.10.05.
 //
 
-extern NSString *documentsDirectory();
 static NSTimeInterval lastModificationOfPersistentClientQueue;
 
 #import "RemoteDistributedNotificationCenter.h"
@@ -47,7 +46,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 		lastModificationOfPersistentClientQueue = 0;
 		pathRDNotifationProperties=[[NSString alloc] initWithString:[[NSBundle mainBundle] pathForResource:@"RDNotification" ofType:@"plist"]];
 		//fullPathPersitentQueue=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCPersitentNotificationsQueue.db"]];
-		fullPathPersitentQueue=[[NSString alloc] initWithString:[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/RDNCPersitentNotificationsQueue.db"]];
+		fullPathPersitentQueue=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCPersitentNotificationsQueue.db"]];
 		
 		// retrieve or create a softID
 		NSDictionary* prop=[NSDictionary dictionaryWithContentsOfFile:pathRDNotifationProperties];
@@ -299,7 +298,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 		NSString* notifTimeStamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
 		[persitentNotificationsQueue addObject:notifTimeStamp];
 			NSLog(@"(RemoteDistributedNotificationCenter,postTxNotification) notificationTx time stamp = %@", notifTimeStamp);
-		[NSArchiver archiveRootObject:notificationTx toFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
+		[NSArchiver archiveRootObject:notificationTx toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
 		lastModificationOfPersistentClientQueue = [[NSDate date] timeIntervalSince1970];
 		NSLog(@"lastModificationOfPersistentClientQueue = [[NSDate date] timeIntervalSince1970]; : %f", lastModificationOfPersistentClientQueue);
 	}
@@ -399,7 +398,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 			while((notifTimeStamp=[notifEnumerator nextObject]) && (!connectionError) && (!stopSendingPQNotif)) //TODO double check if nextObject need to be synchronized ...
 			{
 				NSAutoreleasePool* pool2 = [[NSAutoreleasePool alloc] init];
-				notif = [NSUnarchiver unarchiveObjectWithFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
+				notif = [NSUnarchiver unarchiveObjectWithFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
 				NSLog(@"(RemoteDistributedNotificationCenter,checkPersitentQueueAndSendTxNotification), notif (unarchived) name = %@", [notif name]);
 				@try{
 					if (!proxy)
@@ -417,7 +416,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 						//TODO do not store if there are no more notifications !!
 						@synchronized(persitentNotificationsQueue)
 					{	
-							[NSArchiver archiveRootObject:notif toFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
+							[NSArchiver archiveRootObject:notif toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
 							BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
 							NSLog(@"(RemoteDistributedNotificationCenter,checkPersitentQueueAndSendTxNotification), store notifications !, result=%x",res);
 					}
@@ -427,7 +426,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 				{
 					@synchronized(persitentNotificationsQueue)
 				{	
-						[[NSFileManager defaultManager] removeFileAtPath:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
+						[[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
 						[persitentNotificationsQueue removeObject:notifTimeStamp];
 						//TODO	performance: optimisation possible, ne pas sauvegarder si la notif vient juste d'arriver !
 						//					 archiver uniquement si la notif avait été sauvegardée précédement

@@ -1,7 +1,6 @@
 #import "ClusteringController.h"
 #import "BrowserController.h"
 
-extern NSString* documentsDirectory();
 
 @implementation ClusteringController
 

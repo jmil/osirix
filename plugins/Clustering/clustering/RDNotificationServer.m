@@ -4,8 +4,6 @@
 //
 //  Created by Arnaud Garcia on 22.10.05.
 
-extern NSString *documentsDirectory();
-
 static NSTimeInterval lastModificationOfPersistentQueue;
 
 #import "RDNotificationServer.h"
@@ -51,10 +49,10 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		notifCenter = nil;
 		lastModificationOfPersistentQueue = [[NSDate date] timeIntervalSince1970]; // init
 																				   //fullPathPersitentQueue=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCServerPersitentNotificationsQueue.db"]];
-		fullPathPersitentQueue=[[NSString alloc] initWithString:[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/RDNCServerPersitentNotificationsQueue.db"]];
+		fullPathPersitentQueue=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCServerPersitentNotificationsQueue.db"]];
 		
 		//fullPathToNotifCenter=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCServerNotifcenter.db"]];
-		fullPathToNotifCenter=[[NSString alloc] initWithString:[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/RDNCServerNotifcenter.db"]];
+		fullPathToNotifCenter=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCServerNotifcenter.db"]];
 		// if transactional mode, load notifications (persitentNotificationsQueue, array) and observers (notifCenter dictionary)
 		if (isTransactional)
 		{
@@ -172,7 +170,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 			{
 				NSAutoreleasePool* pool2 = [[NSAutoreleasePool alloc] init];
 				
-				notif = [NSUnarchiver unarchiveObjectWithFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
+				notif = [NSUnarchiver unarchiveObjectWithFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
 				NSLog(@"+++++++++> [Server], process notification object");
 				//NSLog(@"+++++++++> [Server], process notification object=%@",[notif object]);
 				deleteNotif=YES; // if one observer didn't received the notification, deleteNotif=NO
@@ -210,7 +208,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 									// update notification status and save it
 									[observersOK addObject:[obs softID]];
 									//BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
-									BOOL res=[NSArchiver archiveRootObject:notif toFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
+									BOOL res=[NSArchiver archiveRootObject:notif toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
 									NSLog(@"    write to file res=%x",res);
 							}
 								//NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), success for notification object=%@ to softID=%@",[notif object],[obs softID]);
@@ -239,7 +237,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 				{	
 						//NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=%@",[notif object]);
 						NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=");
-						[[NSFileManager defaultManager] removeFileAtPath:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
+						[[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
 						[persitentNotificationsQueue removeObject:notifTimeStamp];
 						BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
 						NSLog(@"    write to file res=%x",res);
@@ -504,7 +502,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		//[persitentNotificationsQueue addObject:notificationTx];
 		NSString* notifTimeStamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
 		[persitentNotificationsQueue addObject:notifTimeStamp];
-		[NSArchiver archiveRootObject:notificationTx toFile:[[documentsDirectory() stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
+		[NSArchiver archiveRootObject:notificationTx toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
 		NSLog(@"[SERVER], notificationTx class : %@", [[[notificationTx object] objectAtIndex:0] className]);
 		NSLog(@"[SERVER],postTransactionalNotification, persitentNotificationsQueue count=%d, notificationTx name=%@",[persitentNotificationsQueue count],[notificationTx name]);
 		res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];

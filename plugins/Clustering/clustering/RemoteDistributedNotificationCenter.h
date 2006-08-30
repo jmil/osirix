@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "RDNotificationCenterProtocol.h"
+#import "BrowserController.h"
+
 @interface RemoteDistributedNotificationCenter : NSObject {
 	//TODO voir si nécessaire de rendre toutes les variables bool en synchronized !
 	id proxy;

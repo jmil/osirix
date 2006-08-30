@@ -7,6 +7,7 @@
 #import <Cocoa/Cocoa.h>
 #import "RDNotificationCenterProtocol.h"
 #import "Observer.h"
+#import "BrowserController.h"
 
 // The RDNotificationServer is in charge to listen and dispatch notifications to all the cluster ...
 // Two modes: Transactional, Default
