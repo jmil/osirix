@@ -50,11 +50,9 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 		
 		// retrieve or create a softID
 		NSDictionary* prop=[NSDictionary dictionaryWithContentsOfFile:pathRDNotifationProperties];
-		//joris
-		//softID=[[NSString alloc] initWithString:[prop objectForKey:@"softID"]];
-		//if ([softID length]<2) // 2 is an arbitrary value ! lower than a real timestamp
-		//\joris
-		[self generateSoftID]; 
+		softID=[[NSString alloc] initWithString:[prop objectForKey:@"softID"]];
+		if ([softID length]<2) // 2 is an arbitrary value ! lower than a real timestamp
+			[self generateSoftID]; 
 		NSLog(@"(RemoteDistributedNotificationCenter, initWithTCPPort) softID=%@",softID);
 		
 		// if transactional mode, create a persitent Queue to store the notifications
@@ -118,7 +116,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 	NSArray	*addresses = [[NSHost currentHost] addresses];
 	NSEnumerator *addressesEnumerator = [addresses objectEnumerator];
 	NSString *anAddress, *tempSoftID;
-	int maxLength = 0, i=0;
+	int maxLength = 0;
 	while (anAddress = [addressesEnumerator nextObject])
 	{
 		NSLog(@"anAddress : %@", anAddress);

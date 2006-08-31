@@ -48,10 +48,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		exitRunLoop = NO;
 		notifCenter = nil;
 		lastModificationOfPersistentQueue = [[NSDate date] timeIntervalSince1970]; // init
-																				   //fullPathPersitentQueue=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCServerPersitentNotificationsQueue.db"]];
 		fullPathPersitentQueue=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCServerPersitentNotificationsQueue.db"]];
-		
-		//fullPathToNotifCenter=[[NSString alloc] initWithString:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/RDNCServerNotifcenter.db"]];
 		fullPathToNotifCenter=[[NSString alloc] initWithString:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/RDNCServerNotifcenter.db"]];
 		// if transactional mode, load notifications (persitentNotificationsQueue, array) and observers (notifCenter dictionary)
 		if (isTransactional)
