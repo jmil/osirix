@@ -37,9 +37,9 @@
 	// register controller to Remote Notification
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(osirixAddToDB:) name:@"OsirixAddToDBNotification" object:nil];
 	
-	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/"] attributes: 0L];
-	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] attributes: 0L];
-	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] attributes: 0L];
+	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingString:@"/CLUSTER/"] attributes: 0L];
+	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingString:@"/CLUSTER/CLIENTQUEUE/"] attributes: 0L];
+	[[NSFileManager defaultManager] createDirectoryAtPath: [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingString:@"/CLUSTER/SERVERQUEUE/"] attributes: 0L];
 	
 	/*
 	 // init wget

@@ -23,6 +23,6 @@
 		<string>Clustering</string>
 	</array>
 	<key>pluginType</key>
-	<string>unknow</string>
+	<string>Database</string>
 </dict>
 </plist>

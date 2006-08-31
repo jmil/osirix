@@ -13,12 +13,12 @@
 
 - (void) initPlugin
 {
-	ClusteringController *cluster = [[ClusteringController alloc] init];
-	[cluster showWindow:self];
 }
 
 - (long) filterImage:(NSString*) menuName
-{
+{	
+	ClusteringController *cluster = [[ClusteringController alloc] init];
+	[cluster showWindow:self];
 	return 0;
 }
 
