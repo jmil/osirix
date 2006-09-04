@@ -59,7 +59,7 @@
 	NSMutableArray			*imagesInSeries = [ NSMutableArray arrayWithCapacity: 0 ];
 
 	NSMutableString	*csvText = [ NSMutableString stringWithCapacity: 100 ];
-	[ csvText appendFormat: @"ImageNo,RoiNo,RoiMean,RoiMin,RoiMax,RoiTotal,RoiDev,RoiName,RoiCenterX,RoiCenterY,RoiCenterZ,RoiType,NumOfPoints,mmX,mmY,mmZ,pxX,pxY,...%c", LF];
+	[ csvText appendFormat: @"ImageNo,RoiNo,RoiMean,RoiMin,RoiMax,RoiTotal,RoiDev,RoiName,RoiCenterX,RoiCenterY,RoiCenterZ,Area,RoiType,NumOfPoints,mmX,mmY,mmZ,pxX,pxY,...%c", LF];
 	
 	NSMutableString *csvRoiPoints;
 	
@@ -114,6 +114,12 @@
 			[ pix convertPixX: roiCenterPoint.x pixY: roiCenterPoint.y toDICOMCoords: clocs ];
 			NSString *roiCenter = [ NSString stringWithFormat: @"(%f, %f, %f)", clocs[0], clocs[1], clocs[2] ];
 			
+			float area = 0;
+			NSMutableDictionary	*dataString = [roi dataString];
+			
+			if( [dataString objectForKey:@"AreaCM2"]) area = [[dataString objectForKey:@"AreaCM2"] floatValue];
+			if( [dataString objectForKey:@"AreaPIX2"]) area = [[dataString objectForKey:@"AreaPIX2"] floatValue];
+			
 			// walk through each point in the ROI
 			if ( fileType == FT_CSV ) {
 				csvRoiPoints = [ NSMutableString stringWithCapacity: 100 ];
@@ -142,7 +148,7 @@
 			}
 			
 			if ( fileType == FT_CSV ) {
-				[ csvText appendFormat: @"%d,%d,%f,%f,%f,%f,%f,%c%@%c,%f,%f,%f,%d,%d,%@%c", i, j, mean, min, max, total, dev, DQUOTE, roiName, DQUOTE, clocs[0], clocs[1], clocs[2], [ roi type ], numCsvPoints, csvRoiPoints, LF ];
+				[ csvText appendFormat: @"%d,%d,%f,%f,%f,%f,%f,%c%@%c,%f,%f,%f,%f,%d,%d,%@%c", i, j, mean, min, max, total, dev, DQUOTE, roiName, DQUOTE, clocs[0], clocs[1], clocs[2], area, [ roi type ], numCsvPoints, csvRoiPoints, LF ];
 			}
 						
 			// roiInfo stands for a ROI
@@ -160,6 +166,7 @@
 			[ roiInfo setObject: [ NSNumber numberWithFloat: total ] forKey: @"Total" ];
 			[ roiInfo setObject: [ NSNumber numberWithFloat: dev ] forKey: @"Dev" ];
 			[ roiInfo setObject: roiName forKey: @"Name" ];
+			[ roiInfo setObject: [ NSNumber numberWithFloat: area ] forKey: @"Area" ];
 			[ roiInfo setObject: [ NSNumber numberWithLong: [ roi type ] ] forKey: @"Type" ];
 			[ roiInfo setObject: roiCenter forKey: @"Center" ];
 			[ roiInfo setObject: [ NSNumber numberWithLong: [ roiPoints count ] ] forKey: @"NumberOfPoints" ];
