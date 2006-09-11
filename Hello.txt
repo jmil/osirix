@@ -1,3 +1,6 @@
+$Rev$
+$Date$
+
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
 
