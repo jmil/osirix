@@ -423,7 +423,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 				if ([ack intValue]>0) // success, so remove the notification ...
 				{
 					@synchronized(persitentNotificationsQueue)
-				{	
+					{	
 						[[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
 						[persitentNotificationsQueue removeObject:notifTimeStamp];
 						//TODO	performance: optimisation possible, ne pas sauvegarder si la notif vient juste d'arriver !
@@ -432,8 +432,9 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 						//lastModificationOfPersistentClientQueue = [[NSDate date] timeIntervalSince1970];
 						//NSLog(@"lastModificationOfPersistentClientQueue = [[NSDate date] timeIntervalSince1970]; : %f", lastModificationOfPersistentClientQueue);
 						NSLog(@"(RemoteDistributedNotificationCenter,checkPersitentQueueAndSendTxNotification), remove notification, save operation=%x",res);
+					}
 				}
-				} else
+				else
 				{
 					NSLog(@"(RemoteDistributedNotificationCenter,checkPersitentQueueAndSendTxNotification), CANNOT remove notification object, no ACK");
 				}

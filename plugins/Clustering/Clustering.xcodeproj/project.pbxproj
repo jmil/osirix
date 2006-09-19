@@ -12,8 +12,8 @@
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		A9A90A7B0A75015E005A1CA7 /* Clustering.nib in Resources */ = {isa = PBXBuildFile; fileRef = A9A90A6F0A75015E005A1CA7 /* Clustering.nib */; };
-		A9A90A7D0A75015E005A1CA7 /* Observer.h in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A710A75015E005A1CA7 /* Observer.h */; };
-		A9A90A7E0A75015E005A1CA7 /* Observer.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A90A720A75015E005A1CA7 /* Observer.m */; };
+		A9A90A7D0A75015E005A1CA7 /* ObserverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A710A75015E005A1CA7 /* ObserverWrapper.h */; };
+		A9A90A7E0A75015E005A1CA7 /* ObserverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A90A720A75015E005A1CA7 /* ObserverWrapper.m */; };
 		A9A90A7F0A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */; };
 		A9A90A800A75015E005A1CA7 /* RDNotificationCenterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A740A75015E005A1CA7 /* RDNotificationCenterProtocol.h */; };
 		A9A90A810A75015E005A1CA7 /* RDNotificationServer.h in Headers */ = {isa = PBXBuildFile; fileRef = A9A90A750A75015E005A1CA7 /* RDNotificationServer.h */; };
@@ -44,8 +44,8 @@
 		3AC0EF100AA5D0C1002062F2 /* RDNotification.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = RDNotification.plist; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9A90A6F0A75015E005A1CA7 /* Clustering.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Clustering.nib; sourceTree = "<group>"; };
-		A9A90A710A75015E005A1CA7 /* Observer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Observer.h; sourceTree = "<group>"; };
-		A9A90A720A75015E005A1CA7 /* Observer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Observer.m; sourceTree = "<group>"; };
+		A9A90A710A75015E005A1CA7 /* ObserverWrapper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObserverWrapper.h; sourceTree = "<group>"; };
+		A9A90A720A75015E005A1CA7 /* ObserverWrapper.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ObserverWrapper.m; sourceTree = "<group>"; };
 		A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RDNotificationCenter_Prefix.pch; sourceTree = "<group>"; };
 		A9A90A740A75015E005A1CA7 /* RDNotificationCenterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RDNotificationCenterProtocol.h; sourceTree = "<group>"; };
 		A9A90A750A75015E005A1CA7 /* RDNotificationServer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = RDNotificationServer.h; sourceTree = "<group>"; };
@@ -159,8 +159,8 @@
 			children = (
 				A9A90A8B0A7501B8005A1CA7 /* ClusterIcon.tiff */,
 				A9A90A6F0A75015E005A1CA7 /* Clustering.nib */,
-				A9A90A710A75015E005A1CA7 /* Observer.h */,
-				A9A90A720A75015E005A1CA7 /* Observer.m */,
+				A9A90A710A75015E005A1CA7 /* ObserverWrapper.h */,
+				A9A90A720A75015E005A1CA7 /* ObserverWrapper.m */,
 				A9A90A730A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch */,
 				A9A90A740A75015E005A1CA7 /* RDNotificationCenterProtocol.h */,
 				A9A90A750A75015E005A1CA7 /* RDNotificationServer.h */,
@@ -213,7 +213,7 @@
 				ABB76345067FB2A8000912C1 /* ROI.h in Headers */,
 				ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */,
 				ABA48A650680BB600089EB4F /* ClusteringFilter.h in Headers */,
-				A9A90A7D0A75015E005A1CA7 /* Observer.h in Headers */,
+				A9A90A7D0A75015E005A1CA7 /* ObserverWrapper.h in Headers */,
 				A9A90A7F0A75015E005A1CA7 /* RDNotificationCenter_Prefix.pch in Headers */,
 				A9A90A800A75015E005A1CA7 /* RDNotificationCenterProtocol.h in Headers */,
 				A9A90A810A75015E005A1CA7 /* RDNotificationServer.h in Headers */,
@@ -291,7 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABA48A670680BB690089EB4F /* ClusteringFilter.m in Sources */,
-				A9A90A7E0A75015E005A1CA7 /* Observer.m in Sources */,
+				A9A90A7E0A75015E005A1CA7 /* ObserverWrapper.m in Sources */,
 				A9A90A820A75015E005A1CA7 /* RDNotificationServer.m in Sources */,
 				A9A90A840A75015E005A1CA7 /* RemoteDistributedNotificationCenter.m in Sources */,
 				A9A90A860A75015E005A1CA7 /* ClusteringController.m in Sources */,

@@ -139,7 +139,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		NSNumber* ack=nil; // Observer response, if >0 OK else a problem occurs 
 		NSNotification* notif;
 		NSString* notifTimeStamp;
-		Observer* obs;
+		ObserverWrapper* obsWrapper;
 		//BOOL connectionError=NO;  
 		NSMutableArray* observers;
 		
@@ -172,22 +172,22 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 				//NSLog(@"+++++++++> [Server], process notification object=%@",[notif object]);
 				deleteNotif=YES; // if one observer didn't received the notification, deleteNotif=NO
 								 // FIND all oberservers that already received the notification, use the dictionary userInfo of the notification which contains softID of successed observers 
-				observersOK=[[notif userInfo] objectForKey:@"HAVERECEIVED"];
+				observersOK=[[notif userInfo] objectForKey:@"hasReceived"];
 				//FIND all observers for this notification, (use the notifCenter to retrieve them)
 				observers=[notifCenter objectForKey:[notif name]];
 				
 				// for each observer who are listening this kind of notification ...
 				observerEnumerator=[observers objectEnumerator];
-				while(obs=[observerEnumerator nextObject])
+				while(obsWrapper=[observerEnumerator nextObject])
 				{
-					NSLog(@"... [Server], process observer softID=%@",[obs softID]);
+					NSLog(@"... [Server], process observer softID=%@",[obsWrapper softID]);
 					
 					// Double check if we have already send it !, if yes the notification dictionary userInfo for key HAVERECEIVED contains its softID
 					needToSendTheNotif=YES;
 					observersOKEnumerator=[observersOK objectEnumerator];
 					while((tempSoftID=[observersOKEnumerator nextObject]) && needToSendTheNotif)
 					{
-						if ([tempSoftID isEqualToString:[obs softID]])
+						if ([tempSoftID isEqualToString:[obsWrapper softID]])
 							needToSendTheNotif=NO;
 					}
 					
@@ -196,25 +196,25 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 					{
 						NSLog(@"[SERVER], notification need to be send ...");
 						@try{
-							ack=[[obs anObserver] performSelector:[obs selector] withObject:notif];//TODO voir ce qui se passe avec les ack ?? mŽmoire ?
-							NSLog(@"anObserver =%@",[obs anObserver]);
+							ack=[[obsWrapper slaveObserver] performSelector:[obsWrapper selector] withObject:notif];//TODO voir ce qui se passe avec les ack ?? mŽmoire ?
+							NSLog(@"anObserver =%@",[obsWrapper slaveObserver]);
 							if([ack intValue]>0) //sucess
 							{
 								@synchronized(persitentNotificationsQueue)
-							{	
+								{	
 									// update notification status and save it
-									[observersOK addObject:[obs softID]];
+									[observersOK addObject:[obsWrapper softID]];
 									//BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
 									BOOL res=[NSArchiver archiveRootObject:notif toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp]];
 									NSLog(@"    write to file res=%x",res);
-							}
-								//NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), success for notification object=%@ to softID=%@",[notif object],[obs softID]);
-								NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), success for notification object= to softID=%@",[obs softID]);
+								}
+								//NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), success for notification object=%@ to softID=%@",[notif object],[obsWrapper softID]);
+								NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), success for notification object= to softID=%@",[obsWrapper softID]);
 							} else
 							{
 								// a problem occurs, do not delete the notification, we have to try again next time ..
-								//NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), PROBLEM for notification object=%@ to softID=%@",[notif object],[obs softID]);
-								NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), PROBLEM for notification object= to softID=%@",[obs softID]);
+								//NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), PROBLEM for notification object=%@ to softID=%@",[notif object],[obsWrapper softID]);
+								NSLog(@"([SERVER],checkPersitentQueueAndSendTxNotification), PROBLEM for notification object= to softID=%@",[obsWrapper softID]);
 								deleteNotif=NO;
 							}
 						}@catch (NSException *exception) {
@@ -231,7 +231,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 				if (deleteNotif)
 				{
 					@synchronized(persitentNotificationsQueue)
-				{	
+					{	
 						//NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=%@",[notif object]);
 						NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=");
 						[[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
@@ -239,7 +239,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 						BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
 						NSLog(@"    write to file res=%x",res);
 						//lastModificationOfPersistentQueue = [[NSDate date] timeIntervalSince1970];
-				}
+					}
 				}
 				[pool2 release];
 			}
@@ -271,7 +271,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	
 	
 	// add a new observer to notifCenter ...
-	Observer* newObserver=[[Observer alloc] initWithObserver:anObserver 
+	ObserverWrapper* newObserverWrapper=[[ObserverWrapper alloc] initWithObserver:anObserver 
 												 andSelector:aSelector
 										 forNotificationName:notificationName 
 												  withSoftID:aSoftID];
@@ -283,31 +283,31 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	{
 		NSLog(@"[SERVER], observersForNotifName already exist for noticationName=%@ ...",notificationName);
 		if(!isTransactional)
-			[observersForNotifName addObject:newObserver];
+			[observersForNotifName addObject:newObserverWrapper];
 		else
 		{
 			// In a transactional mode, the object could have been already added, before a crach so check the sofID
 			NSEnumerator* observerEnumerator=[observersForNotifName objectEnumerator];
-			Observer* anObserver;
+			ObserverWrapper* anObserverWrapper;
 			BOOL alreadyExist=NO;
-			while((anObserver=[observerEnumerator nextObject]) && (!alreadyExist))
+			while((anObserverWrapper=[observerEnumerator nextObject]) && (!alreadyExist))
 			{
-				if ([[anObserver softID] isEqualToString:[newObserver softID]])
+				if ([[anObserverWrapper softID] isEqualToString:[newObserverWrapper softID]])
 				{
 					alreadyExist=YES;
 					//update proxy
-					[anObserver setAnObserver:[newObserver anObserver]];
+					[anObserverWrapper setSlaveObserver:[newObserverWrapper slaveObserver]];
 				}
 			}
 			
 			if(!alreadyExist)
 			{
-				NSLog(@"([SERVER],addObserver) add new Observer to NotifCenter");
-				[observersForNotifName addObject:newObserver];
+				NSLog(@"([SERVER],addObserver) add new ObserverWrapper to NotifCenter");
+				[observersForNotifName addObject:newObserverWrapper];
 			}
 			else
 			{
-				NSLog(@"([SERVER],addObserver) Observer already exist");
+				NSLog(@"([SERVER],addObserver) ObserverWrapper already exist");
 			}
 		}
 	}
@@ -315,14 +315,14 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	{
 		NSLog(@"[SERVER], observersForNotifName doesn't exist for noticationName=%@, create one entry...",notificationName);
 		observersForNotifName=[NSMutableArray arrayWithCapacity:10];
-		[observersForNotifName addObject:newObserver];
+		[observersForNotifName addObject:newObserverWrapper];
 		@synchronized(notifCenter)
 		{
 			[notifCenter setObject:observersForNotifName forKey:notificationName];
 		}
 	}
 	
-	[newObserver release];
+	[newObserverWrapper release];
 	
 	// II- In transactional mode store the notifCenter !
 	if (isTransactional)
@@ -342,7 +342,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	
 	// var init
 	NSMutableArray* observersForNotifName;
-	Observer* obs;
+	ObserverWrapper* obsWrapper;
 	NSEnumerator *enumeratorObs;
 	NSString* notificationName;
 	
@@ -354,14 +354,14 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		
 		// for all observers of the key entry
 		enumeratorObs = [observersForNotifName objectEnumerator];
-		while ((obs = [enumeratorObs nextObject])) {
-			notificationName=[NSString stringWithString:[obs notificationName]]; // Must be one else no entry are possible in the notifCenter
-			if ([aSoftID isEqualToString:[obs softID]])
+		while ((obsWrapper = [enumeratorObs nextObject])) {
+			notificationName=[NSString stringWithString:[obsWrapper notificationName]]; // Must be one else no entry are possible in the notifCenter
+			if ([aSoftID isEqualToString:[obsWrapper softID]])
 			{
 				NSLog(@"([SERVER], Remove observer with softID=%@",aSoftID);
 				@synchronized(notifCenter)
 				{
-					[observersForNotifName removeObject:obs];
+					[observersForNotifName removeObject:obsWrapper];
 					if (isTransactional)
 					{
 						BOOL res=[NSArchiver archiveRootObject:notifCenter toFile:fullPathToNotifCenter];	
@@ -395,17 +395,17 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	NSMutableArray* observersForNotifName=[notifCenter objectForKey:notificationName];
 	if (observersForNotifName)
 	{
-		Observer* obs;
+		ObserverWrapper* obsWrapper;
 		NSEnumerator *enumerator = [observersForNotifName objectEnumerator];
 		// search in all observers, the observer which will be removed ...
-		while ((obs = [enumerator nextObject])) 
+		while ((obsWrapper = [enumerator nextObject])) 
 		{
-			if ([aSoftID isEqualToString:[obs softID]])
+			if ([aSoftID isEqualToString:[obsWrapper softID]])
 			{
-				NSLog(@"[SERVER], Remove observer with softID=%@ for notificationName=%@",aSoftID,[obs notificationName]);
+				NSLog(@"[SERVER], Remove observer with softID=%@ for notificationName=%@",aSoftID,[obsWrapper notificationName]);
 				@synchronized(notifCenter)
 				{
-					[observersForNotifName removeObject:obs];
+					[observersForNotifName removeObject:obsWrapper];
 					if (isTransactional)
 					{
 						BOOL res=[NSArchiver archiveRootObject:notifCenter toFile:fullPathToNotifCenter];	
@@ -444,17 +444,17 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 	{
 		NSLog(@"[SERVER], found some observers for this notification");
 		NSEnumerator *enumerator=[observersForNotifName objectEnumerator];
-		Observer* obs;
-		while ( (obs = [enumerator nextObject]) ) 
+		ObserverWrapper* obsWrapper;
+		while ( (obsWrapper = [enumerator nextObject]) ) 
 		{
-			if(![[[notification userInfo] valueForKey:@"softID"] isEqualToString:[obs softID]])
+			if(![[[notification userInfo] valueForKey:@"softID"] isEqualToString:[obsWrapper softID]])
 			{
-				NSLog(@"[SERVER], send notification for observer=%@ for notificationName=%@ to selector=%@",[obs anObserver],[obs notificationName],NSStringFromSelector([obs selector]));
-				[[obs anObserver] performSelector:[obs selector] withObject:notification];
+				NSLog(@"[SERVER], send notification for observer=%@ for notificationName=%@ to selector=%@",[obsWrapper slaveObserver],[obsWrapper notificationName],NSStringFromSelector([obsWrapper selector]));
+				[[obsWrapper slaveObserver] performSelector:[obsWrapper selector] withObject:notification];
 			}
 			else
 			{
-				NSLog(@"[SERVER], notification NOT sent for observer=%@ for notificationName=%@ to selector=%@ (same softID!)",[obs anObserver],[obs notificationName],NSStringFromSelector([obs selector]));
+				NSLog(@"[SERVER], notification NOT sent for observer=%@ for notificationName=%@ to selector=%@ (same softID!)",[obsWrapper slaveObserver],[obsWrapper notificationName],NSStringFromSelector([obsWrapper selector]));
 			}
 		}
 	} 
@@ -489,7 +489,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		notifInfo=[NSMutableDictionary dictionaryWithDictionary:[notification userInfo]];
 	if (!notifInfo)
 		notifInfo=[NSMutableDictionary dictionaryWithCapacity:1];
-	[notifInfo setObject:observersOK forKey:@"HAVERECEIVED"];
+	[notifInfo setObject:observersOK forKey:@"hasReceived"];
 	NSNotification* notificationTx=[NSNotification notificationWithName:[notification name] object:[notification object] userInfo:notifInfo];
 	
 	// Add notification to the queue
