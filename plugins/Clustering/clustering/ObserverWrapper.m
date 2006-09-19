@@ -5,14 +5,14 @@
 //  Created by Arnaud Garcia on 19.10.05.
 //
 
-#import "Observer.h"
+#import "ObserverWrapper.h"
 
 
-@implementation Observer
+@implementation ObserverWrapper
 -(id)initWithObserver:(id)obs andSelector:(SEL)sel forNotificationName:(NSString*)name withSoftID:(NSString*)aSoftID
 {
 	if ((self = [super init])) {
-		[self setAnObserver:obs];
+		[self setSlaveObserver:obs];
 		[self setSelector:sel];
 		[self setNotificationName:name];
 		[self SetSoftID:aSoftID];
@@ -25,15 +25,15 @@
 	self=[super init];
 	return self;
 }
-// anObserver
--(id)anObserver
+// slaveObserver
+-(id)slaveObserver
 {
-	return anObserver;
+	return slaveObserver;
 }
--(void)setAnObserver:(id)obs
+-(void)setSlaveObserver:(id)obs
 {
 	[obs retain];
-	anObserver=obs;
+	slaveObserver=obs;
 }
 
 //notificationName
@@ -94,7 +94,7 @@
 -(void)dealloc
 {
 	[aSelectorString release];
-	[anObserver release];
+	[slaveObserver release];
 	[notificationName release];
 	[super dealloc];
 }

@@ -8,16 +8,16 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface Observer : NSObject<NSCoding> {
-	id anObserver;
+@interface ObserverWrapper : NSObject<NSCoding> {
+	id slaveObserver;
 	NSString* softID;
 	NSString* aSelectorString;
 	NSString* notificationName;
 }
 -(id)initWithObserver:(id)obs andSelector:(SEL)sel forNotificationName:(NSString*)name withSoftID:(NSString*)aSoftID;
-	// anObserver
--(id)anObserver;
--(void)setAnObserver:(id)obs;
+	// slaveObserver
+-(id)slaveObserver;
+-(void)setSlaveObserver:(id)obs;
 
 //softID
 -(NSString*)softID;
