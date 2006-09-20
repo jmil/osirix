@@ -107,7 +107,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 
 -(void)generateSoftID
 {
-	NSLog(@"(RemoteDistributedNotificationCenter, generateSoftID) First initializazion generateSoftID ...");
+	NSLog(@"(RemoteDistributedNotificationCenter, generateSoftID) First initialization generateSoftID ...");
 	[softID release]; // clean  ...
 					  //generate
 					  //	NSDate *today = [NSDate date];

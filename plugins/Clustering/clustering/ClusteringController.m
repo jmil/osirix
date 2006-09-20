@@ -48,6 +48,11 @@
 	 [wget setCurrentDirectoryPath:  [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingPathComponent:@"INCOMING"]];
 	 */
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(activateJoinClusterButton:) 
+												 name:NSTextDidEndEditingNotification 
+											   object:nil];
+	
 	return self;
 }
 
@@ -350,6 +355,13 @@
 	NSLog(@"retrieve image...");
 	//[wget release]; // Don't forget to clean up memory
 	//wget=nil; // Just in case...
+}
+
+
+- (void)activateJoinClusterButton:(NSNotification *)aNotification;
+{
+	NSLog(@"Jesus revient!");
+	[joinButton setEnabled:YES];
 }
 
 @end

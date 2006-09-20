@@ -54,6 +54,7 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		if (isTransactional)
 		{
 			NSLog(@"([SERVER],init) TRANSACTION MODE !");
+			persitentNotificationsQueue=[[NSUnarchiver unarchiveObjectWithFile:fullPathPersitentQueue] retain];
 			if (!persitentNotificationsQueue)
 			{
 				NSLog(@"([SERVER],init), create a persitentNotificationsQueue !");
@@ -292,9 +293,11 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 			BOOL alreadyExist=NO;
 			while((anObserverWrapper=[observerEnumerator nextObject]) && (!alreadyExist))
 			{
+				NSLog(@"[SERVER], addObserver: anObserverWrapper=%@, newObserverWrapper=%@", [anObserverWrapper softID], [newObserverWrapper softID]);
 				if ([[anObserverWrapper softID] isEqualToString:[newObserverWrapper softID]])
 				{
 					alreadyExist=YES;
+					NSLog(@"[SERVER], addObserver: alreadyExist -> update proxy");
 					//update proxy
 					[anObserverWrapper setSlaveObserver:[newObserverWrapper slaveObserver]];
 				}
