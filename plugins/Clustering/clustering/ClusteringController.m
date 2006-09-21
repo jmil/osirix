@@ -125,6 +125,7 @@
 	[remoteDistributedNC	addObserver: self
 							   selector: @selector(osirixRDAddToDB:)
 								   name: @"OsirixRDAddedImages"];
+	[remoteDistributedNC setDelegate:self];
 }
 
 -(void)waitConnection
@@ -362,6 +363,11 @@
 	NSLog(@"retrieve image...");
 	//[wget release]; // Don't forget to clean up memory
 	//wget=nil; // Just in case...
+}
+
+- (void)updateProxyWhenReconnect;
+{
+	[remoteDistributedNC addObserver:self selector:@selector(osirixRDAddToDB:) name:@"OsirixRDAddedImages"];
 }
 
 @end

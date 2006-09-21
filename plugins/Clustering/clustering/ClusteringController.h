@@ -37,4 +37,6 @@
 -(NSString*)retrieveHUGIP;
 - (NSNumber*)osirixRDAddToDB:(NSNotification*) note;
 
+- (void)updateProxyWhenReconnect;
+
 @end

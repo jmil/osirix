@@ -162,6 +162,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 			[reconnectionTimer release];
 			//reconnectionTimer=nil; // TODO nil ?
 			tryToReconnect=NO;
+			if(delegate) [delegate updateProxyWhenReconnect];
 		}
 	}
 	@catch (NSException *exception) {
@@ -454,6 +455,11 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 -(NSMutableArray*)persitentNotificationsQueue
 {
 	return persitentNotificationsQueue;
+}
+
+- (void)setDelegate:(id)aDelegate;
+{
+	delegate = aDelegate;
 }
 
 @end

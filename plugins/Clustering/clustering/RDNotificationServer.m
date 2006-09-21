@@ -617,4 +617,5 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		[pool release]; 
 	}
 }
+
 @end

@@ -33,4 +33,5 @@
 // stop the runloop, use this method before releasing RDNotificationServer
 -(void)stopServer;
 -(BOOL)isRunning;
+
 @end

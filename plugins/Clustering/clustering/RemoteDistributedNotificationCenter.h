@@ -24,6 +24,7 @@
 	NSTimer* reconnectionTimer;
 	NSString* serverHost;
 	unsigned short serverPort;
+	id delegate;
 	
 }
 
@@ -43,4 +44,9 @@
 	// use this method to identify your software when you want to addObserver with TX notifications ...
 - (NSString*)softID;
 - (BOOL)isTransactional;
+
+- (void)setDelegate:(id)aDelegate;
+// Delegate Method:
+// - (void) updateProxyWhenReconnect;
+
 @end
