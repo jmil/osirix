@@ -47,12 +47,7 @@
 	 [wget setLaunchPath:@"/opt/local/bin/wget"];
 	 [wget setCurrentDirectoryPath:  [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingPathComponent:@"INCOMING"]];
 	 */
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self 
-											 selector:@selector(activateJoinClusterButton:) 
-												 name:NSTextDidEndEditingNotification 
-											   object:nil];
-	
+
 	return self;
 }
 
@@ -68,6 +63,13 @@
 	
 	// start on the join tab
 	[clusterTab selectTabViewItemWithIdentifier:@"join"];
+	
+//	[[self window] setBackgroundColor:[NSColor colorWithCalibratedRed:0.8 green:0. blue:0. alpha:1]];
+//	[[self window] setAlphaValue:0.75];
+//	
+//	NSImage *whiteTile = [[[NSImage alloc] initWithSize:NSMakeSize(10,10)] autorelease];
+//	[whiteTile setBackgroundColor:[NSColor magentaColor]];
+//	[joinButton setImage:whiteTile];
 }
 
 - (void) dealloc
@@ -106,10 +108,15 @@
 {
 	//unsigned short port=[[NSNumber numberWithInt:[serverPortTextField intValue]] unsignedShortValue];
 	//hostServer=[NSString stringWithString:[serverHostTextField stringValue]];
-	
-	//ftpServer=[[NSString alloc] initWithString:[@"ftp://joris:1234@" stringByAppendingString:hostServer]];
-	
+		
 	[joinButton setEnabled:NO];
+	
+	// make sure the selected row is not in editing mode.
+	// otherwise, we won't take the modified values...
+	int selectedRow = [clustersTabView selectedRow];
+	[clustersTabView deselectRow:selectedRow];
+	[clustersTabView selectRow:selectedRow byExtendingSelection:NO];
+	
 	// for now join only one server
 	NSMutableDictionary* rowValues = [clusterDS objectAtIndex:0];
 	NSString *hostServer=[NSString stringWithString:[rowValues objectForKey:@"Ip"]];
@@ -355,13 +362,6 @@
 	NSLog(@"retrieve image...");
 	//[wget release]; // Don't forget to clean up memory
 	//wget=nil; // Just in case...
-}
-
-
-- (void)activateJoinClusterButton:(NSNotification *)aNotification;
-{
-	NSLog(@"Jesus revient!");
-	[joinButton setEnabled:YES];
 }
 
 @end
