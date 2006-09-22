@@ -34,4 +34,8 @@
 -(void)stopServer;
 -(BOOL)isRunning;
 
+
+- (void)emptyPersitentQueue;
+- (void)removeConnectionsToNodes;
+
 @end

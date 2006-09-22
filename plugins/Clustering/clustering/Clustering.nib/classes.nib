@@ -1,7 +1,13 @@
 {
     IBClasses = (
         {
-            ACTIONS = {connectToServer = id; enableServer = id; }; 
+            ACTIONS = {
+                cleanAll = id; 
+                cleanQueue = id; 
+                connectToServer = id; 
+                disableServer = id; 
+                enableServer = id; 
+            }; 
             CLASS = ClusteringController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
@@ -13,6 +19,7 @@
                 ipTextField = NSTextField; 
                 joinButton = NSButton; 
                 progressConnection = NSProgressIndicator; 
+                serverToolsBox = NSBox; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 

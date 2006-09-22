@@ -26,6 +26,8 @@
 	[values setObject:@"127.0.0.1" forKey:@"Ip"];
 	[values setObject:@"4242" forKey:@"Port"];
 	
+	[serverToolsBox setHidden:YES];
+	
 	[clusterDS addObject:values];
 	
 	// register server to wget end
@@ -174,22 +176,30 @@
 		[activateButton setEnabled: NO];
 		[progressConnection startAnimation:nil];
 		[joinButton setEnabled:NO];
+		[serverToolsBox setHidden:NO];
 		//RDNCServer = [[RDNotificationServer alloc] initWithDefaultContainer];
 		RDNCServer = [[RDNotificationServer alloc] initWithTransactionalContainer];
 		//[self performSelectorOnMainThread:@selector(waitConnection) withObject:nil afterDelay:0];
-		timerServerStatus=[NSTimer scheduledTimerWithTimeInterval:5
-																	target:self
-																  selector:@selector(waitConnection)
-																  userInfo:nil
-																   repeats:YES];
+		timerServerStatus=[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(waitConnection) userInfo:nil repeats:YES];
 	}
 	else
 	{
-		NSLog(@"kill Cluster server !");
-		[RDNCServer stopServer];
-		[RDNCServer release];
+		[self disableServer:nil];
 	}
 	
+}
+
+- (IBAction)disableServer:(id)sender;
+{
+	NSLog(@"kill Cluster server !");
+	[RDNCServer stopServer];
+	[RDNCServer release];
+	RDNCServer = nil;
+	connectionDone=NO;
+	[activateButton setEnabled: YES];
+	[activateButton setState:0];
+	[createTabView selectTabViewItemWithIdentifier:@"start"];
+	[serverToolsBox setHidden:YES];
 }
 
 - (void)osirixAddToDB:(NSNotification*) note
@@ -368,6 +378,31 @@
 - (void)updateProxyWhenReconnect;
 {
 	[remoteDistributedNC addObserver:self selector:@selector(osirixRDAddToDB:) name:@"OsirixRDAddedImages"];
+}
+
+- (IBAction)cleanQueue:(id)sender;
+{
+	// client
+	if(remoteDistributedNC)
+	{
+		[remoteDistributedNC emptyPersitentQueue];
+	}
+	// server
+	if(RDNCServer)
+	{
+		[RDNCServer emptyPersitentQueue];
+	}
+}
+
+- (IBAction)cleanAll:(id)sender;
+{
+	[self cleanQueue:nil];
+	// server
+	if(RDNCServer)
+	{
+		[RDNCServer removeConnectionsToNodes];
+		[self disableServer:nil];
+	}
 }
 
 @end

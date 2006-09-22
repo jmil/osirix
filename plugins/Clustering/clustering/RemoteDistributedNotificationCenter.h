@@ -49,4 +49,6 @@
 // Delegate Method:
 // - (void) updateProxyWhenReconnect;
 
+- (void)emptyPersitentQueue;
+
 @end

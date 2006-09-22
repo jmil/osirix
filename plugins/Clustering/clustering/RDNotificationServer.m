@@ -528,10 +528,12 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 {
 	return [self postTransactionalNotification:[NSNotification notificationWithName:notificationName object:anObject userInfo:userInfo]];
 }
+
 -(BOOL)isRunning
 {
 	return isRunning;
 }
+
 -(void)startConnection
 {
 	while(!exitRunLoop)
@@ -616,6 +618,31 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 		//
 		[pool release]; 
 	}
+}
+
+#pragma mark -
+
+- (void)emptyPersitentQueue;
+{
+	// empty the array
+	[persitentNotificationsQueue removeAllObjects];
+	[[NSFileManager defaultManager] removeFileAtPath:fullPathPersitentQueue handler:nil];
+	
+	// erase the files on the disk
+	NSString *notificationFileName;
+	NSString *notificationFilesDirectory = [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"];
+	NSDirectoryEnumerator *notificationFilesDirectoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:notificationFilesDirectory];
+	 
+	while (notificationFileName = [notificationFilesDirectoryEnumerator nextObject])
+	{
+		[[NSFileManager defaultManager] removeFileAtPath:[notificationFilesDirectory stringByAppendingPathComponent:notificationFileName] handler:nil];
+	}
+}
+
+- (void)removeConnectionsToNodes;
+{
+	[notifCenter removeAllObjects];
+	[[NSFileManager defaultManager] removeFileAtPath:fullPathToNotifCenter handler:nil];
 }
 
 @end

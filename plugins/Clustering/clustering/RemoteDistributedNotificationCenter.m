@@ -76,7 +76,6 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 	return self;
 }
 
-
 -(void)dealloc
 {	
 	NSLog(@"(RemoteDistributedNotificationCenter, dealloc)");
@@ -414,11 +413,11 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 						// store notification
 						//TODO do not store if there are no more notifications !!
 						@synchronized(persitentNotificationsQueue)
-					{	
+						{	
 							[NSArchiver archiveRootObject:notif toFile:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"] stringByAppendingString:notifTimeStamp]];
 							BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
 							NSLog(@"(RemoteDistributedNotificationCenter,checkPersitentQueueAndSendTxNotification), store notifications !, result=%x",res);
-					}
+						}
 					}
 				}
 				if ([ack intValue]>0) // success, so remove the notification ...
@@ -457,9 +456,28 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 	return persitentNotificationsQueue;
 }
 
+#pragma mark -
+
 - (void)setDelegate:(id)aDelegate;
 {
 	delegate = aDelegate;
+}
+
+- (void)emptyPersitentQueue;
+{
+	// empty the array
+	[persitentNotificationsQueue removeAllObjects];
+	[[NSFileManager defaultManager] removeFileAtPath:fullPathPersitentQueue handler:nil];
+	
+	// erase the files on the disk
+	NSString *notificationFileName;
+	NSString *notificationFilesDirectory = [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/CLIENTQUEUE/"];
+	NSDirectoryEnumerator *notificationFilesDirectoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:notificationFilesDirectory];
+	 
+	while (notificationFileName = [notificationFilesDirectoryEnumerator nextObject])
+	{
+		[[NSFileManager defaultManager] removeFileAtPath:[notificationFilesDirectory stringByAppendingPathComponent:notificationFileName] handler:nil];
+	}
 }
 
 @end

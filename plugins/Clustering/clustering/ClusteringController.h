@@ -18,7 +18,10 @@
 	IBOutlet NSTextField *ipTextField;
 	IBOutlet NSProgressIndicator *progressConnection;
 	IBOutlet NSButton *activateButton;
-
+	
+	//third tab
+	IBOutlet NSBox *serverToolsBox;
+	
 	NSMutableArray* clusterDS; 
 	//NSTask *wget;
 	//NSString* ftpServer; //for wget strategy
@@ -32,11 +35,15 @@
 }
 - (IBAction)connectToServer:(id)sender;
 - (IBAction)enableServer:(id)sender;
+- (IBAction)disableServer:(id)sender;
 - (NSString*)softID;
--(void)waitConnection;
--(NSString*)retrieveHUGIP;
+- (void)waitConnection;
+- (NSString*)retrieveHUGIP;
 - (NSNumber*)osirixRDAddToDB:(NSNotification*) note;
 
 - (void)updateProxyWhenReconnect;
+
+- (IBAction)cleanQueue:(id)sender;
+- (IBAction)cleanAll:(id)sender;
 
 @end
