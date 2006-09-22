@@ -22,10 +22,18 @@
 	[values setObject:buttonCell forKey:@"Add"];
 	[buttonCell release];
 	
-	[values setObject:@"Lavim" forKey:@"Name"];
-	[values setObject:@"127.0.0.1" forKey:@"Ip"];
-	[values setObject:@"4242" forKey:@"Port"];
-	
+	NSMutableDictionary *defaultValues = (NSMutableDictionary *)[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"ClusterPluginServerListDefaultValues"];
+	if(!defaultValues)
+	{
+		defaultValues = [NSMutableDictionary dictionaryWithCapacity:3];
+		[defaultValues setObject:@"Lavim" forKey:@"serverName"];
+		[defaultValues setObject:@"127.0.0.1" forKey:@"serverIPAdress"];
+		[defaultValues setObject:@"4242" forKey:@"serverPort"];
+	}
+	[values setObject:[defaultValues objectForKey:@"serverName"] forKey:@"Name"];
+	[values setObject:[defaultValues objectForKey:@"serverIPAdress"] forKey:@"Ip"];
+	[values setObject:[defaultValues objectForKey:@"serverPort"] forKey:@"Port"];
+		
 	[serverToolsBox setHidden:YES];
 	
 	[clusterDS addObject:values];
@@ -128,6 +136,13 @@
 							   selector: @selector(osirixRDAddToDB:)
 								   name: @"OsirixRDAddedImages"];
 	[remoteDistributedNC setDelegate:self];
+	
+	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionaryWithCapacity:3];
+	[defaultValues setObject:[rowValues objectForKey:@"Name"] forKey:@"serverName"];
+	[defaultValues setObject:[rowValues objectForKey:@"Ip"] forKey:@"serverIPAdress"];
+	[defaultValues setObject:[rowValues objectForKey:@"Port"] forKey:@"serverPort"];
+	
+	[[NSUserDefaults standardUserDefaults] setObject:defaultValues forKey:@"ClusterPluginServerListDefaultValues"];
 }
 
 -(void)waitConnection
