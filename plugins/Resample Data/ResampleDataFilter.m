@@ -13,7 +13,7 @@
 
 - (IBAction) setXYZValue:(id) sender
 {
-//	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
+	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: 0];
 	
 	if( [ForceRatioCheck state] == NSOnState)
 	{
@@ -39,10 +39,13 @@
 	}
 	
 	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
+	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
 }
 
 - (IBAction) setForceRatio:(id) sender
 {
+	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: 0];
+	
 	if( [sender state] == NSOnState)
 	{
 		[YText setIntValue: ([XText intValue] * originRatio * originHeight) / originWidth];
@@ -51,6 +54,7 @@
 	}
 	
 	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
+	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
 }
 
 -(IBAction) endDialog:(id) sender
@@ -61,7 +65,7 @@
     
     if( [sender tag])   //User clicks OK Button
     {
-		long				i, y, x, z, imageSize, newX, newY, newZ, size;
+		long				i, y, z, imageSize, newX, newY, newZ, size;
 		NSArray				*pixList = [viewerController pixList];
 		float				*srcImage, *dstImage, *emptyData;
 		DCMPix				*curPix;
@@ -81,10 +85,60 @@
 		emptyData = malloc( size);
 		if( emptyData)
 		{
+			float vectors[ 9], vectorsB[ 9], interval = 0, origin[ 3], newOrigin[ 3];
+			BOOL equalVector = YES;
+			int o;
+			
+			[[pixList objectAtIndex:0] orientation: vectors];
+			[[pixList objectAtIndex:1] orientation: vectorsB];
+		
+			for( i = 0; i < 9; i++)
+			{
+				if( vectors[ i] != vectorsB[ i]) equalVector = NO;
+			}
+		
+			if( equalVector)
+			{
+				if( fabs( vectors[6]) > fabs(vectors[7]) && fabs( vectors[6]) > fabs(vectors[8]))
+				{
+					interval = [[pixList objectAtIndex:0] originX] - [[pixList objectAtIndex:1] originX];
+				
+					if( vectors[6] > 0) interval = -( interval);
+					else interval = ( interval);
+					o = 0;
+				}
+				
+				if( fabs( vectors[7]) > fabs(vectors[6]) && fabs( vectors[7]) > fabs(vectors[8]))
+				{
+					interval = [[pixList objectAtIndex:0] originY] - [[pixList objectAtIndex:1] originY];
+					
+					if( vectors[7] > 0) interval = -( interval);
+					else interval = ( interval);
+					o = 1;
+				}
+				
+				if( fabs( vectors[8]) > fabs(vectors[6]) && fabs( vectors[8]) > fabs(vectors[7]))
+				{
+					interval = [[pixList objectAtIndex:0] originZ] - [[pixList objectAtIndex:1] originZ];
+					
+					if( vectors[8] > 0) interval = -( interval);
+					else interval = ( interval);
+					o = 2;
+				}
+			}
+			
+			interval *= (float) originZ / (float) newZ;
+			
 			NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
 			NSMutableArray	*finalnewPixList = [NSMutableArray arrayWithCapacity: 0];
 			NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
 			NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
+			
+			float pos1 = [[pixList objectAtIndex: 0] sliceLocation];
+			float pos2 = [[pixList objectAtIndex: 1] sliceLocation];
+			float intervalSlice = pos2 - pos1;
+			
+			intervalSlice *= (float) originZ / (float) newZ;
 			
 			for( z = 0 ; z < newZ; z ++)
 			{
@@ -103,12 +157,29 @@
 				[[newPixList lastObject] setFrameNo: z];
 				[[newPixList lastObject] setID: z];
 				
-				[[newPixList lastObject] setPixelSpacingX: ([curPix pixelSpacingX] * originWidth) / newX];
-				[[newPixList lastObject] setPixelSpacingY: ([curPix pixelSpacingY] * originHeight) / newY];
+				[[newPixList lastObject] setPixelSpacingX: ([curPix pixelSpacingX] * (float) originWidth) / (float) newX];
+				[[newPixList lastObject] setPixelSpacingY: ([curPix pixelSpacingY] * (float) originHeight) / (float) newY];
 				[[newPixList lastObject] setSliceThickness: [copyPix sliceThickness] * (float) originZ / (float) newZ];
 				[[newPixList lastObject] setPixelRatio:  originRatio * ((float) newX / (float) originWidth) / ((float) newY / (float) originHeight)];
 				
-				[[newPixList lastObject] setSliceInterval: 0];
+				newOrigin[ 0] = origin[ 0];	newOrigin[ 1] = origin[ 1];	newOrigin[ 2] = origin[ 2];
+				switch( o)
+				{
+					case 0:
+						newOrigin[ 0] = origin[ 0] + (float) z * interval; 
+					break;
+					
+					case 1:
+						newOrigin[ 1] = origin[ 1] + (float) z * interval;
+					break;
+					
+					case 2:
+						newOrigin[ 2] = origin[ 2] + (float) z * interval;
+					break;
+				}
+				[[newPixList lastObject] setOrigin: newOrigin];
+				[[newPixList lastObject] setSliceLocation: pos1 + intervalSlice * (float) z];
+				[[newPixList lastObject] setSliceInterval: intervalSlice * (float) z];
 			}
 		
 			for( z = 0; z < originZ; z++)
@@ -164,12 +235,12 @@
 					else
 						vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, kvImageHighQualityResampling);
 				}
-				
-				for( z = 0 ; z < newZ; z ++)
-				{
-					[newDcmList addObject: [[viewerController fileList] objectAtIndex: (z * originZ) / newZ]];
-					[finalnewPixList addObject: [newPixList objectAtIndex: z]];
-				}
+			}
+			
+			for( z = 0 ; z < newZ; z ++)
+			{
+				[newDcmList addObject: [[viewerController fileList] objectAtIndex: (z * originZ) / newZ]];
+				[finalnewPixList addObject: [newPixList objectAtIndex: z]];
 			}
 			
 			// CREATE A SERIES
@@ -188,7 +259,6 @@
 - (long) filterImage:(NSString*) menuName
 {
 	DCMPix			*curPix;
-	long			i;
 	
 	[NSBundle loadNibNamed:@"DialogResampleData" owner:self];
 	
@@ -212,6 +282,7 @@
 	[oZText setIntValue: originZ];
 	
 	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
+	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
 	
 	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	

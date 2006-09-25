@@ -16,6 +16,7 @@
                 oXText = NSTextField; 
                 oYText = NSTextField; 
                 oZText = NSTextField; 
+                thicknessText = NSTextField; 
                 window = NSWindow; 
             }; 
             SUPERCLASS = PluginFilter; 

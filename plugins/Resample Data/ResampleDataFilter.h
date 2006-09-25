@@ -14,7 +14,7 @@
 	IBOutlet	NSButton		*ForceRatioCheck;
 	IBOutlet	NSWindow		*window;
 	IBOutlet	NSTextField		*XText, *YText, *ZText, *RatioText;
-	IBOutlet	NSTextField		*oXText, *oYText, *oZText, *MemoryText;
+	IBOutlet	NSTextField		*oXText, *oYText, *oZText, *MemoryText, *thicknessText;
 	
 	long	originWidth, originHeight, originZ;
 	float	originRatio;
