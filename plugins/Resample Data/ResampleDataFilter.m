@@ -91,6 +91,10 @@
 			
 			[[pixList objectAtIndex:0] orientation: vectors];
 			[[pixList objectAtIndex:1] orientation: vectorsB];
+			
+			origin[ 0] = [[pixList objectAtIndex:0] originX]; 
+			origin[ 1] = [[pixList objectAtIndex:1] originY]; 
+			origin[ 2] = [[pixList objectAtIndex:2] originZ]; 
 		
 			for( i = 0; i < 9; i++)
 			{
