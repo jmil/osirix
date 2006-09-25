@@ -13,7 +13,7 @@
 
 - (IBAction) setXYZValue:(id) sender
 {
-	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
+//	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
 	
 	if( [ForceRatioCheck state] == NSOnState)
 	{
@@ -75,26 +75,25 @@
 		newZ = [ZText intValue];
 		
 		imageSize = newX * newY;
-		size = sizeof(float) * newZ * imageSize;
+		size = sizeof(float) * originZ * imageSize;
 		
 		// CREATE A NEW SERIES TO CONTAIN THIS NEW RE-SAMPLED SERIES
 		emptyData = malloc( size);
 		if( emptyData)
 		{
 			NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+			NSMutableArray	*finalnewPixList = [NSMutableArray arrayWithCapacity: 0];
 			NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
 			NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
 			
 			for( z = 0 ; z < newZ; z ++)
 			{
-				curPix = [pixList objectAtIndex: (originZ * z) / newZ];
+				curPix = [pixList objectAtIndex: (z * originZ) / newZ];
 				
 				DCMPix	*copyPix = [curPix copy];
 				
 				[newPixList addObject: copyPix];
 				[copyPix release];
-				
-				[newDcmList addObject: [[viewerController fileList] objectAtIndex: (originZ * z) / newZ]];
 				
 				[[newPixList lastObject] setPwidth: newX];
 				[[newPixList lastObject] setPheight: newY];
@@ -106,17 +105,17 @@
 				
 				[[newPixList lastObject] setPixelSpacingX: ([curPix pixelSpacingX] * originWidth) / newX];
 				[[newPixList lastObject] setPixelSpacingY: ([curPix pixelSpacingY] * originHeight) / newY];
-				
+				[[newPixList lastObject] setSliceThickness: [copyPix sliceThickness] * (float) originZ / (float) newZ];
 				[[newPixList lastObject] setPixelRatio:  originRatio * ((float) newX / (float) originWidth) / ((float) newY / (float) originHeight)];
 				
 				[[newPixList lastObject] setSliceInterval: 0];
 			}
 		
-			for( z = 0; z < newZ; z++)
+			for( z = 0; z < originZ; z++)
 			{
 				vImage_Buffer	srcVimage, dstVimage;
 				
-				curPix = [pixList objectAtIndex: (originZ * z) / newZ];
+				curPix = [pixList objectAtIndex: z];
 				
 				srcImage = [curPix  fImage];
 				dstImage = emptyData + imageSize * z;
@@ -132,15 +131,49 @@
 				dstVimage.rowBytes = newX*4;
 				
 				if( [curPix isRGB])
-				{
-					vImageScale_ARGB8888( &srcVimage, &dstVimage, 0L, 0);
-				}
+					vImageScale_ARGB8888( &srcVimage, &dstVimage, 0L, kvImageHighQualityResampling);
 				else
-					vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, 0);	//kvImageHighQualityResampling
+					vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, kvImageHighQualityResampling);
+			}
+			
+			// Z RESAMPLING
+			
+			if( originZ != newZ)
+			{
+				curPix = [newPixList objectAtIndex: 0];
+				
+				for( y = 0; y < newY; y++)
+				{
+					vImage_Buffer	srcVimage, dstVimage;
+					
+					srcImage = [curPix  fImage] + y * newX;
+					dstImage = emptyData + y * newX;
+					
+					srcVimage.data = srcImage;
+					srcVimage.height =  originZ;
+					srcVimage.width = newX;
+					srcVimage.rowBytes = newY*newX*4;
+					
+					dstVimage.data = dstImage;
+					dstVimage.height =  newZ;
+					dstVimage.width = newX;
+					dstVimage.rowBytes = newY*newX*4;
+					
+					if( [curPix isRGB])
+						vImageScale_ARGB8888( &srcVimage, &dstVimage, 0L, kvImageHighQualityResampling);
+					else
+						vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, kvImageHighQualityResampling);
+				}
+				
+				for( z = 0 ; z < newZ; z ++)
+				{
+					[newDcmList addObject: [[viewerController fileList] objectAtIndex: (z * originZ) / newZ]];
+					[finalnewPixList addObject: [newPixList objectAtIndex: z]];
+				}
 			}
 			
 			// CREATE A SERIES
-			new2DViewer = [viewerController newWindow	:newPixList
+			new2DViewer = [viewerController newWindow	:finalnewPixList
 														:newDcmList
 														:newData];
 		}
