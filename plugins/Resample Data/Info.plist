@@ -24,5 +24,9 @@
 	<string>ResampleDataFilter</string>
 	<key>pluginType</key>
 	<string>imageFilter</string>
+	<key>allowToolbarIcon</key>
+	<string>YES</string>
+	<key>ToolbarIcon</key>
+	<string>ResampleIcon.png</string>
 </dict>
 </plist>
