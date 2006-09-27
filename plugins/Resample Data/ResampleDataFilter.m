@@ -68,7 +68,10 @@
 		[RatioText setFloatValue: originRatio * ([XText floatValue] / (float) originWidth) / ([YText floatValue] / (float) originHeight) ];
 	}
 	
-	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
+	float mem = ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.);
+	float oldmem = (originHeight * originWidth * originZ *  4.) / (1024. * 1024.);
+	
+	[MemoryText setStringValue: [NSString stringWithFormat:@"%.2f Mb / %d%%", mem, (long) (100 * mem / oldmem)]];
 	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
 	
 	[xSlider setFloatValue: 100. * [XText floatValue] / (float) originWidth];
