@@ -15,6 +15,7 @@
 	IBOutlet	NSWindow		*window;
 	IBOutlet	NSTextField		*XText, *YText, *ZText, *RatioText;
 	IBOutlet	NSTextField		*oXText, *oYText, *oZText, *MemoryText, *thicknessText;
+	IBOutlet	NSSlider		*xSlider, *ySlider, *zSlider;
 	
 	long	originWidth, originHeight, originZ;
 	float	originRatio;
@@ -23,7 +24,7 @@
 - (long) filterImage:(NSString*) menuName;
 - (IBAction) endDialog:(id) sender;
 - (IBAction) setXYZValue:(id) sender;
+- (IBAction) setXYZSlider:(id) sender;
 - (IBAction) setForceRatio:(id) sender;
-
 @end
 

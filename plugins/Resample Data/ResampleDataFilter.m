@@ -11,6 +11,36 @@
 
 @implementation ResampleDataFilter
 
+- (IBAction) setXYZSlider:(id) sender;
+{
+	switch( [sender tag])
+	{
+		case 0:
+		{
+			int xValue = [sender intValue] * originWidth / 100.;
+			[XText setIntValue:  xValue];
+			[self setXYZValue: XText];
+		}
+		break;
+		
+		case 1:
+		{
+			int yValue = [sender intValue] * originHeight / 100.;
+			[YText setIntValue:  yValue];
+			[self setXYZValue: YText];
+		}
+		break;
+		
+		case 2:
+		{
+			int zValue = [sender intValue] * originZ / 100.;
+			[ZText setIntValue:  zValue];
+			[self setXYZValue: ZText];
+		}
+		break;
+	}
+}
+
 - (IBAction) setXYZValue:(id) sender
 {
 	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: 0];
@@ -40,21 +70,18 @@
 	
 	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
 	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
+	
+	[xSlider setFloatValue: 100. * [XText floatValue] / (float) originWidth];
+	[ySlider setFloatValue: 100. * [YText floatValue] / (float) originHeight];
+	[zSlider setFloatValue: 100. * [ZText floatValue] / (float) originZ];
 }
 
 - (IBAction) setForceRatio:(id) sender
 {
-	DCMPix	*curPix = [[viewerController pixList] objectAtIndex: 0];
-	
 	if( [sender state] == NSOnState)
 	{
-		[YText setIntValue: ([XText intValue] * originRatio * originHeight) / originWidth];
-		
-		[RatioText setFloatValue:1.0];
+		[self setXYZValue: XText];
 	}
-	
-	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
-	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
 }
 
 -(IBAction) endDialog:(id) sender
@@ -300,8 +327,7 @@
 	[oYText setIntValue: originHeight];
 	[oZText setIntValue: originZ];
 	
-	[MemoryText setFloatValue: ([XText intValue] * [YText intValue] * [ZText intValue] * 4.) / (1024. * 1024.)];
-	[thicknessText setStringValue: [NSString stringWithFormat: @"Original: %.2f mm / Resampled: %.2f mm", [curPix sliceThickness], [curPix sliceThickness] * (float) originZ / (float) [ZText intValue]]];
+	[self setXYZValue: XText];
 	
 	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	
