@@ -36,6 +36,8 @@
 		{
 			if( total < 2) line[ total] = curROI;
 			total ++;
+			
+			[curROI setROIMode: ROI_sleep];
 		}
 	}
 	
@@ -90,18 +92,11 @@
 	float xx = (or2 - or1) / (slope1 - slope2);
 	
 	c = NSMakePoint( xx, or1 + xx*slope1);
+
+	b = [newROI ProjectionPointLine: a :b1 :b2];
 	
-	float angle = atan( (slope2 - slope1) / (1 - slope1*slope2));
-	float distance = sqrt((a.x - c.x)*(a.x - c.x) + (a.y - c.y)*(a.y - c.y));
-	
-	float length = cos( angle) * distance;
-	
-	float bAngle = atan( slope2);
-	
-	b.x = c.x + cos( bAngle) * length;
-	b.y = c.y + sin( bAngle) * length;
-	
-	// *******************
+	b.x = b.x + (c.x - b.x)/2.;
+	b.y = b.y + (c.y - b.y)/2.;
 	
 	slope2 = -1./slope2;
 	or2 = b.y - slope2*b.x;
@@ -113,7 +108,7 @@
 	[points addObject: [viewerController newPoint : a.x : a.y]];
 	[points addObject: [viewerController newPoint : c.x : c.y]];
 	[points addObject: [viewerController newPoint : b.x : b.y]];
-	
+		
 	// Select it!
 	[newROI setROIMode: ROI_selected];
 	
