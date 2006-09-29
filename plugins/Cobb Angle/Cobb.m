@@ -7,12 +7,64 @@
 
 @implementation Cobb
 
+- (void) create: (NSArray*) A :(NSArray*) B :(NSMutableArray*) roiImageList
+{
+	ROI				*newROI;
+	
+	NSPoint	a1 = [[A objectAtIndex: 0] point], a2 = [[A objectAtIndex: 1] point], b1 = [[B objectAtIndex: 0] point], b2 = [[B objectAtIndex: 1] point];
+
+	newROI = [viewerController newROI: tAngle];
+
+	// Points of this ROI (it's currently empty)
+	NSMutableArray  *points = [newROI points];
+	
+	NSPoint	a, b, c, d;
+	
+	a = NSMakePoint( a1.x + (a2.x - a1.x)/2, a1.y + (a2.y - a1.y)/2);
+	
+	float slope1 = (a2.y - a1.y) / (a2.x - a1.x);
+	slope1 = -1./slope1;
+	float or1 = a.y - slope1*a.x;
+
+	float slope2 = (b2.y - b1.y) / (b2.x - b1.x);
+	float or2 = b1.y - slope2*b1.x;
+	
+	float xx = (or2 - or1) / (slope1 - slope2);
+	
+	d = NSMakePoint( xx, or1 + xx*slope1);
+
+	b = [newROI ProjectionPointLine: a :b1 :b2];
+	
+	b.x = b.x + (d.x - b.x)/2.;
+	b.y = b.y + (d.y - b.y)/2.;
+	
+	slope2 = -1./slope2;
+	or2 = b.y - slope2*b.x;
+	
+	xx = (or2 - or1) / (slope1 - slope2);
+	
+	c = NSMakePoint( xx, or1 + xx*slope1);
+	
+	[points addObject: [viewerController newPoint : b.x : b.y]];
+	[points addObject: [viewerController newPoint : c.x : c.y]];
+	[points addObject: [viewerController newPoint : d.x : d.y]];
+	[roiImageList addObject: newROI];
+	[newROI setROIMode: ROI_selected];
+	
+	
+	newROI = [viewerController newROI: tMesure];
+	points = [newROI points];
+	[points addObject: [viewerController newPoint : a.x : a.y]];
+	[points addObject: [viewerController newPoint : c.x : c.y]];
+	[roiImageList addObject: newROI];
+	[newROI setROIMode: ROI_selected];
+}
+
 - (long) filterImage:(NSString*) menuName
 {
 	NSMutableArray  *roiSeriesList;
 	NSMutableArray  *roiImageList;
 	DCMPix			*curPix;
-	ROI				*newROI;
 	
 	curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
 	
@@ -70,50 +122,8 @@
 		}
 	}
 	
-	// See DCMView.h for available ROIs, we create here a closed polygon
-	newROI = [viewerController newROI: tAngle];
-	
-	NSPoint	a1 = [[[line[ 0] points] objectAtIndex: 0] point], a2 = [[[line[ 0] points] objectAtIndex: 1] point], b1 = [[[line[ 1] points] objectAtIndex: 0] point], b2 = [[[line[ 1] points] objectAtIndex: 1] point];
-	
-	// Points of this ROI (it's currently empty)
-	NSMutableArray  *points = [newROI points];
-	
-	NSPoint	a, b, c;
-	
-	a = NSMakePoint( a1.x + (a2.x - a1.x)/2, a1.y + (a2.y - a1.y)/2);
-	
-	float slope1 = (a2.y - a1.y) / (a2.x - a1.x);
-	slope1 = -1./slope1;
-	float or1 = a.y - slope1*a.x;
-
-	float slope2 = (b2.y - b1.y) / (b2.x - b1.x);
-	float or2 = b1.y - slope2*b1.x;
-	
-	float xx = (or2 - or1) / (slope1 - slope2);
-	
-	c = NSMakePoint( xx, or1 + xx*slope1);
-
-	b = [newROI ProjectionPointLine: a :b1 :b2];
-	
-	b.x = b.x + (c.x - b.x)/2.;
-	b.y = b.y + (c.y - b.y)/2.;
-	
-	slope2 = -1./slope2;
-	or2 = b.y - slope2*b.x;
-	
-	xx = (or2 - or1) / (slope1 - slope2);
-	
-	c = NSMakePoint( xx, or1 + xx*slope1);
-	
-	[points addObject: [viewerController newPoint : a.x : a.y]];
-	[points addObject: [viewerController newPoint : c.x : c.y]];
-	[points addObject: [viewerController newPoint : b.x : b.y]];
+	[self create: [line[ 0] points] : [line[ 1] points] :roiImageList];
 		
-	// Select it!
-	[newROI setROIMode: ROI_selected];
-	
-	[roiImageList addObject: newROI];
-	
 	// We modified the view: OsiriX please update the display!
 	[viewerController needsDisplayUpdate];
 	
