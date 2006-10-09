@@ -29,6 +29,7 @@
 				CE76EEA50994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EEA90994DBBD007B9067 /* PBXTargetDependency */,
 				CE38EC810994E12D008E1A2D /* PBXTargetDependency */,
+				B7C187950ADA03DF0066C5EB /* PBXTargetDependency */,
 			);
 			name = plugins;
 			productName = plugins;
@@ -36,6 +37,20 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B7C186120AD9E8B90066C5EB /* PLUGINdrawTextInfo.plugin */;
+			remoteInfo = PLUGINdrawTextInfo;
+		};
+		B7C187940ADA03DF0066C5EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* PLUGINdrawTextInfo */;
+			remoteInfo = PLUGINdrawTextInfo;
+		};
 		CE38EC7E0994E11F008E1A2D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */;
@@ -326,6 +341,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PLUGINdrawTextInfo.xcodeproj; path = PLUGINdrawTextInfo/PLUGINdrawTextInfo.xcodeproj; sourceTree = "<group>"; };
 		CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EjectionFraction.xcodeproj; path = CardiacEjection/EjectionFraction.xcodeproj; sourceTree = "<group>"; };
 		CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TeachingFile.xcodeproj; path = "MIRC Teaching File/TeachingFile.xcodeproj"; sourceTree = "<group>"; };
 		CE76EDE90994DBAD007B9067 /* ROI-Enhancement.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "ROI-Enhancement.xcodeproj"; path = "ROI Enhancement/ROI-Enhancement.xcodeproj"; sourceTree = "<group>"; };
@@ -354,6 +370,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		B7C1875D0AD9FD080066C5EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7C187610AD9FD080066C5EB /* PLUGINdrawTextInfo.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CE38EC7A0994E11F008E1A2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,6 +389,7 @@
 		CE76EBF00994DA4C007B9067 = {
 			isa = PBXGroup;
 			children = (
+				B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */,
 				CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */,
 				CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */,
 				CE76EDE90994DBAD007B9067 /* ROI-Enhancement.xcodeproj */,
@@ -656,12 +681,12 @@
 					ProjectRef = CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EE0E0994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */;
+				},
+				{
+					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
+					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE020994DBAD007B9067 /* Products */;
@@ -678,6 +703,10 @@
 				{
 					ProductGroup = CE76EDF30994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EDF20994DBAD007B9067 /* PDFToDicom.xcodeproj */;
+				},
+				{
+					ProductGroup = B7C1875D0AD9FD080066C5EB /* Products */;
+					ProjectRef = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EDF00994DBAD007B9067 /* Products */;
@@ -703,6 +732,14 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		B7C187610AD9FD080066C5EB /* PLUGINdrawTextInfo.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			name = PLUGINdrawTextInfo.plugin;
+			path = build/Development/PLUGINdrawTextInfo.plugin;
+			remoteRef = B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */;
+			sourceTree = "<group>";
+		};
 		CE38EC7F0994E11F008E1A2D /* Ejection Fraction.plugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -881,6 +918,11 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
+		B7C187950ADA03DF0066C5EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PLUGINdrawTextInfo;
+			targetProxy = B7C187940ADA03DF0066C5EB /* PBXContainerItemProxy */;
+		};
 		CE38EC810994E12D008E1A2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = EjectionFraction;
