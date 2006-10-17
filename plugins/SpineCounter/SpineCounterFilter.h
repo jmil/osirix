@@ -24,6 +24,7 @@
 - (void) exportPSDs;
 - (void) exportLengths;
 - (void) exportDistances;
+- (void) saveROIs;
 
 - (NSString*) outputString:(NSString*) prevType: (NSString*) newType;
 

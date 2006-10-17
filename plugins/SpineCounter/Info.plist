@@ -25,6 +25,7 @@
 		<string>Export PSDs</string>
 		<string>Export Lengths</string>
 		<string>Export Distances</string>
+		<string>Save ROIs</string>
 	</array>
 	<key>NSPrincipalClass</key>
 	<string>SpineCounterFilter</string>

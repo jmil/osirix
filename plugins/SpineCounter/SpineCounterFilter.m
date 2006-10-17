@@ -36,6 +36,8 @@
 		[self exportLengths];
 	else if ([menuName isEqualToString:@"Export Distances"])
 		[self exportDistances];
+	else if ([menuName isEqualToString:@"Save ROIs"])
+		[self saveROIs];
 
 	return 0;
 }
@@ -47,8 +49,12 @@
 	NSMenuItem *switchMenuItem = 0L;
 	NSMenuItem *switchPSDMenuItem = 0L;
 	NSMenuItem *countMenuItem = 0L;
+	NSMenuItem *saveMenuItem = 0L;
 	
 	appController = [AppController sharedAppController];
+
+	// remove the command-S shortcut for export to quicktime
+	[[[[[[[[NSApplication sharedApplication] mainMenu] itemWithTitle:@"File"] submenu] itemWithTitle:@"Export"] submenu] itemWithTitle:@"Export to Quicktime"] setKeyEquivalent:@""];
 	
 	spineMenu = [[appController roisMenu] itemWithTitle:@"SpineCounter"];
 	if (spineMenu && [spineMenu hasSubmenu])
@@ -59,6 +65,7 @@
 		switchMenuItem = [spineSubMenu itemWithTitle:@"Switch Spine Type"];
 		switchPSDMenuItem = [spineSubMenu itemWithTitle:@"Switch PSD Type"];
 		countMenuItem = [spineSubMenu itemWithTitle:@"Increment Count"];
+		saveMenuItem = [spineSubMenu itemWithTitle:@"Save ROIs"];
 		
 		[switchMenuItem setKeyEquivalent:@"s"];
 		[switchMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
@@ -68,7 +75,12 @@
 
 		[countMenuItem setKeyEquivalent:@"a"];
 		[countMenuItem setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+
+		[saveMenuItem setKeyEquivalent:@"s"];
 	}
+	
+	
+	
 }
 
 - (void) switchTypes: (BOOL) PSD
@@ -212,6 +224,22 @@
 
 	[ panel setRequiredFileType: nil ];
 	[ panel beginSheetForDirectory:nil file:nil modalForWindow: [ viewerController window ] modalDelegate:self didEndSelector: @selector(endSavePanelDistances:returnCode:contextInfo:) contextInfo: nil ];
+}
+
+- (void) saveROIs
+{
+	int i, j;
+	NSArray* viewerControllers = [self viewerControllersList];
+	
+	for (i = 0; i < [viewerControllers count]; i++)
+	{
+		ViewerController* currentController = [viewerControllers objectAtIndex:i];
+	
+		for(j = 0; j < [currentController maxMovieIndex]; j++)
+		{
+			[currentController saveROI: j];
+		}
+	}
 }
 
 - (ROI*) findMeasureROIWithShortnameInController: (NSString *) shortname: (ViewerController*) controller
