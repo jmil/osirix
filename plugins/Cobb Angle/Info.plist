@@ -24,5 +24,10 @@
 	<string>Cobb</string>
 	<key>pluginType</key>
 	<string>roiTool</string>
+	<key>ToolbarIcon</key>
+	<string>CobbAngle.tif</string>
+	<key>allowToolbarIcon</key>
+	<string>YES</string>
+
 </dict>
 </plist>

@@ -11,6 +11,7 @@
 	IBOutlet	NSTextField		*xResolution, *yResolution;
 	IBOutlet	NSWindow		*window;
 	IBOutlet	NSButton		*squarePixels;
+	IBOutlet	NSButton		*newWindow;
 }
 
 - (long) filterImage:(NSString*) menuName;

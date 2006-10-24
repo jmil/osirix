@@ -3,10 +3,11 @@
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             ACTIONS = {endDialog = id; }; 
-            CLASS = OrthogonalReslice; 
+            CLASS = OrthogonalReslicePlugin; 
             LANGUAGE = ObjC; 
             OUTLETS = {
                 direction = NSMatrix; 
+                newWindow = NSButton; 
                 squarePixels = NSButton; 
                 window = NSWindow; 
                 xResolution = NSTextField; 

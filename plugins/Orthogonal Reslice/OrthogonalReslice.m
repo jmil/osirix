@@ -7,7 +7,7 @@
 
 @implementation OrthogonalReslicePlugin
 
--(void) executeReslice:(long) directionm :(BOOL) square
+-(void) executeReslice:(long) directionm :(BOOL) square :(BOOL) newViewer
 {
 	// Contains a list of DCMPix objects: they contain the pixels of current series
 		NSArray				*pixList = [viewerController pixList];	
@@ -94,6 +94,19 @@
 				
 				[[newPixList lastObject] setPwidth: newX];
 				[[newPixList lastObject] setPheight: newY];
+
+				// SUV
+				[[newPixList lastObject] setDisplaySUVValue: [firstPix displaySUVValue]];
+				[[newPixList lastObject] setSUVConverted: [firstPix SUVConverted]];
+				[[newPixList lastObject] setRadiopharmaceuticalStartTime: [firstPix radiopharmaceuticalStartTime]];
+				[[newPixList lastObject] setPatientsWeight: [firstPix patientsWeight]];
+				[[newPixList lastObject] setRadionuclideTotalDose: [firstPix radionuclideTotalDose]];
+				[[newPixList lastObject] setRadionuclideTotalDoseCorrected: [firstPix radionuclideTotalDoseCorrected]];
+				[[newPixList lastObject] setAcquisitionTime: [firstPix acquisitionTime]];
+				[[newPixList lastObject] setDecayCorrection: [firstPix decayCorrection]];
+				[[newPixList lastObject] setDecayFactor: [firstPix decayFactor]];
+				[[newPixList lastObject] setUnits: [firstPix units]];
+				
 				
 				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
 				[[newPixList lastObject] setTot: newTotal];
@@ -105,9 +118,6 @@
 				if( directionm == 0)		// X - RESLICE
 				{
 					DCMPix	*curPix = [newPixList lastObject];
-					long	rowBytes = [firstPix pwidth];
-					float	*srcPtr;
-					float	left, right, s;
 					
 					if( sign > 0)
 					{
@@ -230,7 +240,6 @@
 					float	*srcPtr;
 					float	*dstPtr;
 					long	rowBytes = [firstPix pwidth];
-					float	left, right, s;
 					
 					for(x = 0; x < [pixList count]; x++)
 					{
@@ -344,50 +353,27 @@
 				}
 			}
 			
-			// CREATE A SERIES
-			new2DViewer = [viewerController newWindow	:newPixList
-														:newDcmList
-														:newData];
+			if( newViewer == NO)
+			{
+				[viewerController replaceSeriesWith :newPixList :newDcmList :newData];
+			}
+			else
+			{
+				// CREATE A SERIES
+				new2DViewer = [viewerController newWindow	:newPixList
+															:newDcmList
+															:newData];
+															
+				[new2DViewer setImageIndex: [newPixList count]/2];
+				
+				[[new2DViewer window] makeKeyAndOrderFront: self];
+			}
 		}
 		
 		// Close the waiting window
 		[viewerController endWaitWindow: waitWindow];
 		
 		NSLog(@"End-Reslice");
-}
-
-static volatile long countThread;
-
--(void) executeResliceSquareX:(id) obj
-{
-	NSAutoreleasePool   *pool=[[NSAutoreleasePool alloc] init];
-	[self executeReslice:0 :YES];
-	countThread--;
-	[pool release];
-}
-
--(void) executeResliceNonSquareX:(id) obj
-{
-	NSAutoreleasePool   *pool=[[NSAutoreleasePool alloc] init];
-	[self executeReslice:0 :NO];
-	countThread--;
-	[pool release];
-}
-
--(void) executeResliceSquareY:(id) obj
-{
-	NSAutoreleasePool   *pool=[[NSAutoreleasePool alloc] init];
-	[self executeReslice:1 :YES];
-	countThread--;
-	[pool release];
-}
-
--(void) executeResliceNonSquareY:(id) obj
-{
-	NSAutoreleasePool   *pool=[[NSAutoreleasePool alloc] init];
-	[self executeReslice:1 :NO];
-	countThread--;
-	[pool release];
 }
 
 -(IBAction) endDialog:(id) sender
@@ -400,14 +386,17 @@ static volatile long countThread;
     {
 		if( [[direction selectedCell] tag] == 2)
 		{
-			[self executeReslice: 0 :[squarePixels state]];
-			[self executeReslice: 1 :[squarePixels state]];
+			[self executeReslice: 0 :[squarePixels state] :[newWindow state]];
+			[self executeReslice: 1 :[squarePixels state] :YES];
 		}
-		else [self executeReslice: [[direction selectedCell] tag] :[squarePixels state]];
+		else [self executeReslice: [[direction selectedCell] tag] :[squarePixels state] :[newWindow state]];
 		
 		// We modified the pixels: OsiriX please update the display!
 		[viewerController needsDisplayUpdate];
     }
+	
+	[[NSUserDefaults standardUserDefaults] setBool:[newWindow state] forKey:@"newWindow - OrthogonalReslice"];
+	[[NSUserDefaults standardUserDefaults] setBool:[squarePixels state] forKey:@"squarePixels - OrthogonalReslice"];
 }
 
 - (long) filterImage:(NSString*) menuName
@@ -427,7 +416,8 @@ static volatile long countThread;
 	im = [firstPix pwidth];			thick = [firstPix pixelSpacingX];
 	[yResolution setStringValue: [NSString stringWithFormat: @"%d images, %2.2f thickness", im, thick]];
 	
-	[squarePixels setEnabled: NO];
+	[newWindow setState: [[NSUserDefaults standardUserDefaults] boolForKey:@"newWindow - OrthogonalReslice"]];
+	[squarePixels setState: [[NSUserDefaults standardUserDefaults] boolForKey:@"squarePixels - OrthogonalReslice"]];
 	
 	NSLog(@"X: %2.2f, Y: %2.2f, Interval: %2.2f", [firstPix pixelSpacingX], [firstPix pixelSpacingY], fabs( [firstPix sliceInterval]));
 	
