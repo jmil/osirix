@@ -1,0 +1,15 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {CLASS = PluginFilter; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {playAudio = id; recordAudio = id; }; 
+            CLASS = VoiceClipFilter; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_window" = NSWindow; }; 
+            SUPERCLASS = PluginFilter; 
+        }
+    ); 
+    IBVersion = 1; 
+}
