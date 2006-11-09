@@ -27,6 +27,7 @@
 		BF1C418C0B029267001CBFEA /* VoiceClip.nib in Resources */ = {isa = PBXBuildFile; fileRef = BF1C418A0B029267001CBFEA /* VoiceClip.nib */; };
 		BF1C41DF0B029BCE001CBFEA /* VoiceClipController.h in Headers */ = {isa = PBXBuildFile; fileRef = BF1C41DD0B029BCE001CBFEA /* VoiceClipController.h */; };
 		BF1C41E00B029BCE001CBFEA /* VoiceClipController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BF1C41DE0B029BCE001CBFEA /* VoiceClipController.mm */; };
+		BF5D42140B03CEA6001E7B41 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5D42130B03CEA6001E7B41 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		BF1C418B0B029267001CBFEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/VoiceClip.nib; sourceTree = "<group>"; };
 		BF1C41DD0B029BCE001CBFEA /* VoiceClipController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceClipController.h; sourceTree = "<group>"; };
 		BF1C41DE0B029BCE001CBFEA /* VoiceClipController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceClipController.mm; sourceTree = "<group>"; };
+		BF5D42130B03CEA6001E7B41 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				BF1C41040B0283E7001CBFEA /* CoreAudio.framework in Frameworks */,
 				BF1C41050B0283E7001CBFEA /* CoreAudioKit.framework in Frameworks */,
+				BF5D42140B03CEA6001E7B41 /* QTKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +89,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BF5D42130B03CEA6001E7B41 /* QTKit.framework */,
 				BF1C41020B0283E7001CBFEA /* CoreAudio.framework */,
 				BF1C41030B0283E7001CBFEA /* CoreAudioKit.framework */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
@@ -148,10 +152,10 @@
 		AB2C26750677B0C400A08910 /* DuplicateFilter */ = {
 			isa = PBXGroup;
 			children = (
+				BF5D41CC0B03C548001E7B41 /* Play */,
+				BF5D41C90B03C534001E7B41 /* Record */,
 				ABA48A640680BB600089EB4F /* VoiceClipFilter.h */,
 				ABA48A660680BB690089EB4F /* VoiceClipFilter.mm */,
-				BF1C40FE0B027C6A001CBFEA /* DCAudioFileRecorder.h */,
-				BF1C40FF0B027C6A001CBFEA /* DCAudioFileRecorder.cpp */,
 				BF1C41DD0B029BCE001CBFEA /* VoiceClipController.h */,
 				BF1C41DE0B029BCE001CBFEA /* VoiceClipController.mm */,
 			);
@@ -171,6 +175,22 @@
 				ABB7633F067FB2A8000912C1 /* ViewerController.h */,
 			);
 			path = "OsiriX Headers";
+			sourceTree = "<group>";
+		};
+		BF5D41C90B03C534001E7B41 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				BF1C40FE0B027C6A001CBFEA /* DCAudioFileRecorder.h */,
+				BF1C40FF0B027C6A001CBFEA /* DCAudioFileRecorder.cpp */,
+			);
+			name = Record;
+			sourceTree = "<group>";
+		};
+		BF5D41CC0B03C548001E7B41 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Play;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
