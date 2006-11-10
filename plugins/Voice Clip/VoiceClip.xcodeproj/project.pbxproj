@@ -28,6 +28,8 @@
 		BF1C41DF0B029BCE001CBFEA /* VoiceClipController.h in Headers */ = {isa = PBXBuildFile; fileRef = BF1C41DD0B029BCE001CBFEA /* VoiceClipController.h */; };
 		BF1C41E00B029BCE001CBFEA /* VoiceClipController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BF1C41DE0B029BCE001CBFEA /* VoiceClipController.mm */; };
 		BF5D42140B03CEA6001E7B41 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5D42130B03CEA6001E7B41 /* QTKit.framework */; };
+		BFE72D6E0B0543A6009A98A8 /* Capture_Record_off.tif in Resources */ = {isa = PBXBuildFile; fileRef = BFE72D6C0B0543A6009A98A8 /* Capture_Record_off.tif */; };
+		BFE72D6F0B0543A6009A98A8 /* Capture_Record_on.tif in Resources */ = {isa = PBXBuildFile; fileRef = BFE72D6D0B0543A6009A98A8 /* Capture_Record_on.tif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		BF1C41DD0B029BCE001CBFEA /* VoiceClipController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceClipController.h; sourceTree = "<group>"; };
 		BF1C41DE0B029BCE001CBFEA /* VoiceClipController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceClipController.mm; sourceTree = "<group>"; };
 		BF5D42130B03CEA6001E7B41 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		BFE72D6C0B0543A6009A98A8 /* Capture_Record_off.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Capture_Record_off.tif; sourceTree = "<group>"; };
+		BFE72D6D0B0543A6009A98A8 /* Capture_Record_on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Capture_Record_on.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,8 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BFE72D6C0B0543A6009A98A8 /* Capture_Record_off.tif */,
+				BFE72D6D0B0543A6009A98A8 /* Capture_Record_on.tif */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -260,6 +266,8 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				BF1C418C0B029267001CBFEA /* VoiceClip.nib in Resources */,
+				BFE72D6E0B0543A6009A98A8 /* Capture_Record_off.tif in Resources */,
+				BFE72D6F0B0543A6009A98A8 /* Capture_Record_on.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

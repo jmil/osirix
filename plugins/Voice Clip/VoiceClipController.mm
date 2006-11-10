@@ -26,7 +26,7 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	if (self = [super initWithWindowNibName:@"VoiceClip"]) {
 	_recording  = NO;
 	_audioExists = NO;
-	_recordTitle = @"Record";
+	_recordImage = [[NSImage imageNamed:@"Capture_Record_off.tif"] retain];
 	}
 	return self;
 }
@@ -35,7 +35,7 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	NSLog (@"reset");
 	[self setRecording:NO];
 	[self setAudioExists:NO];
-	[self setRecordTitle:@"Record"];
+	[self setRecordImage:[NSImage imageNamed:@"Capture_Record_off.tif"]];
 	NSArray *currentSelection = [[BrowserController currentBrowser] databaseSelection];
 	if ([currentSelection count] > 0) {
 
@@ -104,7 +104,7 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 		delete gAudioFileRecorder; gAudioFileRecorder = NULL;
 		return;
 	}
-	[self setRecordTitle:@"Stop"];
+	[self setRecordImage:[NSImage imageNamed:@"Capture_Record_on.tif"]];
 	gIsRecording = true;
 	_recording = YES;
 	
@@ -124,7 +124,7 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	gIsRecording = false;
 	
 	_recording = NO;
-	[self setRecordTitle:@"Record"];
+	[self setRecordImage:[NSImage imageNamed:@"Capture_Record_off.tif"]];
 	// move temp file to path
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 	NSString *fname = [NSString stringWithFormat: @".%@", [_moviePath lastPathComponent]];
@@ -183,13 +183,13 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	//don't do anything just call to let Binding know of change
 }
 
-- (NSString *)recordTitle{
-	return _recordTitle;
+- (NSImage *)recordImage{
+	return _recordImage;
 }
 
-- (void)setRecordTitle:(NSString *)recordTitle{
-	[_recordTitle release];
-	_recordTitle = [recordTitle retain];
+- (void)setRecordImage:(NSImage *)recordImage{
+	[_recordImage release];
+	_recordImage = [recordImage retain];
 }
 
 - (QTMovie *)movie{

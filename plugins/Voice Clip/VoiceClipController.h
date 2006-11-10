@@ -13,7 +13,7 @@
 @interface VoiceClipController : NSWindowController {
 	BOOL _recording;
 	BOOL _audioExists;
-	NSString *_recordTitle; 
+	NSImage *_recordImage; 
 	NSString *_moviePath;
 	QTMovie *_movie;
 }
@@ -24,14 +24,12 @@
 - (void)stopRecording;
 - (BOOL)path:(NSString *)path toFSRef:(FSRef *)ref;
 
-- (void)setRecordTitle:(NSString *)recordTitle;
-
 - (BOOL)recording;
 - (void)setRecording:(BOOL)recording;
 - (BOOL)audioExists;
 - (void)setAudioExists:(BOOL)audioExists;
-- (NSString *)recordTitle;
-- (void)setRecordTitle:(NSString *)recordTitle;
+- (NSImage *)recordImage;
+- (void)setRecordImage:(NSImage *)recordImage;
 - (QTMovie *)movie;
 - (void)setMovie:(QTMovie *)movie;
 - (BOOL)hidePlayerControls;
