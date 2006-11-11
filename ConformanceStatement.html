@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+   <META http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+   <TITLE>OsiriX Conformance Statement</TITLE>
+</HEAD>
+
+<BODY>
+		OsiriX DICOM v3.0 conformance summary
+		<HR size="1">
+		<H2>Introduction</H2>
+		This section is an abbreviated DICOM conformance statement for OsiriX.<BR>It specifies the compliance of OsiriX to file reading/writing, file displaying and file transferring support to the <A HREF="http://www.dclunie.com/dicom-status/status.html">
+          dicom base standard <B>part 5</B></A>.
+
+		<H2>Supported transfer syntaxes (Reading)</H2>
+		
+The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
+
+		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<!####### Uncompressed #########>
+<TR BGCOLOR="#99ccff">
+   <TH> Uncompressed Transfer Syntax </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2 </TD>
+   <TD> Implicit VR - Little Endian</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.1 </TD>
+   <TD> Explicit VR - Little Endian</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.1.99</TD>
+   <TD> Deflated Explicit VR - Little Endian</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.2 </TD>
+   <TD> Explicit VR - Big Endian </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.113619.5.2 </TD>
+   <TD> Implicit VR - Big Endian (G.E Private) </TD>
+</TR>
+
+
+<!####### RLE #########>
+<TR BGCOLOR="#99ccff">
+   <TD> RLE Transfer Syntax </TD>
+   <TD></TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.5 </TD>
+   <TD> Run Length Encoding, Lossless</TD>
+</TR>
+
+<!####### JPEG #########>
+<TR BGCOLOR="#99ccff">
+   <TD> JPEG Transfer Syntax </TD>
+   <TD></TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.50 </TD>
+   <TD> JPEG Baseline (Process 1)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.51 </TD>
+   <TD> JPEG Extended (Process 2 & 4) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.57 </TD>
+   <TD> JPEG Lossless, Non-Hierarchical (Process 14) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.70 </TD>
+   <TD> JPEG Lossless, Hierarchical, First-Order
+        Prediction (Process 14, [Selection Value 1]) </TD>
+</TR>
+</TABLE>
+		<H2>Supported transfer syntaxes (Writing)</H2>
+		
+The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
+
+		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<!####### Uncompressed #########>
+<TR BGCOLOR="#99ccff">
+   <TH> Uncompressed Transfer Syntax </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2 </TD>
+   <TD> Implicit VR - Little Endian</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.1 </TD>
+   <TD> Explicit VR - Little Endian</TD>
+</TR>
+</TABLE>
+		<H2>Supported "Photometric Interpretation" pixel format (Reading)</H2>
+		
+The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).
+
+		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<TR BGCOLOR="#99ccff">
+   <TH> Photometric Interpretation" pixel format </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> MONOCHROME1 </TD>
+   <TD> grey level image description (high values=dark, low values=bright)</TD>
+</TR>
+<TR>
+   <TD> MONOCHROME2 </TD>
+   <TD> grey level image description (high values=bright, low values=dark)</TD>
+</TR>
+<TR>
+   <TD> PALETTE COLOR </TD>
+   <TD> pseudo color image description</TD>
+</TR>
+<TR>
+   <TD> RGB </TD>
+   <TD> true color image description</TD>
+</TR>
+<TR>
+   <TD> YBR_FULL </TD>
+   <TD> true color image description</TD>
+</TR>
+<TR>
+   <TD> YBR_FULL_422 </TD>
+   <TD> true color image description</TD>
+</TR>
+</TABLE>
+		<H2>Supported "Photometric Interpretation" pixel format (Writing)</H2>
+		
+The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).
+
+		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<TR BGCOLOR="#99ccff">
+   <TH> Photometric Interpretation" pixel format </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> MONOCHROME2 </TD>
+   <TD> grey level image description (high values=bright, low values=dark)</TD>
+</TR>
+<TR>
+   <TD> PALETTE COLOR </TD>
+   <TD> pseudo color image description</TD>
+</TR>
+<TR>
+   <TD> RGB </TD>
+   <TD> true color image description</TD>
+</TR>
+
+</TABLE>
+		<H2>Supported 'Bits Allocated' values (Reading)</H2>
+		
+The Bits Allocated value is in the file DICOM Tag field (0020,0100).
+
+		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<!####### Uncompressed #########>
+<TR BGCOLOR="#99ccff">
+   <TH> Classical values </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> 8, 12, 16 </TD>
+   <TD> 12 means that 4 pixels are stored in 3 'short int'</TD>
+</TR>
+<TR BGCOLOR="#99ccff">
+   <TH> Unusual values </TH>
+   <TH> Description </TH></TR>
+<TR>
+   <TD> 24 </TD>
+   <TD> Some ACR-NEMA RGB files came with 'Bits Allocated' = 24
+     and 'Samples Per Pixel' = 1, or with no 'Samples Per Pixel' 
+     at all  </TD>
+</TR>
+<TR>  
+   <TD> 32 </TD>
+   <TD> Some ACR-NEMA files, from CT,  came with 'Bits Allocated' = 32
+      (probabely 65535 grey levels was not enough for them ...) 
+   </TD>
+</TR>
+</TABLE>
+		<H2> Note on odd length data elements</H2>
+		
+
+The Dicom Standard PS 3.5 (Data Structures and Encoding) specifies that
+the data element values which make up a DICOM data stream must be padded
+to an even length.
+<BR>
+Gdcm will <B>tolerate</B> an incorrectly formed odd length data field while
+<B>reading</B> (thus not enforcing the standard).
+<BR>
+But gdcm will always <B>enforce</B> the standard while <B>writing</B>.
+
+		<H2> Note on undefined Value Representations</H2>
+		
+
+If gdcm encounters an undefined VR (either because in a private group,
+or because it corresponds to an undocumented public dictionary entry
+when in implicit VR) while reading a file, it will set that data
+element's VR to be UN (unknown).
+
+		<H2> Note on missing 'Mandatory' Tags</H2>
+		
+
+Each time it's possible to assume a 'reasonable' default value for missing
+'mandatory' tag, gdcm does it. <br>
+For instance if the Tag 'Samples Per Pixels' is missing, we assume its value is
+'1' (Grey pixels, as opposite to RGB); <br>
+if the tag 'High Bit' is missing, we
+assume its value is 'Bits stored -1' (i.e. : no bad trick inside the pixels)<br>
+		
+As gdcm wants to read *as well* old ACR-NEMA files, it has to be widely
+tolerant.
+
+		<H2> Note 'Value Multiplicity'</H2>
+		
+
+gdcm believes what's written on disc, better than the 'Dicom Dictionary'.<br>
+		
+For instance if the field 'Pixels Spacing' contains a single value -instead of
+the mandatory two, gdcm will suppose both values are equal.
+
+		<H2>Note on retired data elements</H2>
+		
+
+Certain data elements are no longer supported under the v3.0 of the DICOM
+standard but persist as retired element. Gdcm maintain them in its Dicom
+Dictionary, postfix their names with the "(RET)" string, and goes on dealing
+with them as standard data elements.
+
+		<HR size="1">
+		<ADDRESS style="align: right;"></ADDRESS>
+<H2><B>UN</B>Supported transfer syntaxes</H2>
+The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
+                                                                                
+<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
+       BGCOLOR="#ffffff">
+<!####### Uncompressed #########>
+<TR BGCOLOR="#99ccff">
+   <TH> Jpeg UNSUPPORTED Transfer Syntax </TH>
+   <TH> Description </TH>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.52 </TD>
+   <TD> JPEG Extended (Process 3 & 5) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.53</TD>
+   <TD> JPEG Spectral Selection, Non-Hierarchical (Process 6 & 8)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.54 </TD>
+   <TD> JPEG Spectral Selection, Non-Hierarchical (Process 7 & 9)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.55 </TD>
+   <TD> JPEG Full Progression, Non-Hierarchical (Process 10 & 12)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.56 </TD>
+   <TD> JPEG Full Progression, Non-Hierarchical (Process 11 & 13) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.58 </TD>
+   <TD> JPEG Lossless, Non-Hierarchical (Process 15) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.59 </TD>
+   <TD> JPEG Extended, Hierarchical (Process 16 & 18) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.60 </TD>
+   <TD> JPEG Extended, Hierarchical (Process 17 & 19)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.61 </TD>
+   <TD> JPEG Spectral Selection, Hierarchical (Process 20 & 22) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.62 </TD>
+   <TD> JPEG Spectral Selection, Hierarchical (Process 21 & 23) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.63 </TD>
+   <TD> JPEG Full Progression, Hierarchical (Process 24 & 26)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.64 </TD>
+   <TD> JPEG Full Progression, Hierarchical (Process 25 & 27) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.65 </TD>
+   <TD> JPEG Lossless, Hierarchical (Process 28)</TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.66 </TD>
+   <TD> JPEG Lossless, Hierarchical (Process 29) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.80 </TD>
+   <TD> JPEG-LS Lossless Image Compression </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.81 </TD>
+   <TD> JPEG-LS Lossy (Near-Lossless) Image Compression </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.90 </TD>
+   <TD> JPEG 2000 Image Compression (Lossless Only) </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.91 </TD>
+   <TD> JPEG 2000 Image Compression </TD>
+</TR>
+<TR>
+   <TD> 1.2.840.10008.1.2.4.100 </TD>
+   <TD> MPEG2 Main Profile @ Main Level </TD>
+</TR>
+
+</TABLE>
+
+
+<HR size="1"><ADDRESS style="align: right;"></ADDRESS>
+
+</BODY>
+</HTML>
