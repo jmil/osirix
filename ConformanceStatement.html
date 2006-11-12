@@ -1,335 +1,483 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-   <META http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
-   <TITLE>OsiriX Conformance Statement</TITLE>
-</HEAD>
-
-<BODY>
-		OsiriX DICOM v3.0 conformance summary
-		<HR size="1">
-		<H2>Introduction</H2>
-		This section is an abbreviated DICOM conformance statement for OsiriX.<BR>It specifies the compliance of OsiriX to file reading/writing, file displaying and file transferring support to the <A HREF="http://www.dclunie.com/dicom-status/status.html">
-          dicom base standard <B>part 5</B></A>.
-
-		<H2>Supported transfer syntaxes (Reading)</H2>
-		
-The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
-
-		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<!####### Uncompressed #########>
-<TR BGCOLOR="#99ccff">
-   <TH> Uncompressed Transfer Syntax </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2 </TD>
-   <TD> Implicit VR - Little Endian</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.1 </TD>
-   <TD> Explicit VR - Little Endian</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.1.99</TD>
-   <TD> Deflated Explicit VR - Little Endian</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.2 </TD>
-   <TD> Explicit VR - Big Endian </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.113619.5.2 </TD>
-   <TD> Implicit VR - Big Endian (G.E Private) </TD>
-</TR>
-
-
-<!####### RLE #########>
-<TR BGCOLOR="#99ccff">
-   <TD> RLE Transfer Syntax </TD>
-   <TD></TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.5 </TD>
-   <TD> Run Length Encoding, Lossless</TD>
-</TR>
-
-<!####### JPEG #########>
-<TR BGCOLOR="#99ccff">
-   <TD> JPEG Transfer Syntax </TD>
-   <TD></TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.50 </TD>
-   <TD> JPEG Baseline (Process 1)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.51 </TD>
-   <TD> JPEG Extended (Process 2 & 4) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.57 </TD>
-   <TD> JPEG Lossless, Non-Hierarchical (Process 14) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.70 </TD>
-   <TD> JPEG Lossless, Hierarchical, First-Order
-        Prediction (Process 14, [Selection Value 1]) </TD>
-</TR>
-</TABLE>
-		<H2>Supported transfer syntaxes (Writing)</H2>
-		
-The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
-
-		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<!####### Uncompressed #########>
-<TR BGCOLOR="#99ccff">
-   <TH> Uncompressed Transfer Syntax </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2 </TD>
-   <TD> Implicit VR - Little Endian</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.1 </TD>
-   <TD> Explicit VR - Little Endian</TD>
-</TR>
-</TABLE>
-		<H2>Supported "Photometric Interpretation" pixel format (Reading)</H2>
-		
-The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).
-
-		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<TR BGCOLOR="#99ccff">
-   <TH> Photometric Interpretation" pixel format </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> MONOCHROME1 </TD>
-   <TD> grey level image description (high values=dark, low values=bright)</TD>
-</TR>
-<TR>
-   <TD> MONOCHROME2 </TD>
-   <TD> grey level image description (high values=bright, low values=dark)</TD>
-</TR>
-<TR>
-   <TD> PALETTE COLOR </TD>
-   <TD> pseudo color image description</TD>
-</TR>
-<TR>
-   <TD> RGB </TD>
-   <TD> true color image description</TD>
-</TR>
-<TR>
-   <TD> YBR_FULL </TD>
-   <TD> true color image description</TD>
-</TR>
-<TR>
-   <TD> YBR_FULL_422 </TD>
-   <TD> true color image description</TD>
-</TR>
-</TABLE>
-		<H2>Supported "Photometric Interpretation" pixel format (Writing)</H2>
-		
-The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).
-
-		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<TR BGCOLOR="#99ccff">
-   <TH> Photometric Interpretation" pixel format </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> MONOCHROME2 </TD>
-   <TD> grey level image description (high values=bright, low values=dark)</TD>
-</TR>
-<TR>
-   <TD> PALETTE COLOR </TD>
-   <TD> pseudo color image description</TD>
-</TR>
-<TR>
-   <TD> RGB </TD>
-   <TD> true color image description</TD>
-</TR>
-
-</TABLE>
-		<H2>Supported 'Bits Allocated' values (Reading)</H2>
-		
-The Bits Allocated value is in the file DICOM Tag field (0020,0100).
-
-		<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<!####### Uncompressed #########>
-<TR BGCOLOR="#99ccff">
-   <TH> Classical values </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> 8, 12, 16 </TD>
-   <TD> 12 means that 4 pixels are stored in 3 'short int'</TD>
-</TR>
-<TR BGCOLOR="#99ccff">
-   <TH> Unusual values </TH>
-   <TH> Description </TH></TR>
-<TR>
-   <TD> 24 </TD>
-   <TD> Some ACR-NEMA RGB files came with 'Bits Allocated' = 24
-     and 'Samples Per Pixel' = 1, or with no 'Samples Per Pixel' 
-     at all  </TD>
-</TR>
-<TR>  
-   <TD> 32 </TD>
-   <TD> Some ACR-NEMA files, from CT,  came with 'Bits Allocated' = 32
-      (probabely 65535 grey levels was not enough for them ...) 
-   </TD>
-</TR>
-</TABLE>
-		<H2> Note on odd length data elements</H2>
-		
-
-The Dicom Standard PS 3.5 (Data Structures and Encoding) specifies that
-the data element values which make up a DICOM data stream must be padded
-to an even length.
-<BR>
-Gdcm will <B>tolerate</B> an incorrectly formed odd length data field while
-<B>reading</B> (thus not enforcing the standard).
-<BR>
-But gdcm will always <B>enforce</B> the standard while <B>writing</B>.
-
-		<H2> Note on undefined Value Representations</H2>
-		
-
-If gdcm encounters an undefined VR (either because in a private group,
-or because it corresponds to an undocumented public dictionary entry
-when in implicit VR) while reading a file, it will set that data
-element's VR to be UN (unknown).
-
-		<H2> Note on missing 'Mandatory' Tags</H2>
-		
-
-Each time it's possible to assume a 'reasonable' default value for missing
-'mandatory' tag, gdcm does it. <br>
-For instance if the Tag 'Samples Per Pixels' is missing, we assume its value is
-'1' (Grey pixels, as opposite to RGB); <br>
-if the tag 'High Bit' is missing, we
-assume its value is 'Bits stored -1' (i.e. : no bad trick inside the pixels)<br>
-		
-As gdcm wants to read *as well* old ACR-NEMA files, it has to be widely
-tolerant.
-
-		<H2> Note 'Value Multiplicity'</H2>
-		
-
-gdcm believes what's written on disc, better than the 'Dicom Dictionary'.<br>
-		
-For instance if the field 'Pixels Spacing' contains a single value -instead of
-the mandatory two, gdcm will suppose both values are equal.
-
-		<H2>Note on retired data elements</H2>
-		
-
-Certain data elements are no longer supported under the v3.0 of the DICOM
-standard but persist as retired element. Gdcm maintain them in its Dicom
-Dictionary, postfix their names with the "(RET)" string, and goes on dealing
-with them as standard data elements.
-
-		<HR size="1">
-		<ADDRESS style="align: right;"></ADDRESS>
-<H2><B>UN</B>Supported transfer syntaxes</H2>
-The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).
-                                                                                
-<TABLE WIDTH="800" BORDER="0" CELLSPACING="1" CELLPADDING="10"
-       BGCOLOR="#ffffff">
-<!####### Uncompressed #########>
-<TR BGCOLOR="#99ccff">
-   <TH> Jpeg UNSUPPORTED Transfer Syntax </TH>
-   <TH> Description </TH>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.52 </TD>
-   <TD> JPEG Extended (Process 3 & 5) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.53</TD>
-   <TD> JPEG Spectral Selection, Non-Hierarchical (Process 6 & 8)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.54 </TD>
-   <TD> JPEG Spectral Selection, Non-Hierarchical (Process 7 & 9)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.55 </TD>
-   <TD> JPEG Full Progression, Non-Hierarchical (Process 10 & 12)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.56 </TD>
-   <TD> JPEG Full Progression, Non-Hierarchical (Process 11 & 13) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.58 </TD>
-   <TD> JPEG Lossless, Non-Hierarchical (Process 15) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.59 </TD>
-   <TD> JPEG Extended, Hierarchical (Process 16 & 18) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.60 </TD>
-   <TD> JPEG Extended, Hierarchical (Process 17 & 19)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.61 </TD>
-   <TD> JPEG Spectral Selection, Hierarchical (Process 20 & 22) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.62 </TD>
-   <TD> JPEG Spectral Selection, Hierarchical (Process 21 & 23) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.63 </TD>
-   <TD> JPEG Full Progression, Hierarchical (Process 24 & 26)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.64 </TD>
-   <TD> JPEG Full Progression, Hierarchical (Process 25 & 27) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.65 </TD>
-   <TD> JPEG Lossless, Hierarchical (Process 28)</TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.66 </TD>
-   <TD> JPEG Lossless, Hierarchical (Process 29) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.80 </TD>
-   <TD> JPEG-LS Lossless Image Compression </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.81 </TD>
-   <TD> JPEG-LS Lossy (Near-Lossless) Image Compression </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.90 </TD>
-   <TD> JPEG 2000 Image Compression (Lossless Only) </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.91 </TD>
-   <TD> JPEG 2000 Image Compression </TD>
-</TR>
-<TR>
-   <TD> 1.2.840.10008.1.2.4.100 </TD>
-   <TD> MPEG2 Main Profile @ Main Level </TD>
-</TR>
-
-</TABLE>
-
-
-<HR size="1"><ADDRESS style="align: right;"></ADDRESS>
-
-</BODY>
-</HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>OsiriX Conformance Statement</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="882">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 31.0px Century Gothic}
+    p.p2 {margin: 0.0px 0.0px 6.0px 0.0px; font: 12.0px Century Gothic}
+    p.p3 {margin: 0.0px 0.0px 6.0px 0.0px; font: 12.0px Century Gothic; min-height: 15.0px}
+    p.p4 {margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Century Gothic}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Century Gothic; min-height: 15.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Century Gothic; min-height: 22.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px Century Gothic}
+    p.p9 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Century Gothic; min-height: 15.0px}
+    p.p10 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Century Gothic}
+    span.s1 {text-decoration: underline ; color: #1600e4}
+    span.s2 {color: #1600e4}
+    table.t1 {width: 800.0px; background-color: #ffffff}
+    td.td1 {width: 276.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td2 {width: 444.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td3 {width: 276.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td4 {width: 444.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td5 {width: 329.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td6 {width: 391.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td7 {width: 329.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td8 {width: 391.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td9 {width: 290.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td10 {width: 430.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td11 {width: 290.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td12 {width: 430.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td13 {width: 289.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td14 {width: 431.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td15 {width: 289.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td16 {width: 431.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td17 {width: 87.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td18 {width: 633.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td19 {width: 87.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td20 {width: 633.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td21 {width: 301.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td22 {width: 419.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td23 {width: 301.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td24 {width: 419.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td25 {width: 302.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td26 {width: 418.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td27 {width: 302.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td28 {width: 418.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td29 {width: 298.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td30 {width: 422.0px; background-color: #95cafb; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td31 {width: 298.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+    td.td32 {width: 422.0px; padding: 20.0px 20.0px 20.0px 20.0px}
+  </style>
+</head>
+<body>
+<p class="p1"><b>OsiriX DICOM Conformance Statement</b></p>
+<p class="p2">Last update of this document: 11/12/06</p>
+<p class="p3"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Introduction</b></h2>
+<p class="p5">This section is an abbreviated DICOM conformance statement for OsiriX.</p>
+<p class="p5">It specifies the compliance of OsiriX to file reading/writing, file displaying and file transferring support to the <a href="http://medical.nema.org/"><span class="s1">dicom </span><span class="s2"><b>standard</b></span></a>.</p>
+<p class="p6"><br></p>
+<p class="p7"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported transfer syntaxes (Reading)</b></h2>
+<p class="p5">The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).</p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p8"><b>Uncompressed Transfer Syntax</b></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">Implicit VR - Little Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.1</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">Explicit VR - Little Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.1.99</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">Deflated Explicit VR - Little Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.2</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">Explicit VR - Big Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p5"><b>RLE Transfer Syntax</b></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.5</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">Run Length Encoding, Lossless</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p5"><b>JPEG Transfer Syntax</b></p>
+      </td>
+      <td valign="middle" class="td2">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.50</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG Baseline (Process 1)</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.51</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG Extended (Process 2 &amp; 4)</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.57</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG Lossless, Non-Hierarchical (Process 14)</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.70</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG Lossless, Hierarchical, First-Order Prediction (Process 14, [Selection Value 1])</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.90</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG 2000 Image Compression (Lossless Only)</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td3">
+        <p class="p5">1.2.840.10008.1.2.4.91</p>
+      </td>
+      <td valign="middle" class="td4">
+        <p class="p5">JPEG 2000 Image Compression</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported transfer syntaxes (Writing)</b></h2>
+<p class="p5">The Transfer Syntax UID is in the file DICOM Tag field (0002,0010).</p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td5">
+        <p class="p8"><b>Uncompressed Transfer Syntax</b></p>
+      </td>
+      <td valign="middle" class="td6">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td7">
+        <p class="p5">1.2.840.10008.1.2</p>
+      </td>
+      <td valign="middle" class="td8">
+        <p class="p5">Implicit VR - Little Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td7">
+        <p class="p5">1.2.840.10008.1.2.1</p>
+      </td>
+      <td valign="middle" class="td8">
+        <p class="p5">Explicit VR - Little Endian</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td5">
+        <p class="p5"><b>JPEG Transfer Syntax</b></p>
+      </td>
+      <td valign="middle" class="td6">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td7">
+        <p class="p5">1.2.840.10008.1.2.4.70</p>
+      </td>
+      <td valign="middle" class="td8">
+        <p class="p5">JPEG Lossless, Hierarchical, First-Order Prediction (Process 14, [Selection Value 1])</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported "Photometric Interpretation" pixel format (Reading)</b></h2>
+<p class="p5">The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).</p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td9">
+        <p class="p8">Photometric Interpretation" pixel format</p>
+      </td>
+      <td valign="middle" class="td10">
+        <p class="p8">Description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">MONOCHROME1</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">grey level image description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">MONOCHROME2</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">grey level image description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">PALETTE COLOR</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">pseudo color image description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">RGB</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">true color image description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">YBR_FULL</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">true color image description</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td11">
+        <p class="p5">YBR_FULL_422</p>
+      </td>
+      <td valign="middle" class="td12">
+        <p class="p5">true color image description</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported "Photometric Interpretation" pixel format (Writing)</b></h2>
+<p class="p5">The Photometric Interpretation UID is in the file DICOM Tag field (0028,0004).</p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td13">
+        <p class="p8"><b>Photometric Interpretation" pixel format</b></p>
+      </td>
+      <td valign="middle" class="td14">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td15">
+        <p class="p5">MONOCHROME2</p>
+      </td>
+      <td valign="middle" class="td16">
+        <p class="p5">grey level image description (high values=bright, low values=dark)</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td15">
+        <p class="p5">RGB</p>
+      </td>
+      <td valign="middle" class="td16">
+        <p class="p5">true color image description</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported 'Bits Allocated' values (Reading)</b></h2>
+<p class="p5">The Bits Allocated value is in the file DICOM Tag field (0020,0100).</p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td17">
+        <p class="p8"><b>Classical values</b></p>
+      </td>
+      <td valign="middle" class="td18">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td19">
+        <p class="p5">8, 12, 16</p>
+      </td>
+      <td valign="middle" class="td20">
+        <p class="p5">12 means that 4 pixels are stored in 3 'short int'</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<p class="p6"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Supported SOP Classes - User Of Service (SCU) and Provider Of Service (SCP)</b></h2>
+<p class="p6"><br></p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td21">
+        <p class="p8"><b>Networking SOP Classes</b></p>
+      </td>
+      <td valign="middle" class="td22">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td23">
+        <p class="p5">Verification</p>
+      </td>
+      <td valign="middle" class="td24">
+        <p class="p5">SCU &amp; SCP</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td23">
+        <p class="p5">Image Transfer</p>
+      </td>
+      <td valign="middle" class="td24">
+        <p class="p5">SCU &amp; SCP, all modalities, multicast</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td23">
+        <p class="p5">Query &amp; Retrieve</p>
+      </td>
+      <td valign="middle" class="td24">
+        <p class="p5">Study Root Q/R - FIND, Study Root Q/R - MOVE, SCU &amp; SCP, multicast</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p10"><b>Support of Extended Character Sets</b></p>
+<p class="p10"><b>Configurable Parameters:</b><br>
+The following items are configurable for each entity in the configuration file: <br>
+- Port Number <br>
+- AE Title for SCU operations <br>
+- AE Title for Storage SCP <br>
+- AE Title for Query/Retrieve SCP / SCU</p>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Processing Application Support</b></h2>
+<p class="p6"><br></p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td25">
+        <p class="p8"><b>SOP Classes</b></p>
+      </td>
+      <td valign="middle" class="td26">
+        <p class="p8"><b>Description</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td27">
+        <p class="p5">Digital X-Ray Image Storage - for Presentation<br>
+Digital X-Ray Image Storage - for Presentation<br>
+Digital X-Ray Image Storage - for Processing Storage<br>
+Digital Mammography X-ray Image Storage - For Presentation<br>
+Digital Mammography X-ray Image Storage - For Processing<br>
+Digital Intra-Oral X-ray Image Storage - For Presentation<br>
+Digital Intra-Oral X-Ray Image Storage - For Processing<br>
+CT Image Storage<br>
+US Multi-frame Image Storage<br>
+MR Image Storage<br>
+Enhanced MR Image Storage<br>
+MR Spectroscopy Storage<br>
+Ultrasound Image Storage<br>
+Secondary Capture Image Storage<br>
+Multi-Frame Single Bit Secondary Capture Image Storage<br>
+Multi-Frame GrayScale Byte Secondary Capture Image Storage<br>
+Multi-Frame GrayScale Word Secondary Capture Image Storage<br>
+Multi-Frame True Color Secondary Capture Image Storage<br>
+Standalone Overlay Storage<br>
+Standalone Curve Storage<br>
+Standalone Modality LUT Storage<br>
+Standalone VOI LUT Storage<br>
+GrayScale Softcopy Presentation State Storage SOP Class<br>
+X-Ray Angiographic Image Storage<br>
+X-Ray Radiofluoroscopic Image Storage<br>
+Nuclear Medicine Image Storage<br>
+Raw Data Storage<br>
+VL Endoscopic Image Storage<br>
+VL Microscopic Image Storage<br>
+VL Slide-Coordinates Microscopic Image Storage<br>
+VL Photographic Image Storage<br>
+Positron Emission Tomography Image Storage<br>
+Standalone PET Curve Storage</p>
+      </td>
+      <td valign="middle" class="td28">
+        <p class="p5">Use and Create</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p9"><br></p>
+<h2 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Century Gothic"><b>Print SOP Classes - User Of Service (SCU)</b></h2>
+<p class="p6"><br></p>
+<table width="800.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td29">
+        <p class="p8"><b>SOP Classes</b></p>
+      </td>
+      <td valign="middle" class="td30">
+        <p class="p8"><b>SOP Class UID</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td31">
+        <p class="p5">Print Job SOP Class</p>
+      </td>
+      <td valign="middle" class="td32">
+        <p class="p5">1.2.840.10008.5.1.1.14</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td31">
+        <p class="p5">Printer SOP</p>
+      </td>
+      <td valign="middle" class="td32">
+        <p class="p5">1.2.840.10008.5.1.1.16</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p6"><br></p>
+</body>
+</html>
