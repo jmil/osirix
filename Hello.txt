@@ -1,5 +1,9 @@
-$Rev$
-$Date$
+TODO:
+
+- Default PET fusion
+- thumbnails for not enough memory dialog
+- 4D for Ortho MPR
+- Check if multiple volume during open: open the entire series, which volume, 4D
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
@@ -7,6 +11,31 @@ http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compilin
 DEFINE:
 
 #ifdef __LP64__
+#endif
+
+For DCMTK and JASPER headers:
+
+replace in jas_config.h and cfunix.h
+#define SIZEOF_LONG 4
+
+by
+
+#ifdef __LP64__
+#define SIZEOF_LONG 8
+#else
+#define SIZEOF_LONG 4
+#endif
+
+#ifdef __LP64__
+#define SIZEOF_UNSIGNED_LONG 8
+#else
+#define SIZEOF_UNSIGNED_LONG 4
+#endif
+
+#ifdef __LP64__
+#define SIZEOF_VOID_P 8
+#else
+#define SIZEOF_VOID_P 4
 #endif
 
 LIPO:
@@ -28,6 +57,8 @@ Ensuite, utiliser lipo
 
 Pour changer le default path de la dylib:
 http://www.cocoadev.com/index.pl?ApplicationLinking
+
+(otool)
 
 JASPER:
 
