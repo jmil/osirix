@@ -82,8 +82,8 @@
 	
 	[nib release];
 	
-	[self setPatientName:nil];
-	[self setPatientID:nil];
+	[self setPatientName:@"No Name"];
+	[self setPatientID:@""];
 	[self setDocTitle:nil];
 
 	_patientID = nil;
@@ -107,12 +107,12 @@
 	
 	//create image
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	//NSLog(@"convert Image");
 	NSData *pdf = nil;
 	if ([[path pathExtension] isEqualToString:@"pdf"])
 		pdf = [NSData dataWithContentsOfFile:path];	
 	//if we have an image  get the info we need from the imageRep.
-	if (pdf ){
-			
+	if (pdf ){			
 			// create DICOM OBJECT
 			DCMObject *dcmObject = [DCMObject newEncapsulatedPDF:pdf];
 			[dcmObject setAttributeValues:[NSArray arrayWithObject:_studyInstanceUID] forName:@"StudyInstanceUID"];
@@ -120,17 +120,18 @@
 			[dcmObject setAttributeValues:[NSArray arrayWithObject:@"PDF"] forName:@"SeriesDescription"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientName] forName:@"PatientsName"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientID] forName:@"PatientID"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientSex] forName:@"PatientsSex"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientDOB] forName:@"PatientsBirthDate"];
-			
+			if (_patientSex)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientSex] forName:@"PatientsSex"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@""] forName:@"PatientsSex"];
+				
+			if (_patientDOB)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientDOB] forName:@"PatientsBirthDate"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_docTitle] forName:@"DocumentTitle"];
-			
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", _imageNumber++]] forName:@"InstanceNumber"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", _studyID]] forName:@"StudyID"];
-			
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyDate] forName:@"StudyDate"];			
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"StudyTime"];
-						
 			if (_seriesDate)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_seriesDate] forName:@"SeriesDate"];
 			else
@@ -142,7 +143,6 @@
 			
 			else			
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"SeriesTime"];
-
 					
 			//NSLog(@"pdf: %@", [dcmObject description]);
 			
@@ -152,7 +152,6 @@
 		
 			if ([dcmObject writeToFile:destination withTransferSyntax:[DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax] quality:DCMLosslessQuality atomically:YES])
 				NSLog(@"Wrote PDF: %@", destination);
-			//NSLog(@"Exit PDF import");
 
 	}
 
@@ -206,8 +205,14 @@
 				study = [selection valueForKey:@"study"];
 			
 			_studyInstanceUID = [study valueForKeyPath:@"studyInstanceUID"];
-			[self setPatientName:[study valueForKeyPath:@"name"]];
-			[self setPatientID:[study valueForKeyPath:@"patientID"]];
+			NSString *name = [study valueForKeyPath:@"name"];
+			if (!name)
+				name = @"No Name";
+			[self setPatientName:name];
+			NSString *pid = [study valueForKeyPath:@"patientID"];
+			if (!pid)
+				pid = @"0";
+			[self setPatientID:pid];
 			_patientDOB = [DCMCalendarDate dicomDateWithDate:[study valueForKeyPath:@"dateOfBirth"]];
 			_patientSex = [study valueForKeyPath:@"patientSex"];
 			
@@ -220,11 +225,7 @@
 			NSEnumerator *enumerator = [[study valueForKey:@"series"] objectEnumerator];
 			while (series = [enumerator nextObject]) {
 				if ([[series valueForKey:@"name"] isEqualToString:@"PDF"]) {
-					NSArray *arrayUID = [[series valueForKey:@"seriesInstanceUID"] componentsSeparatedByString:@" "];
-					// the core data DB stores the seriesUID in an unusual fashion. The true UID needs to be removed out of the string
-					if ([arrayUID count] >= 2)
-						_seriesInstanceUID = [arrayUID objectAtIndex:1];
-
+					_seriesInstanceUID = [series valueForKey:@"seriesDICOMUID"];
 					_seriesDate  = [DCMCalendarDate dicomDateWithDate:[series valueForKeyPath:@"date"]];
 					_seriesTime  = [DCMCalendarDate dicomTimeWithDate:[series valueForKeyPath:@"date"]];
 					_imageNumber = [[series valueForKey:@"images"] count] + 1;
