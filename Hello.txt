@@ -58,7 +58,10 @@ Ensuite, utiliser lipo
 Pour changer le default path de la dylib:
 http://www.cocoadev.com/index.pl?ApplicationLinking
 
-(otool)
+otool, install_name_tool:
+
+otool -D libtiff.3.dylib
+install_name_tool -id @executable_path/../Frameworks/libtiff.dylib libtiff.3.dylib
 
 JASPER:
 
