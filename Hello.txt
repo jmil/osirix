@@ -4,6 +4,7 @@ TODO:
 - thumbnails for not enough memory dialog
 - 4D for Ortho MPR
 - Check if multiple volume during open: open the entire series, which volume, 4D
+- Convolution in 3D
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
