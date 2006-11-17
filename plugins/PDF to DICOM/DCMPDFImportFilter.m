@@ -115,11 +115,20 @@
 	if (pdf ){			
 			// create DICOM OBJECT
 			DCMObject *dcmObject = [DCMObject newEncapsulatedPDF:pdf];
-			[dcmObject setAttributeValues:[NSArray arrayWithObject:_studyInstanceUID] forName:@"StudyInstanceUID"];
-			[dcmObject setAttributeValues:[NSArray arrayWithObject:_seriesInstanceUID] forName:@"SeriesInstanceUID"];
+			if (_studyInstanceUID)
+				[dcmObject setAttributeValues:[NSArray arrayWithObject:_studyInstanceUID] forName:@"StudyInstanceUID"];
+			if (_seriesInstanceUID)
+				[dcmObject setAttributeValues:[NSArray arrayWithObject:_seriesInstanceUID] forName:@"SeriesInstanceUID"];
 			[dcmObject setAttributeValues:[NSArray arrayWithObject:@"PDF"] forName:@"SeriesDescription"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientName] forName:@"PatientsName"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientID] forName:@"PatientID"];
+			if (_patientName)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientName] forName:@"PatientsName"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@""] forName:@"PatientsName"];
+			if (_patientID)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientID] forName:@"PatientID"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@"0"] forName:@"PatientID"];
+				
 			if (_patientSex)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientSex] forName:@"PatientsSex"];
 			else
@@ -127,11 +136,27 @@
 				
 			if (_patientDOB)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientDOB] forName:@"PatientsBirthDate"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_docTitle] forName:@"DocumentTitle"];
+				
+			if (_docTitle)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_docTitle] forName:@"DocumentTitle"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@"PDF"] forName:@"DocumentTitle"];
+				
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", _imageNumber++]] forName:@"InstanceNumber"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", _studyID]] forName:@"StudyID"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyDate] forName:@"StudyDate"];			
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"StudyTime"];
+			if (_studyID)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", _studyID]] forName:@"StudyID"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", 0001]] forName:@"StudyID"];
+				
+			if (_studyDate)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyDate] forName:@"StudyDate"];	
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[DCMCalendarDate dicomDateWithDate:[NSDate date]]] forName:@"StudyDate"];
+			if (_studyTime)	
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"StudyTime"];
+			else
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[DCMCalendarDate dicomTimeWithDate:[NSDate date]]] forName:@"StudyTime"];
+
 			if (_seriesDate)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_seriesDate] forName:@"SeriesDate"];
 			else

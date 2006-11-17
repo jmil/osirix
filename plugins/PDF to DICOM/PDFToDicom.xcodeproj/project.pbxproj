@@ -273,10 +273,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(FRAMEWORK_SEARCH_PATHS)",
-					"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Users/lpysher/osirix/osirix/build/Development;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -315,12 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../osirix/build/Development",
-					"$(SRCROOT)/../../osirix/Binaries",
-					"$(SRCROOT)/../../build/Development",
-					"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Users/lpysher/osirix/osirix/build/Development;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -349,12 +341,7 @@
 		BF90E90D088F520B0078E0EC /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../osirix/build/Development",
-					"$(SRCROOT)/../../osirix/Binaries",
-					"$(SRCROOT)/../../build/Development",
-					"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Users/lpysher/osirix/osirix/build/Development;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Duplicate_Prefix.pch;
