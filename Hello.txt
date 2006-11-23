@@ -6,6 +6,7 @@ TODO:
 - Check if multiple volume during open: open the entire series, which volume, 4D
 - Convolution in 3D
 - Restore a volume (scissor)
+- Interactive segmentation: plain ROI / 2D ROI
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
