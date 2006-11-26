@@ -1,9 +1,7 @@
 TODO:
 
 - Default PET fusion
-- thumbnails for not enough memory dialog
 - 4D for Ortho MPR
-- Check if multiple volume during open: open the entire series, which volume, 4D
 - Convolution in 3D
 - Restore a volume (scissor)
 - Interactive segmentation: plain ROI / 2D ROI
