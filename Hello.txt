@@ -5,6 +5,7 @@ TODO:
 - Convolution in 3D
 - Restore a volume (scissor)
 - Interactive segmentation: plain ROI / 2D ROI
+- Series in bold/italic red, not red, ...
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
