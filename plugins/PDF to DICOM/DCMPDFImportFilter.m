@@ -108,11 +108,15 @@
 	//create image
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	//NSLog(@"convert Image");
-	NSData *pdf = nil;
+	NSMutableData *pdf = nil;
 	if ([[path pathExtension] isEqualToString:@"pdf"])
-		pdf = [NSData dataWithContentsOfFile:path];	
+		pdf = [NSMutableData dataWithContentsOfFile:path];	
+	
 	//if we have an image  get the info we need from the imageRep.
-	if (pdf ){			
+	if (pdf ){		
+			// pad data
+			if ([pdf length] % 2 != 0)
+				[pdf increaseLengthBy:1];
 			// create DICOM OBJECT
 			DCMObject *dcmObject = [DCMObject newEncapsulatedPDF:pdf];
 			if (_studyInstanceUID)
@@ -176,7 +180,7 @@
 			//destination = [NSString stringWithFormat: @"%@/Desktop/%@.dcm", NSHomeDirectory(), _docTitle]; 
 		
 			if ([dcmObject writeToFile:destination withTransferSyntax:[DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax] quality:DCMLosslessQuality atomically:YES])
-				NSLog(@"Wrote PDF: %@", destination);
+				NSLog(@"Wrote PDF to %@", destination);
 
 	}
 
@@ -209,11 +213,13 @@
 	return _patientID;
 }
 -(void)setPatientName:(NSString *)name{
+	//NSLog(@"set Name: %@", name);
 	[_patientName release];
 	_patientName = [name retain];
 }
 	
 -(void)setPatientID:(NSString *)pid{
+	//NSLog(@"set ID: %@", pid);
 	[_patientID release];
 	_patientID = [pid retain];
 }
@@ -231,10 +237,12 @@
 			
 			_studyInstanceUID = [study valueForKeyPath:@"studyInstanceUID"];
 			NSString *name = [study valueForKeyPath:@"name"];
+			
 			if (!name)
 				name = @"No Name";
 			[self setPatientName:name];
 			NSString *pid = [study valueForKeyPath:@"patientID"];
+			
 			if (!pid)
 				pid = @"0";
 			[self setPatientID:pid];
