@@ -171,7 +171,7 @@
 	while (anAddress = [addressesEnumerator nextObject])
 	{
 		NSLog(@"anAddress : %@", anAddress);
-		if([anAddress hasPrefix:@"129."])
+		if([anAddress hasPrefix:@"165."] || [anAddress hasPrefix:@"169."])
 		{
 			ip = [NSString stringWithString:anAddress];
 			break;

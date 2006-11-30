@@ -1,10 +1,17 @@
 TODO:
 
-- Default PET fusion
+- Default PET fusion mode, Default PET wl&ww
 - 4D for Ortho MPR
 - Convolution in 3D
 - Restore a volume (scissor)
+- Cancel scissor if switch tool
 - Interactive segmentation: plain ROI / 2D ROI
+- MPR views in VR
+- Export HTML
+- Query Patient in File menu
+- New study for keyimages
+- Opacity table for 16-bit, floating window, thumbnails for presets
+- MPR 3 planes for curved-MPR
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
