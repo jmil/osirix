@@ -9,6 +9,7 @@ TODO:
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
 - MPR 3 planes for curved-MPR
+- Thumbnail study: comments, dictated
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
