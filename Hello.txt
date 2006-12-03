@@ -1,6 +1,5 @@
 TODO:
 
-- Default PET fusion mode, Default PET wl&ww
 - 4D for Ortho MPR
 - Convolution in 3D
 - Restore a volume (scissor)
@@ -10,6 +9,9 @@ TODO:
 - Opacity table for 16-bit, floating window, thumbnails for presets
 - MPR 3 planes for curved-MPR
 - Thumbnail study: comments, dictated
+- Bug to QTVR? All directions?
+- Segmentation in RGB
+- Check image orientation in DCM printing
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
