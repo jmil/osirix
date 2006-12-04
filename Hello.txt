@@ -10,6 +10,7 @@ TODO:
 - MPR 3 planes for curved-MPR
 - Bug to QTVR? All directions?
 - Segmentation in RGB
+- Preview Segmentation in 2D brush
 - Check image orientation in DCM printing
 
 Web Site:
