@@ -8,7 +8,6 @@ TODO:
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
 - MPR 3 planes for curved-MPR
-- Thumbnail study: comments, dictated
 - Bug to QTVR? All directions?
 - Segmentation in RGB
 - Check image orientation in DCM printing
