@@ -12,6 +12,7 @@ TODO:
 - Preview Segmentation in 2D brush
 - Check image orientation in DCM printing
 - Free rotation for crop box if not PET-CT
+- Add flip angle if MR
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
