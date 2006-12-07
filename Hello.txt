@@ -1,3 +1,9 @@
+2.7 New Features:
+
+- Matrix Size for 3D Export
+- Preview growing region
+- Query & Retrieve Selected Patient
+
 TODO:
 
 - 4D for Ortho MPR
@@ -8,9 +14,6 @@ TODO:
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
 - MPR 3 planes for curved-MPR
-- Segmentation in RGB
-- Check image orientation in DCM printing
-- Free rotation for crop box if not PET-CT
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
