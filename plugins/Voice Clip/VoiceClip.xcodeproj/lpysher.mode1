@@ -185,48 +185,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>BF5D42580B03DE0C001E7B41</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>VoiceClipController.h</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>BF5D42590B03DE0C001E7B41</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>VoiceClipController.h</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>BFE72D8B0B0548F3009A98A8</string>
-						<key>history</key>
-						<array>
-							<string>BF5D42870B03E8C5001E7B41</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {433, 780}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>38 331 433 821 0 0 1920 1178 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -312,8 +271,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>23</integer>
-									<integer>22</integer>
+									<integer>29</integer>
+									<integer>28</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -353,7 +312,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Capture_Record_off.tif</string>
+								<string>Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -361,14 +320,13 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Capture_Record_off.tif</string>
+										<string>Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>BFE72D8A0B0548F3009A98A8</string>
+										<string>BF2EE5240B1F80B7007E9088</string>
 										<key>history</key>
 										<array>
-											<string>BF1C41D30B029BA3001CBFEA</string>
 											<string>BF1C42300B02A03F001CBFEA</string>
 											<string>BF5D422E0B03D0EC001E7B41</string>
 											<string>BF5D422F0B03D0EC001E7B41</string>
@@ -377,7 +335,8 @@
 											<string>BFE72D740B054734009A98A8</string>
 											<string>BFE72D840B0548F3009A98A8</string>
 											<string>BFE72D850B0548F3009A98A8</string>
-											<string>BFE72D860B0548F3009A98A8</string>
+											<string>BF2EE51D0B1F399D007E9088</string>
+											<string>BF1C41D30B029BA3001CBFEA</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -389,17 +348,9 @@
 											<string>BF1C41FD0B029ED3001CBFEA</string>
 											<string>BF1C421C0B029ED3001CBFEA</string>
 											<string>BF5D423B0B03D0EC001E7B41</string>
-											<string>BFE72D670B054385009A98A8</string>
-											<string>BFE72D770B054734009A98A8</string>
-											<string>BFE72D780B054734009A98A8</string>
-											<string>BFE72D790B054734009A98A8</string>
-											<string>BFE72D7A0B054734009A98A8</string>
-											<string>BFE72D7B0B054734009A98A8</string>
-											<string>BFE72D7C0B054734009A98A8</string>
 											<string>BFE72D7D0B054734009A98A8</string>
-											<string>BFE72D870B0548F3009A98A8</string>
-											<string>BFE72D880B0548F3009A98A8</string>
 											<string>BFE72D890B0548F3009A98A8</string>
+											<string>BF2EE51E0B1F399D007E9088</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -457,9 +408,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>BFE72D690B054385009A98A8</string>
+				<string>BF2EE5200B1F399D007E9088</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>BFE72D6A0B054385009A98A8</string>
+				<string>BF2EE5210B1F399D007E9088</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -594,7 +545,6 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>BF1C40F80B027C44001CBFEA</string>
-		<string>BF5D42580B03DE0C001E7B41</string>
 		<string>/Users/lpysher/osirix/plugins/Voice Clip/VoiceClip.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -675,7 +625,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>BF1C40F80B027C44001CBFEA</string>
-				<string>BFE72D800B054734009A98A8</string>
+				<string>BF2EE5230B1F399D007E9088</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
