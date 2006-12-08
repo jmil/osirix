@@ -4,6 +4,7 @@
 - Preview growing region
 - Query & Retrieve Selected Patient
 - For CR, XA DF: split/combine options (database preferences)
+- Anonymize before burning option
 
 TODO:
 
