@@ -5,6 +5,7 @@
 - Query & Retrieve Selected Patient
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
+- MPR 3 planes for curved-MPR
 
 TODO:
 
@@ -15,7 +16,12 @@ TODO:
 - MPR views in VR
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
-- MPR 3 planes for curved-MPR
+
+
+DB:
+
+Study Level:
+- Locked
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
