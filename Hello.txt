@@ -3,6 +3,7 @@
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
+- New options for Q&R
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
 - MPR 3 planes for curved-MPR
@@ -16,7 +17,9 @@ TODO:
 - MPR views in VR
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
-
+- Perfusion
+- ROI enhancement
+- Worklist DICOM
 
 DB:
 
