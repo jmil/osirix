@@ -3,10 +3,12 @@
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
-- New options for Q&R
+- New options for Q&R: direct viewing, birthdate, ...
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
+- Templates for anonymization
 - MPR 3 planes for curved-MPR
+- Sub-Series opening: (alt key) + 2D Viewer
 
 TODO:
 
