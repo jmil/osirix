@@ -143,6 +143,8 @@
 	[defaultValues setObject:[rowValues objectForKey:@"Port"] forKey:@"serverPort"];
 	
 	[[NSUserDefaults standardUserDefaults] setObject:defaultValues forKey:@"ClusterPluginServerListDefaultValues"];
+	
+	[self performSelector:@selector(connectToServer:) withObject:sender afterDelay: 60*60*2];
 }
 
 -(void)waitConnection
@@ -171,7 +173,7 @@
 	while (anAddress = [addressesEnumerator nextObject])
 	{
 		NSLog(@"anAddress : %@", anAddress);
-		if([anAddress hasPrefix:@"165."] || [anAddress hasPrefix:@"169."])
+		if([anAddress hasPrefix:@"129."])
 		{
 			ip = [NSString stringWithString:anAddress];
 			break;

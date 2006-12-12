@@ -235,10 +235,17 @@ static NSTimeInterval lastModificationOfPersistentQueue;
 					{	
 						//NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=%@",[notif object]);
 						NSLog(@"----->[SERVER], checkPersitentQueueAndSendTxNotification: remove notification object=");
-						[[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
-						[persitentNotificationsQueue removeObject:notifTimeStamp];
-						BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
-						NSLog(@"    write to file res=%x",res);
+						BOOL fileRemoved = [[NSFileManager defaultManager] removeFileAtPath:[[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/CLUSTER/SERVERQUEUE/"] stringByAppendingString:notifTimeStamp] handler:nil];
+						if (fileRemoved)
+						{
+							[persitentNotificationsQueue removeObject:notifTimeStamp];
+							BOOL res=[NSArchiver archiveRootObject:persitentNotificationsQueue toFile:fullPathPersitentQueue];
+							NSLog(@"    write to file res=%x",res);
+						}
+						else
+						{
+							NSLog(@"    [NSFileManager defaultManager] removeFileAtPath FAILED");
+						}
 						//lastModificationOfPersistentQueue = [[NSDate date] timeIntervalSince1970];
 					}
 				}

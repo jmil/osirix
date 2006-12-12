@@ -51,7 +51,7 @@ static NSTimeInterval lastModificationOfPersistentClientQueue;
 		// retrieve or create a softID
 		NSDictionary* prop=[NSDictionary dictionaryWithContentsOfFile:pathRDNotifationProperties];
 		softID=[[NSString alloc] initWithString:[prop objectForKey:@"softID"]];
-		if ([softID length]<2) // 2 is an arbitrary value ! lower than a real timestamp
+		//if ([softID length]<2) // 2 is an arbitrary value ! lower than a real timestamp
 			[self generateSoftID]; 
 		NSLog(@"(RemoteDistributedNotificationCenter, initWithTCPPort) softID=%@",softID);
 		
