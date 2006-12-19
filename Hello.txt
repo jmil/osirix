@@ -3,16 +3,16 @@
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
-- New options for Q&R: direct viewing, birthdate, ...
+- New options for Q&R: multi-sources, direct viewing, birthdate, ...
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
 - Templates for anonymization
 - MPR 3 planes for curved-MPR
 - Sub-Series opening: (alt key) + 2D Viewer
+- 4D, 5D for Orthogonal MPR
 
 TODO:
 
-- 4D for Ortho MPR
 - Convolution in 3D
 - Restore a volume (scissor)
 - Interactive segmentation: plain ROI / 2D ROI
@@ -24,9 +24,10 @@ TODO:
 - Worklist DICOM
 
 DB:
-
 Study Level:
 - Locked
+DICOM SR:
+- Referenced UID
 
 Web Site:
 http://developer.apple.com/documentation/Porting/Conceptual/PortingUnix/compiling/chapter_4_section_3.html
