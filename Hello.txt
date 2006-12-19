@@ -9,7 +9,8 @@
 - Templates for anonymization
 - MPR 3 planes for curved-MPR
 - Sub-Series opening: (alt key) + 2D Viewer
-- 4D, 5D for Orthogonal MPR
+- 4D, 5D for Orthogonal-MPR and 2D-MPR
+- Multi-threaded Orthogonal-MPR
 
 TODO:
 
