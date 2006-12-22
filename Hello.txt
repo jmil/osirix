@@ -11,6 +11,7 @@
 - Sub-Series opening: (alt key) + 2D Viewer
 - 4D, 5D for Orthogonal-MPR and 2D-MPR
 - Multi-threaded Orthogonal-MPR
+- Better Bonjour DICOM nodes detection
 
 TODO:
 
