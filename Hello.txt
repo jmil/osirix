@@ -12,6 +12,7 @@
 - 4D, 5D for Orthogonal-MPR and 2D-MPR
 - Multi-threaded Orthogonal-MPR
 - Better Bonjour DICOM nodes detection
+- DICOM MPEG2 support (require VLC installed)
 
 TODO:
 
