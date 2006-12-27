@@ -40,6 +40,8 @@ DEFINE:
 #ifdef __LP64__
 #endif
 
+*********************************************************************
+
 For DCMTK and JASPER headers:
 
 replace in jas_config.h and cfunix.h
@@ -69,9 +71,13 @@ LIPO:
 
 lipo -create a64.lib b32.lib -output combined
 
+*********************************************************************
+
 LIBTIFF 3.8.2:
 
-./configure CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" CXXFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" --host=ppc64
+./configure CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" CXXFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64"
+
+Le --host=ppc64 ne marche pas
 
 make clean
 
@@ -90,6 +96,8 @@ otool, install_name_tool:
 otool -D libtiff.3.dylib
 install_name_tool -id @executable_path/../Frameworks/libtiff.dylib libtiff.3.dylib
 
+*********************************************************************
+
 JASPER:
 
 ./configure CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk -arch ppc64" CXXFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch ppc64"
@@ -104,6 +112,8 @@ cd /Users/antoinerosset/jasper-1.701.0/src/libjasper/.libs
 Jasper, make: une seule architecture a la fois...
 
 Ensuite, utiliser lipo
+
+*********************************************************************
 
 ITK/VTK:
 
