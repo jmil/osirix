@@ -1,0 +1,33 @@
+2.7 New Features:
+
+- Matrix Size for 3D Export
+- Preview growing region
+- Query & Retrieve Selected Patient
+- New options for Q&R: multi-sources, direct viewing, birthdate, ...
+- For CR, XA DF: split/combine options (database preferences)
+- Anonymize before burning option
+- Templates for anonymization
+- MPR 3 planes for curved-MPR
+- Sub-Series opening: (alt key) + 2D Viewer
+- 4D, 5D for Orthogonal-MPR and 2D-MPR
+- Multi-threaded Orthogonal-MPR
+- Better Bonjour DICOM nodes detection
+- DICOM MPEG2 support (require VLC installed)
+
+TODO:
+
+- Convolution in 3D
+- Restore a volume (scissor)
+- Interactive segmentation: plain ROI / 2D ROI
+- MPR views in VR
+- New study for keyimages
+- Opacity table for 16-bit, floating window, thumbnails for presets
+- Perfusion
+- ROI enhancement
+- Worklist DICOM
+
+DB:
+Study Level:
+- Locked
+DICOM SR:
+- Referenced UID
