@@ -12,7 +12,9 @@
 - 4D, 5D for Orthogonal-MPR and 2D-MPR
 - Multi-threaded Orthogonal-MPR
 - Better Bonjour DICOM nodes detection
-- DICOM MPEG2 support (require VLC installed)
+- DICOM MPEG2 support (require VLC installed, http://www.videolan.org/vlc/)
+- Multi-threaded DICOM Printing
+- Hot Keys support (see Preferences)
 
 TODO:
 
