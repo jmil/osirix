@@ -15,6 +15,8 @@
 - DICOM MPEG2 support (require VLC installed, http://www.videolan.org/vlc/)
 - Multi-threaded DICOM Printing
 - Hot Keys support (see Preferences)
+- comparison hanging (LP)
+- improved hanging protocols.
 
 TODO:
 
@@ -27,6 +29,9 @@ TODO:
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
+- implement hanging of comparisons (Finding Comparisons using body regions 	done) (LP)
+_ Add Image tiling to advanced hanging protocols (LP)
+
 
 DB:
 Study Level:
