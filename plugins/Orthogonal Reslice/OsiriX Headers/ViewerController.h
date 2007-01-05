@@ -30,10 +30,18 @@
 @class CurvedMPR;
 @class DICOMExport;
 @class KeyObjectPopupController;
+@class VRController;
+@class VRPROController;
+@class MPR2DController;
+@class OrthogonalMPRViewer;
+@class OrthogonalMPRPETCTViewer;
+@class SRController;
+@class EndoscopyViewer;
 
 #import "Schedulable.h"
 #import "Scheduler.h"
 #import "StaticScheduler.h"
+#import "OSIWindowController.h"
 
 enum
 {
@@ -45,7 +53,7 @@ enum
 	eAxialNeg				// 5
 };
 
-@interface ViewerController : NSWindowController  <Schedulable>
+@interface ViewerController : OSIWindowController  <Schedulable>
 {
 	NSLock	*ThreadLoadImageLock;
 	NSLock	*roiLock;
@@ -65,8 +73,10 @@ enum
 	
 	DCMView					*imageView;
 	
-	IBOutlet NSView         *orientationTool;
+	IBOutlet NSView         *orientationView;
 	IBOutlet NSMatrix		*orientationMatrix;
+	
+	short					currentOrientationTool, originalOrientation;
 	
     IBOutlet NSSlider       *slider, *speedSlider;
 	IBOutlet NSButton		*loopButton;
@@ -105,6 +115,7 @@ enum
 
     IBOutlet NSSlider       *subCtrlZero;
     IBOutlet NSSlider       *subCtrlGamma;
+    IBOutlet NSSlider       *subCtrlSum;
     IBOutlet NSSlider       *subCtrlPercent;
 	IBOutlet NSButton		*subCtrlSharpenButton;
 	IBOutlet NSButton		*shutterOnOff;
@@ -151,6 +162,7 @@ enum
 	IBOutlet NSTextField	*curvedMPRsizeText;
 	IBOutlet NSSlider		*curvedMPRinterval;
 	IBOutlet NSTextField	*curvedMPRintervalText;
+	IBOutlet NSMatrix		*curvedMPRaxis;
 	
 	IBOutlet NSWindow       *blendingTypeWindow;
 	IBOutlet NSButton		*blendingTypeMultiply, *blendingTypeSubtract;
@@ -192,6 +204,7 @@ enum
 	IBOutlet NSSlider       *movieRateSlider;
 	IBOutlet NSSlider       *moviePosSlider;
 	
+	IBOutlet NSPopUpButton  *blendingPopupMenu;
 	IBOutlet NSTextField    *blendingPercentage;
 	IBOutlet NSSlider       *blendingSlider;
 	ViewerController		*blendingController;
@@ -258,6 +271,19 @@ enum
 	IBOutlet NSView			*reportTemplatesView;
 	IBOutlet NSImageView	*reportTemplatesImageView;
 	IBOutlet NSPopUpButton	*reportTemplatesListPopUpButton;
+	
+	NSConditionLock			*processorsLock;
+	
+	IBOutlet NSWindow		*printWindow;
+	IBOutlet NSMatrix		*printSelection;
+	IBOutlet NSMatrix		*printFormat;
+	IBOutlet NSSlider		*printInterval, *printFrom, *printTo;
+	IBOutlet NSTextField	*printIntervalText, *printFromText, *printToText;
+	IBOutlet NSBox			*printBox;
+	IBOutlet NSMatrix		*printSettings;
+	IBOutlet NSColorWell	*printColor;
+	IBOutlet NSPopUpButton	*printLayout;
+	IBOutlet NSTextField	*printText, *printPagesToPrint;
 }
 
 // Create a new 2D Viewer
@@ -296,9 +322,11 @@ enum
 
 // Return the array of DicomFile objects
 - (NSMutableArray*) fileList;
+- (NSMutableArray*) fileList: (long) i;
 
 // Return the array of ROI objects
 - (NSMutableArray*) roiList;
+- (NSMutableArray*) roiList: (long) i;
 
 // Create a new Point object
 - (MyPoint*) newPoint: (float) x :(float) y;
@@ -315,6 +343,8 @@ enum
 // UNDOCUMENTED FUNCTIONS
 // For more informations: rossetantoine@bluewin.ch
 
+- (IBAction) setPagesToPrint:(id) sender;
+- (IBAction) endPrint:(id) sender;
 - (IBAction) startMSRG:(id) sender;
 - (IBAction) startMSRGWithAutomaticBounding:(id) sender;
 //arg: this function will automatically scan the buffer to create a textured ROI (tPlain) for all slices
@@ -331,13 +361,13 @@ enum
 - (void) brushTool:(id) sender;
 - (IBAction) setButtonTool:(id) sender;
 - (IBAction) shutterOnOff:(id) sender;
-
 - (void) setLoadingPause:(BOOL) lp;
 - (void) setImageIndex:(long) i;
 - (IBAction) ConvertToRGBMenu:(id) sender;
 - (IBAction) ConvertToBWMenu:(id) sender;
 - (IBAction) export2PACS:(id) sender;
-
+- (void) print:(id) sender;
+- (IBAction) roiDeleteWithName:(NSString*) name;
 - (IBAction)resampleDataBy2:(id)sender;
 - (BOOL)resampleDataBy2;
 - (BOOL)resampleDataWithFactor:(float)factor;
@@ -402,12 +432,14 @@ enum
 - (void) blendingSlider:(id) sender;
 - (void) blendingMode:(id) sender;
 - (ViewerController*) blendingController;
+- (void)blendWithViewer:(ViewerController *)bc blendingType:(int)blendingType;
 - (NSString*) modality;
 - (void) addMovieSerie:(NSMutableArray*)f :(NSMutableArray*)d :(NSData*) v;
 - (void) startLoadImageThread;
 - (void) moviePosSliderAction:(id) sender;
 - (void) movieRateSliderAction:(id) sender;
 - (void) MoviePlayStop:(id) sender;
+- (void) MovieStop:(id) sender;
 - (void) checkEverythingLoaded;
 - (BOOL) isEverythingLoaded;
 - (IBAction) roiSetPixelsSetup:(id) sender;
@@ -422,11 +454,15 @@ enum
 //- (IBAction) MPRViewer:(id) sender;
 - (IBAction) VRVPROViewer:(id) sender;
 - (IBAction) VRViewer:(id) sender;
+
 - (IBAction) MPR2DViewer:(id) sender;
+
 - (IBAction) orthogonalMPRViewer:(id) sender;
+
 - (IBAction) endoscopyViewer:(id) sender;
 - (IBAction) CurvedMPR:(id) sender;
-//- (IBAction) MIPViewer:(id) sender;
+
+
 - (IBAction) SRViewer:(id) sender;
 - (void)createDCMViewMenu;
 - (void) exportJPEG:(id) sender;
@@ -460,6 +496,7 @@ enum
 - (IBAction) keyImageDisplayButton:(id) sender;
 - (void) adjustKeyImage;
 - (void) buildMatrixPreview;
+- (void) buildMatrixPreview: (BOOL) showSelected;
 - (void) matrixPreviewSelectCurrentSeries;
 - (void) autoHideMatrix;
 - (void) exportQuicktimeIn:(long) dimension :(long) from :(long) to :(long) interval;
@@ -488,6 +525,7 @@ enum
 - (IBAction) fullScreenMenu:(id) sender;
 - (void)exportTextFieldDidChange:(NSNotification *)note;
 - (short) orientationVector;
+- (short) orthogonalOrientation;
 // functions s that plugins can also play with globals
 + (ViewerController *) draggedController;
 + (void) setDraggedController:(ViewerController *) controller;
@@ -502,6 +540,12 @@ enum
 - (void)updateReportToolbarIcon:(NSNotification *)note;
 - (IBAction) setOrientationTool:(id) sender;
 - (void) setWindowTitle:(id) sender;
+- (IBAction) printSlider:(id) sender;
+- (void) setConv:(short*) matrix :(short) size :(short) norm;
+-(BOOL) checkFrameSize;
+- (IBAction) vertFlipDataSet:(id) sender;
+- (IBAction) horzFlipDataSet:(id) sender;
+- (void) rotateDataSet:(int) constant;
 
 #pragma mark-
 #pragma mark Brush ROI Filters
@@ -533,5 +577,33 @@ enum
 - (IBAction)keyObjectNotes:(id)sender;
 - (BOOL)displayOnlyKeyImages;
 - (BOOL)isKeyImage:(int)index;
+
+
+
+
+#pragma mark-
+#pragma mark Convience methods for accessing values in the current imageView
+-(float)curWW;
+-(float)curWL;
+- (void)setWL:(float)wl  WW:(float)ww;
+- (BOOL)xFlipped;
+- (BOOL)yFlipped;
+- (float)rotation;
+- (void)setRotation:(float)rotation;
+- (float)scaleValue;
+- (void)setScaleValue:(float)scaleValue;
+
+
+// Opening 3D Viewers
+- (VRController *)openVRViewerForMode:(NSString *)mode;
+- (VRPROController *)openVRVPROViewerForMode:(NSString *)mode;
+- (OrthogonalMPRViewer *)openOrthogonalMPRViewer;
+- (OrthogonalMPRPETCTViewer *)openOrthogonalMPRPETCTViewer;
+- (MPR2DController *)openMPR2DViewer;
+- (EndoscopyViewer *)openEndoscopyViewer;
+- (SRController *)openSRViewer;
+
+- (SeriesView *) seriesView;
+
 
 @end

@@ -2,6 +2,7 @@
 //  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
 //
 
+#import "DCMPix.h"
 #import "OrthogonalReslice.h"
 #include <Accelerate/Accelerate.h>
 
@@ -347,15 +348,19 @@
 					}
 					
 					[[newPixList lastObject] setSliceThickness: [firstPix pixelSpacingX]];
-					[[newPixList lastObject] setSliceInterval: [firstPix pixelSpacingY]];
+					[[newPixList lastObject] setSliceInterval: 0];
 					
 					[curPix setOrigin: origin];
 				}
 			}
 			
+			int newOrientationTool, currentOrientationTool = [viewerController orthogonalOrientation];
+			
 			if( newViewer == NO)
 			{
 				[viewerController replaceSeriesWith :newPixList :newDcmList :newData];
+				
+				new2DViewer = viewerController;
 			}
 			else
 			{
@@ -368,6 +373,77 @@
 				
 				[[new2DViewer window] makeKeyAndOrderFront: self];
 			}
+			
+			switch( currentOrientationTool)
+			{
+				case 0:	// axial
+					if( directionm == 0) newOrientationTool = 1;
+					else newOrientationTool = 2;
+				break;
+				
+				case 1:	// cor
+					if( directionm == 0) newOrientationTool = 0;
+					else newOrientationTool = 2;
+				break;
+				
+				case 2:	// sag
+					if( directionm == 0) newOrientationTool = 0;
+					else newOrientationTool = 1;
+				break;
+			}
+			
+			switch( currentOrientationTool)
+			{
+				case 0:
+				{
+					switch( newOrientationTool)
+					{
+						case 0:
+						break;
+						case 1:
+						break;
+						case 2:
+						break;
+					}
+				}
+				break;
+
+				case 1:
+				{
+					switch( newOrientationTool)
+					{
+						case 0:
+							[new2DViewer vertFlipDataSet: self];
+						break;
+						case 1:
+						break;
+						case 2:
+							[new2DViewer rotateDataSet: kRotate90DegreesClockwise];
+						break;
+					}
+				}
+				break;
+
+				case 2:
+				{
+					switch( newOrientationTool)
+					{
+						case 0:
+							[new2DViewer rotateDataSet: kRotate90DegreesClockwise];
+							[new2DViewer horzFlipDataSet: self];
+						break;
+						case 1:
+							[new2DViewer rotateDataSet: kRotate90DegreesClockwise];
+							[new2DViewer horzFlipDataSet: self];
+						break;
+						case 2:
+						break;
+					}
+				}
+				break;
+			}
+			
+			[new2DViewer computeInterval];
 		}
 		
 		// Close the waiting window
