@@ -30,6 +30,7 @@
 				CE76EEA90994DBBD007B9067 /* PBXTargetDependency */,
 				CE38EC810994E12D008E1A2D /* PBXTargetDependency */,
 				B7C187950ADA03DF0066C5EB /* PBXTargetDependency */,
+				B750B8050B505870003D5933 /* PBXTargetDependency */,
 			);
 			name = plugins;
 			productName = plugins;
@@ -37,6 +38,20 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		B750B8020B505849003D5933 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AB5D36050680E57E00F4007A /* ContextualDictionary.plugin */;
+			remoteInfo = ContextualDictionary;
+		};
+		B750B8040B505870003D5933 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* ContextualDictionary */;
+			remoteInfo = ContextualDictionary;
+		};
 		B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
@@ -341,6 +356,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ContextualDictionary.xcodeproj; path = ContextualDictionary/ContextualDictionary.xcodeproj; sourceTree = "<group>"; };
 		B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PLUGINdrawTextInfo.xcodeproj; path = PLUGINdrawTextInfo/PLUGINdrawTextInfo.xcodeproj; sourceTree = "<group>"; };
 		CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EjectionFraction.xcodeproj; path = CardiacEjection/EjectionFraction.xcodeproj; sourceTree = "<group>"; };
 		CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TeachingFile.xcodeproj; path = "MIRC Teaching File/TeachingFile.xcodeproj"; sourceTree = "<group>"; };
@@ -370,6 +386,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		B750B7FC0B505849003D5933 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B750B8030B505849003D5933 /* ContextualDictionary.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B7C1875D0AD9FD080066C5EB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -389,6 +413,7 @@
 		CE76EBF00994DA4C007B9067 = {
 			isa = PBXGroup;
 			children = (
+				B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */,
 				B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */,
 				CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */,
 				CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */,
@@ -621,6 +646,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = B750B7FC0B505849003D5933 /* Products */;
+					ProjectRef = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
+				},
+				{
 					ProductGroup = CE76EDFC0994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */;
 				},
@@ -732,6 +761,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		B750B8030B505849003D5933 /* ContextualDictionary.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ContextualDictionary.plugin;
+			remoteRef = B750B8020B505849003D5933 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B7C187610AD9FD080066C5EB /* PLUGINdrawTextInfo.plugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -917,6 +953,11 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
+		B750B8050B505870003D5933 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ContextualDictionary;
+			targetProxy = B750B8040B505870003D5933 /* PBXContainerItemProxy */;
+		};
 		B7C187950ADA03DF0066C5EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PLUGINdrawTextInfo;
