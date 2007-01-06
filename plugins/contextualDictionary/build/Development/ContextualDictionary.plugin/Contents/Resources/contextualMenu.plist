@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>01@CAROT DER</key>
+	<dict>
+		<key>0101@FRENTE</key>
+		<dict>
+			<key>010101@PRE EMB</key>
+			<dict/>
+			<key>020101@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0201@OAD</key>
+		<dict>
+			<key>010201@PRE EMB</key>
+			<dict/>
+			<key>020201@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0301@OAI</key>
+		<dict>
+			<key>010301@PRE EMB</key>
+			<dict/>
+			<key>020301@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0401@PERFIL</key>
+		<dict>
+			<key>010401@PRE EMB</key>
+			<dict/>
+			<key>020401@POST EMB</key>
+			<dict/>
+		</dict>
+	</dict>
+	<key>02@VERT DER</key>
+	<dict>
+		<key>0102@TOWNE</key>
+		<dict>
+			<key>010102@PRE EMB</key>
+			<dict/>
+			<key>020102@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0202@CALDWELL</key>
+		<dict>
+			<key>010202@PRE EMB</key>
+			<dict/>
+			<key>020202@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0302@PERFIL</key>
+		<dict>
+			<key>010302@PRE EMB</key>
+			<dict/>
+			<key>020302@POST EMB</key>
+			<dict/>
+		</dict>
+	</dict>
+	<key>03@VERT IZQ</key>
+	<dict>
+		<key>0103@TOWNE</key>
+		<dict>
+			<key>010103@PRE EMB</key>
+			<dict/>
+			<key>020103@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0203@CALDWELL</key>
+		<dict>
+			<key>010203@PRE EMB</key>
+			<dict/>
+			<key>020203@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0303@PERFIL</key>
+		<dict>
+			<key>010303@PRE EMB</key>
+			<dict/>
+			<key>020303@POST EMB</key>
+			<dict/>
+		</dict>
+	</dict>
+	<key>04@CAROT IZQ</key>
+	<dict>
+		<key>0104@FRENTE</key>
+		<dict>
+			<key>010104@PRE EMB</key>
+			<dict/>
+			<key>020104@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0204@OAD</key>
+		<dict>
+			<key>010204@PRE EMB</key>
+			<dict/>
+			<key>020204@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0304@OAI</key>
+		<dict>
+			<key>010304@PRE EMB</key>
+			<dict/>
+			<key>020304@POST EMB</key>
+			<dict/>
+		</dict>
+		<key>0404@PERFIL</key>
+		<dict>
+			<key>010404@PRE EMB</key>
+			<dict/>
+			<key>020404@POST EMB</key>
+			<dict/>
+		</dict>
+	</dict>
+	<key>05@ULTRA SELECTIVA</key>
+	<dict>
+		<key>0105@PRIMER PEDICULO</key>
+		<dict>
+			<key>010105@PRE NBCA</key>
+			<dict/>
+			<key>02010@POST NBCA</key>
+			<dict/>
+		</dict>
+		<key>0205@SEGUNDO PEDICULO</key>
+		<dict>
+			<key>010205@PRE NBCA</key>
+			<dict/>
+			<key>020205@POST NBCA</key>
+			<dict/>
+		</dict>
+		<key>0305@TERCER PEDICULO</key>
+		<dict>
+			<key>010305@PRE NBCA</key>
+			<dict/>
+			<key>020305@POST NBCA</key>
+			<dict/>
+		</dict>
+		<key>0405@CUARTO PEDICULO</key>
+		<dict>
+			<key>010405@PRE NBCA</key>
+			<dict/>
+			<key>020405@POST NBCA</key>
+			<dict/>
+		</dict>
+		<key>0505@QUINTO PEDICULO</key>
+		<dict>
+			<key>010505@PRE NBCA</key>
+			<dict/>
+			<key>020505@POST NBCA</key>
+			<dict/>
+		</dict>
+		<key>0605@SEXTO PEDICULO</key>
+		<dict>
+			<key>010605@PRE NBCA</key>
+			<dict/>
+			<key>020605@POST NBCA</key>
+			<dict/>
+		</dict>
+	</dict>
+	<key>06@ESCRIBIR</key>
+	<dict/>
+</dict>
+</plist>
