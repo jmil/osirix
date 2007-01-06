@@ -41,14 +41,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = B7C186120AD9E8B90066C5EB /* PLUGINdrawTextInfo.plugin */;
+			remoteGlobalIDString = B7C186120AD9E8B90066C5EB;
 			remoteInfo = PLUGINdrawTextInfo;
 		};
 		B7C187940ADA03DF0066C5EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* PLUGINdrawTextInfo */;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = PLUGINdrawTextInfo;
 		};
 		CE38EC7E0994E11F008E1A2D /* PBXContainerItemProxy */ = {
@@ -681,12 +681,12 @@
 					ProjectRef = CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE0E0994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
+				},
+				{
+					ProductGroup = CE76EE0E0994DBAD007B9067 /* Products */;
+					ProjectRef = CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE020994DBAD007B9067 /* Products */;
@@ -735,10 +735,9 @@
 		B7C187610AD9FD080066C5EB /* PLUGINdrawTextInfo.plugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			name = PLUGINdrawTextInfo.plugin;
-			path = build/Development/PLUGINdrawTextInfo.plugin;
+			path = PLUGINdrawTextInfo.plugin;
 			remoteRef = B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */;
-			sourceTree = "<group>";
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CE38EC7F0994E11F008E1A2D /* Ejection Fraction.plugin */ = {
 			isa = PBXReferenceProxy;

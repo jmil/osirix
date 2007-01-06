@@ -204,7 +204,7 @@
 		NSData	*newData = [NSData dataWithBytes:emptyData length: size];
 		
 		// CREATE A SERIE WITH ONE IMAGE
-		new2DViewer = [[filter viewerController] newWindow		:[NSMutableArray arrayWithObject: [[pixListA objectAtIndex:0] copy]]
+		new2DViewer = [[filter viewerController] newWindow		:[NSMutableArray arrayWithObject: [[[pixListA objectAtIndex:0] copy] autorelease]]
 																:[NSMutableArray arrayWithObject: [[[filter viewerController] fileList] objectAtIndex:0]]
 																:newData];
 		free( emptyData);

@@ -21,23 +21,6 @@
 		BFED7F160A6EECDC00119174 /* SSHWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFED7F140A6EECDC00119174 /* SSHWindowController.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		BFED7FC30A712B4B00119174 /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-			};
-			name = Development;
-		};
-		BFED7FC40A712B4B00119174 /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
-
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -201,12 +184,6 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = BF90E90E088F520B0078E0EC /* Build configuration list for PBXProject "sshPlugin" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				BFED7FC30A712B4B00119174 /* Development */,
-				BFED7FC40A712B4B00119174 /* Deployment */,
-			);
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Duplicate */;
 			projectDirPath = "";

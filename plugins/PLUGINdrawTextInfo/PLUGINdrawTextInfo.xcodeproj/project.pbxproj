@@ -28,7 +28,7 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* PLUGINdrawTextInfo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLUGINdrawTextInfo_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
-		A99DD2910ADA32220073FD57 /* PLUGINdrawTextInfo.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = PLUGINdrawTextInfo.plugin; path = build/Development/PLUGINdrawTextInfo.plugin; sourceTree = "<group>"; };
+		A99DD2910ADA32220073FD57 /* PLUGINdrawTextInfo.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PLUGINdrawTextInfo.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABA48A640680BB600089EB4F /* PLUGINdrawTextInfoFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PLUGINdrawTextInfoFilter.h; sourceTree = "<group>"; };
 		ABA48A660680BB690089EB4F /* PLUGINdrawTextInfoFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = PLUGINdrawTextInfoFilter.m; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };

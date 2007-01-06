@@ -79,7 +79,7 @@
 				
 				for( x = 0; x < slices; x++)
 				{
-					[newPixList addObject: [[pixList objectAtIndex: i] copy]];
+					[newPixList addObject: [[[pixList objectAtIndex: i] copy] release]];
 					[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
 					[[newPixList lastObject] setTot: newTotal];
 					[[newPixList lastObject] setFrameNo: [newPixList count]-1];
@@ -101,7 +101,7 @@
 			}
 			else
 			{
-				[newPixList addObject: [[pixList objectAtIndex: i] copy]];
+				[newPixList addObject: [[[pixList objectAtIndex: i] copy] release]];
 				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
 				BlockMoveData( [[pixList objectAtIndex: i] fImage], [[newPixList lastObject] fImage], imageSize);
 				[[newPixList lastObject] setTot: newTotal];

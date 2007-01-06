@@ -91,7 +91,7 @@
 			{
 				[viewerController waitIncrementBy: waitWindow :1];
 				
-				[newPixList addObject: [[pixList objectAtIndex: 0] copy]];
+				[newPixList addObject: [[[pixList objectAtIndex: 0] copy] autorelease]];
 				
 				[[newPixList lastObject] setPwidth: newX];
 				[[newPixList lastObject] setPheight: newY];

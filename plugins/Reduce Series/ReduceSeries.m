@@ -77,7 +77,7 @@
 			
 			for( i = start ; i < end; i += interval)
 			{
-				[newPixList addObject: [[pixList objectAtIndex: i] copy]];
+				[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
 				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
 				BlockMoveData( [[pixList objectAtIndex: i] fImage], [[newPixList lastObject] fImage], imageSize);
 				[[newPixList lastObject] setTot: newTotal];
