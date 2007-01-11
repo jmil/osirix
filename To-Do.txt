@@ -15,13 +15,12 @@
 - DICOM MPEG2 support (require VLC installed, http://www.videolan.org/vlc/)
 - Multi-threaded DICOM Printing
 - Hot Keys support (see Preferences)
-- comparison hanging (LP)
-- improved hanging protocols.
+- Comparison hanging
+- Improved hanging protocols
+- Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
+- Convolution filters in 3D VR/MIP
 
 TODO:
-
-- Convolution in 3D
-- Restore a volume (scissor)
 - Interactive segmentation: plain ROI / 2D ROI
 - MPR views in VR
 - New study for keyimages
@@ -31,7 +30,6 @@ TODO:
 - Worklist DICOM
 - implement hanging of comparisons (Finding Comparisons using body regions 	done) (LP)
 _ Add Image tiling to advanced hanging protocols (LP)
-
 
 DB:
 Study Level:
