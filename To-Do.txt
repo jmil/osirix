@@ -19,6 +19,7 @@
 - Improved hanging protocols
 - Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
 - Convolution filters in 3D VR/MIP
+- DICOM Shutter fields supported (RECTANGULAR, CIRCULAR)
 
 TODO:
 
