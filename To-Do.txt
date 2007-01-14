@@ -1,5 +1,6 @@
 2.7 New Features:
 
+- The patented and revolutionary "repulsor" tool is now available !
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
@@ -23,7 +24,8 @@
 
 TODO:
 
-- Interactive segmentation: plain ROI / 2D ROI
+- Test color DICOM Printing -> BW conversion
+- Undo ROIs, Copy textual ROIs
 - MPR views in VR
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
