@@ -22,11 +22,12 @@
 - Convolution filters in 3D VR/MIP
 - DICOM Shutter fields supported (RECTANGULAR, CIRCULAR)
 - Undo / Redo for ROIs edition
+- Possibility to move the 'Text Box' associated with ROIs
+- Copy ROIs 'Text Box' to clipboard
 
 TODO:
 
 - Test color DICOM Printing -> BW conversion
-- Copy textual ROIs
 - MPR views in VR
 - New study for keyimages
 - Opacity table for 16-bit, floating window, thumbnails for presets
