@@ -1,6 +1,6 @@
 2.7 New Features:
 
-- The patented and revolutionary "repulsor" tool is now available !
+- The patented and revolutionary "repulsor" tool is now available ! It's just magic!
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
