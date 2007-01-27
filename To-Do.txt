@@ -4,7 +4,7 @@
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
-- New options for Q&R: multi-sources, direct viewing, birthdate, ...
+- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, ...
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
 - Templates for anonymization
@@ -28,7 +28,6 @@
 TODO:
 
 - Sync item, contextual menu
-- Accession Number for Q&R
 - Angio W&L
 - Test color DICOM Printing -> BW conversion
 - MPR views in VR
