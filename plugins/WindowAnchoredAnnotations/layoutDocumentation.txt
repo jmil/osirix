@@ -3,10 +3,6 @@ FORMAT PLIST FOR ANNOTATION LAYOUT
 
 The window is divided in 9 zones which are always adjusted to the current size of it. WindowAnchoredAnnotation is relative to the window, not to the contents of the viewer. That is, one can translate imageView, scale it, rotate it without affecting the annotation. Character type and size is defined for the whole layout. It remains without changes when the contents is zoomed.
 
-The 9 zones are numbered from 1 to 9 with correspondance to the disposition of the keys in the numeric keyboard. (1 is buttom left, 4 is center left, 5 is centered, 9 is top right,...).
-
-Each corner zone is subdivided in 4 lines. 71,72,73,74 are the references of the five lines of top left corner, from top to bottom. 36,37,38,39 are the references of the five lines of botom right corner, from top to bottom. It we use only 3 lines at the botom right corner, these are the 37,38,39.
-
 fig. 1 window zones
 +---------------------------------+
 |01		00		11|
@@ -24,7 +20,7 @@ fig. 1 window zones
 |09		10		19|
 +---------------------------------+
 
-The layout dictionary contains one array for each one of the 21 lines.
+The layout dictionary contains one array of the 21 line entries.
 
 Each line is made of 0 or more items. The item may be a simple string
 for static text in the layout, or dynamic text. In this later case, the
@@ -45,50 +41,50 @@ ONLY SOLUTION FOR NOW... TO IMPLEMENT CORRESPONDING PROXY METHODS IN CATEGORIES.
 
 
 fig.2 xml of the layout
-
-...
-	<key>72</key>
 	<array>								//line with 2 dynamic items
 		<array>
-			<string>%Y-%m-%d</string>
+			<string>%%Y-%%m-%%d</string>
 			<string>date</string>
 			<string>imageMO</string>
 			<string>valueForKeyPath:</string>
 			<string>series.study.dateOfBirth</string>
 		</array>
 		<array>
-			<string>%@</string>
+			<string> (%%@)</string>
 			<string>string</string>
 			<string>view</string>
-			<string>patientSex</string>
+			<string>yearOld</string>
 			<string></string>
 		</array>
 	</array>
-	<key>73</key>
 	<array>								//line with 1 dynamic item
 		<array>
-			<string>%@</string>				//format
+			<string>%%@</string>				//format
 			<string>string</string>				//type
 			<string>imageMO</string>			//informator
 			<string>valueForKeyPath:</string>		//method
 			<string>series.study.patientID</string>		//parameter
 		</array>
 	</array>
-	<key>74</key>
-	<array/>							//empty line 74 (fourth top left)
-	<key>81</key>
-	<array/>							//empty line 81 (top center)
-	<key>91</key>
 	<array>
-		<string>CEDIVA URUGUAY</string>				//line with 1 static item
+		<array>
+			<string>%%@</string>
+			<string>string</string>
+			<string>view</string>
+			<string>patientSex</string>
+			<string></string>
+		</array>
 	</array>
+	<array/>							//empty line
+	<string>tiempo</string>						//line with 1 static item
+	<array>
+
 
 ...
 
-
 Formats
 -------
-In a futur version, some more formats will be added... for instance
+In a future version, some more formats will be added... for instance
 
 range [2 unsigned int --- location   length]
 point [2 float --- x   y ]
