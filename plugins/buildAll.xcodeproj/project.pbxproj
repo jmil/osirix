@@ -52,6 +52,13 @@
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = ContextualDictionary;
 		};
+		B7ADD56E0B6EF34A00D1BD3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AB5D36050680E57E00F4007A /* WindowAnchoredAnnotations.plugin */;
+			remoteInfo = WindowAnchoredAnnotations;
+		};
 		B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */;
@@ -357,6 +364,7 @@
 
 /* Begin PBXFileReference section */
 		B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ContextualDictionary.xcodeproj; path = ContextualDictionary/ContextualDictionary.xcodeproj; sourceTree = "<group>"; };
+		B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WindowAnchoredAnnotations.xcodeproj; path = WindowAnchoredAnnotations/WindowAnchoredAnnotations.xcodeproj; sourceTree = "<group>"; };
 		B7C1875C0AD9FD080066C5EB /* PLUGINdrawTextInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PLUGINdrawTextInfo.xcodeproj; path = PLUGINdrawTextInfo/PLUGINdrawTextInfo.xcodeproj; sourceTree = "<group>"; };
 		CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EjectionFraction.xcodeproj; path = CardiacEjection/EjectionFraction.xcodeproj; sourceTree = "<group>"; };
 		CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TeachingFile.xcodeproj; path = "MIRC Teaching File/TeachingFile.xcodeproj"; sourceTree = "<group>"; };
@@ -390,6 +398,14 @@
 			isa = PBXGroup;
 			children = (
 				B750B8030B505849003D5933 /* ContextualDictionary.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7ADD55F0B6EF34A00D1BD3E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7ADD56F0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.plugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -440,6 +456,7 @@
 				CE76EE250994DBAD007B9067 /* Invert.xcodeproj */,
 				CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */,
 				CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */,
+				B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -694,12 +711,12 @@
 					ProjectRef = CE76EE220994DBAD007B9067 /* Fusion.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE170994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE160994DBAD007B9067 /* Invert.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EE260994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EE250994DBAD007B9067 /* Invert.xcodeproj */;
+				},
+				{
+					ProductGroup = CE76EE170994DBAD007B9067 /* Products */;
+					ProjectRef = CE76EE160994DBAD007B9067 /* Invert.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE2C0994DBAD007B9067 /* Products */;
@@ -710,12 +727,12 @@
 					ProjectRef = CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EE0E0994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */;
+				},
+				{
+					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
+					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE020994DBAD007B9067 /* Products */;
@@ -753,6 +770,10 @@
 					ProductGroup = CE76EDE70994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */;
 				},
+				{
+					ProductGroup = B7ADD55F0B6EF34A00D1BD3E /* Products */;
+					ProjectRef = B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */;
+				},
 			);
 			targets = (
 				CE76EBFB0994DA64007B9067 /* plugins */,
@@ -766,6 +787,13 @@
 			fileType = wrapper.cfbundle;
 			path = ContextualDictionary.plugin;
 			remoteRef = B750B8020B505849003D5933 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B7ADD56F0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WindowAnchoredAnnotations.plugin;
+			remoteRef = B7ADD56E0B6EF34A00D1BD3E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B7C187610AD9FD080066C5EB /* PLUGINdrawTextInfo.plugin */ = {
