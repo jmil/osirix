@@ -1,0 +1,2 @@
+In file included from /Users/Shared/osirix/plugins/WindowAnchoredAnnotations/ViewerControllerCategoryNumberProxy.m:9:
+/Users/Shared/osirix/plugins/WindowAnchoredAnnotations/ViewerControllerCategoryNumberProxy.h:14: error: cannot find interface declaration for 'ViewerController'

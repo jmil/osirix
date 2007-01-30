@@ -42,14 +42,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A /* ContextualDictionary.plugin */;
+			remoteGlobalIDString = AB5D36050680E57E00F4007A;
 			remoteInfo = ContextualDictionary;
 		};
 		B750B8040B505870003D5933 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* ContextualDictionary */;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = ContextualDictionary;
 		};
 		B7C187600AD9FD080066C5EB /* PBXContainerItemProxy */ = {
