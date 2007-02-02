@@ -25,7 +25,7 @@
 - DICOM Shutter fields supported (RECTANGULAR, CIRCULAR, POLYGON)
 - Possibility to move the 'Text Box' associated with ROIs
 - Copy ROIs 'Text Box' to clipboard
-
+- Protected Mode: start OsiriX with Shift+Option keys
 
 TODO:
 
