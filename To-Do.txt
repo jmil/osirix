@@ -1,10 +1,15 @@
 2.7 New Features:
 
 - The patented and revolutionary "repulsor" tool is now available ! It's just magic!
+- Advanced CLUT in 16-bit for Volume Rendering
+- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, ...
+- Comparison hanging
+- Improved hanging protocols
+- Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
+- Undo / Redo for ROIs edition
 - Matrix Size for 3D Export
 - Preview growing region
 - Query & Retrieve Selected Patient
-- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, ...
 - For CR, XA DF: split/combine options (database preferences)
 - Anonymize before burning option
 - Templates for anonymization
@@ -13,31 +18,23 @@
 - 4D, 5D for Orthogonal-MPR and 2D-MPR
 - Multi-threaded Orthogonal-MPR
 - Better Bonjour DICOM nodes detection
-- DICOM MPEG2 support (require VLC installed, http://www.videolan.org/vlc/)
+- DICOM MPEG2 support (it requires VLC installed, http://www.videolan.org/vlc/)
 - Multi-threaded DICOM Printing
 - Hot Keys support (see Preferences)
-- Comparison hanging
-- Improved hanging protocols
-- Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
 - Convolution filters in 3D VR/MIP
 - DICOM Shutter fields supported (RECTANGULAR, CIRCULAR, POLYGON)
-- Undo / Redo for ROIs edition
 - Possibility to move the 'Text Box' associated with ROIs
 - Copy ROIs 'Text Box' to clipboard
 
+
 TODO:
 
-- Sync item, contextual menu
-- Angio W&L
 - Test color DICOM Printing -> BW conversion
-- MPR views in VR
 - New study for keyimages
-- Opacity table for 16-bit, floating window, thumbnails for presets
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
-- implement hanging of comparisons (Finding Comparisons using body regions 	done) (LP)
-_ Add Image tiling to advanced hanging protocols (LP)
+
 
 DB:
 Study Level:
