@@ -29,9 +29,13 @@
 
 TODO:
 
+- Short Keys PET-CT
+- Dots selection
+- Short keys - WLWW menu
 - Test color DICOM Printing -> BW conversion
 - New study for keyimages
 - Perfusion
+- Registration
 - ROI enhancement
 - Worklist DICOM
 
