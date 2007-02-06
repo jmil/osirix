@@ -6,6 +6,7 @@
 - Comparison hanging
 - Improved hanging protocols
 - Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
+- Calcium Scoring
 - Undo / Redo for ROIs edition
 - Matrix Size for 3D Export
 - Preview growing region
@@ -41,7 +42,17 @@ TODO:
 
 
 DB:
+
 Study Level:
 - Locked
+- Remove 'type' field
+
+Series Level:
+- Remove 'type' field
+
+Image Level:
+- Remove 'name' field
+- Remove 'type' field
+
 DICOM SR:
 - Referenced UID
