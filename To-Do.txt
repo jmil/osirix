@@ -54,5 +54,8 @@ Image Level:
 - Remove 'name' field
 - Remove 'type' field
 
+sopInstanceUIDEncode
+sopInstanceUIDDecode
+
 DICOM SR:
 - Referenced UID
