@@ -30,9 +30,10 @@
 
 TODO:
 
-- Short Keys PET-CT
-- Dots selection
-- Short keys - WLWW menu
+- PET-CT default type for MPR PET-CT
+- Retrieve Destination
+- MIP PET: logarithmique
+
 - Test color DICOM Printing -> BW conversion
 - New study for keyimages
 - Perfusion
