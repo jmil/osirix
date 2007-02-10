@@ -30,9 +30,9 @@
 
 TODO:
 
-- PET-CT default type for MPR PET-CT
+- Bonjour Move: USE DICOM SEND !
 - Retrieve Destination
-- MIP PET: logarithmique
+- Async copy - import: CD-ROM
 
 - Test color DICOM Printing -> BW conversion
 - New study for keyimages
