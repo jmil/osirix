@@ -30,8 +30,8 @@
 
 TODO:
 
+- Bug 16-bit saved cluts
 - Bonjour Move: USE DICOM SEND !
-- Retrieve Destination
 - Async copy - import: CD-ROM
 
 - Test color DICOM Printing -> BW conversion
