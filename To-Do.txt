@@ -2,7 +2,7 @@
 
 - The patented and revolutionary "repulsor" tool is now available ! It's just magic!
 - Advanced CLUT in 16-bit for Volume Rendering
-- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, ...
+- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, retrieve destination...
 - Comparison hanging
 - Improved hanging protocols
 - Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
@@ -27,6 +27,7 @@
 - Possibility to move the 'Text Box' associated with ROIs
 - Copy ROIs 'Text Box' to clipboard
 - Protected Mode: start OsiriX with Shift+Option keys
+- Import / Export 'DICOM Nodes Locations' in XML
 
 TODO:
 
