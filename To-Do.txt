@@ -28,19 +28,18 @@
 - Copy ROIs 'Text Box' to clipboard
 - Protected Mode: start OsiriX with Shift+Option keys
 - Import / Export 'DICOM Nodes Locations' in XML
+- Faster and asynchronous transfers between Bonjour shared databases (upgrade all your nodes to vers.2.7)
+- Asynchronous copy from DICOM-CD to local database
 
 TODO:
 
-- Async copy - import: CD-ROM
 - Editable image annotation options
-
-- Test color DICOM Printing -> BW conversion
+- Local database in the 'Sources' area
 - New study for keyimages
 - Perfusion
 - Registration
 - ROI enhancement
 - Worklist DICOM
-
 
 DB:
 
