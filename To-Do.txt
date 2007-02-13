@@ -30,9 +30,8 @@
 
 TODO:
 
-- Bug 16-bit saved cluts
-- Bonjour Move: USE DICOM SEND !
 - Async copy - import: CD-ROM
+- Editable image annotation options
 
 - Test color DICOM Printing -> BW conversion
 - New study for keyimages
