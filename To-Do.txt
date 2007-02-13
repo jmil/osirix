@@ -53,9 +53,14 @@ Series Level:
 Image Level:
 - Remove 'name' field
 - Remove 'type' field
-
-sopInstanceUIDEncode
-sopInstanceUIDDecode
+- Remove 'frameNo'field
+- Set fileType to 0L for DICOM file
+- Compress sopInstanceUID: (sopInstanceUIDEncode, sopInstanceUIDDecode)
+- Create sopInstanceUID with Numbers and . ONLY, including for non-DICOM objects
+- PathNumber : 64 bit Int: if no path, create the path with PathNumber + '.' + extension
+- InstanceNumber : 32 bits, instead of 64 bits
+- numberOfFrames: if not available, return 1
+- numberOfSeries: if not available, return 1
 
 DICOM SR:
 - Referenced UID
