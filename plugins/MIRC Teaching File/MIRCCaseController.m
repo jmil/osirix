@@ -16,7 +16,7 @@
 	[_caseName release];
 	[super dealloc];
 }
-
+/*
 - (void)awakeFromNib{
 	NSMutableArray *cases = [[[[NSUserDefaults standardUserDefaults] objectForKey:@"MIRCCases"] mutableCopy] autorelease];
 	if (!cases)
@@ -28,23 +28,26 @@
 		[self choose:nil];
 	}
 }
+*/
 
 - (IBAction)controlAction: (id) sender{
 	//NSLog(@"control Action");
 	
 	if ([sender selectedSegment] == 0) {
-		[self addFolder:@"New Case"];
+		NSLog(@"add");
+		[self add:self];
+	//	int index = [[self content] count] - 1;
+	//	[tableView editColumn:0 row:index withEvent:nil select:YES];
 	}
 	else if ([sender selectedSegment] == 1) {
 		if ([tableView selectedRow] > -1 && [tableView selectedRow] < [[self content] count]) {
-			[self removeFolder:[[self content] objectAtIndex:[tableView selectedRow]]];
-			[(NSMutableArray *)[self content] removeObjectAtIndex:[tableView selectedRow]];
+			[self remove:self];
 		}
 
 	}
 	[self save];
-	[tableView reloadData];
-	
+
+/*	
 	if ([sender selectedSegment] == 0) {
 		int index = [[self content] count] - 1;
 		//NSLog(@"index: %d", index);
@@ -55,7 +58,15 @@
 			//[tableView reloadData];
 		}
 	}
+*/
 }
+
+- (void)save{
+	NSLog(@"save Case");
+	[mircController save];
+}
+
+/*
 
 - (IBAction)choose: (id) sender{
 	NSString *folder = [[self content] objectAtIndex:[tableView selectedRow]];
@@ -83,9 +94,7 @@
 	}
 }
 
-- (void)save{
-	[[NSUserDefaults standardUserDefaults] setObject:[self content] forKey:@"MIRCCases"];
-}
+
 
 - (NSString *)caseName{
 	return _caseName;
@@ -123,6 +132,6 @@
 - (void)removeFolder:(NSString *)folderName{
 	[[NSFileManager defaultManager] removeFileAtPath: [[mircController path] stringByAppendingPathComponent:folderName]  handler:nil];
 }
-
+*/
 
 @end

@@ -83,6 +83,7 @@
 		BF3E772408BC1B5F004224AA /* MIRCImageCell.h in Headers */ = {isa = PBXBuildFile; fileRef = BF3E772208BC1B5F004224AA /* MIRCImageCell.h */; };
 		BF3E772508BC1B5F004224AA /* MIRCImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF3E772308BC1B5F004224AA /* MIRCImageCell.m */; };
 		BF47A81008C407D600D36F4F /* TheMIRCdocumentSchema.htm in Resources */ = {isa = PBXBuildFile; fileRef = BF47A80F08C407D600D36F4F /* TheMIRCdocumentSchema.htm */; };
+		BF4B47540B83739D0096D325 /* TeachingFile.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */; };
 		BF6AB8D008C2B00800B4D496 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6AB8CF08C2B00800B4D496 /* QTKit.framework */; };
 		BFB1E3C108BD673300805411 /* MIRCImage.h in Headers */ = {isa = PBXBuildFile; fileRef = BFB1E3BF08BD673300805411 /* MIRCImage.h */; };
 		BFB1E3C208BD673300805411 /* MIRCImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB1E3C008BD673300805411 /* MIRCImage.m */; };
@@ -97,6 +98,10 @@
 		BFE9EF5508AAEED700D2BF08 /* MIRCAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */; };
 		BFE9EF6308AAF91200D2BF08 /* MIRCAuthorController.h in Headers */ = {isa = PBXBuildFile; fileRef = BFE9EF6108AAF91200D2BF08 /* MIRCAuthorController.h */; };
 		BFE9EF6408AAF91200D2BF08 /* MIRCAuthorController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE9EF6208AAF91200D2BF08 /* MIRCAuthorController.m */; };
+		BFF57D5D0B83ADBA008B4FF2 /* CaseImageArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = BFF57D5B0B83ADBA008B4FF2 /* CaseImageArrayController.h */; };
+		BFF57D5E0B83ADBA008B4FF2 /* CaseImageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFF57D5C0B83ADBA008B4FF2 /* CaseImageArrayController.m */; };
+		BFF57D630B83ADD2008B4FF2 /* AccessoryFileArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = BFF57D610B83ADD2008B4FF2 /* AccessoryFileArrayController.h */; };
+		BFF57D640B83ADD2008B4FF2 /* AccessoryFileArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFF57D620B83ADD2008B4FF2 /* AccessoryFileArrayController.m */; };
 		BFFC059708AEE5E500804446 /* MIRCThumbnail.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFC059508AEE5E500804446 /* MIRCThumbnail.h */; };
 		BFFC059808AEE5E500804446 /* MIRCThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFC059608AEE5E500804446 /* MIRCThumbnail.m */; };
 		BFFC059D08AEE5F800804446 /* MIRCQuiz.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFC059B08AEE5F800804446 /* MIRCQuiz.h */; };
@@ -191,6 +196,7 @@
 		BF3E772208BC1B5F004224AA /* MIRCImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCImageCell.h; sourceTree = "<group>"; };
 		BF3E772308BC1B5F004224AA /* MIRCImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCImageCell.m; sourceTree = "<group>"; };
 		BF47A80F08C407D600D36F4F /* TheMIRCdocumentSchema.htm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; path = TheMIRCdocumentSchema.htm; sourceTree = "<group>"; };
+		BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = TeachingFile.xcdatamodel; sourceTree = "<group>"; };
 		BF6AB8CF08C2B00800B4D496 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		BFB1E3BF08BD673300805411 /* MIRCImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCImage.h; sourceTree = "<group>"; };
 		BFB1E3C008BD673300805411 /* MIRCImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCImage.m; sourceTree = "<group>"; };
@@ -205,6 +211,10 @@
 		BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCAuthor.m; sourceTree = "<group>"; };
 		BFE9EF6108AAF91200D2BF08 /* MIRCAuthorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCAuthorController.h; sourceTree = "<group>"; };
 		BFE9EF6208AAF91200D2BF08 /* MIRCAuthorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCAuthorController.m; sourceTree = "<group>"; };
+		BFF57D5B0B83ADBA008B4FF2 /* CaseImageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaseImageArrayController.h; sourceTree = "<group>"; };
+		BFF57D5C0B83ADBA008B4FF2 /* CaseImageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseImageArrayController.m; sourceTree = "<group>"; };
+		BFF57D610B83ADD2008B4FF2 /* AccessoryFileArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessoryFileArrayController.h; sourceTree = "<group>"; };
+		BFF57D620B83ADD2008B4FF2 /* AccessoryFileArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessoryFileArrayController.m; sourceTree = "<group>"; };
 		BFFC059508AEE5E500804446 /* MIRCThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCThumbnail.h; sourceTree = "<group>"; };
 		BFFC059608AEE5E500804446 /* MIRCThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCThumbnail.m; sourceTree = "<group>"; };
 		BFFC059B08AEE5F800804446 /* MIRCQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCQuiz.h; sourceTree = "<group>"; };
@@ -243,6 +253,7 @@
 		089C166AFE841209C02AAC07 /* Invert */ = {
 			isa = PBXGroup;
 			children = (
+				BF4B475A0B8373AA0096D325 /* Models */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
@@ -403,19 +414,15 @@
 		AB2C26750677B0C400A08910 /* TF Filter */ = {
 			isa = PBXGroup;
 			children = (
+				BFF57D580B83AD6B008B4FF2 /* XML Creation */,
 				7E5DDD9208BA66570076C75F /* XML Classes */,
+				BFF57D330B83AC30008B4FF2 /* Case */,
 				AB2C25D70677AEEA00A08910 /* MIRCFilter.h */,
 				AB2C25D80677AEEA00A08910 /* MIRCFilter.m */,
 				AB01B8EE067FA69F00CDDB0F /* MIRCController.h */,
 				AB01B8EF067FA69F00CDDB0F /* MIRCController.m */,
-				7E11257E08A7FDB10037819D /* MIRCCaseController.h */,
-				7E11257F08A7FDB10037819D /* MIRCCaseController.m */,
-				7E2C55DD08AA9CDC005AC3B8 /* MIRCXMLController.h */,
-				7E2C55DE08AA9CDC005AC3B8 /* MIRCXMLController.m */,
 				7E28F10A08AD14FF00C8E99F /* MIRCFileTableView.h */,
 				7E28F10B08AD14FF00C8E99F /* MIRCFileTableView.m */,
-				BFE9EF6108AAF91200D2BF08 /* MIRCAuthorController.h */,
-				BFE9EF6208AAF91200D2BF08 /* MIRCAuthorController.m */,
 				BFFC059508AEE5E500804446 /* MIRCThumbnail.h */,
 				BFFC059608AEE5E500804446 /* MIRCThumbnail.m */,
 				BFFF310A08B828A7008D1E82 /* MIRCQuestionWindowController.h */,
@@ -434,8 +441,6 @@
 				7E54279F08C0F66D00DDE31C /* MIRCTextView.m */,
 				7E279F5508C3991F00CA67AB /* MIRCWebController.h */,
 				7E279F5608C3991F00CA67AB /* MIRCWebController.m */,
-				BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */,
-				BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */,
 			);
 			name = "TF Filter";
 			sourceTree = "<group>";
@@ -454,6 +459,40 @@
 				ABB7633F067FB2A8000912C1 /* ViewerController.h */,
 			);
 			path = "OsiriX Headers";
+			sourceTree = "<group>";
+		};
+		BF4B475A0B8373AA0096D325 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		BFF57D330B83AC30008B4FF2 /* Case */ = {
+			isa = PBXGroup;
+			children = (
+				7E11257E08A7FDB10037819D /* MIRCCaseController.h */,
+				7E11257F08A7FDB10037819D /* MIRCCaseController.m */,
+				BFF57D5B0B83ADBA008B4FF2 /* CaseImageArrayController.h */,
+				BFF57D5C0B83ADBA008B4FF2 /* CaseImageArrayController.m */,
+				BFF57D610B83ADD2008B4FF2 /* AccessoryFileArrayController.h */,
+				BFF57D620B83ADD2008B4FF2 /* AccessoryFileArrayController.m */,
+			);
+			name = Case;
+			sourceTree = "<group>";
+		};
+		BFF57D580B83AD6B008B4FF2 /* XML Creation */ = {
+			isa = PBXGroup;
+			children = (
+				7E2C55DD08AA9CDC005AC3B8 /* MIRCXMLController.h */,
+				7E2C55DE08AA9CDC005AC3B8 /* MIRCXMLController.m */,
+				BFE9EF6108AAF91200D2BF08 /* MIRCAuthorController.h */,
+				BFE9EF6208AAF91200D2BF08 /* MIRCAuthorController.m */,
+				BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */,
+				BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */,
+			);
+			name = "XML Creation";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -508,6 +547,8 @@
 				7E279F5708C3991F00CA67AB /* MIRCWebController.h in Headers */,
 				BFBFDBC108C5677C0062CE9A /* MIRCXMLEditor.h in Headers */,
 				7E91D62908CDF68B00B94DD2 /* browserController.h in Headers */,
+				BFF57D5D0B83ADBA008B4FF2 /* CaseImageArrayController.h in Headers */,
+				BFF57D630B83ADD2008B4FF2 /* AccessoryFileArrayController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,6 +660,9 @@
 				7E54293E08C111AE00DDE31C /* WhackedTVController.m in Sources */,
 				7E279F5808C3991F00CA67AB /* MIRCWebController.m in Sources */,
 				BFBFDBC208C5677C0062CE9A /* MIRCXMLEditor.m in Sources */,
+				BF4B47540B83739D0096D325 /* TeachingFile.xcdatamodel in Sources */,
+				BFF57D5E0B83ADBA008B4FF2 /* CaseImageArrayController.m in Sources */,
+				BFF57D640B83ADD2008B4FF2 /* AccessoryFileArrayController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

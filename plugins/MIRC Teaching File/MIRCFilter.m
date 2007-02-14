@@ -16,7 +16,7 @@
 @implementation MIRCFilter
 
 - (void) initPlugin{
-	//create main teacching file folder in OsiriX Data
+	//create main teaching file folder in OsiriX Data
 	controller = nil;
 	[self teachingFileFolder];
 }
@@ -41,6 +41,7 @@
 	if (!([defaultManager fileExistsAtPath:directory isDirectory:&isDir] && isDir)){
 		[defaultManager createDirectoryAtPath:directory attributes:nil];
 	}
+	NSLog(@"TF %@", directory);
 	return directory;
 }
 	

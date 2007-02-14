@@ -13,6 +13,7 @@
 #import "MIRCXMLController.h"
 #import "MIRCWebController.h"
 #import "MIRCImage.h"
+#import "browserController.h"
  #import <OsiriX/DCM.h>
 
 //enum { annotNone = 0, annotGraphics = 1, annotBase = 2, annotFull = 3};
@@ -21,10 +22,77 @@
 
 //extern short annotations;
 
+//Core Data Managed Objects
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (_managedObjectModel) return _managedObjectModel;
+	
+	NSMutableSet *allBundles = [[NSMutableSet alloc] init];
+	[allBundles addObject: [NSBundle mainBundle]];
+	[allBundles addObjectsFromArray: [NSBundle allFrameworks]];
+    
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: [NSURL fileURLWithPath: [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingString:@"/TeachingFile.mom"]]];
+    [allBundles release];
+    
+    return _managedObjectModel;
+}
+
+- (NSManagedObjectContext *) managedObjectContext
+{
+    NSError *error = 0L;
+    NSString *localizedDescription;
+	NSFileManager *fileManager;
+
+	
+    if (_managedObjectContext) return _managedObjectContext;
+		
+	fileManager = [NSFileManager defaultManager];
+	
+    NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator: coordinator];
+	
+	NSString *dbPath = [[self path] stringByAppendingPathComponent:@"teachingFile.sql"];
+	//NSLog(@"PATH TO TEAHCING FILE SQL FILE	: %@, TF path: %@", dbPath, _path);
+    NSURL *url = [NSURL fileURLWithPath: dbPath];
+
+	if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&error])
+	{	// NSSQLiteStoreType - NSXMLStoreType
+      localizedDescription = [error localizedDescription];
+		error = [NSError errorWithDomain:@"OsiriXDomain" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:error, NSUnderlyingErrorKey, [NSString stringWithFormat:@"Store Configuration Failure: %@", ((localizedDescription != nil) ? localizedDescription : @"Unknown Error")], NSLocalizedDescriptionKey, nil]];
+    }
+	
+	[coordinator release];
+	
+	[_managedObjectContext setStalenessInterval: 1200];
+	
+    return _managedObjectContext;
+}
+
+- (void)save{
+//	NSManagedObjectModel *model = [self managedObjectModel];
+	NSManagedObjectContext *context = [self managedObjectContext];
+	NSError *error = nil;
+			
+	[context save: &error];
+	if (error)
+	{
+		NSLog(@"error saving DB: %@", [[error userInfo] description]);
+		NSLog( @"saveDatabase ERROR: %@", [error localizedDescription]);
+	}
+	else
+		NSLog(@"MIRC TF saved");
+		
+		
+	//[context unlock];
+	//[context release];
+}
+
+
 - (id) initWithFilter:(id)filter
 {
 	self = [super initWithWindowNibName:@"MIRC"];
-	NSLog(@"init MIRC filter");
+	//NSLog(@"init MIRC filter");
 	_filter = filter;
 	[[self window] setDelegate:self];   //In order to receive the windowWillClose notification!
 	_path = [[[NSUserDefaults standardUserDefaults] stringForKey:@"MIRCFolderPath"] retain];
@@ -33,18 +101,38 @@
 	if (!_path)
 		_path = [[_filter teachingFileFolder] retain];
 	[titleField setStringValue:_path];
-
+	
+	//Get Cases
+	NSError *error = nil;	
+	NSPredicate * predicate = [NSPredicate predicateWithValue:YES];
+	NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
+	[dbRequest setEntity: [[[self managedObjectModel] entitiesByName] objectForKey:@"teachingFile"]];
+	[dbRequest setPredicate:predicate];
+	_teachingFiles = [[[self managedObjectContext] executeFetchRequest:dbRequest error:&error] retain];
+	if( [_teachingFiles count]) {
+		NSEnumerator *enumerator = [_teachingFiles objectEnumerator];
+		id tf;
+		while (tf = [enumerator nextObject])
+			NSLog(@"name %@", [tf valueForKey:@"name"]);
+		
+	}
+	
 	return self;
 }
 
 - (void)windowDidLoad{
-	[tableView reloadData];
+}
+
+- (void)windowWillClose:(NSNotification *)note{
+	[self save];
 }
 
 
 
 - (void) dealloc
 {	
+	[self save];
+	[_teachingFiles release];
 	[_xmlController release];
 	[_webController release];
 	[_caseName release];
@@ -300,6 +388,10 @@
 }
 
 - (NSString *)path{
+	if (!_path)
+	_path = [[[NSUserDefaults standardUserDefaults] stringForKey:@"MIRCFolderPath"] retain];
+	if (!_path)
+		_path = [[_filter teachingFileFolder] retain];
 	return _path;
 }
 
@@ -381,7 +473,14 @@
 	[_webController showWindow:nil];
 	*/
 }
-	
+
+- (NSArray *)teachingFiles{
+	return _teachingFiles;
+}
+- (void)setTeachingFiles:(NSArray *)teachingFiles{
+	[_teachingFiles release];
+	_teachingFiles = [teachingFiles retain];
+}
 
 
 @end

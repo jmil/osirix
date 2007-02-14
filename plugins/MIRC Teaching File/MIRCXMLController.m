@@ -63,14 +63,15 @@
 		NSMutableArray *images = [NSMutableArray array];
 		NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:_path];
 		NSString *file;
-		//NSLog(@"path: %@", _path);
+		NSLog(@"path: %@", _path);
 		while (file = [dirEnum nextObject]) {
-			//NSLog(@"file: %@", file);
+			NSLog(@"file: %@", file);
+			NSLog(@"adding images");
 			if (!([file hasPrefix:@"."] || [file hasSuffix:@"xml"]))
 				[images addObject:[MIRCThumbnail imageWithPath:[_path stringByAppendingPathComponent:file]]];
 		}
 		_images = [images retain];
-		
+		NSLog(@"look for movies");
 		_historyMovie = nil;
 		if ([QTMovie canInitWithFile:[_path stringByAppendingPathComponent:@"history.mov"]])
 			[self setHistoryMovie:[QTMovie movieWithFile:[_path stringByAppendingPathComponent:@"history.mov"] error:nil]];

@@ -25,6 +25,11 @@
 	IBOutlet NSTableView *tableView;
 	MIRCXMLController *_xmlController;
 	MIRCWebController *_webController;
+	NSArray *_teachingFiles;
+	
+	//Core Data
+	NSManagedObjectModel *_managedObjectModel;
+	NSManagedObjectContext *_managedObjectContext;
 }
 
 - (id) initWithFilter:(id)filter;
@@ -44,5 +49,13 @@
 - (NSString *)url;
 - (void)setUrl:(NSString *)url;
 - (IBAction)getInfo:(id)sender;
+
+
+- (NSArray *)teachingFiles;
+- (void)setTeachingFiles:(NSArray *)teachingFiles;
+//Core Data
+- (NSManagedObjectModel *)managedObjectModel;
+- (NSManagedObjectContext *)managedObjectContext;
+- (void)save;
 
 @end
