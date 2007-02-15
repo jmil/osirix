@@ -113,7 +113,7 @@
 		NSEnumerator *enumerator = [_teachingFiles objectEnumerator];
 		id tf;
 		while (tf = [enumerator nextObject])
-			NSLog(@"name %@", [tf valueForKey:@"name"]);
+			NSLog(@"images %@", [tf valueForKey:@"images"]);
 		
 	}
 	
@@ -124,6 +124,12 @@
 }
 
 - (void)windowWillClose:(NSNotification *)note{
+	NSLog(@"window Will Close");
+	[self save];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification{
+	NSLog(@"terminate MIRC");
 	[self save];
 }
 
@@ -143,7 +149,9 @@
 
 - (IBAction)controlAction: (id)sender {
 	if ([sender selectedSegment] == 0) 
-		[self selectCurrentImage:nil];
+	{
+		//[self selectCurrentImage:nil];
+	}
 	else if ([sender selectedSegment] == 1) 
 		[self createCase:nil];
 	else if ([sender selectedSegment] == 2)

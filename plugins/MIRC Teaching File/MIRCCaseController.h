@@ -18,12 +18,6 @@
 }
 
 - (IBAction)controlAction: (id) sender;
-- (IBAction)choose: (id) sender;
-- (void)save;
-- (NSString *)caseName;
-- (void)setCaseName:(NSString *)caseName;
-- (NSString *)replaceFolderName:(NSString *)caseString withName:(NSString *)newName;
-- (void)addFolder:(NSString *)folderName;
-- (void)removeFolder:(NSString *)folderName;
+
 
 @end

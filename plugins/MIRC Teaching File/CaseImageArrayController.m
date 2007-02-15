@@ -10,6 +10,8 @@
 #import "DCMView.h"
 #import "DCMPix.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ViewerController.h"
+#import "WindowLayoutManager.h"
 NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 
 
@@ -29,12 +31,17 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 
 
 - (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation{
+	[self insertImageAtRow:row FromViewer:[info draggingSource]];	
+	return YES;
+}
+
+- (void)insertImageAtRow:(int)row FromViewer:(DCMView *)vi{
 	id newImage = [self newObject];
-	DCMView	*vi = (DCMView *)[info draggingSource];
+
 	// JPEG Image
 	NSLog(@"Add originalSize");
 	NSImage *originalSizeImage = [vi nsimage:YES];
-	NSBitmapImageRep *rep = [originalSizeImage bestRepresentationForDevice:nil];
+	NSBitmapImageRep *rep = (NSBitmapImageRep *)[originalSizeImage bestRepresentationForDevice:nil];
 	NSData *jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 	
 	[newImage setValue:jpegData forKey: @"originalDimension"];
@@ -66,6 +73,7 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	[newImage setValue:jpegData forKey: @"thumbnail"];
 	NSLog(@"original Format");
 	// Original Format
+	// need to anonymize
 	NSString *originalImagePath = [[vi imageObj] valueForKey:@"completePath"];	
 	NSData *originalFormatData = [NSData dataWithContentsOfFile:originalImagePath];
 	[newImage setValue:originalFormatData forKey: @"originalFormat"];
@@ -79,8 +87,24 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	if (row < 0)
 		row = 0;
 	[self insertObject:newImage atArrangedObjectIndex:row];
-	
-	return YES;
 }
+
+- (IBAction)addOrDelete:(id)sender{
+	if ([sender selectedSegment] == 0) 
+		[self selectCurrentImage:sender];
+	else
+		[self remove:sender];
+
+}
+
+- (IBAction)selectCurrentImage:(id)sender{
+	// need to get current DCMView;
+	NSWindowController  *viewer = [[WindowLayoutManager sharedWindowLayoutManager] currentViewer];
+	[self insertImageAtRow:[[self arrangedObjects] count] FromViewer:[(ViewerController *)viewer imageView]];
+}
+
+
+
+
 
 @end
