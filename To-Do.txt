@@ -33,8 +33,6 @@
 
 TODO:
 
-- MatrixLoadIcons
-
 - +- For bone removal
 - Global Prefs 3D (thumbnails, shading, CLUT, opacity, ...)
 - Editable image annotation options
