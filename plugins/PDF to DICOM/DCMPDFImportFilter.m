@@ -100,7 +100,8 @@
 	_seriesInstanceUID = nil;
 
 	[pool release];
-	return -1;
+	//JF20070211 (it was returning the error code) return -1;
+	return 0;
 }
 
 - (void)convertImageToDICOM:(NSString *)path{
