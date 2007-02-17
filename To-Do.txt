@@ -34,6 +34,7 @@
 TODO:
 
 - +- For bone removal
+
 - Global Prefs 3D (thumbnails, shading, CLUT, opacity, ...)
 - Editable image annotation options
 - Local database in the 'Sources' area
