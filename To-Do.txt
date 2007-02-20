@@ -52,6 +52,7 @@ Study Level:
 
 Series Level:
 - Remove 'type' field
+- Add 'noOfKeyimages' field
 
 Image Level:
 - Remove 'name' field
