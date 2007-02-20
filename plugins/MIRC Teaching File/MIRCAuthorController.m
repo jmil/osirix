@@ -12,11 +12,7 @@
 
 @implementation MIRCAuthorController
 
-- (void)addObject:(id)object{
-	[object setAuthorName:@"New Author"];
-	[super addObject:object];
-	[tableView selectRow:[tableView numberOfRows] - 1 byExtendingSelection:NO];
-}
+
 
 
 

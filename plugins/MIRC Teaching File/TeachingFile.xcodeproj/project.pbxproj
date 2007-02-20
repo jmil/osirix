@@ -408,8 +408,8 @@
 				7E28F11908AD5A5300C8E99F /* MIRCPatient.m */,
 				BFE9EF5208AAEED700D2BF08 /* MIRCAuthor.h */,
 				BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */,
-				BFB1E3BF08BD673300805411 /* MIRCImage.h */,
 				BFB1E3C008BD673300805411 /* MIRCImage.m */,
+				BFB1E3BF08BD673300805411 /* MIRCImage.h */,
 			);
 			name = "XML Classes";
 			sourceTree = "<group>";

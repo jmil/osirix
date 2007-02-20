@@ -75,6 +75,10 @@
 	NSLog (@"MIRC XML WINDOW DID LOAD");
 }
 
+- (NSManagedObjectContext *)managedObjectContext{
+	return _managedObjectContext;
+}
+
 
 
 /*

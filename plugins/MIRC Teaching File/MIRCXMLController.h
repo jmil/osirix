@@ -58,6 +58,7 @@
 - (id)initWithTeachingFile:(id)teachingFile  managedObjectContext:(NSManagedObjectContext *)context;
 - (id)createAuthor;
 - (id)initWithPath: (NSString *)folder;
+- (NSManagedObjectContext *)managedObjectContext;
 
 //- (void)save: (id)sender;
 //general info
