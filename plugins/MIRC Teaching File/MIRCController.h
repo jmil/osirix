@@ -34,10 +34,8 @@
 
 - (id) initWithFilter:(id)filter;
 
-- (IBAction)selectCurrentImage:(id)sender;
-- (IBAction)createCase:(id)sender;
 - (IBAction)connectToMIRC:(id)sender;
-- (IBAction)chooseFolder:(id)sender;
+
 - (IBAction)createArchive:(id)sender;
 - (NSString *)caseName;
 - (void) setCaseName: (NSString *)caseName;

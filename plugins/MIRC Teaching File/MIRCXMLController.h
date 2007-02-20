@@ -33,6 +33,9 @@
 	QTMovie *_discussionMovie;
 	IBOutlet QTMovieView *historyMovieView;
 	IBOutlet QTMovieView *discussionMovieView;
+	
+	id _teachingFile;
+	NSManagedObjectContext *_managedObjectContext;
 
 
 }
@@ -52,19 +55,13 @@
 - (IBAction)deleteQuestion:(id)sender;
 - (IBAction)chooseRefDoc:(id)sender;
 
-
+- (id)initWithTeachingFile:(id)teachingFile  managedObjectContext:(NSManagedObjectContext *)context;
+- (id)createAuthor;
 - (id)initWithPath: (NSString *)folder;
-- (void)save: (id)sender;
+
+//- (void)save: (id)sender;
 //general info
-- (NSString *)refDoc;
-- (void)setRefDoc:(NSString *)refDoc;
 
--(void)setAuthors:(NSArray *)authors;
--(NSArray *)authors;
-- (MIRCAuthor *)createAuthor;
-
-//- (NSXMLElement *)patient;
-//- (void)setPatient:(NSXMLElement *)patient;
 
 - (NSString *)title;
 - (NSString *)altTitle;
@@ -123,5 +120,7 @@
 - (void)newMovie:(NSNotification *)note;
 - (void)setMovie:(QTMovie *)movie withName:(NSString *)name;
 -  (void)saveWithAlert:(BOOL)useAlert;
+- (id)teachingFile;
+- (void)setTeachingFile:(id)teachingFile;
 
 @end

@@ -20,7 +20,7 @@
             SUPERCLASS = NSObject; 
         }, 
         {
-            ACTIONS = {choose = id; controlAction = id; }; 
+            ACTIONS = {choose = id; controlAction = id; create = id; }; 
             CLASS = MIRCCaseController; 
             LANGUAGE = ObjC; 
             OUTLETS = {mircController = MIRCController; tableView = id; }; 
@@ -37,7 +37,7 @@
             }; 
             CLASS = MIRCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {tableView = NSTableView; titleField = id; }; 
+            OUTLETS = {}; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = MIRCFileTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }, 

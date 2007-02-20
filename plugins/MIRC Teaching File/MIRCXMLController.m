@@ -20,9 +20,64 @@
 #import "MIRCThumbnail.h"
 #import <QTKit/QTKit.h>
 #import "AddressBook/AddressBook.h"
+#import "WindowLayoutManager.h"
 
 @implementation MIRCXMLController
 
+- (id)initWithTeachingFile:(id)teachingFile  managedObjectContext:(NSManagedObjectContext *)context;{
+	if (self = [super initWithWindowNibName:@"MIRCXMLEditor"]) {
+		_teachingFile = teachingFile;
+		_managedObjectContext = context;
+		// set up default values for TF, if this is our first time through
+		NSString *name = [_teachingFile valueForKey:@"name"];
+		if (![_teachingFile valueForKey:@"display"])
+			[_teachingFile setValue:@"mstf" forKey:@"display"];
+		if (![_teachingFile valueForKey:@"title"])
+			[_teachingFile setValue:name forKey:@"title"];
+		if (![_teachingFile valueForKey:@"altTitle"])
+			[_teachingFile setValue:name forKey:@"altTitle"];
+		if ([[_teachingFile valueForKey:@"authors"] count] <  1){
+			[self createAuthor];
+		}	
+		id currentStudy = [[WindowLayoutManager sharedWindowLayoutManager] currentStudy];
+		if (![_teachingFile valueForKey:@"age"])
+			[_teachingFile setValue:[currentStudy yearOldAcquisition] forKey:@"age"];
+		if (![_teachingFile valueForKey:@"sex"])
+			[_teachingFile setValue:[currentStudy valueForKey:@"patientSex"] forKey:@"sex"];
+	}
+	return self;
+}
+
+- (id)teachingFile{
+	return _teachingFile;
+}
+
+- (void)setTeachingFile:(id)teachingFile{
+	_teachingFile = teachingFile;
+}
+
+- (id)createAuthor{
+	ABPerson *me = [[ABAddressBook sharedAddressBook] me];
+	id  author =  [NSEntityDescription insertNewObjectForEntityForName:@"author"  inManagedObjectContext:_managedObjectContext];
+	[author setValue:_teachingFile forKey:@"teachingFile"];
+	[author setValue:[NSString stringWithFormat: @"%@ %@", [me valueForProperty:kABFirstNameProperty], [me valueForProperty:kABLastNameProperty]] forKey:@"name"];
+	ABMultiValue *phones = [me valueForProperty:kABPhoneProperty]; 
+	id value = [phones valueAtIndex:[phones indexForIdentifier: [phones primaryIdentifier]]];
+	[author setValue:value forKey:@"phone"];
+	ABMultiValue *emails = [me valueForProperty:kABEmailProperty]; 
+	value = [emails valueAtIndex:[emails indexForIdentifier: [emails primaryIdentifier]]];
+	[author setValue:value forKey:@"email"];
+	[author setValue:[me valueForProperty:kABOrganizationProperty] forKey:@"affilitation"];
+	return author;
+}
+
+- (void)windowDidLoad{
+	NSLog (@"MIRC XML WINDOW DID LOAD");
+}
+
+
+
+/*
 - (id) initWithPath: (NSString *)folder{
 	if (self = [super initWithWindowNibName:@"MIRCXMLEditor"]) {
 		NSError *error;
@@ -200,7 +255,7 @@
 }
 
 - (IBAction)chooseRefDoc:(id)sender{
-/*
+
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	[savePanel beginSheetForDirectory:[self folder] 
 		file:lastPathComponent 
@@ -208,16 +263,9 @@
 		modalDelegate:self 
 		didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:)
 		contextInfo:nil];
-*/
+
 }
 
-- (void)savePanelDidEnd:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo{
-	if (returnCode == NSOKButton){
-		NSString *filename = [[sheet filename] lastPathComponent];
-		[self setRefDoc:filename];
-		//NSLog(@"fileName: %@", filename);
-	}
-}
 
 - (NSString *)refDoc{
 	NSXMLNode *attr = [[self rootElement] attributeForName:@"docref"];
@@ -1006,7 +1054,7 @@
 	else if ([[path lastPathComponent] isEqualToString:@"discussion.mov"]) 
 		[self setDiscussionMovie:movie];
  }
-
+*/
 
 
 

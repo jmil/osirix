@@ -8,12 +8,14 @@
 
 #import "MIRCCaseController.h"
 #import "MIRCController.h"
+#import "MIRCXMLController.h"
 
 @implementation MIRCCaseController
 
 - (void)dealloc{
 	[self save];
 	[_caseName release];
+	[_mircEditor release];
 	[super dealloc];
 }
 
@@ -29,9 +31,18 @@
 	}
 }
 
+
 - (void)save{
 	NSLog(@"save Case");
 	[mircController save];
+}
+
+- (IBAction)create:(id)sender{
+	if (_mircEditor) 
+		[_mircEditor release];
+	_mircEditor = [[MIRCXMLController alloc] initWithTeachingFile:[[self selectedObjects] objectAtIndex:0] managedObjectContext:[self managedObjectContext]];
+	[_mircEditor showWindow:self];
+
 }
 
 

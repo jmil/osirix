@@ -161,7 +161,7 @@
 }
 
 
-
+/*
 - (IBAction)selectCurrentImage:(id)sender{
 	NSString *path = [[[[_filter viewerController] fileList] objectAtIndex:[[[_filter viewerController] imageView] curImage]] valueForKey:@"completePath"];	
 	NSString *lastPathComponent = [path lastPathComponent];
@@ -176,18 +176,15 @@
 }
 
 - (void)selectCurrentImageDidEnd:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo{
-	//NSLog(@"save current files");
 	if (returnCode == NSOKButton){
 		//delete archive is present
 		NSString *filename = [[[sheet filename] lastPathComponent]  stringByDeletingPathExtension];
-		//NSLog(@"fileName: %@", filename);
-		//short currentAnnotation = annotNone;
+
 		NSString *path = [[[[_filter viewerController] fileList] objectAtIndex:[[[_filter viewerController] imageView] curImage]] valueForKey:@"completePath"];	
 		NSString *lastPathComponent = [path lastPathComponent];
 		NSString *extension = [lastPathComponent pathExtension];
 		//copy original
 		NSString *jpegPath = [[[self folder] stringByAppendingPathComponent:filename] stringByDeletingPathExtension];
-		//NSLog(@"jpegPath; %@", jpegPath);
 		// Need to anonymize DICOMs
 		
 		//create xml image
@@ -228,7 +225,6 @@
 		NSData *jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 		NSString *fullSizePath = [jpegPath stringByAppendingPathExtension:@"jpg"] ;
 		if ([jpegData writeToFile:fullSizePath atomically:YES]) {
-			NSLog(@"Wrote JPEG: %@:", fullSizePath);
 			//add orignal fSize Alt image	
 			[image setOriginalDimensionImagePath:[fullSizePath lastPathComponent]];
 		}
@@ -256,7 +252,6 @@
 		jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 		NSString *tnPath = [[jpegPath stringByAppendingString:@"_tn"] stringByAppendingPathExtension:@"jpg"];
 		if ([jpegData writeToFile:tnPath atomically:YES]) {
-			NSLog(@"Wrote JPeg: %@:", tnPath );
 			//path for the orginal image
 			[image setPath:[tnPath lastPathComponent]];
 		}
@@ -271,7 +266,6 @@
 		jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 		NSString *annotPath = [[jpegPath stringByAppendingString:@"_annot"] stringByAppendingPathExtension:@"jpg"];
 		if ([jpegData writeToFile:annotPath atomically:YES]) {
-			NSLog(@"Wrote JPeg: %@:", annotPath);
 			//add annotated format Alt image	
 			[image setAnnotationImagePath:[annotPath lastPathComponent]];
 		}
@@ -291,13 +285,8 @@
 	}
 }
 
-- (IBAction)createCase:(id)sender{
-	if (_xmlController)
-		[_xmlController release];
-	_xmlController = [[MIRCXMLController alloc] initWithPath:[self folder]];
-	[_xmlController showWindow:nil];
-	
-}
+*/
+
 
 - (IBAction)connectToMIRC:(id)sender{
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:_url]];
@@ -334,19 +323,7 @@
 }
 
 
-- (IBAction)chooseFolder:(id)sender{
-	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setMessage:NSLocalizedString(@"Select folder for Teaching File.", nil)];
-	[openPanel setCanCreateDirectories:YES];
-	[openPanel setCanChooseFiles:NO];
-	[openPanel setCanChooseDirectories:YES];
-	NSString *directory = [_filter teachingFileFolder];
-	if ([openPanel runModalForDirectory:directory file:nil types:nil] == NSOKButton){
-		[_path release];
-		_path = [[openPanel filename] retain];
-		[[NSUserDefaults standardUserDefaults] setObject:_path forKey:@"MIRCFolderPath"];
-	}
-}
+
 
 - (IBAction)createArchive:(id)sender{
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
@@ -403,84 +380,11 @@
 	return _path;
 }
 
-- (NSString *)folder{
-	return [_path stringByAppendingPathComponent:_caseName];
-}
-
-- (int)numberOfRowsInTableView:(NSTableView *)aTable{
-	return [[self directoryContents] count];
-}
-
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex{
-	return [[[self directoryContents] objectAtIndex:rowIndex] lastPathComponent];
-}
-
-- (NSDragOperation)tableView:(NSTableView *)tableView validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)operation{
-		//NSLog(@"Dragging validate");
-    NSPasteboard *pboard;
-    NSDragOperation sourceDragMask;
-    sourceDragMask = [info draggingSourceOperationMask];
-    pboard = [info draggingPasteboard];
-    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
-        if (sourceDragMask & NSDragOperationLink) {
-            return NSDragOperationLink;
-        } else if (sourceDragMask & NSDragOperationCopy) {
-            return NSDragOperationCopy;
-        }
-    }
-    return NSDragOperationNone;
-}
-
-- (BOOL)tableView:(NSTableView *)tableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation {
-	//NSLog(@"perform drop");
-    NSPasteboard *pboard;
-    NSDragOperation sourceDragMask;
-    sourceDragMask = [info draggingSourceOperationMask];
-    pboard = [info draggingPasteboard];
-	if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
-        NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-        // Depending on the dragging source and modifier keys,
-        // the file data may be copied or linked
-        if (sourceDragMask & NSDragOperationLink) {
-            [self addFiles:files];
-        }
-    }
-    return YES;
-}
-
-- (void)addFiles:(NSArray *)files{
-	
-	NSEnumerator *enumerator = [files objectEnumerator];
-	NSString *file;
-	while (file = [enumerator nextObject]){
-		NSString *lastPathComponent = [file lastPathComponent];
-		if ([self folder])
-			[[NSFileManager defaultManager] copyPath:file toPath:[[self folder] stringByAppendingPathComponent:lastPathComponent] handler:nil];		
-	}
-	//[tableView reloadData];
-}
 
 
 
-- (NSArray *)directoryContents{
-	return [[NSFileManager defaultManager] directoryContentsAtPath:[self folder]];
-}
 
--(void)setDirectoryContents:(id)contents{
-}
 
-- (IBAction)getInfo:(id)sender{
-	NSBundle *bundle = [NSBundle bundleWithIdentifier:@"com.macrad.mircplugin"];
-	NSString *path = [bundle pathForResource:@"TheMIRCdocumentSchema" ofType:@"htm"];
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:path]];
-	/*
-	if (!_webController)
-		_webController = [[MIRCWebController alloc] initWithURL:[NSURL fileURLWithPath:path]];
-	else
-		[_webController setURL:[NSURL fileURLWithPath:path]];
-	[_webController showWindow:nil];
-	*/
-}
 
 - (NSArray *)teachingFiles{
 	return _teachingFiles;

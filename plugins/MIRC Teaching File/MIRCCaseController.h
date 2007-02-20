@@ -10,14 +10,16 @@
 
 
 @class MIRCController;
-
+@class MIRCXMLController;
 @interface MIRCCaseController : NSArrayController {
 	IBOutlet NSTableView *tableView;
 	IBOutlet MIRCController *mircController;
+	MIRCXMLController *_mircEditor;
 	NSString *_caseName;
 }
 
 - (IBAction)controlAction: (id) sender;
-
+- (IBAction)create:(id)sender;
+- (void)save;
 
 @end

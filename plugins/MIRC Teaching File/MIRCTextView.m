@@ -11,8 +11,8 @@
 
 @implementation MIRCTextView
 
-- (void)keyDown:(NSEvent *)theEvent{	
-	if ([[theEvent characters] characterAtIndex:0] == NSEnterCharacter)
+- (void)keyDown:(NSEvent *)theEvent{
+	if ([[theEvent characters] length] > 0 && [[theEvent characters] characterAtIndex:0] == NSEnterCharacter)
 		[[self window] selectNextKeyView:nil];
 	else
 		[super keyDown:theEvent];
