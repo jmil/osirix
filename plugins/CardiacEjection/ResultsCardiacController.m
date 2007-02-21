@@ -35,15 +35,12 @@
 	//ID = ([dE objectForKey: @"PatientID"]==nil)?@"":[dE objectForKey: @"PatientID"];
 	ID = [dE valueForKeyPath:@"series.study.patientID"];
 	if (!ID) ID = @"";
-	NSLog(@"ID : %@", ID);
 	//name = ([dE objectForKey: @"PatientsName"]==nil)?@"":[dE objectForKey: @"PatientsName"];
 	name = [dE valueForKeyPath:@"series.study.name"];
 	if (!name) name = @"";
-	NSLog(@"name : %@", name);
 	//birthDate = ([dE objectForKey: @"PatientsBirthDate"]==nil)?@"":[dE objectForKey: @"PatientsBirthDate"];
 	birthDate = [[dE valueForKeyPath:@"series.study.dateOfBirth"] descriptionWithCalendarFormat:[[NSUserDefaults standardUserDefaults] stringForKey: NSShortDateFormatString] timeZone:0L locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 	if (!birthDate) birthDate = @"";
-	NSLog(@"birthDate : %@", birthDate);
 	[patientID setStringValue: ID];
 	[patientName setStringValue: name];
 	[patientBirthDate setStringValue: birthDate];
@@ -86,7 +83,6 @@
 	long i, j, k, l;
 	
 	NSSize cSize = [thumbnails cellSize];
-	
 	// ROIs to display
 	NSMutableArray *ROInamesToDisplay;
 	ROInamesToDisplay = [[NSMutableArray alloc] initWithCapacity:0];
@@ -142,7 +138,7 @@
 		//[thumbnails removeRow:0];
 	}
 	[thumbnails sizeToCells];
-
+	
 	for( i = 0 ; i < [roiArray count]; i++)
 	{	
 		BOOL displayROI = FALSE;

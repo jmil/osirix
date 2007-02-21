@@ -10,11 +10,26 @@
 
 @implementation ZoomMatrix
 
+- (id) init {
+	if (![super init]) return nil;
+	
+	images = [[NSMutableArray alloc] initWithCapacity:0];
+	
+	return self;
+}
+
+
+- (void)dealloc
+{
+	if(images) [images release];
+	[super dealloc];
+}
+
 - (void)drawRect:(NSRect)aRect
 {
 	NSEnumerator *e = [[self cells] objectEnumerator];
 	NSEnumerator *eIm = [images objectEnumerator];
-	id cell, im;
+	id cell, previousCell=nil, im;
 	NSSize sz, szIm, newSz;
 	float factH, factV, minFact;
 	while ( cell = [e nextObject])
@@ -22,11 +37,15 @@
 		im = [eIm nextObject];
 		sz = [self cellSize];
 		szIm = [im size];
-		
+		if(([im size].width<=0 || [im size].height<=0) && previousCell)
+			szIm = [[previousCell image] size];
+		previousCell = cell;
+	
 		factH = (float)sz.width/(float)szIm.width;
 		factV = (float)sz.height/(float)szIm.height;
 		
 		minFact = (factH<factV)?factH:factV;
+		
 		//minFact = (minFact<1)?1:minFact;
 		int row = 0;
 		int col = 0;
@@ -39,14 +58,16 @@
 				NSImage * img = [[NSImage alloc] initWithSize: newSz];
 				[im setScalesWhenResized:YES];
 				
-				[img lockFocus];
-				[NSGraphicsContext saveGraphicsState];
-				[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-				[im drawInRect:NSMakeRect(0.0,0.0,newSz.width,newSz.height) fromRect:NSMakeRect(0.0,0.0, szIm.width, szIm.height) operation:NSCompositeCopy fraction:1.0];
-				[NSGraphicsContext restoreGraphicsState];
-				[img unlockFocus];
-				
-				[cell setImage: img];
+				if(newSz.width>0 && newSz.height>0)
+				{
+					[img lockFocus];
+					[NSGraphicsContext saveGraphicsState];
+					[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+					[im drawInRect:NSMakeRect(0.0,0.0,newSz.width,newSz.height) fromRect:NSMakeRect(0.0,0.0, szIm.width, szIm.height) operation:NSCompositeCopy fraction:1.0];
+					[NSGraphicsContext restoreGraphicsState];
+					[img unlockFocus];
+					[cell setImage: img];
+				}
 			}
 		}
 		else if (col==2)
@@ -54,10 +75,13 @@
 			NSImage *image = [[NSImage alloc] initWithSize: newSz];
 			[image setFlipped:YES];
 			[image setScalesWhenResized:YES];
-			[image lockFocus];
-			[[NSColor whiteColor] set];
-			NSRectFill( NSMakeRect( 0, 0, [image size].width, [image size].height ));
-			[image unlockFocus];
+			if(newSz.width>0 && newSz.height>0)
+			{
+				[image lockFocus];
+				[[NSColor whiteColor] set];
+				NSRectFill( NSMakeRect( 0, 0, [image size].width, [image size].height ));
+				[image unlockFocus];
+			}
 			NSMutableArray * rois;
 			
 			if(row==0)
@@ -120,6 +144,7 @@
 			[self drawROI: [rois objectAtIndex:0]: (NSImage*) image: (float) scale: (NSPoint) cm: (float) angle[row]];
 			[self drawROI: [rois objectAtIndex:1]: (NSImage*) image: (float) scale: (NSPoint) cm: (float) angle[row]];
 			[cell setImage: image];
+			previousCell = nil;
 		}
 	}
 	[super drawRect:(NSRect)aRect];
@@ -161,13 +186,15 @@
 
 -(void) copyImages
 {
-	images = [[NSMutableArray alloc] initWithCapacity:[[self cells] count]];
+//	images = [[NSMutableArray alloc] initWithCapacity:[[self cells] count]];
 
 	NSEnumerator *e = [[self cells] objectEnumerator];
 	id cell;
 	while ( cell = [e nextObject])
 	{	
-			NSImage * img = [[NSImage alloc] initWithSize: [[cell image] size]];
+		NSImage * img = [[NSImage alloc] initWithSize: [[cell image] size]];
+		if([[cell image] size].width>0 && [[cell image] size].height>0)
+		{
 			[img lockFocus];
 			[NSGraphicsContext saveGraphicsState];
 			[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
@@ -175,6 +202,7 @@
 			[NSGraphicsContext restoreGraphicsState];
 			[img unlockFocus];
 			[images addObject: img];
+		}
 	}
 }
 
@@ -235,6 +263,8 @@
 	// point is moved
 	startingPoint.x = x1;
 	startingPoint.y = y1;
+
+	if([image size].width<=0 || [image size].height<=0) return;
 	
 	[image lockFocus];
 	// path

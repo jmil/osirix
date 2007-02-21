@@ -142,6 +142,7 @@ static double cPipi	= 3.141592653589793238;
 
 	// Get an array with ALL displayed 2D Viewer Windows
 	viewersArray = [self viewerControllersList];
+
 	for( i = 0 ; i < [viewersArray count] ; i++)
 	{
 		// All DCMPix contained in the current series
@@ -322,11 +323,12 @@ static double cPipi	= 3.141592653589793238;
 					[roisArray addObject:roi]; // adding current ROI to list
 					// image
 					short curIndex = [[[viewersArray objectAtIndex: i] imageView] curImage]; // index of current image displayed on DCMView
-					[[[viewersArray objectAtIndex: i] imageView] setIndex :j];
+					[[[viewersArray objectAtIndex: i] imageView] setIndex:(short)j];
+					[[[viewersArray objectAtIndex: i] imageView] display];
 					NSImage * imm = [[[viewersArray objectAtIndex: i] imageView] nsimage :NO];
-					//[imm setBackgroundColor:[NSColor greenColor]];
 					[imagesArray addObject:imm]; // adding image where the ROI is
-					[[[viewersArray objectAtIndex: i] imageView] setIndex :curIndex];
+					[[[viewersArray objectAtIndex: i] imageView] setIndex:curIndex];
+					[[[viewersArray objectAtIndex: i] imageView] display];
 					// scale
 					scalesArray[index] = [[[viewersArray objectAtIndex: i] imageView] scaleValue];
 					// rotation
@@ -341,11 +343,9 @@ static double cPipi	= 3.141592653589793238;
 	}
 
 	if( [self checkData] == NO) return 0;
-
 	//Now create our results window
 	ResultsCardiacController* resultsWin = [[ResultsCardiacController alloc] init];
 	[resultsWin setDICOMElements: dicomElements];
-
 
 	switch( fMethod)
 	{
