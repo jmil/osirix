@@ -44,10 +44,24 @@
 			[_teachingFile setValue:[currentStudy yearOldAcquisition] forKey:@"age"];
 		if (![_teachingFile valueForKey:@"sex"])
 			[_teachingFile setValue:[currentStudy valueForKey:@"patientSex"] forKey:@"sex"];
+		
+		if ([_teachingFile valueForKey:@"discussionMovie"]) {
+			NSError *error;
+			_discussionMovie = [[QTMovie movieWithData:[_teachingFile valueForKey:@"discussionMovie"] error:&error] retain];
+			[discussionMovieView setMovie:_discussionMovie];
+		}
+		if ([_teachingFile valueForKey:@"historyMovie"]) {
+			NSError *error;
+			_historyMovie = [[QTMovie movieWithData:[_teachingFile valueForKey:@"historyMovie"] error:&error] retain];
+			[historyMovieView setMovie:_historyMovie];
+		}
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newMovie:) name:@"MIRCNewMovie" object:nil];
 	}
 	return self;
 }
 
+
+#pragma mark Teaching File
 - (id)teachingFile{
 	return _teachingFile;
 }
@@ -56,6 +70,7 @@
 	_teachingFile = teachingFile;
 }
 
+#pragma mark Author
 - (id)createAuthor{
 	ABPerson *me = [[ABAddressBook sharedAddressBook] me];
 	id  author =  [NSEntityDescription insertNewObjectForEntityForName:@"author"  inManagedObjectContext:_managedObjectContext];
@@ -73,11 +88,80 @@
 
 - (void)windowDidLoad{
 	NSLog (@"MIRC XML WINDOW DID LOAD");
+	//[authorController setManagedObjectContext:[self managedObjectContext]];
 }
 
 - (NSManagedObjectContext *)managedObjectContext{
 	return _managedObjectContext;
 }
+
+
+#pragma mark Movies
+- (QTMovie *)historyMovie{
+	return _historyMovie;
+}
+
+- (void)setHistoryMovie:(QTMovie *)movie{
+	[_historyMovie release];
+	_historyMovie = [movie retain];
+	[_teachingFile setValue:[_historyMovie movieFormatRepresentation] forKey:@"historyMovie"];
+	[historyMovieView setMovie:_historyMovie];
+}
+
+- (QTMovie *)discussionMovie{
+	return _discussionMovie;
+}
+
+- (void)setDiscussionMovie:(QTMovie *)movie{
+	[_discussionMovie release];
+	_discussionMovie = [movie retain];
+	[_teachingFile setValue:[_discussionMovie movieFormatRepresentation] forKey:@"discussionMovie"];
+	[discussionMovieView setMovie:_discussionMovie];
+}
+
+ - (void)newMovie:(NSNotification *)note{
+	NSString *path = [[note userInfo] objectForKey:@"moviePath"];
+	QTMovie *movie = nil;
+	if ([QTMovie canInitWithFile:path])
+		movie = [QTMovie movieWithFile:path error:nil];
+	if ([[path lastPathComponent] isEqualToString:@"history.mov"]) {
+		[self setHistoryMovie:movie];
+	}
+	else if ([[path lastPathComponent] isEqualToString:@"discussion.mov"]) 
+		[self setDiscussionMovie:movie];
+	[[NSFileManager defaultManager] removeFileAtPath:(NSString *)path handler:nil];
+ }
+ 
+ - (IBAction)captureHistory:(id)sender{
+	NSString *moviePath = [@"/tmp" stringByAppendingPathComponent:@"history.mov"];
+	if (whackedController)
+		[whackedController setPath:moviePath];
+	else
+		whackedController = [[WhackedTVController alloc] initWithPath:moviePath];
+	//[NSApp beginSheet:[whackedController window] modalForWindow:[self window] modalDelegate:self  didEndSelector:@selector(sheetDidEnd: returnCode: contextInfo:) contextInfo:nil];
+	[whackedController showWindow:self];
+}
+
+- (IBAction)captureDiscussion:(id)sender{
+	NSString *moviePath = [@"/tmp"  stringByAppendingPathComponent:@"discussion.mov"];
+	if (whackedController)
+		[whackedController setPath:moviePath];
+	else
+		whackedController = [[WhackedTVController alloc] initWithPath:moviePath];
+	//[NSApp beginSheet:[whackedController window] modalForWindow:[self window] modalDelegate:self  didEndSelector:@selector(sheetDidEnd: returnCode: contextInfo:) contextInfo:nil];
+	[whackedController showWindow:self];
+}
+
+
+
+
+
+- (void)dealloc {
+	[_historyMovie release];
+	[_discussionMovie release];
+	[super dealloc];
+}
+
 
 
 
@@ -155,27 +239,7 @@
 }
 
 
-- (void)windowDidLoad{
-	//NSLog (@"MIRC XML WINDOW DID LOAD");
-	[historyMovieView setMovie:_historyMovie];
-	//NSArray *authors = [[self rootElement] elementsForName:@"author"];
-	//[authorController setContent:authors];
 
-
-}
-
-
-- (void)dealloc{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[questionController release];
-	[self saveWithAlert:NO];
-	[imageController release];
-	[whackedController release];
-	[_xmlDocument release];
-	[_path release];
-	[_images release];
-	[super dealloc];
-}
 
 - (NSXMLDocument *)xmlDocument{
 	return _xmlDocument;
@@ -971,25 +1035,7 @@
 	//[self setQuestions:[self questions]];
 }
 
-- (IBAction)captureHistory:(id)sender{
-	NSString *moviePath = [_path stringByAppendingPathComponent:@"history.mov"];
-	if (whackedController)
-		[whackedController setPath:moviePath];
-	else
-		whackedController = [[WhackedTVController alloc] initWithPath:moviePath];
-	//[NSApp beginSheet:[whackedController window] modalForWindow:[self window] modalDelegate:self  didEndSelector:@selector(sheetDidEnd: returnCode: contextInfo:) contextInfo:nil];
-	[whackedController showWindow:self];
-}
 
-- (IBAction)captureDiscussion:(id)sender{
-	NSString *moviePath = [_path stringByAppendingPathComponent:@"discussion.mov"];
-	if (whackedController)
-		[whackedController setPath:moviePath];
-	else
-		whackedController = [[WhackedTVController alloc] initWithPath:moviePath];
-	//[NSApp beginSheet:[whackedController window] modalForWindow:[self window] modalDelegate:self  didEndSelector:@selector(sheetDidEnd: returnCode: contextInfo:) contextInfo:nil];
-	[whackedController showWindow:self];
-}
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo{
 	[whackedController release];

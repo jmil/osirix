@@ -73,7 +73,6 @@
 //	NSManagedObjectModel *model = [self managedObjectModel];
 	NSManagedObjectContext *context = [self managedObjectContext];
 	NSError *error = nil;
-			
 	[context save: &error];
 	if (error)
 	{
@@ -112,8 +111,8 @@
 	if( [_teachingFiles count]) {
 		NSEnumerator *enumerator = [_teachingFiles objectEnumerator];
 		id tf;
-		while (tf = [enumerator nextObject])
-			NSLog(@"images %@", [tf valueForKey:@"images"]);
+		while (tf = [enumerator nextObject]) {}
+			//NSLog(@"images %@", [tf valueForKey:@"images"]);
 		
 	}
 	

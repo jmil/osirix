@@ -10,7 +10,10 @@
 
 
 @interface MIRCAnswerArrayController : NSArrayController {
-
+	IBOutlet id _controller;
 }
+
+- (IBAction)answerAction:(id)sender;
+- (IBAction)modifyAnswer:(id)sender;
 
 @end

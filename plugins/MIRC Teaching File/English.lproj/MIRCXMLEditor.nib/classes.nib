@@ -9,7 +9,6 @@
         {
             CLASS = MIRCAuthorController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {tableView = id; }; 
             SUPERCLASS = NSArrayController; 
         }, 
         {CLASS = MIRCTextView; LANGUAGE = ObjC; SUPERCLASS = NSTextView; }, 
@@ -59,6 +58,13 @@
             CLASS = QTMovieView; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSView; 
+        }, 
+        {
+            ACTIONS = {modifyQuestion = id; quizAction = id; }; 
+            CLASS = QuestionArrayController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_controller" = id; "_window" = NSWindow; }; 
+            SUPERCLASS = NSArrayController; 
         }
     ); 
     IBVersion = 1; 

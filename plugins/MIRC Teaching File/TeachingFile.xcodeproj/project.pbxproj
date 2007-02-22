@@ -84,6 +84,8 @@
 		BF47A81008C407D600D36F4F /* TheMIRCdocumentSchema.htm in Resources */ = {isa = PBXBuildFile; fileRef = BF47A80F08C407D600D36F4F /* TheMIRCdocumentSchema.htm */; };
 		BF4B47540B83739D0096D325 /* TeachingFile.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */; };
 		BF6AB8D008C2B00800B4D496 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6AB8CF08C2B00800B4D496 /* QTKit.framework */; };
+		BF6DB1A40B8E4B5900DDA353 /* QuestionArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = BF6DB1A20B8E4B5900DDA353 /* QuestionArrayController.h */; };
+		BF6DB1A50B8E4B5900DDA353 /* QuestionArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF6DB1A30B8E4B5900DDA353 /* QuestionArrayController.m */; };
 		BFA289730B850C9F00E5991A /* WindowLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BFA289720B850C9F00E5991A /* WindowLayoutManager.h */; };
 		BFA2899A0B85125200E5991A /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = BFA289990B85125200E5991A /* DCMView.h */; };
 		BFB1E3C108BD673300805411 /* MIRCImage.h in Headers */ = {isa = PBXBuildFile; fileRef = BFB1E3BF08BD673300805411 /* MIRCImage.h */; };
@@ -198,6 +200,8 @@
 		BF47A80F08C407D600D36F4F /* TheMIRCdocumentSchema.htm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; path = TheMIRCdocumentSchema.htm; sourceTree = "<group>"; };
 		BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = TeachingFile.xcdatamodel; sourceTree = "<group>"; };
 		BF6AB8CF08C2B00800B4D496 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		BF6DB1A20B8E4B5900DDA353 /* QuestionArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionArrayController.h; sourceTree = "<group>"; };
+		BF6DB1A30B8E4B5900DDA353 /* QuestionArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionArrayController.m; sourceTree = "<group>"; };
 		BFA289720B850C9F00E5991A /* WindowLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = WindowLayoutManager.h; path = ../../osirix/WindowLayoutManager.h; sourceTree = SOURCE_ROOT; };
 		BFA289990B85125200E5991A /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
 		BFB1E3BF08BD673300805411 /* MIRCImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCImage.h; sourceTree = "<group>"; };
@@ -428,10 +432,6 @@
 				7E28F10B08AD14FF00C8E99F /* MIRCFileTableView.m */,
 				BFFC059508AEE5E500804446 /* MIRCThumbnail.h */,
 				BFFC059608AEE5E500804446 /* MIRCThumbnail.m */,
-				BFFF310A08B828A7008D1E82 /* MIRCQuestionWindowController.h */,
-				BFFF310B08B828A7008D1E82 /* MIRCQuestionWindowController.m */,
-				BFFF311008B828BF008D1E82 /* MIRCAnswerArrayController.h */,
-				BFFF311108B828BF008D1E82 /* MIRCAnswerArrayController.m */,
 				BF3E772208BC1B5F004224AA /* MIRCImageCell.h */,
 				BF3E772308BC1B5F004224AA /* MIRCImageCell.m */,
 				BFB1E3D008BD73A200805411 /* MIRCImageWindowController.h */,
@@ -502,6 +502,12 @@
 				BFE9EF6208AAF91200D2BF08 /* MIRCAuthorController.m */,
 				BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */,
 				BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */,
+				BF6DB1A20B8E4B5900DDA353 /* QuestionArrayController.h */,
+				BF6DB1A30B8E4B5900DDA353 /* QuestionArrayController.m */,
+				BFFF310A08B828A7008D1E82 /* MIRCQuestionWindowController.h */,
+				BFFF310B08B828A7008D1E82 /* MIRCQuestionWindowController.m */,
+				BFFF311008B828BF008D1E82 /* MIRCAnswerArrayController.h */,
+				BFFF311108B828BF008D1E82 /* MIRCAnswerArrayController.m */,
 			);
 			name = "XML Creation";
 			sourceTree = "<group>";
@@ -561,6 +567,7 @@
 				BFF57D630B83ADD2008B4FF2 /* AccessoryFileArrayController.h in Headers */,
 				BFA289730B850C9F00E5991A /* WindowLayoutManager.h in Headers */,
 				BFA2899A0B85125200E5991A /* DCMView.h in Headers */,
+				BF6DB1A40B8E4B5900DDA353 /* QuestionArrayController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,6 +682,7 @@
 				BF4B47540B83739D0096D325 /* TeachingFile.xcdatamodel in Sources */,
 				BFF57D5E0B83ADBA008B4FF2 /* CaseImageArrayController.m in Sources */,
 				BFF57D640B83ADD2008B4FF2 /* AccessoryFileArrayController.m in Sources */,
+				BF6DB1A50B8E4B5900DDA353 /* QuestionArrayController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

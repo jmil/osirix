@@ -14,37 +14,33 @@
 
 @implementation MIRCQuestionWindowController
 
-- (id) initWithQuestion:(NSXMLElement *)question{
-	if (self = [super initWithWindowNibName:@"MIRCQuestion"])
-		_question = [question retain];
+- (id) initWithQuestion:(id)question managedObjectContext:(NSManagedObjectContext *)context{
+	if (self = [super initWithWindowNibName:@"MIRCQuestion"]) {
+		_question = question;
+		_managedObjectContext = context;
+		//NSLog(@"init Question Window");
+	}
 	return self;
 }
 
 - (void)dealloc{
-	[_question release];
+	_question;
 	[super dealloc];
 }
 
-- (NSXMLElement *)question{
+- (id)question{
 	return _question;
 }
 
 - (NSAttributedString *)questionString{
-	return [[[NSAttributedString alloc] initWithString:[_question questionString]] autorelease];
+	return [[[NSAttributedString alloc] initWithString:[_question valueForKey:@"question"]] autorelease];
 }
 
 - (void)setQuestionString:(NSAttributedString *)questionString{
-	[_question setQuestionString:[questionString string]];
+	[_question setValue:[questionString string] forKey:@"question"];
 }
 
-- (NSArray *)answers{
-	return [_question answers];
-}
 
-- (void)setAnswers:(NSArray *)answers{	
-	[_question setAnswers:answers];
-	
-}
 
 - (IBAction)closeWindow:(id)sender{
 	
@@ -52,54 +48,10 @@
 	[[self window]  orderOut:self];
 }
 
-- (IBAction)answerAction:(id)sender{
-	if ([sender isKindOfClass:[NSSegmentedControl class]]) {
-		switch ([sender selectedSegment]) {
-			case 0: [self addAnswer:sender];
-					break;
-			//case 1: [self modifyAnswer:sender];
-			//		break;
-			case 1: [self deleteAnswer:sender];
-					break;
-		}
-	}
-}
 
-- (IBAction)addAnswer:(id)sender{
-	
-	NSXMLElement *answer = [NSXMLElement answerWithString:@"The Answer is:"];
-	[answer setAnswerIsCorrect:NO];
-	//[_question addChild:answer];
-	NSMutableArray *answers = [NSMutableArray arrayWithArray:[_question answers]];
-	//[answers makeObjectsPerformSelector:@selector(detach)];
-	[answers addObject:answer];
-	[self setAnswers:answers];
-}
 
-- (IBAction)modifyAnswer:(id)sender{
-/*
-	NSArray *selectedObjects = [answerController selectedObjects];
-	if ([selectedObjects count]) {
-		NSXMLElement *answer = [selectedObjects objectAtIndex:0];
-		[[self quiz] addChild:question];
-		if (questionController)
-			[questionController release];
-		questionController = [[MIRCQuestionWindowController alloc] initWithQuestion:question];
-		[NSApp beginSheet:[questionController window] modalForWindow:[self window] modalDelegate:self  didEndSelector:nil contextInfo:nil];
-		//[questionController release];
-	}
-*/
-}
-
-- (IBAction)deleteAnswer:(id)sender{
-
-	NSArray *selectedObjects = [answerController selectedObjects];
-	if ([selectedObjects count]) {
-		NSXMLElement *answer = [selectedObjects objectAtIndex:0];
-		[answer detach];
-	 }
-	[self setAnswers:[self answers]];
-	
+- (NSManagedObjectContext *) managedObjectContext{
+	return _managedObjectContext;
 }
 
 

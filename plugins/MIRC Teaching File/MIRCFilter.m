@@ -41,7 +41,7 @@
 	if (!([defaultManager fileExistsAtPath:directory isDirectory:&isDir] && isDir)){
 		[defaultManager createDirectoryAtPath:directory attributes:nil];
 	}
-	NSLog(@"TF %@", directory);
+	//NSLog(@"TF %@", directory);
 	return directory;
 }
 	

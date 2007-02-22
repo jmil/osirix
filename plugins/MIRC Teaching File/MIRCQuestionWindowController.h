@@ -10,19 +10,17 @@
 
 @class MIRCAnswerArrayController;
 @interface MIRCQuestionWindowController : NSWindowController {
-	NSXMLElement *_question;
+	id _question;
 	IBOutlet MIRCAnswerArrayController *answerController;
+	NSManagedObjectContext *_managedObjectContext;
 }
 
-- (id) initWithQuestion:(NSXMLElement *)question;
-- (NSXMLElement *)question;
-- (NSArray *)answers;
-- (void)setAnswers:(NSArray *)answers;
+- (id) initWithQuestion:(id)question managedObjectContext:(NSManagedObjectContext *)context;
+- (id)question;
 - (IBAction)closeWindow:(id)sender;
-- (IBAction)answerAction:(id)sender;
-- (IBAction)addAnswer:(id)sender;
-- (IBAction)modifyAnswer:(id)sender;
-- (IBAction)deleteAnswer:(id)sender;
+
+
+- (NSManagedObjectContext *) managedObjectContext;
 
 
 

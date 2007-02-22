@@ -2,8 +2,10 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
+            ACTIONS = {answerAction = id; }; 
             CLASS = MIRCAnswerArrayController; 
             LANGUAGE = ObjC; 
+            OUTLETS = {"_controller" = id; }; 
             SUPERCLASS = NSArrayController; 
         }, 
         {
