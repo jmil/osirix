@@ -24,7 +24,6 @@
 }
 	
 - (void)setPath:(NSString *)path{
-	NSLog(@"setPath: %@", path);
 	NSXMLNode *attr = [self attributeForName:@"src"];
 	if (attr)
 		[attr setStringValue:path];

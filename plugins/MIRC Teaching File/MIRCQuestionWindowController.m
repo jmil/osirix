@@ -18,15 +18,11 @@
 	if (self = [super initWithWindowNibName:@"MIRCQuestion"]) {
 		_question = question;
 		_managedObjectContext = context;
-		//NSLog(@"init Question Window");
 	}
 	return self;
 }
 
-- (void)dealloc{
-	_question;
-	[super dealloc];
-}
+
 
 - (id)question{
 	return _question;

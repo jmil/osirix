@@ -123,12 +123,12 @@
 }
 
 - (void)windowWillClose:(NSNotification *)note{
-	NSLog(@"window Will Close");
+
 	[self save];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification{
-	NSLog(@"terminate MIRC");
+
 	[self save];
 }
 
@@ -307,7 +307,7 @@
 }
 
 - (NSString *)url{
-//	NSLog(@"url: %@", _url);
+
 	return _url;
 }
 
@@ -317,7 +317,7 @@
 		_url = [url retain];
 	else
 		_url = [[NSString stringWithFormat:@"http://%@", url] retain];
-//	NSLog(@"set url: %@", _url);
+
 	[[NSUserDefaults standardUserDefaults] setObject:_url forKey:@"MIRCurl"];
 }
 
@@ -365,7 +365,7 @@
 }
 
 - (void) setCaseName: (NSString *)caseName{
-//	NSLog(@"setCaseName: %@", caseName);
+
 	[_caseName release];
 	_caseName = [caseName retain];
 	[tableView reloadData];

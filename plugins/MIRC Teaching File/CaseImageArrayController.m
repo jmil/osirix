@@ -24,7 +24,7 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)operation
 {
     // Add code here to validate the drop
-    NSLog(@"validate Drop");
+  
 	
     return NSDragOperationEvery;    
 }
@@ -39,14 +39,14 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	id newImage = [self newObject];
 
 	// JPEG Image
-	NSLog(@"Add originalSize");
+
 	NSImage *originalSizeImage = [vi nsimage:YES];
 	NSBitmapImageRep *rep = (NSBitmapImageRep *)[originalSizeImage bestRepresentationForDevice:nil];
 	NSData *jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 	
 	[newImage setValue:jpegData forKey: @"originalDimension"];
 	[newImage setValue:@"jpg" forKey:@"originalDimensionExtension"];
-	NSLog(@"Add Thumbnail");
+
 	//NSImage *thumbnail;
 	NSData *tiff = [originalSizeImage TIFFRepresentation];
 	// Convert to a CIImage
@@ -71,14 +71,14 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	rep = (NSBitmapImageRep *)[tn bestRepresentationForDevice:nil];
 	jpegData = [rep representationUsingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
 	[newImage setValue:jpegData forKey: @"thumbnail"];
-	NSLog(@"original Format");
+
 	// Original Format
 	// need to anonymize
 	NSString *originalImagePath = [[vi imageObj] valueForKey:@"completePath"];	
 	NSData *originalFormatData = [NSData dataWithContentsOfFile:originalImagePath];
 	[newImage setValue:originalFormatData forKey: @"originalFormat"];
 	[newImage setValue:[originalImagePath pathExtension] forKey:@"originalFormatExtension"];
-	NSLog(@"Annotation");
+
 	//Annotation
 	NSImage *annotationImage = [vi nsimage:NO];
 	rep = [annotationImage bestRepresentationForDevice:nil];

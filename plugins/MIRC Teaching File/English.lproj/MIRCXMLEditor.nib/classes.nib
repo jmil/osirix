@@ -27,7 +27,6 @@
                 authorController = MIRCAuthorController; 
                 discussionMovieView = id; 
                 historyMovieView = QTMovieView; 
-                imageArrayController = id; 
                 questionArrayController = NSArrayController; 
             }; 
             SUPERCLASS = NSWindowController; 

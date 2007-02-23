@@ -23,7 +23,6 @@
 
 - (IBAction)controlAction: (id) sender{	
 	if ([sender selectedSegment] == 0) {
-		NSLog(@"add");
 		[self add:self];
 	}
 	else if ([sender selectedSegment] == 1) {
@@ -33,7 +32,6 @@
 
 
 - (void)save{
-	NSLog(@"save Case");
 	[mircController save];
 }
 

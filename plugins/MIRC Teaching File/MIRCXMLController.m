@@ -70,6 +70,10 @@
 	_teachingFile = teachingFile;
 }
 
+- (id)authors{
+	return [_teachingFile valueForKey:@"authors"];
+}
+
 #pragma mark Author
 - (id)createAuthor{
 	ABPerson *me = [[ABAddressBook sharedAddressBook] me];
@@ -87,8 +91,7 @@
 }
 
 - (void)windowDidLoad{
-	NSLog (@"MIRC XML WINDOW DID LOAD");
-	//[authorController setManagedObjectContext:[self managedObjectContext]];
+
 }
 
 - (NSManagedObjectContext *)managedObjectContext{

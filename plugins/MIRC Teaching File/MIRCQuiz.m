@@ -16,17 +16,14 @@
 }
 
 - (NSArray *)questions{
-	NSLog(@"Questions");
 	return [self elementsForName:@"question"];
 }
 
 - (void)addQuestion:(NSXMLElement *)question{
-	NSLog(@"add Questions: %@", [question description]);
 	[self addChild:question];
 }
 
 - (void)setQuestions:(NSArray *)questions{
-	NSLog(@"set Questions: %@", [questions description]);
 	NSArray *children = [self children];
 	NSEnumerator *enumerator = [[self questions] objectEnumerator];
 	NSXMLElement *question;

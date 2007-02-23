@@ -21,7 +21,7 @@
 	
 	if ([sender isKindOfClass:[NSSegmentedControl class]]) {
 		switch ([sender selectedSegment]) {
-			case 0: [self add:sender];
+			case 0: [self addQuestion:sender];
 					break;
 			case 1: [self modifyQuestion:sender];
 					break;
@@ -34,14 +34,12 @@
 #pragma mark Questions
 - (IBAction)addQuestion:(id)sender{
 	id question = [self newObject];
-	//[question setValue:[_controller teachingFile]  forKey:@"teachingFile"];
 	[self addObject:question];
-	/*
 	if (_questionWindowController)
 		[_questionWindowController release];
 	_questionWindowController = [[MIRCQuestionWindowController alloc] initWithQuestion:question managedObjectContext:[self managedObjectContext]];
 	[NSApp beginSheet:[_questionWindowController window] modalForWindow:_window modalDelegate:self  didEndSelector:nil contextInfo:nil];
-	*/
+	
 }
 
 - (IBAction)modifyQuestion:(id)sender{	
