@@ -21,5 +21,6 @@
 - (IBAction)controlAction: (id) sender;
 - (IBAction)create:(id)sender;
 - (void)save;
+- (id)teachingFile;
 
 @end
