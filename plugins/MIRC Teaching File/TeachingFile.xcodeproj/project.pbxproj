@@ -96,12 +96,14 @@
 		BFBFDBC108C5677C0062CE9A /* MIRCXMLEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */; };
 		BFBFDBC208C5677C0062CE9A /* MIRCXMLEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */; };
 		BFBFDBC608C5686C0062CE9A /* MIRCXMLTextEditor.nib in Resources */ = {isa = PBXBuildFile; fileRef = BFBFDBC408C5686C0062CE9A /* MIRCXMLTextEditor.nib */; };
-		BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */; };
-		BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B60B972E7F00FA7ACA /* dicom.jar */; };
-		BFDF59BD0B972E7F00FA7ACA /* fs.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B70B972E7F00FA7ACA /* fs.jar */; };
-		BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B80B972E7F00FA7ACA /* getopt.jar */; };
-		BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B90B972E7F00FA7ACA /* log4j.jar */; };
-		BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */; };
+		BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */; };
+		BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59B60B972E7F00FA7ACA /* dicom.jar */; };
+		BFDF59BD0B972E7F00FA7ACA /* fs.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59B70B972E7F00FA7ACA /* fs.jar */; };
+		BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59B80B972E7F00FA7ACA /* getopt.jar */; };
+		BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59B90B972E7F00FA7ACA /* log4j.jar */; };
+		BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Resources */ = {isa = PBXBuildFile; fileRef = BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */; };
+		BFDF59C50B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = BFDF59C30B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.h */; };
+		BFDF59C60B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = BFDF59C40B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.m */; };
 		BFE286C808A1C44E00A6675E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFE286C708A1C44E00A6675E /* QuartzCore.framework */; };
 		BFE9EF5408AAEED700D2BF08 /* MIRCAuthor.h in Headers */ = {isa = PBXBuildFile; fileRef = BFE9EF5208AAEED700D2BF08 /* MIRCAuthor.h */; };
 		BFE9EF5508AAEED700D2BF08 /* MIRCAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */; };
@@ -224,6 +226,8 @@
 		BFDF59B80B972E7F00FA7ACA /* getopt.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = getopt.jar; sourceTree = "<group>"; };
 		BFDF59B90B972E7F00FA7ACA /* log4j.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = log4j.jar; sourceTree = "<group>"; };
 		BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = rsnautil.jar; sourceTree = "<group>"; };
+		BFDF59C30B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataToMIRCXMLConverter.h; sourceTree = "<group>"; };
+		BFDF59C40B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataToMIRCXMLConverter.m; sourceTree = "<group>"; };
 		BFE286C708A1C44E00A6675E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		BFE9EF5208AAEED700D2BF08 /* MIRCAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCAuthor.h; sourceTree = "<group>"; };
 		BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCAuthor.m; sourceTree = "<group>"; };
@@ -262,12 +266,6 @@
 				BF6AB8D008C2B00800B4D496 /* QTKit.framework in Frameworks */,
 				7E72147808C4EA4100C3883D /* AddressBook.framework in Frameworks */,
 				7E91D79508CE0E8000B94DD2 /* OsiriX.framework in Frameworks */,
-				BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Frameworks */,
-				BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Frameworks */,
-				BFDF59BD0B972E7F00FA7ACA /* fs.jar in Frameworks */,
-				BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Frameworks */,
-				BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Frameworks */,
-				BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +530,8 @@
 				BFFF310B08B828A7008D1E82 /* MIRCQuestionWindowController.m */,
 				BFFF311008B828BF008D1E82 /* MIRCAnswerArrayController.h */,
 				BFFF311108B828BF008D1E82 /* MIRCAnswerArrayController.m */,
+				BFDF59C30B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.h */,
+				BFDF59C40B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.m */,
 			);
 			name = "XML Creation";
 			sourceTree = "<group>";
@@ -592,6 +592,7 @@
 				BFA289730B850C9F00E5991A /* WindowLayoutManager.h in Headers */,
 				BFA2899A0B85125200E5991A /* DCMView.h in Headers */,
 				BF6DB1A40B8E4B5900DDA353 /* QuestionArrayController.h in Headers */,
+				BFDF59C50B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +639,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Resources */,
+				BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Resources */,
+				BFDF59BD0B972E7F00FA7ACA /* fs.jar in Resources */,
+				BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Resources */,
+				BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Resources */,
+				BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				AB01B8F3067FA6D000CDDB0F /* MIRC.nib in Resources */,
 				7E2C55DA08AA9CC1005AC3B8 /* MIRCXMLEditor.nib in Resources */,
@@ -707,6 +714,7 @@
 				BFF57D5E0B83ADBA008B4FF2 /* CaseImageArrayController.m in Sources */,
 				BFF57D640B83ADD2008B4FF2 /* AccessoryFileArrayController.m in Sources */,
 				BF6DB1A50B8E4B5900DDA353 /* QuestionArrayController.m in Sources */,
+				BFDF59C60B972F1400FA7ACA /* CoreDataToMIRCXMLConverter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
