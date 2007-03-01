@@ -96,6 +96,12 @@
 		BFBFDBC108C5677C0062CE9A /* MIRCXMLEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */; };
 		BFBFDBC208C5677C0062CE9A /* MIRCXMLEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */; };
 		BFBFDBC608C5686C0062CE9A /* MIRCXMLTextEditor.nib in Resources */ = {isa = PBXBuildFile; fileRef = BFBFDBC408C5686C0062CE9A /* MIRCXMLTextEditor.nib */; };
+		BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */; };
+		BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B60B972E7F00FA7ACA /* dicom.jar */; };
+		BFDF59BD0B972E7F00FA7ACA /* fs.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B70B972E7F00FA7ACA /* fs.jar */; };
+		BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B80B972E7F00FA7ACA /* getopt.jar */; };
+		BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59B90B972E7F00FA7ACA /* log4j.jar */; };
+		BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */; };
 		BFE286C808A1C44E00A6675E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFE286C708A1C44E00A6675E /* QuartzCore.framework */; };
 		BFE9EF5408AAEED700D2BF08 /* MIRCAuthor.h in Headers */ = {isa = PBXBuildFile; fileRef = BFE9EF5208AAEED700D2BF08 /* MIRCAuthor.h */; };
 		BFE9EF5508AAEED700D2BF08 /* MIRCAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */; };
@@ -212,6 +218,12 @@
 		BFBFDBBF08C5677C0062CE9A /* MIRCXMLEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCXMLEditor.h; sourceTree = "<group>"; };
 		BFBFDBC008C5677C0062CE9A /* MIRCXMLEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCXMLEditor.m; sourceTree = "<group>"; };
 		BFBFDBC508C5686C0062CE9A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MIRCXMLTextEditor.nib; sourceTree = "<group>"; };
+		BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = dcm4che.jar; sourceTree = "<group>"; };
+		BFDF59B60B972E7F00FA7ACA /* dicom.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = dicom.jar; sourceTree = "<group>"; };
+		BFDF59B70B972E7F00FA7ACA /* fs.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = fs.jar; sourceTree = "<group>"; };
+		BFDF59B80B972E7F00FA7ACA /* getopt.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = getopt.jar; sourceTree = "<group>"; };
+		BFDF59B90B972E7F00FA7ACA /* log4j.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = log4j.jar; sourceTree = "<group>"; };
+		BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = rsnautil.jar; sourceTree = "<group>"; };
 		BFE286C708A1C44E00A6675E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		BFE9EF5208AAEED700D2BF08 /* MIRCAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCAuthor.h; sourceTree = "<group>"; };
 		BFE9EF5308AAEED700D2BF08 /* MIRCAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCAuthor.m; sourceTree = "<group>"; };
@@ -250,6 +262,12 @@
 				BF6AB8D008C2B00800B4D496 /* QTKit.framework in Frameworks */,
 				7E72147808C4EA4100C3883D /* AddressBook.framework in Frameworks */,
 				7E91D79508CE0E8000B94DD2 /* OsiriX.framework in Frameworks */,
+				BFDF59BB0B972E7F00FA7ACA /* dcm4che.jar in Frameworks */,
+				BFDF59BC0B972E7F00FA7ACA /* dicom.jar in Frameworks */,
+				BFDF59BD0B972E7F00FA7ACA /* fs.jar in Frameworks */,
+				BFDF59BE0B972E7F00FA7ACA /* getopt.jar in Frameworks */,
+				BFDF59BF0B972E7F00FA7ACA /* log4j.jar in Frameworks */,
+				BFDF59C00B972E7F00FA7ACA /* rsnautil.jar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +299,12 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */,
+				BFDF59B60B972E7F00FA7ACA /* dicom.jar */,
+				BFDF59B70B972E7F00FA7ACA /* fs.jar */,
+				BFDF59B80B972E7F00FA7ACA /* getopt.jar */,
+				BFDF59B90B972E7F00FA7ACA /* log4j.jar */,
+				BFDF59BA0B972E7F00FA7ACA /* rsnautil.jar */,
 				7E7AD80008C50FE300592302 /* MIRC Video Setting.data */,
 				BF47A80F08C407D600D36F4F /* TheMIRCdocumentSchema.htm */,
 				7E5427D908C1020800DDE31C /* MIRCVideoRecord.nib */,
