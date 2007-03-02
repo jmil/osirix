@@ -12,6 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ViewerController.h"
 #import "WindowLayoutManager.h"
+#import <OsiriX/DCM.h>
 NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 
 
@@ -75,9 +76,37 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	// Original Format
 	// need to anonymize
 	NSString *originalImagePath = [[vi imageObj] valueForKey:@"completePath"];	
-	NSData *originalFormatData = [NSData dataWithContentsOfFile:originalImagePath];
-	[newImage setValue:originalFormatData forKey: @"originalFormat"];
 	[newImage setValue:[originalImagePath pathExtension] forKey:@"originalFormatExtension"];
+	if ([[originalImagePath pathExtension] isEqualToString:@"dcm"]) {
+			
+			NSMutableArray *tags = [NSMutableArray array];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"PatientsName"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"PatientsBirthDate"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"InstitutionName"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"StudyDate"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"SeriesDate"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"InstanceDate"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"ContentDate"]]];
+			[tags addObject:[NSArray arrayWithObject:[DCMAttributeTag tagWithName:@"AcquisitionDate"]]];
+			DCMObject *dcmObject = [DCMObject objectWithContentsOfFile:originalImagePath decodingPixelData:NO];
+			NSEnumerator *enumerator = [tags objectEnumerator];
+			DCMAttributeTag *tag;
+			while (tag = [enumerator nextObject])
+				[dcmObject anonyimizeAttributeForTag:(DCMAttributeTag *)tag replacingWith:nil];
+			DCMDataContainer *container = [DCMDataContainer dataContainer];
+			[dcmObject writeToDataContainer:(DCMDataContainer *)container 
+			withTransferSyntax:[DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax]
+			quality:1.0 
+			asDICOM3:YES
+			strippingGroupLengthLength:YES];
+			//[DCMObject anonymizeContentsOfFile:path  tags:(NSArray *)tags  writingToFile:newJpegPath];
+			[newImage setValue:[container dicomData]  forKey: @"originalFormat"];	
+			
+		}
+		else {	
+			NSData *originalFormatData = [NSData dataWithContentsOfFile:originalImagePath];
+			[newImage setValue:originalFormatData forKey: @"originalFormat"];
+		}
 
 	//Annotation
 	NSImage *annotationImage = [vi nsimage:NO];

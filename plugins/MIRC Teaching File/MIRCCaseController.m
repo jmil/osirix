@@ -101,12 +101,13 @@
 	[task release];
 	
 	// send
+	NSString *destination = nil;
 	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 	NSString *dirPath = [bundle resourcePath];
 	task = [[NSTask alloc] init];
 	[task setCurrentDirectoryPath:dirPath];
 	[task setLaunchPath:@"/usr/bin/java/"];
-	args = [NSArray array];
+	args = [NSArray arrayWithObjects:@"-jar", @"fs.jar", @"/tmp/archive.zip", destination, nil];
 	[task setArguments:args];
 	
 	
