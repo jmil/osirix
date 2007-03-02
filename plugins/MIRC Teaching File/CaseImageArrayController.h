@@ -11,11 +11,19 @@
 @class DCMView;
 @interface CaseImageArrayController : NSArrayController {
 	IBOutlet NSTableView *tableView;
+	IBOutlet NSWindow *_window;
+	IBOutlet NSPanel *_imageImportPanel;
+	BOOL _addOrginalFormatImage;
+	BOOL _addAnnotatedImage;
+	BOOL _addOriginalDimensionImage;
+	BOOL _addOriginalDimensionAsMovie;
+	id _imageWaitingForMovie;
 }
 
 - (void)insertImageAtRow:(int)row FromViewer:(DCMView *)vi;
 - (IBAction)selectCurrentImage:(id)sender;
 - (IBAction)addOrDelete:(id)sender;
+- (void)newMovie:(NSNotification *)note;
 
 
 @end

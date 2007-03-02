@@ -32,6 +32,8 @@
 }
 
 
+
+
 - (void)save{
 	[mircController save];
 }
@@ -57,6 +59,7 @@
 	[[xmlDocument XMLData] writeToFile:[tempPath stringByAppendingPathComponent:@"teachingFile.xml"] atomically:YES];
 	[converter release];
 	//Add movies
+	NSLog(@"copy Movies");
 	if ([teachingFile valueForKey:@"historyMovie"])
 		[[teachingFile valueForKey:@"historyMovie"] writeToFile:[tempPath stringByAppendingPathComponent:@"history.mov"] atomically:YES];
 	if ([teachingFile valueForKey:@"historyMovie"])
@@ -65,6 +68,7 @@
 	// Add Images;
 	NSEnumerator *enumerator = [teachingFile valueForKey:@"images"];
 	id image;
+	NSLog(@"copy images");
 	while (image = [enumerator nextObject]) {
 		NSString *index = [[image valueForKey:@"index"] stringValue];
 		[[image valueForKey:@"primary"] writeToFile:
@@ -95,7 +99,7 @@
 	NSMutableArray*args = [NSMutableArray arrayWithObject:path];
 	[args addObjectsFromArray:[[NSFileManager defaultManager] directoryContentsAtPath:tempPath]];
 	[task setArguments:args];
-	//NSLog(@"Create archive args: %@ path: %@", [args description], [self folder]);
+	NSLog(@"Create archive args: %@ path: %@", args, path);
 	[task  launch];
 	[task waitUntilExit];
 	[task release];
@@ -109,6 +113,10 @@
 	[task setLaunchPath:@"/usr/bin/java/"];
 	args = [NSArray arrayWithObjects:@"-jar", @"fs.jar", @"/tmp/archive.zip", destination, nil];
 	[task setArguments:args];
+	NSLog(@"send archive args: %@", args);
+	[task  launch];
+	[task waitUntilExit];
+	[task release];
 	
 	
 }

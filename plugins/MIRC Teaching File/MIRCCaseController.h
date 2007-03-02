@@ -15,7 +15,7 @@
 	IBOutlet NSTableView *tableView;
 	IBOutlet MIRCController *mircController;
 	MIRCXMLController *_mircEditor;
-	NSString *_caseName;
+	NSString *_caseName;	
 }
 
 - (IBAction)controlAction: (id) sender;

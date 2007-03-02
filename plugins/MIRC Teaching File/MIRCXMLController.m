@@ -107,7 +107,7 @@
 - (void)setHistoryMovie:(QTMovie *)movie{
 	[_historyMovie release];
 	_historyMovie = [movie retain];
-	[_teachingFile setValue:[_historyMovie movieFormatRepresentation] forKey:@"historyMovie"];
+	//[_teachingFile setValue:[_historyMovie movieFormatRepresentation] forKey:@"historyMovie"];
 	[historyMovieView setMovie:_historyMovie];
 }
 
@@ -118,7 +118,7 @@
 - (void)setDiscussionMovie:(QTMovie *)movie{
 	[_discussionMovie release];
 	_discussionMovie = [movie retain];
-	[_teachingFile setValue:[_discussionMovie movieFormatRepresentation] forKey:@"discussionMovie"];
+	//[_teachingFile setValue:[_discussionMovie movieFormatRepresentation] forKey:@"discussionMovie"];
 	[discussionMovieView setMovie:_discussionMovie];
 }
 
@@ -129,9 +129,12 @@
 		movie = [QTMovie movieWithFile:path error:nil];
 	if ([[path lastPathComponent] isEqualToString:@"history.mov"]) {
 		[self setHistoryMovie:movie];
+		[_teachingFile setValue:[NSData dataWithContentsOfFile:path] forKey:@"historyMovie"];
 	}
-	else if ([[path lastPathComponent] isEqualToString:@"discussion.mov"]) 
+	else if ([[path lastPathComponent] isEqualToString:@"discussion.mov"]) {
 		[self setDiscussionMovie:movie];
+		[_teachingFile setValue:[NSData dataWithContentsOfFile:path] forKey:@"discussionMovie"];
+	}
 	[[NSFileManager defaultManager] removeFileAtPath:(NSString *)path handler:nil];
  }
  

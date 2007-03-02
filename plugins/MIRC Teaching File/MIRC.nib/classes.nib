@@ -7,10 +7,10 @@
             SUPERCLASS = NSArrayController; 
         }, 
         {
-            ACTIONS = {addOrDelete = id; }; 
+            ACTIONS = {addOrDelete = id; endSheet = id; }; 
             CLASS = CaseImageArrayController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {tableView = NSTableView; }; 
+            OUTLETS = {"_imageImportPanel" = NSPanel; "_window" = id; tableView = NSTableView; }; 
             SUPERCLASS = NSArrayController; 
         }, 
         {
@@ -37,7 +37,6 @@
             }; 
             CLASS = MIRCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {}; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = MIRCFileTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }, 

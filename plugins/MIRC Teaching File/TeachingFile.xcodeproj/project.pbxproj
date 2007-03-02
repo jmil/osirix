@@ -200,6 +200,7 @@
 		ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
 		ABB7633E067FB2A8000912C1 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
+		BF028D780B988F700078CEAC /* qtData.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = qtData.data; sourceTree = "<group>"; };
 		BF215EB308B588FC00A25AE8 /* MIRCAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCAnswer.h; sourceTree = "<group>"; };
 		BF215EB408B588FC00A25AE8 /* MIRCAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIRCAnswer.m; sourceTree = "<group>"; };
 		BF3E771E08BC1B42004224AA /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
@@ -297,6 +298,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BF028D780B988F700078CEAC /* qtData.data */,
 				BFDF59B50B972E7F00FA7ACA /* dcm4che.jar */,
 				BFDF59B60B972E7F00FA7ACA /* dicom.jar */,
 				BFDF59B70B972E7F00FA7ACA /* fs.jar */,
