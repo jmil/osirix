@@ -26,6 +26,7 @@
 	MIRCXMLController *_xmlController;
 	MIRCWebController *_webController;
 	NSArray *_teachingFiles;
+	IBOutlet NSPanel	*_mircSettings;
 	
 	//Core Data
 	NSManagedObjectModel *_managedObjectModel;
@@ -55,5 +56,8 @@
 - (NSManagedObjectModel *)managedObjectModel;
 - (NSManagedObjectContext *)managedObjectContext;
 - (void)save;
+
+- (IBAction)openMIRCSettings:(id)sender;
+- (IBAction)closeMIRCSettings:(id)sender;
 
 @end

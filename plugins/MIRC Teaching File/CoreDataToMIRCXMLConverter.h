@@ -17,7 +17,7 @@
 - (id)initWithTeachingFile:(id)teachingFile;
 - (NSXMLDocument *)xmlDocument;
 - (void)createXMLDocument;
-- (NSXMLNode *)nodeFromXML:(NSData *)xmlData withName:(NSString *)name;
+- (NSXMLNode *)nodeFromXML:(NSString *)xml withName:(NSString *)name;
 - (NSXMLElement *)historySection;
 - (NSXMLElement *)imageSection;
 - (NSXMLElement *)discussionSection;

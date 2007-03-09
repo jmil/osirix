@@ -254,5 +254,13 @@
 	_teachingFiles = [teachingFiles retain];
 }
 
+- (IBAction)openMIRCSettings:(id)sender{
+	[NSApp beginSheet:_mircSettings modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+- (IBAction)closeMIRCSettings:(id)sender{
+	[NSApp endSheet:_mircSettings];
+	[_mircSettings  orderOut:self];
+}
+
 
 @end

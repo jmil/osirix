@@ -20,7 +20,7 @@
             SUPERCLASS = NSObject; 
         }, 
         {
-            ACTIONS = {choose = id; controlAction = id; create = id; }; 
+            ACTIONS = {controlAction = id; create = id; send = id; }; 
             CLASS = MIRCCaseController; 
             LANGUAGE = ObjC; 
             OUTLETS = {mircController = MIRCController; tableView = id; }; 
@@ -29,14 +29,16 @@
         {
             ACTIONS = {
                 chooseFolder = id; 
+                closeMIRCSettings = id; 
                 connectToMIRC = id; 
                 controlAction = id; 
                 createCase = id; 
-                getInfo = id; 
+                openMIRCSettings = id; 
                 selectCurrentImage = id; 
             }; 
             CLASS = MIRCController; 
             LANGUAGE = ObjC; 
+            OUTLETS = {"_mircSettings" = id; }; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = MIRCFileTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }, 

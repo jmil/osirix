@@ -44,6 +44,7 @@
 	NSEnumerator *enumerator = [[_teachingFile valueForKey:@"authors"] objectEnumerator];
 	id author;
 	while (author = [enumerator nextObject]){
+
 		MIRCAuthor *mircAuthor = [MIRCAuthor author];
 		if ([author valueForKey:@"name"])
 			[mircAuthor setAuthorName:[author valueForKey:@"name"]];
@@ -51,12 +52,12 @@
 			[mircAuthor setPhone:[author valueForKey:@"phone"]];
 		if ([author valueForKey:@"email"])
 			[mircAuthor setEmail:[author valueForKey:@"email"]];
-		if ([author valueForKey:@"affiliation"])
-			[mircAuthor setAffiliation:[author valueForKey:@"affiliation"]];
+		if ([author valueForKey:@"affilitation"])
+			[mircAuthor setAffiliation:[author valueForKey:@"affilitation"]];
 		[root addChild:mircAuthor];
 	}
 	// History
-	
+
 	//Abstract
 	if ([_teachingFile  valueForKey:@"abstractText"]) {
 		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:[_teachingFile  valueForKey:@"abstractText"] withName:@"abstract"];
@@ -64,6 +65,7 @@
 	}
 
 	//Alt Abstract
+	
 	if ([_teachingFile  valueForKey:@"altAbstractText"]) {
 		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:[_teachingFile  valueForKey:@"altAbstractText"] withName:@"alternative-abstract"];
 		[root addChild:node];
@@ -74,18 +76,18 @@
 		[root addChild:[NSXMLNode elementWithName:@"keywords" stringValue:[_teachingFile valueForKey:@"keywords"]]];
 	
 	/********** Sections ************/
-	//History;
+	
 	[root addChild:[self historySection]];
 	[root addChild:[self imageSection]];
 	[root addChild:[self discussionSection]];
 	[root addChild:[self quizSection]];
+	
 }
 
-- (NSXMLNode *)nodeFromXML:(NSData *)xmlData withName:(NSString *)name{
+- (NSXMLNode *)nodeFromXML:(NSString*)xml withName:(NSString *)name{
 	NSError *error;
-	NSAttributedString *attrString = [[NSAttributedString alloc] initWithCoder:[NSUnarchiver unarchiveObjectWithData:xmlData]];
-	NSString *xmlString = [NSString stringWithFormat:@"<%@>%@</%@>",name, [attrString string], name];
-	[attrString release];
+
+	NSString *xmlString = [NSString stringWithFormat:@"<%@>%@</%@>",name, xml, name];
 	NSXMLElement *node = [[[NSXMLElement alloc] initWithXMLString:xmlString error:&error] autorelease];
 	if (!error)
 		return node;
@@ -94,22 +96,24 @@
 }
 
 - (NSXMLElement *)historySection{
+
 	NSXMLElement *historySection =  [self sectionWithHeading:@"History"];
 	NS_DURING
-	NSAttributedString *history = [[NSAttributedString alloc] initWithCoder:[NSUnarchiver unarchiveObjectWithData:[_teachingFile valueForKey:@"history"]]];
-	NSString *string = [history string];
+	
+	NSString *history = [_teachingFile valueForKey:@"history"];
+
 	// Add history text.  Need to take into account possible embedded html
-	if ([string hasPrefix:@"<"]) {
+	if ([history hasPrefix:@"<"]) {
 		//should be xml or html"
-		NSLog(@"set history as html: %@", [history string]);
-		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:[_teachingFile valueForKey:@"history"]withName:@"history"];
+
+		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:history withName:@"history"];
 		[self insertNode:(NSXMLElement *)node  intoNode:historySection atIndex:0];
 	}
 	// probably no HTML. treat it as plain text.
 	else  if (history){
-		NSLog(@"set history: %@", [history string]);
+
 		NSXMLElement *node = nil;
-		NSXMLNode *textNode = [NSXMLNode textWithStringValue:[history string]];
+		NSXMLNode *textNode = [NSXMLNode textWithStringValue:history];
 		node = [NSXMLNode elementWithName:@"history"];
 		[self insertNode:(NSXMLElement *)node  intoNode:historySection atIndex:0];
 		[node setChildren:[NSArray arrayWithObject:textNode]];
@@ -140,23 +144,22 @@
 	NS_DURING
 	//diagnosis
 	NSXMLNode *node = [NSXMLNode elementWithName:@"diagnosis" stringValue:[_teachingFile valueForKey:@"diagnosis"]];
-	[self insertNode:(NSXMLElement *)node  intoNode:[self discussionSection] atIndex:0];
+	[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:0];
 	
 	//findings
-	NSAttributedString *findings = [[NSAttributedString alloc] initWithCoder:[NSUnarchiver unarchiveObjectWithData:[_teachingFile valueForKey:@"findings"]]];
-	NSString *string = [findings string];
+	NSString *findings = [_teachingFile valueForKey:@"findings"];
 	// Add findings text.  Need to take into account possible embedded html
-	if ([string hasPrefix:@"<"]) {
+	if ([findings hasPrefix:@"<"]) {
 		//should be xml or html"
-		NSLog(@"set history as html: %@", [findings string]);
-		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:[_teachingFile valueForKey:@"findings"] withName:@"findings"];
+
+		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:findings withName:@"findings"];
 		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:1];
 	}
 	// probably no HTML. treat it as plain text.
 	else  if (findings){
-		NSLog(@"set findings: %@", [findings string]);
+		
 		NSXMLElement *node = nil;
-		NSXMLNode *textNode = [NSXMLNode textWithStringValue:[findings string]];
+		NSXMLNode *textNode = [NSXMLNode textWithStringValue:findings];
 		node = [NSXMLNode elementWithName:@"findings"];
 		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:1];
 		[node setChildren:[NSArray arrayWithObject:textNode]];		
@@ -165,22 +168,22 @@
 		
 	//ddx
 	node = [NSXMLNode elementWithName:@"differential-diagnosis" stringValue:[_teachingFile valueForKey:@"ddx"]];
-	[self insertNode:(NSXMLElement *)node  intoNode:[self discussionSection] atIndex:2];	
+	[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:2];	
 	
-	NSAttributedString *discussion = [[NSAttributedString alloc] initWithCoder:[NSUnarchiver unarchiveObjectWithData:[_teachingFile valueForKey:@"discussion"]]];
-	string = [discussion string];
+	NSString *discussion = [_teachingFile valueForKey:@"discussion"];
+
 	// Add discussion text.  Need to take into account possible embedded html
-	if ([string hasPrefix:@"<"]) {
+	if ([discussion hasPrefix:@"<"]) {
 		//should be xml or html"
-		NSLog(@"set history as html: %@", [discussion string]);
-		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:[_teachingFile valueForKey:@"discussion"] withName:@"discussion"];
+	;
+		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:discussion withName:@"discussion"];
 		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:3];
 	}
 	// probably no HTML. treat it as plain text.
 	else  if (discussion){
-		NSLog(@"set discussion: %@", [discussion string]);
+	
 		NSXMLElement *node = nil;
-		NSXMLNode *textNode = [NSXMLNode textWithStringValue:[discussion string]];
+		NSXMLNode *textNode = [NSXMLNode textWithStringValue:discussion];
 		node = [NSXMLNode elementWithName:@"discussion"];
 		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:3];
 		[node setChildren:[NSArray arrayWithObject:textNode]];
@@ -248,6 +251,7 @@
 }
 
 - (NSXMLElement *)sectionWithHeading:(NSString *)heading{
+	
 	NSXMLElement *node = [NSXMLNode elementWithName:@"section"];
 	[node addAttribute:[NSXMLNode attributeWithName:@"heading" stringValue:heading]];
 	return node;
@@ -258,7 +262,7 @@
 	if (childCount > index)
 		[destination insertChild:node atIndex:index]; 
 	else {
-		//NSLog(@"add Node: %@", [node description]);
+
 		[destination addChild:node];
 	}
 }

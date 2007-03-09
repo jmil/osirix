@@ -179,6 +179,10 @@ NSString *pasteBoardOsiriX = @"OsiriX pasteboard";
 	NSLog(@"added Movie: %@", note);
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"OsiriXNewMovieSaved" object:nil];
 	[_imageWaitingForMovie setValue:[NSData dataWithContentsOfFile:[[note userInfo] objectForKey:@"path"]] forKey:@"originalDimension"];
+	NSAlert *alert = [NSAlert alertWithError:nil];
+	[alert setMessageText:NSLocalizedString(@"Movie Added", nil)];
+	[alert setInformativeText:NSLocalizedString(@"MIRC", nil)];
+	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:nil contextInfo:nil];
 	_imageWaitingForMovie = nil;
 }
 

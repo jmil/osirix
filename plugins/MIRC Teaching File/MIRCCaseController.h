@@ -15,12 +15,15 @@
 	IBOutlet NSTableView *tableView;
 	IBOutlet MIRCController *mircController;
 	MIRCXMLController *_mircEditor;
-	NSString *_caseName;	
+	NSString *_caseName;
+	NSMutableData *receivedData;	
 }
 
 - (IBAction)controlAction: (id) sender;
 - (IBAction)create:(id)sender;
 - (void)save;
 - (id)teachingFile;
+- (IBAction)send: (id)sender;
+- (BOOL)sendURL:(NSURL *)url;
 
 @end
