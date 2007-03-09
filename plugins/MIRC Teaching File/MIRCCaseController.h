@@ -17,6 +17,8 @@
 	MIRCXMLController *_mircEditor;
 	NSString *_caseName;
 	NSMutableData *receivedData;	
+	BOOL _animateProgressBar;
+	BOOL _hideProgressBar;
 }
 
 - (IBAction)controlAction: (id) sender;
@@ -26,4 +28,10 @@
 - (IBAction)send: (id)sender;
 - (BOOL)sendURL:(NSURL *)url;
 
+- (void)displaySendStatus:(NSString *)status;
+- (void)setProgressBarStatus:(BOOL)status;
+- (BOOL) animateProgressBar;
+- (void) setAnimateProgressBar:(BOOL)animate;
+- (BOOL) hideProgressBar;
+- (void) setHideProgressBar:(BOOL)hide;
 @end

@@ -27,6 +27,7 @@
 	MIRCWebController *_webController;
 	NSArray *_teachingFiles;
 	IBOutlet NSPanel	*_mircSettings;
+	IBOutlet NSPanel	*_loginPanel;
 	
 	//Core Data
 	NSManagedObjectModel *_managedObjectModel;
@@ -59,5 +60,6 @@
 
 - (IBAction)openMIRCSettings:(id)sender;
 - (IBAction)closeMIRCSettings:(id)sender;
+- (IBAction)endLoginPanel:(id)sender;
 
 @end

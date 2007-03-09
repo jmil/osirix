@@ -211,6 +211,8 @@
 		BF6AB8CF08C2B00800B4D496 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		BF6DB1A20B8E4B5900DDA353 /* QuestionArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionArrayController.h; sourceTree = "<group>"; };
 		BF6DB1A30B8E4B5900DDA353 /* QuestionArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionArrayController.m; sourceTree = "<group>"; };
+		BF91DC2E0BA1BBFB008C2D32 /* FAWebPostQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FAWebPostQuery.h; sourceTree = "<group>"; };
+		BF91DC2F0BA1BBFB008C2D32 /* FAWebPostQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FAWebPostQuery.m; sourceTree = "<group>"; };
 		BFA289720B850C9F00E5991A /* WindowLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = WindowLayoutManager.h; path = ../../osirix/WindowLayoutManager.h; sourceTree = SOURCE_ROOT; };
 		BFA289990B85125200E5991A /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
 		BFB1E3BF08BD673300805411 /* MIRCImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIRCImage.h; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BF91DC2D0BA1BBD6008C2D32 /* HTTP */,
 				BFA2897E0B850E8400E5991A /* OsiriX Header referenced */,
 				7E5427A708C1015C00DDE31C /*  Making Movies */,
 				ABB76338067FB2A8000912C1 /* OsiriX Headers */,
@@ -495,6 +498,15 @@
 				BF4B47530B83739D0096D325 /* TeachingFile.xcdatamodel */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		BF91DC2D0BA1BBD6008C2D32 /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				BF91DC2E0BA1BBFB008C2D32 /* FAWebPostQuery.h */,
+				BF91DC2F0BA1BBFB008C2D32 /* FAWebPostQuery.m */,
+			);
+			name = HTTP;
 			sourceTree = "<group>";
 		};
 		BFA2897E0B850E8400E5991A /* OsiriX Header referenced */ = {

@@ -33,7 +33,8 @@
 	NSXMLElement *root = [[[NSXMLElement alloc] initWithName:@"MIRCdocument"] autorelease];
 	_xmlDocument = [[NSXMLDocument alloc] initWithRootElement:root];
 	// Display type
-	[root addAttribute:[NSXMLNode attributeWithName:@"display" stringValue:@"mstf"]];
+	//[root addAttribute:[NSXMLNode attributeWithName:@"display" stringValue:@"mstf"]];
+	[root addAttribute:[NSXMLNode attributeWithName:@"display" stringValue:@"tab"]];
 	// Title
 	if ([_teachingFile valueForKey:@"title"])
 		[root addChild:[NSXMLNode elementWithName:@"title" stringValue:[_teachingFile valueForKey:@"title"]]];
@@ -78,7 +79,9 @@
 	/********** Sections ************/
 	
 	[root addChild:[self historySection]];
+	//[root addChild: [self sectionWithHeading:@"Method"]];
 	[root addChild:[self imageSection]];
+	//[root addChild: [self sectionWithHeading:@"Results"]];
 	[root addChild:[self discussionSection]];
 	[root addChild:[self quizSection]];
 	
@@ -111,11 +114,12 @@
 	}
 	// probably no HTML. treat it as plain text.
 	else  if (history){
-
+		NSLog(@"history, no html");
 		NSXMLElement *node = nil;
 		NSXMLNode *textNode = [NSXMLNode textWithStringValue:history];
 		node = [NSXMLNode elementWithName:@"history"];
-		[self insertNode:(NSXMLElement *)node  intoNode:historySection atIndex:0];
+		[historySection addChild:node];
+		//[self insertNode:(NSXMLElement *)node  intoNode:historySection atIndex:0];
 		[node setChildren:[NSArray arrayWithObject:textNode]];
 		
 	}
@@ -144,48 +148,52 @@
 	NS_DURING
 	//diagnosis
 	NSXMLNode *node = [NSXMLNode elementWithName:@"diagnosis" stringValue:[_teachingFile valueForKey:@"diagnosis"]];
-	[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:0];
+	[discussionSection addChild:node];
+	//[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:0];
 	
 	//findings
 	NSString *findings = [_teachingFile valueForKey:@"findings"];
 	// Add findings text.  Need to take into account possible embedded html
-	if ([findings hasPrefix:@"<"]) {
+	if (findings){
+	//if ([findings hasPrefix:@"<"]) {
 		//should be xml or html"
-
 		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:findings withName:@"findings"];
-		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:1];
+		[discussionSection addChild:node];
 	}
 	// probably no HTML. treat it as plain text.
-	else  if (findings){
-		
+	else  {
+	//if (findings){
+		NSLog(@"findings not html");
 		NSXMLElement *node = nil;
-		NSXMLNode *textNode = [NSXMLNode textWithStringValue:findings];
-		node = [NSXMLNode elementWithName:@"findings"];
-		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:1];
-		[node setChildren:[NSArray arrayWithObject:textNode]];		
+		//NSXMLNode *textNode = [NSXMLNode textWithStringValue:findings];
+		//node = [NSXMLNode elementWithName:@"findings"];
+		//[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:1];
+		node = [NSXMLNode elementWithName:@"findings" stringValue:findings];
+		[discussionSection addChild:node];	
+	//	[node setChildren:[NSArray arrayWithObject:textNode]];
 	}
 	[findings release];
 		
 	//ddx
 	node = [NSXMLNode elementWithName:@"differential-diagnosis" stringValue:[_teachingFile valueForKey:@"ddx"]];
-	[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:2];	
+	[discussionSection addChild:node];	
 	
 	NSString *discussion = [_teachingFile valueForKey:@"discussion"];
 
 	// Add discussion text.  Need to take into account possible embedded html
-	if ([discussion hasPrefix:@"<"]) {
+	if (discussion){
+	//if ([discussion hasPrefix:@"<"]) {
 		//should be xml or html"
-	;
 		NSXMLElement *node = (NSXMLElement *)[self nodeFromXML:discussion withName:@"discussion"];
 		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:3];
 	}
 	// probably no HTML. treat it as plain text.
-	else  if (discussion){
+	else { // if (discussion){
 	
 		NSXMLElement *node = nil;
 		NSXMLNode *textNode = [NSXMLNode textWithStringValue:discussion];
 		node = [NSXMLNode elementWithName:@"discussion"];
-		[self insertNode:(NSXMLElement *)node  intoNode:discussionSection atIndex:3];
+		[discussionSection addChild:node];
 		[node setChildren:[NSArray arrayWithObject:textNode]];
 		
 	}

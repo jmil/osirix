@@ -260,6 +260,27 @@
 - (IBAction)closeMIRCSettings:(id)sender{
 	[NSApp endSheet:_mircSettings];
 	[_mircSettings  orderOut:self];
+	[NSApp beginSheet:_loginPanel modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+
+- (IBAction)endLoginPanel:(id)sender{
+	[NSApp endSheet:_loginPanel];
+	[_loginPanel orderOut:self];
+	if ([sender tag] == 1) {
+			NSString *destinationIP = [[NSUserDefaults standardUserDefaults] objectForKey:@"MIRC_IPAddress"];
+	if (!destinationIP) 
+		destinationIP = @"localhost";
+	NSString *port = [[NSUserDefaults standardUserDefaults] objectForKey:@"MIRC_Port"];
+	if (!port) 
+		port = @"8080";
+		
+	NSString *storageService = [[NSUserDefaults standardUserDefaults] objectForKey:@"MIRC_StorageService"];
+	if (!storageService)
+		storageService = @"storageService";
+		NSString *destination = [NSString stringWithFormat:@"http://%@:%@/%@/submit/doc", destinationIP , port, storageService];
+		NSURL *url = [NSURL URLWithString:destination];
+		[[NSWorkspace sharedWorkspace] openURL:url];
+	}
 }
 
 

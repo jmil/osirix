@@ -20,7 +20,7 @@
 	id _imageWaitingForMovie;
 }
 
-- (void)insertImageAtRow:(int)row FromViewer:(DCMView *)vi;
+- (void)insertImageAtRow:(int)row fromView:(DCMView *)vi;
 - (IBAction)selectCurrentImage:(id)sender;
 - (IBAction)addOrDelete:(id)sender;
 - (void)newMovie:(NSNotification *)note;

@@ -33,8 +33,12 @@ the query fails with the error status FAWebPostTimedOut.
 
 + (CFTimeInterval) timeoutInterval
 { return sPostTimeout; }
+
+/*
 setTimeoutInterval
 Sets the length, in seconds, for all timeout intervals beginning after this class method is called.
+*/
+
 + (void) setTimeoutInterval: (CFTimeInterval) newInterval
 {
    sPostTimeout = newInterval;
@@ -55,10 +59,12 @@ CFClientRetain(void *   selfPtr)
    return [object retain];
 }
 
+/*
 CFClientRelease
 A glue function bridging the Objective-C FAWebPostQuery object to Core Foundation. A pointer to this 
 function goes into the release field of the client context for the HTTP CFStream that services the
 reply to the query.
+*/
 
 void
 CFClientRelease(void *   selfPtr)
@@ -75,6 +81,7 @@ A glue function bridging the Objective-C FAWebPostQuery object to Core Foundatio
 function goes into the copyDescription field of the client context for the HTTP CFStream that 
 services the reply to the query.
 */
+
 CFStringRef
 CFClientDescribeCopy(void *   selfPtr)
 {
@@ -108,12 +115,14 @@ http result code from the header. Sets the FAWebPostQuery's status code to the r
       }
    }
 }
+
 /*
 closeOutMessaging
 An internal-use method, called when the CFReadStream that manages the queery reply is no longer 
 needed--either because the whole reply has been received or because the request has failed. This 
 method tears down the stream, the original POST query, and the timeout timer.
 */
+
 - (void) closeOutMessaging
 {
    if (replyStream) {
@@ -145,6 +154,8 @@ This method gets called when the query has completed, successfully or not, after
 have been torn down. If this object's client has set a delegate, inform the delegate of completion 
 through the method webPostQuery:completedWithResult:.
 */
+
+
 - (void) informDelegateOfCompletion
 {
    if (delegate) {
@@ -218,6 +229,7 @@ MyReadCallback(CFReadStreamRef   stream,
       break;
    }
 }
+
 /*
 messageTimedOut:
 The callback for the internal timeout timer. This method gets called only in the exceptional case of 

@@ -33,9 +33,14 @@
 }
 
 
+- (void)awakeFromNib{
+	[super awakeFromNib];
+	[self setProgressBarStatus:NO];
+}
 
 
 - (void)save{
+	NSLog(@"save Case");
 	[mircController save];
 }
 
@@ -121,41 +126,39 @@
 	if (!storageService)
 		storageService = @"storageService";
 	NSString *destination = [NSString stringWithFormat:@"http://%@:%@/%@/submit/doc", destinationIP , port, storageService];
-	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-	NSString *dirPath = [bundle resourcePath];
-//	task = [[NSTask alloc] init];
-	NSLog(@"dir path: %@", dirPath);
-//	[task setCurrentDirectoryPath:dirPath];
-//	[task setLaunchPath:@"/usr/bin/java/"];
-//	args = [NSArray arrayWithObjects:@"-jar", @"fs.jar", @"/tmp/archive.zip", destination, nil];
-//	[task setArguments:args];
-	NSLog(@"send archive args: %@", args);
-//	[task  launch];
-//	[task waitUntilExit];
-//	[task release];
 	NSURL *url = [NSURL URLWithString:destination];
-	//[url setResourceData:[NSData dataWithContentsOfFile:@"/tmp/archive.zip"]];
 	[self sendURL:url];
+	[manager removeFileAtPath:path handler:nil];
+	[manager removeFileAtPath:tempPath handler:nil];
 	
 	
 }
 
 - (BOOL)sendURL:(NSURL *)url{
 	// create the request
-	NSURLRequest *theRequest=[NSURLRequest requestWithURL:url
+	//url = [NSURL URLWithString:@"http://10.125.6.182:8080/mdmhmirc/submit/doc"];
+	NSLog(@"send URL: %@", url);
+	 NSMutableURLRequest *theRequest=[ NSMutableURLRequest requestWithURL:url
 							cachePolicy:NSURLRequestUseProtocolCachePolicy
 						timeoutInterval:60.0];
 	// create the connection with the request
 	// and start loading the data
+	
+	[theRequest setHTTPMethod:@"POST"];
+	[theRequest setValue:@" application/x-zip-compressed" forHTTPHeaderField:@"Content-type"];
+	[theRequest setHTTPBody:[NSData dataWithContentsOfFile:@"/tmp/archive.zip"]];
+	
 	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
 	if (theConnection) {
 		// Create the NSMutableData that will hold
 		// the received data
 		receivedData = [[NSMutableData data] retain];
+		[self setProgressBarStatus:YES];
 		return YES;
 	} else {
 		// inform the user that the download could not be made
 		NSLog(@"connection failed");
+		[self setProgressBarStatus:NO];
 		return NO;
 	} 
 }
@@ -168,7 +171,11 @@
     // it can be called multiple times, for example in the case of a 
     // redirect, so each time we reset the data.
     [receivedData setLength:0];
+	[self setProgressBarStatus:NO];
 	NSLog(@"url response: %@", response);
+	NSLog(@"url: %@", [response URL]);
+	NSLog(@"mime: %@", [response MIMEType]);
+	NSLog(@"header: %@", [response allHeaderFields]);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -186,16 +193,22 @@
 	receivedData = nil;
  
     // inform the user
-    NSLog(@"Connection failed! Error - %@ %@",
+	[self setProgressBarStatus:NO];
+	[self displaySendStatus:NSLocalizedString(@"Connection failed", nil)];
+    NSLog(@"Connection failed! Error - %@ %@ %@",
           [error localizedDescription],
-          [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+          [[error userInfo] objectForKey:NSErrorFailingURLStringKey], error);
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     // do something with the data
-    NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
- 
+	NSString *response = [NSString stringWithUTF8String:[receivedData bytes]];
+	if ([response rangeOfString: @"The zip file was received and unpacked successfully"].location == NSNotFound)
+		[self displaySendStatus:NSLocalizedString(@"Connection failed", nil)];
+	else
+		[self displaySendStatus:NSLocalizedString(@"Connection Succeeded", nil)];
+	NSLog(@"response:\n%@", response);
     // release the connection, and the data object
     [connection release];
     [receivedData release];
@@ -218,6 +231,31 @@
         // in the preferences are incorrect
         //[self showPreferencesCredentialsAreIncorrectPanel:self];
     }
+}
+
+- (void)setProgressBarStatus:(BOOL)status{
+	[self setAnimateProgressBar:status];
+	[self setHideProgressBar:!status];
+}
+
+- (void)displaySendStatus:(NSString *)status{
+	NSAlert *alert = [NSAlert alertWithError:nil];
+	[alert setInformativeText:status];
+	[alert setMessageText:NSLocalizedString(@"MIRC", nil)];
+	[alert beginSheetModalForWindow:[mircController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+
+- (BOOL) animateProgressBar{
+	return _animateProgressBar;
+}
+- (void) setAnimateProgressBar:(BOOL)animate{
+	_animateProgressBar = animate;
+}
+- (BOOL) hideProgressBar{
+	return _hideProgressBar;
+}
+- (void) setHideProgressBar:(BOOL)hide{
+	_hideProgressBar = hide;
 }
 
 - (id)teachingFile {
