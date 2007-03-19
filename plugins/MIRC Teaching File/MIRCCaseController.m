@@ -221,7 +221,7 @@
     if ([challenge previousFailureCount] == 0) {
         NSURLCredential *newCredential;
         newCredential=[NSURLCredential credentialWithUser:@"lpysher"
-                                                 password:@"pinhead"
+                                                 password:@"password"
                                               persistence:NSURLCredentialPersistenceNone];
         [[challenge sender] useCredential:newCredential
                forAuthenticationChallenge:challenge];
