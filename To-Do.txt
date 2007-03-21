@@ -1,40 +1,10 @@
-2.7 New Features:
+3.0 New Features:
 
-- Advanced CLUT in 16-bit for Volume Rendering
-- New options for Q&R: multi-sources, direct viewing, birthdate, accession Number, retrieve destination...
-- Comparison hanging
-- Improved hanging protocols
-- Restore a volume in 3D VR/MIP with scissors (Del key: delete / Return key: keep / Tab key: restore)
-- Repulsor Tool for ROIs
-- Calcium Scoring
-- Undo / Redo for ROIs edition
-- Matrix Size for 3D Export
-- Preview growing region
-- Query & Retrieve Selected Patient
-- For CR, XA DF: split/combine options (database preferences)
-- Anonymize before burning option
-- Templates for anonymization
-- MPR 3 planes for curved-MPR
-- Sub-Series opening: (alt key) + 2D Viewer
-- 4D, 5D for Orthogonal-MPR and 2D-MPR
-- Multi-threaded Orthogonal-MPR
-- Better Bonjour DICOM nodes detection
-- DICOM MPEG2 support (it requires VLC installed, http://www.videolan.org/vlc/)
-- Multi-threaded DICOM Printing
-- Hot Keys support (see Preferences)
-- Convolution filters in 3D VR/MIP
-- DICOM Shutter fields supported (RECTANGULAR, CIRCULAR, POLYGON)
-- Possibility to move the 'Text Box' associated with ROIs
-- Copy ROIs 'Text Box' to clipboard
-- Protected Mode: start OsiriX with Shift+Option keys
-- Import / Export 'DICOM Nodes Locations' in XML
-- Faster and asynchronous transfers between Bonjour shared databases (upgrade all your nodes to vers.2.7)
-- Asynchronous copy from DICOM-CD to local database
+- 64 bits !
 
 TODO:
 
-- +- For bone removal
-
+- Independent rotation, pan, etc for CR
 - Global Prefs 3D (thumbnails, shading, CLUT, opacity, ...)
 - Editable image annotation options
 - Local database in the 'Sources' area
