@@ -35,6 +35,7 @@ Image Level:
 - InstanceNumber : 32 bits, instead of 64 bits
 - numberOfFrames: if not available, return 1
 - numberOfSeries: if not available, return 1
+- Add optional 'wl' & 'ww' & 'zoom' & 'offset' field
 
 DICOM SR:
 - Referenced UID
