@@ -5,7 +5,6 @@
 TODO:
 
 - Open All Series (4D open)
-- Routing check box
 - Meta-Data menu
 - Edit DICOM fields
 - Independent rotation, pan, etc for CR
