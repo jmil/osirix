@@ -5,9 +5,7 @@
 TODO:
 
 - Open All Series (4D open)
-- Meta-Data menu
 - Edit DICOM fields
-- Independent rotation, pan, etc for CR
 - Global Prefs 3D (thumbnails, shading, CLUT, opacity, ...)
 - Editable image annotation options
 - Local database in the 'Sources' area
