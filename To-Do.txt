@@ -3,6 +3,8 @@
 - 64 bits !
 - Growl
 - Magnetic Windows
+- Automatically eject CD/DVD after importing
+- Better support for 4D series
 
 TODO:
 
