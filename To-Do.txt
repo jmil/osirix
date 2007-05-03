@@ -8,6 +8,8 @@
 
 TODO:
 
+- HUD Windows
+- Bonjour shared list (update+ default name)
 - Open All Series (4D open)
 - Edit DICOM fields
 - Independent rotation, pan, etc for CR & Others
