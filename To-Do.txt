@@ -18,6 +18,7 @@ TODO:
 - Registration (vtkLandmark, itkLandmark)
 - ROI enhancement
 - Worklist DICOM
+- Plugins Manager
 
 DB:
 
