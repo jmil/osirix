@@ -19,12 +19,15 @@ TODO:
 - ROI enhancement
 - Worklist DICOM
 - Plugins Manager
+- Windows state (DB study)
+- Virtual matrix for Windows position
 
 DB:
 
 Study Level:
 - Locked
 - Remove 'type' field
+- Windows state (BLOB, windows position + series ID)
 
 Series Level:
 - Remove 'type' field
