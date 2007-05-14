@@ -8,6 +8,7 @@
 - DICOM Editor
 - 3D Settings (thumbnails, shading, CLUT, opacity, ...)
 - Plugins Manager
+- Windows Media Video (WMV) format for movies export if Flip4Mac is installed
 
 TODO:
 
