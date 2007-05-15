@@ -12,6 +12,8 @@
 
 TODO:
 
+- Progress bar during CD burning preparation
+- Exacter volume size calculation in burning dialog
 - Editable image annotation options
 - Local database in the 'Sources' area
 - New series for keyimages
