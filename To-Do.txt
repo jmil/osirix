@@ -12,7 +12,7 @@
 
 TODO:
 
-- Progress bar during CD burning preparation
+- Delete study: delete associated states (scissor, 3D, ...)
 - Exacter volume size calculation in burning dialog
 - Editable image annotation options
 - Local database in the 'Sources' area
