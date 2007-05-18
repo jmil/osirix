@@ -27,6 +27,8 @@ TODO:
 
 DB:
 
+- XML with DB name, instead of DB_VERSION, ... files
+
 Study Level:
 - Locked
 - Remove 'type' field
