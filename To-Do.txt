@@ -9,18 +9,18 @@
 - 3D Settings (thumbnails, shading, CLUT, opacity, ...)
 - Plugins Manager
 - Windows Media Video (WMV) format for movies export if Flip4Mac is installed
+- Local database in the 'Sources' area
 
 TODO:
 
-- Delete study: delete associated states (scissor, 3D, ...)
-- Exacter volume size calculation in burning dialog
 - Editable image annotation options
-- Local database in the 'Sources' area
+- Delete study: delete associated states (scissor, 3D, ...)
+- Registration (vtkLandmark, itkLandmark)
+- new DB format
 - New series for keyimages
 - Windows state (DB study)
 - HUD Windows
 - Perfusion
-- Registration (vtkLandmark, itkLandmark)
 - ROI enhancement
 - Worklist DICOM
 - Virtual matrix for Windows position
