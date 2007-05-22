@@ -10,6 +10,7 @@
 - Plugins Manager
 - Windows Media Video (WMV) format for movies export if Flip4Mac is installed
 - Local database in the 'Sources' area
+- Better iPod management (available as a 'OsiriX Data' folder in the Sources).
 
 TODO:
 
@@ -40,6 +41,7 @@ Series Level:
 
 Image Level:
 - Remove 'name' field
+- Remove 'iPod' field
 - Remove 'type' field
 - Set fileType to 0L for DICOM file
 - Compress sopInstanceUID: (sopInstanceUIDEncode, sopInstanceUIDDecode)
