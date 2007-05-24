@@ -15,7 +15,6 @@
 TODO:
 
 - Editable image annotation options
-- Delete study: delete associated states (scissor, 3D, ...)
 - Registration (vtkLandmark, itkLandmark)
 - new DB format
 - New series for keyimages
