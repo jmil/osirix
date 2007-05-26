@@ -4,13 +4,14 @@
 - Growl support (http://growl.info/)
 - Magnetic Windows
 - Automatically eject CD/DVD after importing
-- Better support for 4D series
-- DICOM Editor
+- Better support for 4D series (Alt key + click on 2D/3D Viewer icon)
+- DICOM Editor - See Meta-Data window
 - 3D Settings (thumbnails, shading, CLUT, opacity, ...)
 - Plugins Manager
 - Windows Media Video (WMV) format for movies export if Flip4Mac is installed
-- Local database in the 'Sources' area
-- Better iPod management (available as a 'OsiriX Data' folder in the Sources).
+- Local database in the 'Sources' area - See Preferences Locations
+- Better iPod management (available as a 'OsiriX Data' database folder in the Sources).
+- NIfTI-1 Data Format support
 
 TODO:
 
