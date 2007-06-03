@@ -43,15 +43,20 @@ Image Level:
 - Remove 'name' field
 - Remove 'iPod' field
 - Remove 'type' field
+- if( extension == dcm) don't store
 - Set fileType to 0L for DICOM file
+- No default pour mountedVolume
+- No default pour isKeyImage
+- No default pour numberOfSeries
+- numberOfSeries: if not available, return 1
+- No default pour numberOfFrames
+- numberOfFrames: if not available, return 1
 - Compress sopInstanceUID: (sopInstanceUIDEncode, sopInstanceUIDDecode)
 - Create sopInstanceUID with Numbers and . ONLY, including for non-DICOM objects
-- PathNumber : 64 bit Int: if no path, create the path with PathNumber + '.' + extension
+- Add PathNumber : 64 bit Int: if no path, create the path with PathNumber + '.' + extension
 - InstanceNumber : 32 bits, instead of 64 bits
-- numberOfFrames: if not available, return 1
 - Remove 'frameNo' field
 - Add 'frameID' field
-- numberOfSeries: if not available, return 1
 - Add optional 'wl' & 'ww' & 'zoom' & 'offset' field
 
 DICOM SR:
