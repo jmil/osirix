@@ -54,6 +54,7 @@ Image Level:
 - numberOfFrames: if not available, return 1
 - Compress sopInstanceUID: (sopInstanceUIDEncode, sopInstanceUIDDecode)
 - Create sopInstanceUID with Numbers and . ONLY, including for non-DICOM objects
+- Rename sopInstanceUID to compressedSopInstanceUID, binary data type
 - Add PathNumber : 64 bit Int: if no path, create the path with PathNumber + '.' + extension
 - InstanceNumber : 32 bits, instead of 64 bits
 - Remove 'frameNo' field
