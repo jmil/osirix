@@ -12,6 +12,7 @@
 - Local database in the 'Sources' area - See Preferences Locations
 - Better iPod management (available as a 'OsiriX Data' database folder in the Sources).
 - NIfTI-1 Data Format support
+- Possibility to tile multiple series in DICOM Export, Quicktime Export
 
 TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
