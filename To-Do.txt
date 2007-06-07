@@ -28,6 +28,11 @@ Et le look du shading panel dans l'Endoscopy viewer...
 - Worklist DICOM
 - Virtual matrix for Windows position
 
+HUG:
+- Routage colloques
+- Demandes numerisees
+- Rapport images -> DPI
+
 DB:
 
 - XML with DB name, instead of DB_VERSION, ... files
