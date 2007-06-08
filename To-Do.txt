@@ -13,6 +13,7 @@
 - Better iPod management (available as a 'OsiriX Data' database folder in the Sources).
 - NIfTI-1 Data Format support
 - Possibility to tile multiple series in DICOM Export, Quicktime Export
+- Possibility to copy all ROIs of a series into another series (image fusion window)
 
 TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
