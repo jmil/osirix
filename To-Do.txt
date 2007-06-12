@@ -14,6 +14,7 @@
 - NIfTI-1 Data Format support
 - Possibility to tile multiple series in DICOM Export, Quicktime Export
 - Possibility to copy all ROIs of a series into another series (image fusion window)
+- Better 'ROI Volume' support: generate missing ROIs, extract data from ROI Volume.
 
 TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
