@@ -5,7 +5,7 @@
 - Magnetic Windows
 - Automatically eject CD/DVD after importing
 - Better support for 4D series (Alt key + click on 2D/3D Viewer icon)
-- DICOM Editor - See Meta-Data window
+- DICOM Editor : edit any DICOM fields - See Meta-Data window
 - 3D Settings (thumbnails, shading, CLUT, opacity, ...)
 - Plugins Manager
 - Windows Media Video (WMV) format for movies export if Flip4Mac is installed
@@ -15,6 +15,7 @@
 - Possibility to tile multiple series in DICOM Export, Quicktime Export
 - Possibility to copy all ROIs of a series into another series (image fusion window)
 - Better 'ROI Volume' support: generate missing ROIs, extract data from ROI Volume.
+- Possibility to restore the pixels from the "Set Pixel Values to..." window.
 
 TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
