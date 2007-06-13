@@ -20,8 +20,7 @@
 TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
 Et le look du shading panel dans l'Endoscopy viewer...
-- Polygon morphing -> extract min, max, mean of a volume
-- tPlain <-> Polygons
+- 3D Viewers pref: same screen or other screen.
 - Editable image annotation options
 - Registration (vtkLandmark, itkLandmark)
 - new DB format
