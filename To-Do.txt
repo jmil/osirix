@@ -22,7 +22,8 @@ TODO:
 Les cluts 16-bits dans le Endoscopy viewer....
 Et le look du shading panel dans l'Endoscopy viewer...
 - The other choices I would like considered are 2x1, 2x3, 3x2, 3x3, 3x4, 4x3, 4x5.
-- If < 1 cm -> mm
+- ITK update
+- DICOM fields for reports
 - Editable image annotation options
 - Registration (vtkLandmark, itkLandmark)
 - new DB format
