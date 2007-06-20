@@ -16,6 +16,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 	DCMPixelDataAttribute *pixelAttr = (DCMPixelDataAttribute *)[dcmObject attributeWithName:@"PixelData"];
 	
 	NSImage *image = [pixelAttr imageAtIndex: 0 ww: 0 wl: 0];
+
 	NSSize canvasSize = [image size];
  
     // Preview will be drawn in a vectorized context
