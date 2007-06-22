@@ -21,6 +21,8 @@
 - Possibility to add DICOM Fields in Report Templates (RTF or Pages): «DICOM_FIELD:ReferringPhysiciansName»
 
 TODO:
+- Crop Box Presets
+- DB Location: racine /
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - DICOM SR, export, send, ...
 - The other choices I would like considered are 2x1, 2x3, 3x2, 3x3, 3x4, 4x3, 4x5.
