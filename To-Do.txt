@@ -20,7 +20,13 @@
 - ITK 3.2.0
 - Possibility to add DICOM Fields in Report Templates (RTF or Pages): ÇDICOM_FIELD:ReferringPhysiciansNameÈ
 
+BUG 3D PRESETS:
+- 9 presets -> arrows
+- low res
+- rotate, move ALL ?
+
 TODO:
+- Fixed shadings
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - DICOM SR, export, send, ...
 - Navigate Endoscopy
