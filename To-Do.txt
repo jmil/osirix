@@ -20,18 +20,9 @@
 - ITK 3.2.0
 - Possibility to add DICOM Fields in Report Templates (RTF or Pages): ÇDICOM_FIELD:ReferringPhysiciansNameÈ
 
-BUG 3D PRESETS:
-- 9 presets -> arrows
-- low res
-- rotate, move ALL ?
-- Crop Box
-- Loop functions call 16-bit
-
 TODO:
-- Fixed shadings
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - DICOM SR, export, send, ...
-- Navigate Endoscopy
 - The other choices I would like considered are 2x1, 2x3, 3x2, 3x3, 3x4, 4x3, 4x5.
 - Editable image annotation options
 - Registration (vtkLandmark, itkLandmark)
