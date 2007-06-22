@@ -24,6 +24,8 @@ BUG 3D PRESETS:
 - 9 presets -> arrows
 - low res
 - rotate, move ALL ?
+- Crop Box
+- Loop functions call 16-bit
 
 TODO:
 - Fixed shadings
