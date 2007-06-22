@@ -75,5 +75,5 @@ Image Level:
 - Add 'frameID' field
 - Add optional 'wl' & 'ww' & 'zoom' & 'offset' field
 
-DICOM SR:
+DICOM SR - Level:
 - Referenced UID
