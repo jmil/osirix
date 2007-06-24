@@ -976,20 +976,6 @@
 		CE8C08850C2EB16800537400 /* DCMObjectPixelDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C08810C2EB16800537400 /* DCMObjectPixelDataImport.m */; };
 		CE8CF1F70C2EA43100537400 /* DCMPix.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF1F50C2EA43100537400 /* DCMPix.m */; };
 		CE8CF1F80C2EA43100537400 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF1F60C2EA43100537400 /* DCMPix.h */; };
-		CE8CF3A60C2EA48400537400 /* libtiff.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
-		CE8CF3A70C2EA48400537400 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3990C2EA48400537400 /* libtiff.a */; };
-		CE8CF3A80C2EA48400537400 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39A0C2EA48400537400 /* port.h */; };
-		CE8CF3A90C2EA48400537400 /* t4.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39B0C2EA48400537400 /* t4.h */; };
-		CE8CF3AA0C2EA48400537400 /* tif_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39C0C2EA48400537400 /* tif_dir.h */; };
-		CE8CF3AB0C2EA48400537400 /* tif_fax3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39D0C2EA48400537400 /* tif_fax3.h */; };
-		CE8CF3AC0C2EA48400537400 /* tif_predict.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39E0C2EA48400537400 /* tif_predict.h */; };
-		CE8CF3AD0C2EA48400537400 /* tiff.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39F0C2EA48400537400 /* tiff.h */; };
-		CE8CF3AE0C2EA48400537400 /* tiffcomp.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A00C2EA48400537400 /* tiffcomp.h */; };
-		CE8CF3AF0C2EA48400537400 /* tiffconf.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A10C2EA48400537400 /* tiffconf.h */; };
-		CE8CF3B00C2EA48400537400 /* tiffio.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A20C2EA48400537400 /* tiffio.h */; };
-		CE8CF3B10C2EA48400537400 /* tiffiop.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A30C2EA48400537400 /* tiffiop.h */; };
-		CE8CF3B20C2EA48400537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
-		CE8CF3B30C2EA48400537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
 		CE8CF3BB0C2EA4BA00537400 /* nifti1.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3B60C2EA4BA00537400 /* nifti1.h */; };
 		CE8CF3BC0C2EA4BA00537400 /* nifti1_io.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3B70C2EA4BA00537400 /* nifti1_io.c */; };
 		CE8CF3BD0C2EA4BA00537400 /* nifti1_io.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3B80C2EA4BA00537400 /* nifti1_io.h */; };
@@ -1058,6 +1044,20 @@
 		CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */; };
 		CE8CF4460C2EA56200537400 /* Papyrus3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4070C2EA56200537400 /* Papyrus3.h */; };
 		CE8CF4470C2EA56200537400 /* PapyPubFunctionDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4080C2EA56200537400 /* PapyPubFunctionDef3.h */; };
+		CEC00C480C2EFE6B00537400 /* libtiff.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
+		CEC00C490C2EFE6B00537400 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3990C2EA48400537400 /* libtiff.a */; };
+		CEC00C4A0C2EFE6B00537400 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39A0C2EA48400537400 /* port.h */; };
+		CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39B0C2EA48400537400 /* t4.h */; };
+		CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39C0C2EA48400537400 /* tif_dir.h */; };
+		CEC00C4D0C2EFE6B00537400 /* tif_fax3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39D0C2EA48400537400 /* tif_fax3.h */; };
+		CEC00C4E0C2EFE6B00537400 /* tif_predict.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39E0C2EA48400537400 /* tif_predict.h */; };
+		CEC00C4F0C2EFE6B00537400 /* tiff.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39F0C2EA48400537400 /* tiff.h */; };
+		CEC00C500C2EFE6B00537400 /* tiffcomp.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A00C2EA48400537400 /* tiffcomp.h */; };
+		CEC00C510C2EFE6B00537400 /* tiffconf.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A10C2EA48400537400 /* tiffconf.h */; };
+		CEC00C520C2EFE6B00537400 /* tiffio.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A20C2EA48400537400 /* tiffio.h */; };
+		CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A30C2EA48400537400 /* tiffiop.h */; };
+		CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
+		CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
 		F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */; };
 		F28CFC030A3EC0C6000ABFF5 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */; };
 /* End PBXBuildFile section */
@@ -2159,8 +2159,6 @@
 				F28CFC030A3EC0C6000ABFF5 /* QuickLook.framework in Frameworks */,
 				CE657B1E0C29AC7800537400 /* OsiriX.framework in Frameworks */,
 				CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */,
-				CE8CF3A60C2EA48400537400 /* libtiff.dylib in Frameworks */,
-				CE8CF3A70C2EA48400537400 /* libtiff.a in Frameworks */,
 				CE8C061E0C2EAAA700537400 /* libz.dylib in Frameworks */,
 				CE8C06200C2EAAC300537400 /* QuickTime.framework in Frameworks */,
 				CE8C06430C2EAAD000537400 /* Foundation.framework in Frameworks */,
@@ -2168,6 +2166,8 @@
 				CE8C06C80C2EAB3200537400 /* libcrypto.dylib in Frameworks */,
 				CE8C06CC0C2EAB5E00537400 /* Accelerate.framework in Frameworks */,
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
+				CEC00C480C2EFE6B00537400 /* libtiff.dylib in Frameworks */,
+				CEC00C490C2EFE6B00537400 /* libtiff.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3473,18 +3473,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE8CF1F80C2EA43100537400 /* DCMPix.h in Headers */,
-				CE8CF3A80C2EA48400537400 /* port.h in Headers */,
-				CE8CF3A90C2EA48400537400 /* t4.h in Headers */,
-				CE8CF3AA0C2EA48400537400 /* tif_dir.h in Headers */,
-				CE8CF3AB0C2EA48400537400 /* tif_fax3.h in Headers */,
-				CE8CF3AC0C2EA48400537400 /* tif_predict.h in Headers */,
-				CE8CF3AD0C2EA48400537400 /* tiff.h in Headers */,
-				CE8CF3AE0C2EA48400537400 /* tiffcomp.h in Headers */,
-				CE8CF3AF0C2EA48400537400 /* tiffconf.h in Headers */,
-				CE8CF3B00C2EA48400537400 /* tiffio.h in Headers */,
-				CE8CF3B10C2EA48400537400 /* tiffiop.h in Headers */,
-				CE8CF3B20C2EA48400537400 /* tiffvers.h in Headers */,
-				CE8CF3B30C2EA48400537400 /* uvcode.h in Headers */,
 				CE8CF3BB0C2EA4BA00537400 /* nifti1.h in Headers */,
 				CE8CF3BD0C2EA4BA00537400 /* nifti1_io.h in Headers */,
 				CE8CF3BF0C2EA4BA00537400 /* znzlib.h in Headers */,
@@ -3956,6 +3944,18 @@
 				CE8C08790C2EB10800537400 /* dsrxrdcc.h in Headers */,
 				CE8C08820C2EB16800537400 /* DCMObjectDBImport.h in Headers */,
 				CE8C08840C2EB16800537400 /* DCMObjectPixelDataImport.h in Headers */,
+				CEC00C4A0C2EFE6B00537400 /* port.h in Headers */,
+				CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */,
+				CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */,
+				CEC00C4D0C2EFE6B00537400 /* tif_fax3.h in Headers */,
+				CEC00C4E0C2EFE6B00537400 /* tif_predict.h in Headers */,
+				CEC00C4F0C2EFE6B00537400 /* tiff.h in Headers */,
+				CEC00C500C2EFE6B00537400 /* tiffcomp.h in Headers */,
+				CEC00C510C2EFE6B00537400 /* tiffconf.h in Headers */,
+				CEC00C520C2EFE6B00537400 /* tiffio.h in Headers */,
+				CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */,
+				CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */,
+				CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4614,8 +4614,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				PRODUCT_NAME = DICOMQuickLook;
 				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
@@ -4638,8 +4640,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				PRODUCT_NAME = DICOMQuickLook;
 				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
@@ -4665,7 +4669,7 @@
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				PREBINDING = NO;
+				PREBINDING = YES;
 				SDKROOTS = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 			};
 			name = Release;
