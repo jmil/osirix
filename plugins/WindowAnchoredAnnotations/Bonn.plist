@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<array/>
+	<string>UPPER ORIENTATION</string>
 	<array>
 		<array>
 			<string>%%@</string>
@@ -23,7 +23,7 @@
 	</array>
 	<array/>
 	<array/>
-	<array/>
+	<string>LEFT ORIENTATION</string>
 	<array/>
 	<array/>
 	<array>
@@ -43,7 +43,7 @@
 		</array>
 	</array>
 	<string>Gemeinschaftskhs. Bonn</string>
-	<array/>
+	<string>LOWER ORIENTATION</string>
 	<array>
 		<array>
 			<string>%%@</string>
@@ -64,7 +64,7 @@
 	</array>
 	<array/>
 	<array/>
-	<array/>
+	<string>RIGHT ORIENTATION</string>
 	<array/>
 	<array/>
 	<array>

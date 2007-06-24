@@ -99,7 +99,7 @@ static NSMutableArray *correspondingLayout;
 						for (currentItemPosition=0;currentItemPosition < [currentLineArray count];currentItemPosition++)
 						{
 								if (currentItemPosition == ([currentLineArray count] - 1))	[annotationLine     addObject:[NSNumber numberWithInt:currentLine]];
-								else													[annotationLine     addObject:[NSNumber numberWithInt:0]];	
+								else													[annotationLine     addObject:[NSNumber numberWithInt:-1]];	
 								currentItem = [currentLineArray objectAtIndex:currentItemPosition];
 								tempFormat = [NSMutableString stringWithString:[currentItem objectAtIndex:0]];
 								changeCharacters = [tempFormat replaceOccurrencesOfString:@"%%" 

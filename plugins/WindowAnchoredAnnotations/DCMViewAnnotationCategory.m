@@ -35,18 +35,121 @@
 	//NSLog(@"x,y:%f %f",	contextualMenuInWindowPosX, contextualMenuInWindowPosY);	
 	if ([targets count] == 6)
 	{
+		//orientation init
+		//-orientationCorrectedToView:
+		float   vectors[ 9];
+		[self orientationCorrectedToView: vectors];
+		
 		//loop processing each item, and when the item is a line, drawing it
-		unsigned currentItem;
 		NSMutableString *lineItemsString = [NSMutableString stringWithCapacity:64]; //fifo pile of arguments for line
+		[lineItemsString setString:@""];
+		unsigned currentItem;
+
+		//variables used to solve the case of orientation NORTH, EAST, WEST, SUR
+		float absX;
+		float absY;
+		float absZ;
+		NSMutableString *orientationX = [NSMutableString stringWithCapacity:1];
+		NSMutableString *orientationY = [NSMutableString stringWithCapacity:1];
+		NSMutableString *orientationZ = [NSMutableString stringWithCapacity:1];
+		BOOL annotationOrientation;
+
 		for (currentItem = 0; currentItem < [annotationType count]; currentItem++)
 		{
 			//NSLog(@"case %d:'%@'",currentItem,[annotationFormat objectAtIndex:currentItem]);
 			switch([[annotationType objectAtIndex:currentItem] intValue])
 			{
 				case 0:	// immutableString
-						[lineItemsString appendString:[annotationFormat objectAtIndex:currentItem]];
+						
+						annotationOrientation = FALSE;
+
+						switch([[annotationLine objectAtIndex:currentItem] intValue])
+						{
+							case 0: //NORTH
+							if([[annotationFormat objectAtIndex:currentItem] isEqualToString:@"UPPER ORIENTATION"])
+							{
+								annotationOrientation = TRUE;
+								if (-vectors[ 3] < 0) [orientationX setString:@"R"];
+												else  [orientationX setString:@"L"];
+								if (-vectors[ 4] < 0) [orientationY setString:@"A"];
+												else  [orientationY setString:@"P"];
+								if (-vectors[ 5] < 0) [orientationZ setString:@"I"];
+												else  [orientationZ setString:@"S"];
+								 absX = fabs( vectors[ 3]);
+								 absY = fabs( vectors[ 4]);
+								 absZ = fabs( vectors[ 5]);
+							}
+							break;
+							case 5: //EAST
+							if([[annotationFormat objectAtIndex:currentItem] isEqualToString:@"LEFT ORIENTATION"])
+							{
+								annotationOrientation = TRUE;
+								if (-vectors[ 0] < 0) [orientationX setString:@"R"];
+												else  [orientationX setString:@"L"];
+								if (-vectors[ 1] < 0) [orientationY setString:@"A"];
+												else  [orientationY setString:@"P"];
+								if (-vectors[ 2] < 0) [orientationZ setString:@"I"];
+												else  [orientationZ setString:@"S"];
+								 absX = fabs( vectors[ 0]);
+								 absY = fabs( vectors[ 1]);
+								 absZ = fabs( vectors[ 2]);
+							}
+							break;
+							case 10: //SOUTH
+							if([[annotationFormat objectAtIndex:currentItem] isEqualToString:@"LOWER ORIENTATION"])
+							{
+								annotationOrientation = TRUE;
+								if (vectors[ 3] < 0)  [orientationX setString:@"R"];
+												else  [orientationX setString:@"L"];
+								if (vectors[ 4] < 0)  [orientationY setString:@"A"];
+												else  [orientationY setString:@"P"];
+								if (vectors[ 5] < 0)  [orientationZ setString:@"I"];
+												else  [orientationZ setString:@"S"];
+								 absX = fabs( vectors[ 3]);
+								 absY = fabs( vectors[ 4]);
+								 absZ = fabs( vectors[ 5]);
+							}						
+							break;
+							case 15: //WEST
+							if([[annotationFormat objectAtIndex:currentItem] isEqualToString:@"RIGHT ORIENTATION"])
+							{
+								annotationOrientation = TRUE;
+								if (vectors[ 0] < 0)  [orientationX setString:@"R"];
+												else  [orientationX setString:@"L"];
+								if (vectors[ 1] < 0)  [orientationY setString:@"A"];
+												else  [orientationY setString:@"P"];
+								if (vectors[ 2] < 0)  [orientationZ setString:@"I"];
+												else  [orientationZ setString:@"S"];
+								 absX = fabs( vectors[ 0]);
+								 absY = fabs( vectors[ 1]);
+								 absZ = fabs( vectors[ 2]);
+							}
+							break;						
+						}
+						
+						if (annotationOrientation)
+						{
+							if      (absX>.2 && absX>absY && absX>absZ){[lineItemsString appendString:orientationX]; absX=0;}
+							else if (absY>.2 && absY>absX && absY>absZ){[lineItemsString appendString:orientationY]; absY=0;}
+							else if (absZ>.2 && absZ>absX && absZ>absY){[lineItemsString appendString:orientationZ]; absZ=0;}
+							else break;
+							if      (absX>.2 && absX>absY && absX>absZ){[lineItemsString appendString:orientationX]; absX=0;}
+							else if (absY>.2 && absY>absX && absY>absZ){[lineItemsString appendString:orientationY]; absY=0;}
+							else if (absZ>.2 && absZ>absX && absZ>absY){[lineItemsString appendString:orientationZ]; absZ=0;}
+							else break;
+							if      (absX>.2 && absX>absY && absX>absZ){[lineItemsString appendString:orientationX]; absX=0;}
+							else if (absY>.2 && absY>absX && absY>absZ){[lineItemsString appendString:orientationY]; absY=0;}
+							else if (absZ>.2 && absZ>absX && absZ>absY){[lineItemsString appendString:orientationZ]; absZ=0;}
+							else break;
+						}
+						else //immutableString
+						{
+							[lineItemsString appendString:[annotationFormat objectAtIndex:currentItem]];
+						}
 				break;
-				
+
+				//----------------------------------------------------------------------------------------------------------
+
 				case 1:	// string
 						if ([annotationFormat objectAtIndex:currentItem])
 						{
@@ -59,7 +162,9 @@
 							];
 						}
 				break;
-				
+
+				//----------------------------------------------------------------------------------------------------------
+
 				case 2:	// date
 						[lineItemsString appendString:
 							[
@@ -74,11 +179,15 @@
 							]
 						];
 				break;
-				
+
+				//----------------------------------------------------------------------------------------------------------
+
 				case 3:	// boolValue
 						[lineItemsString appendString:@"boolValue"];
 				break;
-				
+
+				//----------------------------------------------------------------------------------------------------------
+
 				case 4:	// intValue
 						[lineItemsString appendFormat:[annotationFormat objectAtIndex:currentItem],
 							[
@@ -91,7 +200,9 @@
 							]
 						];
 				break;
-				
+
+				//----------------------------------------------------------------------------------------------------------
+
 				case 5:	// floatValue
 						[lineItemsString appendFormat:[annotationFormat objectAtIndex:currentItem],
 							[
@@ -104,13 +215,17 @@
 							]
 						];
 				break;
+
+				//----------------------------------------------------------------------------------------------------------
+
+				case 6: //
 				
 				default:
 						NSLog(@"Line option %d not valid",[[annotationType objectAtIndex:currentItem] intValue]);
 			}
 			
 			//last item of a line -> draw the line
-			if ([[annotationLine objectAtIndex:currentItem] intValue] > 0)		
+			if ([[annotationLine objectAtIndex:currentItem] intValue] > -1)		
 			{
 				//NSLog(lineItemsString);
 				[self  DrawNSStringGLPlugin:lineItemsString position:[[annotationLine objectAtIndex:currentItem] intValue]];
