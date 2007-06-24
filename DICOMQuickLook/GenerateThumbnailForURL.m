@@ -19,20 +19,20 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 
 	QLThumbnailRequestSetImage( thumbnail, image, 0L);
 	
-//	NSSize canvasSize = [image size];
-// 
-//    CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&canvasSize, true, NULL);
-//    if(cgContext) {
-//		NSLog( @"GenerateThumbnailForURL");
-//	
-//        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:YES];
-//        if(context) {
-//			[NSGraphicsContext setCurrentContext: context];
-//            [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, [image size].width, [image size].height) operation:NSCompositeCopy fraction:1.0];
-//        }
-//        QLThumbnailRequestFlushContext(thumbnail, cgContext);
-//        CFRelease(cgContext);
-//    }
+	NSSize canvasSize = [image size];
+ 
+    CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&canvasSize, true, NULL);
+    if(cgContext) {
+		NSLog( @"GenerateThumbnailForURL");
+	
+        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:YES];
+        if(context) {
+			[NSGraphicsContext setCurrentContext: context];
+            [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, [image size].width, [image size].height) operation:NSCompositeCopy fraction:1.0];
+        }
+        QLThumbnailRequestFlushContext(thumbnail, cgContext);
+        CFRelease(cgContext);
+    }
     [pool release];
 	
     return noErr;

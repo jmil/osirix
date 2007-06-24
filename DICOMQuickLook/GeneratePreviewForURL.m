@@ -18,8 +18,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 	NSImage *image = [pixelAttr imageAtIndex: 0 ww: 0 wl: 0];
 
 	NSSize canvasSize = [image size];
- 
-    // Preview will be drawn in a vectorized context
+	
     CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
     if(cgContext) {
 		

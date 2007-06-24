@@ -55,6 +55,10 @@
          to be run on main thread -->
     <key>QLNeedsToBeRunInMainThread</key>
     <false/>
+	<!-- Change following property to indicate the minimum useful size for a thumbnail the generator
+     can produce. If your generator is fast enough, you can remove the minimum size so to appear in lists -->
+    <key>QLThumbnailMinimumSize</key>
+    <real>17</real>
     <key>QLPreviewWidth</key>
     <real>800</real>
     <key>QLPreviewHeight</key>
