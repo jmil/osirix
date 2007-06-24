@@ -16,6 +16,7 @@
 		CE657B1E0C29AC7800537400 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
 		CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657D4E0C29AD5100537400 /* Cocoa.framework */; };
 		CE657D700C29B31600537400 /* OsiriX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
+		CE82AE120C2EDB6400537400 /* libtiff.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
 		CE8C01FB0C2EA8C700537400 /* cfunix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE400C2EA8C500537400 /* cfunix.h */; };
 		CE8C01FC0C2EA8C700537400 /* osconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE410C2EA8C500537400 /* osconfig.h */; };
 		CE8C01FF0C2EA8C700537400 /* dcbytstr.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8CFE450C2EA8C500537400 /* dcbytstr.cc */; };
@@ -1068,6 +1069,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				CE82AE120C2EDB6400537400 /* libtiff.dylib in CopyFiles */,
 				CE657D700C29B31600537400 /* OsiriX.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

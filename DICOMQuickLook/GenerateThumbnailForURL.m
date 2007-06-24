@@ -2,7 +2,9 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreServices/CoreServices.h>
 #import <QuickLook/QuickLook.h>
+
 #import <OsiriX/DCM.h>
+#import "DCMPix.h"
 
 OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thumbnail, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options, CGSize maxSize)
 {
@@ -33,6 +35,14 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
         QLThumbnailRequestFlushContext(thumbnail, cgContext);
         CFRelease(cgContext);
     }
+	
+	
+	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
+	
+	NSLog( [pix description]);
+	
+	[pix release];
+
     [pool release];
 	
     return noErr;
