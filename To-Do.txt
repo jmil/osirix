@@ -28,6 +28,7 @@ TODO:
 - Editable image annotation options
 - Registration (vtkLandmark, itkLandmark)
 - new DB format
+- New smart filter editor (10.5)
 - New series for keyimages
 - Windows state (DB study)
 - Perfusion
