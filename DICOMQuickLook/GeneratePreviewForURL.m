@@ -33,8 +33,6 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         CFRelease(cgContext);
     }
 	
-	
-	
 	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
 	
 	NSLog( [pix description]);

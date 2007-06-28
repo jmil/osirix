@@ -16,6 +16,7 @@
 		CE657B1E0C29AC7800537400 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
 		CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657D4E0C29AD5100537400 /* Cocoa.framework */; };
 		CE657D700C29B31600537400 /* OsiriX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
+		CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE689C040C33DE3400FA47B4 /* vecLib.framework */; };
 		CE82AE120C2EDB6400537400 /* libtiff.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
 		CE8C01FB0C2EA8C700537400 /* cfunix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE400C2EA8C500537400 /* cfunix.h */; };
 		CE8C01FC0C2EA8C700537400 /* osconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE410C2EA8C500537400 /* osconfig.h */; };
@@ -1096,6 +1097,7 @@
 		CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
 		CE657B1D0C29AC7800537400 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 		CE657D4E0C29AD5100537400 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		CE689C040C33DE3400FA47B4 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		CE8C00000C2EA8C600537400 /* jcpred.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcpred.c; sourceTree = "<group>"; };
 		CE8C00010C2EA8C600537400 /* jcprepct.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcprepct.c; sourceTree = "<group>"; };
 		CE8C00020C2EA8C600537400 /* jcsample.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcsample.c; sourceTree = "<group>"; };
@@ -2168,6 +2170,7 @@
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
 				CEC00C480C2EFE6B00537400 /* libtiff.dylib in Frameworks */,
 				CEC00C490C2EFE6B00537400 /* libtiff.a in Frameworks */,
+				CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2195,6 +2198,7 @@
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
 				CE8C06C30C2EAB1200537400 /* libssl.dylib */,
+				CE689C040C33DE3400FA47B4 /* vecLib.framework */,
 				CE8C075E0C2EB03E00537400 /* IOKit.framework */,
 				CE8C06CB0C2EAB5E00537400 /* Accelerate.framework */,
 				CE8C06420C2EAAD000537400 /* Foundation.framework */,

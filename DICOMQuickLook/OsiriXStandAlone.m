@@ -3,6 +3,7 @@
 #include "BrowserController.h"
 #import <OsiriX/DCMCalendarDate.h>
 #import <OsiriX/DCMAbstractSyntaxUID.h>
+#import <vecLib/vecLib.h>
 
 NSLock	*PapyrusLock = 0L;
 NSMutableDictionary *fileFormatPlugins = 0L;
@@ -112,6 +113,7 @@ void vmaxIntel( vFloat *a, vFloat *b, vFloat *r, long size)
 		*r++ = _mm_max_ps( *a++, *b++);
 	}
 }
+
 void vminIntel( vFloat *a, vFloat *b, vFloat *r, long size)
 {
 	long i = size/4;
