@@ -2,31 +2,27 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreServices/CoreServices.h>
 #import <QuickLook/QuickLook.h>
-
-#import <OsiriX/DCM.h>
 #import "DCMPix.h"
 
 OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thumbnail, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options, CGSize maxSize)
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
- 
-	DCMObject *dcmObject;
+	
+	NSLog( @"*** GENERATE - Thumbnail");
+	
 	NSURL *nsurl = (NSURL*) url;
 	
-	dcmObject = [DCMObject objectWithContentsOfFile: [nsurl path] decodingPixelData:YES];
-	
-	DCMPixelDataAttribute *pixelAttr = (DCMPixelDataAttribute *)[dcmObject attributeWithName:@"PixelData"];
-	
-	NSImage *image = [pixelAttr imageAtIndex: 0 ww: 0 wl: 0];
-
-	QLThumbnailRequestSetImage( thumbnail, image, 0L);
+	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
+	[pix CheckLoad];
+	[pix changeWLWW:[pix savedWL] :[pix savedWW]];
+//	NSImage *image = [pix image];
+	NSImage *image = [pix computeWImage:YES :[pix savedWW] :[pix savedWL]];
+//	QLThumbnailRequestSetImage( thumbnail, (CGImageRef) image, 0L);
 	
 	NSSize canvasSize = [image size];
  
     CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&canvasSize, true, NULL);
     if(cgContext) {
-		NSLog( @"GenerateThumbnailForURL");
-	
         NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:YES];
         if(context) {
 			[NSGraphicsContext setCurrentContext: context];
@@ -36,13 +32,7 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
         CFRelease(cgContext);
     }
 	
-	
-	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
-	
-	NSLog( [pix description]);
-	
 	[pix release];
-
     [pool release];
 	
     return noErr;

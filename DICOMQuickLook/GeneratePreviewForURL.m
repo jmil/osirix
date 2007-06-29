@@ -2,23 +2,21 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreServices/CoreServices.h>
 #import <QuickLook/QuickLook.h>
-
-#import <OsiriX/DCM.h>
 #import "DCMPix.h"
 
 OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options)
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
- 
-	DCMObject *dcmObject;
+	
+	NSLog( @"*** GENERATE - Preview");
+	
 	NSURL *nsurl = (NSURL*) url;
-	
-	dcmObject = [DCMObject objectWithContentsOfFile: [nsurl path] decodingPixelData:YES];
-	
-	DCMPixelDataAttribute *pixelAttr = (DCMPixelDataAttribute *)[dcmObject attributeWithName:@"PixelData"];
-	
-	NSImage *image = [pixelAttr imageAtIndex: 0 ww: 0 wl: 0];
 
+	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
+	[pix CheckLoad];
+	[pix changeWLWW:[pix savedWL] :[pix savedWW]];
+	NSImage *image = [pix image];
+	
 	NSSize canvasSize = [image size];
 	
     CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
@@ -32,11 +30,6 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         QLPreviewRequestFlushContext(preview, cgContext);
         CFRelease(cgContext);
     }
-	
-	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
-	
-	NSLog( [pix description]);
-	NSLog( @"DCMPix test");
 	
 	[pix release];
 	
