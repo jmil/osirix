@@ -19,6 +19,7 @@
 - Possibility to restore the pixels from the "Set Pixel Values to..." window.
 - ITK 3.2.0
 - Possibility to add DICOM Fields in Report Templates (RTF or Pages): «DICOM_FIELD:ReferringPhysiciansName»
+- Better interpolation for zoom
 
 TODO:
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
