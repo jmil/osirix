@@ -25,7 +25,6 @@ TODO:
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - Add a 'basic' 3d preset group
 - DICOM SR, export, send, ...
-- The other choices I would like considered are 2x1, 2x3, 3x2, 3x3, 3x4, 4x3, 4x5.
 - Editable image annotation options
 - Registration (vtkLandmark, itkLandmark)
 - new DB format
@@ -77,4 +76,6 @@ Image Level:
 - Add optional 'wl' & 'ww' & 'zoom' & 'offset' field
 
 DICOM SR - Level:
-- Referenced UID
+- SopInstanceUID
+- ROIType
+- Path
