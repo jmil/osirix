@@ -16,7 +16,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-//#import "DCMPix.h"				// An object containing an image, including pixels values
+#import "DCMPix.h"				// An object containing an image, including pixels values
 #import "ViewerController.h"	// An object representing a 2D Viewer window
 #import "DCMView.h"				// An object representing the 2D pane, contained in a 2D Viewer window
 #import "MyPoint.h"				// An object representing a point

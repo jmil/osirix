@@ -19,6 +19,7 @@
 #import "ColorTransferView.h"
 #import "OpacityTransferView.h"
 #import "NSFullScreenWindow.h"
+#import "OSIWindowController.h"
 
 
 #define DATABASEPATH				@"/DATABASE/"
@@ -30,7 +31,7 @@
 @class DCMPix;
 @class VTKView;
 
-@interface Window3DController : NSWindowController
+@interface Window3DController : OSIWindowController
 {
 	IBOutlet NSWindow				*setWLWWWindow;
     IBOutlet NSTextField			*wlset, *fromset;
@@ -93,4 +94,11 @@
 - (IBAction) fullScreenMenu: (id) sender;
 - (long) movieFrames;
 - (void) setMovieFrame: (long) l;
+
+- (void) print:(id) sender;
+- (BOOL)is4D;
+
+- (NSArray*) pixList;
+- (NSArray*) fileList;
+
 @end

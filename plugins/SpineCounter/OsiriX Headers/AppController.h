@@ -13,17 +13,17 @@
 =========================================================================*/
 
 
-
+#if !__LP64__
+#import <Growl/Growl.h>
+#endif
 
 #import <AppKit/AppKit.h>
-//#import "DICOMStoreSCPDispatcher.h"
 
 @class PreferenceController;
 @class BrowserController;
 @class SplashScreen;
 @class DCMNetServiceDelegate;
 
-//#define SINGLE_WINDOW_MODE YES
 enum
 {
 	always = 0,
@@ -32,9 +32,22 @@ enum
 	ask = 3
 };
 
-NSRect screenFrame();
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+	NSRect screenFrame();
+	NSString * documentsDirectoryFor( int mode, NSString *url);
+	NSString * documentsDirectory();
+#ifdef __cplusplus
+}
+#endif
 
+#if !__LP64__
+@interface AppController : NSObject	<GrowlApplicationBridgeDelegate>
+#else
 @interface AppController : NSObject
+#endif
 {
 	IBOutlet BrowserController		*browserController;
 
@@ -42,65 +55,88 @@ NSRect screenFrame();
 	IBOutlet NSMenu					*roisMenu;
 	IBOutlet NSMenu					*othersMenu;
 	IBOutlet NSMenu					*dbMenu;
-	IBOutlet NSMenuItem				*syncSeriesMenuItem;
 	IBOutlet NSWindow				*dbWindow;
+	
+	IBOutlet NSDictionary			*previousDefaults;
+	
+	BOOL							showRestartNeeded;
 		
     SplashScreen					*splashController;
 	
     volatile BOOL					quitting;
 	BOOL							verboseUpdateCheck;
     NSTask							*theTask;
+	NSNetService					*BonjourDICOMService;
 	
 	BOOL							xFlipped, yFlipped;  // Dependent on current DCMView settings.
 	
-	//DICOMStoreSCPDispatcher *dicomStoreSCPDispatcher;
-	NSMutableDictionary *currentHangingProtocol;
-	DCMNetServiceDelegate *dicomNetServiceDelegate;
+	NSTimer							*updateTimer;
+	NSMutableDictionary				*currentHangingProtocol;
+	DCMNetServiceDelegate			*dicomNetServiceDelegate;
 }
-
+#pragma mark-
+#pragma mark initialization of the main event loop singleton
 + (id) sharedAppController;
++ (void)checkForPagesTemplate;
+- (void) terminate :(id) sender;
+- (void) restartSTORESCP;
+- (void) startSTORESCP:(id) sender;
+- (void) startDICOMBonjourSearch;
 
-
-- (IBAction) cancelModal: (id) sender;
-- (IBAction) okModal: (id) sender;
+#pragma mark-
+#pragma mark static menu items
+//===============OSIRIX========================
+- (IBAction) about:(id)sender;
+- (IBAction) showPreferencePanel:(id)sender;
+- (IBAction) checkForUpdates:(id) sender;
+//===============WINDOW========================
+- (void) tileWindows:(id)sender;
+- (IBAction) closeAllViewers: (id) sender;
+- (void) checkAllWindowsAreVisible:(id) sender;
+//===============HELP==========================
 - (IBAction) sendEmail: (id) sender;
 - (IBAction) openOsirixWebPage: (id) sender;
+- (IBAction) openOsirixDiscussion: (id) sender;
+//---------------------------------------------
 - (IBAction) help: (id) sender;
 - (IBAction) openOsirixWikiWebPage: (id) sender;
-- (IBAction) openOsirixDiscussion: (id) sender;
-- (IBAction) openOsirixBugReporter: (id) sender;
-- (IBAction) openOsirixFeatureRequest: (id) sender;
+//=============================================
 
-- (IBAction) closeAllViewers: (id) sender;
-- (IBAction) switchRoiTextIfSelected:(id) sender;
-- (IBAction) checkForUpdates:(id) sender;
-- (IBAction) showPreferencePanel:(id)sender;
-- (IBAction) about:(id)sender;
-- (void) startSTORESCP:(id) sender;
-- (void) tileWindows:(id)sender;
+#pragma mark-
+#pragma mark window routines
+- (IBAction) updateViews:(id) sender;
+- (IBAction) saveLayout:(id) sender;
 - (NSScreen *)dbScreen;
 - (NSArray *)viewerScreens;
-- (void) restartSTORESCP;
 - (id) FindViewer:(NSString*) nib :(NSMutableArray*) pixList;
 - (NSArray*) FindRelatedViewers:(NSMutableArray*) pixList;
+- (IBAction) cancelModal: (id) sender;
+- (IBAction) okModal: (id) sender;
+
+#pragma mark-
+#pragma mark growl
+- (void) growlTitle:(NSString*) title description:(NSString*) description name:(NSString*) name;
+- (NSDictionary *) registrationDictionaryForGrowl;
+
+#pragma mark Deprecated. Current Hanging Protocols moveds to Window layout Manager
 - (void) setCurrentHangingProtocolForModality: (NSString*) modality description: (NSString*) description;
 - (NSDictionary*) currentHangingProtocol;
 
-- (void) terminate :(id) sender;
-- (IBAction) cancelModal:(id) sender;
-- (IBAction) okModal:(id) sender;
-- (void) startDICOMBonjourSearch;
-
+#pragma mark-
+#pragma mark display setters and getters
+- (IBAction) saveLayout: (id)sender;
 - (BOOL) xFlipped;
 - (void) setXFlipped: (BOOL) v;
 - (BOOL) yFlipped;
 - (void) setYFlipped: (BOOL) v;
 
-- ( NSMenuItem *)	syncSeriesMenuItem;
-
 #pragma mark-
 #pragma mark Geneva University Hospital (HUG) specific function
-+ (BOOL) isHUG;
 - (void) HUGVerifyComPACSPlugin;
 - (void) HUGDisableBonjourFeature;
+
+#pragma mark-
+#pragma mark HTML Templates
++ (void)checkForHTMLTemplates;
 @end
+

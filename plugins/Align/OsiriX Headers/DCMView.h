@@ -53,13 +53,21 @@ enum
 	tCamera3D,					//	18
 	t2DPoint,					//	19
 	tPlain,						//	20
-	tBonesRemoval				//	21
+	tBonesRemoval,				//	21
+	tWLBlended,					//  22
+	tRepulsor,					//  23
+	tLayerROI,					//	24
+	tROISelector,				//	25
+	tAxis,						//	26 //JJCP
+	tDynAngle					//	27 //JJCP
 };
 
+extern NSString *pasteBoardOsiriX;
+extern NSString *pasteBoardOsiriXPlugin;
 
 enum { annotNone = 0, annotGraphics, annotBase, annotFull };
 enum { barHide = 0, barOrigin, barFused, barBoth };
-
+enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3};
 
 
 @class DCMPix;
@@ -116,18 +124,19 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
     
 	BOOL			suppress_labels; // keep from drawing the labels when command+shift is pressed
 
-	NSString		*shortDateString;
+	NSString		*shortDateString, *shortDateTimeString;
 	NSDictionary	*localeDictionnary;
 
     NSPoint         start, originStart, originOffsetStart, previous;
+	
     float			startWW, curWW, startMin, startMax;
     float			startWL, curWL;
+
+    float			bdstartWW, bdcurWW, bdstartMin, bdstartMax;
+    float			bdstartWL, bdcurWL;
+	
     NSSize          scaleStart, scaleInit;
     
-	BOOL			convolution;
-	short			kernelsize, normalization;
-	short			kernel[ 25];
-	
     float           scaleValue, startScaleValue;
     float           rotation, rotationStart;
     NSPoint			origin, originOffset;
@@ -151,11 +160,16 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 	NSColor			*fontColor;
     GLuint          fontListGL;
 	GLuint          labelFontListGL;
-    
+	float			fontRasterY;
+	
     NSPoint         mesureA, mesureB;
     NSRect          roiRect;
 	NSString		*stringID;
 	NSSize			previousViewSize;
+
+	float			contextualMenuInWindowPosX;
+	float			contextualMenuInWindowPosY;	
+
 	
 	float			mouseXPos, mouseYPos;
 	float			pixelMouseValue;
@@ -189,16 +203,55 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 	NSPoint			display2DPoint;
 	
 	NSMutableDictionary	*stringTextureCache;
+	
+	BOOL           _dragInProgress; // Are we drag and dropping
+	NSTimer			*_mouseDownTimer; //Timer to check if mouseDown is Persisiting;
+	NSImage			*destinationImage; //image will be dropping
+	
+	BOOL			_hasChanged;
+	//Context for rendering to iChat
+	NSOpenGLContext *_alternateContext;
+	NSDictionary *_hotKeyDictionary;
+	
+	BOOL			drawing;
+	
+	int				repulsorRadius;
+	NSPoint			repulsorPosition;
+	NSTimer			*repulsorColorTimer;
+	float			repulsorAlpha, repulsorAlphaSign;
+	BOOL			repulsorROIEdition;
+	long            scrollMode;
+	
+	NSPoint			ROISelectorStartPoint, ROISelectorEndPoint;
+	BOOL			selectorROIEdition;
+	NSMutableArray	*ROISelectorSelectedROIList;
+	
+	BOOL			syncOnLocationImpossible;
+	
+	char			*resampledBaseAddr;
+	char			*resampledTempAddr;
+	
+	int				resampledBaseAddrSize;
 }
++ (void) setDefaults;
++ (void) setCLUTBARS:(int) c ANNOTATIONS:(int) a;
 + (void)setPluginOverridesMouse: (BOOL)override;
 + (void) computePETBlendingCLUT;
++ (NSString*) findWLWWPreset: (float) wl :(float) ww :(DCMPix*) pix;
++ (NSSize)sizeOfString:(NSString *)string forFont:(NSFont *)font;
++ (long) lengthOfString:( char *) cstr forFont:(long *)fontSizeArray;
++ (BOOL) intersectionBetweenTwoLinesA1:(NSPoint) a1 A2:(NSPoint) a2 B1:(NSPoint) b1 B2:(NSPoint) b2 result:(NSPoint*) r;
++ (float) Magnitude:( NSPoint) Point1 :(NSPoint) Point2;
+- (BOOL) softwareInterpolation;
 - (void) applyImageTransformation;
 - (void) initFont;
 - (NSMutableArray*) rectArray;
 -(BOOL) flippedData;
+- (void) gClickCountSetReset;
 -(void) setFlippedData:(BOOL) f;
  -(NSMutableArray*) dcmPixList;
  -(NSMutableArray*) dcmRoiList;
+ -(NSArray*) dcmFilesList;
 - (long) indexForPix: (long) pixIndex; // Return the index into fileList that coresponds to the index in pixList
 - (long) syncSeriesIndex;
 - (void) setSyncSeriesIndex:(long) i;
@@ -207,6 +260,7 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (long) findPlaneAndPoint:(float*) pt :(float*) location;
 - (unsigned char*) getRawPixels:(long*) width :(long*) height :(long*) spp :(long*) bpp :(BOOL) screenCapture :(BOOL) force8bits;
 - (unsigned char*) getRawPixels:(long*) width :(long*) height :(long*) spp :(long*) bpp :(BOOL) screenCapture :(BOOL) force8bits :(BOOL) removeGraphical;
+- (unsigned char*) getRawPixels:(long*) width :(long*) height :(long*) spp :(long*) bpp :(BOOL) screenCapture :(BOOL) force8bits :(BOOL) removeGraphical :(BOOL) squarePixels;
 - (void) setCrossPrev:(NSPoint) c;
 -(NSPoint) cross;
 -(NSPoint) crossPrev;
@@ -216,19 +270,18 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 -(void) multiply:(DCMView*) bV;
 -(void) setBlendingMode:(long) f;
 - (GLuint *) loadTextureIn:(GLuint *) texture blending:(BOOL) blending colorBuf: (unsigned char**) colorBufPtr textureX:(long*) tX textureY:(long*) tY redTable:(unsigned char*) rT greenTable:(unsigned char*) gT blueTable:(unsigned char*) bT;
-//- (void) setSubtraction:(long) imID :(NSPoint) offset;
-- (void) setSubtraction:(long) imID;
-- (void) setSubOffset:(NSPoint) offset;
-
 - (BOOL)xFlipped;
 - (void)setXFlipped: (BOOL)v;
 - (BOOL)yFlipped;
 - (void)setYFlipped:(BOOL) v;
+// checks to see if tool is for ROIs.  maybe better name - (BOOL)isToolforROIs:(long)tool
 - (BOOL) roiTool:(long) tool;
 - (void) sliderAction2DMPR:(id) sender;
 - (void) setStringID:(NSString*) str;
--(NSString*) stringID;
+- (NSString*) stringID;
 - (float) angle;
+- (void) prepareToRelease;
+- (void) orientationCorrectedToView:(float*) correctedOrientation;
 - (void) setCrossCoordinatesPer:(float) val;
 - (void) setCrossCoordinates:(float) x :(float) y :(BOOL) update;
 - (void) setCross:(long) x :(long)y :(BOOL) update;
@@ -239,7 +292,7 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (void) setWLWW:(float) wl :(float) ww;
 - (void)discretelySetWLWW:(float)wl :(float)ww;
 - (void) getWLWW:(float*) wl :(float*) ww;
-- (void) setConv:(short*) matrix :(short) size :(short) norm;
+- (void) getThickSlabThickness:(float*) thickness location:(float*) location;
 - (void) setCLUT:( unsigned char*) r :(unsigned char*) g :(unsigned char*) b;
 - (void) setCurrentTool:(short)i;
 - (short) currentTool;
@@ -247,6 +300,7 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (void) setRightTool:(short) i;
 - (void) dealloc;
 - (NSImage*) nsimage:(BOOL) originalSize;
+- (NSImage*) nsimage:(BOOL) originalSize allViewers:(BOOL) allViewers;
 - (void) setTheMatrix:(NSMatrix*)m;
 - (void) setIndex:(short) index;
 - (void) setIndexWithReset:(short) index :(BOOL)sizeToFit;
@@ -264,26 +318,25 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (void) setScaleValue:(float) x;
 - (float) rotation;
 - (void) setRotation:(float) x;
--(NSPoint) rotatePoint:(NSPoint) a;
+- (NSPoint) rotatePoint:(NSPoint) a;
 - (NSPoint) origin;
 - (NSPoint) originOffset;
 - (void) setOrigin:(NSPoint) x;
 - (void) setOriginOffset:(NSPoint) x;
 - (void) setBlending:(DCMView*) bV;
-- (float) pixelSpacing;
-- (float) pixelSpacingX;
-- (float) pixelSpacingY;
+- (double) pixelSpacing;
+- (double) pixelSpacingX;
+- (double) pixelSpacingY;
 - (void) scaleToFit;
+- (void) scaleBy2AndCenterShutter;
 - (void) setBlendingFactor:(float) f;
 - (void) sliderAction:(id) sender;
 - (DCMPix*)curDCM;
 - (void) roiSet;
--(void) roiSet:(ROI*) aRoi;
+- (void) roiSet:(ROI*) aRoi;
 - (void) colorTables:(unsigned char **) a :(unsigned char **) r :(unsigned char **)g :(unsigned char **) b;
 - (void) blendingColorTables:(unsigned char **) a :(unsigned char **) r :(unsigned char **)g :(unsigned char **) b;
 - (void )changeFont:(id)sender;
-- (NSSize)sizeOfString:(NSString *)string forFont:(NSFont *)font;
-- (long) lengthOfString:( char *) cstr forFont:(long *)fontSizeArray;
 - (void) getCrossCoordinates:(float*) x: (float*) y;
 - (IBAction) sliderRGBFactor:(id) sender;
 - (IBAction) alwaysSyncMenu:(id) sender;
@@ -295,6 +348,10 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (IBAction) roiLoadFromXMLFiles: (id) sender;
 - (float)mouseXPos;
 - (float)mouseYPos;
+- (float) contextualMenuInWindowPosX;
+- (float) contextualMenuInWindowPosY;
+- (BOOL)checkHasChanged;
+- (BOOL)_checkHasChanged:(BOOL)flag;
 - (GLuint)fontListGL;
 - (void) drawRectIn:(NSRect) size :(GLuint *) texture :(NSPoint) offset :(long) tX :(long) tY;
 - (void) DrawNSStringGL: (NSString*) cstrOut :(GLuint) fontL :(long) x :(long) y;
@@ -308,23 +365,23 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (NSFont*)fontGL;
 - (void) setScaleValueCentered:(float) x;
 //notifications
--(void) updateCurrentImage: (NSNotification*) note;
--(void)updateImageTiling:(NSNotification *)note;
--(void)setImageParamatersFromView:(DCMView *)aView;
--(void) setRows:(int)rows columns:(int)columns;
--(void)setTag:(int)aTag;
--(int)tag;
--(float)curWW;
--(float)curWL;
--(float)scaleValue;
--(NSPoint)origin;
+- (void) updateCurrentImage: (NSNotification*) note;
+- (void)updateImageTiling:(NSNotification *)note;
+- (void)setImageParamatersFromView:(DCMView *)aView;
+- (void) setRows:(int)rows columns:(int)columns;
+- (void)setTag:( long)aTag;
+- (long)tag;
+- (float)curWW;
+- (float)curWL;
+- (float)scaleValue;
+- (NSPoint)origin;
 - (int)rows;
 - (int)columns;
--(DCMView *)blendingView;
+- (DCMView *)blendingView;
 - (float)blendingFactor;
 - (float)blendingMode;
 - (NSCursor *)cursor;
--(void) becomeMainWindow;
+- (void) becomeMainWindow;
 - (BOOL)eraserFlag;
 - (void)setEraserFlag: (BOOL)aFlag;
 - (NSManagedObject *)imageObj;
@@ -337,15 +394,54 @@ enum { barHide = 0, barOrigin, barFused, barBoth };
 - (void)resizeWindowToScale:(float)resizeScale;
 - (float) getBlendedSUV;
 - (OrthogonalMPRController*) controller;
--(void) roiChange:(NSNotification*)note;
--(void) roiSelected:(NSNotification*) note;
+- (void) roiChange:(NSNotification*)note;
+- (void) roiSelected:(NSNotification*) note;
 - (void) setStartWLWW;
 - (void) stopROIEditing;
+- (void) stopROIEditingForce:(BOOL) force;
 - (void)subDrawRect: (NSRect)aRect;  // Subclassable, default does nothing.
+- (void) setDrawing:(BOOL) v;
 
 // methodes to access global variables (for plugins)
 + (BOOL) display2DMPRLines;
 + (unsigned char*) PETredTable;
 + (unsigned char*) PETgreenTable;
 + (unsigned char*) PETblueTable;
+
+//Timer method to start drag
+- (void) startDrag:(NSTimer*)theTimer;
+- (void)deleteMouseDownTimer;
+- (id)dicomImage;
+
+//windowController
+- (id)windowController;
+- (BOOL)is2DViewer;
+
+//Hot key action
+-(BOOL)actionForHotKey:(NSString *)hotKey;
+
+//iChat
+// New Draw method to allow for IChat Theater
+- (void) drawRect:(NSRect)aRect withContext:(NSOpenGLContext *)ctx;
+- (BOOL)_checkHasChanged:(BOOL)flag;
+
+// Methods for mouse drag response  Can be modified for subclassing
+// This allow the various tools to  have different responses indifferent subclasses.
+// Making it easie to modify mouseDragged:
+- (NSPoint)currentPointInView:(NSEvent *)event;
+- (BOOL)checkROIsForHitAtPoint:(NSPoint)point forEvent:(NSEvent *)event;
+- (void)mouseDraggedForROIs:(NSEvent *)event;
+- (void)mouseDraggedCrosshair:(NSEvent *)event;
+- (void)mouseDragged3DRotate:(NSEvent *)event;
+- (void)mouseDraggedZoom:(NSEvent *)event;
+- (void)mouseDraggedTranslate:(NSEvent *)event;
+- (void)mouseDraggedRotate:(NSEvent *)event;
+- (void)mouseDraggedImageScroll:(NSEvent *)event;
+- (void)mouseDraggedBlending:(NSEvent *)event;
+- (void)mouseDraggedWindowLevel:(NSEvent *)event;
+- (void)mouseDraggedRepulsor:(NSEvent *)event;
+- (void)mouseDraggedROISelector:(NSEvent *)event;
+
+- (void)deleteROIGroupID:(NSTimeInterval)groupID;
+
 @end

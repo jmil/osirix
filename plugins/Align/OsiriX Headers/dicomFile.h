@@ -46,14 +46,17 @@
 // file functions
 + (BOOL) isTiffFile:(NSString *) file;
 + (BOOL) isFVTiffFile:(NSString *) file;
++ (BOOL) isNIfTIFile:(NSString *) file;
 + (BOOL) isDICOMFile:(NSString *) file;
++ (BOOL) isDICOMFile:(NSString *) file compressed:(BOOL*) compressed;
 + (BOOL) isXMLDescriptedFile:(NSString *) file;
 + (BOOL) isXMLDescriptorFile:(NSString *) file;
-
++ (void) setFilesAreFromCDMedia: (BOOL) f;
 + (void) setDefaults;
 + (void) resetDefaults;
 + (NSString*) NSreplaceBadCharacter: (NSString*) str;
 + (char *) replaceBadCharacter:(char *) str encoding: (NSStringEncoding) encoding;
++ (NSString *) stringWithBytes:(char *) str encodings: (NSStringEncoding*) encoding;
 
 - (long) NoOfFrames;
 - (long) getWidth;
@@ -71,11 +74,16 @@
 
 - (id) initWithXMLDescriptor: (NSString*)pathToXMLDescriptor path:(NSString*) f;
 -(short) getDicomFile;
+-(short) getNIfTI;
++(NSXMLDocument *) getNIfTIXML : (NSString *) file;
 - (BOOL)autoFillComments;
 - (BOOL)splitMultiEchoMR;
+- (BOOL)useSeriesDescription;
 - (BOOL) noLocalizer;
 - (BOOL)combineProjectionSeries;
+- (BOOL)combineProjectionSeriesMode;
 - (BOOL)checkForLAVIM;
+- (BOOL)separateCardiac4D;
 - (int)commentsGroup ;
 - (int)commentsElement ;
 @end

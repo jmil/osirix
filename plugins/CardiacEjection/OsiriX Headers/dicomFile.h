@@ -1,105 +1,91 @@
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
+
+
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
-@class ViewerController;
 
-@interface DicomFile: NSObject <NSCoding>
+
+@interface DicomFile: NSObject
 {
-    NSCalendarDate      *date;
-    NSString            *description, *descriptionshort;
     NSString            *name;
     NSString            *study;
     NSString            *serie;
-    NSString            *filePath;
+    NSString            *filePath, *fileType;
     NSString            *Modality;
 	NSString			*SOPUID;
-	NSString			*comment;
+	NSString			*imageType;
     
     NSString            *studyID;
     NSString            *serieID;
     NSString            *imageID;
 	NSString			*patientID;
 	NSString			*studyIDs;
-	NSString			*sliceLocation;
-    
-    char                type;
-    long                noFiles;
-    long                filesSize;
+	NSString			*seriesNo;
+    NSCalendarDate		*date;
+	
 	long				width, height;
 	long				NoOfFrames;
 	long				NoOfSeries;
     
-    NSMutableArray      *child;
-	NSMutableArray		*father;
-	DicomFile			*fatherDicomFile;
-    
-    ViewerController    *viewer[ 50];
-    
-    NSString            *fatherDescription;
-    NSString            *stringForSorting;
-	
-	NSCalendarDate		*dateAdded, *dateOpened;
-	
-	BOOL				loadingFlag;
-	BOOL				valid;
-	BOOL				local;
-	BOOL				iPod;
-	
 	NSMutableDictionary *dicomElements;
+	
 }
+// file functions
++ (BOOL) isTiffFile:(NSString *) file;
++ (BOOL) isFVTiffFile:(NSString *) file;
++ (BOOL) isNIfTIFile:(NSString *) file;
++ (BOOL) isDICOMFile:(NSString *) file;
++ (BOOL) isDICOMFile:(NSString *) file compressed:(BOOL*) compressed;
++ (BOOL) isXMLDescriptedFile:(NSString *) file;
++ (BOOL) isXMLDescriptorFile:(NSString *) file;
++ (void) setFilesAreFromCDMedia: (BOOL) f;
++ (void) setDefaults;
++ (void) resetDefaults;
++ (NSString*) NSreplaceBadCharacter: (NSString*) str;
++ (char *) replaceBadCharacter:(char *) str encoding: (NSStringEncoding) encoding;
++ (NSString *) stringWithBytes:(char *) str encodings: (NSStringEncoding*) encoding;
 
-- (NSCalendarDate*) dateOpened;
-- (void) setDateAdded:(NSCalendarDate*) d;
-- (BOOL) valid;
 - (long) NoOfFrames;
-- (long) NoOfSeries;
-- (BOOL) loadingFlag;
-- (BOOL) setLoadingFlag:(BOOL)w;
 - (long) getWidth;
 - (long) getHeight;
-- (void) setWidthHeight:(short) w :(short)h;
-- (void) addChild:(NSMutableArray*) p;
-- (NSMutableArray*) child;
-- (void) setFather: (NSMutableArray*) p :(DicomFile*) f;
-- (NSMutableArray*) father;
-- (void) computeStringForSorting;
-- (BOOL) findViewer :(long) s;
-- (void) setViewer:(ViewerController*) v forSerie:(long)s;
-- (void) setDType:(char)t;
-- (char) Dtype;
-- (NSCalendarDate*) dateAdded;
-- (void) setDescription:(NSString*)d :(NSString*)e;
-- (NSString*) description;
-- (NSString*) descriptionshort;
-- (NSString*) fatherDescription;
-- (void) setNo:(long)a setSize:(long)b;
-- (void) addNo:(long)a addSize:(long)b;
-- (NSString *)stringForSorting;
-- (NSString *)filesSizeFormatted;
-- (NSComparisonResult)compareDcm:(DicomFile *)p;
+- (long) NoOfSeries;
 - (id) init:(NSString*) f;
-- (id) initWithObject: (DicomFile*) other;
-- (NSString*) patName;
-- (NSString*) filePath;
-- (NSCalendarDate*) date;
-- (NSString*) study;
-- (NSString*) serie;
-- (NSString*) studyIDs;
-- (NSString*) serieID;
-- (NSString*) imageID;
-- (NSString*) Modality;
-- (NSString*) patientID;
-- (NSString*) studyID;
-- (NSString*) SOPUID;
-- (NSString *)uid;
-- (NSString*) sliceLocation;
-- (long) filesSize;
-- (long) noFiles;
-- (BOOL) local;
-- (BOOL) iPod;
-- (void) setLocal :(BOOL) l;
-- (void) SetDateOpened;
-- (void) setModality:(NSString*) m;
-- (void) setNoFiles:(long)number;
+- (id) init:(NSString*) f DICOMOnly:(BOOL) DICOMOnly;
+- (id) initRandom;
+- (NSString*) patientUID;
 - (NSMutableDictionary *)dicomElements;
+- (id)elementForKey:(id)key;
+- (short)getPluginFile;
+- (void)extractSeriesStudyImageNumbersFromFileName:(NSString *)tempString;
+- (short) decodeDICOMFileWithDCMFramework;
+
+- (id) initWithXMLDescriptor: (NSString*)pathToXMLDescriptor path:(NSString*) f;
+-(short) getDicomFile;
+-(short) getNIfTI;
++(NSXMLDocument *) getNIfTIXML : (NSString *) file;
+- (BOOL)autoFillComments;
+- (BOOL)splitMultiEchoMR;
+- (BOOL)useSeriesDescription;
+- (BOOL) noLocalizer;
+- (BOOL)combineProjectionSeries;
+- (BOOL)combineProjectionSeriesMode;
+- (BOOL)checkForLAVIM;
+- (BOOL)separateCardiac4D;
+- (int)commentsGroup ;
+- (int)commentsElement ;
 @end
+
+

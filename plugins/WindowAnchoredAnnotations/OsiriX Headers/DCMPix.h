@@ -21,7 +21,7 @@
 #define USEVIMAGE
 
 typedef struct {
-   float x,y,z;
+   double x,y,z;
 } XYZ;
 
 extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
@@ -48,8 +48,8 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 //DICOM TAGS
 
 //	orientation
-	float				originX, originY, originZ;
-	float				orientation[ 9];
+	double				originX, originY, originZ;
+	double				orientation[ 9];
 
 //	pixel representation
 	BOOL				fIsSigned;
@@ -64,7 +64,7 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 
 //	planar configuration
 	long				fPlanarConf;
-    float               pixelSpacingX, pixelSpacingY, pixelRatio;
+    double               pixelSpacingX, pixelSpacingY, pixelRatio;
 
 //	photointerpretation
 	BOOL				isRGB;
@@ -76,7 +76,7 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	float				patientsWeight;
 	NSString			*repetitiontime;
 	NSString			*echotime;
-	NSString			*flipAngle;
+	NSString			*flipAngle, *laterality;
 	NSString			*protocolName;
 	NSString			*viewPosition;
 	NSString			*patientPosition;
@@ -100,19 +100,31 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	NSPoint				subPixOffset;
 	NSPoint				subMinMax;
 	float				subtractedfPercent;
+	float				subtractedfZ;
 	float				subtractedfZero;
+	float				subtractedfGamma;
 	GammaFunction		subGammaFunction;
 	
 	long				maskID;
 	float				maskTime;
 	float				fImageTime;
-	float				rot;
-	float				ang;
+	//float				rot;
+	//float				ang;
+	NSNumber			*positionerPrimaryAngle;
+	NSNumber			*positionerSecondaryAngle;
 	
 	long				shutterRect_x;
 	long				shutterRect_y;
 	long				shutterRect_w;
 	long				shutterRect_h;
+	
+	long				shutterCircular_x;
+	long				shutterCircular_y;
+	long				shutterCircular_radius;
+	
+	NSPoint	 			*shutterPolygonal;
+	long				shutterPolygonalSize;
+	
 	BOOL				DCMPixShutterOnOff;
 
 //-------------------------------------------------------	
@@ -130,7 +142,9 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	float				cineRate;
 
 //slice
-    float               sliceInterval, sliceLocation, sliceThickness;
+    double				sliceInterval, sliceLocation, sliceThickness;
+	double				spacingBetweenSlices;								//SpacingBetweenSlices (0018,0088)
+	
 //stack
 	short				stack;
 	short				stackMode, pixPos, stackDirection;
@@ -154,7 +168,16 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	BOOL				useVOILUT;
 	int					VOILUT_first;
 	unsigned int		VOILUT_number, VOILUT_depth, *VOILUT_table;
+	
+	char				blackIndex;
+	
+	NSPoint				independentOffset;
+	float				independentRotation, independentZoom;
 }
+
++ (void) checkUserDefaults: (BOOL) update;
++ (void) resetUserDefaults;
++ (BOOL) IsPoint:(NSPoint) x inPolygon:(NSPoint*) poly size:(int) count;
 
 // Is it an RGB image (ARGB) or float image?
 - (BOOL) isRGB;
@@ -184,13 +207,24 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 - (void) setMaxValueOfSeries: (float) f;
 - (float) minValueOfSeries;
 - (void) setMinValueOfSeries: (float) f;
-
+-(NSPoint) independentOffset;
+-(void) setIndependentOffset:(NSPoint) z;
+-(float) independentRotation;
+-(void) setIndependentRotation:(float) z;
+-(float) independentZoom;
+-(void) setIndependentZoom:(float) z;
 // Compute ROI data
+- (int)calciumCofactorForROI:(ROI *)roi threshold:(int)threshold;
 - (void) computeROI:(ROI*) roi :(float *)mean :(float *)total :(float *)dev :(float *)min :(float *)max;
+- (void) computeROIInt:(ROI*) roi :(float*) mean :(float *)total :(float *)dev :(float *)min :(float *)max;
 
 // Fill a ROI with a value!
+- (void) fillROI:(ROI*) roi newVal :(float) newVal minValue :(float) minValue maxValue :(float) maxValue outside :(BOOL) outside orientationStack :(long) orientationStack stackNo :(long) stackNo restore :(BOOL) restore addition:(BOOL) addition;
+- (void) fillROI:(ROI*) roi :(float) newVal :(float) minValue :(float) maxValue :(BOOL) outside :(long) orientationStack :(long) stackNo :(BOOL) restore;
 - (void) fillROI:(ROI*) roi :(float) newVal :(float) minValue :(float) maxValue :(BOOL) outside :(long) orientation :(long) stackNo;
 - (void) fillROI:(ROI*) roi :(float) newVal :(float) minValue :(float) maxValue :(BOOL) outside;
+
+- (unsigned char*) getMapFromPolygonROI:(ROI*) roi;
 
 // Is this Point (pt) in this ROI ?
 - (BOOL) isInROI:(ROI*) roi :(NSPoint) pt;
@@ -202,37 +236,46 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 
 // X/Y ratio - non-square pixels
 -(void) setPixelRatio:(float)r;
--(float) pixelRatio;
+-(double) pixelRatio;
 
 // pixel size
--(float) pixelSpacingX;
--(float) pixelSpacingY;
--(void) setPixelSpacingX :(float) s;
--(void) setPixelSpacingY :(float) s;
+-(double) pixelSpacingX;
+-(double) pixelSpacingY;
+-(void) setPixelSpacingX :(double) s;
+-(void) setPixelSpacingY :(double) s;
 
 // Slice orientation
 -(void) orientation:(float*) c;
 -(void) setOrientation:(float*) c;
 
+-(void) orientationDouble:(double*) c;
+-(void) setOrientationDouble:(double*) c;
+
 // Slice location
--(float) originX;
--(float) originY;
--(float) originZ;
+-(double) originX;
+-(double) originY;
+-(double) originZ;
 -(void) setOrigin :(float*) o;
+-(void) setOriginDouble :(double*) o;
 
 // Utility methods to convert user supplied pixel coords to DICOM patient coords float d[3] (in mm)
 // using current slice location and orientation and vice versa
 -(void) convertPixX: (float) x pixY: (float) y toDICOMCoords: (float*) d;
+-(void) convertPixDoubleX: (double) x pixY: (double) y toDICOMCoords: (double*) d;
+
 -(void) convertDICOMCoords: (float*) dc toSliceCoords: (float*) sc;
+-(void) convertDICOMCoordsDouble: (double*) dc toSliceCoords: (double*) sc;
+
 +(int) nearestSliceInPixelList: (NSArray*)pixlist withDICOMCoords: (float*)dc sliceCoords: (float*) sc;  // Return index & sliceCoords
 
 // Thickness/Axial Location
--(float) sliceLocation;
+-(double) sliceLocation;
 -(void) setSliceLocation:(float) l;
--(float) sliceThickness;
+-(double) sliceThickness;
 -(void) setSliceThickness:(float) l;
--(float) sliceInterval;
+-(double) sliceInterval;
 -(void) setSliceInterval :(float) s;
+-(double) spacingBetweenSlices;
 
 // ID / FrameNo
 -(long) ID;
@@ -252,6 +295,7 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 
 //DSA
 - (void) setSubSlidersPercent: (float) p gamma: (float) g zero: (float) z;
+- (void) setSubSlidersPercent: (float) p;
 - (NSPoint) subPixOffset;
 - (void) setSubPixOffset:(NSPoint) subOffset;
 - (NSPoint) subMinMax:(float*)input :(float*)subfImage;
@@ -264,11 +308,12 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 -(long) maskID;
 -(void) maskTime:(float)newMaskTime;
 -(float) maskTime;
--(void) rot:(float)newRot;
--(float) rot;
--(void) ang:(float)newAng;
--(float) ang;
-
+-(void) positionerPrimaryAngle:(NSNumber *)newPositionerPrimaryAngle;
+-(NSNumber*) positionerPrimaryAngle;
+-(void) positionerSecondaryAngle:(NSNumber*)newPositionerSecondaryAngle;
+-(NSNumber*) positionerSecondaryAngle;
++ (NSPoint) originDeltaBetween:(DCMPix*) pix1 And:(DCMPix*) pix2;
+- (void) setBlackIndex:(int) i;
 + (NSImage*) resizeIfNecessary:(NSImage*) currentImage dcmPix: (DCMPix*) dcmPix;
 -(void) DCMPixShutterRect:(long)x:(long)y:(long)w:(long)h;
 -(long) DCMPixShutterRectWidth;
@@ -283,6 +328,7 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 - (NSString*) repetitiontime;
 - (NSString*) echotime;
 - (NSString*) flipAngle;
+- (NSString*) laterality;
 - (void) setRepetitiontime:(NSString*)rep;
 - (void) setEchotime:(NSString*)echo;
 - (NSString*) protocolName;
@@ -357,6 +403,10 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 - (void) setThickSlabController:( ThickSlabController*) ts;
 - (void) setFixed8bitsWLWW:(BOOL) f;
 - (BOOL) generated;
+- (void) prepareRestore;
+- (void) freeRestore;
++ (void) setRunOsiriXInProtectedMode:(BOOL) v;
++ (BOOL) isRunOsiriXInProtectedModeActivated;
 
 //Database links
 - (NSManagedObject *)imageObj;

@@ -1,10 +1,19 @@
-//
-//  MyPoint.h
-//  OsiriX
-//
-//  Created by rossetantoine on Mon Mar 29 2004.
-//  Copyright (c) 2004 ROSSET Antoine. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
+
+
+
 
 #import <Foundation/Foundation.h>
 
@@ -22,7 +31,7 @@
 - (float) x;
 - (NSPoint) point;
 - (BOOL) isEqualToPoint:(NSPoint) a;
-- (BOOL) isNearToPoint:(NSPoint) a :(float) scale;
+- (BOOL) isNearToPoint:(NSPoint) a :(float) scale :(float) ratio;
 - (void) move:(float) x :(float) y;
 
 @end

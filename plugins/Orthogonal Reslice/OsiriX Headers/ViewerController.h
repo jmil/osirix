@@ -12,11 +12,26 @@
      PURPOSE.
 =========================================================================*/
 
-
-
-
 #import <Cocoa/Cocoa.h>
 #import <AppKit/AppKit.h>
+
+//#import "DCMView.h"
+//#import "OpacityTransferView.h"
+//#import "ColorTransferView.h"
+//#import "MyPoint.h"
+//#import "ROI.h"
+//#import "ThickSlabController.h"
+//#import "StudyView.h"
+//#import "SeriesView.h"
+//#import "CurvedMPR.h"
+//#import "DICOMExport.h"
+//#import "KeyObjectPopupController.h"
+//#import "VRController.h"
+//#import "MPR2DController.h"
+//#import "OrthogonalMPRViewer.h"
+//#import "OrthogonalMPRPETCTViewer.h"
+//#import "SRController.h"
+//#import "EndoscopyViewer.h"
 
 @class DCMView;
 @class OpacityTransferView;
@@ -31,12 +46,12 @@
 @class DICOMExport;
 @class KeyObjectPopupController;
 @class VRController;
-@class VRPROController;
 @class MPR2DController;
 @class OrthogonalMPRViewer;
 @class OrthogonalMPRPETCTViewer;
 @class SRController;
 @class EndoscopyViewer;
+@class VRPROController;
 
 #import "Schedulable.h"
 #import "Scheduler.h"
@@ -63,13 +78,15 @@ enum
 
 	IBOutlet NSSplitView	*splitView;
 	IBOutlet NSMatrix		*previewMatrix;
+	IBOutlet NSScrollView	*previewMatrixScrollView;
 	BOOL					matrixPreviewBuilt;
 	
     IBOutlet NSWindow       *quicktimeWindow;
 	IBOutlet NSMatrix		*quicktimeMode;
 	IBOutlet NSSlider		*quicktimeInterval, *quicktimeFrom, *quicktimeTo;
-	IBOutlet NSTextField	*quicktimeIntervalText, *quicktimeFromText, *quicktimeToText;
+	IBOutlet NSTextField	*quicktimeIntervalText, *quicktimeFromText, *quicktimeToText, *quicktimeNumber;
 	IBOutlet NSBox			*quicktimeBox;
+	IBOutlet NSButton		*quicktimeAllViewers;
 	
 	DCMView					*imageView;
 	
@@ -95,6 +112,8 @@ enum
     IBOutlet NSPopUpButton  *clutPopup;
 	IBOutlet NSPopUpButton  *OpacityPopup;
 	
+	IBOutlet NSView			*propagateSettingsView;
+	
 	IBOutlet NSView         *subCtrlView;
 			 BOOL			enableSubtraction;
 	IBOutlet NSButton		*subCtrlOnOff;
@@ -112,15 +131,14 @@ enum
 	IBOutlet NSButton		*sc7;
 	IBOutlet NSButton		*sc8;
 	IBOutlet NSButton		*sc9;
-
-    IBOutlet NSSlider       *subCtrlZero;
-    IBOutlet NSSlider       *subCtrlGamma;
+	
     IBOutlet NSSlider       *subCtrlSum;
     IBOutlet NSSlider       *subCtrlPercent;
 	IBOutlet NSButton		*subCtrlSharpenButton;
 	IBOutlet NSButton		*shutterOnOff;
 	IBOutlet NSView			*shutterView;
-
+			 NSString		*contextualDictionaryPath; //JF20070102
+			 
 			 long			speedometer;
 		 
 	IBOutlet NSView			*StatusView;
@@ -129,7 +147,6 @@ enum
 	IBOutlet NSWindow		*CommentsWindow;
 	IBOutlet NSTextField    *CommentsEditField;
 	
-	IBOutlet NSButton		*keyImageDisplay;
 	IBOutlet NSButton		*keyImageCheck;
 	
 	
@@ -151,7 +168,7 @@ enum
     
 	IBOutlet NSWindow       *roiSetPixWindow;
 	IBOutlet NSTextField    *maxValueText, *minValueText, *newValueText;
-	IBOutlet NSMatrix		*InOutROI, *AllROIsRadio;
+	IBOutlet NSMatrix		*InOutROI, *AllROIsRadio, *newValueMatrix;
 	IBOutlet NSButton		*checkMaxValue, *checkMinValue, *setROI4DSeries;
 
 	IBOutlet NSWindow       *curvedMPRWindow;
@@ -166,12 +183,15 @@ enum
 	
 	IBOutlet NSWindow       *blendingTypeWindow;
 	IBOutlet NSButton		*blendingTypeMultiply, *blendingTypeSubtract;
-	IBOutlet NSButton		*blendingTypeRed, *blendingTypeGreen, *blendingTypeBlue, *blendingTypeRGB;
+	IBOutlet NSButton		*blendingTypeRed, *blendingTypeGreen, *blendingTypeBlue;
 	IBOutlet NSPopUpButton  *blendingPlugins;
 	
 	IBOutlet NSWindow       *roiPropaWindow;
 	IBOutlet NSMatrix		*roiPropaMode, *roiPropaDim, *roiPropaCopy;
 	IBOutlet NSTextField	*roiPropaDest;
+	
+	IBOutlet NSWindow		*roiApplyWindow;
+	IBOutlet NSMatrix		*roiApplyMatrix;
 	
 	IBOutlet NSWindow       *addConvWindow;
 	IBOutlet NSMatrix		*convMatrix, *sizeMatrix;
@@ -184,8 +204,9 @@ enum
 	IBOutlet NSWindow       *dcmExportWindow;
 	IBOutlet NSMatrix		*dcmSelection, *dcmFormat;
 	IBOutlet NSSlider		*dcmInterval, *dcmFrom, *dcmTo;
-	IBOutlet NSTextField	*dcmIntervalText, *dcmFromText, *dcmToText;
+	IBOutlet NSTextField	*dcmIntervalText, *dcmFromText, *dcmToText, *dcmNumber;
 	IBOutlet NSBox			*dcmBox;
+	IBOutlet NSButton		*dcmAllViewers;
 	IBOutlet NSTextField	*dcmSeriesName;
 	
 	IBOutlet NSWindow       *imageExportWindow;
@@ -217,6 +238,7 @@ enum
 	
 	IBOutlet NSTextField    *stacksFusion;
 	IBOutlet NSSlider       *sliderFusion;
+	IBOutlet NSButton		*activatedFusion;
 	IBOutlet NSPopUpButton  *popFusion, *popupRoi, *ReconstructionRoi;
 	
 	IBOutlet NSMatrix		*buttonToolMatrix;
@@ -252,6 +274,7 @@ enum
 	DICOMExport				*exportDCM;
 	
 	BOOL					windowWillClose;
+	BOOL					postprocessed;
 	
 	NSRect					standardRect;
 	
@@ -261,12 +284,14 @@ enum
 	IBOutlet NSTextField	*structuringElementRadiusTextField;
 	IBOutlet NSButton		*brushROIFilterOptionsAllWithSameName;
 	IBOutlet NSButton		*brushROIFilterOptionsOKButton;
+	NSString				*morphoFunction;
+	BOOL					morphoFunctionPreviewApplied;
 	IBOutlet NSPopUpButton	*keyImagePopUpButton;
 	
 	KeyObjectPopupController *keyObjectPopupController;
 	BOOL					displayOnlyKeyImages;
 	
-	int						qt_to, qt_from, qt_interval, qt_dimension, current_qt_interval;
+	int						qt_to, qt_from, qt_interval, qt_dimension, current_qt_interval, qt_allViewers;
 	
 	IBOutlet NSView			*reportTemplatesView;
 	IBOutlet NSImageView	*reportTemplatesImageView;
@@ -284,7 +309,17 @@ enum
 	IBOutlet NSColorWell	*printColor;
 	IBOutlet NSPopUpButton	*printLayout;
 	IBOutlet NSTextField	*printText, *printPagesToPrint;
+	
+	NSMutableArray			*undoQueue, *redoQueue;
+	
+	BOOL					SyncButtonBehaviorIsBetweenStudies;
+	
+	float					resampleRatio;
+	
+	NSRect					savedWindowsFrame;
 }
+
++ (NSMutableArray*) getDisplayed2DViewers;
 
 // Create a new 2D Viewer
 + (ViewerController *) newWindow:(NSMutableArray*)pixList :(NSMutableArray*)fileList :(NSData*) volumeData;
@@ -343,6 +378,18 @@ enum
 // UNDOCUMENTED FUNCTIONS
 // For more informations: rossetantoine@bluewin.ch
 
+- (void) addToUndoQueue:(NSString*) string;
+- (id) prepareObjectForUndo:(NSString*) string;
+- (IBAction) redo:(id) sender;
+- (IBAction) undo:(id) sender;
+- (void) updateRepresentedFileName;
+- (IBAction) closeModal:(id) sender;
+- (void)bringToFrontROI:(ROI*)roi;
+- (void) activateFusion:(id) sender;
+- (void) copySettingsToOthers: (id)sender;
+- (void) setPostprocessed:(BOOL) v;
+- (BOOL) postprocessed;
+- (void) refresh;
 - (IBAction) setPagesToPrint:(id) sender;
 - (IBAction) endPrint:(id) sender;
 - (IBAction) startMSRG:(id) sender;
@@ -356,7 +403,11 @@ enum
 - (void)addPlainRoiToCurrentSliceFromBuffer:(unsigned char*)buff;
 - (void)addRoiFromFullStackBuffer:(unsigned char*)buff withName:(NSString*)name;
 - (void)addPlainRoiToCurrentSliceFromBuffer:(unsigned char*)buff withName:(NSString*)name;
--(void)addPlainRoiToCurrentSliceFromBuffer:(unsigned char*)buff forSpecificValue:(unsigned char)value withColor:(RGBColor)aColor withName:(NSString*)name;
+- (void)addPlainRoiToCurrentSliceFromBuffer:(unsigned char*)buff forSpecificValue:(unsigned char)value withColor:(RGBColor)aColor withName:(NSString*)name;
+- (ROI*)addLayerRoiToCurrentSliceWithImage:(NSImage*)image referenceFilePath:(NSString*)path layerPixelSpacingX:(float)layerPixelSpacingX layerPixelSpacingY:(float)layerPixelSpacingY;
+- (ROI*)createLayerROIFromROI:(ROI*)roi;
+- (void)createLayerROIFromSelectedROI;
+- (IBAction)createLayerROIFromSelectedROI:(id)sender;
 - (NSLock*) roiLock;
 - (void) brushTool:(id) sender;
 - (IBAction) setButtonTool:(id) sender;
@@ -365,9 +416,12 @@ enum
 - (void) setImageIndex:(long) i;
 - (IBAction) ConvertToRGBMenu:(id) sender;
 - (IBAction) ConvertToBWMenu:(id) sender;
+- (void) place3DViewerWindow:(NSWindowController*) viewer;
 - (IBAction) export2PACS:(id) sender;
 - (void) print:(id) sender;
 - (IBAction) roiDeleteWithName:(NSString*) name;
+- (IBAction) roiIntDeleteAllROIsWithSameName :(NSString*) name;
+- (IBAction) roiDeleteAllROIsWithSameName:(id) sender;
 - (IBAction)resampleDataBy2:(id)sender;
 - (BOOL)resampleDataBy2;
 - (BOOL)resampleDataWithFactor:(float)factor;
@@ -383,6 +437,11 @@ enum
 - (void) offsetMatrixSetting: (int) twentyFiveCodes;
 - (IBAction) subSumSlider:(id) sender;
 - (IBAction) subSharpen:(id) sender;
+//JF20070103
+- (void) contextualDictionaryPath:(NSString *)newContextualDictionaryPath;
+- (NSString *) contextualDictionaryPath;
+- (void) contextualMenuEvent:(id)sender;
+- (IBAction) setAxialOrientation:(id) sender;
 - (IBAction) reSyncOrigin:(id) sender;
 - (void) loadROI:(long) mIndex;
 - (void) saveROI:(long) mIndex;
@@ -434,6 +493,7 @@ enum
 - (ViewerController*) blendingController;
 - (void)blendWithViewer:(ViewerController *)bc blendingType:(int)blendingType;
 - (NSString*) modality;
+- (NSString*) studyInstanceUID;
 - (void) addMovieSerie:(NSMutableArray*)f :(NSMutableArray*)d :(NSData*) v;
 - (void) startLoadImageThread;
 - (void) moviePosSliderAction:(id) sender;
@@ -442,8 +502,10 @@ enum
 - (void) MovieStop:(id) sender;
 - (void) checkEverythingLoaded;
 - (BOOL) isEverythingLoaded;
+- (IBAction) roiSetPixelsCheckButton:(id) sender;
 - (IBAction) roiSetPixelsSetup:(id) sender;
 - (IBAction) roiSetPixels:(ROI*)aROI :(short)allRois :(BOOL)propagateIn4D :(BOOL)outside :(float)minValue :(float)maxValue :(float)newValue;
+- (IBAction) roiSetPixels:(ROI*)aROI :(short)allRois :(BOOL) propagateIn4D :(BOOL)outside :(float)minValue :(float)maxValue :(float)newValue :(BOOL) revert;
 - (IBAction) roiSetPixels:(id) sender;
 - (IBAction) roiPropagateSetup: (id) sender;
 - (IBAction) roiPropagate:(id) sender;
@@ -454,16 +516,16 @@ enum
 //- (IBAction) MPRViewer:(id) sender;
 - (IBAction) VRVPROViewer:(id) sender;
 - (IBAction) VRViewer:(id) sender;
-
 - (IBAction) MPR2DViewer:(id) sender;
-
+- (IBAction) blendWindows:(id) sender;
 - (IBAction) orthogonalMPRViewer:(id) sender;
 
 - (IBAction) endoscopyViewer:(id) sender;
 - (IBAction) CurvedMPR:(id) sender;
-
+- (void) showCurrentThumbnail:(id) sender;
 
 - (IBAction) SRViewer:(id) sender;
+- (NSMenu *)contextualMenu;
 - (void)createDCMViewMenu;
 - (void) exportJPEG:(id) sender;
 - (void)closeAllWindows:(NSNotification *)note;
@@ -479,7 +541,8 @@ enum
 -(IBAction) PagePadCreate:(id) sender;
 - (void) exportQuicktime:(id) sender;
 - (IBAction) exportQuicktimeSlider:(id) sender;
-- (IBAction) exportDICOMSlider:(id) sender;;
+- (IBAction) exportDICOMSlider:(id) sender;
+- (IBAction) exportDICOMAllViewers:(id) sender;
 - (IBAction) setComments:(id) sender;
 - (IBAction) setStatus:(id) sender;
 - (IBAction) endSetComments:(id) sender;
@@ -500,6 +563,7 @@ enum
 - (void) matrixPreviewSelectCurrentSeries;
 - (void) autoHideMatrix;
 - (void) exportQuicktimeIn:(long) dimension :(long) from :(long) to :(long) interval;
+- (void) exportQuicktimeIn:(long) dimension :(long) from :(long) to :(long) interval :(BOOL) allViewers;
 - (IBAction) endExportImage: (id) sender;
 - (IBAction) setCurrentPosition:(id) sender;
 - (IBAction) setCurrentdcmExport:(id) sender;
@@ -508,7 +572,10 @@ enum
 - (IBAction) roiRename:(id) sender;
 - (void) SyncSeries:(id) sender;
 - (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts error:(NSString**) error;
+- (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts generateMissingROIs:(BOOL) generateMissingROIs error:(NSString**) error;
+- (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts generateMissingROIs:(BOOL) generateMissingROIs generatedROIs:(NSMutableArray*) generatedROIs computeData:(NSMutableDictionary*) data error:(NSString**) error;
 - (NSArray*) roisWithName: (NSString*) name;
+- (NSArray*) roisWithComment: (NSString*) comment;
 - (NSArray*) roiNames;
 - (void) deleteSeriesROIwithName: (NSString*) name;
 - (void) renameSeriesROIwithName: (NSString*) name newName:(NSString*) newName;
@@ -523,6 +590,7 @@ enum
 - (id) findiChatButton;
 - (void) convertPETtoSUV;
 - (IBAction) fullScreenMenu:(id) sender;
+-(int) imageIndexOfROI:(ROI*) c;
 - (void)exportTextFieldDidChange:(NSNotification *)note;
 - (short) orientationVector;
 - (short) orthogonalOrientation;
@@ -546,23 +614,33 @@ enum
 - (IBAction) vertFlipDataSet:(id) sender;
 - (IBAction) horzFlipDataSet:(id) sender;
 - (void) rotateDataSet:(int) constant;
+- (void) SetSyncButtonBehavior:(id) sender;
+- (IBAction) roiDeleteGeneratedROIsForName:(NSString*) name;
+- (IBAction) roiDeleteGeneratedROIs:(id) sender;
+- (ROI*)selectedROI;
+- (NSMutableArray*) selectedROIs;
+
+- (void)setMode:(long)mode toROIGroupWithID:(NSTimeInterval)groupID;
+- (void)selectROI:(ROI*)roi deselectingOther:(BOOL)deselectOther;
+- (void)deselectAllROIs;
 
 #pragma mark-
 #pragma mark Brush ROI Filters
 
 - (void) applyMorphology: (NSArray*) rois action:(NSString*) action	radius: (long) radius sendNotification: (BOOL) sendNotification;
 
-- (ROI*) selectedROI;
-
 - (IBAction) setStructuringElementRadius: (id) sender;
-- (IBAction) closeBrushROIFilterOptionsSheet: (id) sender;
+//- (IBAction) closeBrushROIFilterOptionsSheet: (id) sender;
 
-- (IBAction) erodeSelectedBrushROIWithRadius: (id) sender;
-- (IBAction) erodeSelectedBrushROI: (id) sender;
-- (IBAction) dilateSelectedBrushROIWithRadius: (id) sender;
-- (IBAction) dilateSelectedBrushROI: (id) sender;
-- (IBAction) closeSelectedBrushROIWithRadius: (id) sender;
-- (IBAction) closeSelectedBrushROI: (id) sender;
+- (IBAction) morphoSelectedBrushROIWithRadius: (id) sender;
+- (IBAction) morphoSelectedBrushROI: (id) sender;
+//- (IBAction) dilateSelectedBrushROIWithRadius: (id) sender;
+//- (IBAction) dilateSelectedBrushROI: (id) sender;
+//- (IBAction) closeSelectedBrushROIWithRadius: (id) sender;
+//- (IBAction) closeSelectedBrushROI: (id) sender;
+- (ROI*) roiMorphingBetween:(ROI*) a and:(ROI*) b ratio:(float) ratio;
+- (ROI*) convertPolygonROItoBrush:(ROI*) selectedROI;
+- (ROI*) convertBrushROItoPolygon:(ROI*) selectedROI numPoints: (int) numPoints;
 
 #pragma mark-
 #pragma mark Registration
@@ -592,11 +670,15 @@ enum
 - (void)setRotation:(float)rotation;
 - (float)scaleValue;
 - (void)setScaleValue:(float)scaleValue;
+- (void)setYFlipped:(BOOL) v;
+- (void)setXFlipped:(BOOL) v;
 
 
 // Opening 3D Viewers
+#pragma mark-
+#pragma mark 3D Viewers
 - (VRController *)openVRViewerForMode:(NSString *)mode;
-- (VRPROController *)openVRVPROViewerForMode:(NSString *)mode;
+- (VRPROController*)openVRVPROViewerForMode:(NSString *)mode;
 - (OrthogonalMPRViewer *)openOrthogonalMPRViewer;
 - (OrthogonalMPRPETCTViewer *)openOrthogonalMPRPETCTViewer;
 - (MPR2DController *)openMPR2DViewer;
@@ -604,6 +686,23 @@ enum
 - (SRController *)openSRViewer;
 
 - (SeriesView *) seriesView;
+- (void)setImageRows:(int)rows columns:(int)columns;
 
+#pragma mark-
+#pragma mark Calcium scoring
+- (IBAction)calciumScoring:(id)sender;
+
+#pragma mark-
+#pragma mark Centerline
+- (IBAction)centerline: (id)sender;
+
+#pragma mark-
+#pragma mark ROI Grouping
+- (IBAction)groupSelectedROIs:(id)sender;
+- (IBAction)ungroupSelectedROIs:(id)sender;
+
+
+- (void) exportDICOMFileInt:(BOOL)screenCapture withName:(NSString*)name;
+- (void) exportDICOMFileInt:(BOOL)screenCapture withName:(NSString*)name allViewers: (BOOL) allViewers;
 
 @end

@@ -54,14 +54,20 @@ enum
 	t2DPoint,					//	19
 	tPlain,						//	20
 	tBonesRemoval,				//	21
-	tWLBlended					//  22
+	tWLBlended,					//  22
+	tRepulsor,					//  23
+	tLayerROI,					//	24
+	tROISelector,				//	25
+	tAxis,						//	26 //JJCP
+	tDynAngle					//	27 //JJCP
 };
 
 extern NSString *pasteBoardOsiriX;
+extern NSString *pasteBoardOsiriXPlugin;
 
 enum { annotNone = 0, annotGraphics, annotBase, annotFull };
 enum { barHide = 0, barOrigin, barFused, barBoth };
-enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D = 5};
+enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3};
 
 
 @class DCMPix;
@@ -208,13 +214,40 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 	NSDictionary *_hotKeyDictionary;
 	
 	BOOL			drawing;
+	
+	int				repulsorRadius;
+	NSPoint			repulsorPosition;
+	NSTimer			*repulsorColorTimer;
+	float			repulsorAlpha, repulsorAlphaSign;
+	BOOL			repulsorROIEdition;
+	long            scrollMode;
+	
+	NSPoint			ROISelectorStartPoint, ROISelectorEndPoint;
+	BOOL			selectorROIEdition;
+	NSMutableArray	*ROISelectorSelectedROIList;
+	
+	BOOL			syncOnLocationImpossible;
+	
+	char			*resampledBaseAddr;
+	char			*resampledTempAddr;
+	
+	int				resampledBaseAddrSize;
 }
++ (void) setDefaults;
++ (void) setCLUTBARS:(int) c ANNOTATIONS:(int) a;
 + (void)setPluginOverridesMouse: (BOOL)override;
 + (void) computePETBlendingCLUT;
++ (NSString*) findWLWWPreset: (float) wl :(float) ww :(DCMPix*) pix;
++ (NSSize)sizeOfString:(NSString *)string forFont:(NSFont *)font;
++ (long) lengthOfString:( char *) cstr forFont:(long *)fontSizeArray;
++ (BOOL) intersectionBetweenTwoLinesA1:(NSPoint) a1 A2:(NSPoint) a2 B1:(NSPoint) b1 B2:(NSPoint) b2 result:(NSPoint*) r;
++ (float) Magnitude:( NSPoint) Point1 :(NSPoint) Point2;
+- (BOOL) softwareInterpolation;
 - (void) applyImageTransformation;
 - (void) initFont;
 - (NSMutableArray*) rectArray;
 -(BOOL) flippedData;
+- (void) gClickCountSetReset;
 -(void) setFlippedData:(BOOL) f;
  -(NSMutableArray*) dcmPixList;
  -(NSMutableArray*) dcmRoiList;
@@ -237,20 +270,17 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 -(void) multiply:(DCMView*) bV;
 -(void) setBlendingMode:(long) f;
 - (GLuint *) loadTextureIn:(GLuint *) texture blending:(BOOL) blending colorBuf: (unsigned char**) colorBufPtr textureX:(long*) tX textureY:(long*) tY redTable:(unsigned char*) rT greenTable:(unsigned char*) gT blueTable:(unsigned char*) bT;
-/*			DCMView proxy not necesary between ViewerController and DCMPix
-- (void) setSubtraction:(long) imID;
-- (NSPoint) subOffset;
-- (void) setSubOffset:(NSPoint) subCtrlOffset;
-*/
 - (BOOL)xFlipped;
 - (void)setXFlipped: (BOOL)v;
 - (BOOL)yFlipped;
 - (void)setYFlipped:(BOOL) v;
+// checks to see if tool is for ROIs.  maybe better name - (BOOL)isToolforROIs:(long)tool
 - (BOOL) roiTool:(long) tool;
 - (void) sliderAction2DMPR:(id) sender;
 - (void) setStringID:(NSString*) str;
--(NSString*) stringID;
+- (NSString*) stringID;
 - (float) angle;
+- (void) prepareToRelease;
 - (void) orientationCorrectedToView:(float*) correctedOrientation;
 - (void) setCrossCoordinatesPer:(float) val;
 - (void) setCrossCoordinates:(float) x :(float) y :(BOOL) update;
@@ -259,12 +289,10 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (NSPoint) ConvertFromView2GL:(NSPoint) a;
 - (NSPoint) ConvertFromGL2View:(NSPoint) a;
 - (void) cross3D:(float*) x :(float*) y :(float*) z;
-
 - (void) setWLWW:(float) wl :(float) ww;
 - (void)discretelySetWLWW:(float)wl :(float)ww;
 - (void) getWLWW:(float*) wl :(float*) ww;
-
--(void) getThickSlabThickness:(float*) thickness location:(float*) location;
+- (void) getThickSlabThickness:(float*) thickness location:(float*) location;
 - (void) setCLUT:( unsigned char*) r :(unsigned char*) g :(unsigned char*) b;
 - (void) setCurrentTool:(short)i;
 - (short) currentTool;
@@ -272,6 +300,7 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (void) setRightTool:(short) i;
 - (void) dealloc;
 - (NSImage*) nsimage:(BOOL) originalSize;
+- (NSImage*) nsimage:(BOOL) originalSize allViewers:(BOOL) allViewers;
 - (void) setTheMatrix:(NSMatrix*)m;
 - (void) setIndex:(short) index;
 - (void) setIndexWithReset:(short) index :(BOOL)sizeToFit;
@@ -289,27 +318,25 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (void) setScaleValue:(float) x;
 - (float) rotation;
 - (void) setRotation:(float) x;
--(NSPoint) rotatePoint:(NSPoint) a;
+- (NSPoint) rotatePoint:(NSPoint) a;
 - (NSPoint) origin;
 - (NSPoint) originOffset;
 - (void) setOrigin:(NSPoint) x;
 - (void) setOriginOffset:(NSPoint) x;
 - (void) setBlending:(DCMView*) bV;
-- (float) pixelSpacing;
-- (float) pixelSpacingX;
-- (float) pixelSpacingY;
+- (double) pixelSpacing;
+- (double) pixelSpacingX;
+- (double) pixelSpacingY;
 - (void) scaleToFit;
 - (void) scaleBy2AndCenterShutter;
 - (void) setBlendingFactor:(float) f;
 - (void) sliderAction:(id) sender;
 - (DCMPix*)curDCM;
 - (void) roiSet;
--(void) roiSet:(ROI*) aRoi;
+- (void) roiSet:(ROI*) aRoi;
 - (void) colorTables:(unsigned char **) a :(unsigned char **) r :(unsigned char **)g :(unsigned char **) b;
 - (void) blendingColorTables:(unsigned char **) a :(unsigned char **) r :(unsigned char **)g :(unsigned char **) b;
 - (void )changeFont:(id)sender;
-- (NSSize)sizeOfString:(NSString *)string forFont:(NSFont *)font;
-- (long) lengthOfString:( char *) cstr forFont:(long *)fontSizeArray;
 - (void) getCrossCoordinates:(float*) x: (float*) y;
 - (IBAction) sliderRGBFactor:(id) sender;
 - (IBAction) alwaysSyncMenu:(id) sender;
@@ -323,13 +350,14 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (float)mouseYPos;
 - (float) contextualMenuInWindowPosX;
 - (float) contextualMenuInWindowPosY;
+- (BOOL)checkHasChanged;
+- (BOOL)_checkHasChanged:(BOOL)flag;
 - (GLuint)fontListGL;
 - (void) drawRectIn:(NSRect) size :(GLuint *) texture :(NSPoint) offset :(long) tX :(long) tY;
 - (void) DrawNSStringGL: (NSString*) cstrOut :(GLuint) fontL :(long) x :(long) y;
 - (void) DrawNSStringGL: (NSString*) str :(GLuint) fontL :(long) x :(long) y rightAlignment: (BOOL) right useStringTexture: (BOOL) stringTex;
 - (void) DrawCStringGL: ( char *) cstrOut :(GLuint) fontL :(long) x :(long) y;
 - (void) DrawCStringGL: ( char *) cstrOut :(GLuint) fontL :(long) x :(long) y rightAlignment: (BOOL) right useStringTexture: (BOOL) stringTex;
-- (void) DrawNSStringGLPLUGINonly:(NSString*)str :(long)line :(_Bool)right;
 - (void) drawTextualData:(NSRect) size :(long) annotations;
 - (void) draw2DPointMarker;
 - (void) setSyncro:(long) s;
@@ -337,23 +365,23 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (NSFont*)fontGL;
 - (void) setScaleValueCentered:(float) x;
 //notifications
--(void) updateCurrentImage: (NSNotification*) note;
--(void)updateImageTiling:(NSNotification *)note;
--(void)setImageParamatersFromView:(DCMView *)aView;
--(void) setRows:(int)rows columns:(int)columns;
--(void)setTag:( long)aTag;
--( long)tag;
--(float)curWW;
--(float)curWL;
--(float)scaleValue;
--(NSPoint)origin;
+- (void) updateCurrentImage: (NSNotification*) note;
+- (void)updateImageTiling:(NSNotification *)note;
+- (void)setImageParamatersFromView:(DCMView *)aView;
+- (void) setRows:(int)rows columns:(int)columns;
+- (void)setTag:( long)aTag;
+- (long)tag;
+- (float)curWW;
+- (float)curWL;
+- (float)scaleValue;
+- (NSPoint)origin;
 - (int)rows;
 - (int)columns;
--(DCMView *)blendingView;
+- (DCMView *)blendingView;
 - (float)blendingFactor;
 - (float)blendingMode;
 - (NSCursor *)cursor;
--(void) becomeMainWindow;
+- (void) becomeMainWindow;
 - (BOOL)eraserFlag;
 - (void)setEraserFlag: (BOOL)aFlag;
 - (NSManagedObject *)imageObj;
@@ -366,8 +394,8 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 - (void)resizeWindowToScale:(float)resizeScale;
 - (float) getBlendedSUV;
 - (OrthogonalMPRController*) controller;
--(void) roiChange:(NSNotification*)note;
--(void) roiSelected:(NSNotification*) note;
+- (void) roiChange:(NSNotification*)note;
+- (void) roiSelected:(NSNotification*) note;
 - (void) setStartWLWW;
 - (void) stopROIEditing;
 - (void) stopROIEditingForce:(BOOL) force;
@@ -396,4 +424,24 @@ enum { syncroOFF = 0, syncroABS = 1, syncroREL = 2, syncroLOC = 3, syncroPoint3D
 // New Draw method to allow for IChat Theater
 - (void) drawRect:(NSRect)aRect withContext:(NSOpenGLContext *)ctx;
 - (BOOL)_checkHasChanged:(BOOL)flag;
+
+// Methods for mouse drag response  Can be modified for subclassing
+// This allow the various tools to  have different responses indifferent subclasses.
+// Making it easie to modify mouseDragged:
+- (NSPoint)currentPointInView:(NSEvent *)event;
+- (BOOL)checkROIsForHitAtPoint:(NSPoint)point forEvent:(NSEvent *)event;
+- (void)mouseDraggedForROIs:(NSEvent *)event;
+- (void)mouseDraggedCrosshair:(NSEvent *)event;
+- (void)mouseDragged3DRotate:(NSEvent *)event;
+- (void)mouseDraggedZoom:(NSEvent *)event;
+- (void)mouseDraggedTranslate:(NSEvent *)event;
+- (void)mouseDraggedRotate:(NSEvent *)event;
+- (void)mouseDraggedImageScroll:(NSEvent *)event;
+- (void)mouseDraggedBlending:(NSEvent *)event;
+- (void)mouseDraggedWindowLevel:(NSEvent *)event;
+- (void)mouseDraggedRepulsor:(NSEvent *)event;
+- (void)mouseDraggedROISelector:(NSEvent *)event;
+
+- (void)deleteROIGroupID:(NSTimeInterval)groupID;
+
 @end
