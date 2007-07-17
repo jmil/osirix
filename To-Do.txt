@@ -20,14 +20,14 @@
 - ITK 3.2.0
 - Possibility to add DICOM Fields in Report Templates (RTF or Pages): «DICOM_FIELD:ReferringPhysiciansName»
 - Better interpolation for zoom
+- Reslice a series according to another series
+- Registration (points based, rigid)
 
 TODO:
-- BUG: high quality zoom with fusion
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - Add a 'basic' 3d preset group
 - DICOM SR, export, send, ...
 - Editable image annotation options
-- Registration (vtkLandmark, itkLandmark)
 - new DB format
 - New smart filter editor (10.5)
 - New series for keyimages
