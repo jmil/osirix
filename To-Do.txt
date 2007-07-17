@@ -22,7 +22,7 @@
 - Better interpolation for zoom
 
 TODO:
-- Show/Hide series in thumbnail bar
+- BUG: high quality zoom with fusion
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - Add a 'basic' 3d preset group
 - DICOM SR, export, send, ...
