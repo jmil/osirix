@@ -80,3 +80,5 @@ DICOM SR - Level:
 - SopInstanceUID
 - ROIType
 - Path
+
+for i in `ls *.a`; do lipo -create "$i" "$i"i386 -output "$i"final; done
