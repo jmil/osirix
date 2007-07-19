@@ -12,7 +12,8 @@
 
 - (void)awakeFromNib
  {
-	[urlString setStringValue: [[NSUserDefaults standardUserDefaults] stringForKey:@"lastURL"]];
+	if( [[NSUserDefaults standardUserDefaults] stringForKey:@"lastURL"])
+		[urlString setStringValue: [[NSUserDefaults standardUserDefaults] stringForKey:@"lastURL"]];
  }
 
 - (NSCalendarDate*) convertDate: (NSString*) date
