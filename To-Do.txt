@@ -79,6 +79,9 @@ Image Level:
 
 DICOM SR - Level:
 - SopInstanceUID
+- ReferencedSOPInstanceUID
+- ReferencedSOPClassUID
+- ReferencedImageSequence
 - ROIType
 - Path
 
