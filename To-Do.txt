@@ -47,6 +47,8 @@ DB:
 
 - XML with DB name, instead of DB_VERSION, ... files
 
+dicomTime, derived from date
+
 Study Level:
 - Locked
 - Remove 'type' field
