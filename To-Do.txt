@@ -23,13 +23,14 @@
 - Better interpolation for zoom
 - Reslice a series according to another series
 - Registration (points based, rigid)
+- Non Linear Transfer Functions for 2D Viewers (logarithmic, ...)
+- New Database format
 
 TODO:
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - Add a 'basic' 3d preset group
 - DICOM SR, export, send, ...
 - Editable image annotation options
-- new DB format
 - New smart filter editor (10.5)
 - New series for keyimages
 - Windows state (DB study)
