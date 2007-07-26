@@ -27,6 +27,8 @@
 - New Database format
 
 TODO:
+- For auto-fusion: check if orientation is same
+- Check sopInstranceUID generation for non-DICOM files
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - Add a 'basic' 3d preset group
 - DICOM SR, export, send, ...
