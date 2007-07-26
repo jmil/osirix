@@ -1,0 +1,20 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {onCancel = id; onSave = id; openNewCreatedSeries = id; }; 
+            CLASS = CMIVSaveResult; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                needSaveROI = NSButton; 
+                okButton = NSButton; 
+                seriesName = NSTextField; 
+                seriesNumber = NSTextField; 
+                waitWindow = id; 
+                window = NSWindow; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

@@ -1,0 +1,57 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                changeReformView = id; 
+                endPanel = id; 
+                selectAll = id; 
+                setCurrentToImageFromTo = id; 
+                setImageFromTo = id; 
+                setImageFromToSlider = id; 
+                setROIRect = id; 
+                setReformViewIndex = id; 
+            }; 
+            CLASS = CMIVChopperController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                imageFrom = NSTextField; 
+                imageFromSlider = NSSlider; 
+                imageTo = NSTextField; 
+                imageToSlider = NSSlider; 
+                leftTopX = NSTextField; 
+                leftTopY = NSTextField; 
+                nextStep = NSButton; 
+                originalView = DCMView; 
+                originalViewSlider = NSSlider; 
+                reformView = DCMView; 
+                reformViewSlider = NSSlider; 
+                reformViewState = NSSegmentedControl; 
+                rightBottomX = NSTextField; 
+                rightBottomY = NSTextField; 
+                window = NSWindow; 
+                wizardTips = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                alwaysSyncMenu = id; 
+                changeFont = id; 
+                flipHorizontal = id; 
+                flipVertical = id; 
+                resetImagePresentationState = id; 
+                resetSeriesPresentationState = id; 
+                roiLoadFromXMLFiles = id; 
+                sliderAction = id; 
+                sliderAction2DMPR = id; 
+                sliderRGBFactor = id; 
+            }; 
+            CLASS = DCMView; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSOpenGLView; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}

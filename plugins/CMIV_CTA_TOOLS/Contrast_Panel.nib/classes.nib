@@ -1,0 +1,29 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addToRight = id; 
+                onCancel = id; 
+                onOk = id; 
+                onPreview = id; 
+                removeFromRight = id; 
+            }; 
+            CLASS = CMIVContrastController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                exportCenterlineChechBox = NSButton; 
+                exportConnectednessChechBox = NSButton; 
+                exportIntoMaskChechBox = NSButton; 
+                exportIntoOneChechBox = NSButton; 
+                exportIntoSeparateChechBox = NSButton; 
+                inROIList = NSTableView; 
+                neighborhoodModeMatrix = NSMatrix; 
+                outROIList = NSTableView; 
+                window = NSWindow; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

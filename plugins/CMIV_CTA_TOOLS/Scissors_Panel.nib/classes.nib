@@ -1,0 +1,112 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addSeed = id; 
+                changOriginalViewDirection = id; 
+                changeDefaultTool = id; 
+                changeSeedColor = id; 
+                changeSeedName = id; 
+                continuePlanting = id; 
+                covertRegoinToSeeds = id; 
+                crossShow = id; 
+                endCPRImageDialog = id; 
+                endCenterlinesDialog = id; 
+                endLoadPathDialog = id; 
+                exportCenterlines = id; 
+                goNextStep = id; 
+                goPreviousStep = id; 
+                lockCenter = id; 
+                onCancel = id; 
+                onOK = id; 
+                pageAxView = id; 
+                pageCView = id; 
+                pageOView = id; 
+                removeCenterline = id; 
+                removeSeed = id; 
+                resetOriginalView = id; 
+                rotateXCView = id; 
+                rotateXOView = id; 
+                rotateYOView = id; 
+                selectAContrast = id; 
+                selectANewCenterline = id; 
+                setBrushMode = id; 
+                setBrushWidth = id; 
+                setPathMode = id; 
+                setResampleRatio = id; 
+                showCPRImageDialog = id; 
+                showCenterlinesDialog = id; 
+                showLoadPathDialog = id; 
+                switchStraightenedCPR = id; 
+            }; 
+            CLASS = CMIVScissorsController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                axImageSlider = NSSlider; 
+                brushStatSegment = NSSegmentedControl; 
+                brushWidthSlider = NSSlider; 
+                brushWidthText = NSTextField; 
+                cImageSlider = NSSlider; 
+                cPRView = DCMView; 
+                cViewRotateYText = NSTextField; 
+                cYRotateSlider = NSSlider; 
+                cancelButton = NSButton; 
+                centerLock = NSButton; 
+                centerlinesList = NSTableView; 
+                continuePlantingButton = NSButton; 
+                convertToSeedButton = NSButton; 
+                crossAxiasView = DCMView; 
+                crossShowButton = NSButton; 
+                currentTips = NSTextField; 
+                exportCPRWindow = NSWindow; 
+                howManyAngleToExport = NSMatrix; 
+                howManyImageToExport = NSTextField; 
+                loadPathWindow = NSWindow; 
+                nextButton = NSButton; 
+                oImageSlider = NSSlider; 
+                oViewRotateXText = NSTextField; 
+                oViewRotateYText = NSTextField; 
+                oXRotateSlider = NSSlider; 
+                oYRotateSlider = NSSlider; 
+                originalView = DCMView; 
+                pathListButton = NSPopUpButton; 
+                pathModifyButton = NSPopUpButton; 
+                pathName = NSTextField; 
+                previousButton = NSButton; 
+                resampleRatioSlider = NSSlider; 
+                resampleRatioText = NSTextField; 
+                resampleText = NSTextField; 
+                saveButton = NSButton; 
+                savePathWindow = NSWindow; 
+                seedColor = NSColorWell; 
+                seedName = NSTextField; 
+                seedToolTipsTabView = NSTabView; 
+                seedsList = NSTableView; 
+                straightenedCPRButton = NSButton; 
+                straightenedCPRSwitchMenu = NSMenuItem; 
+                window = NSWindow; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                alwaysSyncMenu = id; 
+                changeFont = id; 
+                flipHorizontal = id; 
+                flipVertical = id; 
+                resetImagePresentationState = id; 
+                resetSeriesPresentationState = id; 
+                roiLoadFromXMLFiles = id; 
+                sliderAction = id; 
+                sliderAction2DMPR = id; 
+                sliderRGBFactor = id; 
+            }; 
+            CLASS = DCMView; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSOpenGLView; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}
