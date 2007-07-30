@@ -609,7 +609,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	mprViewSlice->SetOptimization( true);
 	mprViewSlice->SetResliceTransform( mprViewUserTransform);
 	mprViewSlice->SetResliceAxesOrigin( 0, 0, 0);
-	mprViewSlice->SetInterpolationModeToNearestNeighbor();
+	mprViewSlice->SetInterpolationModeToCubic();
 	mprViewSlice->SetOutputDimensionality( 2);
 	mprViewSlice->SetBackgroundLevel( -1024);
 	
@@ -620,7 +620,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	mprViewROISlice->SetOptimization( true);
 	mprViewROISlice->SetResliceTransform( mprViewUserTransform);
 	mprViewROISlice->SetResliceAxesOrigin( 0, 0, 0);
-	mprViewROISlice->SetInterpolationModeToNearestNeighbor();
+	mprViewROISlice->SetInterpolationModeToCubic();
 	mprViewROISlice->SetOutputDimensionality( 2);
 	mprViewROISlice->SetBackgroundLevel( -1024);	
 	

@@ -846,7 +846,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	oViewSlice->SetOptimization( true);
 	oViewSlice->SetResliceTransform( oViewUserTransform);
 	oViewSlice->SetResliceAxesOrigin( 0, 0, 0);
-	oViewSlice->SetInterpolationModeToNearestNeighbor();
+	oViewSlice->SetInterpolationModeToCubic();
 	oViewSlice->SetOutputDimensionality( 2);
 	oViewSlice->SetBackgroundLevel( -1024);
 	if(!isInCPROnlyMode)
@@ -858,7 +858,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		oViewROISlice->SetOptimization( true);
 		oViewROISlice->SetResliceTransform( oViewUserTransform);
 		oViewROISlice->SetResliceAxesOrigin( 0, 0, 0);
-		oViewROISlice->SetInterpolationModeToNearestNeighbor();
+		oViewROISlice->SetInterpolationModeToCubic();
 		oViewROISlice->SetOutputDimensionality( 2);
 		oViewROISlice->SetBackgroundLevel( -1024);	
 	}
@@ -920,7 +920,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	cViewSlice->SetOptimization( true);
 	cViewSlice->SetResliceTransform( cViewTransform);
 	cViewSlice->SetResliceAxesOrigin( 0, 0, 0);
-	cViewSlice->SetInterpolationModeToNearestNeighbor();
+	cViewSlice->SetInterpolationModeToCubic();
 	cViewSlice->SetOutputDimensionality( 2);
 	cViewSlice->SetBackgroundLevel( -1024);
 
@@ -963,7 +963,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	axViewSlice->SetOptimization( true);
 	axViewSlice->SetResliceTransform( axViewTransform);
 	axViewSlice->SetResliceAxesOrigin( 0, 0, 0);
-	axViewSlice->SetInterpolationModeToNearestNeighbor();
+	axViewSlice->SetInterpolationModeToCubic();
 	axViewSlice->SetOutputDimensionality( 2);
 	axViewSlice->SetBackgroundLevel( -1024);
 	
