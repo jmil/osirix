@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 43;
+	objectVersion = 42;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2226,7 +2226,6 @@
 		08FB77AFFE84173DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */,
 				CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */,
 				CE8CF1F50C2EA43100537400 /* DCMPix.m */,
 				CE8CF1F60C2EA43100537400 /* DCMPix.h */,
@@ -2234,6 +2233,7 @@
 				CE8C06F20C2EAC1A00537400 /* OsiriXStandAlone.m */,
 				CE8C06F90C2EACFB00537400 /* xNSImage.h */,
 				CE8C06FA0C2EACFB00537400 /* xNSImage.m */,
+				CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */,
 				CE8C07000C2EAD2F00537400 /* MyPoint.h */,
 				CE8C07010C2EAD2F00537400 /* MyPoint.m */,
 				CE8C07170C2EADC400537400 /* FVTiff.h */,
@@ -3995,7 +3995,6 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 2CA326220896AD4900168862 /* Build configuration list for PBXProject "DICOMQuickLook" */;
-			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* DICOMQuickLook */;
 			projectDirPath = "";
