@@ -31,8 +31,8 @@
 - Faster Ortho-MPR & PET-CT Ortho MPR
 
 TODO:
+- Add Export to DICOM Nodes in contextual menu DB
 - ROIs in non-squared images: arrow, text, brush
-- Check open-gl bug in ortho-mpr !! NSView
 - If another DB is selected, who is receiving the images??
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
