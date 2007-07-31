@@ -27,8 +27,11 @@
 - New Database format
 - ROIs are now saved in the Database and completely supported in the DICOM Network/Files protocols
 - Editable image annotations (see Preferences)
+- Much better quality for PET-CT reading
+- Faster Ortho-MPR & PET-CT Ortho MPR
 
 TODO:
+- If another DB is selected, who is receiving the images??
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
 - New series for keyimages
