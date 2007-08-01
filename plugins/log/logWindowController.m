@@ -166,6 +166,8 @@
 
 		
 		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d\r", [startdate monthOfYear], i - startIndex, [uniqueIP count]]];
+		[resultField setString: result];
+		[resultField display];
 	}
 	
 	[resultField setString: result];
