@@ -24,11 +24,11 @@
 - Reslice a series according to another series
 - Registration (points based, rigid)
 - Non Linear Transfer Functions for 2D Viewers (logarithmic, ...)
-- New Database format
+- New Database format (smaller, faster)
 - ROIs are now saved in the Database and completely supported in the DICOM Network/Files protocols
 - ROIs are now visible on network shared Database
 - Editable image annotations (see Preferences)
-- Much better quality for PET-CT reading
+- Better image quality for PET-CT reading
 - Faster Ortho-MPR & PET-CT Ortho MPR
 
 TODO:
