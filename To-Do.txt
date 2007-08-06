@@ -35,10 +35,10 @@
 TODO:
 - Study lock
 - Save/Restore scaleValue / windowFrameHeight
+- Windows state (DB study)
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
 - New series for keyimages
-- Windows state (DB study)
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
