@@ -31,9 +31,9 @@
 - Better image quality for PET-CT reading
 - Faster Ortho-MPR & PET-CT Ortho MPR
 - Better & Faster tiling viewing mode
+- Possibility to lock a study against deletion
 
 TODO:
-- Study lock
 - Save/Restore scaleValue / windowFrameHeight
 - Windows state (DB study)
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
