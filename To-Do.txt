@@ -32,18 +32,21 @@
 - Faster Ortho-MPR & PET-CT Ortho MPR
 - Better & Faster tiling viewing mode
 - Possibility to lock a study against deletion
+- Possibility to save and restore the workspace (windows position, index, ...)
 
 TODO:
-- Save/Restore scaleValue / windowFrameHeight
-- Windows state (DB study)
+
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
 - New series for keyimages
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
+- MPR Ortho: oblique
+- Curved MPR: spline
 
 HUG:
+
 - Routage colloques
 - Demandes numerisees
 - Rapport images -> DPI
