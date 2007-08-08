@@ -32,7 +32,7 @@
 - Faster Ortho-MPR & PET-CT Ortho MPR
 - Better & Faster tiling viewing mode
 - Possibility to lock a study against deletion
-- Possibility to save and restore the workspace (windows position, index, ...)
+- Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 
 TODO:
 
