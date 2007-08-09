@@ -35,8 +35,6 @@
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 
 TODO:
-- Check incoming lock
-- Validate menu popup
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
 - New series for keyimages
