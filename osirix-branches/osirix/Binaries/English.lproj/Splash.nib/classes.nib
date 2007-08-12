@@ -1,0 +1,18 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {openOsirixWebPage = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {switchVersion = id; }; 
+            CLASS = SplashScreen; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {version = NSButton; view = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

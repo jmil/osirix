@@ -1,0 +1,354 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                chooseNameAndSave = id; 
+                computeHistogram = id; 
+                copy = id; 
+                cut = id; 
+                delete = id; 
+                newCurve = id; 
+                niceDisplay = id; 
+                paste = id; 
+                redo = id; 
+                removeAllCurves = id; 
+                save = id; 
+                scroll = id; 
+                sendToBack = id; 
+                setHistogramOpacity = id; 
+                setLineWidth = id; 
+                setPointDiameter = id; 
+                setZoomFator = id; 
+                undo = id; 
+            }; 
+            CLASS = CLUTOpacityView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                chooseNameAndSaveWindow = NSWindow; 
+                clutSavedName = NSTextField; 
+                vrView = VRView; 
+            }; 
+            SUPERCLASS = NSView; 
+        }, 
+        {
+            ACTIONS = {
+                alwaysSyncMenu = id; 
+                changeFont = id; 
+                flipHorizontal = id; 
+                flipVertical = id; 
+                resetImagePresentationState = id; 
+                resetSeriesPresentationState = id; 
+                roiLoadFromXMLFiles = id; 
+                sliderAction = id; 
+                sliderAction2DMPR = id; 
+                sliderRGBFactor = id; 
+            }; 
+            CLASS = DCMView; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSOpenGLView; 
+        }, 
+        {CLASS = EndoscopyMPRView; LANGUAGE = ObjC; SUPERCLASS = OrthogonalMPRView; }, 
+        {
+            ACTIONS = {applyShading = id; }; 
+            CLASS = EndoscopyVRController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {shadingPanel = NSPanel; shadingsPresetsController = NSArrayController; }; 
+            SUPERCLASS = VRController; 
+        }, 
+        {CLASS = EndoscopyVRView; LANGUAGE = ObjC; SUPERCLASS = VRView; }, 
+        {
+            ACTIONS = {
+                ApplyWLWW = id; 
+                change2DTool = id; 
+                change3DTool = id; 
+                endDCMExportSettings = id; 
+                exportDICOMFile = id; 
+            }; 
+            CLASS = EndoscopyViewer; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                LODView = NSView; 
+                WLWW2DView = NSView; 
+                WLWW3DView = NSView; 
+                bottomSplitView = NSSplitView; 
+                clut2DPopup = NSPopUpButton; 
+                engineView = NSView; 
+                exportDCMSeriesName = NSTextField; 
+                exportDCMViewsChoice = NSMatrix; 
+                exportDCMWindow = NSWindow; 
+                mprController = OrthogonalMPRController; 
+                shadingView = NSView; 
+                tools2DMatrix = NSMatrix; 
+                tools2DView = NSView; 
+                tools3DMatrix = NSMatrix; 
+                tools3DView = NSView; 
+                topSplitView = NSSplitView; 
+                vrController = EndoscopyVRController; 
+                wlww2DPopup = NSPopUpButton; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = OSIWindowController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            ACTIONS = {
+                blendingPropagate = id; 
+                blendingPropagateOriginal = id; 
+                blendingPropagateX = id; 
+                blendingPropagateY = id; 
+                fullWindowView = id; 
+                showViews = id; 
+                toggleDisplayResliceAxes = id; 
+            }; 
+            CLASS = OrthogonalMPRController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                originalView = OrthogonalMPRView; 
+                viewer = id; 
+                xReslicedView = OrthogonalMPRView; 
+                yReslicedView = OrthogonalMPRView; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = OrthogonalMPRView; LANGUAGE = ObjC; SUPERCLASS = DCMView; }, 
+        {
+            CLASS = ShadingArrayController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSArrayController; 
+        }, 
+        {
+            ACTIONS = {
+                ApplyWLWW = id; 
+                LODsliderAction = id; 
+                MoviePlayStop = id; 
+                applyConvolution = id; 
+                applyShading = id; 
+                blendingSlider = id; 
+                close3DSettingsSavePanel = id; 
+                displayPresetsForSelectedGroup = id; 
+                editShadingValues = id; 
+                enable3DSettingsSaveButton = id; 
+                export2iPhoto = id; 
+                exportJPEG = id; 
+                exportTIFF = id; 
+                findShadingPreset = id; 
+                flyThruControllerInit = id; 
+                load3DSettings = id; 
+                loadAdvancedCLUTOpacity = id; 
+                moviePosSliderAction = id; 
+                movieRateSliderAction = id; 
+                nextPresetPage = id; 
+                previousPresetPage = id; 
+                roiGetManager = id; 
+                save3DSettings = id; 
+                sendMail = id; 
+                setDefaultTool = id; 
+                setEngine = id; 
+                setMode = id; 
+                setOrientation = id; 
+                show3DSettingsNewGroupTextField = id; 
+                showCLUTOpacityPanel = id; 
+                showPresetInfoPanel = id; 
+                undo = id; 
+            }; 
+            CLASS = VRController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                BackgroundColorView = NSView; 
+                BlendingView = NSView; 
+                LODSlider = NSSlider; 
+                LODView = NSView; 
+                OrientationsView = NSView; 
+                WLWWView = NSView; 
+                blendingPercentage = NSTextField; 
+                blendingSlider = NSSlider; 
+                clutOpacityDrawer = NSDrawer; 
+                clutOpacityView = CLUTOpacityView; 
+                convolutionMenu = NSPopUpButton; 
+                convolutionView = NSView; 
+                enginePopup = NSPopUpButton; 
+                engineView = NSView; 
+                infoBackgroundColorTextField = NSTextField; 
+                infoBackgroundColorView = ColorView; 
+                infoCLUTTextField = NSTextField; 
+                infoConvolutionFilterTextField = NSTextField; 
+                infoNameTextField = NSTextField; 
+                infoOpacityTextField = NSTextField; 
+                infoProjectionTextField = NSTextField; 
+                infoShadingsTextField = NSTextField; 
+                infoWLWWTextField = NSTextField; 
+                modeMatrix = NSMatrix; 
+                modeView = NSView; 
+                moviePlayStop = NSButton; 
+                moviePosSlider = NSSlider; 
+                movieRateSlider = NSSlider; 
+                movieTextSlide = NSTextField; 
+                movieView = NSView; 
+                nextPresetPageButton = NSButton; 
+                numberOfPresetInGroupTextField = NSTextField; 
+                perspectiveMatrix = NSMatrix; 
+                perspectiveView = NSView; 
+                presetName1 = NSTextField; 
+                presetName2 = NSTextField; 
+                presetName3 = NSTextField; 
+                presetName4 = NSTextField; 
+                presetName5 = NSTextField; 
+                presetName6 = NSTextField; 
+                presetName7 = NSTextField; 
+                presetName8 = NSTextField; 
+                presetName9 = NSTextField; 
+                presetPreview1 = VRPresetPreview; 
+                presetPreview2 = VRPresetPreview; 
+                presetPreview3 = VRPresetPreview; 
+                presetPreview4 = VRPresetPreview; 
+                presetPreview5 = VRPresetPreview; 
+                presetPreview6 = VRPresetPreview; 
+                presetPreview7 = VRPresetPreview; 
+                presetPreview8 = VRPresetPreview; 
+                presetPreview9 = VRPresetPreview; 
+                presetsApplyButton = NSButton; 
+                presetsGroupPopUpButton = NSPopUpButton; 
+                presetsInfoPanel = NSWindow; 
+                presetsPanel = NSWindow; 
+                previousPresetPageButton = NSButton; 
+                save3DSettingsWindow = NSWindow; 
+                scissorStateView = NSView; 
+                settingsBackgroundColorTextField = NSTextField; 
+                settingsCLUTTextField = NSTextField; 
+                settingsConvolutionFilterTextField = NSTextField; 
+                settingsGroupPopUpButton = NSPopUpButton; 
+                settingsNameTextField = NSTextField; 
+                settingsNewGroupNameLabelTextField = NSTextField; 
+                settingsNewGroupNameTextField = NSTextField; 
+                settingsOpacityTextField = NSTextField; 
+                settingsProjectionTextField = NSTextField; 
+                settingsSaveButton = NSButton; 
+                settingsShadingsTextField = NSTextField; 
+                settingsWLWWTextField = NSTextField; 
+                shadingCheck = NSButton; 
+                shadingEditWindow = NSWindow; 
+                shadingPanel = NSPanel; 
+                shadingValues = NSTextField; 
+                shadingView = NSView; 
+                shadingsPresetsController = ShadingArrayController; 
+                toolsMatrix = NSMatrix; 
+                toolsView = NSView; 
+                view = VRView; 
+            }; 
+            SUPERCLASS = Window3DController; 
+        }, 
+        {
+            ACTIONS = {
+                IBPropagate3DPointsSettings = id; 
+                IBSetSelected3DPointColor = id; 
+                IBSetSelected3DPointRadius = id; 
+                axView = id; 
+                bestRendering = id; 
+                changeColor = id; 
+                changeColorWith = id; 
+                coView = id; 
+                endDCMExportSettings = id; 
+                endQuicktimeSettings = id; 
+                endQuicktimeVRSettings = id; 
+                export2iPhoto = id; 
+                exportDICOMFile = id; 
+                exportJPEG = id; 
+                exportQuicktime = id; 
+                exportTIFF = id; 
+                resetAutorotate = id; 
+                resetImage = id; 
+                saView = id; 
+                saViewOpposite = id; 
+                save3DPointsDefaultProperties = id; 
+                scissorStateButtons = id; 
+                sendMail = id; 
+                setCurrentdcmExport = id; 
+                setRenderMode = id; 
+                squareView = id; 
+                switchOrientationWidget = id; 
+                switchProjection = id; 
+                switchShading = id; 
+                switchToSeriesRadio = id; 
+            }; 
+            CLASS = VRView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                VRFrames = NSMatrix; 
+                VRquality = NSMatrix; 
+                backgroundColor = NSColorWell; 
+                clutOpacityView = CLUTOpacityView; 
+                controller = VRController; 
+                dcmBox = NSBox; 
+                dcmExportMode = NSMatrix; 
+                dcmSeriesName = NSTextField; 
+                dcmframesSlider = NSSlider; 
+                dcmorientation = NSMatrix; 
+                dcmquality = NSMatrix; 
+                dcmrotation = NSMatrix; 
+                export3DVRWindow = NSWindow; 
+                export3DWindow = NSWindow; 
+                exportDCMWindow = NSWindow; 
+                framesSlider = NSSlider; 
+                orientation = NSMatrix; 
+                pixelInformation = NSTextField; 
+                point3DColorWell = NSColorWell; 
+                point3DInfoPanel = NSPanel; 
+                point3DPropagateToAll = NSButton; 
+                point3DRadiusSlider = NSSlider; 
+                point3DSetDefault = NSButton; 
+                projection = NSMatrix; 
+                quality = NSMatrix; 
+                rotation = NSMatrix; 
+                scissorStateMatrix = NSMatrix; 
+                shadingController = NSObjectController; 
+            }; 
+            SUPERCLASS = VTKView; 
+        }, 
+        {CLASS = VTKView; LANGUAGE = ObjC; SUPERCLASS = vtkCocoaGLView; }, 
+        {
+            ACTIONS = {
+                AddCLUT = id; 
+                ApplyCLUT = id; 
+                ApplyOpacity = id; 
+                SetWLWW = id; 
+                clutAction = id; 
+                endCLUT = id; 
+                endNameWLWW = id; 
+                endOpacity = id; 
+                endSetWLWW = id; 
+                fullScreenMenu = id; 
+                print = id; 
+                updateSetWLWW = id; 
+            }; 
+            CLASS = Window3DController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                OpacityName = NSTextField; 
+                OpacityPopup = NSPopUpButton; 
+                OpacityView = OpacityTransferView; 
+                addCLUTWindow = NSWindow; 
+                addOpacityWindow = NSWindow; 
+                addWLWWWindow = NSWindow; 
+                clutName = NSTextField; 
+                clutPopup = NSPopUpButton; 
+                clutView = ColorTransferView; 
+                fromset = NSTextField; 
+                newName = NSTextField; 
+                setWLWWWindow = NSWindow; 
+                toset = NSTextField; 
+                wl = NSTextField; 
+                wlset = NSTextField; 
+                wlwwPopup = NSPopUpButton; 
+                ww = NSTextField; 
+                wwset = NSTextField; 
+            }; 
+            SUPERCLASS = OSIWindowController; 
+        }, 
+        {CLASS = vtkCocoaGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }
+    ); 
+    IBVersion = 1; 
+}

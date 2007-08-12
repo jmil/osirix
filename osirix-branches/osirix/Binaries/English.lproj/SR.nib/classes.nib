@@ -1,0 +1,184 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {selectPicker = id; }; 
+            CLASS = ColorTransferView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {pick = NSColorWell; position = NSTextField; }; 
+            SUPERCLASS = NSView; 
+        }, 
+        {CLASS = DCMView; LANGUAGE = ObjC; SUPERCLASS = NSImageView; }, 
+        {
+            ACTIONS = {switchActor = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = OSIWindowController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = OpacityTransferView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {position = NSTextField; }; 
+            SUPERCLASS = NSView; 
+        }, 
+        {
+            ACTIONS = {
+                ApplySettings = id; 
+                BApplySettings = id; 
+                BChangeSettings = id; 
+                BSettingsPopup = id; 
+                ChangeSettings = id; 
+                SettingsPopup = id; 
+                roiGetManager = id; 
+                setDefaultTool = id; 
+                setOrientation = id; 
+            }; 
+            CLASS = SRController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                BSRSettingsWindow = NSWindow; 
+                BackgroundColorView = NSView; 
+                BcheckFirst = NSButton; 
+                BcheckSecond = NSButton; 
+                Bdecimate = NSTextField; 
+                BfirstColor = NSColorWell; 
+                BfirstPopup = NSPopUpButton; 
+                BfirstTrans = NSSlider; 
+                BfirstValue = NSTextField; 
+                BlendingView = NSView; 
+                BpreprocessMatrix = NSMatrix; 
+                BresolSlide = NSSlider; 
+                BsecondColor = NSColorWell; 
+                BsecondPopup = NSPopUpButton; 
+                BsecondTrans = NSSlider; 
+                BsecondValue = NSTextField; 
+                Bsmooth = NSTextField; 
+                LODSlider = NSSlider; 
+                LODView = NSView; 
+                OrientationsView = NSView; 
+                SRSettingsWindow = NSWindow; 
+                blendingPercentage = NSTextField; 
+                blendingSlider = NSSlider; 
+                checkFirst = NSButton; 
+                checkSecond = NSButton; 
+                decimate = NSTextField; 
+                export3DView = NSView; 
+                firstPopup = NSPopUpButton; 
+                firstTrans = NSSlider; 
+                firstValue = NSTextField; 
+                perspectiveView = NSView; 
+                preprocessMatrix = NSMatrix; 
+                resolSlide = NSSlider; 
+                secondPopup = NSPopUpButton; 
+                secondTrans = NSSlider; 
+                secondValue = NSTextField; 
+                smooth = NSTextField; 
+                toolsView = NSView; 
+                view = SRView; 
+            }; 
+            SUPERCLASS = Window3DController; 
+        }, 
+        {
+            ACTIONS = {
+                IBPropagate3DPointsSettings = id; 
+                IBSetSelected3DPointAnnotation = id; 
+                IBSetSelected3DPointAnnotationColor = id; 
+                IBSetSelected3DPointAnnotationSize = id; 
+                IBSetSelected3DPointColor = id; 
+                IBSetSelected3DPointRadius = id; 
+                SwitchStereoMode = id; 
+                axView = id; 
+                changeColor = id; 
+                coView = id; 
+                endDCMExportSettings = id; 
+                endQuicktimeSettings = id; 
+                endQuicktimeVRSettings = id; 
+                export3DFileFormat = id; 
+                exportDICOMFile = id; 
+                exportQuicktime = id; 
+                saView = id; 
+                saViewOpposite = id; 
+                save3DPointsDefaultProperties = id; 
+                setCurrentdcmExport = id; 
+                squareView = id; 
+                switchOrientationWidget = id; 
+                switchProjection = id; 
+            }; 
+            CLASS = SRView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                VRFrames = NSMatrix; 
+                backgroundColor = NSColorWell; 
+                controller = SRController; 
+                dcmBox = NSBox; 
+                dcmExportMode = NSMatrix; 
+                dcmSeriesName = NSTextField; 
+                dcmframesSlider = NSSlider; 
+                dcmorientation = NSMatrix; 
+                dcmrotation = NSMatrix; 
+                export3DVRWindow = NSWindow; 
+                export3DWindow = NSWindow; 
+                exportDCMWindow = NSWindow; 
+                framesSlider = NSSlider; 
+                point3DColorWell = NSColorWell; 
+                point3DDisplayPositionButton = NSButton; 
+                point3DInfoPanel = NSPanel; 
+                point3DPositionTextField = NSTextField; 
+                point3DPropagateToAll = NSButton; 
+                point3DRadiusSlider = NSSlider; 
+                point3DSetDefault = NSButton; 
+                point3DTextColorWell = NSColorWell; 
+                point3DTextSizeSlider = NSSlider; 
+                rotation = NSMatrix; 
+            }; 
+            SUPERCLASS = VTKView; 
+        }, 
+        {CLASS = VRView; LANGUAGE = ObjC; SUPERCLASS = VTKView; }, 
+        {CLASS = VTKView; LANGUAGE = ObjC; SUPERCLASS = vtkCocoaGLView; }, 
+        {
+            ACTIONS = {
+                AddCLUT = id; 
+                ApplyCLUT = id; 
+                ApplyOpacity = id; 
+                SetWLWW = id; 
+                clutAction = id; 
+                endCLUT = id; 
+                endNameWLWW = id; 
+                endOpacity = id; 
+                endSetWLWW = id; 
+                fullScreenMenu = id; 
+                print = id; 
+                updateSetWLWW = id; 
+            }; 
+            CLASS = Window3DController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                OpacityName = NSTextField; 
+                OpacityPopup = NSPopUpButton; 
+                OpacityView = OpacityTransferView; 
+                addCLUTWindow = NSWindow; 
+                addOpacityWindow = NSWindow; 
+                addWLWWWindow = NSWindow; 
+                clutName = NSTextField; 
+                clutPopup = NSPopUpButton; 
+                clutView = ColorTransferView; 
+                fromset = NSTextField; 
+                newName = NSTextField; 
+                setWLWWWindow = NSWindow; 
+                toset = NSTextField; 
+                wl = NSTextField; 
+                wlset = NSTextField; 
+                wlwwPopup = NSPopUpButton; 
+                ww = NSTextField; 
+                wwset = NSTextField; 
+            }; 
+            SUPERCLASS = OSIWindowController; 
+        }, 
+        {CLASS = vtkCocoaGLView; LANGUAGE = ObjC; SUPERCLASS = NSOpenGLView; }
+    ); 
+    IBVersion = 1; 
+}

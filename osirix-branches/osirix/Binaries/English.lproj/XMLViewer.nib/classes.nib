@@ -1,0 +1,40 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {"" = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                addDICOMField = id; 
+                collapseAllItems = id; 
+                deepCollapseAllItems = id; 
+                deepExpandAllItems = id; 
+                executeAdd = id; 
+                expandAllItems = id; 
+                setGroupElement = id; 
+                setSearchString = id; 
+                setTagName = id; 
+                switchDICOMEditing = id; 
+            }; 
+            CLASS = XMLController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                addElement = NSTextField; 
+                addGroup = NSTextField; 
+                addValue = NSTextField; 
+                addWindow = NSWindow; 
+                dicomEditingView = NSView; 
+                dicomFieldsCombo = NSComboBox; 
+                search = NSSearchField; 
+                searchView = NSView; 
+                table = NSOutlineView; 
+                tableScrollView = NSScrollView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
