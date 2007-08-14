@@ -35,6 +35,7 @@
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 
 TODO:
+- IsHUG : first, test if 129.195
 - NRRD
 - Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
 - New smart filter editor (10.5)
