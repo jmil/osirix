@@ -79,7 +79,7 @@
 			{
 				[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
 				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
-				BlockMoveData( [[pixList objectAtIndex: i] fImage], [[newPixList lastObject] fImage], imageSize);
+				memcpy( [[newPixList lastObject] fImage], [[pixList objectAtIndex: i] fImage], imageSize);
 				[[newPixList lastObject] setTot: newTotal];
 				[[newPixList lastObject] setFrameNo: [newPixList count]-1];
 				[newDcmList addObject: [[viewerController fileList] objectAtIndex: i] ];
