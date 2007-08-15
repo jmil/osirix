@@ -37,6 +37,8 @@
 TODO:
 - QuickLook plugin
 - Growl 64 bit?
+- Quicktime support in 64bits
+- Export tiled image, image number?
 - NRRD: ITK IO
 - HUD Windows Leopard
 - New smart filter editor (10.5)
