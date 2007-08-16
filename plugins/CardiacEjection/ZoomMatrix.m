@@ -47,8 +47,8 @@
 		minFact = (factH<factV)?factH:factV;
 		
 		//minFact = (minFact<1)?1:minFact;
-		int row = 0;
-		int col = 0;
+		NSInteger row = 0;
+		NSInteger col = 0;
 		[self getRow: &row column: &col ofCell: (NSCell*)cell];
 		newSz = NSMakeSize(szIm.width*minFact,szIm.height*minFact);
 		if (col<2)
