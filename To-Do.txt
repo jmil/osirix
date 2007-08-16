@@ -33,9 +33,9 @@
 - Better & Faster tiling viewing mode
 - Possibility to lock a study against deletion
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
+- DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 
 TODO:
-- QuickLook plugin
 - Growl 64 bit?
 - Quicktime support in 64bits
 - Export tiled image, image number?

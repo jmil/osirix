@@ -14,11 +14,8 @@
 		CE6435CA0C35272400537400 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D576317048677EA00EA77CD /* Info.plist */; };
 		CE657AA60C29AB7900537400 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */; };
 		CE657AA70C29AB7900537400 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */; };
-		CE657B1E0C29AC7800537400 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
 		CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657D4E0C29AD5100537400 /* Cocoa.framework */; };
-		CE657D700C29B31600537400 /* OsiriX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE657B1D0C29AC7800537400 /* OsiriX.framework */; };
 		CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE689C040C33DE3400FA47B4 /* vecLib.framework */; };
-		CE82AE120C2EDB6400537400 /* libtiff.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
 		CE8C01FB0C2EA8C700537400 /* cfunix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE400C2EA8C500537400 /* cfunix.h */; };
 		CE8C01FC0C2EA8C700537400 /* osconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE410C2EA8C500537400 /* osconfig.h */; };
 		CE8C01FF0C2EA8C700537400 /* dcbytstr.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8CFE450C2EA8C500537400 /* dcbytstr.cc */; };
@@ -864,8 +861,6 @@
 		CE8C06FC0C2EACFB00537400 /* xNSImage.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C06FA0C2EACFB00537400 /* xNSImage.m */; };
 		CE8C07020C2EAD2F00537400 /* MyPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C07000C2EAD2F00537400 /* MyPoint.h */; };
 		CE8C07030C2EAD2F00537400 /* MyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C07010C2EAD2F00537400 /* MyPoint.m */; };
-		CE8C07190C2EADC400537400 /* FVTiff.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C07170C2EADC400537400 /* FVTiff.h */; };
-		CE8C071A0C2EADC400537400 /* FVTiff.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C07180C2EADC400537400 /* FVTiff.m */; };
 		CE8C07210C2EADE900537400 /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C071D0C2EADE900537400 /* dicomFile.h */; };
 		CE8C07220C2EADE900537400 /* dicomFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C071E0C2EADE900537400 /* dicomFile.m */; };
 		CE8C07230C2EADE900537400 /* DicomFileDCMTKCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C071F0C2EADE900537400 /* DicomFileDCMTKCategory.h */; };
@@ -972,10 +967,6 @@
 		CE8C08770C2EB10800537400 /* dsrxmld.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C01BC0C2EA8C700537400 /* dsrxmld.h */; };
 		CE8C08780C2EB10800537400 /* dsrxrdcc.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C01BD0C2EA8C700537400 /* dsrxrdcc.cc */; };
 		CE8C08790C2EB10800537400 /* dsrxrdcc.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C01BE0C2EA8C700537400 /* dsrxrdcc.h */; };
-		CE8C08820C2EB16800537400 /* DCMObjectDBImport.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C087E0C2EB16800537400 /* DCMObjectDBImport.h */; };
-		CE8C08830C2EB16800537400 /* DCMObjectDBImport.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C087F0C2EB16800537400 /* DCMObjectDBImport.m */; };
-		CE8C08840C2EB16800537400 /* DCMObjectPixelDataImport.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C08800C2EB16800537400 /* DCMObjectPixelDataImport.h */; };
-		CE8C08850C2EB16800537400 /* DCMObjectPixelDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8C08810C2EB16800537400 /* DCMObjectPixelDataImport.m */; };
 		CE8CF1F70C2EA43100537400 /* DCMPix.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF1F50C2EA43100537400 /* DCMPix.m */; };
 		CE8CF1F80C2EA43100537400 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF1F60C2EA43100537400 /* DCMPix.h */; };
 		CE8CF3BB0C2EA4BA00537400 /* nifti1.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3B60C2EA4BA00537400 /* nifti1.h */; };
@@ -1046,8 +1037,6 @@
 		CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */; };
 		CE8CF4460C2EA56200537400 /* Papyrus3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4070C2EA56200537400 /* Papyrus3.h */; };
 		CE8CF4470C2EA56200537400 /* PapyPubFunctionDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4080C2EA56200537400 /* PapyPubFunctionDef3.h */; };
-		CEC00C480C2EFE6B00537400 /* libtiff.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3980C2EA48400537400 /* libtiff.dylib */; };
-		CEC00C490C2EFE6B00537400 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CF3990C2EA48400537400 /* libtiff.a */; };
 		CEC00C4A0C2EFE6B00537400 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39A0C2EA48400537400 /* port.h */; };
 		CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39B0C2EA48400537400 /* t4.h */; };
 		CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39C0C2EA48400537400 /* tif_dir.h */; };
@@ -1060,27 +1049,27 @@
 		CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A30C2EA48400537400 /* tiffiop.h */; };
 		CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
 		CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
+		CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */; };
+		CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE52DC20C7474520044205E /* libjasper2.a */; };
 		F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */; };
 		F28CFC030A3EC0C6000ABFF5 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CE586C0B0C74B10400DB7D5A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 11;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE657D730C29B33400537400 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
-			files = (
-				CE82AE120C2EDB6400537400 /* libtiff.dylib in CopyFiles */,
-				CE657D700C29B31600537400 /* OsiriX.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CE657DA00C29BA2600537400 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1096,7 +1085,6 @@
 		C86B05260671AA6E00DD9006 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
 		CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
-		CE657B1D0C29AC7800537400 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 		CE657D4E0C29AD5100537400 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		CE689C040C33DE3400FA47B4 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		CE8C00000C2EA8C600537400 /* jcpred.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcpred.c; sourceTree = "<group>"; };
@@ -1607,8 +1595,6 @@
 		CE8C06FA0C2EACFB00537400 /* xNSImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = xNSImage.m; path = ../osirix/xNSImage.m; sourceTree = SOURCE_ROOT; };
 		CE8C07000C2EAD2F00537400 /* MyPoint.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MyPoint.h; path = ../osirix/MyPoint.h; sourceTree = SOURCE_ROOT; };
 		CE8C07010C2EAD2F00537400 /* MyPoint.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = MyPoint.m; path = ../osirix/MyPoint.m; sourceTree = SOURCE_ROOT; };
-		CE8C07170C2EADC400537400 /* FVTiff.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FVTiff.h; path = ../osirix/FVTiff.h; sourceTree = SOURCE_ROOT; };
-		CE8C07180C2EADC400537400 /* FVTiff.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = FVTiff.m; path = ../osirix/FVTiff.m; sourceTree = SOURCE_ROOT; };
 		CE8C071D0C2EADE900537400 /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = dicomFile.h; path = ../osirix/dicomFile.h; sourceTree = SOURCE_ROOT; };
 		CE8C071E0C2EADE900537400 /* dicomFile.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = dicomFile.m; path = ../osirix/dicomFile.m; sourceTree = SOURCE_ROOT; };
 		CE8C071F0C2EADE900537400 /* DicomFileDCMTKCategory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DicomFileDCMTKCategory.h; path = ../osirix/DicomFileDCMTKCategory.h; sourceTree = SOURCE_ROOT; };
@@ -1616,14 +1602,8 @@
 		CE8C07580C2EB00800537400 /* DefaultsOsiriX.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DefaultsOsiriX.h; path = ../osirix/DefaultsOsiriX.h; sourceTree = SOURCE_ROOT; };
 		CE8C07590C2EB00800537400 /* DefaultsOsiriX.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = DefaultsOsiriX.m; path = ../osirix/DefaultsOsiriX.m; sourceTree = SOURCE_ROOT; };
 		CE8C075E0C2EB03E00537400 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
-		CE8C087E0C2EB16800537400 /* DCMObjectDBImport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DCMObjectDBImport.h; path = ../osirix/DCMObjectDBImport.h; sourceTree = SOURCE_ROOT; };
-		CE8C087F0C2EB16800537400 /* DCMObjectDBImport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = DCMObjectDBImport.m; path = ../osirix/DCMObjectDBImport.m; sourceTree = SOURCE_ROOT; };
-		CE8C08800C2EB16800537400 /* DCMObjectPixelDataImport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DCMObjectPixelDataImport.h; path = ../osirix/DCMObjectPixelDataImport.h; sourceTree = SOURCE_ROOT; };
-		CE8C08810C2EB16800537400 /* DCMObjectPixelDataImport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = DCMObjectPixelDataImport.m; path = ../osirix/DCMObjectPixelDataImport.m; sourceTree = SOURCE_ROOT; };
 		CE8CF1F50C2EA43100537400 /* DCMPix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = DCMPix.m; path = ../osirix/DCMPix.m; sourceTree = SOURCE_ROOT; };
 		CE8CF1F60C2EA43100537400 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DCMPix.h; path = ../osirix/DCMPix.h; sourceTree = SOURCE_ROOT; };
-		CE8CF3980C2EA48400537400 /* libtiff.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtiff.dylib; sourceTree = "<group>"; };
-		CE8CF3990C2EA48400537400 /* libtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libtiff.a; sourceTree = "<group>"; };
 		CE8CF39A0C2EA48400537400 /* port.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = port.h; sourceTree = "<group>"; };
 		CE8CF39B0C2EA48400537400 /* t4.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = t4.h; sourceTree = "<group>"; };
 		CE8CF39C0C2EA48400537400 /* tif_dir.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = tif_dir.h; sourceTree = "<group>"; };
@@ -2147,6 +2127,8 @@
 		CE8CFFFD0C2EA8C600537400 /* jconfig16.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jconfig16.h; sourceTree = "<group>"; };
 		CE8CFFFE0C2EA8C600537400 /* jcparam.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcparam.c; sourceTree = "<group>"; };
 		CE8CFFFF0C2EA8C600537400 /* jcphuff.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcphuff.c; sourceTree = "<group>"; };
+		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
+		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = /System/Library/Frameworks/QuickLook.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -2160,7 +2142,6 @@
 				C86B05270671AA6E00DD9006 /* CoreServices.framework in Frameworks */,
 				F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */,
 				F28CFC030A3EC0C6000ABFF5 /* QuickLook.framework in Frameworks */,
-				CE657B1E0C29AC7800537400 /* OsiriX.framework in Frameworks */,
 				CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */,
 				CE8C061E0C2EAAA700537400 /* libz.dylib in Frameworks */,
 				CE8C06200C2EAAC300537400 /* QuickTime.framework in Frameworks */,
@@ -2169,9 +2150,8 @@
 				CE8C06C80C2EAB3200537400 /* libcrypto.dylib in Frameworks */,
 				CE8C06CC0C2EAB5E00537400 /* Accelerate.framework in Frameworks */,
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
-				CEC00C480C2EFE6B00537400 /* libtiff.dylib in Frameworks */,
-				CEC00C490C2EFE6B00537400 /* libtiff.a in Frameworks */,
 				CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */,
+				CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2196,6 +2176,7 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CEE52DC20C7474520044205E /* libjasper2.a */,
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
 				CE8C06C30C2EAB1200537400 /* libssl.dylib */,
@@ -2204,7 +2185,6 @@
 				CE8C06CB0C2EAB5E00537400 /* Accelerate.framework */,
 				CE8C06420C2EAAD000537400 /* Foundation.framework */,
 				CE8C061F0C2EAAC300537400 /* QuickTime.framework */,
-				CE657B1D0C29AC7800537400 /* OsiriX.framework */,
 				F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */,
 				F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */,
 				C86B05260671AA6E00DD9006 /* CoreServices.framework */,
@@ -2226,28 +2206,23 @@
 		08FB77AFFE84173DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */,
 				CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */,
+				CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */,
 				CE8CF1F50C2EA43100537400 /* DCMPix.m */,
 				CE8CF1F60C2EA43100537400 /* DCMPix.h */,
 				08FB77B6FE84183AC02AAC07 /* main.c */,
 				CE8C06F20C2EAC1A00537400 /* OsiriXStandAlone.m */,
 				CE8C06F90C2EACFB00537400 /* xNSImage.h */,
 				CE8C06FA0C2EACFB00537400 /* xNSImage.m */,
-				CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */,
 				CE8C07000C2EAD2F00537400 /* MyPoint.h */,
 				CE8C07010C2EAD2F00537400 /* MyPoint.m */,
-				CE8C07170C2EADC400537400 /* FVTiff.h */,
-				CE8C07180C2EADC400537400 /* FVTiff.m */,
 				CE8C071D0C2EADE900537400 /* dicomFile.h */,
 				CE8C071E0C2EADE900537400 /* dicomFile.m */,
 				CE8C071F0C2EADE900537400 /* DicomFileDCMTKCategory.h */,
 				CE8C07200C2EADE900537400 /* DicomFileDCMTKCategory.mm */,
 				CE8C07580C2EB00800537400 /* DefaultsOsiriX.h */,
 				CE8C07590C2EB00800537400 /* DefaultsOsiriX.m */,
-				CE8C087E0C2EB16800537400 /* DCMObjectDBImport.h */,
-				CE8C087F0C2EB16800537400 /* DCMObjectDBImport.m */,
-				CE8C08800C2EB16800537400 /* DCMObjectPixelDataImport.h */,
-				CE8C08810C2EB16800537400 /* DCMObjectPixelDataImport.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -2776,8 +2751,6 @@
 		CE8CF3970C2EA48400537400 /* LibTiff */ = {
 			isa = PBXGroup;
 			children = (
-				CE8CF3980C2EA48400537400 /* libtiff.dylib */,
-				CE8CF3990C2EA48400537400 /* libtiff.a */,
 				CE8CF39A0C2EA48400537400 /* port.h */,
 				CE8CF39B0C2EA48400537400 /* t4.h */,
 				CE8CF39C0C2EA48400537400 /* tif_dir.h */,
@@ -3893,7 +3866,6 @@
 				CE8C05FB0C2EA99E00537400 /* dcmqrtis.h in Headers */,
 				CE8C06FB0C2EACFB00537400 /* xNSImage.h in Headers */,
 				CE8C07020C2EAD2F00537400 /* MyPoint.h in Headers */,
-				CE8C07190C2EADC400537400 /* FVTiff.h in Headers */,
 				CE8C07210C2EADE900537400 /* dicomFile.h in Headers */,
 				CE8C07230C2EADE900537400 /* DicomFileDCMTKCategory.h in Headers */,
 				CE8C075A0C2EB00800537400 /* DefaultsOsiriX.h in Headers */,
@@ -3947,8 +3919,6 @@
 				CE8C08750C2EB10800537400 /* dsrxmlc.h in Headers */,
 				CE8C08770C2EB10800537400 /* dsrxmld.h in Headers */,
 				CE8C08790C2EB10800537400 /* dsrxrdcc.h in Headers */,
-				CE8C08820C2EB16800537400 /* DCMObjectDBImport.h in Headers */,
-				CE8C08840C2EB16800537400 /* DCMObjectPixelDataImport.h in Headers */,
 				CEC00C4A0C2EFE6B00537400 /* port.h in Headers */,
 				CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */,
 				CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */,
@@ -3961,6 +3931,7 @@
 				CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */,
 				CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */,
 				CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */,
+				CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3977,7 +3948,7 @@
 				8D576311048677EA00EA77CD /* Sources */,
 				8D576313048677EA00EA77CD /* Frameworks */,
 				8D576315048677EA00EA77CD /* Rez */,
-				CE657DA00C29BA2600537400 /* CopyFiles */,
+				CE586C0B0C74B10400DB7D5A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -4529,7 +4500,6 @@
 				CE8C06F40C2EAC1A00537400 /* OsiriXStandAlone.m in Sources */,
 				CE8C06FC0C2EACFB00537400 /* xNSImage.m in Sources */,
 				CE8C07030C2EAD2F00537400 /* MyPoint.m in Sources */,
-				CE8C071A0C2EADC400537400 /* FVTiff.m in Sources */,
 				CE8C07220C2EADE900537400 /* dicomFile.m in Sources */,
 				CE8C07240C2EADE900537400 /* DicomFileDCMTKCategory.mm in Sources */,
 				CE8C075B0C2EB00800537400 /* DefaultsOsiriX.m in Sources */,
@@ -4582,8 +4552,6 @@
 				CE8C08740C2EB10800537400 /* dsrxmlc.cc in Sources */,
 				CE8C08760C2EB10800537400 /* dsrxmld.cc in Sources */,
 				CE8C08780C2EB10800537400 /* dsrxrdcc.cc in Sources */,
-				CE8C08830C2EB16800537400 /* DCMObjectDBImport.m in Sources */,
-				CE8C08850C2EB16800537400 /* DCMObjectPixelDataImport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4608,8 +4576,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Development 64-bits\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -4621,9 +4591,11 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
 				PRODUCT_NAME = DICOMQuickLook;
 				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
@@ -4634,12 +4606,15 @@
 		2CA326200896AD4900168862 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEAD_CODE_STRIPPING = YES;
+				DYLIB_CURRENT_VERSION = 1.0;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/build/Development\"";
-				GCC_MODEL_TUNING = G5;
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Development 64-bits\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Library/QuickLook;
@@ -4647,10 +4622,13 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
 				PRODUCT_NAME = DICOMQuickLook;
+				STRIP_INSTALLED_PRODUCT = YES;
 				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
 			};
@@ -4669,10 +4647,11 @@
 		2CA326240896AD4900168862 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ALTIVEC_EXTENSIONS = YES;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_PREFIX_HEADER = DICOMQuickLook_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = YES;

@@ -4,11 +4,17 @@
 #import <QuickLook/QuickLook.h>
 #import "DCMPix.h"
 
+static PapyInitDone = NO;
+
 OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options)
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
-	NSLog( @"*** GENERATE - Preview");
+	if( PapyInitDone == NO)
+	{
+		PapyInitDone = YES;
+		Papy3Init();
+	}
 	
 	NSURL *nsurl = (NSURL*) url;
 
