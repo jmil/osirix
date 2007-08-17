@@ -8,6 +8,14 @@
 
 static PapyInitDone = NO;
 
+NSString* stringFromData( NSString *a, NSString *b)
+{
+	if( a && b) return [NSString stringWithFormat:@"%@ - %@", a, b];
+	if( a) return a;
+	if( b) return b;
+	return @"";
+}
+
 OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options)
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -59,11 +67,14 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 				
 				NSMutableString	*text = [NSMutableString string];
 				
-				[text appendString: [NSString stringWithFormat:@"%@ - %@", [file elementForKey:@"patientName"], [date stringFromDate: [file elementForKey:@"patientBirthDate"]]]];
+				[text appendString: stringFromData( [file elementForKey:@"patientName"], [date stringFromDate: [file elementForKey:@"patientBirthDate"]])];
 				[text appendString: @"\r"];
-				[text appendString: [NSString stringWithFormat:@"%@ - %@", [file elementForKey:@"accessionNumber"], [file elementForKey:@"patientID"]]];
+				[text appendString: stringFromData( [file elementForKey:@"accessionNumber"], [file elementForKey:@"patientID"])];
 				[text appendString: @"\r"];
-				[text appendString: [NSString stringWithFormat:@"%@ - %@ / %@", [file elementForKey:@"studyDescription"], [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]]];
+				
+				NSString *s = 0L;
+				if( [file elementForKey:@"studyDate"]) s = [NSString stringWithFormat: @"%@ / %@", [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]];
+				[text appendString: stringFromData( [file elementForKey:@"studyDescription"], s)];
 				
 				[text drawAtPoint: NSMakePoint(10, 10) withAttributes: attributes];
 				
