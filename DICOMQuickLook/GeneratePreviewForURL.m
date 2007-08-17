@@ -28,8 +28,8 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 	NSSize canvasSize = [image size];
 	
     CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
-    if(cgContext) {
-		
+    if(cgContext)
+	{
         NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
         if(context)
 		{
@@ -39,27 +39,35 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 		   
 		   DicomFile	*file = [[DicomFile alloc] init: [nsurl path]];
 		   
-		   if( file)
-		   {
-			NSShadow	*shadow = [[[NSShadow alloc] init] autorelease];
-			[shadow setShadowColor: [NSColor blackColor]];
-			[shadow setShadowOffset: NSMakeSize(-2, -2)];
-			[shadow setShadowBlurRadius: 4];
-			
-			float fontSize = 14.*[image size].width/512.;
-			if( fontSize < 10) fontSize = 10;
-			
-			NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, 0L];
-
-			NSMutableString	*text = [NSMutableString string];
-
-			[text appendString: [file elementForKey:@"patientName"]];
-			[text appendString: @"\r"];
-			[text appendString: [file elementForKey:@"studyDescription"]];
-
-			[text drawAtPoint: NSMakePoint(10, 10) withAttributes: attributes];
-
-			[file release];
+			if( file)
+			{
+				NSDateFormatter		*date = [[[NSDateFormatter alloc] init] autorelease];
+				[date setDateStyle: NSDateFormatterShortStyle];
+				
+				NSDateFormatter		*time = [[[NSDateFormatter alloc] init] autorelease];
+				[time setTimeStyle: NSDateFormatterShortStyle];
+				
+				NSShadow	*shadow = [[[NSShadow alloc] init] autorelease];
+				[shadow setShadowColor: [NSColor blackColor]];
+				[shadow setShadowOffset: NSMakeSize(-2, -2)];
+				[shadow setShadowBlurRadius: 4];
+				
+				float fontSize = 14.*[image size].width/512.;
+				if( fontSize < 10) fontSize = 10;
+				
+				NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, 0L];
+				
+				NSMutableString	*text = [NSMutableString string];
+				
+				[text appendString: [NSString stringWithFormat:@"%@ - %@", [file elementForKey:@"patientName"], [date stringFromDate: [file elementForKey:@"patientBirthDate"]]]];
+				[text appendString: @"\r"];
+				[text appendString: [NSString stringWithFormat:@"%@ - %@", [file elementForKey:@"accessionNumber"], [file elementForKey:@"patientID"]]];
+				[text appendString: @"\r"];
+				[text appendString: [NSString stringWithFormat:@"%@ - %@ / %@", [file elementForKey:@"studyDescription"], [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]]];
+				
+				[text drawAtPoint: NSMakePoint(10, 10) withAttributes: attributes];
+				
+				[file release];
 			}
         }
         QLPreviewRequestFlushContext(preview, cgContext);
