@@ -10,6 +10,8 @@ static PapyInitDone = NO;
 
 NSString* stringFromData( NSString *a, NSString *b)
 {
+	if( [a isEqualTo:@""]) a = 0L;
+	if( [b isEqualTo:@""]) b = 0L;
 	if( a && b) return [NSString stringWithFormat:@"%@ - %@", a, b];
 	if( a) return a;
 	if( b) return b;
