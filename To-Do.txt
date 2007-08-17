@@ -36,9 +36,11 @@
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 
 TODO:
+- Check if image is always visible
+- CLUT in PPC 32-bits (PET modality)
 - Growl 64 bit?
 - Quicktime support in 64bits
-- Export tiled image, image number?
+- Export tiled image, image number, 64-bits?
 - NRRD: ITK IO
 - HUD Windows Leopard
 - New smart filter editor (10.5)

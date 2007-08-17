@@ -2,7 +2,9 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreServices/CoreServices.h>
 #import <QuickLook/QuickLook.h>
+
 #import "DCMPix.h"
+#import "dicomFile.h"
 
 static PapyInitDone = NO;
 
@@ -28,10 +30,37 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
     if(cgContext) {
 		
-        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:YES];
-        if(context) {
+        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
+        if(context)
+		{
 		   [NSGraphicsContext setCurrentContext: context];
            [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, [image size].width, [image size].height) operation:NSCompositeCopy fraction:1.0];
+		   
+		   
+		   DicomFile	*file = [[DicomFile alloc] init: [nsurl path]];
+		   
+		   if( file)
+		   {
+			NSShadow	*shadow = [[[NSShadow alloc] init] autorelease];
+			[shadow setShadowColor: [NSColor blackColor]];
+			[shadow setShadowOffset: NSMakeSize(-2, -2)];
+			[shadow setShadowBlurRadius: 4];
+			
+			float fontSize = 14.*[image size].width/512.;
+			if( fontSize < 10) fontSize = 10;
+			
+			NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, 0L];
+
+			NSMutableString	*text = [NSMutableString string];
+
+			[text appendString: [file elementForKey:@"patientName"]];
+			[text appendString: @"\r"];
+			[text appendString: [file elementForKey:@"studyDescription"]];
+
+			[text drawAtPoint: NSMakePoint(10, 10) withAttributes: attributes];
+
+			[file release];
+			}
         }
         QLPreviewRequestFlushContext(preview, cgContext);
         CFRelease(cgContext);

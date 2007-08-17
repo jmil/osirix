@@ -13,6 +13,7 @@
 			<array>
 				<string>org.nema.dicom</string>
 				<string>public.dcm</string>
+				<string>public.lsm</string>
 			</array>
 		</dict>
 	</array>

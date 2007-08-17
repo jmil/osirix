@@ -31,6 +31,9 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
         if(context) {
 			[NSGraphicsContext setCurrentContext: context];
             [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, [image size].width, [image size].height) operation:NSCompositeCopy fraction:1.0];
+			
+			NSString	*test = [NSString stringWithString:@"Hello"];
+			[test drawAtPoint: NSMakePoint(10, 10) withAttributes:0L];
         }
         QLThumbnailRequestFlushContext(thumbnail, cgContext);
         CFRelease(cgContext);
