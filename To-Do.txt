@@ -42,7 +42,8 @@ TODO:
 - Quicktime support in 64bits
 - NRRD: ITK IO
 - HUD Windows Leopard
-- New smart filter editor (10.5)
+- New smart filter editor NSPredicateEditor
+- NSOperation
 - New series for keyimages
 - Perfusion
 - ROI enhancement
