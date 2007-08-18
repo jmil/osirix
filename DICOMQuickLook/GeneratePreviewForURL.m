@@ -12,9 +12,9 @@ NSString* stringFromData( NSString *a, NSString *b)
 {
 	if( [a isEqualTo:@""]) a = 0L;
 	if( [b isEqualTo:@""]) b = 0L;
-	if( a && b) return [NSString stringWithFormat:@"%@ - %@", a, b];
-	if( a) return a;
-	if( b) return b;
+	if( a && b) return [NSString stringWithFormat:@" %@ - %@", a, b];
+	if( a) return [NSString stringWithFormat:@" %@", a];
+	if( b) return [NSString stringWithFormat:@" %@", b];
 	return @"";
 }
 
@@ -36,7 +36,7 @@ void drawTextualData(NSString* path, float width)
 		[shadow setShadowBlurRadius: 4];
 		
 		float fontSize = 14.*width/512.;
-		if( fontSize < 10) fontSize = 10;
+//		if( fontSize < 10) fontSize = 10;
 		
 		NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, 0L];
 		
@@ -51,7 +51,7 @@ void drawTextualData(NSString* path, float width)
 		if( [file elementForKey:@"studyDate"]) s = [NSString stringWithFormat: @"%@ / %@", [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]];
 		[text appendString: stringFromData( [file elementForKey:@"studyDescription"], s)];
 		
-		[text drawAtPoint: NSMakePoint(10, 10) withAttributes: attributes];
+		[text drawAtPoint: NSMakePoint(0, 0) withAttributes: attributes];
 		
 		[file release];
 	}
