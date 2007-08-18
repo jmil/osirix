@@ -13,7 +13,6 @@
 		C86B05270671AA6E00DD9006 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C86B05260671AA6E00DD9006 /* CoreServices.framework */; };
 		CE6435CA0C35272400537400 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D576317048677EA00EA77CD /* Info.plist */; };
 		CE657AA60C29AB7900537400 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */; };
-		CE657AA70C29AB7900537400 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */; };
 		CE657D4F0C29AD5100537400 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE657D4E0C29AD5100537400 /* Cocoa.framework */; };
 		CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE689C040C33DE3400FA47B4 /* vecLib.framework */; };
 		CE8C01FB0C2EA8C700537400 /* cfunix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CFE400C2EA8C500537400 /* cfunix.h */; };
@@ -1035,7 +1034,6 @@
 		CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */; };
 		CE8CF4460C2EA56200537400 /* Papyrus3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4070C2EA56200537400 /* Papyrus3.h */; };
 		CE8CF4470C2EA56200537400 /* PapyPubFunctionDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4080C2EA56200537400 /* PapyPubFunctionDef3.h */; };
-		CE9CEF500C75BEFA00752D4B /* libDCM StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9CEF4F0C75BEFA00752D4B /* libDCM StaticLibrary.a */; };
 		CE9CEF6D0C75BFCB00752D4B /* DCMObjectDBImport.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9CEF6B0C75BFCB00752D4B /* DCMObjectDBImport.h */; };
 		CE9CEF6E0C75BFCB00752D4B /* DCMObjectDBImport.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9CEF6C0C75BFCB00752D4B /* DCMObjectDBImport.m */; };
 		CE9CEF790C75C0B600752D4B /* dicomDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */; };
@@ -1045,6 +1043,7 @@
 		CE9CEFB40C75CA1500752D4B /* DefaultsOsiriX.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C07580C2EB00800537400 /* DefaultsOsiriX.h */; };
 		CE9CEFD10C75CA9F00752D4B /* DICOMToNSString.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9CEFCF0C75CA9F00752D4B /* DICOMToNSString.h */; };
 		CE9CEFD20C75CA9F00752D4B /* DICOMToNSString.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */; };
+		CEA048F80C76E73B00B4CA0A /* libDCM StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */; };
 		CEC00C4A0C2EFE6B00537400 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39A0C2EA48400537400 /* port.h */; };
 		CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39B0C2EA48400537400 /* t4.h */; };
 		CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39C0C2EA48400537400 /* tif_dir.h */; };
@@ -1092,7 +1091,6 @@
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C86B05260671AA6E00DD9006 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
-		CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
 		CE657D4E0C29AD5100537400 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		CE689C040C33DE3400FA47B4 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		CE8C00000C2EA8C600537400 /* jcpred.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcpred.c; sourceTree = "<group>"; };
@@ -2135,7 +2133,6 @@
 		CE8CFFFD0C2EA8C600537400 /* jconfig16.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jconfig16.h; sourceTree = "<group>"; };
 		CE8CFFFE0C2EA8C600537400 /* jcparam.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcparam.c; sourceTree = "<group>"; };
 		CE8CFFFF0C2EA8C600537400 /* jcphuff.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcphuff.c; sourceTree = "<group>"; };
-		CE9CEF4F0C75BEFA00752D4B /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Deployment Universal 64-bit/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
 		CE9CEF6B0C75BFCB00752D4B /* DCMObjectDBImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCMObjectDBImport.h; path = ../osirix/DCMObjectDBImport.h; sourceTree = SOURCE_ROOT; };
 		CE9CEF6C0C75BFCB00752D4B /* DCMObjectDBImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCMObjectDBImport.m; path = ../osirix/DCMObjectDBImport.m; sourceTree = SOURCE_ROOT; };
 		CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = dicomDictionary.plist; path = "../osirix/DCM Framework/dicomDictionary.plist"; sourceTree = SOURCE_ROOT; };
@@ -2143,6 +2140,7 @@
 		CE9CEF780C75C0B600752D4B /* tagDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tagDictionary.plist; path = "../osirix/DCM Framework/tagDictionary.plist"; sourceTree = SOURCE_ROOT; };
 		CE9CEFCF0C75CA9F00752D4B /* DICOMToNSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DICOMToNSString.h; path = ../osirix/DICOMToNSString.h; sourceTree = SOURCE_ROOT; };
 		CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DICOMToNSString.m; path = ../osirix/DICOMToNSString.m; sourceTree = SOURCE_ROOT; };
+		CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Deployment Universal 32-bit/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
 		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
 		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -2168,7 +2166,7 @@
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
 				CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */,
 				CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */,
-				CE9CEF500C75BEFA00752D4B /* libDCM StaticLibrary.a in Frameworks */,
+				CEA048F80C76E73B00B4CA0A /* libDCM StaticLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2193,10 +2191,10 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				CE9CEF4F0C75BEFA00752D4B /* libDCM StaticLibrary.a */,
 				CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */,
 				CE9CEF770C75C0B600752D4B /* nameDictionary.plist */,
 				CE9CEF780C75C0B600752D4B /* tagDictionary.plist */,
+				CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */,
 				CEE52DC20C7474520044205E /* libjasper2.a */,
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
@@ -2228,7 +2226,6 @@
 			isa = PBXGroup;
 			children = (
 				CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */,
-				CE657AA50C29AB7900537400 /* GenerateThumbnailForURL.m */,
 				CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */,
 				CE8CF1F50C2EA43100537400 /* DCMPix.m */,
 				CE8CF1F60C2EA43100537400 /* DCMPix.h */,
@@ -4036,7 +4033,6 @@
 			files = (
 				8D576312048677EA00EA77CD /* main.c in Sources */,
 				CE657AA60C29AB7900537400 /* GeneratePreviewForURL.m in Sources */,
-				CE657AA70C29AB7900537400 /* GenerateThumbnailForURL.m in Sources */,
 				CE8CF1F70C2EA43100537400 /* DCMPix.m in Sources */,
 				CE8CF3BC0C2EA4BA00537400 /* nifti1_io.c in Sources */,
 				CE8CF3BE0C2EA4BA00537400 /* znzlib.c in Sources */,
@@ -4625,11 +4621,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 64-bit\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 32-bit\"";
 				PRODUCT_NAME = DICOMQuickLook;
 				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
@@ -4658,10 +4656,12 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 64-bit\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 32-bit\"";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = DICOMQuickLook;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -4673,6 +4673,10 @@
 		2CA326230896AD4900168862 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
@@ -4683,6 +4687,10 @@
 		2CA326240896AD4900168862 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ALTIVEC_EXTENSIONS = YES;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
