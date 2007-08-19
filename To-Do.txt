@@ -41,7 +41,7 @@ TODO:
 - Growl 64 bits
 - iDisk 64-bits
 - DICOM Print 64-bits : test
-- Discover CD - 64 bits
+- Discover CD - 64 bits -> NSWorkSpace mountedRemovableMedia
 - Quicktime support in 64bits
 - Plugin Manager
 - NRRD: ITK IO
