@@ -38,8 +38,12 @@
 TODO:
 - Check if image is always visible
 - CLUT in PPC 32-bits (PET modality)
-- Growl 64 bit?
+- Growl 64 bits
+- iDisk 64-bits
+- DICOM Print 64-bits : test
+- Discover CD - 64 bits
 - Quicktime support in 64bits
+- Plugin Manager
 - NRRD: ITK IO
 - HUD Windows Leopard
 - New smart filter editor NSPredicateEditor
