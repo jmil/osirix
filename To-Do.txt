@@ -40,6 +40,7 @@ TODO:
 - iDisk 64-bits
 - DICOM Print 64-bits : test
 - Quicktime support in 64bits: import
+- QTVR : only mov
 - Reports : test (NSDateFormatter)
 - Plugin Manager
 - NRRD: ITK IO
