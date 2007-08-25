@@ -1043,7 +1043,8 @@
 		CE9CEFB40C75CA1500752D4B /* DefaultsOsiriX.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C07580C2EB00800537400 /* DefaultsOsiriX.h */; };
 		CE9CEFD10C75CA9F00752D4B /* DICOMToNSString.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9CEFCF0C75CA9F00752D4B /* DICOMToNSString.h */; };
 		CE9CEFD20C75CA9F00752D4B /* DICOMToNSString.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */; };
-		CEA048F80C76E73B00B4CA0A /* libDCM StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */; };
+		CEB9A42E0C80E1BA00DC1331 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */; };
+		CEB9A4510C80E20900DC1331 /* libDCM StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */; };
 		CEC00C4A0C2EFE6B00537400 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39A0C2EA48400537400 /* port.h */; };
 		CEC00C4B0C2EFE6B00537400 /* t4.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39B0C2EA48400537400 /* t4.h */; };
 		CEC00C4C0C2EFE6B00537400 /* tif_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF39C0C2EA48400537400 /* tif_dir.h */; };
@@ -2140,7 +2141,8 @@
 		CE9CEF780C75C0B600752D4B /* tagDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tagDictionary.plist; path = "../osirix/DCM Framework/tagDictionary.plist"; sourceTree = SOURCE_ROOT; };
 		CE9CEFCF0C75CA9F00752D4B /* DICOMToNSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DICOMToNSString.h; path = ../osirix/DICOMToNSString.h; sourceTree = SOURCE_ROOT; };
 		CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DICOMToNSString.m; path = ../osirix/DICOMToNSString.m; sourceTree = SOURCE_ROOT; };
-		CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Deployment Universal 32-bit/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
+		CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Development/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
 		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
 		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -2166,7 +2168,8 @@
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
 				CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */,
 				CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */,
-				CEA048F80C76E73B00B4CA0A /* libDCM StaticLibrary.a in Frameworks */,
+				CEB9A42E0C80E1BA00DC1331 /* QTKit.framework in Frameworks */,
+				CEB9A4510C80E20900DC1331 /* libDCM StaticLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2194,7 +2197,7 @@
 				CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */,
 				CE9CEF770C75C0B600752D4B /* nameDictionary.plist */,
 				CE9CEF780C75C0B600752D4B /* tagDictionary.plist */,
-				CEA048F70C76E73B00B4CA0A /* libDCM StaticLibrary.a */,
+				CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */,
 				CEE52DC20C7474520044205E /* libjasper2.a */,
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
@@ -2203,6 +2206,7 @@
 				CE8C075E0C2EB03E00537400 /* IOKit.framework */,
 				CE8C06CB0C2EAB5E00537400 /* Accelerate.framework */,
 				CE8C06420C2EAAD000537400 /* Foundation.framework */,
+				CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */,
 				CE8C061F0C2EAAC300537400 /* QuickTime.framework */,
 				F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */,
 				F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */,
@@ -4622,7 +4626,9 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../osirix/build/Development\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
@@ -4657,11 +4663,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 64-bit\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 32-bit\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../osirix/build/Development\"";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = DICOMQuickLook;
 				STRIP_INSTALLED_PRODUCT = YES;
