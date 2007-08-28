@@ -1,0 +1,98 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = HMBlkButton; LANGUAGE = ObjC; SUPERCLASS = NSButton; }, 
+        {CLASS = HMBlkPanel; LANGUAGE = ObjC; SUPERCLASS = NSPanel; }, 
+        {
+            CLASS = HMBlkSegmentedControl; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSSegmentedControl; 
+        }, 
+        {CLASS = NFHUDButton; LANGUAGE = ObjC; SUPERCLASS = NSButton; }, 
+        {CLASS = NFHUDSlider; LANGUAGE = ObjC; SUPERCLASS = NSSlider; }, 
+        {CLASS = NFHUDWindow; LANGUAGE = ObjC; SUPERCLASS = NSPanel; }, 
+        {CLASS = NSObject; LANGUAGE = ObjC; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {CLASS = PluginFilter; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {nextStep = id; previousStep = id; skipStep = id; }; 
+            CLASS = StepByStep; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {delegate = id; view = StepByStepView; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = StepByStepView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {controller = StepByStep; }; 
+            SUPERCLASS = NSView; 
+        }, 
+        {
+            ACTIONS = {
+                changeFemurLayerColor = id; 
+                changeFemurLayerOpacity = id; 
+                manualCalibrationButtonPressed = id; 
+                resetStepByStep = id; 
+                showTemplatePanel = id; 
+                standardMagnificationFactorButtonPressed = id; 
+                updateInfoBoxROI = id; 
+            }; 
+            CLASS = XRayTemplateStepByStepController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                betaVersionTextField = NSTextField; 
+                chosenSizeTextField = NSTextField; 
+                cupAngleTextField = NSTextField; 
+                femurColorWell = NSColorWell; 
+                femurOpacityTextField = NSTextField; 
+                horizontalOffsetTextField = NSTextField; 
+                manualCalibrationButton = NSButton; 
+                manualCalibrationTextField = NSTextField; 
+                plannerNameTextField = NSTextField; 
+                sendToPACSButton = NSButton; 
+                standardMagnificationFactorButton = NSButton; 
+                standardMagnificationFactorTextField = NSTextField; 
+                stepByStep = StepByStep; 
+                verticalOffsetTextField = NSTextField; 
+                viewCalibrationPoints = NSView; 
+                viewCup = NSView; 
+                viewCutting = NSView; 
+                viewFemurAxis = NSView; 
+                viewHorizontalAxis = NSView; 
+                viewLandmarks = NSView; 
+                viewMagnificationFactor = NSView; 
+                viewPlacement = NSView; 
+                viewPlannerName = NSView; 
+                viewSave = NSView; 
+                viewStem = NSView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = XRayTemplateTableView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                templatesArrayController = NSArrayController; 
+                windowController = XRayTemplateWindowController; 
+            }; 
+            SUPERCLASS = NSTableView; 
+        }, 
+        {
+            ACTIONS = {flipLeftRight = id; setPDFDocument = id; setViewDirection = id; }; 
+            CLASS = XRayTemplateWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                pdfView = PDFView; 
+                templatesArrayController = NSArrayController; 
+                templatesTableView = XRayTemplateTableView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = XRayTemplatesPluginFilter; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = PluginFilter; 
+        }
+    ); 
+    IBVersion = 1; 
+}
