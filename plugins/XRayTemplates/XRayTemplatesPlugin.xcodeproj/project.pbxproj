@@ -103,10 +103,7 @@
 		A92546880BDF5DC0000B6082 /* PopUpRightD.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A92545F10BDF5DBF000B6082 /* PopUpRightD.tiff */; };
 		A92546890BDF5DC0000B6082 /* PopUpRightN.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A92545F20BDF5DBF000B6082 /* PopUpRightN.tiff */; };
 		A925468A0BDF5DC0000B6082 /* PopUpRightP.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A92545F30BDF5DBF000B6082 /* PopUpRightP.tiff */; };
-		A925D2AB0C2A7356005751EC /* zimmer_templates in Resources */ = {isa = PBXBuildFile; fileRef = A925CD210C2A7355005751EC /* zimmer_templates */; };
 		A9459DD90BE1F5DF000E85FF /* SendController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9459DD80BE1F5DF000E85FF /* SendController.h */; };
-		A96654C40C05E63C0094A4FB /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96654C30C05E63C0094A4FB /* OsiriX.framework */; };
-		A96655380C05E6660094A4FB /* OsiriX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A96654C30C05E63C0094A4FB /* OsiriX.framework */; };
 		A9969D5F0C0C813600B12D9A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49B7048680CD000E48DA /* Info.plist */; };
 		A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */; };
 		A9F95E900BC37FE400BD8AC8 /* DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = A9F95E860BC37FE400BD8AC8 /* DisclosureBox.h */; };
@@ -143,6 +140,7 @@
 		ABB76344067FB2A8000912C1 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633D067FB2A8000912C1 /* PluginFilter.h */; };
 		ABB76345067FB2A8000912C1 /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633E067FB2A8000912C1 /* ROI.h */; };
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
+		CE0D09FD0C8482410074DEB1 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0D09FC0C8482410074DEB1 /* OsiriX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -152,7 +150,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A96655380C05E6660094A4FB /* OsiriX.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,9 +259,7 @@
 		A92545F10BDF5DBF000B6082 /* PopUpRightD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightD.tiff; sourceTree = "<group>"; };
 		A92545F20BDF5DBF000B6082 /* PopUpRightN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightN.tiff; sourceTree = "<group>"; };
 		A92545F30BDF5DBF000B6082 /* PopUpRightP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightP.tiff; sourceTree = "<group>"; };
-		A925CD210C2A7355005751EC /* zimmer_templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = zimmer_templates; sourceTree = "<group>"; };
 		A9459DD80BE1F5DF000E85FF /* SendController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SendController.h; sourceTree = "<group>"; };
-		A96654C30C05E63C0094A4FB /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../osirix/osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 		A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		A9F95E860BC37FE400BD8AC8 /* DisclosureBox.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DisclosureBox.h; sourceTree = "<group>"; };
 		A9F95E870BC37FE400BD8AC8 /* DisclosureBox.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DisclosureBox.m; sourceTree = "<group>"; };
@@ -301,6 +296,7 @@
 		ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
 		ABB7633E067FB2A8000912C1 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
+		CE0D09FC0C8482410074DEB1 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../../osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,7 +306,7 @@
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */,
-				A96654C40C05E63C0094A4FB /* OsiriX.framework in Frameworks */,
+				CE0D09FD0C8482410074DEB1 /* OsiriX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,13 +337,12 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A96654C30C05E63C0094A4FB /* OsiriX.framework */,
+				CE0D09FC0C8482410074DEB1 /* OsiriX.framework */,
 				A9FBB3FD0BAEC4B00032F6CA /* XRayTemplatesPluginIcon.tiff */,
 				A9FA564B0B9C2D0D009D7BF8 /* TemplatePanel.nib */,
 				A9F95F1E0BC390F000BD8AC8 /* StepByStepPanel.nib */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
-				A925CD210C2A7355005751EC /* zimmer_templates */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -638,9 +633,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "XRayTemplatesPlugin" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* XRayTemplatesPlugin */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* XRayTemplatesPlugin */,
 			);
@@ -710,7 +707,6 @@
 				A92546890BDF5DC0000B6082 /* PopUpRightN.tiff in Resources */,
 				A925468A0BDF5DC0000B6082 /* PopUpRightP.tiff in Resources */,
 				A9969D5F0C0C813600B12D9A /* Info.plist in Resources */,
-				A925D2AB0C2A7356005751EC /* zimmer_templates in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,12 +793,14 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SRCROOT)/../osirix/osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../osirix/build/Development\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -854,12 +852,14 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SRCROOT)/../osirix/osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../osirix/build/Development\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -904,12 +904,14 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SRCROOT)/../osirix/osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../osirix/build/Development\"";
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XRayTemplatesPlugin_Prefix.pch;
@@ -950,7 +952,7 @@
 					i386,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Development;
 		};
@@ -962,7 +964,7 @@
 					i386,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Deployment;
 		};
@@ -974,7 +976,7 @@
 					i386,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Default;
 		};
