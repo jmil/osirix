@@ -37,7 +37,7 @@
 
 TODO:
 - Bug with toolbar in latest MacOS build : always toolbar
-- Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
+- Shading panels : test and validate
 - New smart filter editor (10.5)
 - check setCursorLabelWithText method ([cursorImage setSize:imageSize]) in CLUTOpacityView.m
 - Growl 64 bits
@@ -48,7 +48,6 @@ TODO:
 - Reports : test (NSDateFormatter)
 - Plugin Manager
 - NRRD: ITK IO
-- HUD Windows Leopard
 - NSOperation
 - New series for keyimages
 - Perfusion
