@@ -36,6 +36,9 @@
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 
 TODO:
+- Bug with toolbar in latest MacOS build : always toolbar
+- Et le look du shading panel dans l'Endoscopy viewer... (HUD Windows Leopard)
+- New smart filter editor (10.5)
 - check setCursorLabelWithText method ([cursorImage setSize:imageSize]) in CLUTOpacityView.m
 - Growl 64 bits
 - iDisk 64-bits
@@ -46,7 +49,6 @@ TODO:
 - Plugin Manager
 - NRRD: ITK IO
 - HUD Windows Leopard
-- New smart filter editor NSPredicateEditor
 - NSOperation
 - New series for keyimages
 - Perfusion
