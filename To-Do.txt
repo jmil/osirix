@@ -36,6 +36,7 @@
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 
 TODO:
+- check setCursorLabelWithText method ([cursorImage setSize:imageSize]) in CLUTOpacityView.m
 - Growl 64 bits
 - iDisk 64-bits
 - DICOM Print 64-bits : test
