@@ -41,10 +41,10 @@ TODO:
 - Quicktime support in 64bits: import ??
 - DICOM Print 64-bits : test
 
+- Plugin Manager
 - New smart filter editor (10.5)
 - Growl 64 bits
 - iDisk 64-bits
-- Plugin Manager
 - NRRD: ITK IO
 - NSOperation
 - New series for keyimages
