@@ -34,6 +34,8 @@
 - Possibility to lock a study against deletion
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
+- Built-in HTTP Server with XML-RPC protocol for HIS/RIS Integration - See http://www.osirix-viewer.com/Integration.html
+- High quality tele-radiology through MacOS 10.5 iChat protocol
 
 TODO:
 - Bug with toolbar in latest MacOS build : always toolbar??
