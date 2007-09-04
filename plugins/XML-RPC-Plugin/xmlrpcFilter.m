@@ -8,7 +8,7 @@
 //
 //  This plugin supports 2 methods for xml-rpc messages
 //
-//  closeAllWindows - no parameters
+//  exportSelectedToPath - {path:"/Users/antoinerosset/Desktop/"}
 //
 //  openSelectedWithTiling - {rowsTiling:2, columnsTiling:2}
 //
@@ -32,23 +32,29 @@
 {
 	NSMutableDictionary	*httpServerMessage = [note object];
 	
-	NSLog( [httpServerMessage description]);
-	
 	// ****************************************************************************************
 	
-	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"closeAllWindows"])
+	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"exportSelectedToPath"])
 	{
-		if( [[httpServerMessage valueForKey: @"Processed"] boolValue] == NO)							// Is this order already processed ?
+		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
+		
+		NSError	*error = 0L;
+		NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
+		NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
+		if (1 == [keys count] || 1 == [values count])
 		{
-			NSMutableArray *viewersList = [ViewerController getDisplayed2DViewers];
 			int i;
+			NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
+			for( i = 0; i < [keys count]; i++)
+				[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
 			
-			for( i = 0; i < [viewersList count] ; i++)
-			{
-				[[[viewersList objectAtIndex: i] window] close];
-			}
+			// Ok, now, we have the parameters -> execute it !
 			
-			[httpServerMessage setValue: [NSNumber numberWithBool: YES] forKey: @"Processed"];		// To tell to other XML-RPC that we processed this order
+			NSMutableArray *dicomFiles2Export = [NSMutableArray array];
+			NSMutableArray *filesToExport;
+			
+			filesToExport = [[BrowserController currentBrowser] filesForDatabaseOutlineSelection: dicomFiles2Export onlyImages:YES];
+			[[BrowserController currentBrowser] exportDICOMFileInt: [paramDict valueForKey:@"path"] files: filesToExport objects: dicomFiles2Export];
 			
 			// Done, we can send the response to the sender
 			
@@ -56,8 +62,10 @@
 			NSError *error = nil;
 			NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithXMLString:xml options:NSXMLNodeOptionsNone error:&error] autorelease];
 			[httpServerMessage setValue: doc forKey: @"NSXMLDocumentResponse"];
+			[httpServerMessage setValue: [NSNumber numberWithBool: YES] forKey: @"Processed"];		// To tell to other XML-RPC that we processed this order
 		}
 	}
+
 	
 	// ****************************************************************************************
 	
@@ -97,10 +105,13 @@
 			NSError *error = nil;
 			NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithXMLString:xml options:NSXMLNodeOptionsNone error:&error] autorelease];
 			[httpServerMessage setValue: doc forKey: @"NSXMLDocumentResponse"];
+			[httpServerMessage setValue: [NSNumber numberWithBool: YES] forKey: @"Processed"];		// To tell to other XML-RPC that we processed this order
 		}
 	}
 	
 	// ****************************************************************************************
+
+	NSLog( [httpServerMessage description]);
 }
 
 - (long) filterImage : (NSString*) menuName
