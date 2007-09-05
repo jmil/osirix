@@ -44,6 +44,7 @@ TODO:
 - DICOM Print 64-bits : test
 - Check why DB is opened 2 times
 - Check what happen with memory allocation in plugins?
+- Test ROIs (DICOM SR) with Q&R
 
 - Plugin Manager
 - New smart filter editor (10.5)
