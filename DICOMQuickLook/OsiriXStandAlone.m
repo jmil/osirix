@@ -6,11 +6,6 @@
 #import <vecLib/vecLib.h>
 
 NSLock	*PapyrusLock = 0L;
-NSMutableDictionary *fileFormatPlugins = 0L;
-
-NSMutableArray			*preProcessPlugins = 0L;
-NSMutableDictionary		*reportPlugins = 0L;
-NSMutableDictionary		*plugins = 0L, *pluginsDict = 0L;
 NSThread				*mainThread = 0L;
 BOOL					NEEDTOREBUILD = NO;
 NSMutableDictionary		*DATABASECOLUMNS = 0L;
