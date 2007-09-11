@@ -44,8 +44,9 @@ TODO:
 - DICOM Print 64-bits : test
 - Check why DB is opened 2 times
 - Check what happen with memory allocation in plugins?
-- Test ROIs (DICOM SR) with Q&R
+- Test ROIs (DICOM SR) with Q&R - Send
 - Crash during Drag & Drop DCMView to Desktop
+- Get Info window not displayed in the French Version?
 
 - Plugin Manager
 - New smart filter editor (10.5)
