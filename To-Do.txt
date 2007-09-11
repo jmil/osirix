@@ -45,6 +45,7 @@ TODO:
 - Check why DB is opened 2 times
 - Check what happen with memory allocation in plugins?
 - Test ROIs (DICOM SR) with Q&R
+- Crash during Drag & Drop DCMView to Desktop
 
 - Plugin Manager
 - New smart filter editor (10.5)
