@@ -10187,7 +10187,7 @@ static NSArray*	openSubSeriesArray = 0L;
 					
 					if ([[NSUserDefaults standardUserDefaults] boolForKey: @"USEDICOMDIR"])
 					{
-						NSString    *aPath = [NSString stringWithFormat:@"/Volumes/%s",volNameAsCString];
+						NSString    *aPath = [NSString stringWithFormat:@"/Volumes/%@", [NSString stringWithUTF8String: volNameAsCString]];
 						NSDirectoryEnumerator *enumer = [[NSFileManager defaultManager] enumeratorAtPath:aPath];
 						
 						if( enumer == 0L)

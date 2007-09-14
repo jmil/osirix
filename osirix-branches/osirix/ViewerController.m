@@ -12032,11 +12032,7 @@ int i,j,l;
 	
 	if( loadingPercentage < 0.5) return;
 	
-	if( [pixList[ curMovieIndex] count] <= 1)
-	{
-		[self PlayStop:[self findPlayStopButton]];
-		return;
-	}
+	if( [pixList[ curMovieIndex] count] <= 1) return;
 
 	if( thisTime - lastTimeFrame > 1.0)
 	{

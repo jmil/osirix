@@ -209,7 +209,20 @@ extern NSLock	*PapyrusLock;
 		
 		
 		//Acquistion Date
-		if (dataset->findAndGetString(DCM_AcquisitionDate, string, OFFalse).good() && string != NULL){
+		if (dataset->findAndGetString(DCM_ContentDate, string, OFFalse).good() && string != NULL){
+			NSString	*studyDate = [[NSString alloc] initWithCString:string encoding: NSASCIIStringEncoding];
+			if (dataset->findAndGetString(DCM_ContentTime, string, OFFalse).good() && string != NULL){
+				NSString*   completeDate;
+				NSString*   studyTime = [[NSString alloc] initWithBytes:string length:6 encoding: NSASCIIStringEncoding];
+				completeDate = [studyDate stringByAppendingString:studyTime];
+				date = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M%S"];
+				[studyTime release];
+			}
+			else date = [[NSCalendarDate alloc] initWithString:studyDate calendarFormat:@"%Y%m%d"];
+				
+			[studyDate release];
+		}
+		else if (dataset->findAndGetString(DCM_AcquisitionDate, string, OFFalse).good() && string != NULL){
 			NSString	*studyDate = [[NSString alloc] initWithCString:string encoding: NSASCIIStringEncoding];
 			if (dataset->findAndGetString(DCM_AcquisitionTime, string, OFFalse).good() && string != NULL){
 				NSString*   completeDate;
