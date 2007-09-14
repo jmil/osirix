@@ -534,7 +534,11 @@ extern NSLock	*PapyrusLock;
 		
 		if( serieID == 0L) serieID = [[NSString alloc] initWithString:name];
 		
-		if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) && [self combineProjectionSeries])
+		if( [Modality isEqualToString:@"US"] && [self oneFileOnSeriesForUS])
+		{
+			[dicomElements setObject: [serieID stringByAppendingString: [filePath lastPathComponent]] forKey:@"seriesID"];
+		}
+		else if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) && [self combineProjectionSeries])
 		{
 			if( [self combineProjectionSeriesMode] == 0)		// *******Combine all CR and DR Modality series in a study into one series
 			{

@@ -83,6 +83,7 @@
 - (BOOL)combineProjectionSeriesMode;
 - (BOOL)checkForLAVIM;
 - (BOOL)separateCardiac4D;
+- (BOOL)oneFileOnSeriesForUS;
 - (int)commentsGroup ;
 - (int)commentsElement ;
 @end

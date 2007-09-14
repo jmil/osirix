@@ -58,7 +58,7 @@ static BOOL COMMENTSAUTOFILL = NO;
 static BOOL splitMultiEchoMR = NO;
 static BOOL useSeriesDescription = NO;
 static BOOL NOLOCALIZER = NO;
-static BOOL combineProjectionSeries = NO;
+static BOOL combineProjectionSeries = NO, oneFileOnSeriesForUS = NO;
 static int combineProjectionSeriesMode = NO;
 static BOOL	CHECKFORLAVIM = NO;
 static int COMMENTSGROUP = NO;
@@ -227,6 +227,7 @@ char* replaceBadCharacter (char* str, NSStringEncoding encoding)
 			useSeriesDescription = [sd boolForKey: @"useSeriesDescription"];
 			splitMultiEchoMR = [sd boolForKey: @"splitMultiEchoMR"];
 			NOLOCALIZER = [sd boolForKey: @"NOLOCALIZER"];
+			oneFileOnSeriesForUS = [sd boolForKey: @"oneFileOnSeriesForUS"];
 			combineProjectionSeries = [sd boolForKey: @"combineProjectionSeries"];
 			combineProjectionSeriesMode = [sd boolForKey: @"combineProjectionSeriesMode"];
 			
@@ -254,6 +255,7 @@ char* replaceBadCharacter (char* str, NSStringEncoding encoding)
 			splitMultiEchoMR = [[dict objectForKey: @"splitMultiEchoMR"] intValue];
 			NOLOCALIZER = [[dict objectForKey: @"NOLOCALIZER"] intValue];
 			combineProjectionSeries = [[dict objectForKey: @"combineProjectionSeries"] intValue];
+			oneFileOnSeriesForUS = [[dict objectForKey: @"oneFileOnSeriesForUS"] intValue];
 			combineProjectionSeriesMode = [[dict objectForKey: @"combineProjectionSeriesMode"] intValue];
 			
 			CHECKFORLAVIM = NO;
@@ -2328,7 +2330,11 @@ char* replaceBadCharacter (char* str, NSStringEncoding encoding)
 		
 		if( serieID == 0L) serieID = [[NSString alloc] initWithString:name];
 		
-		if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) && combineProjectionSeries)
+		if( [Modality isEqualToString:@"US"] && oneFileOnSeriesForUS)
+		{
+			[dicomElements setObject: [serieID stringByAppendingString: [filePath lastPathComponent]] forKey:@"seriesID"];
+		}
+		else if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) && combineProjectionSeries)
 		{
 			if( combineProjectionSeriesMode == 0)		// *******Combine all CR and DR Modality series in a study into one series
 			{
@@ -2747,7 +2753,11 @@ char* replaceBadCharacter (char* str, NSStringEncoding encoding)
 		if( serieID == 0L)  
 			serieID = [[NSString alloc] initWithString:name];
 		
-		if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) &&  combineProjectionSeries)
+		if( [Modality isEqualToString:@"US"] && oneFileOnSeriesForUS)
+		{
+			[dicomElements setObject: [serieID stringByAppendingString: [filePath lastPathComponent]] forKey:@"seriesID"];
+		}
+		else if (([Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]) &&  combineProjectionSeries)
 		{
 			if( combineProjectionSeriesMode == 0)		// *******Combine all CR and DR Modality series in a study into one series
 			{
@@ -3264,6 +3274,10 @@ char* replaceBadCharacter (char* str, NSStringEncoding encoding)
 
 - (BOOL) noLocalizer{
 	return NOLOCALIZER;
+}
+
+- (BOOL)oneFileOnSeriesForUS{
+	return oneFileOnSeriesForUS;
 }
 
 - (BOOL)combineProjectionSeries{
