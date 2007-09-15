@@ -49,7 +49,6 @@ TODO:
 - Get Info window not displayed in the French Version?
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
 
-- Split US
 - Plugin Manager
 - New smart filter editor (10.5)
 - Growl 64 bits
