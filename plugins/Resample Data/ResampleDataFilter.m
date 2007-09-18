@@ -11,6 +11,21 @@
 
 @implementation ResampleDataFilter
 
+- (id)init
+{
+	NSLog( @"ResampleDataFilter Init");
+	
+	return [super init];
+}
+
+- (void) dealloc
+{
+	NSLog( @"ResampleDataFilter Dealloc");
+	
+	[super dealloc];
+}
+
+
 - (IBAction) setXYZSlider:(id) sender;
 {
 	switch( [sender tag])

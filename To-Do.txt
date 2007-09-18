@@ -41,13 +41,11 @@ TODO:
 - Bug with toolbar in latest MacOS build : always toolbar??
 - check setCursorLabelWithText method ([cursorImage setSize:imageSize]) in CLUTOpacityView.m ??
 - Quicktime support in 64bits: import ??
-- DICOM Print 64-bits : test
-- Check why DB is opened 2 times
-- Check what happen with memory allocation in plugins?
 - Test ROIs (DICOM SR) with Q&R - Send
 - Crash during Drag & Drop DCMView to Desktop
 - Get Info window not displayed in the French Version?
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
+- Check ITK 3D
 
 - Plugin Manager
 - New smart filter editor (10.5)
