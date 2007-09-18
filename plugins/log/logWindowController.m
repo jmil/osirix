@@ -153,11 +153,17 @@
 		
 		NSMutableArray	*uniqueIP = [NSMutableArray array];
 		
+		float tiger = 0;
+		float leopard = 0;
+		
 		for( x = startIndex; x < i; x++)
 		{
 			if( [uniqueIP containsObject: [[dictionaryArray objectAtIndex: x] objectForKey:@"ip"]] == NO)
 			{
 				[uniqueIP addObject: [[dictionaryArray objectAtIndex: x] objectForKey:@"ip"]];
+				
+				if( [[[dictionaryArray objectAtIndex: x] objectForKey:@"url"] isEqualToString:@"versionTiger.xml"]) tiger++;
+				if( [[[dictionaryArray objectAtIndex: x] objectForKey:@"url"] isEqualToString:@"versionLeopard.xml"]) leopard++;
 			}
 		}
 		
@@ -165,7 +171,7 @@
 		[state display];
 
 		
-		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d\r", [startdate monthOfYear], i - startIndex, [uniqueIP count]]];
+		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], i - startIndex, [uniqueIP count], tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
 		[resultField setString: result];
 		[resultField display];
 	}
