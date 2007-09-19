@@ -146,7 +146,6 @@
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* logExtractor */;
 			projectDirPath = "";
-			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* logExtractor */,
 			);
