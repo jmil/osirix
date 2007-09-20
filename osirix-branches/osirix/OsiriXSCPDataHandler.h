@@ -25,9 +25,6 @@
 #import <OsiriX/DCM.h>
 #import <OsiriX/DCMNetworking.h>
 
-//NSString * const OsiriXFileReceivedNotification;
-
-
 @interface OsiriXSCPDataHandler : DCMCStoreReceivedPDUHandler {
 	int numberMoving;
 	id logEntry;

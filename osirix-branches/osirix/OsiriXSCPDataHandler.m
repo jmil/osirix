@@ -30,9 +30,6 @@
 extern AppController		*appController;
 extern BrowserController	*browserWindow;
 
-
-NSString * const OsiriXFileReceivedNotification = @"OsiriXFileReceivedNotification";
-
 @implementation OsiriXSCPDataHandler
 
 - (void)dealloc
