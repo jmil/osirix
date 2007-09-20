@@ -46,6 +46,7 @@ TODO:
 - Get Info window not displayed in the French Version?
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
 - Check ITK 3D
+- Check Default Database Location display in Preferences.
 
 - New smart filter editor (10.5)
 - Growl 64 bits
