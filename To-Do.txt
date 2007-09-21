@@ -48,6 +48,7 @@ TODO:
 - Check ITK 3D
 - Check Default Database Location display in Preferences.
 - Test Send Email from plugin manager
+- Test open MPEG2 file with VLC
 
 - New smart filter editor (10.5)
 - Growl 64 bits
