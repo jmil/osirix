@@ -5086,11 +5086,11 @@ static BOOL				DICOMDIRCDMODE = NO;
 			}
 			else if ([[imagesArray objectAtIndex:0] isEqualToString:@"DICOMMPEG2"])
 			{
-				imagesSet = [item valueForKeyPath: @"images.path"];
+				imagesSet = [item valueForKeyPath: @"images.completePath"];
 				imagesArray = [imagesSet allObjects];
 				NSString *filePath = [imagesArray objectAtIndex:0];
 				
-				if( [[NSWorkspace sharedWorkspace]openFile: filePath withApplication:@"VLC"] == NO)
+				if( [[NSWorkspace sharedWorkspace] openFile: filePath withApplication:@"VLC"] == NO)
 				{
 					NSRunAlertPanel( NSLocalizedString( @"MPEG-2 File", 0L), NSLocalizedString( @"MPEG-2 DICOM files require the VLC application. Available for free here: http://www.videolan.org/vlc/", 0L), nil, nil, nil);
 				}
@@ -10852,10 +10852,10 @@ static volatile int numberOfThreadsForJPEG = 0;
 					else if( fattrs != 0L && [[fattrs objectForKey:NSFileBusy] boolValue] == NO && [[fattrs objectForKey:NSFileSize] longLongValue] > 0)
 					{
 						BOOL		isDicomFile;
-						BOOL		isJPEGCompressed;
+						BOOL		isJPEGCompressed, isMPEG2;
 						NSString	*dstPath = [OUTpath stringByAppendingPathComponent:[srcPath lastPathComponent]];
 						
-						isDicomFile = [DicomFile isDICOMFile:srcPath compressed:&isJPEGCompressed];
+						isDicomFile = [DicomFile isDICOMFile:srcPath compressed:&isJPEGCompressed mpeg2:&isMPEG2];
 						
 						if( isDicomFile == YES		||
 							(([DicomFile isFVTiffFile:srcPath]		||
@@ -10879,6 +10879,8 @@ static volatile int numberOfThreadsForJPEG = 0;
 									continue;
 								}
 								
+								//if( isMPEG2) dstPath = [self getNewFileDatabasePath:@"mpv"];
+								//else
 								dstPath = [self getNewFileDatabasePath:@"dcm"];
 							}
 							else dstPath = [self getNewFileDatabasePath: [[srcPath pathExtension] lowercaseString]];

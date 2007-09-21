@@ -48,6 +48,7 @@
 + (BOOL) isNIfTIFile:(NSString *) file;
 + (BOOL) isDICOMFile:(NSString *) file;
 + (BOOL) isDICOMFile:(NSString *) file compressed:(BOOL*) compressed;
++ (BOOL) isDICOMFile:(NSString *) file compressed:(BOOL*) compressed mpeg2:(BOOL*) mpeg2;
 + (BOOL) isXMLDescriptedFile:(NSString *) file;
 + (BOOL) isXMLDescriptorFile:(NSString *) file;
 + (void) setFilesAreFromCDMedia: (BOOL) f;
