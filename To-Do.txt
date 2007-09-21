@@ -47,6 +47,7 @@ TODO:
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
 - Check ITK 3D
 - Check Default Database Location display in Preferences.
+- Test Send Email from plugin manager
 
 - New smart filter editor (10.5)
 - Growl 64 bits
