@@ -150,24 +150,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	if(stage==1)// VOI cutter
 	{
+
+		NSLog( @"step 1");
+
 		CMIVChopperController* chopperController=[[CMIVChopperController alloc] init] ;
 		[chopperController showPanelAsWizard:viewerController:self];
 		currentController=chopperController;
 	}
 	else if(stage==2)// 2D viewer
 	{
+
+		NSLog( @"step 2");
+
 		CMIVScissorsController * scissorsController = [[CMIVScissorsController alloc] init];
 		[scissorsController showPanelAsWizard:viewerController:self]; 
 		currentController=scissorsController;		
 	}
 	else if(stage==3) //result preview
 	{
+		NSLog( @"finish step 3");
 		CMIVContrastPreview * previewer = [[CMIVContrastPreview alloc] init];
 		[previewer showPanelAsWizard:viewerController:self]; 
 		currentController=previewer;
 	}
 	else if(stage==4) //2D viewer CPR only
 	{
+		NSLog( @"finish step 4");
 		CMIVScissorsController * scissorsController = [[CMIVScissorsController alloc] init];
 		[scissorsController showPanelAsCPROnly:viewerController:self]; 
 		currentController=scissorsController;

@@ -14,6 +14,7 @@
                 endCenterlinesDialog = id; 
                 endLoadPathDialog = id; 
                 exportCenterlines = id; 
+                exportOrthogonalDataset = id; 
                 goNextStep = id; 
                 goPreviousStep = id; 
                 lockCenter = id; 
@@ -49,7 +50,7 @@
                 cImageSlider = NSSlider; 
                 cPRView = DCMView; 
                 cViewRotateYText = NSTextField; 
-                cYRotateSlider = NSSlider; 
+                cYRotateSlider = CMIVSlider; 
                 cancelButton = NSButton; 
                 centerLock = NSButton; 
                 centerlinesList = NSTableView; 
@@ -59,15 +60,17 @@
                 crossShowButton = NSButton; 
                 currentTips = NSTextField; 
                 exportCPRWindow = NSWindow; 
+                exportOrthogonalImagesButton = NSButton; 
                 howManyAngleToExport = NSMatrix; 
                 howManyImageToExport = NSTextField; 
+                ifExportCrossSectionButton = NSButton; 
                 loadPathWindow = NSWindow; 
                 nextButton = NSButton; 
                 oImageSlider = NSSlider; 
                 oViewRotateXText = NSTextField; 
                 oViewRotateYText = NSTextField; 
-                oXRotateSlider = NSSlider; 
-                oYRotateSlider = NSSlider; 
+                oXRotateSlider = CMIVSlider; 
+                oYRotateSlider = CMIVSlider; 
                 originalView = DCMView; 
                 pathListButton = NSPopUpButton; 
                 pathModifyButton = NSPopUpButton; 
@@ -88,6 +91,7 @@
             }; 
             SUPERCLASS = NSObject; 
         }, 
+        {CLASS = CMIVSlider; LANGUAGE = ObjC; SUPERCLASS = NSSlider; }, 
         {
             ACTIONS = {
                 alwaysSyncMenu = id; 

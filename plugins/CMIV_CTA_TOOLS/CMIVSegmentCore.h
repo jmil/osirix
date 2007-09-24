@@ -49,24 +49,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 @interface CMIVSegmentCore : NSObject {
-long imageWidth,imageHeight,imageAmount;
+long imageWidth,imageHeight,imageAmount,imageSize;
 float *inputData;
 float *outputData;
 unsigned char* directionOfData;
 unsigned char* colorOfData;
 float minValueInCurSeries;
 float weightThreshold,weightWholeValue;
-
+unsigned short* distanceMap;
 }
 - (void) setImageWidth:(long) width Height:(long) height Amount: (long) amount;  
-- (void) startShortestPathSearchAsFloat:(float *) pIn Out:(float *) pOut Direction: (unsigned char*) pPointers;
+- (void) startShortestPathSearchAsFloat:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers;
 - (void) startShortestPathSearchAsFloatWith6Neighborhood:(float *) pIn Out:(float *) pOut Direction: (unsigned char*) pPointers;
-- (void) caculatePathLength:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers;
-- (float) lengthOfParent:(int)pointer;
-- (void) caculatePathLengthWithWeightFunction:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers:(float) threshold: (float)wholeValue;
+- (void) optimizedContinueLoop:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers;
+- (void) caculatePathLength:(unsigned short *) pDistanceMap Pointer: (unsigned char*) pPointers;
+- (unsigned short) lengthOfParent:(int)pointer;
+- (int) caculatePathLengthWithWeightFunction:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers:(float) threshold: (float)wholeValue;
 - (float) lengthOfParentWithWeightFunction:(int)pointer;
 - (void) caculateColorMapFromPointerMap: (unsigned char*) pColor: (unsigned char*) pPointers;
 - (unsigned char) colorOfParent:(int)pointer;
-- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut Pointer:(unsigned char*) pPointers :(float)minAtEdge;
-- (float)valueAfterConvolutionAt:(int)x:(int)y:(int)z;
+- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut:(unsigned short*)pDistanceMap Pointer:(unsigned char*) pPointers :(float)minAtEdge;
+- (void) runFirstRoundFasterWith26Neigbhorhood;
+- (void) checkSaturatedPoints;
+
 @end

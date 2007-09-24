@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import <Cocoa/Cocoa.h>
 #import "PluginFilter.h"
 #import "CMIV_CTA_TOOLS.h"
+#import "CMIVSlider.h"
 #define id Id
 #include <vtkImageImport.h>
 #include <vtkTransform.h>
@@ -68,11 +69,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     IBOutlet NSSlider *cImageSlider;
     IBOutlet DCMView *cPRView;
     IBOutlet DCMView *crossAxiasView;
-    IBOutlet NSSlider *cYRotateSlider;
+    IBOutlet CMIVSlider *cYRotateSlider;
     IBOutlet NSSlider *oImageSlider;
     IBOutlet DCMView *originalView;
-    IBOutlet NSSlider *oXRotateSlider;
-    IBOutlet NSSlider *oYRotateSlider;
+    IBOutlet CMIVSlider *oXRotateSlider;
+    IBOutlet CMIVSlider *oYRotateSlider;
     IBOutlet NSColorWell *seedColor;
     IBOutlet NSTextField *seedName;
     IBOutlet NSTableView *seedsList;
@@ -91,6 +92,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     IBOutlet NSTableView *centerlinesList;
 	IBOutlet NSMenuItem *straightenedCPRSwitchMenu;
 	IBOutlet NSButton *straightenedCPRButton;	
+	IBOutlet NSButton *exportOrthogonalImagesButton;
 	
 	IBOutlet NSTextField *currentTips;
 	IBOutlet NSTabView *seedToolTipsTabView;
@@ -103,6 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSTextField *oViewRotateXText;
 	IBOutlet NSTextField *oViewRotateYText;
 	IBOutlet NSTextField *cViewRotateYText;
+	IBOutlet NSButton *ifExportCrossSectionButton;	
 	
 	int      imageWidth,imageHeight,imageAmount,imageSize;
 	float    sliceThickness;
@@ -194,6 +197,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	int       soomthedpathlen;
 	double*   soomthedpath;
+	int interpolationMode;
 	
 	
 	
@@ -235,6 +239,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)endCenterlinesDialog:(id)sender;
 - (IBAction)removeCenterline:(id)sender;
 - (IBAction)switchStraightenedCPR:(id)sender;
+- (IBAction)exportOrthogonalDataset:(id)sender;
 - (int) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (void)showPanelAsWizard:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (void)showPanelAsCPROnly:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
@@ -281,9 +286,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (int) plantSeeds:(float*)inData:(float*)outData:(unsigned char *)directData;
 - (void) showPreviewResult:(float*)inData:(float*)outData:(unsigned char *)directData :(unsigned char *)colorData;
 - (void) goSubStep:(int)step:(bool)needResetViews;
-- (void) setCurrentCPRPathWithPath:(NSArray*)path:(int)resampelrate;
+- (void) setCurrentCPRPathWithPath:(NSArray*)path:(float)resampelrate;
 - (void) convertCenterlinesToVTKCoordinate:(NSArray*)centerlines;
 - (void) creatROIfrom3DPath:(NSArray*)path:(NSString*)name:(NSMutableArray*)newViewerROIList;
 - (void)reHideToolbar;
 - (void)relocateAxViewSlider;
+- (float)TriCubic : (float*) p :(float *)volume : (int) xDim : (int) yDim :(int) zDim;
+- (ViewerController *) exportCrossSectionImages;
+- (ViewerController *) exportCViewImages;
+- (ViewerController *) exportOViewImages;
 @end

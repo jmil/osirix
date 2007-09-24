@@ -1386,6 +1386,10 @@
 		B98F19590C4EA78900EED2DD /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97765EC0B07C51F0044AA4F /* libvtkImaging.a */; };
 		B98F195A0C4EA78900EED2DD /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */; };
 		B99604090C130ED100924E8C /* VRMakeObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B99604070C130ED100924E8C /* VRMakeObject.h */; };
+		B9960E830C5A7F01004A4E89 /* CMIVSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9960E810C5A7F01004A4E89 /* CMIVSlider.h */; };
+		B9960E840C5A7F01004A4E89 /* CMIVSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B9960E820C5A7F01004A4E89 /* CMIVSlider.m */; };
+		B9960E850C5A7F01004A4E89 /* CMIVSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9960E810C5A7F01004A4E89 /* CMIVSlider.h */; };
+		B9960E860C5A7F01004A4E89 /* CMIVSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B9960E820C5A7F01004A4E89 /* CMIVSlider.m */; };
 		B99ECAD30BC82DC1003C7DEB /* QuicktimeExport.h in Headers */ = {isa = PBXBuildFile; fileRef = B99ECAD20BC82DC1003C7DEB /* QuicktimeExport.h */; };
 		B9A4171F0B4BAF4D009AEE95 /* CMIV3DPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */; };
 		B9A417200B4BAF4D009AEE95 /* CMIV3DPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A4171E0B4BAF4D009AEE95 /* CMIV3DPoint.m */; };
@@ -1415,6 +1419,8 @@
 		B9B419800B36E22F00AD244F /* DCMPixelDataAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B4197F0B36E22F00AD244F /* DCMPixelDataAttribute.h */; };
 		B9B419830B36E26F00AD244F /* DCMAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B419820B36E26F00AD244F /* DCMAttribute.h */; };
 		B9B4F79A0B245953002E9350 /* Rectangle.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B4F7990B245953002E9350 /* Rectangle.tiff */; };
+		B9B702040CA5460D00CF333E /* Length.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B702030CA5460D00CF333E /* Length.tiff */; };
+		B9B702050CA5460D00CF333E /* Length.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B702030CA5460D00CF333E /* Length.tiff */; };
 		B9C030810B073F7B0020A4AD /* Spoon_Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = B9C030800B073F7B0020A4AD /* Spoon_Panel.nib */; };
 		B9C031F20B0753280020A4AD /* CMIVSpoonController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C031F00B0753280020A4AD /* CMIVSpoonController.h */; };
 		B9C033C30B075FB20020A4AD /* CMIVSpoonController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */; };
@@ -2747,6 +2753,8 @@
 		B98D355D0C4CE6E100DA7EA2 /* spline.H */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; path = spline.H; sourceTree = "<group>"; };
 		B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMIV_CTA_TOOLS.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99604070C130ED100924E8C /* VRMakeObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VRMakeObject.h; path = ../VRMakeObject.h; sourceTree = "<group>"; };
+		B9960E810C5A7F01004A4E89 /* CMIVSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVSlider.h; sourceTree = "<group>"; };
+		B9960E820C5A7F01004A4E89 /* CMIVSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVSlider.m; sourceTree = "<group>"; };
 		B99ECAD20BC82DC1003C7DEB /* QuicktimeExport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QuicktimeExport.h; sourceTree = "<group>"; };
 		B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIV3DPoint.h; sourceTree = "<group>"; };
 		B9A4171E0B4BAF4D009AEE95 /* CMIV3DPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIV3DPoint.m; sourceTree = "<group>"; };
@@ -2776,6 +2784,7 @@
 		B9B4197F0B36E22F00AD244F /* DCMPixelDataAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPixelDataAttribute.h; sourceTree = "<group>"; };
 		B9B419820B36E26F00AD244F /* DCMAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMAttribute.h; sourceTree = "<group>"; };
 		B9B4F7990B245953002E9350 /* Rectangle.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Rectangle.tiff; sourceTree = "<group>"; };
+		B9B702030CA5460D00CF333E /* Length.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Length.tiff; sourceTree = "<group>"; };
 		B9C030800B073F7B0020A4AD /* Spoon_Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Spoon_Panel.nib; sourceTree = "<group>"; };
 		B9C031F00B0753280020A4AD /* CMIVSpoonController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVSpoonController.h; sourceTree = "<group>"; };
 		B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVSpoonController.mm; sourceTree = "<group>"; };
@@ -4214,6 +4223,8 @@
 				B9B4195C0B36C8FC00AD244F /* CMIVExport.m */,
 				B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */,
 				B9A4171E0B4BAF4D009AEE95 /* CMIV3DPoint.m */,
+				B9960E810C5A7F01004A4E89 /* CMIVSlider.h */,
+				B9960E820C5A7F01004A4E89 /* CMIVSlider.m */,
 			);
 			name = CMIV_CTA_TOOLS;
 			sourceTree = "<group>";
@@ -4270,6 +4281,7 @@
 		B9B295EA0B085E9B00505F84 /* ICON */ = {
 			isa = PBXGroup;
 			children = (
+				B9B702030CA5460D00CF333E /* Length.tiff */,
 				B95EA4350C54F418005A35CB /* logo.jpg */,
 				22C9712B0BA9BAC900ADA848 /* 3DRotate.tiff */,
 				B9B4F7990B245953002E9350 /* Rectangle.tiff */,
@@ -6906,6 +6918,7 @@
 				B98CF5580BE2BF8D00ED53C4 /* DCMDataContainer.h in Headers */,
 				B99604090C130ED100924E8C /* VRMakeObject.h in Headers */,
 				B98D355F0C4CE6E100DA7EA2 /* spline.H in Headers */,
+				B9960E830C5A7F01004A4E89 /* CMIVSlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8231,6 +8244,7 @@
 				B98F19330C4EA78900EED2DD /* DCMDataContainer.h in Headers */,
 				B98F19340C4EA78900EED2DD /* VRMakeObject.h in Headers */,
 				B98F19350C4EA78900EED2DD /* spline.H in Headers */,
+				B9960E850C5A7F01004A4E89 /* CMIVSlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8319,6 +8333,7 @@
 				22C9712C0BA9BAC900ADA848 /* 3DRotate.tiff in Resources */,
 				B93F17650C54EB1300E7AF6E /* AboutDlg.nib in Resources */,
 				B95EA4360C54F418005A35CB /* logo.jpg in Resources */,
+				B9B702040CA5460D00CF333E /* Length.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8347,6 +8362,7 @@
 				B98F19490C4EA78900EED2DD /* 3DRotate.tiff in Resources */,
 				B93F17660C54EB1400E7AF6E /* AboutDlg.nib in Resources */,
 				B95EA4370C54F418005A35CB /* logo.jpg in Resources */,
+				B9B702050CA5460D00CF333E /* Length.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8386,6 +8402,7 @@
 				B9ADCE080B3B31CD008B5B9C /* CMIVSaveResult.m in Sources */,
 				B9A417200B4BAF4D009AEE95 /* CMIV3DPoint.m in Sources */,
 				B9E39DEA0B03648700387A56 /* CMIV_CTA_TOOLS.mm in Sources */,
+				B9960E840C5A7F01004A4E89 /* CMIVSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8405,6 +8422,7 @@
 				B98F19540C4EA78900EED2DD /* CMIVSaveResult.m in Sources */,
 				B98F19550C4EA78900EED2DD /* CMIV3DPoint.m in Sources */,
 				B98F19560C4EA78900EED2DD /* CMIV_CTA_TOOLS.mm in Sources */,
+				B9960E860C5A7F01004A4E89 /* CMIVSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8435,7 +8453,7 @@
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CMIV_CTA_TOOLS_Prefix.pch;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;

@@ -459,8 +459,10 @@ PURPOSE.
 {
 
 	NSArray *fileList = [originalViewController fileList]; 
+	NSArray	*pixList = [originalViewController pixList];
 	unsigned int ii;
 	float* inputData=[originalViewController volumePtr:0];
+	float o[ 9];
 	DCMPix			*curPix = [[originalViewController imageView] curDCM];
 	width=[curPix pwidth];
 	height=[curPix pheight];
@@ -495,17 +497,18 @@ PURPOSE.
 			vImageConvert_FTo16U( &srcf, &dst8, -1024,  1, 0);	//By default, we use a 1024 rescale intercept !!
 			[self setSourceFile: [[fileList objectAtIndex:[originalViewController indexForPix:ii]] valueForKey:@"completePath"]];
 			
+			curPix=[pixList objectAtIndex: ii];
 
-			//[self setPixelSpacing: [curPix pixelSpacingX]:[curPix pixelSpacingY]];
+			[self setPixelSpacing: [curPix pixelSpacingX]:[curPix pixelSpacingY]];
 
-			//[self setSliceThickness: [curPix sliceThickness]];
-			//[self setSlicePosition: [curPix sliceLocation]];
+			[self setSliceThickness: [curPix sliceThickness]];
+			[self setSlicePosition: [curPix sliceLocation]];
 			
-			//[curPix orientation: o];
-			//[self setOrientation: o];
+			[curPix orientation: o];
+			[self setOrientation: o];
 			
-			//o[ 0] = [curPix originX];		o[ 1] = [curPix originY];		o[ 2] = [curPix originZ];
-			//[self setPosition: o];
+			o[ 0] = [curPix originX];		o[ 1] = [curPix originY];		o[ 2] = [curPix originZ];
+			[self setPosition: o];
 			
 			//[self setPixelData: data samplePerPixel:spp bitsPerPixel:bpp width: width height: height];
 			

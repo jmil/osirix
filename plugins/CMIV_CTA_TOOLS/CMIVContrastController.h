@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSButton *exportConnectednessChechBox;
 	IBOutlet NSMatrix *neighborhoodModeMatrix;
 	NSMutableArray *inROIArray,*outROIArray,*outputColorList;
-	int imageWidth,imageHeight,imageAmount;
+	int imageWidth,imageHeight,imageAmount,imageSize;
 	float minValueInCurSeries,upperThreshold,lowerThreshold;
 	ViewerController     *originalViewController;
 	int   ifUseSmoothFilter;
@@ -73,9 +73,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (int) createCenterlines:(float *)inputData :(float *)outputData :(unsigned char *)directData :(unsigned char *)colorData :(NSMutableArray*)roilist;
 - (BOOL) prepareForSkeletonizatin:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData;
 - (int)plantRootSeeds:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData;
-- (void) prepareForCaculateLength:(float *)inputData :(float *)outputData :(unsigned char *)directData;
-- (float) findDistalEnds:(NSMutableArray *)pointsList:(float *)outputData;
-- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(NSMutableArray *)pointsList:(unsigned char *)directData;
+- (void) prepareForCaculateLength:(unsigned short *)distanceMap :(unsigned char *)directData;
+- (void) prepareForCaculateWeightedLength:(float *)distanceMap :(unsigned char *)directData;
+
+- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(int)endpointindex:(unsigned char*)directionData:(unsigned char*)color;
 - (void)createROIfrom3DPaths:(NSArray*)pathsList:(NSArray*)namesList:(NSMutableArray*)roilist;
 - (void) runSegmentation:(float **)ppInData :(float **)ppOutData :(unsigned char **)ppColorData:(unsigned char **)ppDirectionData;
 - (void) enhanceCenterline:(float *)inputData:(unsigned char *)colorData:(NSMutableArray *)pathlists;

@@ -636,7 +636,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	
 	//	rotate->SetTransformInputSampling( false);
-	rotate->SetInterpolationModeToCubic();	//SetInterpolationModeToLinear(); //SetInterpolationModeToCubic();	//SetInterpolationModeToCubic();
+	rotate->SetInterpolationModeToNearestNeighbor();	//SetInterpolationModeToLinear(); //SetInterpolationModeToCubic();	//SetInterpolationModeToCubic();
 	rotate->SetOutputDimensionality( 2);
 	//	rotate->SetOutputOrigin( 0,0,0);
 	rotate->SetBackgroundLevel( -1024);

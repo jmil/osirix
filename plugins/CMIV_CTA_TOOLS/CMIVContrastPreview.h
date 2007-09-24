@@ -139,6 +139,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int                 segmentNeighborhood;
 
 	int  lastResultSliderPos;
+	int interpolationMode;
 	
 	BOOL   IsVersion2_6;
 	float osirixOffset;
@@ -197,9 +198,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) createUnsignedShortVolumDataUnderMask:(unsigned short*)volumeData;
 - (void) Display3DPoint:(NSNotification*) note;
 - (BOOL) prepareForSkeletonizatin;
-- (void) prepareForCaculateLength;
-- (float) findDistalEnds:(NSMutableArray *)pointsList;
-- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(NSMutableArray *)pointsList;
+- (void) prepareForCaculateLength:(unsigned short*)dismap;
+- (void) prepareForCaculateWightedLength;
+
+- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(int)endpointindex:(unsigned char*)color;
 - (void) replaceDistanceMap;
 - (float)valueAfterConvolutionAt:(int)x:(int)y:(int)z;
 

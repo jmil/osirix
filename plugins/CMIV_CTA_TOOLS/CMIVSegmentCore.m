@@ -37,13 +37,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   imageWidth=width;
   imageHeight=height;
   imageAmount=amount;
-
+  imageSize=width*height;
   
   return;
   
 }  
 
-- (void) startShortestPathSearchAsFloat:(float *) pIn Out:(float *) pOut Direction: (unsigned char*) pPointers;
+- (void) startShortestPathSearchAsFloat:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers
 {
 
 	long i,j,k;
@@ -53,22 +53,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 	long itemp;
-	long ilong,iwidth,iheight,imagesize;
+	long ilong,iwidth,iheight;
 	long position_i1,position_i2,position_j1,position_j2,position_j3;
 	
 	
 	ilong=imageWidth;
 	iwidth=imageHeight;
 	iheight=imageAmount;
-	imagesize=iwidth*ilong;
+	
 
 	inputData=pIn;
 	outputData=pOut;
 	directionOfData=pPointers;
+	
+	unsigned char* marker=pMarker;
+	long long* longmarker=(long long*)marker;
 
+	if(!marker)
+		return;
 
 	
-	
+	[self runFirstRoundFasterWith26Neigbhorhood];
+	memset(marker,0xff,imageSize*imageAmount/8+1);
+		
 	do
 	{
 		changed=0;
@@ -76,169 +83,193 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //**********************positive direction*****************************
 		for(i=1;i<iheight-1;i++)
 		{
-			position_i1 = (i-1)*imagesize;
-			position_i2 = i*imagesize;
+			position_i1 = (i-1)*imageSize;
+			position_i2 = i*imageSize;
 			
 			for(j=1;j<iwidth-1;j++)
 			{
 				position_j1 = (j-1)*ilong;
 				position_j2 = j*ilong;
 				position_j3 = (j+1)*ilong;
+				
 				for(k=1;k<ilong-1;k++)
-				if((!(*(directionOfData + position_i2+position_j2+k)&0x80))&&(*(directionOfData + position_i2+position_j2+k)&0x40))
 				{
-//1
-					itemp=position_i1+position_j1+k-1;
-					maxvalue=*(outputData+itemp);
-					maxcolorindex=1;
-//2
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
+					itemp= position_i2+position_j2+k;
+					if(!(*(longmarker+(itemp>>6))))
 					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=2;
-					}
-//3
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=3;
-					}
-//4
-					itemp=position_i1+position_j2+k-1;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=4;
-					}
-//5
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=5;
-					}
-
-//6
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=6;
-					}
-//7					
-					itemp=position_i1+position_j3+k-1;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=7;
-					}
-//8	
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=8;
-					}
-
-//9					
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=9;
-					}
-//10	
-					itemp=position_i2+position_j1+k-1;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=10;
-					}
-//11
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=11;
-					}
-//12
-					itemp++;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=12;
-					}
-//13
-					itemp=position_i2+position_j2+k-1;
-					if(*(outputData+itemp)>maxvalue)
-					{
-						maxvalue=*(outputData+itemp);
-						maxcolorindex=13;
-					}
-//update g
-//((*(inputData+itemp)>*(outputData+itemp))||(((*(directionOfData+maxcolorindex))&0x3f) != ((*(directionOfData+itemp))&0x3f)))
-					itemp=position_i2+position_j2+k;
-					if(maxvalue>*(outputData+itemp))
-					{
-						if(*(inputData+itemp)>*(outputData+itemp))
+						itemp=itemp>>6;
+						do
 						{
-							//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
-							if(maxvalue>*(inputData+itemp))
-								*(outputData+itemp)=*(inputData+itemp);
-							else 
-								*(outputData+itemp)=maxvalue;
-							*(directionOfData+itemp)=maxcolorindex&0x3f;
-							int ii,jj,kk;
-							for(ii=0;ii<3;ii++)
-								for(jj=0;jj<3;jj++)
-									for(kk=0;kk<3;kk++)
-									{
-										itemp=(i-1+ii)*imagesize+(j-1+jj)*ilong+k-1+kk ;
-										if(!((*(directionOfData+itemp))& 0xC0))
-										   *(directionOfData+itemp) = (*(directionOfData+itemp)) | 0x40;
-									}
-							
-							changed++;				
-						}
-						else if(((*(directionOfData+itemp))&0x3f) != (maxcolorindex&0x3f))// connect value won't change, only direction will change, so no need to notice neighbors to check update.
-						{
-							// to check 26 neighbors to find the highest connectedness( actually 13 has been checked so check the rest 13)
-							float recheckmax=maxvalue;
-							int   recheckmaxindex=maxcolorindex;
-							int ii,jj,kk;
-							float ftemp;
-							for(ii=1;ii<3;ii++)
-								for(jj=0;jj<3;jj++)
-									for(kk=0;kk<3;kk++)
-									{ 
-										ftemp=*(outputData+(i-1+ii)*imagesize+(j-1+jj)*ilong+k-1+kk);
-										if(ftemp>=recheckmax)
-										{
-											recheckmax=ftemp;
-											recheckmaxindex=ii*9+jj*3+kk+1;
-										}
-									}
-							//there is difference between maxcolorindex and recheckmaxindex
-							//maxcolorindex is the first maxinium of forward 13 neighbors
-							//recheckmaxindex is the last maxinium of backward 13 neighbors
-							//recheckmaxindex will not be 14!
-							if(recheckmaxindex<14 ) 
-								*(directionOfData+itemp)=maxcolorindex&0x3f;
+							itemp++;
+						}while(!(*(longmarker+itemp)));
+						itemp=itemp<<6;
+						k=itemp-position_i2-position_j2;
+						
+						if(k>=ilong-1)
+							continue;
+						
+					}
 
-							else 
-								*(directionOfData+itemp)=(recheckmaxindex&0x3f);
-		
-							//above sentence also change the "change" status marker to "no change"			
-						}
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp++;
+						}while(!(*(marker+itemp)));
+						itemp=itemp<<3;
+						k=itemp-position_i2-position_j2;
+						
+						if(k>=ilong-1)
+							continue;
+	
+					}
+						
+					if((*(marker+(itemp>>3)))&(0x01<<(itemp&0x07)))//if this point need to be check again
+					{
+						if(*(directionOfData + itemp)&0xc0)//if this is a seed point or saturated point
+							*(marker+(itemp>>3))=*(marker+(itemp>>3))&(~(0x01<<(itemp&0x07)));
 						else
-							*(directionOfData+itemp) = (*(directionOfData+itemp))&0x3f;
-							
-					}
-					else 
-						*(directionOfData+itemp) = (*(directionOfData+itemp))&0x3f;
+						{
+		//1
+							itemp=position_i1+position_j1+k-1;
+							maxvalue=*(outputData+itemp);
+							maxcolorindex=1;
+		//2
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=2;
+							}
+		//3
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=3;
+							}
+		//4
+							itemp=position_i1+position_j2+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=4;
+							}
+		//5
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=5;
+							}
 
+		//6
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=6;
+							}
+		//7					
+							itemp=position_i1+position_j3+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=7;
+							}
+		//8	
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=8;
+							}
+
+		//9					
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=9;
+							}
+		//10	
+							itemp=position_i2+position_j1+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=10;
+							}
+		//11
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=11;
+							}
+		//12
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=12;
+							}
+		//13
+							itemp=position_i2+position_j2+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=13;
+							}
+		//update g
+	
+							itemp=position_i2+position_j2+k;
+							if(maxvalue>*(outputData+itemp))
+							{
+								if(*(inputData+itemp)>*(outputData+itemp))
+								{
+									//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+									if(maxvalue>*(inputData+itemp))
+									{
+										*(outputData+itemp)=*(inputData+itemp);
+										*(directionOfData+itemp)=maxcolorindex|0x40;
+									}
+									else 
+									{
+										*(outputData+itemp)=maxvalue;
+										*(directionOfData+itemp)=maxcolorindex;
+									}
+									
+									int ii,jj,kk;
+									itemp=position_i1+position_j1+k-1;
+									for(ii=0;ii<3;ii++)
+									{
+										for(jj=0;jj<3;jj++)
+										{
+											for(kk=0;kk<3;kk++)
+											{
+												
+												*(marker+(itemp>>3))|=(0x01<<(itemp&0x07));
+												itemp++;
+											}
+											itemp=itemp-3+ilong;
+											
+										}
+										itemp=itemp-ilong-ilong-ilong+imageSize;
+									}
+									
+									changed++;				
+								}
+							
+								else
+									*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+									
+							}
+							else 
+								*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+
+						}
+					}
 				}
 			}
 		}
@@ -246,8 +277,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*******************************negitive direction*************************
 		for(i=iheight-2;i>0;i--)
 		{
-			position_i1 = (i+1)*imagesize;
-			position_i2 = i*imagesize;
+			position_i1 = (i+1)*imageSize;
+			position_i2 = i*imageSize;
 			
 			for(j=iwidth-2;j>0;j--)
 			{
@@ -256,165 +287,1435 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				position_j3 = (j+1)*ilong;
 				
 				for(k=ilong-2;k>0;k--)
-				if(!(*(directionOfData + position_i2+position_j2+k)&0x80)&&(*(directionOfData + position_i2+position_j2+k)&0x40))
+				{	
+					itemp= position_i2+position_j2+k;
+					
+					
+					if(!(*(longmarker+(itemp>>6))))
+					{
+						itemp=itemp>>6;
+						do
+						{
+							itemp--;
+						}while(!(*(longmarker+itemp)));
+						
+						itemp=(itemp<<6)+63;
+						k=itemp-position_i2-position_j2;
+						
+						if(k<1)
+							continue;
+						
+					}
+					
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp--;
+						}while(!(*(marker+itemp)));
+						itemp=(itemp<<3)+7;
+						k=itemp-position_i2-position_j2;
+						
+						if(k<1)
+							continue;
+						
+					}
+					if((*(marker+(itemp>>3)))&(0x01<<(itemp&0x07)))//if this point need to be check again
+					{
+						if(*(directionOfData + itemp)&0xc0)//if this is a seed point or saturated point
+							*(marker+(itemp>>3))=*(marker+(itemp>>3))&(~(0x01<<(itemp&0x07)));
+						else
+						{
+				//1
+									itemp=position_i1+position_j3+k+1;
+									maxvalue=*(outputData+itemp);
+									maxcolorindex=27;
+				//2
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=26;
+									}
+				//3
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=25;
+									}
+				//4
+									itemp=position_i1+position_j2+k+1;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=24;
+									}
+				//5
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=23;
+									}
+
+				//6
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=22;
+									}
+				//7					
+									itemp=position_i1+position_j1+k+1;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=21;
+									}
+				//8	
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=20;
+									}
+				//9					
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=19;
+									}
+				//10	
+									itemp=position_i2+position_j3+k+1;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=18;
+									}
+				//11
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=17;
+									}
+				//12
+									itemp--;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=16;
+									}
+				//13
+									itemp=position_i2+position_j2+k+1;
+									if(*(outputData+itemp)>maxvalue)
+									{
+										maxvalue=*(outputData+itemp);
+										maxcolorindex=15;
+									}
+				//update g
+			
+									itemp=position_i2+position_j2+k;
+									if(maxvalue>*(outputData+itemp))
+									{
+										if(*(inputData+itemp)>*(outputData+itemp))
+										{
+																	//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+											if(maxvalue>*(inputData+itemp))
+											{
+												*(outputData+itemp)=*(inputData+itemp);
+												*(directionOfData+itemp)=maxcolorindex|0x40;
+											}
+											else 
+											{
+												*(outputData+itemp)=maxvalue;
+												*(directionOfData+itemp)=maxcolorindex;
+											}
+											
+											int ii,jj,kk;
+											itemp=position_i2-imageSize+position_j1+k-1;
+											for(ii=0;ii<3;ii++)
+											{
+												for(jj=0;jj<3;jj++)
+												{
+													for(kk=0;kk<3;kk++)
+													{
+														
+														*(marker+(itemp>>3))|=(0x01<<(itemp&0x07));
+														itemp++;
+													}
+													itemp=itemp-3+ilong;
+													
+												}
+												itemp=itemp-ilong-ilong-ilong+imageSize;
+											}														
+											
+											changed++;
+										}
+										else
+											*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+							
+
+									}
+									else 
+										*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+
+							}
+					}
+				}
+			}
+		}
+
+	}while(changed);
+	
+	[self checkSaturatedPoints];
+	
+
+}
+- (void) runFirstRoundFasterWith26Neigbhorhood
+{
+
+	long i,j,k;
+	float maxvalue;
+	unsigned char maxcolorindex;
+	long itemp;
+	long ilong,iwidth,iheight;
+	long position_i1,position_i2,position_j1,position_j2,position_j3;
+	int countNum=0;
+	
+	
+	ilong=imageWidth;
+	iwidth=imageHeight;
+	iheight=imageAmount;
+
+
+	
+	
+	//**********************positive direction*****************************
+
+
+	for(i=1;i<iheight-1;i++)
+	{
+		position_i1 = (i-1)*imageSize;
+		position_i2 = i*imageSize;
+		
+		for(j=1;j<iwidth-1;j++)
+		{
+			position_j1 = (j-1)*ilong;
+			position_j2 = j*ilong;
+			position_j3 = (j+1)*ilong;
+			for(k=1;k<ilong-1;k++)
+				if(!(*(directionOfData + position_i2+position_j2+k)&0xc0))
 				{
-//1
+					countNum++;
+					//1
+					itemp=position_i1+position_j1+k-1;
+					maxvalue=*(outputData+itemp);
+					maxcolorindex=1;
+					//2
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=2;
+					}
+					//3
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=3;
+					}
+					//4
+					itemp=position_i1+position_j2+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=4;
+					}
+					//5
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=5;
+					}
+					
+					//6
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=6;
+					}
+					//7					
+					itemp=position_i1+position_j3+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=7;
+					}
+					//8	
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=8;
+					}
+					
+					//9					
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=9;
+					}
+					//10	
+					itemp=position_i2+position_j1+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=10;
+					}
+					//11
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=11;
+					}
+					//12
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=12;
+					}
+					//13
+					itemp=position_i2+position_j2+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=13;
+					}
+					//update g
+					itemp=position_i2+position_j2+k;
+					if(maxvalue>*(outputData+itemp))
+					{
+						if(*(inputData+itemp)>*(outputData+itemp))
+						{
+							//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+							if(maxvalue>*(inputData+itemp))
+							{
+								*(outputData+itemp)=*(inputData+itemp);
+								*(directionOfData+itemp)=maxcolorindex|0x40;
+							}
+							else 
+							{
+								*(outputData+itemp)=maxvalue;
+								*(directionOfData+itemp)=maxcolorindex;
+							}
+							
+									
+						}
+	
+					}
+										
+				}
+		}
+	}
+		countNum=0;
+		
+	//*******************************negitive direction*************************
+	for(i=iheight-2;i>0;i--)
+	{
+		position_i1 = (i+1)*imageSize;
+		position_i2 = i*imageSize;
+		
+		for(j=iwidth-2;j>0;j--)
+		{
+			position_j1 = (j-1)*ilong;
+			position_j2 = j*ilong;
+			position_j3 = (j+1)*ilong;
+			
+			for(k=ilong-2;k>0;k--)
+				if(!(*(directionOfData + position_i2+position_j2+k)&0xc0))
+				{
+					countNum++;
+					//1
 					itemp=position_i1+position_j3+k+1;
 					maxvalue=*(outputData+itemp);
 					maxcolorindex=27;
-//2
+					//2
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=26;
 					}
-//3
+					//3
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=25;
 					}
-//4
+					//4
 					itemp=position_i1+position_j2+k+1;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=24;
 					}
-//5
+					//5
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=23;
 					}
-
-//6
+					
+					//6
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=22;
 					}
-//7					
+					//7					
 					itemp=position_i1+position_j1+k+1;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=21;
 					}
-//8	
+					//8	
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=20;
 					}
-//9					
+					//9					
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=19;
 					}
-//10	
+					//10	
 					itemp=position_i2+position_j3+k+1;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=18;
 					}
-//11
+					//11
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=17;
 					}
-//12
+					//12
 					itemp--;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=16;
 					}
-//13
+					//13
 					itemp=position_i2+position_j2+k+1;
 					if(*(outputData+itemp)>maxvalue)
 					{
 						maxvalue=*(outputData+itemp);
 						maxcolorindex=15;
 					}
-//update g
-//((*(inputData+itemp)>*(outputData+itemp))||(((*(directionOfData+maxcolorindex))&0x3f) != ((*(directionOfData+itemp))&0x3f)))
+					//update g
+					
 					itemp=position_i2+position_j2+k;
 					if(maxvalue>*(outputData+itemp))
 					{
-						if(*(inputData+itemp)>*(outputData+itemp))
+						//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+						if(maxvalue>*(inputData+itemp))
 						{
-													//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
-							if(maxvalue>*(inputData+itemp))
-								*(outputData+itemp)=*(inputData+itemp);
-							else 
-								*(outputData+itemp)=maxvalue;
-							*(directionOfData+itemp)=maxcolorindex&0x3f;
-							int ii,jj,kk;
-							for(ii=0;ii<3;ii++)
-								for(jj=0;jj<3;jj++)
-									for(kk=0;kk<3;kk++)
-									{
-										itemp=(i-1+ii)*imagesize+(j-1+jj)*ilong+k-1+kk;
-										if(!((*(directionOfData+itemp)) & 0xC0))
-											*(directionOfData+itemp) = (*(directionOfData+itemp)) | 0x40;
-									}
-										
-							
-							changed++;
+							*(outputData+itemp)=*(inputData+itemp);
+							*(directionOfData+itemp)=maxcolorindex|0x40;
 						}
-						else if(((*(directionOfData+itemp))&0x3f) != (maxcolorindex&0x3f))// connect value won't change, only direction will change, so no need to notice neighbors to check update.
+						else 
 						{
-							// to check 26 neighbors to find the highest connectedness( actually 13 has been checked so check the rest 13)
-							float recheckmax=maxvalue;
-							int   recheckmaxindex=maxcolorindex;
-							int ii,jj,kk;
-							float ftemp;
-							for(ii=0;ii<2;ii++)
-								for(jj=0;jj<3;jj++)
-									for(kk=0;kk<3;kk++)
-									{ 
-										ftemp=*(outputData+(i-1+ii)*imagesize+(j-1+jj)*ilong+k-1+kk);
-										if(ftemp>recheckmax)
-										{
-											recheckmax=ftemp;
-											recheckmaxindex=ii*9+jj*3+kk+1;
-										}
-									}
-							//there is difference between maxcolorindex and recheckmaxindex
-							//maxcolorindex is the lase maxinium of backward 13 neighbors
-							//recheckmaxindex is the first maxinium of forward 13 neighbors
-							//recheckmaxindex will not be 14!
-							if(recheckmaxindex>14 ) 
-								*(directionOfData+itemp)=maxcolorindex&0x3f;
-							else 
-								*(directionOfData+itemp)=(recheckmaxindex&0x3f);
-										
+							*(outputData+itemp)=maxvalue;
+							*(directionOfData+itemp)=maxcolorindex;
 						}
-						else
-							*(directionOfData+itemp) = (*(directionOfData+itemp))&0x3f;
-							
-
+						
+						
 					}
-					else 
-						*(directionOfData+itemp) = (*(directionOfData+itemp))&0x3f;
 
+					
+				}
+		}
+	}
+		countNum++;
+			
+
+}
+- (void) checkSaturatedPoints
+{
+	long i,j,k;
+	float maxvalue, oldmaxvalue;
+	unsigned char maxcolorindex,oldcolorindex;
+	long itemp;
+	long ilong,iwidth,iheight;
+	long position_i1,position_i2,position_i3,position_j1,position_j2,position_j3;
+	ilong=imageWidth;
+	iwidth=imageHeight;
+	iheight=imageAmount;
+
+
+	for(i=1;i<iheight-1;i++)
+	{
+		position_i1 = (i-1)*imageSize;
+		position_i2 = i*imageSize;
+		position_i3 = (i+1)*imageSize;
+		for(j=1;j<iwidth-1;j++)
+		{
+			position_j1 = (j-1)*ilong;
+			position_j2 = j*ilong;
+			position_j3 = (j+1)*ilong;
+			for(k=1;k<ilong-1;k++)
+				if((!(*(directionOfData + position_i2+position_j2+k)&0x80))&&(*(directionOfData + position_i2+position_j2+k)&0x40))
+				{
+					oldcolorindex=*(directionOfData + position_i2+position_j2+k)&0x3f;
+					
+					//1
+					itemp=position_i1+position_j1+k-1;
+					maxvalue=*(outputData+itemp);
+					maxcolorindex=1;
+					oldmaxvalue=maxvalue;
+					//2
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=2;
+					}
+					if(oldcolorindex==2)
+						oldmaxvalue=*(outputData+itemp);
+					//3
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=3;
+					}
+					if(oldcolorindex==3)
+						oldmaxvalue=*(outputData+itemp);
+					//4
+					itemp=position_i1+position_j2+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=4;
+					}
+					if(oldcolorindex==4)
+						oldmaxvalue=*(outputData+itemp);
+					//5
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=5;
+					}
+					if(oldcolorindex==5)
+						oldmaxvalue=*(outputData+itemp);
+					//6
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=6;
+					}
+					if(oldcolorindex==6)
+						oldmaxvalue=*(outputData+itemp);
+					//7					
+					itemp=position_i1+position_j3+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=7;
+					}
+					if(oldcolorindex==7)
+						oldmaxvalue=*(outputData+itemp);
+					//8	
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=8;
+					}
+					if(oldcolorindex==8)
+						oldmaxvalue=*(outputData+itemp);
+					//9					
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=9;
+					}
+					if(oldcolorindex==9)
+						oldmaxvalue=*(outputData+itemp);
+					//10	
+					itemp=position_i2+position_j1+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=10;
+					}
+					if(oldcolorindex==10)
+						oldmaxvalue=*(outputData+itemp);
+					//11
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=11;
+					}
+					if(oldcolorindex==11)
+						oldmaxvalue=*(outputData+itemp);
+					//12
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=12;
+					}
+					if(oldcolorindex==12)
+						oldmaxvalue=*(outputData+itemp);
+					//13
+					itemp=position_i2+position_j2+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=13;
+					}
+					if(oldcolorindex==13)
+						oldmaxvalue=*(outputData+itemp);
+					//15
+					itemp+=2;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=15;
+					}
+					if(oldcolorindex==15)
+						oldmaxvalue=*(outputData+itemp);
+					//16
+					itemp=position_i2+position_j3+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=16;
+					}
+					if(oldcolorindex==16)
+						oldmaxvalue=*(outputData+itemp);
+					//17
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=17;
+					}
+					if(oldcolorindex==17)
+						oldmaxvalue=*(outputData+itemp);
+					//18
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=18;
+					}
+					if(oldcolorindex==18)
+						oldmaxvalue=*(outputData+itemp);
+					//19
+					itemp=position_i3+position_j1+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=19;
+					}
+					if(oldcolorindex==19)
+						oldmaxvalue=*(outputData+itemp);
+					//20
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=20;
+					}
+					if(oldcolorindex==20)
+						oldmaxvalue=*(outputData+itemp);
+					//21
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=21;
+					}
+					if(oldcolorindex==21)
+						oldmaxvalue=*(outputData+itemp);
+					//22
+					itemp=position_i3+position_j2+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=22;
+					}
+					if(oldcolorindex==22)
+						oldmaxvalue=*(outputData+itemp);
+					//23
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=23;
+					}
+					if(oldcolorindex==23)
+						oldmaxvalue=*(outputData+itemp);
+					//24
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=24;
+					}	
+					if(oldcolorindex==24)
+						oldmaxvalue=*(outputData+itemp);
+					//25
+					itemp=position_i3+position_j3+k-1;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=25;
+					}
+					if(oldcolorindex==25)
+						oldmaxvalue=*(outputData+itemp);
+					//26
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=26;
+					}
+					if(oldcolorindex==26)
+						oldmaxvalue=*(outputData+itemp);
+					//27
+					itemp++;
+					if(*(outputData+itemp)>maxvalue)
+					{
+						maxvalue=*(outputData+itemp);
+						maxcolorindex=27;
+					}	
+					if(oldcolorindex==27)
+						oldmaxvalue=*(outputData+itemp);
+					//update direction
+					itemp=position_i2+position_j2+k;
+					if(maxvalue>oldmaxvalue)
+						*(directionOfData+itemp)=maxcolorindex;
+					else
+						*(directionOfData+itemp)=oldcolorindex;
+						
+		
+						
+				}
+		}
+	}
+		
+	
+}
+- (void) optimizedContinueLoop:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers
+{
+	
+	long i,j,k;
+	int changed;
+	float maxvalue;
+	unsigned char maxcolorindex;
+	
+	
+	long itemp;
+	long ilong,iwidth,iheight;
+	long position_i1,position_i2,position_j1,position_j2,position_j3;
+	
+	
+	ilong=imageWidth;
+	iwidth=imageHeight;
+	iheight=imageAmount;
+	
+	
+	inputData=pIn;
+	outputData=pOut;
+	directionOfData=pPointers;
+	
+	unsigned char* marker=pMarker;
+	long long* longmarker=(long long*)marker;
+	int longmarkerlen=imageSize*imageAmount/(sizeof(long long)*8)-1;
+	int markerlen=imageSize*imageAmount/8-1;
+	do
+	{
+		changed=0;
+		
+		//**********************positive direction*****************************
+		for(i=1;i<iheight-1;i++)
+		{
+			position_i1 = (i-1)*imageSize;
+			position_i2 = i*imageSize;
+			
+			for(j=1;j<iwidth-1;j++)
+			{
+				position_j1 = (j-1)*ilong;
+				position_j2 = j*ilong;
+				position_j3 = (j+1)*ilong;
+				
+				for(k=1;k<ilong-1;k++)
+				{
+					itemp= position_i2+position_j2+k;
+					
+					if(!(*(longmarker+(itemp>>6))))
+					{
+						itemp=itemp>>6;
+						do
+						{
+							itemp++;
+						}while(itemp<longmarkerlen&&!(*(longmarker+itemp)));
+						itemp=itemp<<6;
+						k=itemp-position_i2-position_j2;
+						if(k>ilong-1)
+						{
+							i=itemp/imageSize;
+							position_i2=i*imageSize;
+							position_i1=position_i2-imageSize;
+							j=(itemp-position_i2)/ilong;
+							position_j2=ilong*j;
+							position_j1=position_j2-ilong;
+							position_j3=position_j2+ilong;
+							k=itemp-position_i2-position_j2;
+						}
+						if(i>=iheight-1)
+							j=iwidth-1;
+						if(j>=iwidth-1||j<1)
+							k=ilong-1;
+						
+						if(k>=ilong-1||k<1)
+							continue;
+						
+					}
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp++;
+						}while(!(*(marker+itemp))&&itemp<markerlen);
+						itemp=itemp<<3;
+						k=itemp-position_i2-position_j2;
+						
+						if(k>ilong-1)
+						{
+							i=itemp/imageSize;
+							position_i2=i*imageSize;
+							position_i1=position_i2-imageSize;
+							j=(itemp-position_i2)/ilong;
+							position_j2=ilong*j;
+							position_j1=position_j2-ilong;
+							position_j3=position_j2+ilong;
+							k=itemp-position_i2-position_j2;
+						}
+						if(i>=iheight-1)
+							j=iwidth-1;
+						if(j>=iwidth-1||j<1)
+							k=ilong-1;
+						
+						if(k>=ilong-1||k<1)
+							continue;
+						
+					}/*
+					
+					if(!(*(longmarker+(itemp>>6))))
+					{
+						itemp=itemp>>6;
+						do
+						{
+							itemp++;
+						}while(!(*(longmarker+itemp)));
+						itemp=itemp<<6;
+						k=itemp-position_i2-position_j2;
+						
+						if(k>=ilong-1)
+							continue;
+						
+					}
+					
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp++;
+						}while(!(*(marker+itemp)));
+						itemp=itemp<<3;
+						k=itemp-position_i2-position_j2;
+						
+						if(k>=ilong-1)
+							continue;
+						
+					}*/
+					
+					if((*(marker+(itemp>>3)))&(0x01<<(itemp&0x07)))//if this point need to be check again
+					{
+						if(*(directionOfData + itemp)&0x80)//if this is a seed point 
+							*(marker+(itemp>>3))=*(marker+(itemp>>3))&(~(0x01<<(itemp&0x07)));
+						else
+						{
+							//1
+							itemp=position_i1+position_j1+k-1;
+							maxvalue=*(outputData+itemp);
+							maxcolorindex=1;
+							//2
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=2;
+							}
+							//3
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=3;
+							}
+							//4
+							itemp=position_i1+position_j2+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=4;
+							}
+							//5
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=5;
+							}
+							
+							//6
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=6;
+							}
+							//7					
+							itemp=position_i1+position_j3+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=7;
+							}
+							//8	
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=8;
+							}
+							
+							//9					
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=9;
+							}
+							//10	
+							itemp=position_i2+position_j1+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=10;
+							}
+							//11
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=11;
+							}
+							//12
+							itemp++;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=12;
+							}
+							//13
+							itemp=position_i2+position_j2+k-1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=13;
+							}
+							//update g
+							
+							itemp=position_i2+position_j2+k;
+							if(maxvalue>*(outputData+itemp))
+							{
+								if(*(inputData+itemp)>*(outputData+itemp))
+								{
+									//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+									if(maxvalue>*(inputData+itemp))
+									{
+										*(outputData+itemp)=*(inputData+itemp);
+										*(directionOfData+itemp)=maxcolorindex;
+									}
+									else 
+									{
+										*(outputData+itemp)=maxvalue;
+										*(directionOfData+itemp)=maxcolorindex;
+									}
+									
+									int ii,jj,kk;
+									itemp=position_i1+position_j1+k-1;
+									for(ii=0;ii<3;ii++)
+									{
+										for(jj=0;jj<3;jj++)
+										{
+											for(kk=0;kk<3;kk++)
+											{
+												
+												*(marker+(itemp>>3))|=(0x01<<(itemp&0x07));
+												itemp++;
+											}
+											itemp=itemp-3+ilong;
+											
+										}
+										itemp=itemp-ilong-ilong-ilong+imageSize;
+									}
+									
+									changed++;				
+								}
+								
+								else
+								{
+								 if(((*(directionOfData+itemp))&0x3f) != (maxcolorindex&0x3f))
+								 {
+									 int direction=*(directionOfData+itemp)&0x3f;
+									 switch(direction)
+									 {
+										 case 1: direction =  (-imageSize-imageWidth-1);
+											 break;
+										 case 2: direction =  (-imageSize-imageWidth);
+											 break;
+										 case 3: direction = (-imageSize-imageWidth+1);
+											 break;
+										 case 4: direction = (-imageSize-1);
+											 break;
+										 case 5: direction = (-imageSize);
+											 break;
+										 case 6: direction = (-imageSize+1);
+											 break;
+										 case 7: direction = (-imageSize+imageWidth-1);
+											 break;
+										 case 8: direction = (-imageSize+imageWidth);
+											 break;
+										 case 9: direction = (-imageSize+imageWidth+1);
+											 break;
+										 case 10: direction = (-imageWidth-1);
+											 break;
+										 case 11: direction = (-imageWidth);
+											 break;
+										 case 12: direction = (-imageWidth+1);
+											 break;
+										 case 13: direction = (-1);
+											 break;
+										 case 14: direction = 0;
+											 break;
+										 case 15: direction = 1;
+											 break;
+										 case 16: direction = imageWidth-1;
+											 break;
+										 case 17: direction = imageWidth;
+											 break;
+										 case 18: direction = imageWidth+1;
+											 break;
+										 case 19: direction = imageSize-imageWidth-1;
+											 break;
+										 case 20: direction = imageSize-imageWidth;
+											 break;
+										 case 21: direction = imageSize-imageWidth+1;
+											 break;
+										 case 22: direction = imageSize-1;
+											 break;
+										 case 23: direction = imageSize;
+											 break;
+										 case 24: direction = imageSize+1;
+											 break;
+										 case 25: direction = imageSize+imageWidth-1;
+											 break;
+										 case 26: direction = imageSize+imageWidth;
+											 break;
+										 case 27: direction = imageSize+imageWidth+1;
+											 break;
+									 }
+									 if(*(outputData+itemp+direction)<maxvalue)
+										 *(directionOfData+itemp)=maxcolorindex;
+								 }
+									*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+								}
+								
+								
+							}
+							else 
+								*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+							
+						}
+					}
 				}
 			}
 		}
-
+		
+		//*******************************negitive direction*************************
+		for(i=iheight-2;i>0;i--)
+		{
+			position_i1 = (i+1)*imageSize;
+			position_i2 = i*imageSize;
+			
+			for(j=iwidth-2;j>0;j--)
+			{
+				position_j1 = (j-1)*ilong;
+				position_j2 = j*ilong;
+				position_j3 = (j+1)*ilong;
+				
+				for(k=ilong-2;k>0;k--)
+				{	
+					itemp= position_i2+position_j2+k;
+					
+					if(!(*(longmarker+(itemp>>6))))
+					{
+						itemp=itemp>>6;
+						do
+						{
+							itemp--;
+							
+						}while(itemp>=0&&!(*(longmarker+itemp)));
+						
+						itemp=(itemp<<6)+63;
+						k=itemp-position_i2-position_j2;
+						if(k<0)
+						{
+							i=itemp/imageSize;
+							position_i2=i*imageSize;
+							position_i1=position_i2+imageSize;
+							j=(itemp-position_i2)/ilong;
+							position_j2=ilong*j;
+							position_j1=position_j2-ilong;
+							position_j3=position_j2+ilong;
+							k=itemp-position_i2-position_j2;
+						}
+						
+						if(i<1)
+							j=0;
+						if(j>=iwidth-1||j<1)
+							k=0;
+						
+						if(k>=ilong-1||k<1)
+							continue;					
+						
+					}
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp--;
+						}while(!(*(marker+itemp))&&itemp>=0);
+						itemp=(itemp<<3)+7;
+						k=itemp-position_i2-position_j2;
+						
+						if(k<0)
+						{
+							i=itemp/imageSize;
+							position_i2=i*imageSize;
+							position_i1=position_i2+imageSize;
+							j=(itemp-position_i2)/ilong;
+							position_j2=ilong*j;
+							position_j1=position_j2-ilong;
+							position_j3=position_j2+ilong;
+							k=itemp-position_i2-position_j2;
+						}
+						
+						if(i<1)
+							j=0;
+						if(j>=iwidth-1||j<1)
+							k=0;
+						
+						if(k>=ilong-1||k<1)
+							continue;	
+						
+					}
+					/*
+					
+					
+					if(!(*(longmarker+(itemp>>6))))
+					{
+						itemp=itemp>>6;
+						do
+						{
+							itemp--;
+						}while(!(*(longmarker+itemp)));
+						
+						itemp=(itemp<<6)+63;
+						k=itemp-position_i2-position_j2;
+						
+						if(k<1)
+							continue;
+						
+					}
+					
+					if(!(*(marker+(itemp>>3))))
+					{
+						itemp=itemp>>3;
+						do
+						{
+							itemp--;
+						}while(!(*(marker+itemp)));
+						itemp=(itemp<<3)+7;
+						k=itemp-position_i2-position_j2;
+						
+						if(k<1)
+							continue;
+						
+					}*/
+					if((*(marker+(itemp>>3)))&(0x01<<(itemp&0x07)))//if this point need to be check again
+					{
+						if(*(directionOfData + itemp)&0x80)//if this is a seed point 
+							*(marker+(itemp>>3))=*(marker+(itemp>>3))&(~(0x01<<(itemp&0x07)));
+						else
+						{
+							//1
+							itemp=position_i1+position_j3+k+1;
+							maxvalue=*(outputData+itemp);
+							maxcolorindex=27;
+							//2
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=26;
+							}
+							//3
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=25;
+							}
+							//4
+							itemp=position_i1+position_j2+k+1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=24;
+							}
+							//5
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=23;
+							}
+							
+							//6
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=22;
+							}
+							//7					
+							itemp=position_i1+position_j1+k+1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=21;
+							}
+							//8	
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=20;
+							}
+							//9					
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=19;
+							}
+							//10	
+							itemp=position_i2+position_j3+k+1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=18;
+							}
+							//11
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=17;
+							}
+							//12
+							itemp--;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=16;
+							}
+							//13
+							itemp=position_i2+position_j2+k+1;
+							if(*(outputData+itemp)>maxvalue)
+							{
+								maxvalue=*(outputData+itemp);
+								maxcolorindex=15;
+							}
+							//update g
+							
+							itemp=position_i2+position_j2+k;
+							if(maxvalue>*(outputData+itemp))
+							{
+								if(*(inputData+itemp)>*(outputData+itemp))
+								{
+									//*(outputData+itemp)=min(maxvalue,*(inputData+itemp));
+									if(maxvalue>*(inputData+itemp))
+									{
+										*(outputData+itemp)=*(inputData+itemp);
+										*(directionOfData+itemp)=maxcolorindex;
+									}
+									else 
+									{
+										*(outputData+itemp)=maxvalue;
+										*(directionOfData+itemp)=maxcolorindex;
+									}
+									
+									int ii,jj,kk;
+									itemp=position_i2-imageSize+position_j1+k-1;
+									for(ii=0;ii<3;ii++)
+									{
+										for(jj=0;jj<3;jj++)
+										{
+											for(kk=0;kk<3;kk++)
+											{
+												
+												*(marker+(itemp>>3))|=(0x01<<(itemp&0x07));
+												itemp++;
+											}
+											itemp=itemp-3+ilong;
+											
+										}
+										itemp=itemp-ilong-ilong-ilong+imageSize;
+									}														
+									
+									changed++;
+								}
+								else
+								{
+								 if(((*(directionOfData+itemp))&0x3f) != (maxcolorindex&0x3f))
+								 {
+									 int direction=*(directionOfData+itemp)&0x3f;
+									 switch(direction)
+									 {
+										 case 1: direction =  (-imageSize-imageWidth-1);
+											 break;
+										 case 2: direction =  (-imageSize-imageWidth);
+											 break;
+										 case 3: direction = (-imageSize-imageWidth+1);
+											 break;
+										 case 4: direction = (-imageSize-1);
+											 break;
+										 case 5: direction = (-imageSize);
+											 break;
+										 case 6: direction = (-imageSize+1);
+											 break;
+										 case 7: direction = (-imageSize+imageWidth-1);
+											 break;
+										 case 8: direction = (-imageSize+imageWidth);
+											 break;
+										 case 9: direction = (-imageSize+imageWidth+1);
+											 break;
+										 case 10: direction = (-imageWidth-1);
+											 break;
+										 case 11: direction = (-imageWidth);
+											 break;
+										 case 12: direction = (-imageWidth+1);
+											 break;
+										 case 13: direction = (-1);
+											 break;
+										 case 14: direction = 0;
+											 break;
+										 case 15: direction = 1;
+											 break;
+										 case 16: direction = imageWidth-1;
+											 break;
+										 case 17: direction = imageWidth;
+											 break;
+										 case 18: direction = imageWidth+1;
+											 break;
+										 case 19: direction = imageSize-imageWidth-1;
+											 break;
+										 case 20: direction = imageSize-imageWidth;
+											 break;
+										 case 21: direction = imageSize-imageWidth+1;
+											 break;
+										 case 22: direction = imageSize-1;
+											 break;
+										 case 23: direction = imageSize;
+											 break;
+										 case 24: direction = imageSize+1;
+											 break;
+										 case 25: direction = imageSize+imageWidth-1;
+											 break;
+										 case 26: direction = imageSize+imageWidth;
+											 break;
+										 case 27: direction = imageSize+imageWidth+1;
+											 break;
+									 }
+									 if(*(outputData+itemp+direction)<maxvalue)
+										 *(directionOfData+itemp)=maxcolorindex;
+								 }
+									*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+								}
+									
+								
+								
+							}
+							else 
+								*(marker+(itemp>>3))&=(~(0x01<<(itemp&0x07)));
+							
+						}
+					}
+				}
+			}
+		}
+		
 	}while(changed);
 
+	
 }
 - (void) startShortestPathSearchAsFloatWith6Neighborhood:(float *) pIn Out:(float *) pOut Direction: (unsigned char*) pPointers
 {
@@ -426,14 +1727,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	
 	long itemp;
-	long ilong,iwidth,iheight,imagesize;
+	long ilong,iwidth,iheight;
 	long position_i1,position_i2,position_j1,position_j2,position_j3;
 	
 	
 	ilong=imageWidth;
 	iwidth=imageHeight;
 	iheight=imageAmount;
-	imagesize=iwidth*ilong;
+
 	
 	inputData=pIn;
 	outputData=pOut;
@@ -449,8 +1750,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		//**********************positive direction*****************************
 		for(i=1;i<iheight-1;i++)
 		{
-			position_i1 = (i-1)*imagesize;
-			position_i2 = i*imagesize;
+			position_i1 = (i-1)*imageSize;
+			position_i2 = i*imageSize;
 			
 			for(j=1;j<iwidth-1;j++)
 			{
@@ -499,7 +1800,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								*(directionOfData+position_i2+position_j2+k-1) = (*(directionOfData+position_i2+position_j2+k-1)) | 0x40;
 								*(directionOfData+position_i2+position_j2+k+1) = (*(directionOfData+position_i2+position_j2+k+1)) | 0x40;
 								*(directionOfData+position_i2+position_j3+k) = (*(directionOfData+position_i2+position_j3+k)) | 0x40;
-								*(directionOfData+(i+1)*imagesize+position_j2+k) = (*(directionOfData+(i+1)*imagesize+position_j2+k)) | 0x40;
+								*(directionOfData+(i+1)*imageSize+position_j2+k) = (*(directionOfData+(i+1)*imageSize+position_j2+k)) | 0x40;
 
 								changed++;				
 							}
@@ -523,7 +1824,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 									recheckmax=ftemp;
 									recheckmaxindex=17;
 								}
-								ftemp=*(outputData+(i+1)*imagesize+position_j2+k);
+								ftemp=*(outputData+(i+1)*imageSize+position_j2+k);
 								if(ftemp>=recheckmax)
 								{
 									recheckmax=ftemp;
@@ -555,8 +1856,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			//*******************************negitive direction*************************
 			for(i=iheight-2;i>0;i--)
 			{
-				position_i1 = (i+1)*imagesize;
-				position_i2 = i*imagesize;
+				position_i1 = (i+1)*imageSize;
+				position_i2 = i*imageSize;
 				
 				for(j=iwidth-2;j>0;j--)
 				{
@@ -606,7 +1907,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 									*(directionOfData+position_i2+position_j2+k-1) = (*(directionOfData+position_i2+position_j2+k-1)) | 0x40;
 									*(directionOfData+position_i2+position_j2+k+1) = (*(directionOfData+position_i2+position_j2+k+1)) | 0x40;
 									*(directionOfData+position_i2+position_j1+k) = (*(directionOfData+position_i2+position_j1+k)) | 0x40;
-									*(directionOfData+(i-1)*imagesize+position_j2+k) = (*(directionOfData+(i-1)*imagesize+position_j2+k)) | 0x40;
+									*(directionOfData+(i-1)*imageSize+position_j2+k) = (*(directionOfData+(i-1)*imageSize+position_j2+k)) | 0x40;
 									
 									
 									
@@ -631,7 +1932,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 										recheckmax=ftemp;
 										recheckmaxindex=11;
 									}
-									ftemp=*(outputData+(i-1)*imagesize+position_j2+k);
+									ftemp=*(outputData+(i-1)*imageSize+position_j2+k);
 									if(ftemp>=recheckmax)
 									{
 										recheckmax=ftemp;
@@ -663,89 +1964,257 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}while(changed);
 			
 }
-- (void) caculatePathLength:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers
+- (void) caculatePathLength:(unsigned short *) pDistanceMap Pointer: (unsigned char*) pPointers
 {
-	inputData=pIn;
-	outputData=pOut;
+
+	distanceMap=pDistanceMap;
 	directionOfData=pPointers;
-	int i,j,k;
-	for(i=1;i<imageAmount-1;i++)
-		for(j=1;j<imageHeight-1;j++)
-			for(k=1;k<imageWidth-1;k++)
+	int totalvoxel=imageSize*(imageAmount-1);
+	int i;
+	for(i=imageSize;i<totalvoxel;i++)
+	{
+		
+		if((!((*(directionOfData+i))&0x80))&&(*(distanceMap+i)==0))
+		{
+			int direction=*(directionOfData+i)&0x3f;
+			if(direction)
 			{
-				int itemp=i*imageWidth*imageHeight+j*imageWidth+k;
-				if((!((*(directionOfData+itemp))&0x80))&&(*(outputData+itemp)==0))
+				int itemp;
+				switch(direction)
 				{
-					int direction=*(directionOfData+itemp);
-					
-					int xx,yy,zz;
-					zz=(direction-1)/9;
-					yy=((direction-1)-9*zz)/3;
-					xx=(direction-1)-9*zz-3*yy;
-					zz--;
-					yy--;
-					xx--;
-					int newPointerToParent=itemp+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-					*(outputData+itemp)=[self lengthOfParent:newPointerToParent]+1;
+					case 1: itemp =  (-imageSize-imageWidth-1);
+						break;
+					case 2: itemp =  (-imageSize-imageWidth);
+						break;
+					case 3: itemp = (-imageSize-imageWidth+1);
+						break;
+					case 4: itemp = (-imageSize-1);
+						break;
+					case 5: itemp = (-imageSize);
+						break;
+					case 6: itemp = (-imageSize+1);
+						break;
+					case 7: itemp = (-imageSize+imageWidth-1);
+						break;
+					case 8: itemp = (-imageSize+imageWidth);
+						break;
+					case 9: itemp = (-imageSize+imageWidth+1);
+						break;
+					case 10: itemp = (-imageWidth-1);
+						break;
+					case 11: itemp = (-imageWidth);
+						break;
+					case 12: itemp = (-imageWidth+1);
+						break;
+					case 13: itemp = (-1);
+						break;
+					case 14: itemp = 0;
+						break;
+					case 15: itemp = 1;
+						break;
+					case 16: itemp = imageWidth-1;
+						break;
+					case 17: itemp = imageWidth;
+						break;
+					case 18: itemp = imageWidth+1;
+						break;
+					case 19: itemp = imageSize-imageWidth-1;
+						break;
+					case 20: itemp = imageSize-imageWidth;
+						break;
+					case 21: itemp = imageSize-imageWidth+1;
+						break;
+					case 22: itemp = imageSize-1;
+						break;
+					case 23: itemp = imageSize;
+						break;
+					case 24: itemp = imageSize+1;
+						break;
+					case 25: itemp = imageSize+imageWidth-1;
+						break;
+					case 26: itemp = imageSize+imageWidth;
+						break;
+					case 27: itemp = imageSize+imageWidth+1;
+						break;
 				}
 				
+				itemp+=i;
+				*(distanceMap+i)=[self lengthOfParent:itemp]+1;
 			}
-				
-					
+		}
+		
+	}
 	
+
 }
-- (float) lengthOfParent:(int)pointer
+- (unsigned short ) lengthOfParent:(int)pointer
 {
-	if(*(outputData+pointer)==0)
+
+	if(*(distanceMap+pointer)==0)
 	{
-		int direction=*(directionOfData+pointer);
+		int direction=*(directionOfData+pointer)&0x3f;
 		if(direction)
 		{
-			int xx,yy,zz;
-			zz=(direction-1)/9;
-			yy=((direction-1)-9*zz)/3;
-			xx=(direction-1)-9*zz-3*yy;
-			zz--;
-			yy--;
-			xx--;
-			int newPointerToParent = pointer+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-			*(outputData+pointer) = [self lengthOfParent:newPointerToParent]+1;
+			int itemp;
+			switch(direction)
+			{
+				case 1: itemp =  (-imageSize-imageWidth-1);
+					break;
+				case 2: itemp =  (-imageSize-imageWidth);
+					break;
+				case 3: itemp = (-imageSize-imageWidth+1);
+					break;
+				case 4: itemp = (-imageSize-1);
+					break;
+				case 5: itemp = (-imageSize);
+					break;
+				case 6: itemp = (-imageSize+1);
+					break;
+				case 7: itemp = (-imageSize+imageWidth-1);
+					break;
+				case 8: itemp = (-imageSize+imageWidth);
+					break;
+				case 9: itemp = (-imageSize+imageWidth+1);
+					break;
+				case 10: itemp = (-imageWidth-1);
+					break;
+				case 11: itemp = (-imageWidth);
+					break;
+				case 12: itemp = (-imageWidth+1);
+					break;
+				case 13: itemp = (-1);
+					break;
+				case 14: itemp = 0;
+					break;
+				case 15: itemp = 1;
+					break;
+				case 16: itemp = imageWidth-1;
+					break;
+				case 17: itemp = imageWidth;
+					break;
+				case 18: itemp = imageWidth+1;
+					break;
+				case 19: itemp = imageSize-imageWidth-1;
+					break;
+				case 20: itemp = imageSize-imageWidth;
+					break;
+				case 21: itemp = imageSize-imageWidth+1;
+					break;
+				case 22: itemp = imageSize-1;
+					break;
+				case 23: itemp = imageSize;
+					break;
+				case 24: itemp = imageSize+1;
+					break;
+				case 25: itemp = imageSize+imageWidth-1;
+					break;
+				case 26: itemp = imageSize+imageWidth;
+					break;
+				case 27: itemp = imageSize+imageWidth+1;
+					break;
+			}
+			
+			itemp+=pointer;
+			*(distanceMap+pointer) = [self lengthOfParent:itemp]+1;
+			if((*(distanceMap+pointer))>=0xffff)
+					*(distanceMap+pointer)=0xfffe;
 		}
 		else
 			return 1;
-		
 	}
-	return(*(outputData+pointer));
+	return(*(distanceMap+pointer));
+	
 }
-- (void) caculatePathLengthWithWeightFunction:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers:(float) threshold: (float)wholeValue
+- (int) caculatePathLengthWithWeightFunction:(float *) pIn:(float *) pOut Pointer: (unsigned char*) pPointers:(float) threshold: (float)wholeValue
 {
-	inputData=pIn;
 	outputData=pOut;
 	directionOfData=pPointers;
 	weightThreshold=threshold;
-	weightWholeValue=wholeValue;
-	int i,j,k;
-	for(i=1;i<imageAmount-1;i++)
-		for(j=1;j<imageHeight-1;j++)
-			for(k=1;k<imageWidth-1;k++)
+	weightWholeValue=1.0/wholeValue;
+	float maxvalue=0;
+	int   maxindex=0;
+
+	int totalvoxel=imageSize*(imageAmount-1);
+	int i;
+	for(i=imageSize;i<totalvoxel;i++)
+	{
+		
+		if(*(outputData+i)==0)
+		{
+			int direction=*(directionOfData+i)&0x3f;
+			if(direction)
 			{
-				int itemp=i*imageWidth*imageHeight+j*imageWidth+k;
-				if((!((*(directionOfData+itemp))&0x80))&&(*(outputData+itemp)==0))
+				int itemp;
+				switch(direction)
 				{
-					int direction=*(directionOfData+itemp);
-					
-					int xx,yy,zz;
-					zz=(direction-1)/9;
-					yy=((direction-1)-9*zz)/3;
-					xx=(direction-1)-9*zz-3*yy;
-					zz--;
-					yy--;
-					xx--;
-					int newPointerToParent=itemp+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-					*(outputData+itemp)=[self lengthOfParentWithWeightFunction:newPointerToParent]+((*(inputData+itemp)-weightThreshold)/weightWholeValue);
+					case 1: itemp =  (-imageSize-imageWidth-1);
+						break;
+					case 2: itemp =  (-imageSize-imageWidth);
+						break;
+					case 3: itemp = (-imageSize-imageWidth+1);
+						break;
+					case 4: itemp = (-imageSize-1);
+						break;
+					case 5: itemp = (-imageSize);
+						break;
+					case 6: itemp = (-imageSize+1);
+						break;
+					case 7: itemp = (-imageSize+imageWidth-1);
+						break;
+					case 8: itemp = (-imageSize+imageWidth);
+						break;
+					case 9: itemp = (-imageSize+imageWidth+1);
+						break;
+					case 10: itemp = (-imageWidth-1);
+						break;
+					case 11: itemp = (-imageWidth);
+						break;
+					case 12: itemp = (-imageWidth+1);
+						break;
+					case 13: itemp = (-1);
+						break;
+					case 14: itemp = 0;
+						break;
+					case 15: itemp = 1;
+						break;
+					case 16: itemp = imageWidth-1;
+						break;
+					case 17: itemp = imageWidth;
+						break;
+					case 18: itemp = imageWidth+1;
+						break;
+					case 19: itemp = imageSize-imageWidth-1;
+						break;
+					case 20: itemp = imageSize-imageWidth;
+						break;
+					case 21: itemp = imageSize-imageWidth+1;
+						break;
+					case 22: itemp = imageSize-1;
+						break;
+					case 23: itemp = imageSize;
+						break;
+					case 24: itemp = imageSize+1;
+						break;
+					case 25: itemp = imageSize+imageWidth-1;
+						break;
+					case 26: itemp = imageSize+imageWidth;
+						break;
+					case 27: itemp = imageSize+imageWidth+1;
+						break;
 				}
 				
+				itemp+=i;
+				*(outputData+i)=[self lengthOfParentWithWeightFunction:itemp] + ((*(inputData+i)-weightThreshold)*weightWholeValue);
 			}
+		}
+		if(maxvalue<*(outputData+i))
+		{
+			maxvalue=*(outputData+i);
+			maxindex=i;
+		}
+		
+	}
+	return maxindex;
 				
 				
 				
@@ -754,18 +2223,70 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	if(*(outputData+pointer)==0)
 	{
-		int direction=*(directionOfData+pointer);
+		int direction=*(directionOfData+pointer)&0x3f;
 		if(direction)
 		{
-			int xx,yy,zz;
-			zz=(direction-1)/9;
-			yy=((direction-1)-9*zz)/3;
-			xx=(direction-1)-9*zz-3*yy;
-			zz--;
-			yy--;
-			xx--;
-			int newPointerToParent = pointer+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-			*(outputData+pointer) = [self lengthOfParentWithWeightFunction:newPointerToParent]+((*(inputData+pointer)-weightThreshold)/weightWholeValue);
+			int itemp;
+			switch(direction)
+			{
+				case 1: itemp =  (-imageSize-imageWidth-1);
+					break;
+				case 2: itemp =  (-imageSize-imageWidth);
+					break;
+				case 3: itemp = (-imageSize-imageWidth+1);
+					break;
+				case 4: itemp = (-imageSize-1);
+					break;
+				case 5: itemp = (-imageSize);
+					break;
+				case 6: itemp = (-imageSize+1);
+					break;
+				case 7: itemp = (-imageSize+imageWidth-1);
+					break;
+				case 8: itemp = (-imageSize+imageWidth);
+					break;
+				case 9: itemp = (-imageSize+imageWidth+1);
+					break;
+				case 10: itemp = (-imageWidth-1);
+					break;
+				case 11: itemp = (-imageWidth);
+					break;
+				case 12: itemp = (-imageWidth+1);
+					break;
+				case 13: itemp = (-1);
+					break;
+				case 14: itemp = 0;
+					break;
+				case 15: itemp = 1;
+					break;
+				case 16: itemp = imageWidth-1;
+					break;
+				case 17: itemp = imageWidth;
+					break;
+				case 18: itemp = imageWidth+1;
+					break;
+				case 19: itemp = imageSize-imageWidth-1;
+					break;
+				case 20: itemp = imageSize-imageWidth;
+					break;
+				case 21: itemp = imageSize-imageWidth+1;
+					break;
+				case 22: itemp = imageSize-1;
+					break;
+				case 23: itemp = imageSize;
+					break;
+				case 24: itemp = imageSize+1;
+					break;
+				case 25: itemp = imageSize+imageWidth-1;
+					break;
+				case 26: itemp = imageSize+imageWidth;
+					break;
+				case 27: itemp = imageSize+imageWidth+1;
+					break;
+			}
+			
+			itemp+=pointer;
+			*(outputData+pointer) = [self lengthOfParentWithWeightFunction:itemp] + ((*(inputData+pointer)-weightThreshold)*weightWholeValue);
 		}
 		else
 			return 0;
@@ -776,36 +2297,87 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	colorOfData=pColor;
 	directionOfData=pPointers;
-	int i,j,k;
-	for(i=1;i<imageAmount-1;i++)
-		for(j=1;j<imageHeight-1;j++)
-			for(k=1;k<imageWidth-1;k++)
+	int totalvoxel=imageSize*(imageAmount-1);
+	int i;
+	for(i=imageSize;i<totalvoxel;i++)
+	{
+			
+		if(*(colorOfData+i)==0)
+		{
+			if(!((*(directionOfData+i))&0x80))
 			{
-				int itemp=i*imageWidth*imageHeight+j*imageWidth+k;
-				if(*(colorOfData+itemp)==0)
+				int direction=*(directionOfData+i)&0x3f;
+				if(direction)
 				{
-					if(!((*(directionOfData+itemp))&0x80))
+					int itemp;
+					switch(direction)
 					{
-						int direction=*(directionOfData+itemp)&0x3f;
-						if(direction)
-						{
-							int xx,yy,zz;
-							zz=(direction-1)/9;
-							yy=((direction-1)-9*zz)/3;
-							xx=(direction-1)-9*zz-3*yy;
-							zz--;
-							yy--;
-							xx--;
-							int newPointerToParent=itemp+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-							*(colorOfData+itemp)=[self colorOfParent:newPointerToParent];
-						}
+						case 1: itemp =  (-imageSize-imageWidth-1);
+							break;
+						case 2: itemp =  (-imageSize-imageWidth);
+							break;
+						case 3: itemp = (-imageSize-imageWidth+1);
+							break;
+						case 4: itemp = (-imageSize-1);
+							break;
+						case 5: itemp = (-imageSize);
+							break;
+						case 6: itemp = (-imageSize+1);
+							break;
+						case 7: itemp = (-imageSize+imageWidth-1);
+							break;
+						case 8: itemp = (-imageSize+imageWidth);
+							break;
+						case 9: itemp = (-imageSize+imageWidth+1);
+							break;
+						case 10: itemp = (-imageWidth-1);
+							break;
+						case 11: itemp = (-imageWidth);
+							break;
+						case 12: itemp = (-imageWidth+1);
+							break;
+						case 13: itemp = (-1);
+							break;
+						case 14: itemp = 0;
+							break;
+						case 15: itemp = 1;
+							break;
+						case 16: itemp = imageWidth-1;
+							break;
+						case 17: itemp = imageWidth;
+							break;
+						case 18: itemp = imageWidth+1;
+							break;
+						case 19: itemp = imageSize-imageWidth-1;
+							break;
+						case 20: itemp = imageSize-imageWidth;
+							break;
+						case 21: itemp = imageSize-imageWidth+1;
+							break;
+						case 22: itemp = imageSize-1;
+							break;
+						case 23: itemp = imageSize;
+							break;
+						case 24: itemp = imageSize+1;
+							break;
+						case 25: itemp = imageSize+imageWidth-1;
+							break;
+						case 26: itemp = imageSize+imageWidth;
+							break;
+						case 27: itemp = imageSize+imageWidth+1;
+							break;
 					}
-					else
-						*(colorOfData+itemp)=(*(directionOfData+itemp))&0x3f;
+					
+					itemp+=i;
+					*(colorOfData+i)=[self colorOfParent:itemp];
 				}
-				
-				
 			}
+			else
+				*(colorOfData+i)=(*(directionOfData+i))&0x3f;
+		}
+			
+			
+	}
 				
 }
 - (unsigned char) colorOfParent:(int)pointer
@@ -818,15 +2390,67 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				int direction=*(directionOfData+pointer)&0x3f;
 				if(direction)
 				{
-					int xx,yy,zz;
-					zz=(direction-1)/9;
-					yy=((direction-1)-9*zz)/3;
-					xx=(direction-1)-9*zz-3*yy;
-					zz--;
-					yy--;
-					xx--;
-					int newPointerToParent = pointer+zz*imageWidth*imageHeight+yy*imageWidth+xx;
-					*(colorOfData+pointer) = [self colorOfParent:newPointerToParent];
+					int itemp;
+					switch(direction)
+					{
+						case 1: itemp =  (-imageSize-imageWidth-1);
+							break;
+						case 2: itemp =  (-imageSize-imageWidth);
+							break;
+						case 3: itemp = (-imageSize-imageWidth+1);
+							break;
+						case 4: itemp = (-imageSize-1);
+							break;
+						case 5: itemp = (-imageSize);
+							break;
+						case 6: itemp = (-imageSize+1);
+							break;
+						case 7: itemp = (-imageSize+imageWidth-1);
+							break;
+						case 8: itemp = (-imageSize+imageWidth);
+							break;
+						case 9: itemp = (-imageSize+imageWidth+1);
+							break;
+						case 10: itemp = (-imageWidth-1);
+							break;
+						case 11: itemp = (-imageWidth);
+							break;
+						case 12: itemp = (-imageWidth+1);
+							break;
+						case 13: itemp = (-1);
+							break;
+						case 14: itemp = 0;
+							break;
+						case 15: itemp = 1;
+							break;
+						case 16: itemp = imageWidth-1;
+							break;
+						case 17: itemp = imageWidth;
+							break;
+						case 18: itemp = imageWidth+1;
+							break;
+						case 19: itemp = imageSize-imageWidth-1;
+							break;
+						case 20: itemp = imageSize-imageWidth;
+							break;
+						case 21: itemp = imageSize-imageWidth+1;
+							break;
+						case 22: itemp = imageSize-1;
+							break;
+						case 23: itemp = imageSize;
+							break;
+						case 24: itemp = imageSize+1;
+							break;
+						case 25: itemp = imageSize+imageWidth-1;
+							break;
+						case 26: itemp = imageSize+imageWidth;
+							break;
+						case 27: itemp = imageSize+imageWidth+1;
+							break;
+					}
+					
+					itemp += pointer;
+					*(colorOfData+pointer) = [self colorOfParent:itemp];
 				}
 				else
 					return 0;
@@ -840,85 +2464,195 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 }
 
-- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut Pointer:(unsigned char*) pPointers :(float)minAtEdge
+- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut:(unsigned short*)pDistanceMap Pointer:(unsigned char*) pPointers :(float)minAtEdge
 {
 	inputData=pIn;
-	outputData=pOut;
+	float* psmoothed=pOut;
+	distanceMap=pDistanceMap;
 	directionOfData=pPointers;
 	minValueInCurSeries=minAtEdge;
 	unsigned char pointerToUpper;
-	float maxUpper, currentLength;
+	float maxUpper;
+	unsigned short currentLength;
 	int itemp;
 	float tempfloat;
 	int x,y,z;
-	for(z=1;z<imageAmount-1;z++)
-		for(y=1;y<imageHeight-1;y++)
-			for(x=1;x<imageWidth-1;x++)
-				if(!((*(directionOfData + z*imageWidth * imageHeight + y*imageWidth + x))&0xc0))
+	imageSize=imageWidth*imageHeight;
+	
+	[self caculatePathLength:pDistanceMap Pointer:pPointers];
+
+	itemp=0;
+	for(z=0;z<imageAmount;z++)
+		for(y=0;y<imageHeight;y++)
+			for(x=0;x<imageWidth;x++)
+			{
+				if(!((*(directionOfData + itemp))&0x80))
 				{
-
-					pointerToUpper = ((*(directionOfData + z*imageWidth * imageHeight + y*imageWidth + x))&0x3f);
-					
-					
+					int ii,jj,kk;
+					float sum=0;
 					int xx,yy,zz;
-					zz=(pointerToUpper-1)/9;
-					yy=((pointerToUpper-1)-9*zz)/3;
-					xx=(pointerToUpper-1)-9*zz-3*yy;
-					zz--;
-					yy--;
-					xx--;
-					
+					int iitemp=itemp-imageSize-imageWidth-1;
 
-					maxUpper = [self valueAfterConvolutionAt:(x+xx):(y+yy):(z+zz)] ;
-					currentLength = *(outputData + z*imageWidth * imageHeight + y*imageWidth +x);
+					for(ii=-1;ii<2;ii++)
+					{
+						for(jj=-1;jj<2;jj++)
+						{
+							for(kk=-1;kk<2;kk++)
+							{
+								zz=z+ii;
+								yy=y+jj;
+								xx=x+kk;
+								if(xx>=0 && xx<imageWidth && yy>=0 && yy<imageHeight && zz>=0 && zz<imageAmount && (!((*(directionOfData + iitemp))&0x80)))
+									sum+=*(inputData + iitemp);
+								else
+									sum+=minValueInCurSeries;
+								iitemp++;
+							}
+							iitemp=iitemp-3+imageWidth;
+						}
+						iitemp=iitemp-imageWidth-imageWidth-imageWidth+imageSize;
+						
+					}
+							
+					*(psmoothed+itemp)=sum/27.0;
+				}
+				else
+					*(psmoothed+itemp)=minValueInCurSeries;
+				itemp++;
+			}
+	itemp=	imageSize+imageWidth+1;
+	for(z=1;z<imageAmount-1;z++)
+	{
+		for(y=1;y<imageHeight-1;y++)
+		{
+			for(x=1;x<imageWidth-1;x++)
+			{
+				if(!((*(directionOfData + itemp))&0x80))
+				{
+					
+					pointerToUpper = ((*(directionOfData + itemp))&0x3f);
+					
+					
+					int xx,yy,zz,iitemp,ipointer;
+					switch(pointerToUpper)
+					{
+						case 1: iitemp =  (-imageSize-imageWidth-1);
+							break;
+						case 2: iitemp =  (-imageSize-imageWidth);
+							break;
+						case 3: iitemp = (-imageSize-imageWidth+1);
+							break;
+						case 4: iitemp = (-imageSize-1);
+							break;
+						case 5: iitemp = (-imageSize);
+							break;
+						case 6: iitemp = (-imageSize+1);
+							break;
+						case 7: iitemp = (-imageSize+imageWidth-1);
+							break;
+						case 8: iitemp = (-imageSize+imageWidth);
+							break;
+						case 9: iitemp = (-imageSize+imageWidth+1);
+							break;
+						case 10: iitemp = (-imageWidth-1);
+							break;
+						case 11: iitemp = (-imageWidth);
+							break;
+						case 12: iitemp = (-imageWidth+1);
+							break;
+						case 13: iitemp = (-1);
+							break;
+						case 14: iitemp = 0;
+							break;
+						case 15: iitemp = 1;
+							break;
+						case 16: iitemp = imageWidth-1;
+							break;
+						case 17: iitemp = imageWidth;
+							break;
+						case 18: iitemp = imageWidth+1;
+							break;
+						case 19: iitemp = imageSize-imageWidth-1;
+							break;
+						case 20: iitemp = imageSize-imageWidth;
+							break;
+						case 21: iitemp = imageSize-imageWidth+1;
+							break;
+						case 22: iitemp = imageSize-1;
+							break;
+						case 23: iitemp = imageSize;
+							break;
+						case 24: iitemp = imageSize+1;
+							break;
+						case 25: iitemp = imageSize+imageWidth-1;
+							break;
+						case 26: iitemp = imageSize+imageWidth;
+							break;
+						case 27: iitemp = imageSize+imageWidth+1;
+							break;
+					}
+					
+					
+					iitemp+=itemp;
+					maxUpper =  *(psmoothed+iitemp);
+					currentLength = *(distanceMap + itemp);
+					iitemp=itemp-imageSize-imageWidth-1;
+					ipointer=1;
 					for(zz=-1;zz<2;zz++)
+					{
 						for(yy=-1;yy<2;yy++)
+						{
 							for(xx=-1;xx<2;xx++)
 							{
-								itemp=(z+zz)*imageWidth * imageHeight+(y+yy)*imageWidth+x+xx;
-								if((*(outputData+itemp)<currentLength)&&(*(outputData+itemp)>1))
+								if(*(distanceMap+iitemp)>1)
 								{
-									tempfloat=[self valueAfterConvolutionAt:(x+xx):(y+yy):(z+zz)];
-									if(tempfloat>maxUpper)
+									if((*(distanceMap+iitemp)<currentLength))
 									{
-										maxUpper=tempfloat;
+										tempfloat=*(psmoothed+iitemp);
+										
+										if(tempfloat>maxUpper)
+										{
+											maxUpper=tempfloat;
 
-										//optmize the local pointer
-										pointerToUpper=(zz+1)*9+(yy+1)*3+(xx+1)+1;
+											//optmize the local pointer
+											pointerToUpper=ipointer;
+										}
+									}
+									else if((*(distanceMap+iitemp)==currentLength)&&itemp!=iitemp)
+									{
+										tempfloat=*(psmoothed+iitemp);
+										if(tempfloat>maxUpper&&tempfloat>*(psmoothed+itemp))
+										{
+											maxUpper=tempfloat;
+											
+											//optmize the local pointer
+											pointerToUpper=ipointer;
+										}
 									}
 								}
+								iitemp++;
+								ipointer++;
 
 							}
+							iitemp=iitemp-3+imageWidth;
+						}
+						iitemp=iitemp-imageWidth-imageWidth-imageWidth+imageSize;
+						
+					}
 								
-					//mark current point as new seeds(use changed marker) for further skeleton		
-					*(directionOfData + z*imageWidth * imageHeight + y*imageWidth + x)=pointerToUpper;					
+					*(directionOfData + itemp)=pointerToUpper;					
 				}
-					
-	
-	
-}
-- (float)valueAfterConvolutionAt:(int)x:(int)y:(int)z
-{
-	int ii,jj,kk;
-	float sum;
-	int xx,yy,zz;
-	
-	for(ii=-1;ii<2;ii++)
-		for(jj=-1;jj<2;jj++)
-			for(kk=-1;kk<2;kk++)
-			{
-				zz=z+ii;
-				yy=y+jj;
-				xx=x+kk;
-				if(xx>=0 && xx<imageWidth && yy>=0 && yy<imageHeight && zz>=0 && zz<imageAmount && (!((*(directionOfData + zz*imageWidth * imageHeight + yy*imageWidth + xx))&0x80)))
-					sum+=*(inputData + zz*imageWidth * imageHeight + yy*imageWidth + xx);
-				else
-					sum+=minValueInCurSeries;
-				
+				itemp++;
 				
 			}
-				sum=sum/27;
-	return sum;
+			itemp=itemp+2;
+			
+					
+		}
+		itemp=itemp+imageWidth+imageWidth;
+		
+	}
+	
 }
 
 @end

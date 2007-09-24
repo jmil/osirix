@@ -607,9 +607,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								*(textureBuffer+y*[tempROI textureWidth]+x)=0x00;
 					ROI *newROI= [[ROI alloc] initWithTexture:textureBuffer textWidth:[tempROI textureWidth] textHeight:[tempROI textureHeight]  textName:[tempROI name] positionX:[tempROI textureUpLeftCornerX] positionY:[tempROI textureUpLeftCornerY] spacingX:[curPix pixelSpacingY] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
 					
-//					if([tempROI respondsToSelector:@selector(color)])
-//						color= [tempROI color];
-//					else
+					if([tempROI respondsToSelector:@selector(color)])
+						color= [tempROI color];
+					else
 						color= [tempROI rgbcolor];
 					[newROI setColor:color];
 
@@ -637,9 +637,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					else
 						*(textureBuffer+y*[tempROI textureWidth]+x)=0x00;
 			ROI *newROI= [[ROI alloc] initWithTexture:textureBuffer textWidth:[tempROI textureWidth] textHeight:[tempROI textureHeight]  textName:[tempROI name] positionX:[tempROI textureUpLeftCornerX] positionY:[tempROI textureUpLeftCornerY] spacingX:[curPix pixelSpacingY] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
-//			if([tempROI respondsToSelector:@selector(color)])
-//				color= [tempROI color];
-//			else
+			if([tempROI respondsToSelector:@selector(color)])
+				color= [tempROI color];
+			else
 				color= [tempROI rgbcolor];
 			[newROI setColor:color];
 			

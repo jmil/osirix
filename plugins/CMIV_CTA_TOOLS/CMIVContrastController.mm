@@ -92,7 +92,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int err;
 	float               *inputData=0L, *outputData=0L;
 	unsigned char       *colorData=0L, *directionData=0L;
-	long size= sizeof(float)*imageWidth * imageHeight * imageAmount;
 	unsigned int rowIndex;
 	int outputcomponent=0;
 	for(rowIndex=0;rowIndex<[outROIArray count];rowIndex++)
@@ -135,28 +134,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			outputData=nil;
 
 		}
+	
+		
 		if([exportCenterlineChechBox state]== NSOnState)
 		{
-			if(!outputData)
-			{
-				
-				outputData = (float*) malloc( size);
-				if( !outputData)
-				{
-					NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
-					[originalViewController endWaitWindow: waitWindow];
-					return;	
-				}
-			}
+			
 			err=[self exportToCenterLines:inputData :outputData:directionData:colorData];
+			outputData=nil;
 			free(directionData);
 		}
-
-		
-		
-		//clean the  color matrix
-		
-		free( colorData );
+		else
+			free( colorData );//clean the  color matrix
 	}
 	
 	[originalViewController endWaitWindow: waitWindow];
@@ -181,7 +169,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	memset(seedVolume, 0, size);
 	// Display a waiting window
 	id waitWindow = [originalViewController startWaitWindow:@"processing"];	
-	
+	NSLog( @"start step 3");
 	[self runSegmentation:&inputData:&outputData:&colorData:&directionData];
 	
 	[originalViewController endWaitWindow: waitWindow];	
@@ -246,6 +234,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	
 	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
+	imageSize=imageWidth * imageHeight;
 	
 	// get memory first
 	if(ifUseSmoothFilter)
@@ -315,8 +304,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		return ;	
 	}		
 	
-	//initilize the out and color buffer
-	memset(colorData,0,size);
+
 	
 	curPix = [pixList objectAtIndex: 0];
 	
@@ -368,7 +356,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	if([neighborhoodModeMatrix selectedRow])
 		[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directionData];
 	else
-		[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData Direction: directionData];
+		[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData :colorData Direction: directionData];
+	//initilize the out and color buffer
+	memset(colorData,0,size);
 	[segmentCoreFunc caculateColorMapFromPointerMap:colorData:directionData]; 
 	[segmentCoreFunc release];
 
@@ -431,6 +421,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
 //	[window setLevel: NSModalPanelWindowLevel];
+	[neighborhoodModeMatrix setEnabled: NO];
 	[inROIList setDataSource:self];	
 	[outROIList setDataSource: self];
 	return err;
@@ -597,12 +588,6 @@ if( originalViewController == 0L) return 0L;
 								if(!isAStopSeed)
 									*(outputData + j*imageWidth*imageHeight + y*imageWidth + x) =  *(inputData + j*imageWidth*imageHeight + y*imageWidth + x);
 								*(colorData + j*imageWidth*imageHeight + y*imageWidth + x) = colorindex | 0x80;
-								int ii,jj,kk;
-								for(ii=0;ii<3;ii++)
-									for(jj=0;jj<3;jj++)
-										for(kk=0;kk<3;kk++)
-											if(j-1+ii>=0 && j-1+ii < imageAmount && y-1+jj >= 0 && y-1+jj < imageHeight && x-1+kk >= 0 && x-1+kk <= imageWidth)
-											*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk) = (*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk)) | 0x40;
 								
 								seedNumber++;
 								
@@ -649,14 +634,6 @@ if( originalViewController == 0L) return 0L;
 									if(!isAStopSeed)
 										*(outputData + j*imageWidth*imageHeight + y*imageWidth + x) =  *(inputData + j*imageWidth*imageHeight + y*imageWidth + x);
 									*(colorData + j*imageWidth*imageHeight + y*imageWidth + x) = colorindex | 0x80;
-									unsigned int ii,jj,kk;
-									for(ii=0;ii<3;ii++)
-										for(jj=0;jj<3;jj++)
-											for(kk=0;kk<3;kk++)
-												if(j-1+ii>=0 && j-1+ii < imageAmount && y-1+jj >= 0 && y-1+jj < imageHeight && x-1+kk >= 0 && x-1+kk <= imageWidth)
-
-												*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk) = (*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk)) | 0x40;
-
 									seedNumber++;
 									
 								}
@@ -680,13 +657,6 @@ if( originalViewController == 0L) return 0L;
 										if(!isAStopSeed)
 											*(outputData + j*imageWidth*imageHeight + y*imageWidth + x) =  *(inputData + j*imageWidth*imageHeight + y*imageWidth + x);
 										*(colorData + j*imageWidth*imageHeight + y*imageWidth + x) = colorindex | 0x80;
-										unsigned int ii,jj,kk;
-										for(ii=0;ii<3;ii++)
-											for(jj=0;jj<3;jj++)
-												for(kk=0;kk<3;kk++)
-													if(j-1+ii>=0 && j-1+ii < imageAmount && y-1+jj >= 0 && y-1+jj < imageHeight && x-1+kk >= 0 && x-1+kk <= imageWidth)
-
-													*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk) = (*(colorData + (j-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk)) | 0x40;
 										seedNumber++;
 									}
 								}
@@ -863,9 +833,9 @@ if( originalViewController == 0L) return 0L;
 			}
 			roiName = [curROI name];
 			
-//			if([curROI respondsToSelector:@selector(color)])
-//				color= [curROI color];
-//			else
+			if([curROI respondsToSelector:@selector(color)])
+				color= [curROI color];
+			else
 				color= [curROI rgbcolor];
 			unsigned int i;	
 			for(i=0;i<[roiList count];i++)
@@ -1004,7 +974,7 @@ if( originalViewController == 0L) return 0L;
 {
 	
 	long size= sizeof(float)*imageWidth * imageHeight * imageAmount;
-
+	
 	NSArray				*pixList = [originalViewController pixList];
 	DCMPix				*curPix = [pixList objectAtIndex: 0];
 	
@@ -1046,6 +1016,23 @@ if( originalViewController == 0L) return 0L;
 	NSMutableArray      *roiList= [new2DViewer roiList];
 	int err=[self createCenterlines:tempinput :outputData:directData:colorData:roiList];
 	memcpy(outputData,tempinput,size);
+	
+	NSString* tempstr=[NSString stringWithString:@"Centerlines"];
+	NSMutableArray	*temparray=[[parent dataOfWizard] objectForKey: @"VCList"];
+	if(!temparray)
+	{
+		temparray=[NSMutableArray arrayWithCapacity:0];
+		[[parent dataOfWizard] setObject:temparray forKey:@"VCList"];
+	}
+	[temparray addObject:new2DViewer];
+	temparray=[[parent dataOfWizard] objectForKey: @"VCTitleList"];
+	if(!temparray)
+	{
+		temparray=[NSMutableArray arrayWithCapacity:0];
+		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
+	}
+	[temparray addObject:tempstr];
+	
 	return err;
 	
 	
@@ -1298,6 +1285,8 @@ if( originalViewController == 0L) return 0L;
 }
 - (int) createCenterlines:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData:(NSMutableArray*)roilist
 {
+	unsigned char* preservecolormap=(unsigned char*) malloc( sizeof(unsigned char) * imageWidth * imageHeight * imageAmount);
+	memcpy(preservecolormap,colorData,sizeof(unsigned char) * imageWidth * imageHeight * imageAmount);
 	DCMPix* curPix=[[originalViewController pixList] objectAtIndex:0];	
 	float  pathWeightLength,lengthThreshold,weightThreshold;
 	lengthThreshold=10.0;
@@ -1320,15 +1309,36 @@ if( originalViewController == 0L) return 0L;
 				
 		return 1;
 	}
+	
+	
+
+	
+	
 	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
-	NSMutableArray *endPointsList=[NSMutableArray arrayWithCapacity:0];
 	NSMutableArray *centerlinesList=[[NSMutableArray alloc] initWithCapacity: 0];
 	NSMutableArray *centerlinesNameList=[[NSMutableArray alloc] initWithCapacity: 0];
 	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
-	[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData Direction: directData];
-	[self prepareForCaculateLength:inputData:outputData:directData];
-	[segmentCoreFunc caculatePathLength:inputData:outputData Pointer: directData];
-	[segmentCoreFunc localOptmizeConnectednessTree:inputData:outputData Pointer: directData :minValueInCurSeries];
+	
+	if([neighborhoodModeMatrix selectedRow])
+		[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directData];
+	else 
+		[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData :colorData Direction: directData];
+
+	free(colorData);
+	colorData=0;
+	unsigned short* pdismap=(unsigned short*) malloc( sizeof(unsigned short) * imageWidth * imageHeight * imageAmount);
+	
+	if(!pdismap)
+	{	
+		NSRunAlertPanel(NSLocalizedString(@"no root seeds are found, try seed planting again", nil), NSLocalizedString(@"no root seeds, can not create centerlines without root seeds", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		
+		return 1;
+	}	
+	[self prepareForCaculateLength:pdismap:directData];
+	[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directData :minValueInCurSeries];
+	
+	free(pdismap);
+	
 	int* indexForEachSeeds=(int*)malloc(sizeof(int)*[outROIArray count]);
 	unsigned int i;
 	for(i=0;i<[outROIArray count];i++)
@@ -1336,29 +1346,24 @@ if( originalViewController == 0L) return 0L;
 	
 	do
 	{
-		[self prepareForCaculateLength:inputData:outputData:directData];
-		[segmentCoreFunc caculatePathLengthWithWeightFunction:inputData:outputData Pointer: directData:weightThreshold:upperThreshold];
-		pathWeightLength=[self findDistalEnds:endPointsList:outputData];
-		if(pathWeightLength>0)
+		[self prepareForCaculateWeightedLength:outputData:directData];
+		int endindex=[segmentCoreFunc caculatePathLengthWithWeightFunction:inputData:outputData Pointer: directData:weightThreshold:upperThreshold];
+		pathWeightLength = *(outputData+endindex);
+		if(endindex>0)
 		{
-			[self prepareForCaculateLength:inputData:outputData:directData];
-			[segmentCoreFunc caculatePathLength:inputData:outputData Pointer: directData];
-			CMIV3DPoint* aEndPoint=[endPointsList lastObject];
-			int x,y,z;
-			x = (int)[aEndPoint x] ;
-			y = (int)[aEndPoint y] ;
-			z = (int)[aEndPoint z] ;
-			if(*(outputData + z*imageWidth * imageHeight + y*imageWidth +x)>lengthThreshold)
+			[centerlinesList addObject:[NSMutableArray arrayWithCapacity:0]];
+			unsigned char colorindex;
+			int len=[self searchBackToCreatCenterlines: centerlinesList: endindex:directData:&colorindex];
+			NSString *pathName = [[outROIArray objectAtIndex:colorindex-1] name];
+			*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
+			[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];
+			if(len < lengthThreshold)
 			{
-				
-				[centerlinesList addObject:[NSMutableArray arrayWithCapacity:0]];
-				int colorindex=[self searchBackToCreatCenterlines: centerlinesList:endPointsList:directData];
-				NSString *pathName = [[outROIArray objectAtIndex:colorindex-1] name];
-				*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
-				[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];
-			}
-			else
+				[[centerlinesList lastObject] removeAllObjects];
+				[centerlinesList removeLastObject];
+				[centerlinesNameList removeLastObject];
 				pathWeightLength=-1;
+			}
 		}
 	}while( pathWeightLength>0);
 	
@@ -1367,12 +1372,17 @@ if( originalViewController == 0L) return 0L;
 
 	[segmentCoreFunc release];
 	[self createROIfrom3DPaths:centerlinesList:centerlinesNameList:roilist];
-	[self enhanceCenterline:inputData:colorData:centerlinesList];
-	[endPointsList removeAllObjects];
+	
+	//[self enhanceCenterline:inputData:preservecolormap:centerlinesList];
+	free(preservecolormap);
+
 	[centerlinesList removeAllObjects];
 	[centerlinesList release];
 	[centerlinesNameList removeAllObjects];
 	[centerlinesNameList release];
+	
+		
+	
 	return 0;
 		
 }
@@ -1422,7 +1432,7 @@ if( originalViewController == 0L) return 0L;
 	int size;
 	size=sizeof(unsigned char)*choosenColorNumber;
 	choosenColorList=(unsigned char*)malloc(size);
-	size=imageAmount*imageWidth*imageHeight;
+	size=imageAmount*imageSize;
 	int i,j;
 	for(i=0;i<choosenColorNumber;i++)
 		*(choosenColorList+i) = (unsigned char) [[outputColorList objectAtIndex:i] intValue];
@@ -1433,26 +1443,22 @@ if( originalViewController == 0L) return 0L;
 			if(*(choosenColorList+j)==((*(colorData+i))&0x3f))
 				isAChoosenColor=1;
 		if(!isAChoosenColor)
-		{
 			*(directData+i)=(*(directData+i)) | 0x80;
-			*(outputData+i)=minValueInCurSeries;
-		}
-		else
-		{
-			*(directData+i)=0x40;
-			*(outputData+i)=minValueInCurSeries;
-		}
+		
+		*(outputData+i)=minValueInCurSeries;
 		
 	}
 	
 	if([self plantRootSeeds:inputData :outputData :directData:colorData]<1)
 		return NO;
 	
+		
 	free(choosenColorList);
 	return YES;
 	
 	
 }
+
 - (int)plantRootSeeds:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData
 {
 	int seedNumber=0;
@@ -1510,56 +1516,42 @@ if( originalViewController == 0L) return 0L;
 		}
 	return seedNumber;
 }
-- (void) prepareForCaculateLength:(float *)inputData :(float *)outputData :(unsigned char *)directData
+- (void) prepareForCaculateLength:(unsigned short *)distanceMap :(unsigned char *)directData
 {
 	int size,i;
 	size=imageAmount*imageWidth*imageHeight;
 	for(i=0;i<size;i++)
 	{
 		if((*(directData+i)) & 0xC0)
-			*(outputData+i)=1;
+			*(distanceMap+i)=1;
 		else
-			*(outputData+i)=0;
+			*(distanceMap+i)=0;
 	}
 }
-- (float) findDistalEnds:(NSMutableArray *)pointsList:(float *)outputData 
+- (void) prepareForCaculateWeightedLength:(float *)distanceMap :(unsigned char *)directData
 {
-	float maxDistance=0;
-	int   maxIndex=0;
 	int size,i;
 	size=imageAmount*imageWidth*imageHeight;
 	for(i=0;i<size;i++)
-		if(*(outputData+i)>maxDistance)
-		{
-			maxDistance=*(outputData+i);
-			maxIndex=i;
-		}
-			
-			int x,y,z;
-	z=maxIndex/(imageWidth*imageHeight);
-	y=(maxIndex-imageWidth*imageHeight*z)/imageWidth;
-	x=maxIndex-imageWidth*imageHeight*z-y*imageWidth;
-	
-	CMIV3DPoint* new3DPoint=[[CMIV3DPoint alloc] init] ;
-	[new3DPoint setX: x];
-	[new3DPoint setY: y];
-	[new3DPoint setZ: z];
-	[pointsList addObject:new3DPoint];
-	[new3DPoint release];
-	return maxDistance;
-	
-	
+	{
+		if((*(directData+i)) & 0xC0)
+			*(distanceMap+i)=1;
+		else
+			*(distanceMap+i)=0;
+	}
 	
 }
-- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(NSMutableArray *)pointsList:(unsigned char *)directData
+- (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(int)endpointindex:(unsigned char*)directionData:(unsigned char*)color
 {
 	
+	int branchlen=0;
 	int x,y,z;
 	unsigned char pointerToUpper;
-	CMIV3DPoint* aEndPoint=[pointsList lastObject];
-	x = (int)[aEndPoint x] ;
-	y = (int)[aEndPoint y] ;
-	z = (int)[aEndPoint z] ;
+	z = endpointindex/imageSize ;
+	y = (endpointindex-imageSize*z)/imageWidth ;
+	x = endpointindex-imageSize*z-imageWidth*y;
+	
+	
 	CMIV3DPoint* new3DPoint=[[CMIV3DPoint alloc] init] ;
 	[new3DPoint setX: x];
 	[new3DPoint setY: y];
@@ -1567,31 +1559,96 @@ if( originalViewController == 0L) return 0L;
 	[[pathsList lastObject] addObject: new3DPoint];
 	
 	do{
-		pointerToUpper = ((*(directData + z*imageWidth * imageHeight + y*imageWidth + x))&0x3f);
-		*(directData + z*imageWidth * imageHeight + y*imageWidth + x)=pointerToUpper|0x40;
+		if(!(*(directionData + endpointindex)&0x40))
+			branchlen++;
+		pointerToUpper = ((*(directionData + endpointindex))&0x3f);
+		*(directionData + endpointindex)=pointerToUpper|0x40;
+		int itemp;
+		switch(pointerToUpper)
+		{
+			case 1: itemp =  (-imageSize-imageWidth-1);
+				x--;y--;z--;
+				break;
+			case 2: itemp =  (-imageSize-imageWidth);
+				y--;z--;
+				break;
+			case 3: itemp = (-imageSize-imageWidth+1);
+				x++;y--;z--;
+				break;
+			case 4: itemp = (-imageSize-1);
+				x--;z--;
+				break;
+			case 5: itemp = (-imageSize);
+				z--;
+				break;
+			case 6: itemp = (-imageSize+1);
+				x++;z--;
+				break;
+			case 7: itemp = (-imageSize+imageWidth-1);
+				x--;y++;z--;
+				break;
+			case 8: itemp = (-imageSize+imageWidth);
+				y++;z--;
+				break;
+			case 9: itemp = (-imageSize+imageWidth+1);
+				x++;y++;z--;
+				break;
+			case 10: itemp = (-imageWidth-1);
+				x--;y--;
+				break;
+			case 11: itemp = (-imageWidth);
+				y--;
+				break;
+			case 12: itemp = (-imageWidth+1);
+				x++;y--;
+				break;
+			case 13: itemp = (-1);
+				x--;
+				break;
+			case 14: itemp = 0;
+				break;
+			case 15: itemp = 1;
+				x++;
+				break;
+			case 16: itemp = imageWidth-1;
+				x--;y++;
+				break;
+			case 17: itemp = imageWidth;
+				y++;
+				break;
+			case 18: itemp = imageWidth+1;
+				x++;y++;
+				break;
+			case 19: itemp = imageSize-imageWidth-1;
+				x--;y--;z++;
+				break;
+			case 20: itemp = imageSize-imageWidth;
+				y--;z++;
+				break;
+			case 21: itemp = imageSize-imageWidth+1;
+				x++;y--;z++;
+				break;
+			case 22: itemp = imageSize-1;
+				x--;z++;
+				break;
+			case 23: itemp = imageSize;
+				z++;
+				break;
+			case 24: itemp = imageSize+1;
+				x++;z++;
+				break;
+			case 25: itemp = imageSize+imageWidth-1;
+				x--;y++;z++;
+				break;
+			case 26: itemp = imageSize+imageWidth;
+				y++;z++;
+				break;
+			case 27: itemp = imageSize+imageWidth+1;
+				x++;y++;z++;
+				break;
+		}
 		
-		int xx,yy,zz;
-		zz=(pointerToUpper-1)/9;
-		yy=((pointerToUpper-1)-9*zz)/3;
-		xx=(pointerToUpper-1)-9*zz-3*yy;
-		x=x+xx-1;
-		y=y+yy-1;
-		z=z+zz-1;
-		
-		if(x==0)
-			x=1;
-		else if(x==imageWidth)
-			x=imageWidth-1;
-		
-		if(y==0)
-			y=1;
-		else if(y==imageHeight)
-			y=imageHeight-1;
-		
-		if(z==0)
-			z=1;
-		else if(z==imageAmount)
-			z=imageAmount-1;
+		endpointindex+=itemp;
 		new3DPoint=[[CMIV3DPoint alloc] init] ;
 		[new3DPoint setX: x];
 		[new3DPoint setY: y];
@@ -1600,10 +1657,11 @@ if( originalViewController == 0L) return 0L;
 		
 		
 		
-	}while(!((*(directData + z*imageWidth * imageHeight + y*imageWidth + x))&0x80));
+	}while(!((*(directionData + endpointindex))&0x80));
 	
-	return((int)((*(directData + z*imageWidth * imageHeight + y*imageWidth + x))&0x3f));
+	*color=(*(directionData + endpointindex))&0x3f;
 	
+	return branchlen;
 	
 }
 - (void)createROIfrom3DPaths:(NSArray*)pathsList:(NSArray*)namesList:(NSMutableArray*)roilist

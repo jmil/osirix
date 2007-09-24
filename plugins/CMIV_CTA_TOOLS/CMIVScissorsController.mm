@@ -66,6 +66,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	{
 		unsigned int i;
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey: @"ROITEXTNAMEONLY"];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"ROITEXTIFSELECTED"];
 		for ( i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
 		{
 			ROI* temproi=[[oViewROIList objectAtIndex: 0] objectAtIndex: i] ;
@@ -112,6 +113,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[cPRView setCurrentTool: tMesure];
 		[crossAxiasView setCurrentTool:tMesure];
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey: @"ROITEXTNAMEONLY"];
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ROITEXTIFSELECTED"];
 	}
 	else if(tag==5)
 	{
@@ -459,6 +461,11 @@ static		float						deg2rad = 3.14159265358979/180.0;
 {
 	
 
+	NSSliderCell* testcell=[sender cell];
+	 int event= [testcell mouseDownFlags];
+	 
+	 if(event!=256)
+		 event++;
 
 	float locate,step;
 	locate=[sender floatValue];
@@ -470,7 +477,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	if(step!=0)
 	{
 		[self updateOView];
-		if(currentTool!=5&&!isInCPROnlyMode)
+		if(currentTool!=5&&!isInCPROnlyMode) 
 			[self updateAxView];
 	}
 
@@ -513,8 +520,12 @@ static		float						deg2rad = 3.14159265358979/180.0;
 
 	float angle;
 	angle=[sender floatValue];
+	if([sender isMouseLeftKeyDown])
+		interpolationMode=0;
+	else
+		interpolationMode=1;
 	
-	if(angle!=0)
+	if(angle!=0||interpolationMode)
 	{
 		cViewTransform->Identity();
 		cViewTransform->Translate(cPRViewCenter.x,cPRViewCenter.y,0 );
@@ -538,9 +549,15 @@ static		float						deg2rad = 3.14159265358979/180.0;
 
 		float angle;
 		angle=[sender floatValue] - lastOViewXAngle;
+		if([sender isMouseLeftKeyDown])
+			interpolationMode=0;
+		else
+			interpolationMode=1;
 
-		if(angle!=0)
+		if(angle!=0||interpolationMode)
 		{
+
+				
 			lastOViewXAngle = [sender floatValue];
 			oViewUserTransform->RotateX(angle);	
 
@@ -568,7 +585,12 @@ static		float						deg2rad = 3.14159265358979/180.0;
 
 		float angle;
 		angle=[sender floatValue] - lastOViewYAngle;
-		if(angle!=0)
+		if([sender isMouseLeftKeyDown])
+			interpolationMode=0;
+		else
+			interpolationMode=1;
+		
+		if(angle!=0||interpolationMode)
 		{
 			lastOViewYAngle = [sender floatValue];
 			oViewUserTransform->RotateY(angle);
@@ -593,10 +615,10 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[self showScissorsPanel: vc:owner];
 	cpr3DPaths=[[parent dataOfWizard] objectForKey:@"CenterlinesList"];
 	centerlinesNameArrays=[[parent dataOfWizard] objectForKey:@"CenterlinesNameList"];
-	[resampleRatioSlider setIntValue:5];
-	[resampleRatioText setIntValue:5];
+	[resampleRatioSlider setFloatValue:2.5];
+	[resampleRatioText setFloatValue:2.5];
 	[self convertCenterlinesToVTKCoordinate:cpr3DPaths];
-	[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex: 0]:[resampleRatioSlider intValue]];
+	[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex: 0]:[resampleRatioSlider floatValue]];
 	[centerlinesList setDataSource:self];
 	[cImageSlider setEnabled: NO];
 	[cYRotateSlider setEnabled: NO];
@@ -615,7 +637,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		
 		return 0;
 	}	
-	
+	interpolationMode=1;
 	NSArray				*pixList = [originalViewController pixList];
 	imageWidth = [curPix pwidth];
 	imageHeight = [curPix pheight];
@@ -640,7 +662,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	if(err)
 		return err;
 	currentTool=0;
-	currentPathMode=ROI_drawing;
+	currentPathMode=ROI_sleep;
 	curvedMPR3DPath = [[NSMutableArray alloc] initWithCapacity: 0];
 	curvedMPRProjectedPaths=[[NSMutableArray alloc] initWithCapacity: 0];
 
@@ -690,6 +712,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[seedToolTipsTabView removeTabViewItem:[seedToolTipsTabView tabViewItemAtIndex:2]];
 		[seedToolTipsTabView removeTabViewItem:[seedToolTipsTabView tabViewItemAtIndex:0]];
 		[convertToSeedButton setHidden:YES];
+		[exportOrthogonalImagesButton setHidden:YES];
 		totalSteps=3;
 		[self goSubStep:0:YES];
 		[previousButton setEnabled: NO];
@@ -704,6 +727,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[nextButton setHidden:YES];
 		[previousButton setHidden:YES];
 		[saveButton setHidden:YES];
+		[exportOrthogonalImagesButton setHidden:YES];
 		[cancelButton setTitle: @"exit"];
 		
 	}
@@ -846,7 +870,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	oViewSlice->SetOptimization( true);
 	oViewSlice->SetResliceTransform( oViewUserTransform);
 	oViewSlice->SetResliceAxesOrigin( 0, 0, 0);
-	oViewSlice->SetInterpolationModeToCubic();
+	oViewSlice->SetInterpolationModeToCubic();//    >SetInterpolationModeToNearestNeighbor();
 	oViewSlice->SetOutputDimensionality( 2);
 	oViewSlice->SetBackgroundLevel( -1024);
 	if(!isInCPROnlyMode)
@@ -858,7 +882,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		oViewROISlice->SetOptimization( true);
 		oViewROISlice->SetResliceTransform( oViewUserTransform);
 		oViewROISlice->SetResliceAxesOrigin( 0, 0, 0);
-		oViewROISlice->SetInterpolationModeToCubic();
+		oViewROISlice->SetInterpolationModeToNearestNeighbor();
 		oViewROISlice->SetOutputDimensionality( 2);
 		oViewROISlice->SetBackgroundLevel( -1024);	
 	}
@@ -869,6 +893,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	tempIm = oViewSlice->GetOutput();
 	tempIm->Update();
 	tempIm->GetWholeExtent( imExtent);
+	tempIm->GetSpacing( oViewSpace);
+	tempIm->GetOrigin( oViewOrigin);
 	tempIm->GetSpacing( space);
 	tempIm->GetOrigin( origin);	
 	
@@ -930,6 +956,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	tempIm->GetWholeExtent( imExtent);
 	tempIm->GetSpacing( space);
 	tempIm->GetOrigin( origin);	
+	tempIm->GetSpacing( cViewSpace);
+	tempIm->GetOrigin( cViewOrigin);
 	
 	im = (float*) tempIm->GetScalarPointer();
 	mypix = [[DCMPix alloc] initwithdata:(float*) im :32 :imExtent[ 1]-imExtent[ 0]+1 :imExtent[ 3]-imExtent[ 2]+1 :space[0] :space[1] :origin[0] :origin[1] :origin[2]];
@@ -1101,6 +1129,10 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	vtkImageData	*tempIm,*tempROIIm;
 	int				imExtent[ 6];
 
+	if(interpolationMode)
+		oViewSlice->SetInterpolationModeToCubic();
+	else
+		oViewSlice->SetInterpolationModeToNearestNeighbor();
 	tempIm = oViewSlice->GetOutput();
 	tempIm->Update();
 	tempIm->GetWholeExtent( imExtent);
@@ -1267,6 +1299,10 @@ else
 	}
 	vtkImageData	*tempIm;
 	int				imExtent[ 6];
+	if(interpolationMode)
+		axViewSlice->SetInterpolationModeToCubic();
+	else
+		axViewSlice->SetInterpolationModeToNearestNeighbor();
 	tempIm = axViewSlice->GetOutput();
 	tempIm->Update();
 	tempIm->GetWholeExtent( imExtent);
@@ -1635,6 +1671,17 @@ else
 			}
 			else if(roitype==tArrow)
 			{
+				
+				
+				if([[cViewROIList objectAtIndex:0] count]>1)
+				{
+					isRemoveROIBySelf=1;
+					[roi retain];
+					[[cViewROIList objectAtIndex:0] removeAllObjects];
+					[[cViewROIList objectAtIndex:0] addObject:roi];
+					[roi release];
+					isRemoveROIBySelf=0;
+				}
 				NSPoint start=[[[roi points] objectAtIndex: 1] point];
 				if(start.x!= cViewArrowStartPoint.x||start.y!=cViewArrowStartPoint.y)
 					[[[roi points] objectAtIndex: 1] setPoint:cViewArrowStartPoint];
@@ -1922,6 +1969,16 @@ else
 					{
 						[totalROIList removeObjectAtIndex: marker-1 ];
 						unsigned int i;
+						for(i = 0;i<[[oViewROIList objectAtIndex: 0] count];i++)
+							{ 
+							commentstr=[[[oViewROIList objectAtIndex: 0] objectAtIndex: i] comments];
+							short unsigned int tempmarker=(short unsigned int)[commentstr intValue];
+							if(tempmarker>marker)
+								[[[oViewROIList objectAtIndex: 0] objectAtIndex: i] setComments: [NSString stringWithFormat:@"%d",tempmarker-1]];
+							if(tempmarker==marker)
+								[[[oViewROIList objectAtIndex: 0] objectAtIndex: i] setComments: [NSString stringWithFormat:@"%d",0]];
+							}
+							
 						for(i = marker-1;i<[totalROIList count];i++)
 							[[totalROIList objectAtIndex: i] setComments: [NSString stringWithFormat:@"%d",i+1]];
 						long j,size;
@@ -2055,8 +2112,8 @@ else
 				{
 					rect.origin.x=x;
 					rect.origin.y=y;
-					rect.size.width=1;
-					rect.size.height=1;
+					rect.size.width=0;
+					rect.size.height=0;
 				}
 				else
 				{
@@ -2107,9 +2164,9 @@ else
 			ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:(int)rect.size.width textHeight:(int)rect.size.height textName:[roi name] positionX:(int)rect.origin.x positionY:(int)rect.origin.y spacingX:spaceX spacingY:spaceY imageOrigin:NSMakePoint( originX,  originY)];
 			[newROI setComments:[NSString stringWithFormat:@"%d",i+1]];
 			
-//			if(IsVersion2_6)
-//				color= [roi color];
-//			else
+			if(IsVersion2_6)
+				color= [roi color];
+			else
 				color= [roi rgbcolor];		
 			
 			[newROI setColor:color];
@@ -2894,6 +2951,7 @@ else
 	int x,y,z;
 	vtkIdType ptId;
 	int pixelindex=0;
+	float fposition[3];
 	
 	for(ptId=0;ptId<pointNumber;ptId++)
 	{
@@ -2907,13 +2965,24 @@ else
 			int ii;
 			for(ii=0;ii<3;ii++)
 				position[ii]=position1[ii]+(position2[ii]-position1[ii])*(0.5+(float)(i-(int)(width/2)));
-			x = lround((position[0]-vtkOriginalX)/xSpacing);
-			y = lround((position[1]-vtkOriginalY)/ySpacing);
-			z = lround((position[2]-vtkOriginalZ)/zSpacing);
-			if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
-				*(im+pixelindex)=*(volumeData + imageSize*z + imageWidth*y+x);
+			if(interpolationMode)
+			{
+				fposition[0]=(position[0]-vtkOriginalX)/xSpacing;
+				fposition[1]=(position[1]-vtkOriginalY)/ySpacing;
+				fposition[2]=(position[2]-vtkOriginalZ)/zSpacing;
+				*(im+pixelindex)=[self TriCubic:fposition: volumeData: imageWidth: imageHeight: imageAmount];
+			}
 			else
-				*(im+pixelindex)=minValueInSeries;
+			{
+				x = lround((position[0]-vtkOriginalX)/xSpacing);
+				y = lround((position[1]-vtkOriginalY)/ySpacing);
+				z = lround((position[2]-vtkOriginalZ)/zSpacing);
+				if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
+					*(im+pixelindex)=*(volumeData + imageSize*z + imageWidth*y+x);
+				else
+					*(im+pixelindex)=minValueInSeries;
+			}
+			 
 			pixelindex++;
 		}
 		
@@ -2935,12 +3004,12 @@ else
 }
 - (float*) caculateCurvedMPRImage :(int*)pwidth :(int*)pheight
 {
-
+	
 	float* im=0L;
 	int i;
 	int pointNumber;
 	double position[3];
-//cacluate parameters for CPR image (width, height, translateLeftX-Z,translateRightX-Z)
+	//cacluate parameters for CPR image (width, height, translateLeftX-Z,translateRightX-Z)
 	int width, height;
 	float translateLeftX,translateLeftY,translateLeftZ,translateRightX,translateRightY,translateRightZ;
 	
@@ -2950,7 +3019,7 @@ else
 	
 	float curXSpacing,curYSpacing;
 	float curOriginX,curOriginY;
-
+	
 	curXSpacing=[[curvedMPR2DPath pix] pixelSpacingX];
 	curYSpacing=[[curvedMPR2DPath pix] pixelSpacingY];
 	curOriginX = [[curvedMPR2DPath pix] originX];
@@ -2965,15 +3034,15 @@ else
 	}
 	path2DLength*=10;//vtk use length in mm(not cm).
 		
-	//width and height
-	*pwidth=width=(int)(([oImageSlider maxValue]-[oImageSlider minValue])/cViewSpace[0]);
-	*pheight=height=(int)(path2DLength/cViewSpace[1]);
-	
-	// update axview's slider
-	[axImageSlider setMinValue: 0];
-	[axImageSlider setMaxValue: path2DLength];
-	if([axImageSlider floatValue]>path2DLength)
-		[axImageSlider setFloatValue: path2DLength-cViewSpace[1]];
+		//width and height
+		*pwidth=width=(int)(([oImageSlider maxValue]-[oImageSlider minValue])/cViewSpace[0]);
+		*pheight=height=(int)(path2DLength/cViewSpace[1]);
+		
+		// update axview's slider
+		[axImageSlider setMinValue: 0];
+		[axImageSlider setMaxValue: path2DLength];
+		if([axImageSlider floatValue]>path2DLength)
+			[axImageSlider setFloatValue: path2DLength-cViewSpace[1]];
 	else if([axImageSlider floatValue]<0)
 		[axImageSlider setFloatValue: 0];
 				
@@ -3002,7 +3071,7 @@ else
 	translateRightZ=position[2]-startpoint[2];	
 	
 	
-//create a curved surface from projected centerline
+	//create a curved surface from projected centerline
 	im=(float*)malloc(sizeof(float)*width*height);
 	if(!im)
 		return 0L;
@@ -3016,15 +3085,15 @@ else
 		position[2] = 0;
 		oViewUserTransform->TransformPoint(position,position);
 		pathKeyPoints->InsertPoint(i,position);
-
+		
 	}
 	
-
+	
 	centerLinePath = vtkCellArray::New();
 	centerLinePath->InsertNextCell(pointNumber);
 	for(i=0;i<pointNumber;i++)
 		centerLinePath->InsertCellPoint(i);
-
+	
 	
 	centerLinePolyData = vtkPolyData::New() ;
 	centerLinePolyData->SetPoints(pathKeyPoints);
@@ -3062,19 +3131,29 @@ else
 	vtkPolyData *probeResult= curvedSurface->GetOutput();
 	probeResult->Update();
 	int x,y,z;
+	float fposition[3];
 	vtkIdType ptId, numPts;
 	numPts = probeResult->GetNumberOfPoints();
 	for(ptId=0;ptId<numPts;ptId++)
 	{
 		
 		probeResult->GetPoint(ptId,position);
-		x = lround((position[0]-vtkOriginalX)/xSpacing);
-	    y = lround((position[1]-vtkOriginalY)/ySpacing);
-		z = lround((position[2]-vtkOriginalZ)/zSpacing);
-		if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
-			*(im+ptId)=*(volumeData + imageSize*z + imageWidth*y+x);
+		
+		fposition[0]=(position[0]-vtkOriginalX)/xSpacing;
+	    fposition[1]=(position[1]-vtkOriginalY)/ySpacing;
+		fposition[2]=(position[2]-vtkOriginalZ)/zSpacing;
+		if(interpolationMode)
+			*(im+ptId)=[self TriCubic:fposition: volumeData: imageWidth: imageHeight: imageAmount];
 		else
-			*(im+ptId)=minValueInSeries;
+		{
+		 x = lround((position[0]-vtkOriginalX)/xSpacing);
+		 y = lround((position[1]-vtkOriginalY)/ySpacing);
+		 z = lround((position[2]-vtkOriginalZ)/zSpacing);
+		 if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
+		 *(im+ptId)=*(volumeData + imageSize*z + imageWidth*y+x);
+		 else
+		 *(im+ptId)=minValueInSeries;
+		}
 		
 	}
 	
@@ -3161,6 +3240,10 @@ else
 {
 	vtkImageData	*tempIm;
 	int				imExtent[ 6];
+	if(interpolationMode)
+		cViewSlice->SetInterpolationModeToCubic();
+	else
+		cViewSlice->SetInterpolationModeToNearestNeighbor();
 	tempIm = cViewSlice->GetOutput();
 	tempIm->Update();
 	tempIm->GetWholeExtent( imExtent);
@@ -3503,6 +3586,8 @@ else
 	{
 		NSString* roiName=[pathListButton titleOfSelectedItem];
 		[self create3DPathFromROIs:roiName];
+		currentPathMode=ROI_selectedModify;
+		[self changeCurrentTool:5];
 		
 	}
 	[loadPathWindow orderOut:sender];
@@ -3592,7 +3677,7 @@ else
 	}
 	
 }
-- (void) setCurrentCPRPathWithPath:(NSArray*)path:(int)resampelrate
+- (void) setCurrentCPRPathWithPath:(NSArray*)path:(float)resampelrate
 {
 	[curvedMPR3DPath removeAllObjects];
 	int pointNum=[path count]-1;
@@ -3631,22 +3716,44 @@ else
 	}
 	[[oViewROIList objectAtIndex: 0] addObject: curvedMPR2DPath];
 	
-	currentPathMode=ROI_selectedModify;
-	[self changeCurrentTool:5];
+	//currentPathMode=ROI_selectedModify;
+	//[self changeCurrentTool:5];
+	[self updateOView];
+	[self cAndAxViewReset];
+	[self updatePageSliders];
 }
 - (void) resample3DPath:(float)step
 {
 
-	int resamplestep=(int)step;
-	if(resamplestep==0)
+	if(step<0)
 		return;
 	int i,origincount;
 	origincount=(int)[curvedMPR3DPath count];
+	float resamplestep=(step*step);//*4*(xSpacing*xSpacing+ySpacing*ySpacing+zSpacing*xSpacing);
+		CMIV3DPoint* a3DPoint;
+	float prex,prey,prez,distance3d,nextx,nexty,nextz;
+
+	a3DPoint=[curvedMPR3DPath objectAtIndex: origincount-1];
+	prex=[a3DPoint x];
+	prey=[a3DPoint y];
+	prez=[a3DPoint z];
 	
 	for(i=origincount-2;i>=0;i--)
 	{
-		if(i%resamplestep!=0)
+		a3DPoint=[curvedMPR3DPath objectAtIndex: i];
+		nextx=[a3DPoint x];
+		nexty=[a3DPoint y];
+		nextz=[a3DPoint z];
+		distance3d=(nextx-prex)*(nextx-prex)+(nexty-prey)*(nexty-prey)+(nextz-prez)*(nextz-prez);
+		if(distance3d<resamplestep)
+		{
 			[curvedMPR3DPath removeObjectAtIndex:i ];
+
+		}
+		else
+		{
+			prex=nextx;	prey=nexty;	prez=nextz;
+		}
 			
 	}
 	
@@ -3663,7 +3770,6 @@ else
 	if(soomthedpath)
 		free(soomthedpath);
 	soomthedpath=(double*)malloc(soomthedpathlen*sizeof(double)*3);
-	CMIV3DPoint* a3DPoint;
 	for(i=0;i<controlnodenum;i++)
 	{
 		a3DPoint=[curvedMPR3DPath objectAtIndex: i];
@@ -3699,7 +3805,7 @@ else
 	float               *inputData=0L, *outputData=0L;
 	unsigned char       *colorData=0L, *directionData=0L;
 	inputData = volumeData;
-	
+	NSLog( @"start step 3");
 	outputData = (float*) malloc( size);
 	if( !outputData)
 	{
@@ -3726,9 +3832,7 @@ else
 	}		
 	
 	id waitWindow = [originalViewController startWaitWindow:@"processing"];	
-	//initilize the out and color buffer
-	
-	memset(colorData,0,size);
+
 	memset(directionData,0,size);
 	int i;
 	size=imageWidth * imageHeight * imageAmount;
@@ -3751,7 +3855,9 @@ else
 	//start seed growing	
 	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
 	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
-	[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData Direction: directionData];
+	[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData :colorData Direction: directionData];
+	//initilize the out and color buffer
+	memset(colorData,0,size);
 	[segmentCoreFunc caculateColorMapFromPointerMap:colorData:directionData]; 
 	[segmentCoreFunc release];
 	[originalViewController endWaitWindow: waitWindow];
@@ -3802,17 +3908,7 @@ else
 			{
 				*(outData+i)=*(inData+i);
 				*(directData + i) = colorindex | 0x80;
-				int ii,jj,kk,x,y,z;
-				z=i/imageSize;
-				y=(i-z*imageSize)/imageWidth;
-				x=i-z*imageSize-y*imageWidth;
-				
-				for(ii=0;ii<3;ii++)
-					for(jj=0;jj<3;jj++)
-						for(kk=0;kk<3;kk++)
-							if(z-1+ii>=0 && z-1+ii < imageAmount && y-1+jj >= 0 && y-1+jj < imageHeight && x-1+kk >= 0 && x-1+kk <= imageWidth)
-								*(directData + (z-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk) = (*(directData + (z-1+ii)*imageWidth*imageHeight + (y-1+jj)*imageWidth + x-1+kk)) | 0x40;
-				
+					
 				seedNumber++;
 				
 			}
@@ -3964,7 +4060,7 @@ else
 	unsigned int row = [centerlinesList selectedRow];
 	if(row>=0&&row<[cpr3DPaths count])
 	{
-		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider intValue]];
+		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider floatValue]];
 	}
 	
 }
@@ -3998,14 +4094,14 @@ else
 }
 - (IBAction)setResampleRatio:(id)sender
 {
-	[resampleRatioText setIntValue: [sender intValue]];
+	[resampleRatioText setFloatValue: [sender floatValue]];
 	
 	unsigned int row = [centerlinesList selectedRow];
 
 	
 	if(row>=0&&row<[cpr3DPaths count])
 	{
-		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider intValue]];
+		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider floatValue]];
 	}
 	
 }
@@ -4018,6 +4114,39 @@ else
 	if(tag)
 	{
 		id waitWindow = [originalViewController startWaitWindow:@"processing"];	
+		ViewerController *new2DViewer;
+		
+		if([ifExportCrossSectionButton state]== NSOnState)
+		{
+			new2DViewer=[self exportCrossSectionImages];
+			
+			if(isInCPROnlyMode&&parent&&new2DViewer)
+			{
+				NSString* tempstr=[NSString stringWithString:@"Cross Section "];
+				unsigned int row;
+				row = [centerlinesList selectedRow];
+				[new2DViewer checkEverythingLoaded];
+				tempstr=[tempstr stringByAppendingString:[centerlinesNameArrays objectAtIndex: row]  ];
+				[[new2DViewer window] setTitle:tempstr];
+				
+				NSMutableArray	*temparray=[[parent dataOfWizard] objectForKey:@"VCList"];
+				if(!temparray)
+				{
+					temparray=[NSMutableArray arrayWithCapacity:0];
+					[[parent dataOfWizard] setObject:temparray forKey:@"VCList"];
+				}
+				[temparray addObject:new2DViewer];
+				temparray=[[parent dataOfWizard] objectForKey: @"VCTitleList"];
+				if(!temparray)
+				{
+					temparray=[NSMutableArray arrayWithCapacity:0];
+					[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
+				}
+				[temparray addObject:tempstr];
+			}
+			
+			
+		}
 		
 		NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
 		NSMutableArray	*tempPixList = [NSMutableArray arrayWithCapacity: 0];
@@ -4103,12 +4232,12 @@ else
 		}
 		
 		NSData	*newData = [NSData dataWithBytesNoCopy:newVolumeData length: size freeWhenDone:YES];
-		ViewerController *new2DViewer;
+
 		new2DViewer = [originalViewController newWindow	:newPixList
 														:newDcmList
 														:newData]; 
 		[tempPixList removeAllObjects];
-		[originalViewController endWaitWindow: waitWindow];
+
 		if(isInCPROnlyMode&&parent)
 		{
 			NSString* tempstr=[NSString stringWithString:@"CPR of "];
@@ -4134,6 +4263,8 @@ else
 			[temparray addObject:tempstr];
 		}
 		
+		
+		[originalViewController endWaitWindow: waitWindow];
 		
 	}
 }
@@ -4503,6 +4634,709 @@ else
 		curLocation = curLocation * 10;
 		[axImageSlider setFloatValue: curLocation];
 	}
+}
+
+
+/*
+ * TriCubic - tri-cubic interpolation at point, p.
+ *   inputs:
+ *     p - the interpolation point.
+ *     volume - a pointer to the float volume data, stored in x,
+ *              y, then z order (x index increasing fastest).
+ *     xDim, yDim, zDim - dimensions of the array of volume data.
+ *   returns:
+ *     the interpolated value at p.
+ *   note:
+ *     NO range checking is done in this function.
+ */
+
+
+- (float)TriCubic : (float*) p :(float *)volume : (int) xDim : (int) yDim :(int) zDim
+{
+	int             x, y, z;
+	register int    i, j, k;
+	float           dx, dy, dz;
+	register float *pv;
+	float           u[4], v[4], w[4];
+	float           r[4], q[4];
+	float           vox = 0;
+	int             xyDim;
+	
+	xyDim = xDim * yDim;
+	
+	x = (int) p[0], y = (int) p[1], z = (int) p[2];
+	if (x < 1 || x >= xDim-2 || y < 1 || y >= yDim-2 || z < 1 || z >= zDim-2)
+		return (minValueInSeries);
+	
+	dx = p[0] - (float) x, dy = p[1] - (float) y, dz = p[2] - (float) z;
+	pv = volume + (x - 1) + (y - 1) * xDim + (z - 1) * xyDim;
+	
+# define CUBE(x)   ((x) * (x) * (x))
+# define SQR(x)    ((x) * (x))
+	/*
+#define DOUBLE(x) ((x) + (x))
+#define HALF(x)   ...
+	 *
+	 * may also be used to reduce the number of floating point
+	 * multiplications. The IEEE standard allows for DOUBLE/HALF
+	 * operations.
+	 */
+	
+	/* factors for Catmull-Rom interpolation */
+	
+	u[0] = -0.5 * CUBE (dx) + SQR (dx) - 0.5 * dx;
+	u[1] = 1.5 * CUBE (dx) - 2.5 * SQR (dx) + 1;
+	u[2] = -1.5 * CUBE (dx) + 2 * SQR (dx) + 0.5 * dx;
+	u[3] = 0.5 * CUBE (dx) - 0.5 * SQR (dx);
+	
+	v[0] = -0.5 * CUBE (dy) + SQR (dy) - 0.5 * dy;
+	v[1] = 1.5 * CUBE (dy) - 2.5 * SQR (dy) + 1;
+	v[2] = -1.5 * CUBE (dy) + 2 * SQR (dy) + 0.5 * dy;
+	v[3] = 0.5 * CUBE (dy) - 0.5 * SQR (dy);
+	
+	w[0] = -0.5 * CUBE (dz) + SQR (dz) - 0.5 * dz;
+	w[1] = 1.5 * CUBE (dz) - 2.5 * SQR (dz) + 1;
+	w[2] = -1.5 * CUBE (dz) + 2 * SQR (dz) + 0.5 * dz;
+	w[3] = 0.5 * CUBE (dz) - 0.5 * SQR (dz);
+	
+	for (k = 0; k < 4; k++)
+	{
+		q[k] = 0;
+		for (j = 0; j < 4; j++)
+		{
+			r[j] = 0;
+			for (i = 0; i < 4; i++)
+			{
+				r[j] += u[i] * *pv;
+				pv++;
+			}
+			q[k] += v[j] * r[j];
+			pv += xDim - 4;
+		}
+		vox += w[k] * q[k];
+		pv += xyDim - 4 * xDim;
+	}
+	return (vox < minValueInSeries ? minValueInSeries : vox);
+}
+- (IBAction)exportOrthogonalDataset:(id)sender
+{
+
+	if(currentTool==5||isInCPROnlyMode)
+	{
+		NSRunAlertPanel(NSLocalizedString(@"CPR mode", nil), NSLocalizedString(@"In CPR mode, please use export CPR dialog.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		return;
+	}
+
+	id waitWindow = [originalViewController startWaitWindow:@"processing"];
+	ViewerController * newviewer;
+	newviewer=[self exportCrossSectionImages];
+	if(newviewer)
+		newviewer=[self exportCViewImages];
+	
+	if(newviewer)
+		newviewer=[self exportOViewImages];
+	
+	[originalViewController endWaitWindow: waitWindow];	
+	
+}
+
+- (ViewerController *) exportCrossSectionImages
+{
+	
+	NSPoint point[4];
+	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+
+	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+	NSArray				*pixList = [originalViewController pixList];
+	DCMPix	*firstPix=[pixList objectAtIndex: 0];
+	DCMPix  *temppix;
+	float vector[ 9], origin[3];
+	double doublevector[3];
+	int i;
+	
+	vtkTransform* currentTransform;
+	if(isStraightenedCPR)
+		currentTransform=axViewTransformForStraightenCPR;
+	else
+		currentTransform=axViewTransform;
+	// cross section view Images
+	
+
+	
+
+	
+	int imageNumber=([axImageSlider maxValue]-[axImageSlider minValue])/minSpacing;
+	float distanceofstep,currentdistance,startfromdistance;
+	int maxwidth=0,maxheight=0;
+	startfromdistance=[axImageSlider minValue];
+	currentdistance = [axImageSlider floatValue];
+	distanceofstep = minSpacing;
+	
+	if(imageNumber>512&&currentTool!=5&&!isInCPROnlyMode)
+	{
+		imageNumber=512;
+		distanceofstep=([axImageSlider maxValue]-[axImageSlider minValue])/512.0;
+	}
+	
+	
+	NSRect viewsize = [crossAxiasView frame];
+	maxwidth=viewsize.size.width/[crossAxiasView scaleValue];
+	maxheight=viewsize.size.height/[crossAxiasView scaleValue];
+	
+	
+	
+	float* newVolumeData=nil;
+	long size= sizeof(float)*maxwidth*maxheight*imageNumber;
+	newVolumeData=(float*) malloc(size);
+	if(!newVolumeData)
+	{
+		NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		
+		return nil;
+	}
+	
+	
+	for( i = 0 ; i < imageNumber; i ++)
+	{
+		[axImageSlider setFloatValue:(startfromdistance+i*distanceofstep)];
+		[self pageAxView:axImageSlider];
+		
+		//copy data
+		int x,y;
+		int offsetx,offsety;
+		int minx,miny,maxx,maxy;
+		int width,height;
+		float* tempfloat;
+		temppix=[axViewPixList objectAtIndex: 0];
+		
+		
+		width = [temppix pwidth];
+		height = [temppix pheight];
+		tempfloat = [temppix fImage];
+		
+		point[0].x=0;
+		point[1].x=viewsize.size.width;
+		point[2].x=0;
+		point[3].x=viewsize.size.width;
+		
+		point[0].y=0;
+		point[1].y=0;
+		point[2].y=viewsize.size.height;
+		point[3].y=viewsize.size.height;
+		
+		point[0]=[crossAxiasView ConvertFromView2GL:point[0]];
+		point[1]=[crossAxiasView ConvertFromView2GL:point[1]];
+		point[2]=[crossAxiasView ConvertFromView2GL:point[2]];
+		point[3]=[crossAxiasView ConvertFromView2GL:point[3]];
+		
+		minx=maxx=point[0].x;
+		miny=maxy=point[0].y;
+		int j;
+		for(j=1;j<4;j++)
+		{
+			if(point[j].x<minx)
+				minx=point[j].x;
+			if(point[j].y<miny)
+				miny=point[j].y;
+			if(point[j].x>maxx)
+				maxx=point[j].x;
+			if(point[j].y>maxy)
+				maxy=point[j].y;
+		
+		}
+		
+		offsetx=minx;
+		offsety=miny;
+		if(minx<0)
+			minx=0;
+		if(miny<0)
+			miny=0;
+		if(maxx>width)
+			maxx=width;
+		if(maxy>height)
+			maxy=height;
+		
+		for(y=0;y<maxheight;y++)
+			for(x=0;x<maxwidth;x++)
+			{
+				if(x+offsetx>=minx&&x+offsetx<maxx&&y+offsety>=miny&&y+offsety<maxy)
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x)=*(tempfloat+(y+offsety)*width+x+offsetx);
+				else
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x) = minValueInSeries;
+			}
+		
+		//calculate orietion
+		origin[0]=0;
+		origin[1]=0;
+		origin[2]=0;
+		currentTransform->TransformPoint(origin,origin);
+		
+		
+		[firstPix orientation:vector];
+		
+		doublevector[0]=vector[0];
+		doublevector[1]=vector[1];
+		doublevector[2]=vector[2];
+		currentTransform->TransformPoint(doublevector,doublevector);
+		vector[0]=doublevector[0]-origin[0];
+		vector[1]=doublevector[1]-origin[1];
+		vector[2]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[3];
+		doublevector[1]=vector[4];
+		doublevector[2]=vector[5];
+		currentTransform->TransformPoint(doublevector,doublevector);
+		vector[3]=doublevector[0]-origin[0];
+		vector[4]=doublevector[1]-origin[1];
+		vector[5]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[6];
+		doublevector[1]=vector[7];
+		doublevector[2]=vector[8];
+		currentTransform->TransformPoint(doublevector,doublevector);
+		vector[6]=doublevector[0]-origin[0];
+		vector[7]=doublevector[1]-origin[1];
+		vector[8]=doublevector[2]-origin[2];
+		
+		
+		origin[0]=axViewOrigin[0]+offsetx*axViewSpace[0];
+		origin[1]=axViewOrigin[1]+offsety*axViewSpace[1];
+		origin[2]=axViewOrigin[2];
+		currentTransform->TransformPoint(origin,origin);
+		
+
+				
+				
+		DCMPix	*newPix = [firstPix copy];
+		[newPix setPwidth: maxwidth];
+		[newPix setRowBytes: maxwidth];
+		[newPix setPheight: maxheight];
+		
+		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
+		[newPix setTot:imageNumber ];
+		[newPix setFrameNo: i];
+		[newPix setID: i];
+		[newPix setPixelSpacingX: axViewSpace[0]];
+		[newPix setPixelSpacingY: axViewSpace[1]];
+		[newPix setOrigin:origin];
+		[newPix setOrientation: vector];
+		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
+		[newPix setPixelRatio:  axViewSpace[1] / axViewSpace[0]];
+		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceInterval: distanceofstep];
+
+	
+		[newPixList addObject: newPix];
+		[newPix release];
+		[newDcmList addObject: [[originalViewController fileList] objectAtIndex: 0]];
+		
+
+		
+	}
+	[axImageSlider setFloatValue:currentdistance];
+	[self pageAxView:axImageSlider];	
+	
+	
+	
+	NSData	*newData = [NSData dataWithBytesNoCopy:newVolumeData length: size freeWhenDone:YES];
+	ViewerController *new2DViewer;
+	new2DViewer = [originalViewController newWindow	:newPixList
+													:newDcmList
+													:newData]; 
+	return new2DViewer;
+}
+- (ViewerController *) exportCViewImages
+{
+	
+	NSPoint point[4];
+	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+	
+	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+	NSArray				*pixList = [originalViewController pixList];
+	DCMPix	*firstPix=[pixList objectAtIndex: 0];
+	DCMPix  *temppix;
+	float vector[ 9], origin[3];
+	double doublevector[3];
+	int i;
+	
+	// cross section view Images
+	
+	
+	
+	
+	int imageNumber=([cImageSlider maxValue]-[cImageSlider minValue])/minSpacing;
+	float distanceofstep,currentdistance,startfromdistance;
+	int maxwidth=0,maxheight=0;
+	startfromdistance=[cImageSlider minValue];
+	currentdistance = [cImageSlider floatValue];
+	distanceofstep = minSpacing;
+	
+	if(imageNumber>512)
+	{
+		imageNumber=512;
+		distanceofstep=([cImageSlider maxValue]-[cImageSlider minValue])/512.0;
+	}
+	
+	
+	NSRect viewsize = [cPRView frame];
+	maxwidth=viewsize.size.width/[cPRView scaleValue];
+	maxheight=viewsize.size.height/[cPRView scaleValue];
+	
+	float* newVolumeData=nil;
+	long size= sizeof(float)*maxwidth*maxheight*imageNumber;
+	newVolumeData=(float*) malloc(size);
+	if(!newVolumeData)
+	{
+		NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		
+		return nil;
+	}
+	
+	
+	for( i = 0 ; i < imageNumber; i ++)
+	{
+		[cImageSlider setFloatValue:(startfromdistance+i*distanceofstep)];
+		[self pageCView:cImageSlider];
+		
+		//copy data
+		int x,y;
+		int offsetx,offsety;
+		int minx,miny,maxx,maxy;
+		int width,height;
+		float* tempfloat;
+		temppix=[cViewPixList objectAtIndex: 0];
+		
+		
+		width = [temppix pwidth];
+		height = [temppix pheight];
+		tempfloat = [temppix fImage];
+		
+		point[0].x=0;
+		point[1].x=viewsize.size.width;
+		point[2].x=0;
+		point[3].x=viewsize.size.width;
+		
+		point[0].y=0;
+		point[1].y=0;
+		point[2].y=viewsize.size.height;
+		point[3].y=viewsize.size.height;
+		
+		point[0]=[cPRView ConvertFromView2GL:point[0]];
+		point[1]=[cPRView ConvertFromView2GL:point[1]];
+		point[2]=[cPRView ConvertFromView2GL:point[2]];
+		point[3]=[cPRView ConvertFromView2GL:point[3]];
+		
+		minx=maxx=point[0].x;
+		miny=maxy=point[0].y;
+		int j;
+		for(j=1;j<4;j++)
+		{
+			if(point[j].x<minx)
+				minx=point[j].x;
+			if(point[j].y<miny)
+				miny=point[j].y;
+			if(point[j].x>maxx)
+				maxx=point[j].x;
+			if(point[j].y>maxy)
+				maxy=point[j].y;
+			
+		}
+		
+		offsetx=minx;
+		offsety=miny;
+		if(minx<0)
+			minx=0;
+		if(miny<0)
+			miny=0;
+		if(maxx>width)
+			maxx=width;
+		if(maxy>height)
+			maxy=height;
+		
+		for(y=0;y<maxheight;y++)
+			for(x=0;x<maxwidth;x++)
+			{
+				if(x+offsetx>=minx&&x+offsetx<maxx&&y+offsety>=miny&&y+offsety<maxy)
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x)=*(tempfloat+(y+offsety)*width+x+offsetx);
+				else
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x) = minValueInSeries;
+			}
+				
+				//calculate orietion
+				origin[0]=0;
+		origin[1]=0;
+		origin[2]=0;
+		cViewTransform->TransformPoint(origin,origin);
+		
+		
+		[firstPix orientation:vector];
+		
+		doublevector[0]=vector[0];
+		doublevector[1]=vector[1];
+		doublevector[2]=vector[2];
+		cViewTransform->TransformPoint(doublevector,doublevector);
+		vector[0]=doublevector[0]-origin[0];
+		vector[1]=doublevector[1]-origin[1];
+		vector[2]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[3];
+		doublevector[1]=vector[4];
+		doublevector[2]=vector[5];
+		cViewTransform->TransformPoint(doublevector,doublevector);
+		vector[3]=doublevector[0]-origin[0];
+		vector[4]=doublevector[1]-origin[1];
+		vector[5]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[6];
+		doublevector[1]=vector[7];
+		doublevector[2]=vector[8];
+		cViewTransform->TransformPoint(doublevector,doublevector);
+		vector[6]=doublevector[0]-origin[0];
+		vector[7]=doublevector[1]-origin[1];
+		vector[8]=doublevector[2]-origin[2];
+		
+		
+		origin[0]=cViewOrigin[0]+offsetx*cViewSpace[0];
+		origin[1]=cViewOrigin[1]+offsety*cViewSpace[1];
+		origin[2]=cViewOrigin[2];
+		cViewTransform->TransformPoint(origin,origin);
+		
+		
+		
+		
+		DCMPix	*newPix = [firstPix copy];
+		[newPix setPwidth: maxwidth];
+		[newPix setRowBytes: maxwidth];
+		[newPix setPheight: maxheight];
+		
+		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
+		[newPix setTot:imageNumber ];
+		[newPix setFrameNo: i];
+		[newPix setID: i];
+		[newPix setPixelSpacingX: cViewSpace[0]];
+		[newPix setPixelSpacingY: cViewSpace[1]];
+		[newPix setOrigin:origin];
+		[newPix setOrientation: vector];
+		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
+		[newPix setPixelRatio:  cViewSpace[1] / cViewSpace[0]];
+		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceInterval: distanceofstep];
+		
+		
+		[newPixList addObject: newPix];
+		[newPix release];
+		[newDcmList addObject: [[originalViewController fileList] objectAtIndex: 0]];
+		
+		
+		
+	}
+	[cImageSlider setFloatValue:currentdistance];
+	[self pageCView:cImageSlider];	
+	
+	
+	
+	NSData	*newData = [NSData dataWithBytesNoCopy:newVolumeData length: size freeWhenDone:YES];
+	ViewerController *new2DViewer;
+	new2DViewer = [originalViewController newWindow	:newPixList
+													:newDcmList
+													:newData]; 
+	return new2DViewer;
+}
+- (ViewerController *) exportOViewImages
+{
+	
+	NSPoint point[4];
+	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+	
+	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+	NSArray				*pixList = [originalViewController pixList];
+	DCMPix	*firstPix=[pixList objectAtIndex: 0];
+	DCMPix  *temppix;
+	float vector[ 9], origin[3];
+	double doublevector[3];
+	int i;
+	
+	// cross section view Images
+	
+	
+	
+	
+	int imageNumber=([oImageSlider maxValue]-[oImageSlider minValue])/minSpacing;
+	float distanceofstep,currentdistance,startfromdistance;
+	int maxwidth=0,maxheight=0;
+	startfromdistance=[oImageSlider minValue];
+	currentdistance = [oImageSlider floatValue];
+	distanceofstep = minSpacing;
+	
+	if(imageNumber>512)
+	{
+		imageNumber=512;
+		distanceofstep=([oImageSlider maxValue]-[oImageSlider minValue])/512.0;
+	}
+	
+	NSRect viewsize = [originalView frame];
+	maxwidth=viewsize.size.width/[originalView scaleValue];
+	maxheight=viewsize.size.height/[originalView scaleValue];
+	
+	float* newVolumeData=nil;
+	long size= sizeof(float)*maxwidth*maxheight*imageNumber;
+	newVolumeData=(float*) malloc(size);
+	if(!newVolumeData)
+	{
+		NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		
+		return nil;
+	}
+	
+	
+	for( i = 0 ; i < imageNumber; i ++)
+	{
+		[oImageSlider setFloatValue:(startfromdistance+i*distanceofstep)];
+		[self pageOView:oImageSlider];
+		
+		//copy data
+		int x,y;
+		int offsetx,offsety;
+		int minx,miny,maxx,maxy;
+		int width,height;
+		float* tempfloat;
+		temppix=[oViewPixList objectAtIndex: 0];
+		
+		
+		width = [temppix pwidth];
+		height = [temppix pheight];
+		tempfloat = [temppix fImage];
+		
+		point[0].x=0;
+		point[1].x=viewsize.size.width;
+		point[2].x=0;
+		point[3].x=viewsize.size.width;
+		
+		point[0].y=0;
+		point[1].y=0;
+		point[2].y=viewsize.size.height;
+		point[3].y=viewsize.size.height;
+		
+		point[0]=[originalView ConvertFromView2GL:point[0]];
+		point[1]=[originalView ConvertFromView2GL:point[1]];
+		point[2]=[originalView ConvertFromView2GL:point[2]];
+		point[3]=[originalView ConvertFromView2GL:point[3]];
+		
+		minx=maxx=point[0].x;
+		miny=maxy=point[0].y;
+		int j;
+		for(j=1;j<4;j++)
+		{
+			if(point[j].x<minx)
+				minx=point[j].x;
+			if(point[j].y<miny)
+				miny=point[j].y;
+			if(point[j].x>maxx)
+				maxx=point[j].x;
+			if(point[j].y>maxy)
+				maxy=point[j].y;
+			
+		}
+		
+		offsetx=minx;
+		offsety=miny;
+		if(minx<0)
+			minx=0;
+		if(miny<0)
+			miny=0;
+		if(maxx>width)
+			maxx=width;
+		if(maxy>height)
+			maxy=height;
+		
+		for(y=0;y<maxheight;y++)
+			for(x=0;x<maxwidth;x++)
+			{
+				if(x+offsetx>=minx&&x+offsetx<maxx&&y+offsety>=miny&&y+offsety<maxy)
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x)=*(tempfloat+(y+offsety)*width+x+offsetx);
+				else
+					*(newVolumeData+i*maxwidth*maxheight+y*maxwidth+x) = minValueInSeries;
+			}
+				
+				//calculate orietion
+				origin[0]=0;
+		origin[1]=0;
+		origin[2]=0;
+		oViewUserTransform->TransformPoint(origin,origin);
+		
+		
+		[firstPix orientation:vector];
+		
+		doublevector[0]=vector[0];
+		doublevector[1]=vector[1];
+		doublevector[2]=vector[2];
+		oViewUserTransform->TransformPoint(doublevector,doublevector);
+		vector[0]=doublevector[0]-origin[0];
+		vector[1]=doublevector[1]-origin[1];
+		vector[2]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[3];
+		doublevector[1]=vector[4];
+		doublevector[2]=vector[5];
+		oViewUserTransform->TransformPoint(doublevector,doublevector);
+		vector[3]=doublevector[0]-origin[0];
+		vector[4]=doublevector[1]-origin[1];
+		vector[5]=doublevector[2]-origin[2];
+		
+		doublevector[0]=vector[6];
+		doublevector[1]=vector[7];
+		doublevector[2]=vector[8];
+		oViewUserTransform->TransformPoint(doublevector,doublevector);
+		vector[6]=doublevector[0]-origin[0];
+		vector[7]=doublevector[1]-origin[1];
+		vector[8]=doublevector[2]-origin[2];
+		
+		
+		origin[0]=oViewOrigin[0]+offsetx*oViewSpace[0];
+		origin[1]=oViewOrigin[1]+offsety*oViewSpace[1];
+		origin[2]=oViewOrigin[2];
+		oViewUserTransform->TransformPoint(origin,origin);
+		
+		
+		
+		
+		DCMPix	*newPix = [firstPix copy];
+		[newPix setPwidth: maxwidth];
+		[newPix setRowBytes: maxwidth];
+		[newPix setPheight: maxheight];
+		
+		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
+		[newPix setTot:imageNumber ];
+		[newPix setFrameNo: i];
+		[newPix setID: i];
+		[newPix setPixelSpacingX: oViewSpace[0]];
+		[newPix setPixelSpacingY: oViewSpace[1]];
+		[newPix setOrigin:origin];
+		[newPix setOrientation: vector];
+		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
+		[newPix setPixelRatio:  oViewSpace[1] / oViewSpace[0]];
+		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceInterval: distanceofstep];
+		
+		
+		[newPixList addObject: newPix];
+		[newPix release];
+		[newDcmList addObject: [[originalViewController fileList] objectAtIndex: 0]];
+		
+		
+		
+	}
+	[oImageSlider setFloatValue:currentdistance];
+	[self pageOView:oImageSlider];	
+	
+	
+	
+	NSData	*newData = [NSData dataWithBytesNoCopy:newVolumeData length: size freeWhenDone:YES];
+	ViewerController *new2DViewer;
+	new2DViewer = [originalViewController newWindow	:newPixList
+													:newDcmList
+													:newData]; 
+	return new2DViewer;
 }
 
 @end

@@ -33,22 +33,61 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 @implementation CMIVVRcontroller
 -(NSImage*) imageForFrame:(NSNumber*) cur maxFrame:(NSNumber*) max
 {
-	if(!isSegmentVR)
+	float* newVolumeData=[originalViewController volumePtr:[cur intValue]%maxMovieIndex];
+	[vrViewer movieChangeSource: newVolumeData];
+	if ([max intValue]==220*maxMovieIndex&&[cur intValue]%maxMovieIndex==0)
 	{
-		float* newVolumeData=[originalViewController volumePtr:[cur intValue]%maxMovieIndex];
-		[vrViewer movieChangeSource: newVolumeData];
-	//	if([cur intValue]%maxMovieIndex==0)
-		[vrViewer  Azimuth:2];
+		int iteminrow=20,itemincolumn=10;
+		int curint=[cur intValue]/maxMovieIndex;
+		if(  curint == 0)
+		{
+			[vrViewer Vertical: 45];
+			[vrViewer Vertical: 45];
+			verticalAngleForVR=90;
+		}
+		else
+		{
+			if( verticalAngleForVR==-90 ) 
+			{
+				aCamera->Roll(360/iteminrow);
+			}
+			else if( verticalAngleForVR==90) 
+			{
+				aCamera->Roll(-360/iteminrow);
+			}
+			else
+			{
+				[vrViewer Vertical: -verticalAngleForVR];
+			}
+			
+			if(curint%iteminrow==0)
+			{
+				if( verticalAngleForVR==-90 || verticalAngleForVR==90) 
+				{
+					[vrViewer Vertical: -45];
+					[vrViewer Vertical: -45];
+					aCamera->Azimuth(-360/iteminrow);
+				}
+				verticalAngleForVR-=180/itemincolumn;
+				if( verticalAngleForVR==-90 ) 
+				{
+					aCamera->Azimuth(360/iteminrow);
+					[vrViewer Vertical: -45];
+					[vrViewer Vertical: -45];
+				}
+				
+				
+			}
+			if( verticalAngleForVR!=-90 && verticalAngleForVR!=90)
+			{
+				aCamera->Azimuth(360/iteminrow);
+				aCamera->Elevation(verticalAngleForVR);
+			}
+		}
 	}
-	else
-	{
-		[vrViewer  Azimuth:10];		
-	}
-	aCamera->SetFocalPoint( volumeOfVRView->GetCenter());
-	aCamera->OrthogonalizeViewUp();
-	aCamera->ComputeViewPlaneNormal();
-	
 	return [vrViewer nsimageQuicktime];
+	
+
 }
 -(NSImage*) imageForVR:(NSNumber*) cur maxFrame:(NSNumber*) max
 {
@@ -111,10 +150,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	FSSpec				spec, newspec;
 	if(!isSegmentVR)
 	{
-		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForFrame: maxFrame:) :180];
-		
-		//*36	maxMovieIndex	[mov generateMovie: YES  :NO :[[[controller fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
-		[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
+		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForFrame: maxFrame:) :220*maxMovieIndex];
+
+		NSString* path, *newpath;
+		path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
+		if( path)
+		{
+			FSPathMakeRef((unsigned const char *)[path fileSystemRepresentation], &fsref, NULL);
+			FSGetCatalogInfo( &fsref, kFSCatInfoNone,NULL, NULL, &spec, NULL);
+			
+			FSMakeFSSpec(spec.vRefNum, spec.parID, "\ptempMovie", &newspec);
+			
+			VRObject_MakeObjectMovie (&spec,&newspec, 220*maxMovieIndex);	
+			
+			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
+			
+			newpath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"tempMovie"];
+			
+			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
+			
+			[[NSFileManager defaultManager] movePath: newpath  toPath: path handler: nil];
+			
+			//[[NSWorkspace sharedWorkspace] openFile:path];
+		}
 		
 		[mov release];
 	}
@@ -123,8 +181,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		verticalAngleForVR = 0;
 		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForVR: maxFrame:) :220];
 		
-		//*36		[mov generateMovie: YES  :NO :[[[controller fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
 		NSString* path, *newpath;
+		
 		path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
 		if( path)
 		{
@@ -364,9 +422,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[bArray addObject: [NSNumber numberWithFloat:0.0]];
 		[xArray addObject: [NSNumber numberWithFloat:0.0]];
 		
-//		if([tempROI respondsToSelector:@selector(color)])
-//			color= [tempROI color];
-//		else
+		if([tempROI respondsToSelector:@selector(color)])
+			color= [tempROI color];
+		else
 			color= [tempROI rgbcolor];
 		[rArray addObject: [NSNumber numberWithFloat:color.red/65536.0]];		
 		[gArray addObject: [NSNumber numberWithFloat:color.green /65536.0]];		
@@ -674,6 +732,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 		[vrViewer setOpacity:array];
 	}
+
+	renderOfVRView = [vrViewer renderer];
+	aCamera = renderOfVRView->GetActiveCamera();
 
 	[opacitySlider setEnabled: NO];
 	[wlSlider setEnabled: NO];

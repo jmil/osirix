@@ -523,7 +523,8 @@ OSErr VRObject_CreateObjectTrack (Movie theSrcMovie, Track theObjectTrack, Media
 			myObjectSampleData.maxTilt =  (-90);
 			myObjectSampleData.defaultTilt =  (90);
 		break;
-			
+		
+				
 		case 220:
 			myObjectSampleData.columns = EndianU32_NtoB((UInt32)20);
 			myObjectSampleData.rows = EndianU32_NtoB((UInt32)11);
@@ -550,6 +551,17 @@ OSErr VRObject_CreateObjectTrack (Movie theSrcMovie, Track theObjectTrack, Media
 			myObjectSampleData.maxTilt =  (-90);
 			myObjectSampleData.defaultTilt =  (90);
 		break;
+		default:
+			if(maxFrames%220==0)
+			{
+				myObjectSampleData.columns = EndianU32_NtoB((UInt32)20);
+				myObjectSampleData.rows = EndianU32_NtoB((UInt32)11);
+				
+				myObjectSampleData.minTilt =  (90);
+				myObjectSampleData.maxTilt =  (-90);
+				myObjectSampleData.defaultTilt =  (0);
+				myObjectSampleData.viewDuration = EndianU32_NtoB(myDuration*maxFrames/220);
+			}
 	}
 	
 	
@@ -577,11 +589,17 @@ OSErr VRObject_CreateObjectTrack (Movie theSrcMovie, Track theObjectTrack, Media
 	VRObject_ConvertFloatToBigEndian(&myObjectSampleData.viewRate);
 	VRObject_ConvertFloatToBigEndian(&myObjectSampleData.frameRate);
 
-	myObjectSampleData.animationSettings = EndianU32_NtoB(kDefaultAnimationSettings);
-	if( maxFrames==220)
+	
+	if( maxFrames%220==0)
+	{
 		myObjectSampleData.controlSettings = EndianU32_NtoB((UInt32)(kQTVRObjectWrapPanOn | kQTVRObjectCanZoomOn | kQTVRObjectTranslationOn));
+		myObjectSampleData.animationSettings = EndianU32_NtoB(kQTVRObjectAnimateViewFramesOn);
+	}
 	else
+	{
 		myObjectSampleData.controlSettings = EndianU32_NtoB(kDefaultControlSettings); 
+		myObjectSampleData.animationSettings = EndianU32_NtoB(kDefaultAnimationSettings);
+	}
 	
 	
 	// insert the object sample atom into the object sample atom container
