@@ -38,11 +38,6 @@
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 
 TODO:
-CORRECTED - check setCursorLabelWithText method ([cursorImage setSize:imageSize]) in CLUTOpacityView.m ??
-CORRECTED - Crash during Drag & Drop DCMView to Desktop
-CORRECTED - Check Default Database Location display in Preferences.
-CORRECTED - Bug with toolbar in latest MacOS build : always toolbar??
-CORRECTED - Test Send Email from plugin manager
 - Quicktime support in 64bits: import ??
 - Test ROIs (DICOM SR) with Q&R - Send
 - Get Info window not displayed in the French Version?
@@ -50,7 +45,6 @@ CORRECTED - Test Send Email from plugin manager
 - Check ITK 3D
 - Test 3D Presets WL&WW
 - Growl 64 bits
-- iDisk 64-bits
 
 - New smart filter editor (10.5)
 - NRRD: ITK IO
