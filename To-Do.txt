@@ -38,7 +38,6 @@
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 
 TODO:
-- Quicktime support in 64bits: import ??
 - Test ROIs (DICOM SR) with Q&R - Send
 - Get Info window not displayed in the French Version?
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
