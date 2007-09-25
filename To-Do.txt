@@ -43,6 +43,9 @@ TODO:
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
 - Check ITK 3D
 - Growl 64 bits
+- BUG - 16-bit CLUT mouse move
+- BUG - 2D-MPR cross move
+
 
 - New smart filter editor (10.5)
 - NRRD: ITK IO
