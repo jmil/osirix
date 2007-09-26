@@ -45,7 +45,7 @@ TODO:
 - Growl 64 bits
 - iDisk tests
 - BUG - 16-bit CLUT mouse move
-- BUG - 2D-MPR cross move
+- BUG - 2D-MPR cross move 
 
 
 - New smart filter editor (10.5)
