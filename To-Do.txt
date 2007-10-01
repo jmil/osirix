@@ -45,6 +45,7 @@ TODO:
 - Growl 64 bits
 - Test GPU rendering
 - Annotations -> With Without name
+- Bug 3D Preset WLWW
 
 - New smart filter editor (10.5)
 - NRRD: ITK IO
