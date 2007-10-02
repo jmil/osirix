@@ -44,8 +44,6 @@ TODO:
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
-- Annotations -> With Without name
-- Async QR
 
 - New smart filter editor (10.5)
 - NRRD: ITK IO
