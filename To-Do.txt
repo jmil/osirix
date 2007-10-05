@@ -44,6 +44,7 @@ TODO:
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
+- Toolbar bug if double-click on study
 
 - Reslice in 2D-MPR
 - Batch export in 2D-MPR
