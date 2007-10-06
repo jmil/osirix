@@ -46,7 +46,6 @@ TODO:
 - Test GPU rendering
 
 - Window did change screen
-- Multiple toolbar : change items : crash
 
 - Reslice in 2D-MPR
 - Batch export in 2D-MPR
