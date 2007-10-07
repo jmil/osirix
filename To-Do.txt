@@ -44,6 +44,7 @@ TODO:
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
+- CMove support for XML-RPC
 
 - Window did change screen
 
