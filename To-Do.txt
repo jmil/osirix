@@ -38,15 +38,11 @@
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 
 TODO:
-- Test ROIs (DICOM SR) with Q&R - Send
 - Get Info window not displayed in the French Version?
 - Test DB Sharing, drag & Drop, .... : Bonjour Sharing NSRunLoop ?? in [BonjourBrowser connectToServer]
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
-- CMove support for XML-RPC
-
-- Window did change screen
 
 - Reslice in 2D-MPR
 - Batch export in 2D-MPR
