@@ -44,7 +44,6 @@ TODO:
 - Test GPU rendering
 
 - Reslice in 2D-MPR
-- Abort in Bonjour
 - Message for shutter
 
 - Batch export in 2D-MPR
