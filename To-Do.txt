@@ -36,6 +36,7 @@
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 - Built-in HTTP Server with XML-RPC protocol for HIS/RIS Integration - See http://www.osirix-viewer.com/XML-RPC.pdf
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
+- Faster and more robust DB sharing
 
 TODO:
 - Get Info window not displayed in the French Version?
