@@ -29,7 +29,6 @@
 		B96B0F1E0B10AFD20044D904 /* VTKView.h in Headers */ = {isa = PBXBuildFile; fileRef = B96B0F1D0B10AFD20044D904 /* VTKView.h */; };
 		B96B0F210B10B1B60044D904 /* CMIVVRcontroller.h in Headers */ = {isa = PBXBuildFile; fileRef = B96B0F1F0B10B1B60044D904 /* CMIVVRcontroller.h */; };
 		B96B0F220B10B1B60044D904 /* CMIVVRcontroller.mm in Sources */ = {isa = PBXBuildFile; fileRef = B96B0F200B10B1B60044D904 /* CMIVVRcontroller.mm */; };
-		B97765ED0B07C51F0044AA4F /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97765EC0B07C51F0044AA4F /* libvtkImaging.a */; };
 		B98CF5580BE2BF8D00ED53C4 /* DCMDataContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = B98CF5570BE2BF8D00ED53C4 /* DCMDataContainer.h */; };
 		B98D355E0C4CE6E100DA7EA2 /* spline.C in Sources */ = {isa = PBXBuildFile; fileRef = B98D355C0C4CE6E100DA7EA2 /* spline.C */; };
 		B98D355F0C4CE6E100DA7EA2 /* spline.H in Headers */ = {isa = PBXBuildFile; fileRef = B98D355D0C4CE6E100DA7EA2 /* spline.H */; };
@@ -2718,9 +2717,10 @@
 		B9E39DEC0B0364AB00387A56 /* CMIV_CTA_TOOLS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B9E39DEB0B0364AB00387A56 /* CMIV_CTA_TOOLS_Prefix.pch */; };
 		B9E39E6C0B0370B200387A56 /* Chopper_Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = B9E39E6B0B0370B200387A56 /* Chopper_Panel.nib */; };
 		B9E3A0450B048ED300387A56 /* CMIVChopperController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E3A0430B048ED300387A56 /* CMIVChopperController.h */; };
-		B9F0E0CB0B44668900E3EDD8 /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */; };
 		B9FB33550B0A1FD000A5A87A /* CMIVContrastController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9FB33530B0A1FD000A5A87A /* CMIVContrastController.h */; };
 		B9FB33560B0A1FD000A5A87A /* CMIVContrastController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */; };
+		BF76EF1A0C8886560009C91B /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97765EC0B07C51F0044AA4F /* libvtkImaging.a */; };
+		BF76EF1C0C8886680009C91B /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -4093,9 +4093,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF76EF1C0C8886680009C91B /* libvtkGraphics.a in Frameworks */,
+				BF76EF1A0C8886560009C91B /* libvtkImaging.a in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				B97765ED0B07C51F0044AA4F /* libvtkImaging.a in Frameworks */,
-				B9F0E0CB0B44668900E3EDD8 /* libvtkGraphics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8297,9 +8297,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "CMIV_CTA_TOOLS" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Duplicate */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* CMIV_CTA_TOOLS debug */,
 				B98F140E0C4EA78900EED2DD /* CMIV_CTA_TOOLS release */,
@@ -8569,6 +8571,10 @@
 		CE6A9A9108AC841300D0C1EE /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -8602,6 +8608,7 @@
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = CMIV_CTA_TOOLS;
 				SECTORDER_FLAGS = "";
+				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
