@@ -185,7 +185,7 @@
 	float				factor, threshold, thresholdSet, minValue, background;
 	
 	BOOL				meanMode;
-		
+	
 	pixListA = [pixListArrays objectAtIndex: 0];
 	
 	[self refreshGraph: self];
@@ -204,11 +204,18 @@
 		// CREATE A SERIE WITH ONE IMAGE
 		new2DViewer = [[filter viewerController] newWindow		: pixListResult
 																: fileListResult
-																:newData];
+																: newData];
 		free( emptyData);
 		
 		pixListC = [new2DViewer pixList];
-		[[pixListC objectAtIndex: 0] setfImage: (float*)[newData bytes]];
+		float* ptr = (float*) [newData bytes];
+		
+		for( DCMPix *pix in pixListC)
+		{
+			[pix setfImage: ptr];
+			
+			ptr += [firstPix pwidth] * [firstPix pheight];
+		}
 	}
 	else pixListC = [new2DViewer pixList];
 	
@@ -230,10 +237,12 @@
 		NSLog(@"pixels mode");
 	}
 	
-	dstImage = [[pixListC objectAtIndex: 0] fImage];
-	
+	int position = 0;
 	for( NSArray *teSequence in pixListArrays)
 	{
+		dstImage = [[pixListC objectAtIndex: position] fImage];
+		position++;
+		
 		// Loop through all images contained in the current series
 		for( x = 0; x < [firstPix pwidth]; x++)
 		{
@@ -330,10 +339,19 @@
 	{
 		if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
 		{
+			interval = 1;
 			break;
 		}
-		
-		interval++;
+	}
+	
+	if( interval)
+	{
+		interval = 0;
+		for( i = 1; i < [pixListA count]; i++)
+		{
+			interval++;
+			if( [[pixListA objectAtIndex: i] originX] == origin[0] && [[pixListA objectAtIndex: i] originY] == origin[1] && [[pixListA objectAtIndex: i] originZ] == origin[2]) break;
+		}
 	}
 	
 	BOOL volumic = NO;
@@ -394,9 +412,10 @@
 		[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: 0]];
 	}
 
-
-
-
+	for ( DCMPix *p in pixListResult)
+	{
+		[p setEchotime: 0L];
+	}
 
 
 	// Try to find the TEs...
