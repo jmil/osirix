@@ -24,23 +24,22 @@
 		
 		// Get Values
 		
+		start = [[form cellAtIndex: 0] intValue]-1;
+		end = [[form cellAtIndex: 1] intValue]-1;
+		
 		if( [[viewerController imageView] flippedData])
 		{
-			end = [[form cellAtIndex: 0] intValue]-1;
-			start = [[form cellAtIndex: 1] intValue]-1;
-			
 			start = [pixList count]-1 - start;
-			end = [pixList count] - end;
-		}
-		else
-		{
-			start = [[form cellAtIndex: 0] intValue]-1;
-			end = [[form cellAtIndex: 1] intValue];
+			end = [pixList count]-1 - end;
 		}
 		
 		interval = [[form cellAtIndex: 2] intValue];
+		if( interval < 1) interval = 1;
 		
-		if( start >= end) start = end-1;
+		if( [[viewerController imageView] flippedData])
+			interval = -interval;
+		
+		if( start == end) start = end-1;
 		
 		if( start < 0) start = 0;
 		if( start >= [pixList count]) start = [pixList count]-1;
@@ -48,49 +47,79 @@
 		if( end < 0) end = 0;
 		if( end >= [pixList count]) end = [pixList count];
 		
-		if( start >= end) end = start+1;
-		
-		if( interval < 1) interval = 1;
-		
-		newTotal = 0;
-		// Create a new series
-		for( i = start ; i < end; i += interval)
-		{
-			newTotal++;
-		}
+		if( start == end) end = start+1;
 		
 		// Display a waiting window
 		id waitWindow = [viewerController startWaitWindow:@"I'm working for you!"];
-		
-		// CREATE A NEW SERIES WITH ALL IMGES !
-		
-		long imageSize = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
-		long size = newTotal * imageSize;
-		
-		emptyData = malloc( size);
-		if( emptyData)
+
+
+		newTotal = 0;
+		// Create a new series
+		if( interval > 0)
 		{
-			NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
-			NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+			for( i = start ; i < end; i += interval) newTotal++;
+			long imageSize = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
+			long size = newTotal * imageSize;
+
+			// CREATE A NEW SERIES WITH ALL IMGES !
 			
-			NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
 			
-			for( i = start ; i < end; i += interval)
+			emptyData = malloc( size);
+			if( emptyData)
 			{
-				[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
-				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
-				memcpy( [[newPixList lastObject] fImage], [[pixList objectAtIndex: i] fImage], imageSize);
-				[[newPixList lastObject] setTot: newTotal];
-				[[newPixList lastObject] setFrameNo: [newPixList count]-1];
-				[newDcmList addObject: [[viewerController fileList] objectAtIndex: i] ];
+				NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+				NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+				
+				NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
+				
+				for( i = start ; i < end; i += interval)
+				{
+					[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
+					[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
+					memcpy( [[newPixList lastObject] fImage], [[pixList objectAtIndex: i] fImage], imageSize);
+					[[newPixList lastObject] setTot: newTotal];
+					[[newPixList lastObject] setFrameNo: [newPixList count]-1];
+					[newDcmList addObject: [[viewerController fileList] objectAtIndex: i] ];
+				}
+				
+				// CREATE A SERIES
+				new2DViewer = [viewerController newWindow	:newPixList
+															:newDcmList
+															:newData];
 			}
-			
-			// CREATE A SERIES
-			new2DViewer = [viewerController newWindow	:newPixList
-														:newDcmList
-														:newData];
 		}
-		
+		else
+		{
+			for( i = start ; i > end; i += interval) newTotal++;
+			long imageSize = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
+			long size = newTotal * imageSize;
+			
+			// CREATE A NEW SERIES WITH ALL IMGES !
+			
+			emptyData = malloc( size);
+			if( emptyData)
+			{
+				NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+				NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+				
+				NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
+				
+				for( i = start ; i > end; i += interval)
+				{
+					[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
+					[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
+					memcpy( [[newPixList lastObject] fImage], [[pixList objectAtIndex: i] fImage], imageSize);
+					[[newPixList lastObject] setTot: newTotal];
+					[[newPixList lastObject] setFrameNo: [newPixList count]-1];
+					[newDcmList addObject: [[viewerController fileList] objectAtIndex: i] ];
+				}
+				
+				// CREATE A SERIES
+				new2DViewer = [viewerController newWindow	:newPixList
+															:newDcmList
+															:newData];
+			}
+		}
 		// Close the waiting window
 		[viewerController endWaitWindow: waitWindow];
 			

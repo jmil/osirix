@@ -20,7 +20,7 @@
 		CE04AC4B07015B5100245AA0 /* ReduceSeries.m in Sources */ = {isa = PBXBuildFile; fileRef = CE04AC4907015B5100245AA0 /* ReduceSeries.m */; };
 		CE04AC4C07015B5100245AA0 /* ReduceSeries.h in Headers */ = {isa = PBXBuildFile; fileRef = CE04AC4A07015B5100245AA0 /* ReduceSeries.h */; };
 		CE04AC5D07015BA500245AA0 /* ReduceSeries_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CE04AC5C07015BA500245AA0 /* ReduceSeries_Prefix.pch */; };
-		CE7E97F50701737800627E32 /* DialogReduce.nib in Resources */ = {isa = PBXBuildFile; fileRef = CE7E97F30701737800627E32 /* DialogReduce.nib */; };
+		CE9B15990CC7582400B2F120 /* DialogReduce.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE9B15970CC7582400B2F120 /* DialogReduce.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +41,7 @@
 		CE04AC4907015B5100245AA0 /* ReduceSeries.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ReduceSeries.m; sourceTree = "<group>"; };
 		CE04AC4A07015B5100245AA0 /* ReduceSeries.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ReduceSeries.h; sourceTree = "<group>"; };
 		CE04AC5C07015BA500245AA0 /* ReduceSeries_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ReduceSeries_Prefix.pch; sourceTree = "<group>"; };
-		CE7E97F40701737800627E32 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/DialogReduce.nib; sourceTree = "<group>"; };
+		CE9B15980CC7582400B2F120 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DialogReduce.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +81,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CE7E97F30701737800627E32 /* DialogReduce.nib */,
+				CE9B15970CC7582400B2F120 /* DialogReduce.xib */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -219,7 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
-				CE7E97F50701737800627E32 /* DialogReduce.nib in Resources */,
+				CE9B15990CC7582400B2F120 /* DialogReduce.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,12 +255,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		CE7E97F30701737800627E32 /* DialogReduce.nib */ = {
+		CE9B15970CC7582400B2F120 /* DialogReduce.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CE7E97F40701737800627E32 /* English */,
+				CE9B15980CC7582400B2F120 /* English */,
 			);
-			name = DialogReduce.nib;
+			name = DialogReduce.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
