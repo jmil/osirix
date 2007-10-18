@@ -43,7 +43,6 @@ TODO:
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
-- Plugin T2 Window crash
 
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
