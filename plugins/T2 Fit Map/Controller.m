@@ -27,7 +27,7 @@
 		NSMutableArray		*pixList;
 		long				i;
 		
-		pixList = [[filter viewerController] pixList];
+		pixList = [pixListArrays objectAtIndex: 0];
 		
 		if( [[fillMode selectedCell] tag] == 1)		// Interval
 		{
@@ -57,7 +57,7 @@
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [[[filter viewerController] pixList] count];
+	return [[pixListArrays objectAtIndex: 0] count];
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
@@ -121,11 +121,11 @@
 	background = [backgroundSignal floatValue];
 //	NSLog(@"%2.2f", background);
 	
-	pixList = [[filter viewerController] pixList];
+	pixList = [pixListArrays objectAtIndex: 0];
 
 	if( curROI == 0L)
 	{
-		[resultView setArrays: [pixList count] :0L :0L :0L :TEValues :[logScale state]];
+		[resultView setArrays: [[pixListArrays objectAtIndex: 0] count] :0L :0L :0L :TEValues :[logScale state]];
 		return;
 	}
 
@@ -173,8 +173,6 @@
 	[meanT2Value setStringValue: [NSString stringWithFormat:@"Mean T2: %2.2f ms, M0: %2.2f", 1000.0 / (-slope), exp( intercept)]];
 }
 
-
-
 -(IBAction) compute:(id) sender
 {
 	// Contains a list of DCMPix objects: they contain the pixels of current series
@@ -183,12 +181,12 @@
 	DCMPix				*firstPix;
 	long				i, x, y;
 	unsigned char		*emptyData;
-	float				*dstImage, kValue;
+	float				*dstImage;
 	float				factor, threshold, thresholdSet, minValue, background;
 	
 	BOOL				meanMode;
-	
-	pixListA = [[filter viewerController] pixList];
+		
+	pixListA = [pixListArrays objectAtIndex: 0];
 	
 	[self refreshGraph: self];
 	
@@ -196,7 +194,7 @@
 	
 	if( new2DViewer == 0L)
 	{
-		long size = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
+		long size = sizeof(float) * [firstPix pwidth] * [firstPix pheight] * [pixListResult count];
 		
 		emptyData = malloc( size);
 		memset( emptyData, 0, size);
@@ -204,8 +202,8 @@
 		NSData	*newData = [NSData dataWithBytes:emptyData length: size];
 		
 		// CREATE A SERIE WITH ONE IMAGE
-		new2DViewer = [[filter viewerController] newWindow		:[NSMutableArray arrayWithObject: [[[pixListA objectAtIndex:0] copy] autorelease]]
-																:[NSMutableArray arrayWithObject: [[[filter viewerController] fileList] objectAtIndex:0]]
+		new2DViewer = [[filter viewerController] newWindow		: pixListResult
+																: fileListResult
 																:newData];
 		free( emptyData);
 		
@@ -234,38 +232,39 @@
 	
 	dstImage = [[pixListC objectAtIndex: 0] fImage];
 	
-	// Loop through all images contained in the current series
-	for( x = 0; x < [firstPix pwidth]; x++)
+	for( NSArray *teSequence in pixListArrays)
 	{
-		for( y = 0; y < [firstPix pheight]; y++)
+		// Loop through all images contained in the current series
+		for( x = 0; x < [firstPix pwidth]; x++)
 		{
-			if( [firstPix isInROI: curROI :NSMakePoint(x, y)])
+			for( y = 0; y < [firstPix pheight]; y++)
 			{
-				if( meanMode)
+				if( [firstPix isInROI: curROI :NSMakePoint(x, y)])
 				{
-				//	minValue = slope * factor;
-					dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
-				}
-				else
-				{
-					float values[ 1000];
-					long pos = x + y*[firstPix pwidth];
-					
-					for( i = 0; i < [pixListA count]; i++)
+					if( meanMode)
 					{
-						values[ i] = log( [[pixListA objectAtIndex: i] fImage] [ pos] - background);
+					//	minValue = slope * factor;
+						dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
 					}
-					
-					[self computeLinearRegression: [pixListA count] :TEValues :values :&intercept :&slope];
-					
-					dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
-				//	if( slope*factor < minValue) minValue = -slope * factor;
+					else
+					{
+						float values[ 1000];
+						long pos = x + y*[firstPix pwidth];
+						
+						for( i = 0; i < [teSequence count]; i++)
+						{
+							values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+						}
+						
+						[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
+						
+						dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
+					//	if( slope*factor < minValue) minValue = -slope * factor;
+					}
 				}
 			}
 		}
 	}
-	
-//	[[pixListC objectAtIndex: 0] fillROI: curROI :0 :-999999 :99999 :YES];
 	
 	// We modified the pixels: OsiriX please update the display!
 	[new2DViewer needsDisplayUpdate];
@@ -313,12 +312,98 @@
 	curROI = 0L;
 	filter = f;
 	blendedWindow = [[filter viewerController] blendedWindow];
+
+
+
+	NSArray *pixListA = [[filter viewerController] pixList];
 	
+	// Try to identify if it is a volumic TE sequence: multiple volumes of TE sequence
+	
+	float origin[ 3];
+	int interval = 0;
+	
+	origin[0] = [[pixListA objectAtIndex:0] originX];
+	origin[1] = [[pixListA objectAtIndex:0] originY];
+	origin[2] = [[pixListA objectAtIndex:0] originZ];
+	
+	for( DCMPix *pix in pixListA)
+	{
+		if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
+		{
+			break;
+		}
+		
+		interval++;
+	}
+	
+	BOOL volumic = NO;
+	
+	if( interval != [pixListA count])
+	{
+		NSLog( @"It's maybe a volumic TE sequence");
+		
+		volumic = YES;
+		
+		origin[0] = [[pixListA objectAtIndex:0] originX];
+		origin[1] = [[pixListA objectAtIndex:0] originY];
+		origin[2] = [[pixListA objectAtIndex:0] originZ];
+		
+		for( i = 0; i < [pixListA count]; i += interval)
+		{
+			DCMPix *pix = [pixListA objectAtIndex: i];
+			
+			if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
+			{
+				NSLog( @"No... it's not a volumic TE sequence.... but WHAT is it????");
+				volumic = NO;
+			}
+		}
+		
+		if( volumic)
+			NSLog(@"yes! it's a volumic sequence");
+	}
+	
+	[pixListArrays release];
+	pixListArrays = [[NSMutableArray array] retain];
+	
+	[pixListResult release];
+	pixListResult = [[NSMutableArray array] retain];
+	
+	[fileListResult release];
+	fileListResult = [[NSMutableArray array] retain];
+	
+	if( volumic)
+	{
+		for( int s = 0; s < interval; s++)
+		{
+			NSMutableArray *l = [NSMutableArray array];
+			
+			for( i = s; i < [pixListA count]; i += interval)
+				[l addObject: [pixListA objectAtIndex: i]];
+			
+			[pixListArrays addObject: l];
+			
+			[pixListResult addObject: [[[pixListA objectAtIndex: s] copy] autorelease]];
+			[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: s]];
+		}
+	}
+	else
+	{
+		[pixListArrays addObject: pixListA];
+		[pixListResult addObject: [[[pixListA objectAtIndex:0] copy] autorelease]];
+		[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: 0]];
+	}
+
+
+
+
+
+
 	// Try to find the TEs...
 	
-	for( i = 0; i < [[[filter viewerController] pixList] count]; i++)
+	for( i = 0; i < [[pixListArrays objectAtIndex: 0] count]; i++)
 	{
-		TEValues[ i] = [[[[[filter viewerController] pixList] objectAtIndex: i] echotime] floatValue] / 1000.;
+		TEValues[ i] = [[[[pixListArrays objectAtIndex: 0] objectAtIndex: i] echotime] floatValue] / 1000.;
 	}
 	
 	[TETable reloadData];
@@ -391,6 +476,10 @@
 {
     NSLog(@"My window is deallocating a pointer");
 	
+	[pixListArrays release];
+	[pixListResult release];
+	[fileListResult release];
+
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	
 	[super dealloc];

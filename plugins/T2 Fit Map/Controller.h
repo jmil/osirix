@@ -29,6 +29,11 @@
 	IBOutlet		NSWindow			*fillWindow;
 	IBOutlet		NSTextField			*startFill, *endFill, *intervalFill;
 	IBOutlet		NSMatrix			*fillMode;
+	
+					NSMutableArray		*pixListArrays;
+					
+					NSMutableArray		*pixListResult;
+					NSMutableArray		*fileListResult;
 }
 
 -(IBAction) compute:(id) sender;
