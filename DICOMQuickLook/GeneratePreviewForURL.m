@@ -6,7 +6,8 @@
 #import "DCMPix.h"
 #import "dicomFile.h"
 
-static PapyInitDone = NO;
+#include "Papyrus3.h"
+static BOOL PapyInitDone = NO;
 
 NSString* stringFromData( NSString *a, NSString *b)
 {
