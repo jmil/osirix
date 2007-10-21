@@ -44,6 +44,7 @@ TODO:
 - Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
+- Export multiple studies of same patient: replace folder?
 
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
