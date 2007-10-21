@@ -37,6 +37,7 @@
 - Built-in HTTP Server with XML-RPC protocol for HIS/RIS Integration - See http://www.osirix-viewer.com/XML-RPC.pdf
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 - Faster and more robust DB sharing
+- Possibility to merge series or studies
 
 TODO:
 - Get Info window not displayed in the French Version?
