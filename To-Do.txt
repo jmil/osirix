@@ -41,7 +41,6 @@
 
 TODO:
 - Get Info window not displayed in the French Version?
-- Check ITK 3D
 - Growl 64 bits
 - Test GPU rendering
 
