@@ -57,7 +57,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					1000,
+					243,
 					20,
 					48,
 					43,
@@ -96,8 +96,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 211274785;
-			PBXWorkspaceStateSaveDate = 211274785;
+			PBXPerProjectTemplateStateSaveDate = 214903163;
+			PBXWorkspaceStateSaveDate = 214903163;
 		};
 		perUserProjectItems = {
 			A907E22B0C046D93006A861F = A907E22B0C046D93006A861F /* PBXBookmark */;
@@ -2358,8 +2358,9 @@
 	};
 	A9FA56530B9C47A1009D7BF8 /* XRayTemplateWindowController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1331, 9352}}";
-			sepNavSelRange = "{6504, 4}";
+			sepNavIntBoundsRect = "{{0, 0}, {1303, 9352}}";
+			sepNavSelRange = "{4339, 28}";
+			sepNavVisRange = "{3631, 1805}";
 			sepNavVisRect = "{{0, 2883}, {1331, 856}}";
 			sepNavWindowFrame = "{{15, 61}, {1253, 962}}";
 		};
@@ -2387,8 +2388,9 @@
 	};
 	A9FBB4090BAEC5850032F6CA /* XRayTemplate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1331, 1512}}";
-			sepNavSelRange = "{1377, 40}";
+			sepNavIntBoundsRect = "{{0, 0}, {1303, 1302}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 910}";
 			sepNavVisRect = "{{0, 642}, {1331, 856}}";
 		};
 	};
@@ -2408,15 +2410,17 @@
 	};
 	A9FCA4B30B9EF58700939475 /* XRayTemplateTableView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1331, 859}}";
-			sepNavSelRange = "{250, 11}";
+			sepNavIntBoundsRect = "{{0, 0}, {1303, 741}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 385}";
 			sepNavVisRect = "{{0, 0}, {1331, 859}}";
 		};
 	};
 	A9FCA4B40B9EF58700939475 /* XRayTemplateTableView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {776, 1246}}";
-			sepNavSelRange = "{1014, 18}";
+			sepNavIntBoundsRect = "{{0, 0}, {1303, 1202}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1878}";
 			sepNavVisRect = "{{0, 259}, {776, 421}}";
 		};
 	};
@@ -2429,9 +2433,9 @@
 	};
 	ABA48A660680BB690089EB4F /* XRayTemplatesPluginFilter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1742, 1778}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1742, 1666}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{794, 1619}";
+			sepNavVisRange = "{769, 1670}";
 			sepNavVisRect = "{{0, 258}, {1233, 618}}";
 			sepNavWindowFrame = "{{61, 19}, {1253, 962}}";
 		};
