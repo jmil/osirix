@@ -38,6 +38,7 @@
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 - Faster and more robust DB sharing
 - Possibility to merge series or studies
+- Layer ROIs from PNG, JPEG (The *ultimate* annotation tool)
 
 TODO:
 - Get Info window not displayed in the French Version?
