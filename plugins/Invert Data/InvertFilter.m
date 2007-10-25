@@ -12,7 +12,7 @@
 
 - (long) filterImage:(NSString*) menuName
 {
-	long			i, x, y, z;
+	long			i, x, z;
 	float			*fImage;
 	unsigned char   *rgbImage;
 
