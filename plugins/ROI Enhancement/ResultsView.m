@@ -15,6 +15,8 @@
 	if(minValues) free( minValues);
 	if(maxValues) free( maxValues);
 	if(meanValues) free( meanValues);
+	
+	[super dealloc];
 }
 
 - (id)initWithFrame:(NSRect)frame {
