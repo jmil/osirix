@@ -205,9 +205,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9B3208AC846D00D0C1EE /* Build configuration list for PBXProject "OrthogonalReslice" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Invert */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* OrthogonalReslice */,
 			);
@@ -289,7 +291,6 @@
 				INSTALL_PATH = "@executable_path/../Plug-ins";
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -309,108 +310,19 @@
 			};
 			name = Development;
 		};
-		CE6A9B3008AC846D00D0C1EE /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ALTIVEC_EXTENSIONS = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = OrthogonalReslice_prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-undefined",
-					dynamic_lookup,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = OrthogonalReslice;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		CE6A9B3108AC846D00D0C1EE /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ALTIVEC_EXTENSIONS = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = OrthogonalReslice_prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-undefined",
-					dynamic_lookup,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = OrthogonalReslice;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
 		CE6A9B3308AC846D00D0C1EE /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
-					ppc,
 					i386,
+					ppc,
+					ppc64,
+					x86_64,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Development;
-		};
-		CE6A9B3408AC846D00D0C1EE /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Deployment;
-		};
-		CE6A9B3508AC846D00D0C1EE /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Default;
 		};
 /* End XCBuildConfiguration section */
 
@@ -419,8 +331,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9B2F08AC846D00D0C1EE /* Development */,
-				CE6A9B3008AC846D00D0C1EE /* Deployment */,
-				CE6A9B3108AC846D00D0C1EE /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
@@ -429,8 +339,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9B3308AC846D00D0C1EE /* Development */,
-				CE6A9B3408AC846D00D0C1EE /* Deployment */,
-				CE6A9B3508AC846D00D0C1EE /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;

@@ -10,16 +10,17 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
      PURPOSE.
 =========================================================================*/
 
-/*
-Root class for the Viewer Window Controllers such as ViewerController
-and Window3DController
+/** \brief base class for Window Controllers in OsiriX
+*
+*Root class for the Viewer Window Controllers such as ViewerController
+*and Window3DController
 */
 
 #import <Cocoa/Cocoa.h>
@@ -34,8 +35,13 @@ enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtr
 
 - (NSMutableArray*) pixList;
 - (void)windowWillClose:(NSNotification *)notification;
-
+- (void) addToUndoQueue:(NSString*) what;
 - (int)blendingType;
+
+- (IBAction) redo:(id) sender;
+- (IBAction) undo:(id) sender;
+
+- (void) applyShading:(id) sender;
 
 #pragma mark-
 #pragma mark current Core Data Objects
@@ -43,6 +49,6 @@ enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtr
 - (NSManagedObject *)currentSeries;
 - (NSManagedObject *)currentImage;
 
--(float)curWW;
--(float)curWL;
+- (float)curWW;
+- (float)curWL;
 @end
