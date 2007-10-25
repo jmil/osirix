@@ -124,8 +124,8 @@
 					{
 						for( y = 0; y < [pixList count]; y++)
 						{
-							BlockMoveData(	[[pixList objectAtIndex: y] fImage] + i * [[pixList objectAtIndex: y] pwidth],
-											[curPix fImage] + ([pixList count]-y-1) * newX,
+							memcpy(			[curPix fImage] + ([pixList count]-y-1) * newX,
+											[[pixList objectAtIndex: y] fImage] + i * [[pixList objectAtIndex: y] pwidth],
 											newX * sizeof( float));
 						}
 					}
@@ -133,8 +133,8 @@
 					{
 						for( y = 0; y < [pixList count]; y++)
 						{
-							BlockMoveData(	[[pixList objectAtIndex: y] fImage] + i * [[pixList objectAtIndex: y] pwidth],
-											[curPix fImage] + y * newX,
+							memcpy(			[curPix fImage] + y * newX,
+											[[pixList objectAtIndex: y] fImage] + i * [[pixList objectAtIndex: y] pwidth],
 											newX * sizeof( float));
 						}
 					}

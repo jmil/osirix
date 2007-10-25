@@ -13,15 +13,26 @@
 =========================================================================*/
 
 
-#import <Foundation/Foundation.h>
-#import "Scheduler.h"
 
-@interface StaticScheduler : Scheduler {
-    @private
-    int _numberOfThreadsLeft; // Used to keep track of how many threads already have work
+
+#import <Foundation/Foundation.h>
+
+/** \brief Wrapper for NSPoint */
+
+@interface MyPoint : NSObject  <NSCoding>
+{
+	NSPoint pt;
 }
 
--(void)performScheduleForWorkUnits:(NSSet *)workUnits;
--(NSSet *)_workUnitsToExecuteForRemainingUnits:(NSSet *)remainingUnits;
++ (MyPoint*) point: (NSPoint) a;
+
+- (id) initWithPoint:(NSPoint) a;
+- (void) setPoint:(NSPoint) a;
+- (float) y;
+- (float) x;
+- (NSPoint) point;
+- (BOOL) isEqualToPoint:(NSPoint) a;
+- (BOOL) isNearToPoint:(NSPoint) a :(float) scale :(float) ratio;
+- (void) move:(float) x :(float) y;
 
 @end
