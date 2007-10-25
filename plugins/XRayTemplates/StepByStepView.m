@@ -110,7 +110,7 @@
 	}
 
 	float height = [[stepViews objectAtIndex:0] frame].origin.y + [[stepViews objectAtIndex:0] frame].size.height;
-	float viewHeight = [self frame].size.height;
+//	float viewHeight = [self frame].size.height;
 	
 //	float shift = viewHeight - height;	
 //	for(i=[stepViews count]-1; i>=0; i--)

@@ -2,7 +2,7 @@
 //  XRayTemplateTableView.h
 //  XRayTemplatesPlugin
 //
-//  Created by joris on 07/03/07.
+//  Created by Joris Heuberger on 07/03/07.
 //  Copyright 2007 OsiriX Team. All rights reserved.
 //
 

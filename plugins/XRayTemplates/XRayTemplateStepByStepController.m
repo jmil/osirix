@@ -2,7 +2,7 @@
 //  XRayTemplateStepByStepController.m
 //  XRayTemplatesPlugin
 //
-//  Created by joris on 04/04/07.
+//  Created by Joris Heuberger on 04/04/07.
 //  Copyright 2007 OsiriX Team. All rights reserved.
 //
 
@@ -12,7 +12,6 @@
 #import "OsiriX/DCM.h"
 
 #define STANDARD_MAGNIFICATION_FACTOR 1.15
-//#define BETAVERSION
 
 #import </usr/include/objc/objc-class.h>
 void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
@@ -136,28 +135,7 @@ void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
 //	[stepByStep showFirstStep];
 //	[[self window] orderFront:self];
 	
-	[standardMagnificationFactorTextField setFloatValue:STANDARD_MAGNIFICATION_FACTOR];
-	
-	#ifdef BETAVERSION
-		if(betaVersionTextField==nil)
-		{
-			NSRunCriticalAlertPanel(@"Warning", @"This plugin is a Beta version. Don't use it in clinical practice!", @"OK", nil, nil);
-			[self release];
-		}
-		else
-		{
-			[betaVersionTextField setFrameOrigin:NSMakePoint(0.0,0.0)];
-			[betaVersionTextField setFrameSize:NSMakeSize(280,17)];
-			[betaVersionTextField setStringValue:@"Beta version! No clinical use!"];
-			[[self window] setTitle:@"Beta version! No clinical use!"];
-			[betaVersionTextField setHidden:NO];
-			[betaVersionTextField setEnabled:YES];
-			[betaVersionTextField setTextColor:[NSColor whiteColor]];
-			[betaVersionTextField setBackgroundColor:[NSColor clearColor]];
-			[betaVersionTextField setDrawsBackground:NO];
-		}
-	#endif
-	NSLog(@"awakeFromNib END");
+	[standardMagnificationFactorTextField setFloatValue:STANDARD_MAGNIFICATION_FACTOR];	
 }
 
 - (void)dealloc
@@ -2102,13 +2080,6 @@ float distanceNSPoint(NSPoint p1, NSPoint p2)
 	if(maxLength<30) maxLength = 30;
 	
 	NSString *separator = [@"_" stringByPaddingToLength:maxLength withString: @"_" startingAtIndex:0];
-
-#ifdef BETAVERSION
-	[text appendString:@"BETA VERSION - DON'T USE FOR CLINICAL DECISIONS"];
-	[text appendString:@"\n"];
-	[text appendString:separator];
-	[text appendString:@"\n"];
-#endif
 
 	[text appendString:@"Infos"];
 	[text appendString:@"\n"];

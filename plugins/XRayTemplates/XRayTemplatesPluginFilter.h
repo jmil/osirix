@@ -2,7 +2,7 @@
 //  XRayTemplatesPluginFilter.h
 //  XRayTemplatesPlugin
 //
-//  Copyright (c) 2007 Joris. All rights reserved.
+//  Copyright (c) 2007 Joris Heuberger. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

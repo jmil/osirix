@@ -49,6 +49,8 @@
 		A9459DD90BE1F5DF000E85FF /* SendController.h in Headers */ = {isa = PBXBuildFile; fileRef = A9459DD80BE1F5DF000E85FF /* SendController.h */; };
 		A97756600CD0892F00639826 /* NSImage+FrameworkImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A977565E0CD0892F00639826 /* NSImage+FrameworkImage.m */; };
 		A97756610CD0892F00639826 /* NSImage+FrameworkImage.h in Headers */ = {isa = PBXBuildFile; fileRef = A977565F0CD0892F00639826 /* NSImage+FrameworkImage.h */; };
+		A97756920CD08C0900639826 /* NSImage+XRayTemplatePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = A97756900CD08C0900639826 /* NSImage+XRayTemplatePlugin.h */; };
+		A97756930CD08C0900639826 /* NSImage+XRayTemplatePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = A97756910CD08C0900639826 /* NSImage+XRayTemplatePlugin.m */; };
 		A9969D5F0C0C813600B12D9A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49B7048680CD000E48DA /* Info.plist */; };
 		A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */; };
 		A9F95E900BC37FE400BD8AC8 /* DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = A9F95E860BC37FE400BD8AC8 /* DisclosureBox.h */; };
@@ -147,6 +149,8 @@
 		A9459DD80BE1F5DF000E85FF /* SendController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SendController.h; sourceTree = "<group>"; };
 		A977565E0CD0892F00639826 /* NSImage+FrameworkImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+FrameworkImage.m"; sourceTree = "<group>"; };
 		A977565F0CD0892F00639826 /* NSImage+FrameworkImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+FrameworkImage.h"; sourceTree = "<group>"; };
+		A97756900CD08C0900639826 /* NSImage+XRayTemplatePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+XRayTemplatePlugin.h"; sourceTree = "<group>"; };
+		A97756910CD08C0900639826 /* NSImage+XRayTemplatePlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+XRayTemplatePlugin.m"; sourceTree = "<group>"; };
 		A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		A9F95E860BC37FE400BD8AC8 /* DisclosureBox.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DisclosureBox.h; sourceTree = "<group>"; };
 		A9F95E870BC37FE400BD8AC8 /* DisclosureBox.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DisclosureBox.m; sourceTree = "<group>"; };
@@ -365,6 +369,8 @@
 				A9FBB4180BAECA7F0032F6CA /* ZimmerTemplate.m */,
 				A9F95EAF0BC3806800BD8AC8 /* XRayTemplateStepByStepController.h */,
 				A9F95EB00BC3806800BD8AC8 /* XRayTemplateStepByStepController.m */,
+				A97756900CD08C0900639826 /* NSImage+XRayTemplatePlugin.h */,
+				A97756910CD08C0900639826 /* NSImage+XRayTemplatePlugin.m */,
 			);
 			name = XRayTemplatesPluginFilter;
 			sourceTree = "<group>";
@@ -422,6 +428,7 @@
 				A925466C0BDF5DC0000B6082 /* NFHUDSliderCell.h in Headers */,
 				A9459DD90BE1F5DF000E85FF /* SendController.h in Headers */,
 				A97756610CD0892F00639826 /* NSImage+FrameworkImage.h in Headers */,
+				A97756920CD08C0900639826 /* NSImage+XRayTemplatePlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,6 +545,7 @@
 				A925466B0BDF5DC0000B6082 /* NFHUDSlider.m in Sources */,
 				A925466D0BDF5DC0000B6082 /* NFHUDSliderCell.m in Sources */,
 				A97756600CD0892F00639826 /* NSImage+FrameworkImage.m in Sources */,
+				A97756930CD08C0900639826 /* NSImage+XRayTemplatePlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

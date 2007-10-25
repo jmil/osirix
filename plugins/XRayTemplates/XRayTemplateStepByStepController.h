@@ -2,7 +2,7 @@
 //  XRayTemplateStepByStepController.h
 //  XRayTemplatesPlugin
 //
-//  Created by joris on 04/04/07.
+//  Created by Joris Heuberger on 04/04/07.
 //  Copyright 2007 OsiriX Team. All rights reserved.
 //
 
@@ -62,8 +62,6 @@
 	IBOutlet NSTextField *standardMagnificationFactorTextField, *manualCalibrationTextField;
 	float magnificationFactor;
 	float pixelSpacingX, pixelSpacingY;
-	
-	IBOutlet NSTextField *betaVersionTextField;
 }
 
 #pragma mark -
