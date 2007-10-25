@@ -56,7 +56,7 @@
 		A9A90A7A0A75015E005A1CA7 /* ClusteringController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ClusteringController.m; sourceTree = "<group>"; };
 		A9A90A8B0A7501B8005A1CA7 /* ClusterIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ClusterIcon.tiff; sourceTree = "<group>"; };
 		A9A90A8E0A7501FD005A1CA7 /* browserController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = browserController.h; sourceTree = "<group>"; };
-		AB5D36050680E57E00F4007A /* Clustering.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Clustering.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB5D36050680E57E00F4007A /* Clustering.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Clustering.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABA48A640680BB600089EB4F /* ClusteringFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ClusteringFilter.h; sourceTree = "<group>"; };
 		ABA48A660680BB690089EB4F /* ClusteringFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ClusteringFilter.m; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB5D36050680E57E00F4007A /* Clustering.plugin */,
+				AB5D36050680E57E00F4007A /* Clustering.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -243,7 +243,7 @@
 			name = Clustering;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB5D36050680E57E00F4007A /* Clustering.plugin */;
+			productReference = AB5D36050680E57E00F4007A /* Clustering.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -252,9 +252,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Clustering" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Clustering */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* Clustering */,
 			);
@@ -347,7 +349,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

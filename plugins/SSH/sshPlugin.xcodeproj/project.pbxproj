@@ -30,7 +30,7 @@
 		7E6CE364088FE908009FBFBD /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ssh.nib; sourceTree = "<group>"; };
 		7E80F4E308F5A89D00DB4388 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OsiriX.framework; sourceTree = "<absolute>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
-		AB5D36050680E57E00F4007A /* sshFilter.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sshFilter.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB5D36050680E57E00F4007A /* sshFilter.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sshFilter.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABA48A640680BB600089EB4F /* SSHFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SSHFilter.h; sourceTree = "<group>"; };
 		ABA48A660680BB690089EB4F /* SSHFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SSHFilter.m; sourceTree = "<group>"; };
 		BF44EFD10A6F1ECC005B0FA1 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PluginFilter.h; path = ../../osirix/PluginFilter.h; sourceTree = SOURCE_ROOT; };
@@ -113,7 +113,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB5D36050680E57E00F4007A /* sshFilter.plugin */,
+				AB5D36050680E57E00F4007A /* sshFilter.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,7 +175,7 @@
 			name = ssh;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB5D36050680E57E00F4007A /* sshFilter.plugin */;
+			productReference = AB5D36050680E57E00F4007A /* sshFilter.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -184,9 +184,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = BF90E90E088F520B0078E0EC /* Build configuration list for PBXProject "sshPlugin" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Duplicate */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* ssh */,
 			);
@@ -283,7 +285,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

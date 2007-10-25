@@ -51,7 +51,7 @@
 		AB12D36C068344C600B874E4 /* EjectionFraction.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = EjectionFraction.m; sourceTree = "<group>"; };
 		AB12D390068344DC00B874E4 /* EjectionFraction.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = EjectionFraction.pch; sourceTree = "<group>"; };
 		AB15793B067FB3BE007D2552 /* PluginFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = PluginFilter.m; sourceTree = "<group>"; };
-		AB1BC1C406834F460041F4A4 /* Ejection Fraction.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ejection Fraction.plugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB1BC1C406834F460041F4A4 /* Ejection Fraction.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ejection Fraction.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB37E69906822C3900244A70 /* ResultsCardiacController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ResultsCardiacController.m; sourceTree = "<group>"; };
 		AB37E69A06822C3900244A70 /* ResultsCardiacController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ResultsCardiacController.h; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB1BC1C406834F460041F4A4 /* Ejection Fraction.plugin */,
+				AB1BC1C406834F460041F4A4 /* Ejection Fraction.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,7 +223,7 @@
 			name = EjectionFraction;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB1BC1C406834F460041F4A4 /* Ejection Fraction.plugin */;
+			productReference = AB1BC1C406834F460041F4A4 /* Ejection Fraction.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -330,7 +330,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

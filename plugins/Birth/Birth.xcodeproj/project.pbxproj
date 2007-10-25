@@ -29,7 +29,7 @@
 		69BACD800BCF65E5008362D2 /* BirthFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BirthFilter.h; sourceTree = "<group>"; };
 		69BACD810BCF65E5008362D2 /* BirthFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = BirthFilter.m; sourceTree = "<group>"; };
 		69BACD840BCF65FF008362D2 /* Birth_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Birth_Prefix.pch; sourceTree = "<group>"; };
-		69BACD860BCF663F008362D2 /* Birth.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Birth.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		69BACD860BCF663F008362D2 /* Birth.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Birth.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
 		ABB7633A067FB2A8000912C1 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				69BACD860BCF663F008362D2 /* Birth.plugin */,
+				69BACD860BCF663F008362D2 /* Birth.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +186,7 @@
 			name = Birth;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = 69BACD860BCF663F008362D2 /* Birth.plugin */;
+			productReference = 69BACD860BCF663F008362D2 /* Birth.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -285,7 +285,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

@@ -49,7 +49,7 @@
 		ABC38E9E06824379006E9132 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		ABC38EB506824392006E9132 /* OpenGLWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = OpenGLWindow.nib; sourceTree = "<group>"; };
 		ABC38EB706824567006E9132 /* Star.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Star.bmp; sourceTree = "<group>"; };
-		ABC3904B06824E4A006E9132 /* OpenGL.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenGL.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABC3904B06824E4A006E9132 /* OpenGL.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenGL.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ABC3904B06824E4A006E9132 /* OpenGL.plugin */,
+				ABC3904B06824E4A006E9132 /* OpenGL.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,7 +206,7 @@
 			name = OpenGL;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = ABC3904B06824E4A006E9132 /* OpenGL.plugin */;
+			productReference = ABC3904B06824E4A006E9132 /* OpenGL.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -215,9 +215,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9B2208AC846400D0C1EE /* Build configuration list for PBXProject "OpenGL" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Duplicate */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* OpenGL */,
 			);
@@ -307,7 +309,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

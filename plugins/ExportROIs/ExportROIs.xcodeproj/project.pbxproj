@@ -34,7 +34,7 @@
 		82128235092EBCE20093B432 /* FileTypeSelector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FileTypeSelector.h; sourceTree = "<group>"; };
 		82128237092EBD0A0093B432 /* FileTypeSelector.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FileTypeSelector.m; sourceTree = "<group>"; };
 		8253FEE0092DF8A4008956FB /* Wait.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Wait.h; sourceTree = "<group>"; };
-		82CD775408DDAB9100BDF92A /* ExportROIs.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExportROIs.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		82CD775408DDAB9100BDF92A /* ExportROIs.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExportROIs.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
 		ABB7633A067FB2A8000912C1 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				82CD775408DDAB9100BDF92A /* ExportROIs.plugin */,
+				82CD775408DDAB9100BDF92A /* ExportROIs.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -208,7 +208,7 @@
 			name = ExportROIs;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = 82CD775408DDAB9100BDF92A /* ExportROIs.plugin */;
+			productReference = 82CD775408DDAB9100BDF92A /* ExportROIs.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -308,7 +308,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

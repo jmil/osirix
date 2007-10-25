@@ -32,7 +32,7 @@
 		32DBCF630370AF2F00C91783 /* Duplicate_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Duplicate_Prefix.pch; sourceTree = "<group>"; };
 		7E6CE364088FE908009FBFBD /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ConversionInfo.nib; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
-		AB5D36050680E57E00F4007A /* PDFtoDICOM.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFtoDICOM.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB5D36050680E57E00F4007A /* PDFtoDICOM.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFtoDICOM.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB89B4830B26A89600AF2218 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../../osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 		ABA48A640680BB600089EB4F /* DCMPDFImportFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPDFImportFilter.h; sourceTree = "<group>"; };
 		ABA48A660680BB690089EB4F /* DCMPDFImportFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DCMPDFImportFilter.m; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB5D36050680E57E00F4007A /* PDFtoDICOM.plugin */,
+				AB5D36050680E57E00F4007A /* PDFtoDICOM.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,7 +197,7 @@
 			name = PDFToDICOM;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB5D36050680E57E00F4007A /* PDFtoDICOM.plugin */;
+			productReference = AB5D36050680E57E00F4007A /* PDFtoDICOM.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -308,7 +308,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;

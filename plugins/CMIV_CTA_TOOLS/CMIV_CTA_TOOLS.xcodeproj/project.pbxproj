@@ -2751,7 +2751,7 @@
 		B98CF5570BE2BF8D00ED53C4 /* DCMDataContainer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMDataContainer.h; sourceTree = "<group>"; };
 		B98D355C0C4CE6E100DA7EA2 /* spline.C */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = spline.C; sourceTree = "<group>"; };
 		B98D355D0C4CE6E100DA7EA2 /* spline.H */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; path = spline.H; sourceTree = "<group>"; };
-		B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMIV_CTA_TOOLS.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMIV_CTA_TOOLS.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99604070C130ED100924E8C /* VRMakeObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VRMakeObject.h; path = ../VRMakeObject.h; sourceTree = "<group>"; };
 		B9960E810C5A7F01004A4E89 /* CMIVSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVSlider.h; sourceTree = "<group>"; };
 		B9960E820C5A7F01004A4E89 /* CMIVSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVSlider.m; sourceTree = "<group>"; };
@@ -4079,7 +4079,7 @@
 		B9E39DE70B03648700387A56 /* CMIV_CTA_TOOLS.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIV_CTA_TOOLS.h; sourceTree = "<group>"; };
 		B9E39DE80B03648700387A56 /* CMIV_CTA_TOOLS.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIV_CTA_TOOLS.mm; sourceTree = "<group>"; };
 		B9E39DEB0B0364AB00387A56 /* CMIV_CTA_TOOLS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIV_CTA_TOOLS_Prefix.pch; sourceTree = "<group>"; };
-		B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMIV_CTA_TOOLS.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMIV_CTA_TOOLS.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9E39E6B0B0370B200387A56 /* Chopper_Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Chopper_Panel.nib; sourceTree = "<group>"; };
 		B9E3A0430B048ED300387A56 /* CMIVChopperController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVChopperController.h; sourceTree = "<group>"; };
 		B9E3A0440B048ED300387A56 /* CMIVChopperController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVChopperController.mm; sourceTree = "<group>"; };
@@ -4184,8 +4184,8 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.plugin */,
-				B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.plugin */,
+				B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.osirixplugin */,
+				B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8268,7 +8268,7 @@
 			name = "CMIV_CTA_TOOLS debug";
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.plugin */;
+			productReference = B9E39E0C0B0367C200387A56 /* CMIV_CTA_TOOLS.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 		B98F140E0C4EA78900EED2DD /* CMIV_CTA_TOOLS release */ = {
@@ -8288,7 +8288,7 @@
 			name = "CMIV_CTA_TOOLS release";
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.plugin */;
+			productReference = B98F19600C4EA78900EED2DD /* CMIV_CTA_TOOLS.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -8486,7 +8486,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;
@@ -8614,7 +8614,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 				ZERO_LINK = NO;
 			};
 			name = Development;
