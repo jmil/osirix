@@ -22,7 +22,6 @@
 		CE49C7810C8C1DAC004A31FB /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE49C7760C8C1DAC004A31FB /* ViewerController.h */; };
 		CE49C7850C8C1DBE004A31FB /* xmlrpcFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE49C7830C8C1DBE004A31FB /* xmlrpcFilter.m */; };
 		CE49C7860C8C1DBE004A31FB /* xmlrpcFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = CE49C7840C8C1DBE004A31FB /* xmlrpcFilter.h */; };
-		CE49C7940C8C2096004A31FB /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE49C7930C8C2096004A31FB /* browserController.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -170,7 +169,6 @@
 				CE49C7800C8C1DAC004A31FB /* Schedulable.h in Headers */,
 				CE49C7810C8C1DAC004A31FB /* ViewerController.h in Headers */,
 				CE49C7860C8C1DBE004A31FB /* xmlrpcFilter.h in Headers */,
-				CE49C7940C8C2096004A31FB /* browserController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
