@@ -17,6 +17,7 @@
 #import </usr/include/objc/objc-class.h>
 void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
 {
+	#ifndef __LP64__
     Method orig_method = nil, alt_method = nil;
 
     // First, look for the methods
@@ -37,6 +38,7 @@ void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
         orig_method->method_imp = alt_method->method_imp;
         alt_method->method_imp = temp2;
         }
+	#endif
 }
 
 @interface DCMView (myMethods)
