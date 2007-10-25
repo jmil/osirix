@@ -83,7 +83,7 @@
 		[viewerController endWaitWindow: waitWindow];
 		
 		// Update the current displayed WL & WW : we just inverted the image -> invert the WL !
-		long wl, ww;
+		float wl, ww;
 		
 		[[viewerController imageView] getWLWW: &wl :&ww];
 		if( [curPix isRGB]) wl = 255-wl;
