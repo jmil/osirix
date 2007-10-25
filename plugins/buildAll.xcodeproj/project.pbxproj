@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -17,7 +17,6 @@
 				CE76EE7F0994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE810994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE830994DBBD007B9067 /* PBXTargetDependency */,
-				CE76EE890994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE8B0994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE8D0994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EE8F0994DBBD007B9067 /* PBXTargetDependency */,
@@ -28,19 +27,11 @@
 				CE76EEA50994DBBD007B9067 /* PBXTargetDependency */,
 				CE76EEA90994DBBD007B9067 /* PBXTargetDependency */,
 				CE38EC810994E12D008E1A2D /* PBXTargetDependency */,
-				B750B8050B505870003D5933 /* PBXTargetDependency */,
-				CE0599B30CD0B4A30078D119 /* PBXTargetDependency */,
-				CE0599B50CD0B4A60078D119 /* PBXTargetDependency */,
 				CE0599B70CD0B4A90078D119 /* PBXTargetDependency */,
-				CE0599B90CD0B4AC0078D119 /* PBXTargetDependency */,
-				CE0599BB0CD0B4B00078D119 /* PBXTargetDependency */,
-				CE0599BD0CD0B4B20078D119 /* PBXTargetDependency */,
-				CE0599BF0CD0B4B50078D119 /* PBXTargetDependency */,
 				CE0599C10CD0B4B80078D119 /* PBXTargetDependency */,
 				CE0599C30CD0B4BB0078D119 /* PBXTargetDependency */,
-				CE0599C50CD0B4BE0078D119 /* PBXTargetDependency */,
 				CE0599C70CD0B4C00078D119 /* PBXTargetDependency */,
-				CE0599C90CD0B4C40078D119 /* PBXTargetDependency */,
+				CE0599E10CD0B5F80078D119 /* PBXTargetDependency */,
 			);
 			name = plugins;
 			productName = plugins;
@@ -48,27 +39,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
-		B750B8020B505849003D5933 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = ContextualDictionary;
-		};
-		B750B8040B505870003D5933 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
-			remoteInfo = ContextualDictionary;
-		};
-		B7ADD56E0B6EF34A00D1BD3E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = WindowAnchoredAnnotations;
-		};
 		CE0599290CD0B42B0078D119 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE0599220CD0B42B0078D119 /* xmlrpc.xcodeproj */;
@@ -83,54 +53,12 @@
 			remoteGlobalIDString = AB5D36050680E57E00F4007A /* XRayTemplatesPlugin.osirixplugin */;
 			remoteInfo = XRayTemplatesPlugin;
 		};
-		CE0599B20CD0B4A30078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* WindowAnchoredAnnotations */;
-			remoteInfo = WindowAnchoredAnnotations;
-		};
-		CE0599B40CD0B4A60078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* jp2 */;
-			remoteInfo = jp2;
-		};
 		CE0599B60CD0B4A90078D119 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE0599220CD0B42B0078D119 /* xmlrpc.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* xmlrpc */;
 			remoteInfo = xmlrpc;
-		};
-		CE0599B80CD0B4AC0078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE0A0994DBAD007B9067 /* DicomImporter.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D57630D048677EA00EA77CD /* DicomImporter */;
-			remoteInfo = DicomImporter;
-		};
-		CE0599BA0CD0B4B00078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* CreateDICOMDIR */;
-			remoteInfo = CreateDICOMDIR;
-		};
-		CE0599BC0CD0B4B20078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* MIRC */;
-			remoteInfo = MIRC;
-		};
-		CE0599BE0CD0B4B50078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDF80994DBAD007B9067 /* DICOMPlugIn.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* DicomWebPlugIn */;
-			remoteInfo = DicomWebPlugIn;
 		};
 		CE0599C00CD0B4B80078D119 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -146,13 +74,6 @@
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* PDFToDICOM */;
 			remoteInfo = PDFToDICOM;
 		};
-		CE0599C40CD0B4BE0078D119 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* Invert Data */;
-			remoteInfo = "Invert Data";
-		};
 		CE0599C60CD0B4C00078D119 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE0599A90CD0B4970078D119 /* XRayTemplatesPlugin.xcodeproj */;
@@ -160,12 +81,19 @@
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* XRayTemplatesPlugin */;
 			remoteInfo = XRayTemplatesPlugin;
 		};
-		CE0599C80CD0B4C40078D119 /* PBXContainerItemProxy */ = {
+		CE0599DC0CD0B5DE0078D119 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE1F0994DBAD007B9067 /* dbPlugin.xcodeproj */;
+			containerPortal = CE0599D80CD0B5DE0078D119 /* MappingRatio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AB5D36050680E57E00F4007A /* Ratio T2 Map.osirixplugin */;
+			remoteInfo = "Ratio T2 Map";
+		};
+		CE0599E00CD0B5F80078D119 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE0599D80CD0B5DE0078D119 /* MappingRatio.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* dbTest */;
-			remoteInfo = dbTest;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* Ratio T2 Map */;
+			remoteInfo = "Ratio T2 Map";
 		};
 		CE38EC7E0994E11F008E1A2D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -180,13 +108,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = EjectionFraction;
-		};
-		CE76EE2F0994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB1411F40677B3BE004B0074;
-			remoteInfo = MIRC;
 		};
 		CE76EE320994DBAD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -216,20 +137,6 @@
 			remoteGlobalIDString = AB5D36050680E57E00F4007A;
 			remoteInfo = PDFToDICOM;
 		};
-		CE76EE410994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDF80994DBAD007B9067 /* DICOMPlugIn.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8D5B49B6048680CD000E48DA;
-			remoteInfo = DicomWebPlugIn;
-		};
-		CE76EE440994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB1411F40677B3BE004B0074;
-			remoteInfo = "Invert Data";
-		};
 		CE76EE470994DBAD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */;
@@ -244,26 +151,12 @@
 			remoteGlobalIDString = AB94F8DF0682170900733F34;
 			remoteInfo = Normalize;
 		};
-		CE76EE4D0994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = "Ratio T2 Map";
-		};
 		CE76EE500994DBAD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE76EE070994DBAD007B9067 /* OrthogonalReslice.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = AB1411F40677B3BE004B0074;
 			remoteInfo = OrthogonalReslice;
-		};
-		CE76EE530994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE0A0994DBAD007B9067 /* DicomImporter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8D576316048677EA00EA77CD;
-			remoteInfo = DicomImporter;
 		};
 		CE76EE560994DBAD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -307,13 +200,6 @@
 			remoteGlobalIDString = AB94F8DF0682170900733F34;
 			remoteInfo = CreateROI;
 		};
-		CE76EE680994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE1F0994DBAD007B9067 /* dbPlugin.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = dbTest;
-		};
 		CE76EE6B0994DBAD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE76EE220994DBAD007B9067 /* Fusion.xcodeproj */;
@@ -327,20 +213,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = AB1411F40677B3BE004B0074;
 			remoteInfo = Invert;
-		};
-		CE76EE710994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = CreateDICOMDIR;
-		};
-		CE76EE740994DBAD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB5D36050680E57E00F4007A;
-			remoteInfo = jp2;
 		};
 		CE76EE7C0994DBBD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -369,13 +241,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = Invert;
-		};
-		CE76EE880994DBBD007B9067 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
-			remoteInfo = "Ratio T2 Map";
 		};
 		CE76EE8A0994DBBD007B9067 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -443,53 +308,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ContextualDictionary.xcodeproj; path = ContextualDictionary/ContextualDictionary.xcodeproj; sourceTree = "<group>"; };
-		B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WindowAnchoredAnnotations.xcodeproj; path = WindowAnchoredAnnotations/WindowAnchoredAnnotations.xcodeproj; sourceTree = "<group>"; };
 		CE0599220CD0B42B0078D119 /* xmlrpc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = xmlrpc.xcodeproj; path = "XML-RPC-Plugin/xmlrpc.xcodeproj"; sourceTree = "<group>"; };
 		CE0599A90CD0B4970078D119 /* XRayTemplatesPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XRayTemplatesPlugin.xcodeproj; path = XRayTemplates/XRayTemplatesPlugin.xcodeproj; sourceTree = "<group>"; };
+		CE0599D80CD0B5DE0078D119 /* MappingRatio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MappingRatio.xcodeproj; path = "T2 Ratio Map/MappingRatio.xcodeproj"; sourceTree = "<group>"; };
 		CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EjectionFraction.xcodeproj; path = CardiacEjection/EjectionFraction.xcodeproj; sourceTree = "<group>"; };
-		CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TeachingFile.xcodeproj; path = "MIRC Teaching File/TeachingFile.xcodeproj"; sourceTree = "<group>"; };
 		CE76EDE90994DBAD007B9067 /* ROI-Enhancement.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "ROI-Enhancement.xcodeproj"; path = "ROI Enhancement/ROI-Enhancement.xcodeproj"; sourceTree = "<group>"; };
 		CE76EDEC0994DBAD007B9067 /* ResampleData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResampleData.xcodeproj; path = "Resample Data/ResampleData.xcodeproj"; sourceTree = "<group>"; };
 		CE76EDEF0994DBAD007B9067 /* ReduceSeries.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReduceSeries.xcodeproj; path = "Reduce Series/ReduceSeries.xcodeproj"; sourceTree = "<group>"; };
 		CE76EDF20994DBAD007B9067 /* PDFToDicom.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PDFToDicom.xcodeproj; path = "PDF to DICOM/PDFToDicom.xcodeproj"; sourceTree = "<group>"; };
-		CE76EDF80994DBAD007B9067 /* DICOMPlugIn.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DICOMPlugIn.xcodeproj; path = SafariPlugin/DICOMPlugIn.xcodeproj; sourceTree = "<group>"; };
-		CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = coreImageFilters.xcodeproj; path = coreImageFilters/coreImageFilters.xcodeproj; sourceTree = "<group>"; };
 		CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JpegToDicom.xcodeproj; path = "JPEG to DICOM/JpegToDicom.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE010994DBAD007B9067 /* Normalize.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Normalize.xcodeproj; path = Normalize/Normalize.xcodeproj; sourceTree = "<group>"; };
-		CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mapping.xcodeproj; path = "T2 Ratio Map/Mapping.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE070994DBAD007B9067 /* OrthogonalReslice.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OrthogonalReslice.xcodeproj; path = "Orthogonal Reslice/OrthogonalReslice.xcodeproj"; sourceTree = "<group>"; };
-		CE76EE0A0994DBAD007B9067 /* DicomImporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DicomImporter.xcodeproj; path = SpotlightImporter/DicomImporter.xcodeproj; sourceTree = "<group>"; };
 		CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mapping.xcodeproj; path = "T2 Fit Map/Mapping.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE100994DBAD007B9067 /* ExportROIs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ExportROIs.xcodeproj; path = ExportROIs/ExportROIs.xcodeproj; sourceTree = "<group>"; };
 		CE76EE130994DBAD007B9067 /* FillGaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FillGaps.xcodeproj; path = "Fill the gaps/FillGaps.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE160994DBAD007B9067 /* Invert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Invert.xcodeproj; path = "Invert Data/Invert.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE190994DBAD007B9067 /* Duplicate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Duplicate.xcodeproj; path = Duplicate/Duplicate.xcodeproj; sourceTree = "<group>"; };
 		CE76EE1C0994DBAD007B9067 /* CreateROI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CreateROI.xcodeproj; path = "Create ROIs/CreateROI.xcodeproj"; sourceTree = "<group>"; };
-		CE76EE1F0994DBAD007B9067 /* dbPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = dbPlugin.xcodeproj; path = "DB Test/dbPlugin.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE220994DBAD007B9067 /* Fusion.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fusion.xcodeproj; path = "Fusion Angio-CT tool/Fusion.xcodeproj"; sourceTree = "<group>"; };
 		CE76EE250994DBAD007B9067 /* Invert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Invert.xcodeproj; path = "Invert - WindowController/Invert.xcodeproj"; sourceTree = "<group>"; };
-		CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CreateDICOMDIR.xcodeproj; path = "Create DICOMDIR/CreateDICOMDIR.xcodeproj"; sourceTree = "<group>"; };
-		CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = jp2.xcodeproj; path = "jp2 plugin/jp2.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		B750B7FC0B505849003D5933 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B750B8030B505849003D5933 /* ContextualDictionary.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		B7ADD55F0B6EF34A00D1BD3E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B7ADD56F0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CE0599230CD0B42B0078D119 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +346,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CE0599D90CD0B5DE0078D119 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE0599DD0CD0B5DE0078D119 /* Ratio T2 Map.osirixplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CE38EC7A0994E11F008E1A2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -517,43 +365,26 @@
 		CE76EBF00994DA4C007B9067 = {
 			isa = PBXGroup;
 			children = (
-				B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */,
 				CE38EC790994E11F008E1A2D /* EjectionFraction.xcodeproj */,
-				CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */,
 				CE76EDE90994DBAD007B9067 /* ROI-Enhancement.xcodeproj */,
 				CE76EDEC0994DBAD007B9067 /* ResampleData.xcodeproj */,
 				CE76EDEF0994DBAD007B9067 /* ReduceSeries.xcodeproj */,
 				CE76EDF20994DBAD007B9067 /* PDFToDicom.xcodeproj */,
-				CE76EDF80994DBAD007B9067 /* DICOMPlugIn.xcodeproj */,
-				CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */,
 				CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */,
 				CE76EE010994DBAD007B9067 /* Normalize.xcodeproj */,
-				CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */,
 				CE76EE070994DBAD007B9067 /* OrthogonalReslice.xcodeproj */,
-				CE76EE0A0994DBAD007B9067 /* DicomImporter.xcodeproj */,
 				CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */,
 				CE76EE100994DBAD007B9067 /* ExportROIs.xcodeproj */,
 				CE76EE130994DBAD007B9067 /* FillGaps.xcodeproj */,
 				CE76EE160994DBAD007B9067 /* Invert.xcodeproj */,
 				CE76EE190994DBAD007B9067 /* Duplicate.xcodeproj */,
 				CE76EE1C0994DBAD007B9067 /* CreateROI.xcodeproj */,
-				CE76EE1F0994DBAD007B9067 /* dbPlugin.xcodeproj */,
 				CE76EE220994DBAD007B9067 /* Fusion.xcodeproj */,
 				CE0599A90CD0B4970078D119 /* XRayTemplatesPlugin.xcodeproj */,
 				CE76EE250994DBAD007B9067 /* Invert.xcodeproj */,
-				CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */,
-				CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */,
-				B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */,
+				CE0599D80CD0B5DE0078D119 /* MappingRatio.xcodeproj */,
 				CE0599220CD0B42B0078D119 /* xmlrpc.xcodeproj */,
 			);
-			sourceTree = "<group>";
-		};
-		CE76EDE70994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE300994DBAD007B9067 /* MIRC.plugin */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CE76EDEA0994DBAD007B9067 /* Products */ = {
@@ -588,22 +419,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE76EDF90994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE420994DBAD007B9067 /* DicomWebPlugIn.plugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CE76EDFC0994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE450994DBAD007B9067 /* Invert Data.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CE76EDFF0994DBAD007B9067 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,26 +435,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE76EE050994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE4E0994DBAD007B9067 /* Ratio T2 Map.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CE76EE080994DBAD007B9067 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				CE76EE510994DBAD007B9067 /* OrthogonalReslice.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CE76EE0B0994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE540994DBAD007B9067 /* DicomImporter.mdimporter */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -692,14 +491,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE76EE200994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE690994DBAD007B9067 /* DBTest.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CE76EE230994DBAD007B9067 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,60 +507,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE76EE290994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE720994DBAD007B9067 /* CreateDICOMDIR.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CE76EE2C0994DBAD007B9067 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE76EE750994DBAD007B9067 /* jp2.osirixplugin */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXProject section */
 		CE76EBF20994DA4C007B9067 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
 			buildConfigurationList = CE76EBF30994DA4C007B9067 /* Build configuration list for PBXProject "buildAll" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 0;
 			mainGroup = CE76EBF00994DA4C007B9067;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = B750B7FC0B505849003D5933 /* Products */;
-					ProjectRef = B750B7FB0B505849003D5933 /* ContextualDictionary.xcodeproj */;
-				},
-				{
-					ProductGroup = CE76EDFC0994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EDFB0994DBAD007B9067 /* coreImageFilters.xcodeproj */;
-				},
-				{
-					ProductGroup = CE76EE290994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE280994DBAD007B9067 /* CreateDICOMDIR.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EE1D0994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EE1C0994DBAD007B9067 /* CreateROI.xcodeproj */;
-				},
-				{
-					ProductGroup = CE76EE200994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE1F0994DBAD007B9067 /* dbPlugin.xcodeproj */;
-				},
-				{
-					ProductGroup = CE76EE0B0994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE0A0994DBAD007B9067 /* DicomImporter.xcodeproj */;
-				},
-				{
-					ProductGroup = CE76EDF90994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EDF80994DBAD007B9067 /* DICOMPlugIn.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE1A0994DBAD007B9067 /* Products */;
@@ -800,10 +554,6 @@
 					ProjectRef = CE76EE250994DBAD007B9067 /* Invert.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE2C0994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE2B0994DBAD007B9067 /* jp2.xcodeproj */;
-				},
-				{
 					ProductGroup = CE76EDFF0994DBAD007B9067 /* Products */;
 					ProjectRef = CE76EDFE0994DBAD007B9067 /* JpegToDicom.xcodeproj */;
 				},
@@ -812,8 +562,8 @@
 					ProjectRef = CE76EE0D0994DBAD007B9067 /* Mapping.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EE050994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EE040994DBAD007B9067 /* Mapping.xcodeproj */;
+					ProductGroup = CE0599D90CD0B5DE0078D119 /* Products */;
+					ProjectRef = CE0599D80CD0B5DE0078D119 /* MappingRatio.xcodeproj */;
 				},
 				{
 					ProductGroup = CE76EE020994DBAD007B9067 /* Products */;
@@ -840,14 +590,6 @@
 					ProjectRef = CE76EDE90994DBAD007B9067 /* ROI-Enhancement.xcodeproj */;
 				},
 				{
-					ProductGroup = CE76EDE70994DBAD007B9067 /* Products */;
-					ProjectRef = CE76EDE60994DBAD007B9067 /* TeachingFile.xcodeproj */;
-				},
-				{
-					ProductGroup = B7ADD55F0B6EF34A00D1BD3E /* Products */;
-					ProjectRef = B7ADD55E0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.xcodeproj */;
-				},
-				{
 					ProductGroup = CE0599230CD0B42B0078D119 /* Products */;
 					ProjectRef = CE0599220CD0B42B0078D119 /* xmlrpc.xcodeproj */;
 				},
@@ -864,20 +606,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		B750B8030B505849003D5933 /* ContextualDictionary.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ContextualDictionary.osirixplugin;
-			remoteRef = B750B8020B505849003D5933 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		B7ADD56F0B6EF34A00D1BD3E /* WindowAnchoredAnnotations.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = WindowAnchoredAnnotations.osirixplugin;
-			remoteRef = B7ADD56E0B6EF34A00D1BD3E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CE05992A0CD0B42B0078D119 /* xmlrpc.osirixplugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -892,18 +620,18 @@
 			remoteRef = CE0599B00CD0B4970078D119 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CE0599DD0CD0B5DE0078D119 /* Ratio T2 Map.osirixplugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Ratio T2 Map.osirixplugin";
+			remoteRef = CE0599DC0CD0B5DE0078D119 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CE38EC7F0994E11F008E1A2D /* Ejection Fraction.osirixplugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Ejection Fraction.osirixplugin";
 			remoteRef = CE38EC7E0994E11F008E1A2D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE76EE300994DBAD007B9067 /* MIRC.plugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MIRC.plugin;
-			remoteRef = CE76EE2F0994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CE76EE330994DBAD007B9067 /* ROI-Enhancement.osirixplugin */ = {
@@ -934,20 +662,6 @@
 			remoteRef = CE76EE3B0994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE76EE420994DBAD007B9067 /* DicomWebPlugIn.plugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DicomWebPlugIn.plugin;
-			remoteRef = CE76EE410994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE76EE450994DBAD007B9067 /* Invert Data.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Invert Data.osirixplugin";
-			remoteRef = CE76EE440994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CE76EE480994DBAD007B9067 /* JPEGtoDICOM.osirixplugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -962,25 +676,11 @@
 			remoteRef = CE76EE4A0994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE76EE4E0994DBAD007B9067 /* Ratio T2 Map.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Ratio T2 Map.osirixplugin";
-			remoteRef = CE76EE4D0994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CE76EE510994DBAD007B9067 /* OrthogonalReslice.osirixplugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = OrthogonalReslice.osirixplugin;
 			remoteRef = CE76EE500994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE76EE540994DBAD007B9067 /* DicomImporter.mdimporter */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DicomImporter.mdimporter;
-			remoteRef = CE76EE530994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CE76EE570994DBAD007B9067 /* T2 Fit Map.osirixplugin */ = {
@@ -1025,13 +725,6 @@
 			remoteRef = CE76EE650994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE76EE690994DBAD007B9067 /* DBTest.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DBTest.osirixplugin;
-			remoteRef = CE76EE680994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CE76EE6C0994DBAD007B9067 /* Subtraction Angio-CT.osirixplugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -1046,62 +739,13 @@
 			remoteRef = CE76EE6E0994DBAD007B9067 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE76EE720994DBAD007B9067 /* CreateDICOMDIR.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = CreateDICOMDIR.osirixplugin;
-			remoteRef = CE76EE710994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE76EE750994DBAD007B9067 /* jp2.osirixplugin */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = jp2.osirixplugin;
-			remoteRef = CE76EE740994DBAD007B9067 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
-		B750B8050B505870003D5933 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ContextualDictionary;
-			targetProxy = B750B8040B505870003D5933 /* PBXContainerItemProxy */;
-		};
-		CE0599B30CD0B4A30078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = WindowAnchoredAnnotations;
-			targetProxy = CE0599B20CD0B4A30078D119 /* PBXContainerItemProxy */;
-		};
-		CE0599B50CD0B4A60078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = jp2;
-			targetProxy = CE0599B40CD0B4A60078D119 /* PBXContainerItemProxy */;
-		};
 		CE0599B70CD0B4A90078D119 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = xmlrpc;
 			targetProxy = CE0599B60CD0B4A90078D119 /* PBXContainerItemProxy */;
-		};
-		CE0599B90CD0B4AC0078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = DicomImporter;
-			targetProxy = CE0599B80CD0B4AC0078D119 /* PBXContainerItemProxy */;
-		};
-		CE0599BB0CD0B4B00078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CreateDICOMDIR;
-			targetProxy = CE0599BA0CD0B4B00078D119 /* PBXContainerItemProxy */;
-		};
-		CE0599BD0CD0B4B20078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MIRC;
-			targetProxy = CE0599BC0CD0B4B20078D119 /* PBXContainerItemProxy */;
-		};
-		CE0599BF0CD0B4B50078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = DicomWebPlugIn;
-			targetProxy = CE0599BE0CD0B4B50078D119 /* PBXContainerItemProxy */;
 		};
 		CE0599C10CD0B4B80078D119 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1113,20 +757,15 @@
 			name = PDFToDICOM;
 			targetProxy = CE0599C20CD0B4BB0078D119 /* PBXContainerItemProxy */;
 		};
-		CE0599C50CD0B4BE0078D119 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Invert Data";
-			targetProxy = CE0599C40CD0B4BE0078D119 /* PBXContainerItemProxy */;
-		};
 		CE0599C70CD0B4C00078D119 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = XRayTemplatesPlugin;
 			targetProxy = CE0599C60CD0B4C00078D119 /* PBXContainerItemProxy */;
 		};
-		CE0599C90CD0B4C40078D119 /* PBXTargetDependency */ = {
+		CE0599E10CD0B5F80078D119 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = dbTest;
-			targetProxy = CE0599C80CD0B4C40078D119 /* PBXContainerItemProxy */;
+			name = "Ratio T2 Map";
+			targetProxy = CE0599E00CD0B5F80078D119 /* PBXContainerItemProxy */;
 		};
 		CE38EC810994E12D008E1A2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1152,11 +791,6 @@
 			isa = PBXTargetDependency;
 			name = Invert;
 			targetProxy = CE76EE820994DBBD007B9067 /* PBXContainerItemProxy */;
-		};
-		CE76EE890994DBBD007B9067 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Ratio T2 Map";
-			targetProxy = CE76EE880994DBBD007B9067 /* PBXContainerItemProxy */;
 		};
 		CE76EE8B0994DBBD007B9067 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

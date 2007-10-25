@@ -210,7 +210,7 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = CE6A9B8008AC849500D0C1EE /* Build configuration list for PBXProject "Mapping" */;
+			buildConfigurationList = CE6A9B8008AC849500D0C1EE /* Build configuration list for PBXProject "MappingRatio" */;
 			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Mapping */;
@@ -334,7 +334,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
 		};
-		CE6A9B8008AC849500D0C1EE /* Build configuration list for PBXProject "Mapping" */ = {
+		CE6A9B8008AC849500D0C1EE /* Build configuration list for PBXProject "MappingRatio" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9B8108AC849500D0C1EE /* Development */,
