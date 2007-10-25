@@ -5,7 +5,7 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -17,7 +17,8 @@
 
 #import <Foundation/Foundation.h>
 #import "MyPoint.h"
-#include <GLUT/glut.h>
+
+#import <OpenGL/CGLMacro.h>
 
 enum
 {
@@ -32,12 +33,19 @@ enum
 @class StringTexture;
 @class DCMObject;
 
+/** \brief ROI */
+
 @interface ROI : NSObject <NSCoding>
 {
+	NSLock			*roiLock;
+	
 	int				textureWidth, textureHeight;
 
 	unsigned char*	textureBuffer;
-	GLuint			textureName, textureName2;
+	
+	NSMutableArray *ctxArray;	//All contexts where this texture is used
+	NSMutableArray *textArray;	//All texture id
+
 	int				textureUpLeftCornerX,textureUpLeftCornerY,textureDownRightCornerX,textureDownRightCornerY;
 	int				textureFirstPoint;
 	
@@ -68,6 +76,7 @@ enum
 	long			selectedModifyPoint;
 	NSPoint			clickPoint, previousPoint, originAnchor;
 	long			fontListGL, *fontSize;
+	
 	DCMView			*curView;
 	DCMPix			*pix;
 	
@@ -78,12 +87,6 @@ enum
 	
 	StringTexture			*stringTex;
 	NSMutableDictionary		*stanStringAttrib;
-	
-	NSString		*_roiSeriesInstanceUID;
-	NSString		*_sopInstanceUID;
-	NSString		*_referencedSOPInstanceUID;
-	NSString		*_referencedSOPClassUID;
-	int				_frameNumber;
 	
 	ROI*			parentROI;
 	
@@ -96,16 +99,15 @@ enum
 	
 	BOOL			_displayCalciumScoring;
 	int				_calciumThreshold;
-	float			_sliceThickness;
+	double			_sliceThickness;
 	int				_calciumCofactor;
 	
 	NSString		*layerReferenceFilePath;
 	NSImage			*layerImage;//, *layerImageWhenSelected;
 	NSData			*layerImageJPEG;//, *layerImageWhenSelectedJPEG;
 	float			layerPixelSpacingX, layerPixelSpacingY;
-	BOOL			needsLoadTexture, needsLoadTexture2;
 	BOOL			isLayerOpacityConstant;
-	BOOL			canColorizeLayer;
+	BOOL			canColorizeLayer, canResizeLayer;
 	NSColor			*layerColor;
 	
 	NSNumber		*uniqueID;		// <- not saved, only valid during the 'life' of a ROI
@@ -114,12 +116,38 @@ enum
 	BOOL			displayTextualData;
 }
 
+@property(readonly) int textureWidth, textureHeight;
+@property(readonly) int textureDownRightCornerX,textureDownRightCornerY, textureUpLeftCornerX, textureUpLeftCornerY;
+@property(readonly) unsigned char *textureBuffer;
+@property float opacity;
+@property(retain) NSString *name, *comments;
+@property(readonly) long type;
+@property(setter=setROIMode:) long ROImode;
+@property(retain) NSMutableArray *points; // Return/set the points state of the ROI
+@property(readonly) NSMutableArray *zPositions;
+@property(readonly) BOOL clickInTextBox;
+@property(setter=setROIRect:) NSRect rect; // To create a Rectangular ROI (tROI) or an Oval ROI (tOval)
+@property(retain) DCMPix *pix; // The DCMPix associated to this ROI
+@property(readonly) DCMView *curView;  // The DCMView associated to this ROI
+@property float mousePosMeasure;
+@property(readonly) NSData *data;
+@property(setter=setColor:) RGBColor rgbcolor;
+@property float thickness;
+@property(retain) ROI *parentROI;
+@property double sliceThickness;
+
+// Set/retrieve default ROI name (if not set, then default name is the currentTool)
++ (void) setDefaultName:(NSString*) n;
++ (NSString*) defaultName;
+@property(retain) NSString *defaultName;
+
 +(void) loadDefaultSettings;
 +(void) saveDefaultSettings;
 
 // Create a new ROI, needs the current pixel resolution and image origin
 - (id) initWithType: (long) itype :(float) ipixelSpacing :(NSPoint) iimageOrigin;
 - (id) initWithType: (long) itype :(float) ipixelSpacingx :(float) ipixelSpacingy :(NSPoint) iimageOrigin;
+
 // arg: specific methods for tPlain roi
 - (id) initWithTexture: (unsigned char*)tBuff  textWidth:(int)tWidth textHeight:(int)tHeight textName:(NSString*)tName
 			 positionX:(int)posX positionY:(int)posY
@@ -127,36 +155,8 @@ enum
 
 
 - (void) setTextBoxOffset:(NSPoint) o;
-- (BOOL) clickInTextBox;
 
-- (int)textureDownRightCornerX;
-- (int)textureDownRightCornerY;
-- (int)textureUpLeftCornerX;
-- (int)textureUpLeftCornerY;
-
-- (int)textureWidth;
-- (int)textureHeight;
-- (unsigned char*)	textureBuffer;
 - (void)displayTexture;
-- (float) opacity;
-- (void) setOpacity:(float)newOpacity;
-- (NSString*) name;
-- (void) setName:(NSString*) a;
-
-// Return/Set the comments of the ROI
-- (NSString*) comments;
-- (void) setComments:(NSString*) a;
-
-// Return the type of the ROI
-- (long) type;
-
-// Return the current state of the ROI
-- (long) ROImode;
-
-// Return/set the points state of the ROI
-- (NSMutableArray*) points;
-- (void) setPoints:(NSArray*) points;
-- (NSMutableArray*) zPositions;
 
 // Set resolution and origin associated to the ROI
 - (void) setOriginAndSpacing :(float) ipixelSpacing :(NSPoint) iimageOrigin;
@@ -171,34 +171,17 @@ enum
 
 // Compute the length for tMeasure ROI in cm
 - (float) MesureLength: (float*) pixels;
+- (float) Length:(NSPoint) mesureA :(NSPoint) mesureB;
 
 // Compute an angle between 2 lines
 - (float) Angle:(NSPoint) p2 :(NSPoint) p1 :(NSPoint) p3;
 
-// To create a Rectangular ROI (tROI) or an Oval ROI (tOval)
-- (void) setROIRect:(NSRect) rect;
-- (NSRect) rect;
-
 - (float*) dataValuesAsFloatPointer :(long*) no;
-
-// Return the DCMPix associated to this ROI
-- (DCMPix*) pix;
-
-// Return the DCMView associated to this ROI
-- (DCMView*) curView;
 
 + (NSPoint) pointBetweenPoint:(NSPoint) a and:(NSPoint) b ratio: (float) r;
 + (NSMutableArray*) resamplePoints: (NSArray*) points number:(int) no;
 
-// Set/retrieve default ROI name (if not set, then default name is the currentTool)
-+ (void) setDefaultName:(NSString*) n;
-+ (NSString*) defaultName;
-- (void) setDefaultName:(NSString*) n;
-- (NSString*) defaultName;
-
 - (BOOL)mouseRoiDown:(NSPoint)pt :(int)slice :(float)scale;
-- (void) setMousePosMeasure:(float) p;
-- (NSData*) data;
 - (void) roiMove:(NSPoint) offset;
 - (void) roiMove:(NSPoint) offset :(BOOL) sendNotification;
 - (BOOL) mouseRoiDown:(NSPoint) pt :(float) scale;
@@ -207,12 +190,7 @@ enum
 - (BOOL) valid;
 - (void) drawROI :(float) scaleValue :(float) offsetx :(float) offsety :(float) spacingx :(float) spacingy;
 - (BOOL) needQuartz;
-- (void) setROIMode :(long) v;
 - (BOOL) deleteSelectedPoint;
-- (RGBColor) rgbcolor;
-- (void) setColor:(RGBColor) a;
-- (float) thickness;
-- (void) setThickness:(float) a;
 - (NSMutableDictionary*) dataString;
 - (BOOL) mouseRoiUp:(NSPoint) pt;
 - (void) setRoiFont: (long) f :(long*) s :(DCMView*) v;
@@ -221,30 +199,15 @@ enum
 - (void) rotate: (float) angle :(NSPoint) center;
 - (BOOL)canResize;
 - (void) resize: (float) factor :(NSPoint) center;
-- (void) setPix: (DCMPix*) newPix;
-- (DCMPix*) pix;
 - (BOOL) reduceTextureIfPossible;
 - (void) addMarginToBuffer: (int) margin;
 - (void) drawTextualData;
 - (long) clickInROI:(NSPoint) pt :(float) offsetx :(float) offsety :(float) scale :(BOOL) testDrawRect;
 - (NSPoint) ProjectionPointLine: (NSPoint) Point :(NSPoint) startPoint :(NSPoint) endPoint;
-// parent ROI
-- (ROI*) parentROI;
-- (void) setParentROI: (ROI*) aROI;
+- (void) deleteTexture:(NSOpenGLContext*) c;
 
+- (void)setCanResizeLayer:(BOOL)boo;
 
-//DICOM info
-- (NSString	*) roiSeriesInstanceUID;
-- (NSString	*) sopInstanceUID;
-- (NSString	*) referencedSOPInstanceUID;
-- (NSString	*) referencedSOPClassUID;
-- (int) frameNumber;
-
-- (void) setRoiSeriesInstanceUID:(NSString *)uid;
-- (void) setSopInstanceUID:(NSString *)uid;
-- (void) setReferencedSOPInstanceUID:(NSString *)uid;
-- (void) setReferencedSOPClassUID:(NSString *)uid;
-- (void) setFrameNumber:(int)frame;
 
 // Calcium Scoring
 
@@ -252,40 +215,27 @@ enum
 - (float)calciumScore;
 - (float)calciumVolume;
 - (float)calciumMass;
-- (void)setDisplayCalciumScoring:(BOOL)value;
-- (void)setCalciumThreshold:(int)threshold;
 
-- (float) sliceThickness;
-- (void) setSliceThickness:(float)sliceThickness;
+@property BOOL displayCalciumScoring;
+@property int calciumThreshold;
 
-- (void)setLayerReferenceFilePath:(NSString*)path;
-- (NSString*)layerReferenceFilePath;
-- (void)setLayerImage:(NSImage*)image;
-//- (void)setLayerImageWhenSelected:(NSImage*)image;
-- (void)loadLayerImageTexture;
-//- (void)loadLayerImageWhenSelectedTexture;
+@property(retain) NSString *layerReferenceFilePath;
+@property(retain) NSImage *layerImage;
+@property float layerPixelSpacingX, layerPixelSpacingY;
+
+- (GLuint)loadLayerImageTexture;
 - (void)generateEncodedLayerImage;
-- (void)setLayerPixelSpacingX:(float)x;
-- (void)setLayerPixelSpacingY:(float)y;
 - (BOOL)isPoint:(NSPoint)point inRectDefinedByPointA:(NSPoint)pointA pointB:(NSPoint)pointB pointC:(NSPoint)pointC pointD:(NSPoint)pointD;
 - (NSPoint)rotatePoint:(NSPoint)point withAngle:(float)alpha aroundCenter:(NSPoint)center;
 
-- (void)setTextualBoxLine1:(NSString*)line;
-- (void)setTextualBoxLine2:(NSString*)line;
-- (void)setTextualBoxLine3:(NSString*)line;
-- (void)setTextualBoxLine4:(NSString*)line;
-- (void)setTextualBoxLine5:(NSString*)line;
-
-- (NSTimeInterval)groupID;
-- (void)setGroupID:(NSTimeInterval)timestamp;
+@property(retain) NSString *textualBoxLine1, *textualBoxLine2, *textualBoxLine3, *textualBoxLine4, *textualBoxLine5;
+@property NSTimeInterval groupID;
 
 - (NSPoint) lowerRightPoint;
 
-- (void)setIsLayerOpacityConstant:(BOOL)boo;
-- (void)setCanColorizeLayer:(BOOL)boo;
-
-- (BOOL)setDisplayTextualData:(BOOL)boo;
-
-- (NSPoint)clickPoint;
+@property BOOL isLayerOpacityConstant;
+@property BOOL canColorizeLayer;
+@property BOOL displayTextualData;
+@property(readonly) NSPoint clickPoint;
 
 @end
