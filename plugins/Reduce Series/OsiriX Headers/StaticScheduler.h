@@ -5,7 +5,7 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -13,25 +13,16 @@
 =========================================================================*/
 
 
-
-
 #import <Foundation/Foundation.h>
+#import "Scheduler.h"
 
-
-@interface MyPoint : NSObject  <NSCoding>
-{
-	NSPoint pt;
+/** \brief Static multithreaded  Scheduler */
+@interface StaticScheduler : Scheduler {
+    @private
+    int _numberOfThreadsLeft; // Used to keep track of how many threads already have work
 }
 
-+ (MyPoint*) point: (NSPoint) a;
-
-- (id) initWithPoint:(NSPoint) a;
-- (void) setPoint:(NSPoint) a;
-- (float) y;
-- (float) x;
-- (NSPoint) point;
-- (BOOL) isEqualToPoint:(NSPoint) a;
-- (BOOL) isNearToPoint:(NSPoint) a :(float) scale :(float) ratio;
-- (void) move:(float) x :(float) y;
+-(void)performScheduleForWorkUnits:(NSSet *)workUnits;
+-(NSSet *)_workUnitsToExecuteForRemainingUnits:(NSSet *)remainingUnits;
 
 @end
