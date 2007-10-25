@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title>OsiriX Development Guide</title>
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+</head>
+
+<body>
+	<div id="xcode_logo"></div>
+	<h1>OsiriX Development Guide</h1>
+		<p>Welcome to this development Guide.</p>
+		
+		<h2>Developing on Mac OS X</h2>
+			<p>Developing software on Mac OS X is really easy, great and it's totally free! The complete development environment is available with any Mac! The language you will use to develop an OsiriX plugin is Objective-C. Objective-C is a dynamic and object-oriented language, like Java. It is very similar to Java and C++. It uses the same syntax as Java and C++. It is much less complex than C++ and much faster than Java. If you already know Java or C++, you could probably learn Objective-C in less than 2 days...</p>
+			<p>The framework you will use is Cocoa. Cocoa is a powerful and object-oriented framework that will allow you to create any kind of plugin with complex graphic user interface.</p>
+			<p>We highly recommend you to read the following books:</p>
+			<ul>
+				<li><i>Cocoa Programming for Mac OS X</i> by Aaron Hillegass</li>
+				<li><i>Learning Cocoa with Objective-C</i> by James Duncan Davidson & Apple, Inc.</li>
+				<li><i>Programming in Objective-C</i> by Stephen Kochan</li>
+			</ul>
+			<p>Other useful resources to learn Cocoa and Objective-C:</p>
+			<ul>
+				<li><a href="http://www.cocoadevcentral.com/">Cocoa Dev Central</a></li>
+				<li><a href="http://www.cocoadev.com/">CocoaDev</a></li>
+				<li><a href="http://www.oreillynet.com/pub/ct/37">O'Reilly</a></li>
+				<li><a href="http://developer.apple.com/macosx/">Apple's Developer Connection</a></li>
+				<li>And the Help menu of Xcode: "Documentation"</li>
+			</ul>
+
+			<p>The development environment is Xcode. Xcode is a really powerful development environment, based on the open-source GCC compiler. Writing a plugin for OsiriX is much easier than developing in IDL or in ImageJ...</p>
+		
+	<h2>Getting the Source Code</h2>
+		<p>You will find here a quick step by step to download OsiriX Source Code from SourceForge.</p>
+		<p>Before starting anything, make sure that you have the following installed:</p>
+		<ul id='getting_source_code_required_tools'>
+			<li>Mac OS X 10.5 Leopard</li>
+			<li>Xcode 3.0</li>
+			<li>Subversion (SVN) - <a href="http://metissian.com/projects/macosx/subversion/">Download Page</a></li>
+		</ul>
+		
+		<p>Then:</p>
+		<ul id='getting_source_code_compile'>
+			<li>Open your Terminal application (in <code>/Applications/Utilities/</code>)</li>
+			<li>Type <code>svn co https://osirix.svn.sourceforge.net/svnroot/osirix osirix</code> and hit return</li>
+			<li>Open the <code>Osirix.xcodeproj</code> (in <code>osirix/</code>) and select & run the 'Unzip Binaries' target</li>
+			<li>Select & run the 'Development' target to build OsiriX</li>
+		</ul>
+		<p>To download only specific part of OsiriX:</p>
+		<ul id='getting_source_code_alternate_download'>
+			<li>Active application project only: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/osirix&nbsp;osirix</code></li>
+			<li>Mac OS 10.4 compatible: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/osirix-branches&nbsp;osirixMacOS10.4</code></li>
+			<li>Plugins only: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/plugins&nbsp;plugins</code></li>
+		</ul>
+		
+		
+	<h2>Creating a plugin</h2>
+		<p>The plugins architecture of OsiriX allows you to implements the features that you need. You will be able to access the images data, DICOM header data, make an integration of OsiriX in you specific Hospital environment, and much more.</p>
+		<p>A convenient way to create a new plugin is to use the Plugin Generator from the OsiriX source code folder.
+			You will find it in: <code>plugins/_help/</code>. Unzip <code>Osirix Plugin Generator.zip</code> and run the AppleScript. Follow the wizard's instructions. The basic project will be created automatically.
+		</p>
+		
+	<h2>The Plugins Architecture of OsiriX</h2>
+		<p>When OsiriX is launched, it will look in the 'plugin' folders for files with the <code>.osirixplugin</code> or <code>.plugin</code> extensions. It will then try to find if the plugin contains a sub-class of <code>PluginFilter</code> having a <code>-(long)filterImage:(NSString*)menuName;</code> method. OsiriX will then run once the <code>initPlugin</code> function if available.</p>
+		<p>Your plugin is a sub-class of <code>PluginFilter</code>. The <code>PluginFilter</code> class is defined in <code>PluginFilter.m</code>, available in the <code>OsiriX headers</code> folder. Don't modify this file!</p>
+		</code>The <code>-(long)filterImage:(NSString*)menuName;</code> method is the main function of a plugin. OsiriX will always use this function to call your plugin. The <code>menuName</code> string contains the menu selected by the user: a plugin can define more than one menu (.......).</p>
+		<p>In your plugin you can call virtually any function of OsiriX.</p>
+		<p>Here is a list of available objects in OsiriX:</p>
+		<ul>
+			<li><code>PluginFilter</code>: your plugin is a sub-class of this object, it contains some useful functions</li>
+			<li><code>ViewerController</code>: <code>NSWindowController</code> of a ‘2D Viewer’ window</li>
+			<li><code>DCMView</code>: <code>NSOpenGLView</code> that contains the displayed image</li>
+			<li><code>DCMPix</code>:  object that contains the pixel data of an image</li>
+			<li><code>dicomFile</code>:  an object that contains data about the DICOM file</li>
+			<li><code>ROI</code>:  an object that contains a ROI</li>
+			<li><code>MyPoint</code>:  an object that describes a 2D point</li>
+		</ul>
+		<p>See the example to understand how to use these objects. Look at the headers files of these objects to find which functions are available and how to call them.</p>
+</body>
+</html>
