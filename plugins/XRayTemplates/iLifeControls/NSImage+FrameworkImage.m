@@ -7,8 +7,7 @@
 //
 
 #import "NSImage+FrameworkImage.h"
-
-@class NFIWindow;
+#import "NFHUDButton.h"
 
 @implementation NSImage(FrameworkImageAdditions)
 
@@ -17,7 +16,7 @@
 	if([NSImage imageNamed:name])
 		return [NSImage imageNamed:name];
 		
-	NSBundle *bundle = [NSBundle bundleForClass: [NFIWindow class]];
+	NSBundle *bundle = [NSBundle bundleForClass: [NFHUDButton class]];
 	NSImage *image = [[[NSImage alloc] initWithContentsOfFile:[bundle pathForImageResource:name]] autorelease];
 	if(!image)
 		return nil;
