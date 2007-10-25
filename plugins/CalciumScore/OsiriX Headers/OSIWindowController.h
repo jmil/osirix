@@ -17,9 +17,10 @@
      PURPOSE.
 =========================================================================*/
 
-/*
-Root class for the Viewer Window Controllers such as ViewerController
-and Window3DController
+/** \brief base class for Window Controllers in OsiriX
+*
+*Root class for the Viewer Window Controllers such as ViewerController
+*and Window3DController
 */
 
 #import <Cocoa/Cocoa.h>
@@ -40,12 +41,14 @@ enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtr
 - (IBAction) redo:(id) sender;
 - (IBAction) undo:(id) sender;
 
+- (void) applyShading:(id) sender;
+
 #pragma mark-
 #pragma mark current Core Data Objects
 - (NSManagedObject *)currentStudy;
 - (NSManagedObject *)currentSeries;
 - (NSManagedObject *)currentImage;
 
--(float)curWW;
--(float)curWL;
+- (float)curWW;
+- (float)curWL;
 @end
