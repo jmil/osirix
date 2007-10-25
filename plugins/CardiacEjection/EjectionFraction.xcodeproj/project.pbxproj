@@ -21,7 +21,6 @@
 		AB12D36D068344C600B874E4 /* EjectionFraction.h in Headers */ = {isa = PBXBuildFile; fileRef = AB12D36B068344C600B874E4 /* EjectionFraction.h */; };
 		AB12D36E068344C600B874E4 /* EjectionFraction.m in Sources */ = {isa = PBXBuildFile; fileRef = AB12D36C068344C600B874E4 /* EjectionFraction.m */; };
 		AB12D391068344DC00B874E4 /* EjectionFraction.pch in Resources */ = {isa = PBXBuildFile; fileRef = AB12D390068344DC00B874E4 /* EjectionFraction.pch */; };
-		AB15793C067FB3BE007D2552 /* PluginFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = AB15793B067FB3BE007D2552 /* PluginFilter.m */; };
 		AB37E69B06822C3900244A70 /* ResultsCardiacController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37E69906822C3900244A70 /* ResultsCardiacController.m */; };
 		AB37E69C06822C3900244A70 /* ResultsCardiacController.h in Headers */ = {isa = PBXBuildFile; fileRef = AB37E69A06822C3900244A70 /* ResultsCardiacController.h */; };
 		ABB76340067FB2A8000912C1 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB76339067FB2A8000912C1 /* DCMPix.h */; };
@@ -233,9 +232,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = A9DE970C085E395E0019992B /* Build configuration list for PBXProject "EjectionFraction" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* Duplicate */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* EjectionFraction */,
 			);
@@ -274,7 +275,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB15793C067FB3BE007D2552 /* PluginFilter.m in Sources */,
 				AB37E69B06822C3900244A70 /* ResultsCardiacController.m in Sources */,
 				AB12D36E068344C600B874E4 /* EjectionFraction.m in Sources */,
 				A9739DDD0801FEC500B18402 /* ZoomMatrix.m in Sources */,
@@ -318,7 +318,10 @@
 				LIBRARY_STYLE = Bundle;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = "Ejection Fraction";
 				SECTORDER_FLAGS = "";
@@ -332,96 +335,19 @@
 			};
 			name = Development;
 		};
-		A9DE970A085E395E0019992B /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = EjectionFraction.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = Bundle;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "Ejection Fraction";
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		A9DE970B085E395E0019992B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = EjectionFraction.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = Bundle;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "Ejection Fraction";
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
 		A9DE970D085E395E0019992B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
-					ppc,
 					i386,
+					ppc,
+					ppc64,
+					x86_64,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Development;
-		};
-		A9DE970E085E395E0019992B /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Deployment;
-		};
-		A9DE970F085E395E0019992B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Default;
 		};
 /* End XCBuildConfiguration section */
 
@@ -430,8 +356,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A9DE9709085E395E0019992B /* Development */,
-				A9DE970A085E395E0019992B /* Deployment */,
-				A9DE970B085E395E0019992B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
@@ -440,8 +364,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A9DE970D085E395E0019992B /* Development */,
-				A9DE970E085E395E0019992B /* Deployment */,
-				A9DE970F085E395E0019992B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
