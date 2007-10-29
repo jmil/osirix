@@ -8,10 +8,23 @@
 
 <body>
 	<div id="xcode_logo"></div>
+	<ul id="table_of_content">
+		<li id="table_of_content_embellishment_start"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
+		<li id="table_of_content_title">Table of Content</li>
+		<li><a href="#top">Introduction</a></li>
+		<li><a href="#Developing_on_Mac_OS_X">Developing on Mac OS X</a></li>
+		<li><a href="#Getting_OsiriX_Source_Code">Getting OsiriX Source Code</a></li>
+		<li><a href="#Creating_a_Plugin">Creating a Plugin</a></li>
+		<li><a href="#The_Plugins_Architecture_of_OsiriX">The Plugins Architecture</a></li>
+		<li><a href="#Distributing_and_Installing_your_Plugin">Distribution & Installion</a></li>
+		<li><a href="#More_Help">More Help?</a></li>
+		<li id="table_of_content_embellishment_end"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
+	</ul>
+	
 	<h1>OsiriX Development Guide</h1>
-		<p>Welcome to this development Guide.</p>
+		<p>Welcome to the OsiriX development Guide. This Guide was brought to you by the OsiriX development Team and is frequently updated.</p>
 		
-		<h2>Developing on Mac OS X</h2>
+		<a name="Developing_on_Mac_OS_X"></a><h2>Developing on Mac OS X</h2>
 			<p>Developing software on Mac OS X is really easy, great and it's totally free! The complete development environment is available with any Mac! The language you will use to develop an OsiriX plugin is Objective-C. Objective-C is a dynamic and object-oriented language, like Java. It is very similar to Java and C++. It uses the same syntax as Java and C++. It is much less complex than C++ and much faster than Java. If you already know Java or C++, you could probably learn Objective-C in less than 2 days...</p>
 			<p>The framework you will use is Cocoa. Cocoa is a powerful and object-oriented framework that will allow you to create any kind of plugin with complex graphic user interface.</p>
 			<p>We highly recommend you to read the following books:</p>
@@ -30,8 +43,10 @@
 			</ul>
 
 			<p>The development environment is Xcode. Xcode is a really powerful development environment, based on the open-source GCC compiler. Writing a plugin for OsiriX is much easier than developing in IDL or in ImageJ...</p>
-		
-	<h2>Getting the Source Code</h2>
+			
+			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+			
+	<a name="Getting_OsiriX_Source_Code"><h2>Getting OsiriX Source Code</h2></a>
 		<p>You will find here a quick step by step to download OsiriX Source Code from SourceForge.</p>
 		<p>Before starting anything, make sure that you have the following installed:</p>
 		<ul id='getting_source_code_required_tools'>
@@ -54,28 +69,63 @@
 			<li>Plugins only: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/plugins&nbsp;plugins</code></li>
 		</ul>
 		
+		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 		
-	<h2>Creating a plugin</h2>
+	<a name="Creating_a_Plugin"><h2>Creating a Plugin</h2></a>
 		<p>The plugins architecture of OsiriX allows you to implements the features that you need. You will be able to access the images data, DICOM header data, make an integration of OsiriX in you specific Hospital environment, and much more.</p>
 		<p>A convenient way to create a new plugin is to use the Plugin Generator from the OsiriX source code folder.
 			You will find it in: <code>plugins/_help/</code>. Unzip <code>Osirix Plugin Generator.zip</code> and run the AppleScript. Follow the wizard's instructions. The basic project will be created automatically.
 		</p>
-		
-	<h2>The Plugins Architecture of OsiriX</h2>
+				
+		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+				
+	<a name="The_Plugins_Architecture_of_OsiriX"><h2>The Plugins Architecture of OsiriX</h2></a>
 		<p>When OsiriX is launched, it will look in the 'plugin' folders for files with the <code>.osirixplugin</code> or <code>.plugin</code> extensions. It will then try to find if the plugin contains a sub-class of <code>PluginFilter</code> having a <code>-(long)filterImage:(NSString*)menuName;</code> method. OsiriX will then run once the <code>initPlugin</code> function if available.</p>
 		<p>Your plugin is a sub-class of <code>PluginFilter</code>. The <code>PluginFilter</code> class is defined in <code>PluginFilter.m</code>, available in the <code>OsiriX headers</code> folder. Don't modify this file!</p>
-		</code>The <code>-(long)filterImage:(NSString*)menuName;</code> method is the main function of a plugin. OsiriX will always use this function to call your plugin. The <code>menuName</code> string contains the menu selected by the user: a plugin can define more than one menu (.......).</p>
+		<p>The <code>-(long)filterImage:(NSString*)menuName;</code> method is the main function of a plugin. OsiriX will always use this function to call your plugin. The <code>menuName</code> string contains the menu selected by the user. You can can define more than one menu for your plugin (in the <code>Info.plist</code> file).</p>
 		<p>In your plugin you can call virtually any function of OsiriX.</p>
 		<p>Here is a list of available objects in OsiriX:</p>
 		<ul>
 			<li><code>PluginFilter</code>: your plugin is a sub-class of this object, it contains some useful functions</li>
-			<li><code>ViewerController</code>: <code>NSWindowController</code> of a ‘2D Viewer’ window</li>
+			<li><code>ViewerController</code>: <code>NSWindowController</code> of a '2D Viewer' window</li>
 			<li><code>DCMView</code>: <code>NSOpenGLView</code> that contains the displayed image</li>
 			<li><code>DCMPix</code>:  object that contains the pixel data of an image</li>
 			<li><code>dicomFile</code>:  an object that contains data about the DICOM file</li>
 			<li><code>ROI</code>:  an object that contains a ROI</li>
 			<li><code>MyPoint</code>:  an object that describes a 2D point</li>
 		</ul>
-		<p>See the example to understand how to use these objects. Look at the headers files of these objects to find which functions are available and how to call them.</p>
+		<p>See the examples (open source plugins that you will find in the <code>plugins/</code> directory) to understand how to use these objects. Look at the headers files of these objects to find which functions are available and how to call them.</p>
+		
+		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+		
+		<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing & Installing your Plugin</h2></a>
+			<p></p>
+			<p>The distribution of your plugin is left to you. The OsiriX team does not host nor distribute 3rd party plugins. <i>However</i>, if your plugin match our quality standards, we can reference your plugin page from the Plugin Manager in OsiriX app. A place of choice to be wildly visible by our users. You will find the application form directly in the Plugin Manager window of OsiriX.</p>
+			<p>The OsiriX plugins can be installed in 3 different locations:</p>
+			<ul>
+				<li><code>/Library/Application Support/OsiriX/Plugins/</code> - The plugins installed in this folder will be accessible by any user of the computer</li>
+				<li><code>/Users/.../Library/Application Support/OsiriX/Plugins/</code> - The plugins installed in this folder will be accessible only by the specified user (replace the <code>...</code> by the user short name)</li>
+				<li><code>/Applications/OsiriX/Plugins/</code> - The plugins installed in the OsiriX Bundle will be accessible by any user. If you copy OsiriX from one computer to an other, the plugins installed in the bundle will be copied too.</li>
+			</ul>
+			<p>The installation of you plugin is automatic if you chose the <code>.osirixplugin</code> extension. In this case, the user just has to double-clic the plugin icon and OsiriX will install it for the current user.</p>
+			<p>The generic <code>.plugin</code> is still supported but will not provide this mechanism. The user will have to manually copy the plugin to one of the 3 directories.</p>
+			
+			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+			
+		<a name="More_Help"><h2>More Help?</h2></a>
+			<p>If this guide does not answer all your questions, please try our developers mailing-list:</p>
+			<p align="center"><a href="http://tech.groups.yahoo.com/group/osirix-dev/">http://tech.groups.yahoo.com/group/osirix-dev/</a></p>
+			<p>Your can directly subscribe through here:</p>
+			<form method="get" action="http://tech.groups.yahoo.com/subscribe/osirix-dev">
+				<div align="center">
+			    <table cellspacing="0" cellpadding="2" border="0">
+					<tr><td colspan="2" align="center"><em>Subscribe to OsiriX Developers group</em></td></tr>
+					<tr><td><input type="text" name="user" value="enter email address" size="20"></td><td><input type="image" border="0" alt="Click here to join osirix-dev" name="Click here to join osirix-dev" src="http://us.i1.yimg.com/us.yimg.com/i/yg/img/i/us/ui/join.gif"></td></tr>
+				</table>
+                </div>
+			</form>
+			
+			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+		<div id="footer">&copy;2007 The OsiriX Development Team - <i>Developing Swiss Quality DICOM Viewer since 2003</i></div>
 </body>
 </html>
