@@ -100,3 +100,9 @@ code{
 	padding-top:10px;
 	text-align:center;
 }
+
+img.icon{
+	float:right;
+	width:64px;
+	height:64px;
+}
