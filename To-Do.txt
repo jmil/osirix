@@ -45,6 +45,7 @@ TODO:
 - Growl 64 bits
 - Test GPU rendering
 - Localization Tests: short keys, annotations
+- Tiling on multiple screens
 
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
