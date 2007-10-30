@@ -47,6 +47,12 @@ TODO:
 - Localization Tests: short keys, annotations
 - Tiling on multiple screens
 
+- NSWindowCollectionBehaviour : Spaces
+- NSTrackingArea : mouse
+
+- [[<window> standardWindowButton:NSWindowDocumentIconButton] setImage:<image>]
+- (BOOL)window:(NSWindow *)sender shouldPopUpDocumentPathMenu:(NSMenu *)titleMenu
+
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
 - NRRD: ITK IO
