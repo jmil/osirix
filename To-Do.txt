@@ -50,9 +50,7 @@ TODO:
 - NSWindowCollectionBehaviour : Spaces
 - NSTrackingArea : mouse
 
-- [[<window> standardWindowButton:NSWindowDocumentIconButton] setImage:<image>]
-- (BOOL)window:(NSWindow *)sender shouldPopUpDocumentPathMenu:(NSMenu *)titleMenu
-
+- Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
 - NRRD: ITK IO
@@ -69,5 +67,7 @@ HUG:
 - Routage colloques
 - Demandes numerisees
 - Rapport images -> DPI
+
+for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
 
 for i in `ls *.a`; do lipo -create "$i" "$i"i386 -output "$i"final; done
