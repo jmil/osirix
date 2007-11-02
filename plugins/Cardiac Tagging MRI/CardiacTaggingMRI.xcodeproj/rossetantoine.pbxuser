@@ -1,0 +1,445 @@
+// !$*UTF8*$!
+{
+	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Development;
+		activeExecutable = ABDA6A5B0A51001500223368 /* Executable */;
+		activeTarget = 8D5B49AC048680CD000E48DA /* CardiacTaggingMRI */;
+		addToTargets = (
+			8D5B49AC048680CD000E48DA /* CardiacTaggingMRI */,
+		);
+		breakpoints = (
+			ABDA6A820A51008A00223368 /* CardiacTaggingMRIFilter.m:51 */,
+			ABDA6AA20A51019F00223368 /* CardiacTaggingMRIFilter.m:15 */,
+			ABDA6B010A51043800223368 /* CardiacTaggingMRIFilter.m:26 */,
+			ABDA6B060A51046F00223368 /* CardiacTaggingMRIFilter.m:42 */,
+		);
+		codeSenseManager = ABDA6A3D0A50FE1E00223368 /* Code sense */;
+		executables = (
+			ABDA6A5B0A51001500223368 /* Executable */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					400,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					993,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					200,
+					386,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 173082933;
+			PBXWorkspaceStateSaveDate = 173082933;
+		};
+		perUserProjectItems = {
+			AB95B4060A51094800A97056 /* PBXTextBookmark */ = AB95B4060A51094800A97056 /* PBXTextBookmark */;
+			AB95B83C0A5109BA00A97056 /* PBXTextBookmark */ = AB95B83C0A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B83D0A5109BA00A97056 /* PBXTextBookmark */ = AB95B83D0A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B83E0A5109BA00A97056 /* PBXBookmark */ = AB95B83E0A5109BA00A97056 /* PBXBookmark */;
+			AB95B83F0A5109BA00A97056 /* PBXTextBookmark */ = AB95B83F0A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8400A5109BA00A97056 /* PBXTextBookmark */ = AB95B8400A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8410A5109BA00A97056 /* PBXTextBookmark */ = AB95B8410A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8420A5109BA00A97056 /* PBXTextBookmark */ = AB95B8420A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8430A5109BA00A97056 /* PBXBookmark */ = AB95B8430A5109BA00A97056 /* PBXBookmark */;
+			AB95B8440A5109BA00A97056 /* PBXTextBookmark */ = AB95B8440A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8450A5109BA00A97056 /* PBXTextBookmark */ = AB95B8450A5109BA00A97056 /* PBXTextBookmark */;
+			AB95B8620A510A3000A97056 /* PBXTextBookmark */ = AB95B8620A510A3000A97056 /* PBXTextBookmark */;
+			ABDA6A620A51001A00223368 /* PBXTextBookmark */ = ABDA6A620A51001A00223368 /* PBXTextBookmark */;
+			ABDA6A650A51001A00223368 /* PBXTextBookmark */ = ABDA6A650A51001A00223368 /* PBXTextBookmark */;
+			ABDA6A660A51001A00223368 /* PBXTextBookmark */ = ABDA6A660A51001A00223368 /* PBXTextBookmark */;
+			ABDA6A670A51001A00223368 /* PBXTextBookmark */ = ABDA6A670A51001A00223368 /* PBXTextBookmark */;
+			ABDA6AEE0A5103C700223368 /* PBXTextBookmark */ = ABDA6AEE0A5103C700223368 /* PBXTextBookmark */;
+			ABDA6AEF0A5103C700223368 /* PBXTextBookmark */ = ABDA6AEF0A5103C700223368 /* PBXTextBookmark */;
+			ABDA6B3F0A51084400223368 /* PBXTextBookmark */ = ABDA6B3F0A51084400223368 /* PBXTextBookmark */;
+		};
+		sourceControlManager = ABDA6A3C0A50FE1E00223368 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	089C167EFE841241C02AAC07 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 627}}";
+			sepNavSelRange = "{159, 0}";
+			sepNavVisRect = "{{0, 0}, {1185, 627}}";
+		};
+	};
+	8D5B49AC048680CD000E48DA /* CardiacTaggingMRI */ = {
+		activeExec = 0;
+	};
+	8D5B49B7048680CD000E48DA /* Info.plist */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 627}}";
+			sepNavSelRange = "{201, 0}";
+			sepNavVisRect = "{{0, 0}, {1185, 627}}";
+		};
+	};
+	AB95B4060A51094800A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8D5B49B7048680CD000E48DA /* Info.plist */;
+		name = "Info.plist: 27";
+		rLen = 0;
+		rLoc = 846;
+		rType = 0;
+		vrLen = 850;
+		vrLoc = 0;
+	};
+	AB95B83C0A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A470A50FE9300223368 /* CardiacTaggingMRIFilter.h */;
+		name = PluginFilter;
+		rLen = 12;
+		rLoc = 214;
+		rType = 0;
+		vrLen = 336;
+		vrLoc = 0;
+	};
+	AB95B83D0A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		name = "CardiacTaggingMRIFilter.m: 52";
+		rLen = 0;
+		rLoc = 1632;
+		rType = 0;
+		vrLen = 1385;
+		vrLoc = 818;
+	};
+	AB95B83E0A5109BA00A97056 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = ABDA6B430A51091900223368 /* CardiacMRI.tif */;
+	};
+	AB95B83F0A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 089C167EFE841241C02AAC07 /* English */;
+		name = "English: 5";
+		rLen = 0;
+		rLoc = 159;
+		rType = 0;
+		vrLen = 275;
+		vrLoc = 0;
+	};
+	AB95B8400A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8D5B49B7048680CD000E48DA /* Info.plist */;
+		name = "Info.plist: 27";
+		rLen = 0;
+		rLoc = 846;
+		rType = 0;
+		vrLen = 850;
+		vrLoc = 0;
+	};
+	AB95B8410A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A470A50FE9300223368 /* CardiacTaggingMRIFilter.h */;
+		name = PluginFilter;
+		rLen = 12;
+		rLoc = 214;
+		rType = 0;
+		vrLen = 336;
+		vrLoc = 0;
+	};
+	AB95B8420A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		name = "CardiacTaggingMRIFilter.m: 52";
+		rLen = 0;
+		rLoc = 1632;
+		rType = 0;
+		vrLen = 1385;
+		vrLoc = 818;
+	};
+	AB95B8430A5109BA00A97056 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = ABDA6B430A51091900223368 /* CardiacMRI.tif */;
+	};
+	AB95B8440A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8D5B49B7048680CD000E48DA /* Info.plist */;
+		name = "Info.plist: 27";
+		rLen = 0;
+		rLoc = 846;
+		rType = 0;
+		vrLen = 850;
+		vrLoc = 0;
+	};
+	AB95B8450A5109BA00A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 089C167EFE841241C02AAC07 /* English */;
+		name = "English: 5";
+		rLen = 0;
+		rLoc = 159;
+		rType = 0;
+		vrLen = 275;
+		vrLoc = 0;
+	};
+	AB95B8620A510A3000A97056 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8D5B49B7048680CD000E48DA /* Info.plist */;
+		name = "Info.plist: 5";
+		rLen = 0;
+		rLoc = 201;
+		rType = 0;
+		vrLen = 893;
+		vrLoc = 0;
+	};
+	ABB76339067FB2A8000912C1 /* DCMPix.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 3206}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 1324}, {1185, 627}}";
+		};
+	};
+	ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 756}}";
+			sepNavSelRange = "{530, 6}";
+			sepNavVisRect = "{{0, 0}, {1185, 627}}";
+		};
+	};
+	ABDA6A3C0A50FE1E00223368 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+		scmType = "";
+	};
+	ABDA6A3D0A50FE1E00223368 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 1428}}";
+			sepNavSelRange = "{1499, 0}";
+			sepNavVisRect = "{{0, 417}, {1185, 627}}";
+		};
+	};
+	ABDA6A470A50FE9300223368 /* CardiacTaggingMRIFilter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1185, 627}}";
+			sepNavSelRange = "{214, 12}";
+			sepNavVisRect = "{{0, 0}, {1185, 627}}";
+		};
+	};
+	ABDA6A4A0A50FE9D00223368 /* CardiacTaggingMRI_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {758, 195}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {758, 195}}";
+		};
+	};
+	ABDA6A5B0A51001500223368 /* Executable */ = {
+		isa = PBXExecutable;
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		launchableReference = ABDA6A5C0A51001500223368 /* OsiriX.app */;
+		libgmallocEnabled = 0;
+		name = Executable;
+		savedGlobals = {
+		};
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	ABDA6A5C0A51001500223368 /* OsiriX.app */ = {
+		isa = PBXFileReference;
+		explicitFileType = wrapper.application;
+		name = OsiriX.app;
+		path = /Users/rossetantoine/osirix/osirix/build/Development/OsiriX.app;
+		sourceTree = "<absolute>";
+	};
+	ABDA6A620A51001A00223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A4A0A50FE9D00223368 /* CardiacTaggingMRI_Prefix.pch */;
+		name = "CardiacTaggingMRI_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 136;
+		vrLoc = 0;
+	};
+	ABDA6A650A51001A00223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8D5B49B7048680CD000E48DA /* Info.plist */;
+		name = "Info.plist: 8";
+		rLen = 0;
+		rLoc = 301;
+		rType = 0;
+		vrLen = 797;
+		vrLoc = 0;
+	};
+	ABDA6A660A51001A00223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 089C167EFE841241C02AAC07 /* English */;
+		name = "English: 5";
+		rLen = 0;
+		rLoc = 159;
+		rType = 0;
+		vrLen = 275;
+		vrLoc = 0;
+	};
+	ABDA6A670A51001A00223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A4A0A50FE9D00223368 /* CardiacTaggingMRI_Prefix.pch */;
+		name = "CardiacTaggingMRI_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 136;
+		vrLoc = 0;
+	};
+	ABDA6A820A51008A00223368 /* CardiacTaggingMRIFilter.m:51 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		functionName = "-filterImage:";
+		hitCount = 1;
+		lineNumber = 51;
+		location = CardiacTaggingMRI;
+		modificationTime = 173083064.965276;
+		state = 1;
+	};
+	ABDA6AA20A51019F00223368 /* CardiacTaggingMRIFilter.m:15 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		functionName = "-filterImage:";
+		hitCount = 1;
+		lineNumber = 15;
+		location = CardiacTaggingMRI;
+		modificationTime = 173083064.982374;
+		state = 1;
+	};
+	ABDA6AEE0A5103C700223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABB76339067FB2A8000912C1 /* DCMPix.h */;
+		name = "DCMPix.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1306;
+		vrLoc = 2155;
+	};
+	ABDA6AEF0A5103C700223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABB7633D067FB2A8000912C1 /* PluginFilter.h */;
+		name = DCMPix;
+		rLen = 6;
+		rLoc = 530;
+		rType = 0;
+		vrLen = 1505;
+		vrLoc = 0;
+	};
+	ABDA6B010A51043800223368 /* CardiacTaggingMRIFilter.m:26 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		functionName = "-filterImage:";
+		hitCount = 1;
+		lineNumber = 26;
+		location = CardiacTaggingMRI;
+		modificationTime = 173083064.996809;
+		state = 1;
+	};
+	ABDA6B060A51046F00223368 /* CardiacTaggingMRIFilter.m:42 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		functionName = "-filterImage:";
+		hitCount = 1;
+		lineNumber = 42;
+		location = CardiacTaggingMRI;
+		modificationTime = 173083065.024658;
+		state = 1;
+	};
+	ABDA6B3F0A51084400223368 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ABDA6A460A50FE9300223368 /* CardiacTaggingMRIFilter.m */;
+		name = "CardiacTaggingMRIFilter.m: 52";
+		rLen = 0;
+		rLoc = 1632;
+		rType = 0;
+		vrLen = 1390;
+		vrLoc = 818;
+	};
+}
