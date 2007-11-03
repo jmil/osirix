@@ -42,7 +42,6 @@
 
 TODO:
 - Get Info window not displayed in the French Version?
-- Growl 64 bits
 - Test GPU rendering
 - Localization Tests: short keys, annotations
 - Test Bonjour
