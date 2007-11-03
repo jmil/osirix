@@ -45,7 +45,6 @@ TODO:
 - Growl 64 bits
 - Test GPU rendering
 - Localization Tests: short keys, annotations
-- Tiling on multiple screens
 
 - NSWindowCollectionBehaviour : Spaces
 - NSTrackingArea : mouse
