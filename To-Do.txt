@@ -44,9 +44,7 @@ TODO:
 - Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations
-- Test Bonjour
 
-- NSWindowCollectionBehaviour : Spaces
 - NSTrackingArea : mouse
 
 - Is it possible to place keyed images into a report automatically when generating a report?
