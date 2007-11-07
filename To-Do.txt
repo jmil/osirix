@@ -41,6 +41,7 @@
 - Possibility to merge series or studies
 
 TODO:
+- XIB changed for custom annotations after fc3
 - Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations
