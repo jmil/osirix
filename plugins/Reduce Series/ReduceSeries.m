@@ -57,7 +57,7 @@
 		// Create a new series
 		if( interval > 0)
 		{
-			for( i = start ; i < end; i += interval) newTotal++;
+			for( i = start ; i <= end; i += interval) newTotal++;
 			long imageSize = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
 			long size = newTotal * imageSize;
 
@@ -72,7 +72,7 @@
 				
 				NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
 				
-				for( i = start ; i < end; i += interval)
+				for( i = start ; i <= end; i += interval)
 				{
 					[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
 					[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
@@ -90,7 +90,7 @@
 		}
 		else
 		{
-			for( i = start ; i > end; i += interval) newTotal++;
+			for( i = start ; i >= end; i += interval) newTotal++;
 			long imageSize = sizeof(float) * [firstPix pwidth] * [firstPix pheight];
 			long size = newTotal * imageSize;
 			
@@ -104,7 +104,7 @@
 				
 				NSData	*newData = [NSData dataWithBytesNoCopy:emptyData length: size freeWhenDone:YES];
 				
-				for( i = start ; i > end; i += interval)
+				for( i = start ; i >= end; i += interval)
 				{
 					[newPixList addObject: [[[pixList objectAtIndex: i] copy] autorelease]];
 					[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
