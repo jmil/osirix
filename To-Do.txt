@@ -41,12 +41,10 @@
 - Possibility to merge series or studies
 
 TODO:
-- XIB changed for custom annotations after fc3
+- XIB changed after fc3
 - Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations
-
-- NSTrackingArea : mouse
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
