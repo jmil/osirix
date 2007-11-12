@@ -41,11 +41,9 @@
 - Possibility to merge series or studies
 
 TODO:
-- XIB changed after fc3
 - Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations
-- lock icon in PPC 64-bit
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
