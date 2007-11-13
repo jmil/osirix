@@ -55,7 +55,6 @@ TODO:
 - ROI enhancement
 - Worklist DICOM
 - MPR Ortho: oblique
-- Curved MPR: spline
 
 HUG:
 
