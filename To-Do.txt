@@ -39,6 +39,7 @@
 - Possibility to lock a study against deletion
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 - Possibility to merge series or studies
+- Spline for ROIs - See Preferences Viewers
 
 TODO:
 - Get Info window not displayed in the French Version?
