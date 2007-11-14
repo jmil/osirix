@@ -40,6 +40,7 @@
 - Possibility to save and restore the workspace (windows position, index, ...) - see 2D Viewer menu
 - Possibility to merge series or studies
 - Spline for ROIs - See Preferences Viewers
+- High Quality rendering for Curved-MPR
 
 TODO:
 - Get Info window not displayed in the French Version?
