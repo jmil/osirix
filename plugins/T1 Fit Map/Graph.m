@@ -10,7 +10,7 @@
 
 #include "math.h"
 
-@implementation GraphT2Fit
+@implementation GraphT1Fit
 
 - (void) dealloc
 {

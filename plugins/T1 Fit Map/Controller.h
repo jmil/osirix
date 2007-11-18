@@ -9,15 +9,15 @@
 #import <AppKit/AppKit.h>
 #import "Graph.h"
 
-@interface ControllerT2Fit : NSWindowController {
+@interface ControllerT1Fit : NSWindowController {
 
-					MappingT2FitFilter	*filter;
+					MappingT1FitFilter	*filter;
 					ViewerController	*blendedWindow;
 
 					float				TEValues[ 1000];
 
-	IBOutlet		NSTextField			*factorText, *meanT2Value, *backgroundSignal;
-	IBOutlet		GraphT2Fit			*resultView;
+	IBOutlet		NSTextField			*factorText, *meanT1Value, *backgroundSignal;
+	IBOutlet		GraphT1Fit			*resultView;
 	IBOutlet		NSMatrix			*mode;
 	IBOutlet		NSButton			*logScale;
 	IBOutlet		NSTableView			*TETable;
@@ -37,7 +37,7 @@
 }
 
 -(IBAction) compute:(id) sender;
-- (id) init:(MappingT2FitFilter*) f ;
+- (id) init:(MappingT1FitFilter*) f ;
 - (IBAction) refreshGraph:(id) sender;
 -(IBAction) endFill:(id) sender;
 - (IBAction) startFill:(id) sender;

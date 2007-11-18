@@ -46,7 +46,7 @@ TODO:
 - Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations
-- Test Q R from dcm4chee
+- Test Q R in 64-bit
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR

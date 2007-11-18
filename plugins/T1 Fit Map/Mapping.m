@@ -11,7 +11,7 @@
 - (long) filterImage:(NSString*) menuName
 {
 	// Display a nice window to thanks the user for using our powerful filter!
-	ControllerT1Fit* coWin = [[ControllerT2Fit alloc] init:self];
+	ControllerT1Fit* coWin = [[ControllerT1Fit alloc] init:self];
 	[coWin showWindow:self];
 	
 	return 0;

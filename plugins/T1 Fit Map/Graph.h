@@ -9,7 +9,7 @@
 #import <AppKit/AppKit.h>
 
 
-@interface GraphT2Fit : NSView {
+@interface GraphT1Fit : NSView {
 
 	float   *minValues, *maxValues, *meanValues, *teValues;
 	float	slope;

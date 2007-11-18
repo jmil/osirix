@@ -14,7 +14,7 @@
 #import "Controller.h"
 
 
-@implementation ControllerT2Fit
+@implementation ControllerT1Fit
 
 -(IBAction) endFill:(id) sender
 {
@@ -160,7 +160,9 @@
 			if( rmin[i] < 1.0) rmin[i] = 1.0;
 			if( rmax[i] < 1.0) rmax[i] = 1.0;
 			
-			rmeanLog[ i] = log( rmean[i]);
+			//rmeanLog[ i] = log( rmean[i]);
+			
+			rmeanLog[ i] = log( 0.5 * (1.0 -  rmean[i]));
 		}
 		
 		[self computeLinearRegression: [pixList count] :TEValues :rmeanLog :&intercept :&slope];
@@ -170,7 +172,7 @@
 		[resultView setLinearRegression:intercept : slope];
 	}
 	
-	[meanT2Value setStringValue: [NSString stringWithFormat:@"Mean T2: %2.2f ms, M0: %2.2f", 1000.0 / (-slope), exp( intercept)]];
+	[meanT1Value setStringValue: [NSString stringWithFormat:@"Mean T1: %2.2f ms, M0: %2.2f", 1000.0 / (-slope), exp( intercept)]];
 }
 
 -(IBAction) compute:(id) sender
@@ -262,7 +264,8 @@
 						
 						for( i = 0; i < [teSequence count]; i++)
 						{
-							values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+//							values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+							values[ i] = log( 0.5 * (1.0 - ([[teSequence objectAtIndex: i] fImage] [ pos] - background)));
 						}
 						
 						[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
@@ -309,11 +312,11 @@
 			 
 }
 
-- (id) init:(MappingT2FitFilter*) f 
+- (id) init:(MappingT1FitFilter*) f 
 {
 	long i;
 	
-	self = [super initWithWindowNibName:@"ControllerT2Fit"];
+	self = [super initWithWindowNibName:@"ControllerT1Fit"];
 		
 	[[self window] setDelegate:self];   //In order to receive the windowWillClose notification!
 	
