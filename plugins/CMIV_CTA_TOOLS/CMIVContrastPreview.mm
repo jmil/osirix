@@ -463,6 +463,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	{
 	
 
+		[self updateMPRView];
 		[self resetMPRSliders];
 		[self setBrushWidth: brushWidthSlider];
 		if(!isInWizardMode)
@@ -479,8 +480,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			osirixOffset=[vrView offset] ;
 			osirixValueFactor=[vrView valueFactor] ;
 			renderOfVRView = [vrView renderer];
-			volumeCollectionOfVRView = renderOfVRView->GetVolumes();
-			volumeOfVRView = (vtkVolume * )volumeCollectionOfVRView->GetItemAsObject (0);
+			//volumeCollectionOfVRView = renderOfVRView->GetVolumes();
+			volumeOfVRView = (vtkVolume * )[vrView volume];//volumeOfVRView = (vtkVolume * )volumeCollectionOfVRView->GetItemAsObject (0);
 			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
 			volumeImageData=(vtkImageData *)volumeMapper->GetInput();
 			volumeDataOfVR=(unsigned short*)volumeImageData->GetScalarPointer();

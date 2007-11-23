@@ -684,7 +684,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	
 	defaultROIThickness=[[NSUserDefaults standardUserDefaults] floatForKey:@"ROIThickness"];
 	
-	[curvedMPRReferenceLineOfAxis setThickness:0.5];
+	[curvedMPRReferenceLineOfAxis setThickness:0.7];
 	
 	[[NSUserDefaults standardUserDefaults] setFloat:defaultROIThickness forKey:@"ROIThickness"];
 	
@@ -922,7 +922,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	float iwl, iww;
 	iww = [[originalViewController imageView] curWW] ;
 	iwl = [[originalViewController imageView] curWL] ;
-	[originalView setWLWW:iwl :iww];
+	[originalView discretelySetWLWW:iwl :iww];
 	float crossX,crossY;
 	crossX=-origin[0]/space[0];
 	crossY=origin[1]/space[1];
@@ -982,7 +982,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[cPRView setOrigin: NSMakePoint(0,0)];
 	[cPRView setCurrentTool:tWL];
 	[cPRView  scaleToFit];
-	[cPRView setWLWW:iwl :iww];	
+	[cPRView discretelySetWLWW:iwl :iww];	
 	
 	axViewSlice = vtkImageReslice::New();
 	axViewSlice->SetAutoCropOutput( true);
@@ -1023,7 +1023,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[crossAxiasView setOrigin: NSMakePoint(0,0)];
 	[crossAxiasView setCurrentTool:tWL];
 	[crossAxiasView setScaleValue: 1.5*[originalView scaleValue]];
-	[crossAxiasView setWLWW:iwl :iww];	
+	[crossAxiasView discretelySetWLWW:iwl :iww];	
 	
 	cprImageBuffer=0L;
 	
@@ -1487,10 +1487,10 @@ else
 		{
 			ROI* roi=(ROI*)sender;
 			int roitype =[roi type];
-			if(roitype==tMesure)
+			if([roi isEqual:oViewMeasureLine] )
 			{
-				cPRViewCenter=[[[roi points] objectAtIndex: 0] point];
-				NSPoint tempPt=[[[roi points] objectAtIndex: 1] point];
+				cPRViewCenter=[[measureLinePointsArray objectAtIndex: 0] point];
+				NSPoint tempPt=[[measureLinePointsArray objectAtIndex: 1] point];
 				float angle,length;
 				
 				tempPt.x-=cPRViewCenter.x;
@@ -1536,10 +1536,6 @@ else
 				cPRROIRect.size.height = length/cViewSpace[1];
 				
 				ROI* cViewROI=[[cViewROIList objectAtIndex: 0] objectAtIndex: 0];
-				if(cViewROI)
-				{
-					[cViewROI setROIRect:cPRROIRect];
-				}
 				
 			}
 		}
@@ -1559,7 +1555,7 @@ else
 	}
 	else if(currentTool==7)
 	{
-		if([[oViewROIList objectAtIndex: 0] containsObject: sender] )
+		if([sender isEqual:oViewArrow ])
 		{
 			ROI* roi=(ROI*)sender;
 			int roitype =[roi type];
@@ -1576,16 +1572,16 @@ else
 					}
 					else
 					{
-						MyPoint *oViewEndPoint=[[roi points] objectAtIndex:2];
+						MyPoint *oViewEndPoint=[arrowPointsArray objectAtIndex:2];
 						if(oViewEndPoint)
 						{
-							[[[roi points] objectAtIndex:0] setPoint: [oViewEndPoint point]];
+							[[arrowPointsArray objectAtIndex:0] setPoint: [oViewEndPoint point]];
 						}
 					}
 				}
 
-				cPRViewCenter=[[[roi points] objectAtIndex: 1] point];
-				NSPoint tempPt=[[[roi points] objectAtIndex: 0] point];
+				cPRViewCenter=[[arrowPointsArray objectAtIndex: 1] point];
+				NSPoint tempPt=[[arrowPointsArray objectAtIndex: 0] point];
 				float angle,length;
 
 				tempPt.x-=cPRViewCenter.x;
@@ -1615,7 +1611,8 @@ else
 				
 				
 				
-				
+						
+	
 				
 				cPRViewCenter.x = cPRViewCenter.x*oViewSpace[0]+oViewOrigin[0];
 				cPRViewCenter.y = cPRViewCenter.y*oViewSpace[1]+oViewOrigin[1];				
@@ -1637,98 +1634,74 @@ else
 				tempPt.x=-cViewOrigin[0]/cViewSpace[0]-cPRROIRect.size.width/2;
 				tempPt.y=-cViewOrigin[1]/cViewSpace[1];
 				
-				
 
 				
-				ROI* cViewROI=[[cViewROIList objectAtIndex: 0] objectAtIndex: 0];
-				if(cViewROI&&[cViewROI type]==tArrow)
+
+				if(cViewArrow)
 				{
-					NSMutableArray *points = [cViewROI points];
+
 					NSPoint startPoint,endPoint;
 					startPoint=tempPt;
 					endPoint.x= tempPt.x;
 					endPoint.y= tempPt.y+length/cViewSpace[1];
 					
-					[[points objectAtIndex:0] setPoint: endPoint];
-					[[points objectAtIndex:1] setPoint: startPoint];
+					[[cViewArrowPointsArray objectAtIndex:0] setPoint: endPoint];
+					[[cViewArrowPointsArray objectAtIndex:1] setPoint: startPoint];
 					
 				}
-				
+			
 			}
 			[cPRView setIndex:0];
 			
 		}
-		else if([[cViewROIList objectAtIndex:0] containsObject: sender])
+		else if([sender isEqual:cViewArrow])
 		{
-			ROI* roi=(ROI*)sender;
-			int roitype =[roi type];
-			if(roitype==tROI)
+			NSPoint start=[[cViewArrowPointsArray objectAtIndex: 1] point];
+			if(start.x!= cViewArrowStartPoint.x||start.y!=cViewArrowStartPoint.y)
+				[[cViewArrowPointsArray objectAtIndex: 1] setPoint:cViewArrowStartPoint];
+			else
 			{
-				NSRect tempRect=[roi rect];
-				cPRROIRect.origin.x = cPRROIRect.origin.x+cPRROIRect.size.width/2-tempRect.size.width/2;
-				cPRROIRect.size.width = tempRect.size.width;
-				[roi setROIRect: cPRROIRect];
-			}
-			else if(roitype==tArrow)
-			{
+				// caculate cViewToAxViewZAngle
 				
+				NSPoint tempPt=[[cViewArrowPointsArray objectAtIndex: 0] point];
+				float angle;
 				
-				if([[cViewROIList objectAtIndex:0] count]>1)
+				tempPt.x-=start.x;
+				tempPt.y-=start.y;
+				tempPt.x*=cViewSpace[0];
+				tempPt.y*=cViewSpace[1];
+				
+				if(tempPt.y == 0)
 				{
-					isRemoveROIBySelf=1;
-					[roi retain];
-					[[cViewROIList objectAtIndex:0] removeAllObjects];
-					[[cViewROIList objectAtIndex:0] addObject:roi];
-					[roi release];
-					isRemoveROIBySelf=0;
+					if(tempPt.x > 0)
+						angle=90;
+					else if(tempPt.x < 0)
+						angle=-90;
+					else 
+						angle=0;
+
 				}
-				NSPoint start=[[[roi points] objectAtIndex: 1] point];
-				if(start.x!= cViewArrowStartPoint.x||start.y!=cViewArrowStartPoint.y)
-					[[[roi points] objectAtIndex: 1] setPoint:cViewArrowStartPoint];
 				else
 				{
-					// caculate cViewToAxViewZAngle
-					
-					NSPoint tempPt=[[[roi points] objectAtIndex: 0] point];
-					float angle;
-					
-					tempPt.x-=start.x;
-					tempPt.y-=start.y;
-					tempPt.x*=cViewSpace[0];
-					tempPt.y*=cViewSpace[1];
-					
-					if(tempPt.y == 0)
-					{
-						if(tempPt.x > 0)
-							angle=90;
-						else if(tempPt.x < 0)
-							angle=-90;
-						else 
-							angle=0;
+					if( tempPt.y < 0)
+						angle = 180 + atan( (float) tempPt.x / (float) tempPt.y) / deg2rad;
+					else 
+						angle = atan( (float) tempPt.x / (float) tempPt.y) / deg2rad;
 
-					}
-					else
-					{
-						if( tempPt.y < 0)
-							angle = 180 + atan( (float) tempPt.x / (float) tempPt.y) / deg2rad;
-						else 
-							angle = atan( (float) tempPt.x / (float) tempPt.y) / deg2rad;
-
-					}
-					cViewToAxViewZAngle=angle;
-					
-					axViewTransform->Identity();
-					axViewTransform->Translate(cPRViewCenter.x,cPRViewCenter.y,0 );
-					axViewTransform->RotateZ(oViewToCViewZAngle);
-					axViewTransform->RotateX(90+cViewToAxViewZAngle);
-					
-					[self updateAxView];
-					
 				}
+				cViewToAxViewZAngle=angle;
 				
+				axViewTransform->Identity();
+				axViewTransform->Translate(cPRViewCenter.x,cPRViewCenter.y,0 );
+				axViewTransform->RotateZ(oViewToCViewZAngle);
+				axViewTransform->RotateX(90+cViewToAxViewZAngle);
+				
+				[self updateAxView];
 				
 			}
 			
+				
+						
 		}
 	}
 	else if((currentTool==5||isInCPROnlyMode) && curvedMPR2DPath &&[[oViewROIList objectAtIndex: 0] containsObject: sender])
@@ -1741,10 +1714,12 @@ else
 				float curOriginX,curOriginY;
 				double position[3];
 				NSMutableArray  *path2DPoints=[curvedMPR2DPath points] ;
-				curXSpacing = [[curvedMPR2DPath pix] pixelSpacingX];
-				curYSpacing = [[curvedMPR2DPath pix] pixelSpacingY];
-				curOriginX = [[curvedMPR2DPath pix] originX];
-				curOriginY = [[curvedMPR2DPath pix] originY];
+				DCMPix* tempix=[oViewPixList objectAtIndex:0];
+
+				curXSpacing = [tempix pixelSpacingX];
+				curYSpacing = [tempix pixelSpacingY];
+				curOriginX = [tempix originX];
+				curOriginY = [tempix originY];
 				
 				position[0] = curOriginX + [[path2DPoints lastObject] point].x * curXSpacing;
 				position[1] = curOriginY + [[path2DPoints lastObject] point].y * curYSpacing;
@@ -1800,7 +1775,7 @@ else
 
 				[roi setName: currentSeedName];
 
-				float r, g, b;
+				CGFloat r, g, b;
 				
 				[currentSeedColor getRed:&r green:&g blue:&b alpha:0L];
 				
@@ -1860,6 +1835,7 @@ else
 					//delete other
 					unsigned int i;
 					isRemoveROIBySelf=1;
+					oViewMeasureLine=nil;
 					for ( i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
 					{
 						ROI* temproi=[[oViewROIList objectAtIndex: 0] objectAtIndex: i] ;
@@ -1874,7 +1850,9 @@ else
 					}
 
 					[[cViewROIList objectAtIndex: 0] removeAllObjects];
-					isRemoveROIBySelf=0;	
+					isRemoveROIBySelf=0;
+					oViewMeasureLine=roi;	
+					measureLinePointsArray=[oViewMeasureLine points];
 					
 					DCMPix * curImage= [cViewPixList objectAtIndex:0];
 					ROI* newROI=[[ROI alloc] initWithType: tROI :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
@@ -1890,6 +1868,8 @@ else
 					//delete other
 					unsigned int i;
 					isRemoveROIBySelf=1;
+					oViewArrow=nil;
+					cViewArrow=nil;
 					for ( i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
 					{
 						ROI* temproi=[[oViewROIList objectAtIndex: 0] objectAtIndex: i] ;
@@ -1908,8 +1888,10 @@ else
 					isRemoveROIBySelf=0;
 					//change start and end
 					MyPoint *lastPoint=[[MyPoint alloc] initWithPoint:[[[roi points] objectAtIndex:0] point] ];
-					[[roi points] addObject:lastPoint];
+					arrowPointsArray = [roi points] ;
+					[arrowPointsArray addObject:lastPoint];
 					[lastPoint release];
+					oViewArrow=roi;
 
 					
 					
@@ -1918,13 +1900,15 @@ else
 					ROI* newROI=[[ROI alloc] initWithType: tArrow :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
 					[newROI setName:currentSeedName];
 					lastPoint=[[MyPoint alloc] initWithPoint:NSMakePoint(0,0)];
-					[[newROI points] addObject: lastPoint];
+					cViewArrowPointsArray=[newROI points];
+					[cViewArrowPointsArray addObject: lastPoint];
 					[lastPoint release];
 					lastPoint=[[MyPoint alloc] initWithPoint:NSMakePoint(0,0)];
-					[[newROI points] addObject: lastPoint];
+					[cViewArrowPointsArray addObject: lastPoint];
 					[lastPoint release];
 					
 					[[cViewROIList objectAtIndex: 0] addObject: newROI];
+					cViewArrow=newROI;
 					[newROI release];
 					
 					curImage= [axViewPixList objectAtIndex:0];
@@ -1943,7 +1927,21 @@ else
 			
 			
 		}
-		
+		else if ([sender isEqual:cPRView]&&currentTool == 7 )
+		{
+		ROI * roi = [[note userInfo] objectForKey:@"ROI"];
+			if(roi&&cViewArrow)
+			{
+				if(![roi isEqual:cViewArrow])
+				{
+					isRemoveROIBySelf=1;
+					[[cViewROIList objectAtIndex:0] removeObject:cViewArrow];
+					isRemoveROIBySelf=0;
+					cViewArrow=roi;
+					cViewArrowPointsArray=[cViewArrow points];
+				}
+			}
+		}
 	}
 }
 
@@ -1999,6 +1997,7 @@ else
 			{
 				if([originalView isEqual:[roi curView]])
 				{
+					oViewMeasureLine=nil;
 					isRemoveROIBySelf=1;
 					[[cViewROIList objectAtIndex:0] removeAllObjects];
 					[cPRView setIndex: 0];
@@ -2013,6 +2012,8 @@ else
 			{
 				if([originalView isEqual:[roi curView]])
 				{
+					oViewArrow=nil;
+					cViewArrow=nil;
 					isRemoveROIBySelf=1;
 					[[cViewROIList objectAtIndex:0] removeAllObjects];
 					[cPRView setIndex: 0];
@@ -2022,7 +2023,8 @@ else
 				}
 				else if(!isRemoveROIBySelf&&[cPRView isEqual:[roi curView]])
 				{
-					
+					oViewArrow=nil;
+					cViewArrow=nil;
 					unsigned int i;
 					isRemoveROIBySelf=1;
 					for ( i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
@@ -2052,7 +2054,7 @@ else
 				{
 
 					isRemoveROIBySelf=1;
-
+				oViewMeasureLine=nil;
 				unsigned int i;
 					for ( i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
 					{
@@ -2561,7 +2563,7 @@ else
 			tempRect.origin.x-=tempRect.size.width/2;
 			tempRect.origin.y-=tempRect.size.height/2;
 			
-			float rv, gv, bv;
+			CGFloat rv, gv, bv;
 			[currentSeedColor getRed:&rv green:&gv blue:&bv alpha:0L];
 			RGBColor c;
 			c.red =(short unsigned int) (rv * 65535.);
@@ -3019,11 +3021,12 @@ else
 	
 	float curXSpacing,curYSpacing;
 	float curOriginX,curOriginY;
+	DCMPix* tempix=[oViewPixList objectAtIndex:0];
 	
-	curXSpacing=[[curvedMPR2DPath pix] pixelSpacingX];
-	curYSpacing=[[curvedMPR2DPath pix] pixelSpacingY];
-	curOriginX = [[curvedMPR2DPath pix] originX];
-	curOriginY = [[curvedMPR2DPath pix] originY];
+	curXSpacing=[tempix pixelSpacingX];
+	curYSpacing=[tempix pixelSpacingY];
+	curOriginX = [tempix originX];
+	curOriginY = [tempix originY];
 	
 	cViewSpace[0]=cViewSpace[1]=xSpacing;
 	
@@ -3960,7 +3963,7 @@ else
 		NSString* seedname = [[contrastList objectAtIndex: i] objectForKey:@"Name"] ;
 		[temproi setName: seedname];	
 		NSColor* seedcolor =[[contrastList objectAtIndex: i] objectForKey:@"Color"] ;
-		float r, g, b;
+		CGFloat r, g, b;
 		[seedcolor getRed:&r green:&g blue:&b alpha:0L];
 		RGBColor c;
 		c.red =(short unsigned int) (r * 65535.);

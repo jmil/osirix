@@ -146,6 +146,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (IBAction)capureImage:(id)sender
 {
+/*
 	FSRef				fsref;
 	FSSpec				spec, newspec;
 	if(!isSegmentVR)
@@ -209,7 +210,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 		[mov release];		
 	}
-	
+	*/
 }
 
 - (IBAction)endPanel:(id)sender
@@ -498,8 +499,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // get the control of color and opacity;	
 	renderOfVRView = [vrViewer renderer];
 	aCamera = renderOfVRView->GetActiveCamera();
-	volumeCollectionOfVRView = renderOfVRView->GetVolumes();
-	volumeOfVRView = (vtkVolume * )volumeCollectionOfVRView->GetItemAsObject (0);
+	//volumeCollectionOfVRView = renderOfVRView->GetVolumes();
+	volumeOfVRView = (vtkVolume * )[vrViewer volume]; //volumeOfVRView = (vtkVolume * )volumeCollectionOfVRView->GetItemAsObject (0);
 	volumePropteryOfVRView = volumeOfVRView->GetProperty();
 	myVolumeProperty = vtkVolumeProperty::New();
 	myColorTransferFunction = vtkColorTransferFunction::New();

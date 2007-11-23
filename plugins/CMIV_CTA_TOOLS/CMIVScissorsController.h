@@ -198,6 +198,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int       soomthedpathlen;
 	double*   soomthedpath;
 	int interpolationMode;
+	ROI* oViewArrow;
+	ROI* cViewArrow;
+	NSMutableArray  *arrowPointsArray;
+	NSMutableArray  *cViewArrowPointsArray;
+	ROI* oViewMeasureLine;
+	NSMutableArray  *measureLinePointsArray;
 	
 	
 	

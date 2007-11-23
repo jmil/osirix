@@ -125,7 +125,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[databaseUpdateTimer release];
 		databaseUpdateTimer=nil;
 		isUpdated=NO;
-		for(i=0;i<[previewMatrix numberOfRows];i++)
+		for(i=1;i<[previewMatrix numberOfRows];i++)
 		{
 			NSManagedObject	*curSeries = [[previewMatrix cellAtRow: i column:0] representedObject];
 			if(curSeries)
