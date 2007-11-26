@@ -52,6 +52,9 @@ TODO:
 - Keep ROI after reslice
 - Spline ROI for VR
 
+- Add more ROIs tools for 2D-MPR
+- Check Joris iPod connection
+
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
