@@ -43,14 +43,15 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
-- Get Info window not displayed in the French Version?
 - Test GPU rendering
 - Localization Tests: short keys, annotations, show/hide columns in db table
 - Test Q R in 64-bit PPC - Seems to work with OsiriX, dcm4chee, .... ?
 
-- NSOpenGLPixelFormatAttribute attrs[] ?
+- NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24
 - Keep ROI after reslice
 - Add more ROIs tools for 2D-MPR
+- iChat crash
+- Convert JPEG/TIFF/PNG/Multi TIGG/BMP to Dicom
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
