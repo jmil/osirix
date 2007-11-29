@@ -45,13 +45,17 @@
 TODO:
 - Test GPU rendering
 - Localization Tests: short keys, annotations, show/hide columns in db table
-- Test Q R in 64-bit PPC - Seems to work with OsiriX, dcm4chee, .... ?
 
 - NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24
 - Keep ROI after reslice
 - Add more ROIs tools for 2D-MPR
 - iChat crash
 - Convert JPEG/TIFF/PNG/Multi TIGG/BMP to Dicom
+- Reports: test ÇDICOM_FIELD:PatientsSexÈ
+- slider -> Series Level -> Preview Pane
+- 3D Presets -> Double-Click -> Window disappeared
+- PELVIX - Open at the same time, papy crash
+- Mail.scpt
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
