@@ -52,10 +52,9 @@ TODO:
 - iChat crash
 - Convert JPEG/TIFF/PNG/Multi TIGG/BMP to Dicom
 - Reports: test ÇDICOM_FIELD:PatientsSexÈ
-- slider -> Series Level -> Preview Pane
 - 3D Presets -> Double-Click -> Window disappeared
 - PELVIX - Open at the same time, papy crash
-- Mail.scpt
+- Mail.scpt : http://weblog.scifihifi.com/2004/04/15/calling-applescript-handlers-from-cocoa
 
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
