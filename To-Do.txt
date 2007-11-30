@@ -47,13 +47,11 @@ TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
 - NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24 ?
-- Keep ROI after reslice
 - Add more ROIs tools for 2D-MPR
 - iChat crash
-- Convert JPEG/TIFF/PNG/Multi TIGG/BMP to Dicom
-- Reports: test «DICOM_FIELD:PatientsSex»
-- Mail.scpt : http://weblog.scifihifi.com/2004/04/15/calling-applescript-handlers-from-cocoa
+- Finish applescript email export
 
+- Keep ROI after reslice
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
 - New smart filter editor (10.5)
