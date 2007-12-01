@@ -49,8 +49,8 @@ TODO:
 - NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24 ?
 - Add more ROIs tools for 2D-MPR
 - iChat crash
-- Finish applescript email export
 
+- Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Keep ROI after reslice
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
