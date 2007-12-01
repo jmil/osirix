@@ -51,7 +51,8 @@ void drawTextualData(NSString* path, float width)
 		NSString *s = 0L;
 		if( [file elementForKey:@"studyDate"]) s = [NSString stringWithFormat: @"%@ / %@", [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]];
 		[text appendString: stringFromData( [file elementForKey:@"studyDescription"], s)];
-		
+		[text appendString: @"\r"];
+		[text appendString: @"Displayed by OsiriX DICOM Engine v.1.0."];
 		[text drawAtPoint: NSMakePoint(0, 0) withAttributes: attributes];
 		
 		[file release];
