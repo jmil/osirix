@@ -47,7 +47,6 @@ TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
 - NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24 ?
-- Add more ROIs tools for 2D-MPR
 - iChat crash
 
 - Check current image index in exportImage
