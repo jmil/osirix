@@ -50,7 +50,6 @@ TODO:
 - Add more ROIs tools for 2D-MPR
 - iChat crash
 
-- Check DICOM Send
 - Check current image index in exportImage
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
