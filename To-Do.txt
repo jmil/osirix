@@ -43,12 +43,7 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
-- Test GPU rendering
 - Localization Tests: short keys, annotations, show/hide columns in db table
-
-- NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24 ?
-- iChat crash - 64bits related ?
-- Check the Axial 2D Curved MPR
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Keep ROI after reslice
