@@ -45,6 +45,8 @@
 TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
+- Announce iMac 24''
+
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Keep ROI after reslice
 - Is it possible to place keyed images into a report automatically when generating a report?
