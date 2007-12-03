@@ -48,6 +48,7 @@ TODO:
 
 - NSOpenGLPixelFormatAttribute attrs[] ? - iMac 24 ?
 - iChat crash - 64bits related ?
+- Check the Axial 2D Curved MPR
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Keep ROI after reslice
