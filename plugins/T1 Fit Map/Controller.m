@@ -340,7 +340,7 @@
 	
 	for( DCMPix *pix in pixListA)
 	{
-		if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
+		if( [pix originX] != origin[0] || [pix originY] != origin[1] || [pix originZ] != origin[2])
 		{
 			interval = 1;
 			break;
@@ -353,13 +353,13 @@
 		for( i = 1; i < [pixListA count]; i++)
 		{
 			interval++;
-			if( [[pixListA objectAtIndex: i] originX] == origin[0] && [[pixListA objectAtIndex: i] originY] == origin[1] && [[pixListA objectAtIndex: i] originZ] == origin[2]) break;
+			if( [[pixListA objectAtIndex: i] originX] != origin[0] || [[pixListA objectAtIndex: i] originY] != origin[1] || [[pixListA objectAtIndex: i] originZ] != origin[2]) break;
 		}
 	}
 	
 	BOOL volumic = NO;
 	
-	if( interval != [pixListA count])
+	if( interval != [pixListA count] && interval != 0)
 	{
 		NSLog( @"It's maybe a volumic TE sequence");
 		
@@ -383,6 +383,7 @@
 		if( volumic)
 			NSLog(@"yes! it's a volumic sequence");
 	}
+	else interval = 1;
 	
 	[pixListArrays release];
 	pixListArrays = [[NSMutableArray array] retain];

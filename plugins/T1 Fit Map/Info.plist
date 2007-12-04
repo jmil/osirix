@@ -20,6 +20,8 @@
 	<array>
 		<string>T1 Fit Map</string>
 	</array>
+	<key>NSMainNibFile</key>
+	<string>ControllerT1Fit</string>
 	<key>NSPrincipalClass</key>
 	<string>MappingT1FitFilter</string>
 	<key>pluginType</key>
