@@ -45,7 +45,6 @@
 TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
-- iChat bug : flash WLWW.... flush?
 - Keep studies together
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
