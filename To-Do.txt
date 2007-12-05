@@ -45,8 +45,6 @@
 TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
-- Keep studies together
-
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
