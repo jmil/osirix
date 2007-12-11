@@ -60,7 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSRect   roiRect;
 	NSRect   coronalROIRect;
 	NSRect   sagittalROIRect;
-	int      imageWidth,imageHeight,imageAmount;
+	long      imageWidth,imageHeight,imageAmount;
 	int      iImageFrom,iImageTo; 
 	float    ratioXtoThick,ratioYtoThick,ratioXtoY;
 	float    *outputVolumeData;
@@ -72,8 +72,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	ViewerController     *originalViewController;
 	
-	float				vtkOriginalX,vtkOriginalY,vtkOriginalZ;
-	float				sliceThickness;
+	double				vtkOriginalX,vtkOriginalY,vtkOriginalZ;
+	double				sliceThickness;
 	
 	vtkImageReslice		*rotate;
 	vtkImageImport		*reader;

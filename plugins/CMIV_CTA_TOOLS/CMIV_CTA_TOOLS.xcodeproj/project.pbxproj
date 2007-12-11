@@ -1382,8 +1382,6 @@
 		B98F19550C4EA78900EED2DD /* CMIV3DPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A4171E0B4BAF4D009AEE95 /* CMIV3DPoint.m */; };
 		B98F19560C4EA78900EED2DD /* CMIV_CTA_TOOLS.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9E39DE80B03648700387A56 /* CMIV_CTA_TOOLS.mm */; };
 		B98F19580C4EA78900EED2DD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
-		B98F19590C4EA78900EED2DD /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97765EC0B07C51F0044AA4F /* libvtkImaging.a */; };
-		B98F195A0C4EA78900EED2DD /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */; };
 		B99604090C130ED100924E8C /* VRMakeObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B99604070C130ED100924E8C /* VRMakeObject.h */; };
 		B9960E830C5A7F01004A4E89 /* CMIVSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9960E810C5A7F01004A4E89 /* CMIVSlider.h */; };
 		B9960E840C5A7F01004A4E89 /* CMIVSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B9960E820C5A7F01004A4E89 /* CMIVSlider.m */; };
@@ -2719,8 +2717,6 @@
 		B9E3A0450B048ED300387A56 /* CMIVChopperController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E3A0430B048ED300387A56 /* CMIVChopperController.h */; };
 		B9FB33550B0A1FD000A5A87A /* CMIVContrastController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9FB33530B0A1FD000A5A87A /* CMIVContrastController.h */; };
 		B9FB33560B0A1FD000A5A87A /* CMIVContrastController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */; };
-		BF76EF1A0C8886560009C91B /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97765EC0B07C51F0044AA4F /* libvtkImaging.a */; };
-		BF76EF1C0C8886680009C91B /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -2747,7 +2743,6 @@
 		B96B0F1D0B10AFD20044D904 /* VTKView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VTKView.h; sourceTree = "<group>"; };
 		B96B0F1F0B10B1B60044D904 /* CMIVVRcontroller.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVVRcontroller.h; sourceTree = "<group>"; };
 		B96B0F200B10B1B60044D904 /* CMIVVRcontroller.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVVRcontroller.mm; sourceTree = "<group>"; };
-		B97765EC0B07C51F0044AA4F /* libvtkImaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkImaging.a; path = ../../osirix/Binaries/VTKLibs/libvtkImaging.a; sourceTree = SOURCE_ROOT; };
 		B98CF5570BE2BF8D00ED53C4 /* DCMDataContainer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMDataContainer.h; sourceTree = "<group>"; };
 		B98D355C0C4CE6E100DA7EA2 /* spline.C */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = spline.C; sourceTree = "<group>"; };
 		B98D355D0C4CE6E100DA7EA2 /* spline.H */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.h; path = spline.H; sourceTree = "<group>"; };
@@ -4083,7 +4078,6 @@
 		B9E39E6B0B0370B200387A56 /* Chopper_Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Chopper_Panel.nib; sourceTree = "<group>"; };
 		B9E3A0430B048ED300387A56 /* CMIVChopperController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVChopperController.h; sourceTree = "<group>"; };
 		B9E3A0440B048ED300387A56 /* CMIVChopperController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVChopperController.mm; sourceTree = "<group>"; };
-		B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkGraphics.a; path = ../../osirix/Binaries/VTKLibs/libvtkGraphics.a; sourceTree = SOURCE_ROOT; };
 		B9FB33530B0A1FD000A5A87A /* CMIVContrastController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVContrastController.h; sourceTree = "<group>"; };
 		B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVContrastController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -4093,8 +4087,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF76EF1C0C8886680009C91B /* libvtkGraphics.a in Frameworks */,
-				BF76EF1A0C8886560009C91B /* libvtkImaging.a in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4104,8 +4096,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B98F19580C4EA78900EED2DD /* Cocoa.framework in Frameworks */,
-				B98F19590C4EA78900EED2DD /* libvtkImaging.a in Frameworks */,
-				B98F195A0C4EA78900EED2DD /* libvtkGraphics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4115,7 +4105,6 @@
 		089C166AFE841209C02AAC07 /* Duplicate */ = {
 			isa = PBXGroup;
 			children = (
-				B97765DE0B07C3630044AA4F /* vtklib */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
@@ -4251,15 +4240,6 @@
 				ABB7633F067FB2A8000912C1 /* ViewerController.h */,
 			);
 			path = "OsiriX Headers";
-			sourceTree = "<group>";
-		};
-		B97765DE0B07C3630044AA4F /* vtklib */ = {
-			isa = PBXGroup;
-			children = (
-				B97765EC0B07C51F0044AA4F /* libvtkImaging.a */,
-				B9F0E0CA0B44668900E3EDD8 /* libvtkGraphics.a */,
-			);
-			name = vtklib;
 			sourceTree = "<group>";
 		};
 		B98D355B0C4CE6AC00DA7EA2 /* Spline C */ = {
@@ -8591,7 +8571,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G4;
+				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CMIV_CTA_TOOLS_Prefix.pch;

@@ -42,18 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vtkTransform.h>
 #include <vtkImageReslice.h>
 #include <vtkImageData.h>
-//#include <vtkProbeFilter.h>
-#include <vtkRuledSurfaceFilter.h>
-#include <vtkPoints.h>
-#include <vtkTransformFilter.h>
-#include <vtkCellArray.h>
-//#include <vtkDataSet.h>
-#include <vtkPointData.h>
-#include <vtkTransformPolyDataFilter.h>
-#include <vtkSplineFilter.h>
-#include <vtkKochanekSpline.h>
-#include <vtkRibbonFilter.h>
-#include <vtkAppendPolyData.h>
+#include <vtkMath.h>
 #include "spline.h"
 #undef id
 
@@ -134,25 +123,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	vtkImageReslice     *axViewSlice;
 	vtkImageReslice     *oViewROISlice;
 	///////////////
-	vtkTransform        *surfaceLeftTransform;
-	vtkTransform        *surfaceRightTransform;	
-//	vtkProbeFilter      *curvedProber;
-	vtkRuledSurfaceFilter *curvedSurface;
-	vtkPoints           *pathKeyPoints;
-	vtkCellArray        *centerLinePath;
-	vtkPolyData			*centerLinePolyData;
-	vtkTransformPolyDataFilter *leftTransformFilter;
-	vtkTransformPolyDataFilter *rightTransformFilter;
-	vtkAppendPolyData	*appenedPolyData;
-	vtkSplineFilter     *splineFilter;
-	vtkKochanekSpline   *kSpline;
-	vtkPoints           *smoothedCenterlinePoints;
-	vtkCellArray        *smoothedCenterlineCells;
-	vtkPolyData			*smoothedCenterlinePD;
-	vtkRibbonFilter     *narrowRibbonofCenterline;
-	vtkPolyData         *ribbonPolydata;	
 	ROI                 *curvedMPR2DPath;
 	NSMutableArray      *curvedMPR3DPath;
+	NSMutableArray      *curvedMPREven3DPath;
 	NSMutableArray      *curvedMPRProjectedPaths;
 	ROI                 *curvedMPRReferenceLineOfAxis;	
 	float				*cprImageBuffer;
@@ -246,6 +219,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)removeCenterline:(id)sender;
 - (IBAction)switchStraightenedCPR:(id)sender;
 - (IBAction)exportOrthogonalDataset:(id)sender;
+- (int) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (int) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (void)showPanelAsWizard:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (void)showPanelAsCPROnly:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
@@ -301,4 +275,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (ViewerController *) exportCrossSectionImages;
 - (ViewerController *) exportCViewImages;
 - (ViewerController *) exportOViewImages;
+- (int) generateSlidingNormals:(int)npts:(double*)pointsxyz:(double*)ptnormals;
+- (int) generateUnitRobbin:(int)npts:(double*)inputpointsxyz:(double*)ptnormals:(double*)outputpointsxyz:(double)angle:(double)width;
+
 @end

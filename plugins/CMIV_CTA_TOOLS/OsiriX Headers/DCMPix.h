@@ -100,11 +100,12 @@
 - (float*) fImage;
 
 // Dimensions in pixels
-- (long) setPwidth:(long) w;
+
 - (long) pwidth;
 
-- (long) setPheight:(long) h;
+
 - (long) pheight;
+
 
 // WL & WW
 - (float) ww;
@@ -126,23 +127,23 @@
 - (float*) getLineROIValue :(long*) numberOfValues :(ROI*) roi;
 
 // X/Y ratio - non-square pixels
--(void) setPixelRatio:(float)r;
--(float) pixelRatio;
+-(void) setPixelRatio:(double)r;
+-(double) pixelRatio;
 
 // pixel size
--(float) pixelSpacingX;
--(float) pixelSpacingY;
--(void) setPixelSpacingX :(float) s;
--(void) setPixelSpacingY :(float) s;
+-(double) pixelSpacingX;
+-(double) pixelSpacingY;
+-(void) setPixelSpacingX :(double) s;
+-(void) setPixelSpacingY :(double) s;
 
 // Slice orientation
 -(void) orientation:(float*) c;
 -(void) setOrientation:(float*) c;
 
 // Slice location
--(float) originX;
--(float) originY;
--(float) originZ;
+-(double) originX;
+-(double) originY;
+-(double) originZ;
 -(void) setOrigin :(float*) o;
 
 // Utility methods to convert user supplied pixel coords to DICOM patient coords float d[3] (in mm)
@@ -151,12 +152,12 @@
 -(void) convertDICOMCoords: (float*) dc toSliceCoords: (float*) sc;
 
 // Thickness/Axial Location
--(float) sliceLocation;
--(void) setSliceLocation:(float) l;
--(float) sliceThickness;
--(void) setSliceThickness:(float) l;
--(float) sliceInterval;
--(void) setSliceInterval :(float) s;
+-(double) sliceLocation;
+-(void) setSliceLocation:(double) l;
+-(double) sliceThickness;
+-(void) setSliceThickness:(double) l;
+-(double) sliceInterval;
+-(void) setSliceInterval :(double) s;
 
 // ID / FrameNo
 -(long) ID;

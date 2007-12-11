@@ -341,6 +341,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	if(curvedMPRReferenceLineOfAxis)
 		[curvedMPRReferenceLineOfAxis release];
 	[curvedMPR2DPath release];
+	if(curvedMPREven3DPath)
+		[curvedMPREven3DPath release];
+		
 	if(tag!=2&&!isInCPROnlyMode)
 		free(contrastVolumeData);
 	
@@ -361,9 +364,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 			roiReader->Delete();
 			oViewROISlice->Delete();
 		}
-		if(narrowRibbonofCenterline)
-			narrowRibbonofCenterline->Delete();
 		///////////////
+		
 	}
 	if(howToContinueTip)
 		[howToContinueTip release];
@@ -772,6 +774,11 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	
 	return err;
 	
+}
+- (int) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner
+{
+
+ return 1;
 }
 - (int) initViews
 {
@@ -2832,141 +2839,436 @@ else
 					}
 	}
 }
+- (int) generateSlidingNormals:(int)npts:(double*)pointsxyz:(double*)ptnormals
+{
+	double sPrev[3], sNext[3], q[3], w[3], normal[3], theta;
+	double p[3], pNext[3];
+	double c[3], f1, f2;
+	int i, j, largeRotation;
+
+
+	if(npts<2)
+		return 0;
+	for (j=0; j<npts; j++) 
+	{
+
+		if ( j == 0 ) //first point
+		  {
+		  
+
+
+		 for (i=0; i<3; i++) 
+			{
+			p[i]=*(pointsxyz+j*3+i);
+			pNext[i]=*(pointsxyz+j*3+3+i);
+			sPrev[i] = pNext[i] - p[i];
+			sNext[i] = sPrev[i];
+			}
+			if ( vtkMath::Normalize(sNext) == 0.0 )
+            {
+                   return 0;
+            }
+
+
+		// the following logic will produce a normal orthogonal
+		// to the first line segment. If we have three points
+		// we use special logic to select a normal orthogonal
+		// to the first two line segments
+		int foundNormal=0;
+		if (npts > 2)
+		  {
+		  int ipt;
+
+		  // Look at the line segments (0,1), (ipt-1, ipt)
+		  // until a pair which meets the following criteria
+		  // is found: ||(0,1)x(ipt-1,ipt)|| > 1.0E-3.
+		  // This is used to eliminate nearly parallel cases.
+		  for(ipt=2; ipt < npts; ipt++)
+			{
+			double ftmp[3];
+		
+			for (i=0; i<3; i++) 
+			  {
+			  ftmp[i] =*(pointsxyz+ipt*3+i) - *(pointsxyz+ipt*3-3+i);
+			  }
+
+			if ( vtkMath::Normalize(ftmp) == 0.0 )
+			  {
+			  continue;
+			  }
+
+			// now the starting normal should simply be the cross product
+			// in the following if statement we check for the case where
+			// the two segments are parallel 
+			vtkMath::Cross(sNext,ftmp,normal);
+			if ( vtkMath::Norm(normal) > 1.0E-3 )
+			  {
+			  foundNormal = 1;
+			  break;
+			  }
+			}
+		  }
+
+		if ((npts <= 2)|| !foundNormal) 
+		  {
+		  for (i=0; i<3; i++) 
+			{
+			// a little trick to find othogonal normal
+			if ( sNext[i] != 0.0 ) 
+			  {
+			  normal[(i+2)%3] = 0.0;
+			  normal[(i+1)%3] = 1.0;
+			  normal[i] = -sNext[(i+1)%3]/sNext[i];
+			  break;
+			  }
+			}
+		  }
+
+           vtkMath::Normalize(normal);
+          	for(i=0;i<3;i++)
+				*(ptnormals+j*3+i)=normal[i];
+          }
+
+        else if ( j == (npts-1) ) //last point; just insert previous
+          {
+          for(i=0;i<3;i++)
+				*(ptnormals+j*3+i)=normal[i];
+          }
+
+        else //inbetween points
+          {
+          //  Generate normals for new point by projecting previous normal
+          for (i=0; i<3; i++)
+            {
+            p[i] = pNext[i];
+			pNext[i]=*(pointsxyz+j*3+3+i);
+            sPrev[i] = sNext[i];
+            sNext[i] = pNext[i] - p[i];
+            }
+
+          if ( vtkMath::Normalize(sNext) == 0.0 )
+            {
+             return 0;
+            }
+
+          //compute rotation vector
+          vtkMath::Cross(sPrev,normal,w);
+          if ( vtkMath::Normalize(w) == 0.0 ) 
+            {
+              return 0;
+            }
+
+          //see whether we rotate greater than 90 degrees.
+          if ( vtkMath::Dot(sPrev,sNext) < 0.0 )
+            {
+            largeRotation = 1;
+            }
+          else
+            {
+            largeRotation = 0;
+            }
+
+          //compute rotation of line segment
+          vtkMath::Cross (sNext, sPrev, q);
+          if ( (theta=asin((double)vtkMath::Normalize(q))) == 0.0 ) 
+            { //no rotation, use previous normal
+              
+				for(i=0;i<3;i++)
+					*(ptnormals+j*3+i)=normal[i];
+				continue;
+            }
+          if ( largeRotation )
+            {
+            if ( theta > 0.0 )
+              {
+              theta = vtkMath::Pi() - theta;
+              }
+            else
+              {
+              theta = -vtkMath::Pi() - theta;
+              }
+            }
+
+          // new method
+          for (i=0; i<3; i++)
+            {
+            c[i] = sNext[i] + sPrev[i];
+            }
+          vtkMath::Normalize(c);
+          f1 = vtkMath::Dot(q,normal);
+          f2 = 1.0 - f1*f1;
+          if (f2 > 0.0)
+            {
+            f2 = sqrt(1.0 - f1*f1);
+            }
+          else
+            {
+            f2 = 0.0;
+            }
+          vtkMath::Cross(c,q,w);
+          vtkMath::Cross(sPrev,q,c);
+          if (vtkMath::Dot(normal,c)*vtkMath::Dot(w,c) < 0)
+            {
+            f2 = -1.0*f2;
+            }
+          for (i=0; i<3; i++)
+            {
+            normal[i] = f1*q[i] + f2*w[i];
+            }
+          
+			for(i=0;i<3;i++)
+				*(ptnormals+j*3+i)=normal[i];
+          }//for this point
+        }
+	return 1;
+}
+- (int) generateUnitRobbin:(int)npts:(double*)inputpointsxyz:(double*)ptnormals:(double*)outputpointsxyz:(double)angle:(double)width
+{
+/*
+    if ( !this->GeneratePoints(offset,npts,pts,inPts,newPts,pd,outPD,
+                               newNormals,inScalars,range,inNormals) )
+
+int vtkRibbonFilter::GeneratePoints(vtkIdType offset, 
+                                  vtkIdType npts, vtkIdType *pts,
+                                  vtkPoints *inPts, vtkPoints *newPts, 
+                                  vtkPointData *pd, vtkPointData *outPD,
+                                  vtkFloatArray *newNormals,
+                                  vtkDataArray *inScalars, double range[2],
+                                  vtkDataArray *inNormals)*/
+  int i,j;
+  double p[3];
+  double pNext[3];
+  double sNext[3];
+  double sPrev[3];
+  double n[3];
+  double s[3], v[3];
+  //double bevelAngle;
+  double w[3];
+  double nP[3];
+  double sFactor=1.0;
+
+
+  // Use "averaged" segment to create beveled effect. 
+  // Watch out for first and last points.
+  //
+  for (j=0; j < npts; j++)
+    {
+    if ( j == 0 ) //first point
+      {
+
+      for (i=0; i<3; i++) 
+        {
+		p[i]=*(inputpointsxyz+j*3+i);
+		pNext[i]=*(inputpointsxyz+j*3+3+i);
+        sNext[i] = pNext[i] - p[i];
+        sPrev[i] = sNext[i];
+        }
+      }
+    else if ( j == (npts-1) ) //last point
+      {
+      for (i=0; i<3; i++)
+        {
+        sPrev[i] = sNext[i];
+        p[i] = pNext[i];
+        }
+      }
+    else
+      {
+      for (i=0; i<3; i++)
+        {
+        p[i] = pNext[i];
+		pNext[i]=*(inputpointsxyz+j*3+3+i);
+        sPrev[i] = sNext[i];
+        sNext[i] = pNext[i] - p[i];
+        }
+      }
+
+	 for (i=0; i<3; i++)
+		n[i]=*(ptnormals+j*3+i);
+
+    if ( vtkMath::Normalize(sNext) == 0.0 )
+      {
+
+      return 0;
+      }
+
+    for (i=0; i<3; i++)
+      {
+      s[i] = (sPrev[i] + sNext[i]) / 2.0; //average vector
+      }
+    // if s is zero then just use sPrev cross n
+    if (vtkMath::Normalize(s) == 0.0)
+      {
+      vtkMath::Cross(sPrev,n,s);
+      if (vtkMath::Normalize(s) == 0.0)
+        {
+       // vtkWarningMacro(<< "Using alternate bevel vector");
+        }
+      }
+    vtkMath::Cross(s,n,w);
+    if ( vtkMath::Normalize(w) == 0.0)
+      {
+        return 0;
+      }
+
+    vtkMath::Cross(w,s,nP); //create orthogonal coordinate system
+    vtkMath::Normalize(nP);
+
+  
+    for (i=0; i<3; i++) 
+      {
+      v[i] = (w[i]*cos(angle) + nP[i]*sin(angle));
+     // sp[i] = p[i] + width * sFactor * v[i];
+     // sm[i] = p[i] - width * sFactor * v[i];
+	 *(outputpointsxyz+j*3+i)= width * sFactor * v[i];
+      }
+	
+   }//for all points in polyline
+  
+  return 1;
+}
 - (float*) caculateStraightCPRImage :(int*)pwidth :(int*)pheight 
 {
 	float *im=0L;
-	int width;
-	double position[3],position1[3],position2[3];;
-	
+	int i,ii;
+	int width,height;
+	double position[3];
+	double* outputcenterlinexyz;
 	cViewSpace[0]=cViewSpace[1]=xSpacing;
-	*pwidth=width=40/cViewSpace[0];//here we use fixed width( 40mm )
 		
-// create a narrow 3d ribbon from the centerline and use this ribbon to get cross-section line from each pair of point along this ribbon 
-	pathKeyPoints = vtkPoints::New();
-	int pointNumber=[curvedMPR3DPath count];
-	CMIV3DPoint* a3DPoint;
-	int i,j;
-	for(i=0;i<pointNumber;i++)
-	{
-		a3DPoint=[curvedMPR3DPath objectAtIndex: i];
-		position[0]=[a3DPoint x];
-		position[1]=[a3DPoint y];
-		position[2]=[a3DPoint z];
+	if(curvedMPREven3DPath==nil)
+	{	
 		
-		pathKeyPoints->InsertPoint(i,position);
-		
-	}
-	
-	
-	centerLinePath = vtkCellArray::New();
-	centerLinePath->InsertNextCell(pointNumber);
-	for(i=0;i<pointNumber;i++)
-		centerLinePath->InsertCellPoint(i);
-	
-	
-	centerLinePolyData = vtkPolyData::New() ;
-	centerLinePolyData->SetPoints(pathKeyPoints);
-	centerLinePolyData->SetLines(centerLinePath);
-	/* failed when compile, vtkKochanekSpline is not included in the Osirix static library.
-	kSpline=vtkKochanekSpline::New();
-	kSpline->SetDefaultTension(0.5);
-	kSpline->SetDefaultBias(0);
-	kSpline->SetDefaultContinuity(0);
-	*/
-	splineFilter= vtkSplineFilter::New();
-	splineFilter->SetInput(centerLinePolyData);
-	splineFilter->SetSubdivideToLength();
-	splineFilter->SetLength(cViewSpace[1]/6);
-	//splineFilter->SetSpline(kSpline);
 
-	//vtkSplineFilter didn't give equal length centerline, have to resample the curve to create equal subdivision
-	vtkPolyData         *tempPolydata;
-	//tempPolydata=splineFilter->GetOutput();
-	//tempPolydata->Update();	
-	tempPolydata=centerLinePolyData;
-	pointNumber=tempPolydata->GetPoints()->GetNumberOfPoints();
-	smoothedCenterlinePoints = vtkPoints::New();
-	tempPolydata->GetPoint(0,position1);
-	float steplen,len=0,prelen=0;
-	int index=0;
-	for(i=1;i<pointNumber;i++)
-	{
-		tempPolydata->GetPoint(i,position2);
-		steplen = sqrt( (position2[0]-position1[0])*(position2[0]-position1[0]) + (position2[1]-position1[1])*(position2[1]-position1[1]) + (position2[2]-position1[2])*(position2[2]-position1[2]) );
-	
-		while((len+steplen-prelen)>=cViewSpace[1])
+		int pointNumber=[curvedMPR3DPath count];
+		CMIV3DPoint* a3DPoint;
+
+		double* inputpointsxyz=(double*)malloc(sizeof(double)*pointNumber*3);
+		double* inputpointslen=(double*)malloc(sizeof(double)*pointNumber);
+		double prepoint[3];
+		double path3DLength;
+		a3DPoint=[curvedMPR3DPath objectAtIndex: 0];
+		prepoint[0]=[a3DPoint x];
+		prepoint[1]=[a3DPoint y];
+		prepoint[2]=[a3DPoint z];	
+		for(i=0;i<pointNumber;i++)
 		{
-			prelen+=cViewSpace[1];
-			for(j=0;j<3;j++)
+			a3DPoint=[curvedMPR3DPath objectAtIndex: i];
+			position[0]=[a3DPoint x];
+			position[1]=[a3DPoint y];
+			position[2]=[a3DPoint z];	
+			*(inputpointslen+i)=sqrt((position[0]-prepoint[0])*(position[0]-prepoint[0])+(position[1]-prepoint[1])*(position[1]-prepoint[1])+(position[2]-prepoint[2])*(position[2]-prepoint[2]));
+			path3DLength+=*(inputpointslen+i);
+			for(ii=0;ii<3;ii++)
 			{
-				position[j]=position1[j]+(position2[j]-position1[j])*(prelen-len)/steplen;
+				*(inputpointsxyz+i*3+ii)=position[ii];
+				prepoint[ii]=position[ii];
 			}
-			smoothedCenterlinePoints->InsertPoint(index,position);
-			index++;
-			
 		}
-		len+=steplen;
-		position1[0]=position2[0];
-		position1[1]=position2[1];
-		position1[2]=position2[2];
+
+		//width and height
+		*pwidth=width=40/cViewSpace[0];//here we use fixed width( 40mm )
+		*pheight=height=(int)(path3DLength/cViewSpace[1]);
+		
+		// update axview's slider
+
+		[axImageSlider setMinValue: 0];
+		[axImageSlider setMaxValue: path3DLength-1];
+		if([axImageSlider floatValue]>path3DLength-1)
+			[axImageSlider setFloatValue: path3DLength-1];
+		else if([axImageSlider floatValue]<0)
+			[axImageSlider setFloatValue: 0];
+			
+		//resample to get even spacing
+		outputcenterlinexyz=(double*)malloc(sizeof(double)*height*3);
+		for(ii=0;ii<3;ii++)
+			*(outputcenterlinexyz+ii)=*(inputpointsxyz+ii);
+
+		path3DLength=0;
+		int curpointindex=0;
+		double curpointdis=0;
+		double interpolfactor;
+		for(i=1;i<height;i++)
+		{
+			while(curpointdis-path3DLength<cViewSpace[1]&&curpointindex<pointNumber)
+			{
+				curpointindex++;
+				curpointdis+=*(inputpointslen+curpointindex);
+				
+			}
+			interpolfactor=(curpointdis-path3DLength-cViewSpace[1])/(*(inputpointslen+curpointindex));
+			for(ii=0;ii<3;ii++)
+				*(outputcenterlinexyz+i*3+ii)=(*(inputpointsxyz+curpointindex*3+ii))*(1.0-interpolfactor)+(*(inputpointsxyz+curpointindex*3-3+ii))*interpolfactor;	
+			
+			path3DLength+=cViewSpace[1];
+		}
+		
+		curvedMPREven3DPath=[[NSMutableArray alloc] initWithCapacity: 0];
+		for(i=0;i<height;i++)
+		{
+				CMIV3DPoint* new3DPoint=[[CMIV3DPoint alloc] init] ;
+				[new3DPoint setX: *(outputcenterlinexyz+i*3)];
+				[new3DPoint setY: *(outputcenterlinexyz+i*3+1)];
+				[new3DPoint setZ: *(outputcenterlinexyz+i*3+2)];
+				[curvedMPREven3DPath addObject: new3DPoint];
+				[new3DPoint release];
+		}
+		
+		
+		free(inputpointsxyz);free(inputpointslen);
 	}
-	smoothedCenterlineCells = vtkCellArray::New();
-	smoothedCenterlineCells->InsertNextCell(index);
-	for(i=0;i<index;i++)
-		smoothedCenterlineCells->InsertCellPoint(i);
-	smoothedCenterlinePD = vtkPolyData::New() ;
-	smoothedCenterlinePD->SetPoints(smoothedCenterlinePoints);
-	smoothedCenterlinePD->SetLines(smoothedCenterlineCells);	
+	else
+	{
+		*pwidth=width=40/cViewSpace[0];//here we use fixed width( 40mm )
+		*pheight=height=[curvedMPREven3DPath count];
+		outputcenterlinexyz=(double*)malloc(sizeof(double)*height*3);
+		CMIV3DPoint* a3DPoint;
+		for(i=0;i<height;i++)
+		{
+				a3DPoint=[curvedMPREven3DPath objectAtIndex:i];
+				*(outputcenterlinexyz+i*3)=[a3DPoint x];
+				*(outputcenterlinexyz+i*3+1)=[a3DPoint y];
+				*(outputcenterlinexyz+i*3+2)=[a3DPoint z];
+		}
+	}
+	//create minimum rotate normals 
+	double* outputcenterlinenormals=(double*)malloc(sizeof(double)*height*3);
+	if([self generateSlidingNormals:height:outputcenterlinexyz:outputcenterlinenormals]==0)
+		return nil;
 	
-	//create a narrow ribbon along the smoothed centerline
-	if(narrowRibbonofCenterline)
-		narrowRibbonofCenterline->Delete();
-	narrowRibbonofCenterline= vtkRibbonFilter::New();
-	narrowRibbonofCenterline->SetInput(smoothedCenterlinePD);
-	narrowRibbonofCenterline->SetWidth(cViewSpace[0]/2);
-	narrowRibbonofCenterline->SetWidthFactor(1.0);
+	// create a narrow 3d ribbon from the centerline and use this ribbon to get cross-section line from each pair of point along this ribbon 
+	double* unitribbonxyz=(double*)malloc(sizeof(double)*height*3);
 	float rotateangle=[cYRotateSlider floatValue];
 	if(rotateangle<0)
 		rotateangle+=360;
-	narrowRibbonofCenterline->SetAngle(rotateangle);
-	
-	ribbonPolydata=narrowRibbonofCenterline->GetOutput();
-	ribbonPolydata->Update();
-	*pheight = pointNumber = (ribbonPolydata->GetPoints()->GetNumberOfPoints())/2;
+	rotateangle=rotateangle*deg2rad;
+	if([self generateUnitRobbin:height:outputcenterlinexyz:outputcenterlinenormals:unitribbonxyz:rotateangle:cViewSpace[0]]==0)
+		return nil;
 
-	// update axview's slider
-	float path3DLength=(pointNumber-1)*cViewSpace[1];
-	[axImageSlider setMinValue: 0];
-	[axImageSlider setMaxValue: path3DLength];
-	if([axImageSlider floatValue]>path3DLength)
-		[axImageSlider setFloatValue: path3DLength];
-	else if([axImageSlider floatValue]<0)
-		[axImageSlider setFloatValue: 0];
 	
 	
-	im=(float*)malloc(sizeof(float)*width*pointNumber);
+	im=(float*)malloc(sizeof(float)*width*height);
 	if(!im)
 		return 0L;
 	
 	
 
 	int x,y,z;
-	vtkIdType ptId;
+	int j;
 	int pixelindex=0;
 	float fposition[3];
 	
-	for(ptId=0;ptId<pointNumber;ptId++)
+	for(j=0;j<height;j++)
 	{
-		
-		ribbonPolydata->GetPoint(ptId*2,position1);
-		ribbonPolydata->GetPoint(ptId*2+1,position2);
-		
+		for(ii=0;ii<3;ii++)
+			position[ii]=*(outputcenterlinexyz+j*3+ii)-width/2*(*(unitribbonxyz+j*3+ii));
+	
 		
 		for(i=0;i<width;i++)
 		{
 			int ii;
 			for(ii=0;ii<3;ii++)
-				position[ii]=position1[ii]+(position2[ii]-position1[ii])*(0.5+(float)(i-(int)(width/2)));
+				position[ii]+=(*(unitribbonxyz+j*3+ii));
 			if(interpolationMode)
 			{
 				fposition[0]=(position[0]-vtkOriginalX)/xSpacing;
@@ -2991,30 +3293,19 @@ else
 	}
 
 
-	pathKeyPoints->Delete();
-	centerLinePath->Delete();
-	centerLinePolyData->Delete();
-	splineFilter->Delete();
-	smoothedCenterlinePoints->Delete();
-	smoothedCenterlineCells->Delete();
-	smoothedCenterlinePD->Delete();
-
-
-	
+	free(outputcenterlinexyz);free(outputcenterlinenormals);free(unitribbonxyz);
 	return im;	
 
 }
 - (float*) caculateCurvedMPRImage :(int*)pwidth :(int*)pheight
 {
-	
+
 	float* im=0L;
-	int i;
+	int i,ii;
 	int pointNumber;
 	double position[3];
 	//cacluate parameters for CPR image (width, height, translateLeftX-Z,translateRightX-Z)
 	int width, height;
-	float translateLeftX,translateLeftY,translateLeftZ,translateRightX,translateRightY,translateRightZ;
-	
 	float path2DLength;	
 	NSMutableArray  *path2DPoints=[curvedMPR2DPath points] ;
 	pointNumber=[path2DPoints count];
@@ -3030,152 +3321,120 @@ else
 	
 	cViewSpace[0]=cViewSpace[1]=xSpacing;
 	
-	//get projected centerline's length
+	float* inputpointsxyz=(float*)malloc(sizeof(float)*pointNumber*3);
+	float* inputpointslen=(float*)malloc(sizeof(float)*pointNumber);
+	float pre2dpoint[2];
+		pre2dpoint[0] = curOriginX + [[path2DPoints objectAtIndex: 0] point].x * curXSpacing;
+		pre2dpoint[1] = curOriginY + [[path2DPoints objectAtIndex: 0] point].y * curYSpacing;
 	path2DLength=0;
-	for( i = 0; i < pointNumber-1; i++ ) {
-		path2DLength += [curvedMPR2DPath Length:[[path2DPoints objectAtIndex:i] point] :[[path2DPoints objectAtIndex:i+1] point]];
-	}
-	path2DLength*=10;//vtk use length in mm(not cm).
-		
-		//width and height
-		*pwidth=width=(int)(([oImageSlider maxValue]-[oImageSlider minValue])/cViewSpace[0]);
-		*pheight=height=(int)(path2DLength/cViewSpace[1]);
-		
-		// update axview's slider
-		[axImageSlider setMinValue: 0];
-		[axImageSlider setMaxValue: path2DLength];
-		if([axImageSlider floatValue]>path2DLength)
-			[axImageSlider setFloatValue: path2DLength-cViewSpace[1]];
-	else if([axImageSlider floatValue]<0)
-		[axImageSlider setFloatValue: 0];
-				
-	double startpoint[3];
-	
-	startpoint[0] = position[0] = curOriginX + [[path2DPoints objectAtIndex: 0] point].x * curXSpacing;
-	startpoint[1] = position[1] = curOriginY +[[path2DPoints objectAtIndex: 0] point].y * curYSpacing;
-	position[2] = [oImageSlider minValue]-[oImageSlider floatValue];	
-	startpoint[2] = 0;
-	oViewUserTransform->TransformPoint(position,position);
-	oViewUserTransform->TransformPoint(startpoint,startpoint);
-	
-	translateLeftX=position[0]-startpoint[0];
-	translateLeftY=position[1]-startpoint[1];
-	translateLeftZ=position[2]-startpoint[2];
-	
-	startpoint[0] = position[0] = curOriginX +[[path2DPoints objectAtIndex: 0] point].x * curXSpacing;
-	startpoint[1] = position[1] = curOriginY +[[path2DPoints objectAtIndex: 0] point].y * curYSpacing;
-	position[2] = [oImageSlider maxValue]-[oImageSlider floatValue];	
-	startpoint[2] = 0;
-	oViewUserTransform->TransformPoint(position,position);
-	oViewUserTransform->TransformPoint(startpoint,startpoint);
-	
-	translateRightX=position[0]-startpoint[0];
-	translateRightY=position[1]-startpoint[1];
-	translateRightZ=position[2]-startpoint[2];	
-	
-	
-	//create a curved surface from projected centerline
-	im=(float*)malloc(sizeof(float)*width*height);
-	if(!im)
-		return 0L;
-	
-	//create the projected centerline
-	pathKeyPoints = vtkPoints::New();
 	for(i=0;i<pointNumber;i++)
 	{
 		position[0] = curOriginX + [[path2DPoints objectAtIndex: i] point].x * curXSpacing;
 		position[1] = curOriginY + [[path2DPoints objectAtIndex: i] point].y * curYSpacing;
 		position[2] = 0;
+		*(inputpointslen+i)=sqrt((position[0]-pre2dpoint[0])*(position[0]-pre2dpoint[0])+(position[1]-pre2dpoint[1])*(position[1]-pre2dpoint[1]));
+		path2DLength+=*(inputpointslen+i);
+		pre2dpoint[0]=position[0];
+		pre2dpoint[1]=position[1];
 		oViewUserTransform->TransformPoint(position,position);
-		pathKeyPoints->InsertPoint(i,position);
+		for(ii=0;ii<3;ii++)
+				*(inputpointsxyz+i*3+ii)=position[ii];
+	}
+			
+	//width and height
+	*pwidth=width=(int)(([oImageSlider maxValue]-[oImageSlider minValue])/cViewSpace[0]);
+	*pheight=height=(int)(path2DLength/cViewSpace[1]);
+	
+	// update axview's slider
+	[axImageSlider setMinValue: 0];
+	[axImageSlider setMaxValue: path2DLength];
+	if([axImageSlider floatValue]>path2DLength)
+		[axImageSlider setFloatValue: path2DLength-cViewSpace[1]];
+	else if([axImageSlider floatValue]<0)
+		[axImageSlider setFloatValue: 0];
 		
+	//resample to get even spacing
+	float* outputcenterlinexyz=(float*)malloc(sizeof(float)*height*3);
+	for(ii=0;ii<3;ii++)
+		*(outputcenterlinexyz+ii)=*(inputpointsxyz+ii);
+
+	path2DLength=0;
+	int curpointindex=0;
+	float curpointdis=0;
+	float interpolfactor;
+	for(i=1;i<height;i++)
+	{
+		while(curpointdis-path2DLength<cViewSpace[1]&&curpointindex<pointNumber)
+		{
+			curpointindex++;
+			curpointdis+=*(inputpointslen+curpointindex);
+			
+		}
+		interpolfactor=(curpointdis-path2DLength-cViewSpace[1])/(*(inputpointslen+curpointindex));
+		for(ii=0;ii<3;ii++)
+			*(outputcenterlinexyz+i*3+ii)=(*(inputpointsxyz+curpointindex*3+ii))*(1-interpolfactor)+(*(inputpointsxyz+curpointindex*3-3+ii))*interpolfactor;	
+		
+		path2DLength+=cViewSpace[1];
 	}
 	
+	double traslateunit[3];
 	
-	centerLinePath = vtkCellArray::New();
-	centerLinePath->InsertNextCell(pointNumber);
-	for(i=0;i<pointNumber;i++)
-		centerLinePath->InsertCellPoint(i);
+	traslateunit[0] = position[0] = curOriginX + [[path2DPoints objectAtIndex: 0] point].x * curXSpacing;
+	traslateunit[1] = position[1] = curOriginY +[[path2DPoints objectAtIndex: 0] point].y * curYSpacing;
+	traslateunit[2] = cViewSpace[0];	
+	position[2] = 0;
+	oViewUserTransform->TransformPoint(position,position);
+	oViewUserTransform->TransformPoint(traslateunit,traslateunit);
+	for(ii=0;ii<3;ii++)
+		traslateunit[ii]=traslateunit[ii]-position[ii];
+
+			
+	//create a curved surface from projected centerline
+	im=(float*)malloc(sizeof(float)*width*height);
+	if(!im)
+	{
+		*pwidth=0;
+		*pheight=0;
+		return 0L;
+	}
+
+	//////////////////////////////////////////////
 	
-	
-	centerLinePolyData = vtkPolyData::New() ;
-	centerLinePolyData->SetPoints(pathKeyPoints);
-	centerLinePolyData->SetLines(centerLinePath);
-	
-	//translate the line to left&right borders and build a ruller surface from this two borders
-	surfaceLeftTransform = vtkTransform::New();	
-	surfaceLeftTransform->Translate( translateLeftX,translateLeftY,translateLeftZ);
-	
-	surfaceRightTransform = vtkTransform::New();	
-	surfaceRightTransform->Translate( translateRightX, translateRightY, translateRightZ);
-	
-	leftTransformFilter = vtkTransformPolyDataFilter::New();
-	leftTransformFilter->SetInput(centerLinePolyData);
-	leftTransformFilter->SetTransform(surfaceLeftTransform);
-	
-	rightTransformFilter = vtkTransformPolyDataFilter::New();
-	rightTransformFilter->SetInput(centerLinePolyData);
-	rightTransformFilter->SetTransform(surfaceRightTransform);
-	
-	appenedPolyData = vtkAppendPolyData::New() ;
-	appenedPolyData->AddInput(leftTransformFilter->GetOutput());
-	appenedPolyData->AddInput(rightTransformFilter->GetOutput());
-	
-	
-	
-	
-	curvedSurface = vtkRuledSurfaceFilter::New();	
-	curvedSurface->SetInputConnection(appenedPolyData->GetOutputPort());
-	curvedSurface->SetResolution(height-1,width-1);
-	curvedSurface->SetRuledModeToResample();
-	
-	//	I planed to use vtkProbeFilter to get the cpr image, but it failed after compile. maybe it can be fixed in the furture. Here I use nearest interpolation.
-	
-	vtkPolyData *probeResult= curvedSurface->GetOutput();
-	probeResult->Update();
 	int x,y,z;
 	float fposition[3];
-	vtkIdType ptId, numPts;
-	numPts = probeResult->GetNumberOfPoints();
-	for(ptId=0;ptId<numPts;ptId++)
+	int j;
+	for(i=0;i<height;i++)
 	{
-		
-		probeResult->GetPoint(ptId,position);
-		
-		fposition[0]=(position[0]-vtkOriginalX)/xSpacing;
-	    fposition[1]=(position[1]-vtkOriginalY)/ySpacing;
-		fposition[2]=(position[2]-vtkOriginalZ)/zSpacing;
-		if(interpolationMode)
-			*(im+ptId)=[self TriCubic:fposition: volumeData: imageWidth: imageHeight: imageAmount];
-		else
+		for(ii=0;ii<3;ii++)
+			position[ii]=*(outputcenterlinexyz+i*3+ii)+traslateunit[ii]*([oImageSlider minValue]-[oImageSlider floatValue])/cViewSpace[0];
+		for(j=0;j<width;j++)
 		{
-		 x = lround((position[0]-vtkOriginalX)/xSpacing);
-		 y = lround((position[1]-vtkOriginalY)/ySpacing);
-		 z = lround((position[2]-vtkOriginalZ)/zSpacing);
-		 if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
-		 *(im+ptId)=*(volumeData + imageSize*z + imageWidth*y+x);
-		 else
-		 *(im+ptId)=minValueInSeries;
+			
+			for(ii=0;ii<3;ii++)
+				position[ii]+=traslateunit[ii];
+			fposition[0]=(position[0]-vtkOriginalX)/xSpacing;
+			fposition[1]=(position[1]-vtkOriginalY)/ySpacing;
+			fposition[2]=(position[2]-vtkOriginalZ)/zSpacing;
+			if(interpolationMode)
+				*(im+i*width+j)=[self TriCubic:fposition: volumeData: imageWidth: imageHeight: imageAmount];
+			else
+			{
+				 x = lround(fposition[0]);
+				 y = lround(fposition[1]);
+				 z = lround(fposition[2]);
+				 if(x>=0 && x<imageWidth && y>=0 && y<imageHeight && z>=0 && z<imageAmount)		  
+				 *(im+i*width+j)=*(volumeData + imageSize*z + imageWidth*y+x);
+				 else
+				 *(im+i*width+j)=minValueInSeries;
+			}
 		}
 		
 	}
+	free(inputpointsxyz);free(inputpointslen);free(outputcenterlinexyz);
 	
-	
-	//release memory
-	curvedSurface->Delete() ;
-	surfaceLeftTransform->Delete() ;
-	surfaceRightTransform->Delete() ;
-	pathKeyPoints->Delete();
-	centerLinePath->Delete();
-	centerLinePolyData->Delete();
-	leftTransformFilter->Delete();
-	rightTransformFilter->Delete();
-	appenedPolyData->Delete();	
-	
-	
-	
+
 	return im;
-	
+
 }
 
 - (void) updateCViewAsCurvedMPR
@@ -3358,23 +3617,27 @@ else
 }
 - (void) recaculateAxViewForStraightenedCPR
 {
-	double position[3],direction[3],position1[3],position2[3],positionL1[3],positionL2[3],positionR1[3],positionR2[3];
+	double position[3],direction[3],position1[3],position2[3];
 	int ptId,totalpoint;
 	ptId=[axImageSlider floatValue]/cViewSpace[1];
-	totalpoint=(ribbonPolydata->GetPoints()->GetNumberOfPoints())/2;
+	totalpoint=[curvedMPREven3DPath count];
 	if(ptId>=totalpoint-1)
 		ptId=totalpoint-2;
-	ribbonPolydata->GetPoint(ptId*2,positionL1);
-	ribbonPolydata->GetPoint(ptId*2+1,positionR1);
-	ribbonPolydata->GetPoint(ptId*2+2,positionL2);
-	ribbonPolydata->GetPoint(ptId*2+3,positionR2);
-	
+	CMIV3DPoint* a3DPoint;
+	a3DPoint=[curvedMPREven3DPath objectAtIndex: ptId];
+	position1[0]=[a3DPoint x];
+	position1[1]=[a3DPoint y];
+	position1[2]=[a3DPoint z];
+	a3DPoint=[curvedMPREven3DPath objectAtIndex: ptId+1];
+	position2[0]=[a3DPoint x];
+	position2[1]=[a3DPoint y];
+	position2[2]=[a3DPoint z];
+
 	int i;
 	float localoffset=([axImageSlider floatValue] - ptId*cViewSpace[1])/cViewSpace[1];
 	for(i=0;i<3;i++)
 	{
-		position1[i]=(positionR1[i]+positionL1[i])/2;
-		position2[i]=(positionR2[i]+positionL2[i])/2;
+
 		position[i] = position1[i]+(position2[i]-position1[i])*localoffset;
 		direction[i]=position2[i]-position1[i];
 		
@@ -4064,6 +4327,9 @@ else
 	if(row>=0&&row<[cpr3DPaths count])
 	{
 		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider floatValue]];
+		[curvedMPREven3DPath removeAllObjects];
+		[curvedMPREven3DPath release];
+		curvedMPREven3DPath=nil;
 	}
 	
 }
