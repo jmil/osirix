@@ -227,7 +227,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 
 	
-
+/*
 	if(isSegmentVR)
 	{
 		 unsigned int i;
@@ -238,7 +238,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		 }
 		 [toolbarList removeAllObjects];
 	}
-
+*/
 	[parent exitCurrentDialog];
 	
 }
@@ -478,7 +478,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 	
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
-	[window setFrame:[[NSScreen mainScreen] visibleFrame] display:YES ];
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];	
 	//initilize VR view	
 
 	originalVolumeData=[originalViewController volumePtr:0];
@@ -597,12 +598,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 	
-	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	[segmentList setDataSource:self];	
 	//clean inROIArray
 
 	
-
+/*
 	NSArray				*winList = [NSApp windows];
 	toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
 	for( i = 0; i < [winList count]; i++)
@@ -620,7 +621,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		
 	}
-	
+	*/
 	size=imageWidth*imageHeight*imageAmount;
 	for(i=0;i<size;i++)
 	{
@@ -679,7 +680,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	NSArray				*pixList = [originalViewController pixList];
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
-	[window setFrame:[[NSScreen mainScreen] visibleFrame] display:YES ];
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];	
 	//initilize VR view	
 
 	originalVolumeData=[originalViewController volumePtr:0];
@@ -740,7 +742,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[opacitySlider setEnabled: NO];
 	[wlSlider setEnabled: NO];
 	[wwSlider setEnabled: NO];
-	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	[segmentList setDataSource:self];	
 	return err;
 
@@ -949,12 +951,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)reHideToolbar
 {
+	/*
 	unsigned int i;
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: NO];
 		
-	}
+	}*/
 	
 }
 @end

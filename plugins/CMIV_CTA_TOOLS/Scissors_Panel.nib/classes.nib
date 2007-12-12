@@ -1,116 +1,244 @@
-{
-    IBClasses = (
-        {
-            ACTIONS = {
-                addSeed = id; 
-                changOriginalViewDirection = id; 
-                changeDefaultTool = id; 
-                changeSeedColor = id; 
-                changeSeedName = id; 
-                continuePlanting = id; 
-                covertRegoinToSeeds = id; 
-                crossShow = id; 
-                endCPRImageDialog = id; 
-                endCenterlinesDialog = id; 
-                endLoadPathDialog = id; 
-                exportCenterlines = id; 
-                exportOrthogonalDataset = id; 
-                goNextStep = id; 
-                goPreviousStep = id; 
-                lockCenter = id; 
-                onCancel = id; 
-                onOK = id; 
-                pageAxView = id; 
-                pageCView = id; 
-                pageOView = id; 
-                removeCenterline = id; 
-                removeSeed = id; 
-                resetOriginalView = id; 
-                rotateXCView = id; 
-                rotateXOView = id; 
-                rotateYOView = id; 
-                selectAContrast = id; 
-                selectANewCenterline = id; 
-                setBrushMode = id; 
-                setBrushWidth = id; 
-                setPathMode = id; 
-                setResampleRatio = id; 
-                showCPRImageDialog = id; 
-                showCenterlinesDialog = id; 
-                showLoadPathDialog = id; 
-                switchStraightenedCPR = id; 
-            }; 
-            CLASS = CMIVScissorsController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                axImageSlider = NSSlider; 
-                brushStatSegment = NSSegmentedControl; 
-                brushWidthSlider = NSSlider; 
-                brushWidthText = NSTextField; 
-                cImageSlider = NSSlider; 
-                cPRView = DCMView; 
-                cViewRotateYText = NSTextField; 
-                cYRotateSlider = CMIVSlider; 
-                cancelButton = NSButton; 
-                centerLock = NSButton; 
-                centerlinesList = NSTableView; 
-                continuePlantingButton = NSButton; 
-                convertToSeedButton = NSButton; 
-                crossAxiasView = DCMView; 
-                crossShowButton = NSButton; 
-                currentTips = NSTextField; 
-                exportCPRWindow = NSWindow; 
-                exportOrthogonalImagesButton = NSButton; 
-                howManyAngleToExport = NSMatrix; 
-                howManyImageToExport = NSTextField; 
-                ifExportCrossSectionButton = NSButton; 
-                loadPathWindow = NSWindow; 
-                nextButton = NSButton; 
-                oImageSlider = NSSlider; 
-                oViewRotateXText = NSTextField; 
-                oViewRotateYText = NSTextField; 
-                oXRotateSlider = CMIVSlider; 
-                oYRotateSlider = CMIVSlider; 
-                originalView = DCMView; 
-                pathListButton = NSPopUpButton; 
-                pathModifyButton = NSPopUpButton; 
-                pathName = NSTextField; 
-                previousButton = NSButton; 
-                resampleRatioSlider = NSSlider; 
-                resampleRatioText = NSTextField; 
-                resampleText = NSTextField; 
-                saveButton = NSButton; 
-                savePathWindow = NSWindow; 
-                seedColor = NSColorWell; 
-                seedName = NSTextField; 
-                seedToolTipsTabView = NSTabView; 
-                seedsList = NSTableView; 
-                straightenedCPRButton = NSButton; 
-                straightenedCPRSwitchMenu = NSMenuItem; 
-                window = NSWindow; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {CLASS = CMIVSlider; LANGUAGE = ObjC; SUPERCLASS = NSSlider; }, 
-        {
-            ACTIONS = {
-                alwaysSyncMenu = id; 
-                changeFont = id; 
-                flipHorizontal = id; 
-                flipVertical = id; 
-                resetImagePresentationState = id; 
-                resetSeriesPresentationState = id; 
-                roiLoadFromXMLFiles = id; 
-                sliderAction = id; 
-                sliderAction2DMPR = id; 
-                sliderRGBFactor = id; 
-            }; 
-            CLASS = DCMView; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = NSOpenGLView; 
-        }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>CLASS</key>
+			<string>NSSegmentedControl</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSControl</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>alwaysSyncMenu</key>
+				<string>id</string>
+				<key>changeFont</key>
+				<string>id</string>
+				<key>flipHorizontal</key>
+				<string>id</string>
+				<key>flipVertical</key>
+				<string>id</string>
+				<key>resetImagePresentationState</key>
+				<string>id</string>
+				<key>resetSeriesPresentationState</key>
+				<string>id</string>
+				<key>roiLoadFromXMLFiles</key>
+				<string>id</string>
+				<key>sliderAction</key>
+				<string>id</string>
+				<key>sliderAction2DMPR</key>
+				<string>id</string>
+				<key>sliderRGBFactor</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>DCMView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSOpenGLView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>CMIVSlider</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSSlider</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>addSeed</key>
+				<string>id</string>
+				<key>changOriginalViewDirection</key>
+				<string>id</string>
+				<key>changeDefaultTool</key>
+				<string>id</string>
+				<key>changeSeedColor</key>
+				<string>id</string>
+				<key>changeSeedName</key>
+				<string>id</string>
+				<key>continuePlanting</key>
+				<string>id</string>
+				<key>covertRegoinToSeeds</key>
+				<string>id</string>
+				<key>crossShow</key>
+				<string>id</string>
+				<key>endCPRImageDialog</key>
+				<string>id</string>
+				<key>endCenterlinesDialog</key>
+				<string>id</string>
+				<key>endLoadPathDialog</key>
+				<string>id</string>
+				<key>exportCenterlines</key>
+				<string>id</string>
+				<key>exportOrthogonalDataset</key>
+				<string>id</string>
+				<key>goNextStep</key>
+				<string>id</string>
+				<key>goPreviousStep</key>
+				<string>id</string>
+				<key>lockCenter</key>
+				<string>id</string>
+				<key>onCancel</key>
+				<string>id</string>
+				<key>onOK</key>
+				<string>id</string>
+				<key>pageAxView</key>
+				<string>id</string>
+				<key>pageCView</key>
+				<string>id</string>
+				<key>pageOView</key>
+				<string>id</string>
+				<key>removeCenterline</key>
+				<string>id</string>
+				<key>removeSeed</key>
+				<string>id</string>
+				<key>resetOriginalView</key>
+				<string>id</string>
+				<key>rotateXCView</key>
+				<string>id</string>
+				<key>rotateXOView</key>
+				<string>id</string>
+				<key>rotateYOView</key>
+				<string>id</string>
+				<key>selectAContrast</key>
+				<string>id</string>
+				<key>selectANewCenterline</key>
+				<string>id</string>
+				<key>setBrushMode</key>
+				<string>id</string>
+				<key>setBrushWidth</key>
+				<string>id</string>
+				<key>setPathMode</key>
+				<string>id</string>
+				<key>setResampleRatio</key>
+				<string>id</string>
+				<key>showCPRImageDialog</key>
+				<string>id</string>
+				<key>showCenterlinesDialog</key>
+				<string>id</string>
+				<key>showLoadPathDialog</key>
+				<string>id</string>
+				<key>switchStraightenedCPR</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>CMIVScissorsController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>axImageSlider</key>
+				<string>NSSlider</string>
+				<key>brushStatSegment</key>
+				<string>NSSegmentedControl</string>
+				<key>brushWidthSlider</key>
+				<string>NSSlider</string>
+				<key>brushWidthText</key>
+				<string>NSTextField</string>
+				<key>cImageSlider</key>
+				<string>NSSlider</string>
+				<key>cPRView</key>
+				<string>DCMView</string>
+				<key>cViewRotateYText</key>
+				<string>NSTextField</string>
+				<key>cYRotateSlider</key>
+				<string>CMIVSlider</string>
+				<key>cancelButton</key>
+				<string>NSButton</string>
+				<key>centerLock</key>
+				<string>NSButton</string>
+				<key>centerlinesList</key>
+				<string>NSTableView</string>
+				<key>continuePlantingButton</key>
+				<string>NSButton</string>
+				<key>convertToSeedButton</key>
+				<string>NSButton</string>
+				<key>crossAxiasView</key>
+				<string>DCMView</string>
+				<key>crossShowButton</key>
+				<string>NSButton</string>
+				<key>currentTips</key>
+				<string>NSTextField</string>
+				<key>exportCPRWindow</key>
+				<string>NSWindow</string>
+				<key>exportOrthogonalImagesButton</key>
+				<string>NSButton</string>
+				<key>howManyAngleToExport</key>
+				<string>NSMatrix</string>
+				<key>howManyImageToExport</key>
+				<string>NSTextField</string>
+				<key>ifExportCrossSectionButton</key>
+				<string>NSButton</string>
+				<key>loadPathWindow</key>
+				<string>NSWindow</string>
+				<key>nextButton</key>
+				<string>NSButton</string>
+				<key>oImageSlider</key>
+				<string>NSSlider</string>
+				<key>oViewRotateXText</key>
+				<string>NSTextField</string>
+				<key>oViewRotateYText</key>
+				<string>NSTextField</string>
+				<key>oXRotateSlider</key>
+				<string>CMIVSlider</string>
+				<key>oYRotateSlider</key>
+				<string>CMIVSlider</string>
+				<key>originalView</key>
+				<string>DCMView</string>
+				<key>pathListButton</key>
+				<string>NSPopUpButton</string>
+				<key>pathModifyButton</key>
+				<string>NSPopUpButton</string>
+				<key>pathName</key>
+				<string>NSTextField</string>
+				<key>previousButton</key>
+				<string>NSButton</string>
+				<key>resampleRatioSlider</key>
+				<string>NSSlider</string>
+				<key>resampleRatioText</key>
+				<string>NSTextField</string>
+				<key>resampleText</key>
+				<string>NSTextField</string>
+				<key>saveButton</key>
+				<string>NSButton</string>
+				<key>savePathWindow</key>
+				<string>NSWindow</string>
+				<key>seedColor</key>
+				<string>NSColorWell</string>
+				<key>seedName</key>
+				<string>NSTextField</string>
+				<key>seedToolTipsTabView</key>
+				<string>NSTabView</string>
+				<key>seedsList</key>
+				<string>NSTableView</string>
+				<key>straightenedCPRButton</key>
+				<string>NSButton</string>
+				<key>straightenedCPRSwitchMenu</key>
+				<string>NSMenuItem</string>
+				<key>window</key>
+				<string>NSWindow</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>

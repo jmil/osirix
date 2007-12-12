@@ -147,6 +147,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	CMIV_CTA_TOOLS* parent;
 	BOOL isInWizardMode;
 
+
 }
 - (IBAction)chooseASeed:(id)sender;
 - (IBAction)chooseATool:(id)sender;

@@ -96,7 +96,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	int err=0;
 	CMIVScissorsController * scissorsController = [[CMIVScissorsController alloc] init];
-	err=[scissorsController showScissorsPanel:vc:self];
+	err=[scissorsController showPanelAfterROIChecking:vc:self];
 	if(!err)
 		currentController=scissorsController;
 	return err;

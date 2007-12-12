@@ -436,7 +436,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[self pageDownorUp:0L];
 	
-	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	NSArray				*winList = [NSApp windows];
 	toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
 	for( i = 0; i < [winList count]; i++)

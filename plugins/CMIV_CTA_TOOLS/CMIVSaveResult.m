@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	[NSBundle loadNibNamed:@"Save_Panel" owner:self];
 	[seriesName setStringValue:[[originalViewController window] title]];
-	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	//[window makeKeyAndOrderFront:nil];
 	return self;
 }

@@ -183,9 +183,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	if(!IsVersion2_6)
 	{
 		unsigned i;
+		ROI* tempROI;
 		NSString* emptystr=[NSString stringWithString:@""];
 		for(i=0;i<[[MPRROIList objectAtIndex: 0] count];i++)
-			[[[MPRROIList objectAtIndex: 0] objectAtIndex: i] setComments:emptystr];
+		{
+			tempROI=[[MPRROIList objectAtIndex: 0] objectAtIndex: i];
+			[tempROI setComments:emptystr];
+			//[tempROI setPix:nil];
+		}
 	}
 	
 	[[MPRROIList objectAtIndex: 0] removeAllObjects];
@@ -385,6 +390,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	[MPRROIList removeAllObjects];
 	
+	/*
 
 	for( i = 0; i < [toolbarList count]; i++)
 	{
@@ -393,7 +399,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	[toolbarList removeAllObjects];
 
-	
+	*/
 	if(tag!=2)
 	{
 		for(i=0;i<[centerlinesList count];i++)
@@ -445,8 +451,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	directionData = direData;
 	
 	[NSBundle loadNibNamed:@"SegPreview" owner:self];
-	[window setFrame:[[NSScreen mainScreen] visibleFrame] display:YES ];
-	MPRFileList =[originalViewController fileList ];
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];	MPRFileList =[originalViewController fileList ];
 	DCMPix* curPix;	
 	curPix = [[originalViewController pixList] objectAtIndex: 0];
 	imageWidth = [curPix pwidth];
@@ -468,13 +474,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[self setBrushWidth: brushWidthSlider];
 		if(!isInWizardMode)
 			[wizardTips setHidden: YES];
-		[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];	
+		[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];	
 		id waitWindow = [originalViewController startWaitWindow:@"processing"];	
 		//[window setWindowController: self];
 
 
-		NSArray				*winList = [NSApp windows];
-		//hide other segments
+				//hide other segments
 		if(err!=2)
 		{
 			osirixOffset=[vrView offset] ;
@@ -487,6 +492,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			volumeDataOfVR=(unsigned short*)volumeImageData->GetScalarPointer();
 			[self updateVRView];
 		}
+		/*
+		 NSArray				*winList = [NSApp windows];
 
 		toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
 		unsigned int i;
@@ -505,6 +512,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 			
 		}
+		 */
 		roiShowTextOnlyWhenSeleted=[[NSUserDefaults standardUserDefaults] boolForKey:@"ROITEXTIFSELECTED"];
 		roiShowNameOnly=[[NSUserDefaults standardUserDefaults] boolForKey: @"ROITEXTNAMEONLY"];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey: @"ROITEXTNAMEONLY"];
@@ -653,7 +661,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	MPRPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[MPRPixList addObject: mypix];
 	[mypix release];	
-	
+
 	MPRROIList = [[NSMutableArray alloc] initWithCapacity:0];
 	[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
 	[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
@@ -1046,7 +1054,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					uniIndex++;
 					NSString *indexstr=[NSString stringWithFormat:@"%d",uniIndex];
 					[roi setComments:indexstr];	
-					[newSeedsROIList addObject:roi];
+					unsigned int i;
+					for(i=0;i<[[MPRROIList objectAtIndex: 0] count];i++)
+					{
+						[[roi pix] retain];
+					}
+					DCMPix * curImage= [MPRPixList objectAtIndex:0];
+					ROI* newROI=[[ROI alloc] initWithType: tROI :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
+					[newROI setName:roiName];
+					[newROI setComments:indexstr];	
+					[newROI setColor:color];
+
+					[newSeedsROIList addObject:newROI];
 					
 				}
 				
@@ -1172,7 +1191,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		if ([sender isKindOfClass:[ROI class]])
 		{
 			ROI* roi=(ROI*)sender;
-			if([newSeedsROIList containsObject: roi]|| [newSeedsROIList containsObject:[roi parentROI] ])
+			if([roi type]==tPlain)
 			{
 				if(!isRemoveROIBySelf)
 				{
@@ -1302,7 +1321,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					[newROI setColor:color];
 					
 					[newROI setROIMode:ROI_selected];
-					[newROI setParentROI:roi];
+					//[newROI setParentROI:roi];
 					[roiList addObject:newROI];
 					[newROI release];
 					free(textureBuffer);
@@ -2471,7 +2490,7 @@ return originalViewController;
 {
 	if(!isInWizardMode)
 		[saveBeforeSkeletonization setHidden: YES];
-	[NSApp beginSheet: skeletonWindow modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: skeletonWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
 }
 - (void) checkRootSeeds:(NSArray*)roiList
 {
@@ -2505,12 +2524,13 @@ return originalViewController;
 
 - (void)reHideToolbar
 {
+	/*
 	unsigned int i;
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: NO];
 		
-	}
+	}*/
 
 }
 @end

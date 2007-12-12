@@ -145,6 +145,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSMutableArray      *centerlinesNameArrays;
 	int                  uniIndex;
 	int                  isRemoveROIBySelf;
+	int                  isChangingWWWLBySelf;
 	long		annotations	;
 	
 	int      currentTool;
@@ -247,7 +248,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) reCaculateCPRPath:(NSMutableArray*) roiList :(int) width :(int)height :(float)spaceX: (float)spaceY : (float)spaceZ :(float)originX :(float)originY:(float)originZ;
 - (void) changeCurrentTool:(int) tag;
 - (void) fixHolesInBarrier:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker;
-- (void) create3DPathFromROIs:(NSString*) roiName;
+- (NSMutableArray *) create3DPathFromROIs:(NSString*) roiName;
 - (void) resample3DPath:(float)step;
 	//for tableview
 - (int)numberOfRowsInTableView:(NSTableView *)tableView;

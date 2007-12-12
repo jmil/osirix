@@ -370,15 +370,15 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	if(howToContinueTip)
 		[howToContinueTip release];
 	
-
-
+/*
+	NSLog( @"showing toolbar");
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: YES];
 		
 	}
 	[toolbarList removeAllObjects];
-
+	NSLog( @"show toolbar");*/
 	if(tag!=2)
 		[parent exitCurrentDialog];
 	
@@ -651,7 +651,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	
 	
 	[NSBundle loadNibNamed:@"Scissors_Panel" owner:self];
-	[window setFrame:[[NSScreen mainScreen] visibleFrame] display:YES ];
+	 NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	 [window setFrame:screenrect display:YES ];
+	 
 	
 	
 	//initilize original view CPRView and Axial View;
@@ -745,12 +747,14 @@ static		float						deg2rad = 3.14159265358979/180.0;
 
 
 	
-	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];	
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];	
 	[seedsList setDataSource:self];	
 	if(!isInWizardMode)
 		[self selectAContrast:seedsList];
 //	if(!parent)
+	 /*
 	{
+		NSLog( @"hiding toolbar");
 		NSArray				*winList = [NSApp windows];
 		unsigned int i;
 		toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
@@ -769,7 +773,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 				}
 
 		}
-	}
+		NSLog( @"hide toolbar");
+	}*/
 	
 	
 	return err;
@@ -777,8 +782,76 @@ static		float						deg2rad = 3.14159265358979/180.0;
 }
 - (int) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner
 {
+	int err=0;
+	originalViewController=vc;	
+	unsigned int i,j,k;
+	int thereIsSameName ;
+	NSMutableArray *curRoiList = [originalViewController roiList];
+	ROI * tempROI;
+	NSMutableArray *existedMaskList = [[NSMutableArray alloc] initWithCapacity: 0];
+	NSMutableArray *temppathlist = [[NSMutableArray alloc] initWithCapacity: 0];
+	
+	for(i=0;i<[curRoiList count];i++)
+		for(j=0;j<[[curRoiList objectAtIndex:i] count];j++)
+		{
+			tempROI = [[curRoiList objectAtIndex: i] objectAtIndex:j];
+			if([tempROI type]==tPlain)
+			{
+				thereIsSameName=0;
+				for(k=0;k<[existedMaskList count];k++)
+				{ 
+					if ([[tempROI name] isEqualToString:[existedMaskList objectAtIndex: k] ]==YES)
+						thereIsSameName=1;
+				}
+				if(!thereIsSameName)
+				{
+					[existedMaskList addObject:[tempROI name]];
+					[pathListButton addItemWithTitle: [tempROI name]];
+				}	
+			}
+			
+		}
+	if([existedMaskList count]>0)
+	{
+		for(i=0;i<[existedMaskList count];i++)
+		{
+			NSMutableArray *temp3DPath=[self create3DPathFromROIs:[existedMaskList objectAtIndex:i]];
+			if(temp3DPath!=nil)
+				[temppathlist addObject:temp3DPath];
+			else
+			{
+				[existedMaskList removeObjectAtIndex:i];
+				i--;
+			}
+			
 
- return 1;
+		}
+	}
+	if([temppathlist count]>0)
+	{	
+		isInCPROnlyMode=YES;
+		[self showScissorsPanel: vc:owner];
+		cpr3DPaths=temppathlist;
+		centerlinesNameArrays=existedMaskList;
+		[resampleRatioSlider setFloatValue:2.5];
+		[resampleRatioText setFloatValue:2.5];
+		[self convertCenterlinesToVTKCoordinate:cpr3DPaths];
+		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex: 0]:[resampleRatioSlider floatValue]];
+		[centerlinesList setDataSource:self];
+		[cImageSlider setEnabled: NO];
+		[cYRotateSlider setEnabled: NO];
+	}
+	else
+	{
+		[existedMaskList release];
+		[temppathlist release];
+		err=[self showScissorsPanel: vc:owner];
+		
+	}
+
+
+		
+ return err;
 }
 - (int) initViews
 {
@@ -908,7 +981,10 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	float *im = (float*) tempIm->GetScalarPointer();
 	DCMPix*		mypix = [[DCMPix alloc] initwithdata:(float*) im :32 :imExtent[ 1]-imExtent[ 0]+1 :imExtent[ 3]-imExtent[ 2]+1 :space[0] :space[1] :origin[0] :origin[1] :origin[2]];
 	[mypix copySUVfrom: curPix];	
-	
+	float iwl, iww;
+	iww = [[originalViewController imageView] curWW] ;
+	iwl = [[originalViewController imageView] curWL] ;
+	[mypix changeWLWW:iwl :iww];
 	oViewPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[oViewPixList addObject: mypix];
 	[mypix release];	
@@ -926,10 +1002,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[originalView setOrigin: NSMakePoint(0,0)];
 	[originalView setCurrentTool:tWL];
 	[originalView  scaleToFit];
-	float iwl, iww;
-	iww = [[originalViewController imageView] curWW] ;
-	iwl = [[originalViewController imageView] curWL] ;
-	[originalView discretelySetWLWW:iwl :iww];
+
+	//[originalView discretelySetWLWW:iwl :iww];
 	float crossX,crossY;
 	crossX=-origin[0]/space[0];
 	crossY=origin[1]/space[1];
@@ -969,7 +1043,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	im = (float*) tempIm->GetScalarPointer();
 	mypix = [[DCMPix alloc] initwithdata:(float*) im :32 :imExtent[ 1]-imExtent[ 0]+1 :imExtent[ 3]-imExtent[ 2]+1 :space[0] :space[1] :origin[0] :origin[1] :origin[2]];
 	[mypix copySUVfrom: curPix];	
-	
+	[mypix changeWLWW:iwl :iww];
+
 	cViewPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[cViewPixList addObject: mypix];
 	[mypix release];	
@@ -989,7 +1064,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[cPRView setOrigin: NSMakePoint(0,0)];
 	[cPRView setCurrentTool:tWL];
 	[cPRView  scaleToFit];
-	[cPRView discretelySetWLWW:iwl :iww];	
+	//[cPRView discretelySetWLWW:iwl :iww];	
 	
 	axViewSlice = vtkImageReslice::New();
 	axViewSlice->SetAutoCropOutput( true);
@@ -1012,7 +1087,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	im = (float*) tempIm->GetScalarPointer();
 	mypix = [[DCMPix alloc] initwithdata:(float*) im :32 :imExtent[ 1]-imExtent[ 0]+1 :imExtent[ 3]-imExtent[ 2]+1 :space[0] :space[1] :origin[0] :origin[1] :origin[2]];
 	[mypix copySUVfrom: curPix];	
-	
+	[mypix changeWLWW:iwl :iww];
+
 	axViewPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[axViewPixList addObject: mypix];
 	[mypix release];	
@@ -1030,7 +1106,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[crossAxiasView setOrigin: NSMakePoint(0,0)];
 	[crossAxiasView setCurrentTool:tWL];
 	[crossAxiasView setScaleValue: 1.5*[originalView scaleValue]];
-	[crossAxiasView discretelySetWLWW:iwl :iww];	
+	//[crossAxiasView discretelySetWLWW:iwl :iww];	
 	
 	cprImageBuffer=0L;
 	
@@ -1493,7 +1569,7 @@ else
 		if([[oViewROIList objectAtIndex: 0] containsObject: sender] )
 		{
 			ROI* roi=(ROI*)sender;
-			int roitype =[roi type];
+
 			if([roi isEqual:oViewMeasureLine] )
 			{
 				cPRViewCenter=[[measureLinePointsArray objectAtIndex: 0] point];
@@ -1542,8 +1618,7 @@ else
 				cPRROIRect.origin=tempPt;
 				cPRROIRect.size.height = length/cViewSpace[1];
 				
-				ROI* cViewROI=[[cViewROIList objectAtIndex: 0] objectAtIndex: 0];
-				
+			
 			}
 		}
 		else if([[cViewROIList objectAtIndex:0] containsObject: sender])
@@ -1833,9 +1908,20 @@ else
 				else if(currentTool == 8)
 				{
 					uniIndex++;
+					
 					NSString *indexstr=[NSString stringWithFormat:@"%d",uniIndex];
 					[roi setComments:indexstr];	
-					[totalROIList addObject:roi];
+					unsigned int i;
+					for(i=0;i<[[oViewROIList objectAtIndex: 0] count];i++)
+					{
+						[[roi pix] retain];// to avoid a bug. pix seems not retain by the roi, but will be release
+					}
+					DCMPix * curImage= [cViewPixList objectAtIndex:0];
+					ROI* newROI=[[ROI alloc] initWithType: tROI :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
+					[newROI setName:currentSeedName];
+					[newROI setComments:indexstr];	
+					[newROI setColor:c];
+					[totalROIList addObject:newROI];
 				}
 				else if(currentTool == 6)
 				{
@@ -1961,7 +2047,7 @@ else
 		if ([sender isKindOfClass:[ROI class]])
 		{
 			ROI* roi=(ROI*)sender;
-			if([totalROIList containsObject: roi]|| [totalROIList containsObject:[roi parentROI] ])
+			if([roi type]==tPlain)
 			{
 				if(!isRemoveROIBySelf)
 				{
@@ -2180,7 +2266,7 @@ else
 			
 			[newROI setColor:color];
 			[newROI setROIMode:ROI_selected];
-			[newROI setParentROI:roi];
+			//[newROI setParentROI:roi];
 			[roiList addObject:newROI];
 			[newROI release];
 			free(textureBuffer);
@@ -2224,40 +2310,42 @@ else
 - (void) changeWLWW: (NSNotification*) note
 {
 	id sender = [note object] ;
-	if ([sender isKindOfClass:[DCMPix class]])
+	if ([sender isKindOfClass:[DCMPix class]]&&(!isChangingWWWLBySelf))
 	{
 		DCMPix	*otherPix = sender;
 		float iwl, iww;
 		
 		iww = [otherPix ww];
 		iwl = [otherPix wl];
-		
-		
-		if( [oViewPixList containsObject: otherPix])
+		if([oViewPixList containsObject: otherPix]||[cViewPixList containsObject: otherPix]||[axViewPixList containsObject: otherPix])
 		{
-			//if( iww != [originalView curWW] || iwl != [originalView curWL])
-				[originalView setIndex: 0 ];
-			if( iww != [cPRView curWW] || iwl != [cPRView curWL])
-				[cPRView setWLWW:iwl :iww];					
-			if( iww != [crossAxiasView curWW] || iwl != [crossAxiasView curWL])
-				[crossAxiasView setWLWW:iwl :iww];
-	
-		}
-		else if( [cViewPixList containsObject: otherPix])
-		{
-			if( iww != [originalView curWW] || iwl != [originalView curWL])
-				[originalView setWLWW:iwl :iww];				
-			if( iww != [crossAxiasView curWW] || iwl != [crossAxiasView curWL])
-				[crossAxiasView setWLWW:iwl :iww];	
-		}
-		else if( [axViewPixList containsObject: otherPix])
-		{
-			if( iww != [originalView curWW] || iwl != [originalView curWL])
-				[originalView setWLWW:iwl :iww];				
-			if( iww != [cPRView curWW] || iwl != [cPRView curWL])
-				[cPRView setWLWW:iwl :iww];		
-		}
+			isChangingWWWLBySelf=1;
+			if( [oViewPixList containsObject: otherPix])
+			{
+				//if( iww != [originalView curWW] || iwl != [originalView curWL])
+					[originalView setIndex: 0 ];
+				if( iww != [cPRView curWW] || iwl != [cPRView curWL])
+					[cPRView setWLWW:iwl :iww];					
+				if( iww != [crossAxiasView curWW] || iwl != [crossAxiasView curWL])
+					[crossAxiasView setWLWW:iwl :iww];
 		
+			}
+			else if( [cViewPixList containsObject: otherPix])
+			{
+				if( iww != [originalView curWW] || iwl != [originalView curWL])
+					[originalView setWLWW:iwl :iww];				
+				if( iww != [crossAxiasView curWW] || iwl != [crossAxiasView curWL])
+					[crossAxiasView setWLWW:iwl :iww];	
+			}
+			else if( [axViewPixList containsObject: otherPix])
+			{
+				if( iww != [originalView curWW] || iwl != [originalView curWL])
+					[originalView setWLWW:iwl :iww];				
+				if( iww != [cPRView curWW] || iwl != [cPRView curWL])
+					[cPRView setWLWW:iwl :iww];		
+			}
+			isChangingWWWLBySelf=0;
+		}
 	}
 	
 	
@@ -2757,8 +2845,8 @@ else
 						
 		}
 	}
-
-	
+	[[cViewROIList objectAtIndex:0] removeAllObjects];
+	[[axViewROIList objectAtIndex:0] removeAllObjects];
 }
 
 - (void) fixHolesInBarrier:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker
@@ -3843,7 +3931,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 				[pathListButton selectItemAtIndex:0];
 	[existedMaskList removeAllObjects];
 	[existedMaskList release];
-	[NSApp beginSheet: loadPathWindow modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: loadPathWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
 }
 - (IBAction)endLoadPathDialog:(id)sender
 {
@@ -3851,7 +3939,17 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	if(tag)
 	{
 		NSString* roiName=[pathListButton titleOfSelectedItem];
-		[self create3DPathFromROIs:roiName];
+		NSMutableArray *temp3DPath=[self create3DPathFromROIs:roiName];
+		if(temp3DPath!=nil)
+		{
+			NSMutableArray	*temppathlist=[NSMutableArray arrayWithCapacity:0];
+			[temppathlist addObject:temp3DPath];
+			[self convertCenterlinesToVTKCoordinate:temppathlist];
+			[self setCurrentCPRPathWithPath:temp3DPath:[resampleText floatValue]];
+			[temppathlist removeAllObjects];
+		}
+		[temp3DPath removeAllObjects];
+		[temp3DPath release];
 		currentPathMode=ROI_selectedModify;
 		[self changeCurrentTool:5];
 		
@@ -3860,17 +3958,17 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
     
     [NSApp endSheet:loadPathWindow returnCode:tag];
 }
--(void) create3DPathFromROIs:(NSString*) roiName
+-(NSMutableArray *) create3DPathFromROIs:(NSString*) roiName
 {
 	
 	NSMutableArray *tempRoiList=[NSMutableArray arrayWithCapacity:0];
-	NSMutableArray *temp3DPath=[NSMutableArray arrayWithCapacity:0];
+	NSMutableArray *temp3DPath=[[NSMutableArray alloc] initWithCapacity: 0];
 
 	NSMutableArray *curRoiList = [originalViewController roiList];
 	unsigned int i,j,k;
 	ROI * tempROI;
-	int pointNum;
-	int err=0;
+	unsigned int pointNum;
+	int err=1;
 	float x,y,z;
 	for(i=0;i<[curRoiList count];i++)
 		for(j=0;j<[[curRoiList objectAtIndex:i] count];j++)
@@ -3881,8 +3979,20 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 				[tempRoiList addObject: tempROI];
 				
 			}
+			if([tempROI type]==t2DPoint && [[tempROI name] isEqualToString: roiName])
+			{
+				err=0;
+				
+			}
 		}
-	
+	if(err)
+	{
+		[tempRoiList removeAllObjects];
+		[temp3DPath release];
+		return nil;	
+	}
+
+
 	pointNum=[tempRoiList count];
 	
 
@@ -3901,9 +4011,9 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 						z=k;
 						k=[curRoiList count];
 					}
-				x = vtkOriginalX + x*xSpacing;
-				y = vtkOriginalY + y*ySpacing;
-				z = vtkOriginalZ + z*zSpacing;
+				//x = vtkOriginalX + x*xSpacing;
+				//y = vtkOriginalY + y*ySpacing;
+				//z = vtkOriginalZ + z*zSpacing;
 				
 				CMIV3DPoint* new3DPoint=[[CMIV3DPoint alloc] init] ;
 				[new3DPoint setX: x];
@@ -3926,20 +4036,18 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 	}
 
+	[tempRoiList removeAllObjects];
 	if(!err)
 	{
 
-		[self setCurrentCPRPathWithPath:temp3DPath:[resampleText floatValue]];
-			
-		[temp3DPath removeAllObjects];
-		[tempRoiList removeAllObjects];
-		
+		return temp3DPath;
+
 	}
 	else
 	{
-		NSRunAlertPanel(NSLocalizedString(@"Not a path", nil), NSLocalizedString(@"The ROI you chosed is not a path, try other name.", nil), NSLocalizedString(@"OK", nil), nil, nil);
-
-		
+		[temp3DPath removeAllObjects];
+		[temp3DPath release];
+		return nil;	
 	}
 	
 }
@@ -4326,17 +4434,18 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	unsigned int row = [centerlinesList selectedRow];
 	if(row>=0&&row<[cpr3DPaths count])
 	{
-		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider floatValue]];
 		[curvedMPREven3DPath removeAllObjects];
 		[curvedMPREven3DPath release];
 		curvedMPREven3DPath=nil;
+		
+		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex:row]:[resampleRatioSlider floatValue]];
 	}
 	
 }
 - (IBAction)showCPRImageDialog:(id)sender
 {
 	if(currentTool==5||isInCPROnlyMode)
-	[NSApp beginSheet: exportCPRWindow modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: exportCPRWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
 	else
 		NSRunAlertPanel(NSLocalizedString(@"no CPR image", nil), NSLocalizedString(@"Please choose CPR tools again.", nil), NSLocalizedString(@"OK", nil), nil, nil);
 
@@ -4660,7 +4769,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 - (IBAction)showCenterlinesDialog:(id)sender
 {
 	if([curvedMPR3DPath count] )
-		[NSApp beginSheet: savePathWindow modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+		[NSApp beginSheet: savePathWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
 	else
 		NSRunAlertPanel(NSLocalizedString(@"no Path", nil), NSLocalizedString(@"Please define a path first.", nil), NSLocalizedString(@"OK", nil), nil, nil);
 }
@@ -4764,12 +4873,13 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 
 - (void)reHideToolbar
 {
+	/*
 	unsigned int i;
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: NO];
 		
-	}
+	}*/
 	
 }
 

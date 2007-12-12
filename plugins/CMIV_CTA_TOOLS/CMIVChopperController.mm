@@ -245,12 +245,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     [NSApp endSheet:window returnCode:[sender tag]];
 //	[originalView release];
 //	[reformView release];
+	/*
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: YES];
 		
 	}
-	[toolbarList removeAllObjects];
+	[toolbarList removeAllObjects];*/
 	
 	[pool release];
 	if([sender tag]==2)
@@ -286,7 +287,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 	[NSBundle loadNibNamed:@"Chopper_Panel" owner:self];
-	[window setFrame:[[NSScreen mainScreen] visibleFrame] display:YES ];
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];
 
 
 	imageWidth = [curPix pwidth];
@@ -351,7 +353,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[nc addObserver:self selector:@selector(defaultToolModified:) name:@"defaultToolModified" object:nil];
 		[nc addObserver:self selector:@selector(roiChanged:) name:@"roiChange" object:nil];
 		[nc	addObserver: self selector: @selector(changeWLWW:) name: @"changeWLWW" object: nil];
-		[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+		[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 		[nc addObserver: self selector: @selector(windowDidBecomeMain:) name:NSWindowDidBecomeMainNotification object:nil];
 
 		if(!isInWizardMode)
@@ -359,7 +361,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[nextStep setHidden:YES];
 			[wizardTips  setHidden:YES];
 		}
-	
+	/*
 		{
 			NSArray				*winList = [NSApp windows];
 			unsigned int i;
@@ -379,7 +381,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				}
 				
 			}
-		}
+		}*/
 	}
 	
 	return err;
@@ -825,13 +827,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 - (void) reHideToolbar
-{
+{/*
 	unsigned int i;
 	for( i = 0; i < [toolbarList count]; i++)
 	{
 		[[toolbarList objectAtIndex: i] setVisible: NO];
 		
-	}
+	}*/
 	
 }
 @end
