@@ -46,7 +46,6 @@ TODO:
 - Localization Tests: short keys, annotations, show/hide columns in db table
 
 - Rebuild thumbnails if postprocessed
-- Documents DB if default DB is not found
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
