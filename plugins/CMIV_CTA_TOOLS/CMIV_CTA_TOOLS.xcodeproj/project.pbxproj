@@ -24,6 +24,10 @@
 		B93F17660C54EB1400E7AF6E /* AboutDlg.nib in Resources */ = {isa = PBXBuildFile; fileRef = B93F17640C54EB1300E7AF6E /* AboutDlg.nib */; };
 		B95EA4360C54F418005A35CB /* logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B95EA4350C54F418005A35CB /* logo.jpg */; };
 		B95EA4370C54F418005A35CB /* logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B95EA4350C54F418005A35CB /* logo.jpg */; };
+		B969E7B00D111DC700868834 /* CMIVWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = B969E7AE0D111DC700868834 /* CMIVWindow.h */; };
+		B969E7B10D111DC700868834 /* CMIVWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B969E7AF0D111DC700868834 /* CMIVWindow.m */; };
+		B969E7B20D111DC700868834 /* CMIVWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = B969E7AE0D111DC700868834 /* CMIVWindow.h */; };
+		B969E7B30D111DC700868834 /* CMIVWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B969E7AF0D111DC700868834 /* CMIVWindow.m */; };
 		B96B0F170B10AF5E0044D904 /* ColorTransferView.h in Headers */ = {isa = PBXBuildFile; fileRef = B96B0F160B10AF5E0044D904 /* ColorTransferView.h */; };
 		B96B0F190B10AF8C0044D904 /* VRView.h in Headers */ = {isa = PBXBuildFile; fileRef = B96B0F180B10AF8C0044D904 /* VRView.h */; };
 		B96B0F1E0B10AFD20044D904 /* VTKView.h in Headers */ = {isa = PBXBuildFile; fileRef = B96B0F1D0B10AFD20044D904 /* VTKView.h */; };
@@ -1421,6 +1425,10 @@
 		B9C030810B073F7B0020A4AD /* Spoon_Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = B9C030800B073F7B0020A4AD /* Spoon_Panel.nib */; };
 		B9C031F20B0753280020A4AD /* CMIVSpoonController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C031F00B0753280020A4AD /* CMIVSpoonController.h */; };
 		B9C033C30B075FB20020A4AD /* CMIVSpoonController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */; };
+		B9C5969F0D127F810082FCAF /* CMIVDCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C5969D0D127F810082FCAF /* CMIVDCMView.h */; };
+		B9C596A00D127F810082FCAF /* CMIVDCMView.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C5969E0D127F810082FCAF /* CMIVDCMView.m */; };
+		B9C596A10D127F810082FCAF /* CMIVDCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C5969D0D127F810082FCAF /* CMIVDCMView.h */; };
+		B9C596A20D127F810082FCAF /* CMIVDCMView.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C5969E0D127F810082FCAF /* CMIVDCMView.m */; };
 		B9CACF5B0B049C510099ADCE /* CMIVChopperController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9E3A0440B048ED300387A56 /* CMIVChopperController.mm */; };
 		B9DD469A0B06426E00F17150 /* vtk__Int64Array.h in Headers */ = {isa = PBXBuildFile; fileRef = B9DD41920B06426D00F17150 /* vtk__Int64Array.h */; };
 		B9DD469B0B06426E00F17150 /* vtk_expat_mangle.h in Headers */ = {isa = PBXBuildFile; fileRef = B9DD41930B06426D00F17150 /* vtk_expat_mangle.h */; };
@@ -2738,6 +2746,8 @@
 		B930E81D0B0B490400434C33 /* CMIVSegmentCore.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CMIVSegmentCore.m; sourceTree = "<group>"; };
 		B93F17640C54EB1300E7AF6E /* AboutDlg.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AboutDlg.nib; sourceTree = "<group>"; };
 		B95EA4350C54F418005A35CB /* logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo.jpg; sourceTree = "<group>"; };
+		B969E7AE0D111DC700868834 /* CMIVWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVWindow.h; sourceTree = "<group>"; };
+		B969E7AF0D111DC700868834 /* CMIVWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVWindow.m; sourceTree = "<group>"; };
 		B96B0F160B10AF5E0044D904 /* ColorTransferView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ColorTransferView.h; sourceTree = "<group>"; };
 		B96B0F180B10AF8C0044D904 /* VRView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VRView.h; sourceTree = "<group>"; };
 		B96B0F1D0B10AFD20044D904 /* VTKView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VTKView.h; sourceTree = "<group>"; };
@@ -2783,6 +2793,8 @@
 		B9C030800B073F7B0020A4AD /* Spoon_Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Spoon_Panel.nib; sourceTree = "<group>"; };
 		B9C031F00B0753280020A4AD /* CMIVSpoonController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVSpoonController.h; sourceTree = "<group>"; };
 		B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVSpoonController.mm; sourceTree = "<group>"; };
+		B9C5969D0D127F810082FCAF /* CMIVDCMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVDCMView.h; sourceTree = "<group>"; };
+		B9C5969E0D127F810082FCAF /* CMIVDCMView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVDCMView.m; sourceTree = "<group>"; };
 		B9DD41920B06426D00F17150 /* vtk__Int64Array.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = vtk__Int64Array.h; path = ../../osirix/VTKHeaders/vtk__Int64Array.h; sourceTree = SOURCE_ROOT; };
 		B9DD41930B06426D00F17150 /* vtk_expat_mangle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = vtk_expat_mangle.h; path = ../../osirix/VTKHeaders/vtk_expat_mangle.h; sourceTree = SOURCE_ROOT; };
 		B9DD41940B06426D00F17150 /* vtk_expat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = vtk_expat.h; path = ../../osirix/VTKHeaders/vtk_expat.h; sourceTree = SOURCE_ROOT; };
@@ -4208,12 +4220,16 @@
 				B96B0F200B10B1B60044D904 /* CMIVVRcontroller.mm */,
 				B9B29B8F0B147D2600DE2C1F /* CMIVScissorsController.h */,
 				B9B29B900B147D2600DE2C1F /* CMIVScissorsController.mm */,
+				B9C5969D0D127F810082FCAF /* CMIVDCMView.h */,
+				B9C5969E0D127F810082FCAF /* CMIVDCMView.m */,
 				B9B4195B0B36C8FC00AD244F /* CMIVExport.h */,
 				B9B4195C0B36C8FC00AD244F /* CMIVExport.m */,
 				B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */,
 				B9A4171E0B4BAF4D009AEE95 /* CMIV3DPoint.m */,
 				B9960E810C5A7F01004A4E89 /* CMIVSlider.h */,
 				B9960E820C5A7F01004A4E89 /* CMIVSlider.m */,
+				B969E7AE0D111DC700868834 /* CMIVWindow.h */,
+				B969E7AF0D111DC700868834 /* CMIVWindow.m */,
 			);
 			name = CMIV_CTA_TOOLS;
 			sourceTree = "<group>";
@@ -6899,6 +6915,8 @@
 				B99604090C130ED100924E8C /* VRMakeObject.h in Headers */,
 				B98D355F0C4CE6E100DA7EA2 /* spline.H in Headers */,
 				B9960E830C5A7F01004A4E89 /* CMIVSlider.h in Headers */,
+				B969E7B00D111DC700868834 /* CMIVWindow.h in Headers */,
+				B9C596A10D127F810082FCAF /* CMIVDCMView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8225,6 +8243,8 @@
 				B98F19340C4EA78900EED2DD /* VRMakeObject.h in Headers */,
 				B98F19350C4EA78900EED2DD /* spline.H in Headers */,
 				B9960E850C5A7F01004A4E89 /* CMIVSlider.h in Headers */,
+				B969E7B20D111DC700868834 /* CMIVWindow.h in Headers */,
+				B9C5969F0D127F810082FCAF /* CMIVDCMView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8385,6 +8405,8 @@
 				B9A417200B4BAF4D009AEE95 /* CMIV3DPoint.m in Sources */,
 				B9E39DEA0B03648700387A56 /* CMIV_CTA_TOOLS.mm in Sources */,
 				B9960E840C5A7F01004A4E89 /* CMIVSlider.m in Sources */,
+				B969E7B10D111DC700868834 /* CMIVWindow.m in Sources */,
+				B9C596A20D127F810082FCAF /* CMIVDCMView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8405,6 +8427,8 @@
 				B98F19550C4EA78900EED2DD /* CMIV3DPoint.m in Sources */,
 				B98F19560C4EA78900EED2DD /* CMIV_CTA_TOOLS.mm in Sources */,
 				B9960E860C5A7F01004A4E89 /* CMIVSlider.m in Sources */,
+				B969E7B30D111DC700868834 /* CMIVWindow.m in Sources */,
+				B9C596A00D127F810082FCAF /* CMIVDCMView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

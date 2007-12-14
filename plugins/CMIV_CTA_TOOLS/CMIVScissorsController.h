@@ -37,6 +37,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "PluginFilter.h"
 #import "CMIV_CTA_TOOLS.h"
 #import "CMIVSlider.h"
+#import "CMIVWindow.h"
+#import "CMIVDCMView.h"
 #define id Id
 #include <vtkImageImport.h>
 #include <vtkTransform.h>
@@ -48,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 @interface CMIVScissorsController : NSObject
 {
-	IBOutlet NSWindow	*window;
+	IBOutlet CMIVWindow	*window;
 	IBOutlet NSWindow	*loadPathWindow;
 	IBOutlet NSWindow	*exportCPRWindow;
 	IBOutlet NSWindow	*savePathWindow;
@@ -56,11 +58,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSPopUpButton *pathListButton;
     IBOutlet NSSlider *axImageSlider;
     IBOutlet NSSlider *cImageSlider;
-    IBOutlet DCMView *cPRView;
-    IBOutlet DCMView *crossAxiasView;
+    IBOutlet CMIVDCMView *cPRView;
+    IBOutlet CMIVDCMView *crossAxiasView;
     IBOutlet CMIVSlider *cYRotateSlider;
     IBOutlet NSSlider *oImageSlider;
-    IBOutlet DCMView *originalView;
+    IBOutlet CMIVDCMView *originalView;
     IBOutlet CMIVSlider *oXRotateSlider;
     IBOutlet CMIVSlider *oYRotateSlider;
     IBOutlet NSColorWell *seedColor;

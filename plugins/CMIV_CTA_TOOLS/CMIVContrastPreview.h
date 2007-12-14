@@ -37,7 +37,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "PluginFilter.h"
 #import "VRView.h"
 #import "CMIV_CTA_TOOLS.h"
-
+#import "CMIVWindow.h"
+#import "CMIVDCMView.h"
 #define id Id
 #include <vtkColorTransferFunction.h>
 #include <vtkRenderer.h>
@@ -54,10 +55,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 @interface CMIVContrastPreview : NSObject
 {
-    IBOutlet DCMView *mprView;
+    IBOutlet CMIVDCMView *mprView;
     IBOutlet NSTableView *seedList;
-    IBOutlet DCMView *resultView;
-	IBOutlet NSWindow *window;
+    IBOutlet CMIVDCMView *resultView;
+	IBOutlet CMIVWindow *window;
 	IBOutlet NSWindow	*skeletonWindow;
     IBOutlet NSSlider *mprPageSlider;
 	IBOutlet NSSlider *resultPageSlider;

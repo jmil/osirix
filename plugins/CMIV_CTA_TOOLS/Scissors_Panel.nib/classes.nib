@@ -14,6 +14,14 @@
 		</dict>
 		<dict>
 			<key>CLASS</key>
+			<string>CMIVDCMView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>DCMView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
 			<string>FirstResponder</string>
 			<key>LANGUAGE</key>
 			<string>ObjC</string>
@@ -154,7 +162,7 @@
 				<key>cImageSlider</key>
 				<string>NSSlider</string>
 				<key>cPRView</key>
-				<string>DCMView</string>
+				<string>CMIVDCMView</string>
 				<key>cViewRotateYText</key>
 				<string>NSTextField</string>
 				<key>cYRotateSlider</key>
@@ -170,7 +178,7 @@
 				<key>convertToSeedButton</key>
 				<string>NSButton</string>
 				<key>crossAxiasView</key>
-				<string>DCMView</string>
+				<string>CMIVDCMView</string>
 				<key>crossShowButton</key>
 				<string>NSButton</string>
 				<key>currentTips</key>
@@ -200,7 +208,7 @@
 				<key>oYRotateSlider</key>
 				<string>CMIVSlider</string>
 				<key>originalView</key>
-				<string>DCMView</string>
+				<string>CMIVDCMView</string>
 				<key>pathListButton</key>
 				<string>NSPopUpButton</string>
 				<key>pathModifyButton</key>
@@ -232,10 +240,18 @@
 				<key>straightenedCPRSwitchMenu</key>
 				<string>NSMenuItem</string>
 				<key>window</key>
-				<string>NSWindow</string>
+				<string>CMIVWindow</string>
 			</dict>
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>CMIVWindow</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSWindow</string>
 		</dict>
 	</array>
 	<key>IBVersion</key>

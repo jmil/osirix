@@ -1,143 +1,316 @@
-{
-    IBClasses = (
-        {
-            ACTIONS = {
-                changMPRViewDirection = id; 
-                changeVRColor = id; 
-                changeVRDirection = id; 
-                changeVRMode = id; 
-                chooseASeed = id; 
-                chooseATool = id; 
-                continueTheLoop = id; 
-                createSkeleton = id; 
-                exportResults = id; 
-                finishAdjustion = id; 
-                onCancel = id; 
-                pageMPRView = id; 
-                pageResultView = id; 
-                resetMPRView = id; 
-                rotateXMPRView = id; 
-                rotateYMPRView = id; 
-                setBrushMode = id; 
-                setBrushWidth = id; 
-                setConnectnessMapThreshold = id; 
-                showCross = id; 
-                showSkeletonDialog = id; 
-            }; 
-            CLASS = CMIVContrastPreview; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                brushWidthSlider = NSSlider; 
-                brushWidthText = NSTextField; 
-                centerLock = NSButton; 
-                crossShowButton = NSButton; 
-                exportButton = NSPopUpButton; 
-                mprPageSlider = NSSlider; 
-                mprView = DCMView; 
-                mprXRotateSlider = NSSlider; 
-                mprYRotateSlider = NSSlider; 
-                oViewRotateXText = NSTextField; 
-                oViewRotateYText = NSTextField; 
-                resultPageSlider = NSSlider; 
-                resultView = DCMView; 
-                saveBeforeSkeletonization = NSButton; 
-                seedList = NSTableView; 
-                skeletonWindow = NSWindow; 
-                skeletonztionButton = NSButton; 
-                tab2D3DView = NSTabView; 
-                thresholdForBranch = NSTextField; 
-                thresholdForConnectedness = NSTextField; 
-                thresholdForDistalEnd = NSTextField; 
-                thresholdSlider = NSSlider; 
-                updateButton = NSButton; 
-                vrColorLock = NSButton; 
-                vrMode = NSMatrix; 
-                vrView = VRView; 
-                window = NSWindow; 
-                wizardTips = NSTextField; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
-            ACTIONS = {
-                alwaysSyncMenu = id; 
-                changeFont = id; 
-                flipHorizontal = id; 
-                flipVertical = id; 
-                resetImagePresentationState = id; 
-                resetSeriesPresentationState = id; 
-                roiLoadFromXMLFiles = id; 
-                sliderAction = id; 
-                sliderAction2DMPR = id; 
-                sliderRGBFactor = id; 
-            }; 
-            CLASS = DCMView; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = NSOpenGLView; 
-        }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
-        {
-            ACTIONS = {
-                IBPropagate3DPointsSettings = id; 
-                IBSetSelected3DPointColor = id; 
-                IBSetSelected3DPointRadius = id; 
-                bestRendering = id; 
-                endDCMExportSettings = id; 
-                endQuicktimeSettings = id; 
-                endQuicktimeVRSettings = id; 
-                export2iPhoto = id; 
-                exportDICOMFile = id; 
-                exportJPEG = id; 
-                exportQuicktime = id; 
-                exportTIFF = id; 
-                resetImage = id; 
-                resizeWindow = id; 
-                saView = id; 
-                save3DPointsDefaultProperties = id; 
-                scissorStateButtons = id; 
-                sendMail = id; 
-                setCurrentdcmExport = id; 
-                setRenderMode = id; 
-                squareView = id; 
-                switchOrientationWidget = id; 
-                switchProjection = id; 
-                switchShading = id; 
-                switchToSeriesRadio = id; 
-            }; 
-            CLASS = VRView; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                VRFrames = NSMatrix; 
-                VRquality = NSMatrix; 
-                controller = NSObject; 
-                dcmBox = NSBox; 
-                dcmExportMode = NSMatrix; 
-                dcmSeriesName = NSTextField; 
-                dcmframesSlider = NSSlider; 
-                dcmorientation = NSMatrix; 
-                dcmquality = NSMatrix; 
-                dcmrotation = NSMatrix; 
-                export3DVRWindow = NSWindow; 
-                export3DWindow = NSWindow; 
-                exportDCMWindow = NSWindow; 
-                framesSlider = NSSlider; 
-                orientation = NSMatrix; 
-                pixelInformation = NSTextField; 
-                point3DColorWell = NSColorWell; 
-                point3DInfoPanel = NSPanel; 
-                point3DPropagateToAll = NSButton; 
-                point3DRadiusSlider = NSSlider; 
-                point3DSetDefault = NSButton; 
-                projection = NSMatrix; 
-                quality = NSMatrix; 
-                rotation = NSMatrix; 
-                scissorStateMatrix = NSMatrix; 
-            }; 
-            SUPERCLASS = VTKView; 
-        }, 
-        {CLASS = VTKView; LANGUAGE = ObjC; SUPERCLASS = vtkCocoaGLView; }, 
-        {CLASS = vtkCocoaGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>CLASS</key>
+			<string>NSSegmentedControl</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSControl</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>VTKView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>vtkCocoaGLView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>CMIVDCMView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>DCMView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>vtkCocoaGLView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSView</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>IBPropagate3DPointsSettings</key>
+				<string>id</string>
+				<key>IBSetSelected3DPointColor</key>
+				<string>id</string>
+				<key>IBSetSelected3DPointRadius</key>
+				<string>id</string>
+				<key>bestRendering</key>
+				<string>id</string>
+				<key>endDCMExportSettings</key>
+				<string>id</string>
+				<key>endQuicktimeSettings</key>
+				<string>id</string>
+				<key>endQuicktimeVRSettings</key>
+				<string>id</string>
+				<key>export2iPhoto</key>
+				<string>id</string>
+				<key>exportDICOMFile</key>
+				<string>id</string>
+				<key>exportJPEG</key>
+				<string>id</string>
+				<key>exportQuicktime</key>
+				<string>id</string>
+				<key>exportTIFF</key>
+				<string>id</string>
+				<key>resetImage</key>
+				<string>id</string>
+				<key>resizeWindow</key>
+				<string>id</string>
+				<key>saView</key>
+				<string>id</string>
+				<key>save3DPointsDefaultProperties</key>
+				<string>id</string>
+				<key>scissorStateButtons</key>
+				<string>id</string>
+				<key>sendMail</key>
+				<string>id</string>
+				<key>setCurrentdcmExport</key>
+				<string>id</string>
+				<key>setRenderMode</key>
+				<string>id</string>
+				<key>squareView</key>
+				<string>id</string>
+				<key>switchOrientationWidget</key>
+				<string>id</string>
+				<key>switchProjection</key>
+				<string>id</string>
+				<key>switchShading</key>
+				<string>id</string>
+				<key>switchToSeriesRadio</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>VRView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>VRFrames</key>
+				<string>NSMatrix</string>
+				<key>VRquality</key>
+				<string>NSMatrix</string>
+				<key>controller</key>
+				<string>NSObject</string>
+				<key>dcmBox</key>
+				<string>NSBox</string>
+				<key>dcmExportMode</key>
+				<string>NSMatrix</string>
+				<key>dcmSeriesName</key>
+				<string>NSTextField</string>
+				<key>dcmframesSlider</key>
+				<string>NSSlider</string>
+				<key>dcmorientation</key>
+				<string>NSMatrix</string>
+				<key>dcmquality</key>
+				<string>NSMatrix</string>
+				<key>dcmrotation</key>
+				<string>NSMatrix</string>
+				<key>export3DVRWindow</key>
+				<string>NSWindow</string>
+				<key>export3DWindow</key>
+				<string>NSWindow</string>
+				<key>exportDCMWindow</key>
+				<string>NSWindow</string>
+				<key>framesSlider</key>
+				<string>NSSlider</string>
+				<key>orientation</key>
+				<string>NSMatrix</string>
+				<key>pixelInformation</key>
+				<string>NSTextField</string>
+				<key>point3DColorWell</key>
+				<string>NSColorWell</string>
+				<key>point3DInfoPanel</key>
+				<string>NSPanel</string>
+				<key>point3DPropagateToAll</key>
+				<string>NSButton</string>
+				<key>point3DRadiusSlider</key>
+				<string>NSSlider</string>
+				<key>point3DSetDefault</key>
+				<string>NSButton</string>
+				<key>projection</key>
+				<string>NSMatrix</string>
+				<key>quality</key>
+				<string>NSMatrix</string>
+				<key>rotation</key>
+				<string>NSMatrix</string>
+				<key>scissorStateMatrix</key>
+				<string>NSMatrix</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>VTKView</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>changMPRViewDirection</key>
+				<string>id</string>
+				<key>changeVRColor</key>
+				<string>id</string>
+				<key>changeVRDirection</key>
+				<string>id</string>
+				<key>changeVRMode</key>
+				<string>id</string>
+				<key>chooseASeed</key>
+				<string>id</string>
+				<key>chooseATool</key>
+				<string>id</string>
+				<key>continueTheLoop</key>
+				<string>id</string>
+				<key>createSkeleton</key>
+				<string>id</string>
+				<key>exportResults</key>
+				<string>id</string>
+				<key>finishAdjustion</key>
+				<string>id</string>
+				<key>onCancel</key>
+				<string>id</string>
+				<key>pageMPRView</key>
+				<string>id</string>
+				<key>pageResultView</key>
+				<string>id</string>
+				<key>resetMPRView</key>
+				<string>id</string>
+				<key>rotateXMPRView</key>
+				<string>id</string>
+				<key>rotateYMPRView</key>
+				<string>id</string>
+				<key>setBrushMode</key>
+				<string>id</string>
+				<key>setBrushWidth</key>
+				<string>id</string>
+				<key>setConnectnessMapThreshold</key>
+				<string>id</string>
+				<key>showCross</key>
+				<string>id</string>
+				<key>showSkeletonDialog</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>CMIVContrastPreview</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>brushWidthSlider</key>
+				<string>NSSlider</string>
+				<key>brushWidthText</key>
+				<string>NSTextField</string>
+				<key>centerLock</key>
+				<string>NSButton</string>
+				<key>crossShowButton</key>
+				<string>NSButton</string>
+				<key>exportButton</key>
+				<string>NSPopUpButton</string>
+				<key>mprPageSlider</key>
+				<string>NSSlider</string>
+				<key>mprView</key>
+				<string>CMIVDCMView</string>
+				<key>mprXRotateSlider</key>
+				<string>NSSlider</string>
+				<key>mprYRotateSlider</key>
+				<string>NSSlider</string>
+				<key>oViewRotateXText</key>
+				<string>NSTextField</string>
+				<key>oViewRotateYText</key>
+				<string>NSTextField</string>
+				<key>resultPageSlider</key>
+				<string>NSSlider</string>
+				<key>resultView</key>
+				<string>DCMView</string>
+				<key>saveBeforeSkeletonization</key>
+				<string>NSButton</string>
+				<key>seedList</key>
+				<string>NSTableView</string>
+				<key>skeletonWindow</key>
+				<string>NSWindow</string>
+				<key>skeletonztionButton</key>
+				<string>NSButton</string>
+				<key>tab2D3DView</key>
+				<string>NSTabView</string>
+				<key>thresholdForBranch</key>
+				<string>NSTextField</string>
+				<key>thresholdForConnectedness</key>
+				<string>NSTextField</string>
+				<key>thresholdForDistalEnd</key>
+				<string>NSTextField</string>
+				<key>thresholdSlider</key>
+				<string>NSSlider</string>
+				<key>updateButton</key>
+				<string>NSButton</string>
+				<key>vrColorLock</key>
+				<string>NSButton</string>
+				<key>vrMode</key>
+				<string>NSMatrix</string>
+				<key>vrView</key>
+				<string>VRView</string>
+				<key>window</key>
+				<string>CMIVWindow</string>
+				<key>wizardTips</key>
+				<string>NSTextField</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>alwaysSyncMenu</key>
+				<string>id</string>
+				<key>changeFont</key>
+				<string>id</string>
+				<key>flipHorizontal</key>
+				<string>id</string>
+				<key>flipVertical</key>
+				<string>id</string>
+				<key>resetImagePresentationState</key>
+				<string>id</string>
+				<key>resetSeriesPresentationState</key>
+				<string>id</string>
+				<key>roiLoadFromXMLFiles</key>
+				<string>id</string>
+				<key>sliderAction</key>
+				<string>id</string>
+				<key>sliderAction2DMPR</key>
+				<string>id</string>
+				<key>sliderRGBFactor</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>DCMView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSOpenGLView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>CMIVWindow</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSWindow</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>

@@ -141,6 +141,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[curReformROI release];
     [reformPixList removeAllObjects];
 	[reformPixList release];
+	[reformView setTranlateSlider:nil];
     if( [sender tag]&&!isSelectAll)   //User clicks OK Button
     {
 		
@@ -346,7 +347,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[self  updateImageFromToSliders];
 		[self updateAllTextField];
 		
-		
+		[reformView setTranlateSlider:reformViewSlider];
 		
 		NSNotificationCenter *nc;
 		nc = [NSNotificationCenter defaultCenter];

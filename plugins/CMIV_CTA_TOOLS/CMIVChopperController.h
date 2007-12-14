@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import <Cocoa/Cocoa.h>
 #import "PluginFilter.h"
 #import "CMIV_CTA_TOOLS.h"
+#import "CMIVDCMView.h"
 #define id Id
 #include <vtkImageImport.h>
 #include <vtkTransform.h>
@@ -50,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     IBOutlet NSTextField *leftTopY;
     IBOutlet DCMView *originalView;
     IBOutlet NSSlider *originalViewSlider;
-    IBOutlet DCMView *reformView;
+    IBOutlet CMIVDCMView *reformView;
     IBOutlet NSSlider *reformViewSlider;
     IBOutlet NSSegmentedControl *reformViewState;
     IBOutlet NSTextField *rightBottomX;

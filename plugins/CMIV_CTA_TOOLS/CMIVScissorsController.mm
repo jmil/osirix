@@ -298,7 +298,12 @@ static		float						deg2rad = 3.14159265358979/180.0;
 - (IBAction)onCancel:(id)sender
 {
 	int tag=[sender tag];
-	
+	[window setHorizontalSlider:nil];
+	[window setVerticalSlider:nil];
+	[window setTranlateSlider:nil];
+	[cPRView setHorizontalSlider:nil];
+	[cPRView setTranlateSlider:nil];	
+	[crossAxiasView setTranlateSlider:nil];
 	[window setReleasedWhenClosed:YES];
 	[window close];
 //	[window orderOut:sender];
@@ -746,7 +751,16 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	}
 
 
-	
+	 [window setHorizontalSlider:oYRotateSlider];
+	 [window setVerticalSlider:oXRotateSlider];
+	 [window setTranlateSlider:oImageSlider];
+	 if(!isInCPROnlyMode)
+	 {
+		 [cPRView setHorizontalSlider:cYRotateSlider];
+		 [cPRView setTranlateSlider:cImageSlider];
+	 }
+
+	 [crossAxiasView setTranlateSlider:axImageSlider];
 	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];	
 	[seedsList setDataSource:self];	
 	if(!isInWizardMode)
@@ -4888,22 +4902,27 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	if(isStraightenedCPR)
 	{
 		isStraightenedCPR = NO;
+		[cPRView setTranlateSlider:nil];
 		[straightenedCPRSwitchMenu setTitle:@"Straightened CPR"];
 		[cYRotateSlider setEnabled: NO];
 		axViewSlice->SetResliceTransform( axViewTransform);
 		if(isInCPROnlyMode)
 			[straightenedCPRButton setState:NSOffState];
 		[self relocateAxViewSlider];
-	}
+			}
 	else
 	{
 		isStraightenedCPR = YES;
+		
 		[straightenedCPRSwitchMenu setTitle:@"Curved MPR"];
 		[cYRotateSlider setEnabled: YES];
 		axViewSlice->SetResliceTransform( axViewTransformForStraightenCPR);
 		if(isInCPROnlyMode)
 			[straightenedCPRButton setState:NSOnState];	
 		[self relocateAxViewSlider];
+		[cPRView setTranlateSlider:cYRotateSlider];
+
+		
 	}
 	axViewSlice->Update();
 	[self updateCView];

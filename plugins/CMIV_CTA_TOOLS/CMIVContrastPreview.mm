@@ -326,7 +326,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)onCancel:(id)sender
 {
 	int tag=[sender tag];
-
+	[window setHorizontalSlider:nil];
+	[window setVerticalSlider:nil];
+	[window setTranlateSlider:nil];
+	[resultView setTranlateSlider:nil];
 	if([[tab2D3DView tabViewItems] count]>1) 
 	{
 		NSWindow* superwindow=[vrView window];
@@ -513,6 +516,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			
 		}
 		 */
+		[window setHorizontalSlider:mprYRotateSlider];
+		[window setVerticalSlider:mprXRotateSlider];
+		[window setTranlateSlider:mprPageSlider];
+		[resultView setTranlateSlider:resultPageSlider];
 		roiShowTextOnlyWhenSeleted=[[NSUserDefaults standardUserDefaults] boolForKey:@"ROITEXTIFSELECTED"];
 		roiShowNameOnly=[[NSUserDefaults standardUserDefaults] boolForKey: @"ROITEXTNAMEONLY"];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey: @"ROITEXTNAMEONLY"];
