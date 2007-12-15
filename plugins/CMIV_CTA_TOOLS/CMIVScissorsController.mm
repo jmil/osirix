@@ -751,13 +751,20 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	}
 
 
-	 [window setHorizontalSlider:oYRotateSlider];
-	 [window setVerticalSlider:oXRotateSlider];
-	 [window setTranlateSlider:oImageSlider];
 	 if(!isInCPROnlyMode)
 	 {
+		 [window setHorizontalSlider:oYRotateSlider];
+		 [window setVerticalSlider:oXRotateSlider];
+		 [window setTranlateSlider:oImageSlider];
+		 
 		 [cPRView setHorizontalSlider:cYRotateSlider];
 		 [cPRView setTranlateSlider:cImageSlider];
+	 }
+	 else
+	 {
+		 [window setHorizontalSlider:oXRotateSlider];
+		 [window setVerticalSlider:oImageSlider];
+		 [window setTranlateSlider:oYRotateSlider];
 	 }
 
 	 [crossAxiasView setTranlateSlider:axImageSlider];
