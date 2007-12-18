@@ -151,19 +151,24 @@
 
 		}while( [curDate monthOfYear] == [startdate monthOfYear] && i < [dictionaryArray count]-1);
 		
-		NSMutableArray	*uniqueIP = [NSMutableArray array];
+		NSMutableArray	*uniqueIP = [NSMutableArray arrayWithCapacity: [dictionaryArray count]];
 		
 		float tiger = 0;
 		float leopard = 0;
 		
 		for( x = startIndex; x < i; x++)
 		{
-			if( [uniqueIP containsObject: [[dictionaryArray objectAtIndex: x] objectForKey:@"ip"]] == NO)
+			NSDictionary *c = [dictionaryArray objectAtIndex: x];
+			NSString *ip = [c objectForKey:@"ip"];
+			
+			if( [uniqueIP containsObject: ip] == NO)
 			{
-				[uniqueIP addObject: [[dictionaryArray objectAtIndex: x] objectForKey:@"ip"]];
+				[uniqueIP addObject: ip];
 				
-				if( [[[dictionaryArray objectAtIndex: x] objectForKey:@"url"] isEqualToString:@"versionTiger.xml"]) tiger++;
-				if( [[[dictionaryArray objectAtIndex: x] objectForKey:@"url"] isEqualToString:@"versionLeopard.xml"]) leopard++;
+				NSString *url = [c objectForKey:@"url"];
+				
+				if( [url isEqualToString:@"versionLeopard.xml"]) leopard++;
+				else if( [url isEqualToString:@"versionTiger.xml"]) tiger++;
 			}
 		}
 		
