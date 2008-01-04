@@ -356,7 +356,7 @@
 	
 	BOOL volumic = NO;
 	
-	if( interval != [pixListA count])
+	if( interval != [pixListA count] && interval != 0)
 	{
 		NSLog( @"It's maybe a volumic TE sequence");
 		

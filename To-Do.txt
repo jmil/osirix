@@ -1,5 +1,9 @@
 3.0 New Features:
 
+- Misc GUI adjustments
+- OpenJPEG option for JPEG2000
+- Download DICOM Nodes list from an URL
+
 - 64 bits (Support up to 128-TB of RAM, instead of 4-GB)
 - Magnetic Windows
 - DICOM Editor : edit any DICOM fields - See Meta-Data window
@@ -45,9 +49,6 @@
 TODO:
 - Localization Tests: annotations, clut, wl&ww, convolutions menus
 - Localizations: remove 'actual age' from Localizable.strings
-
-T2 plugin
-Log events - incoming studies
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
