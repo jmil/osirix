@@ -50,6 +50,8 @@ TODO:
 - Localization Tests: annotations, clut, wl&ww, convolutions menus
 - Localizations: remove 'actual age' from Localizable.strings
 
+- Test Report Bonjour
+
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
