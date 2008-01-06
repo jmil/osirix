@@ -51,6 +51,7 @@ TODO:
 - Localizations: remove 'actual age' from Localizable.strings
 
 - Test Report Bonjour
+- Test OsiriX DB sync
 
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
