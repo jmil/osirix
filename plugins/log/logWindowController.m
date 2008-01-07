@@ -81,21 +81,23 @@
 			[scan scanUpToString:@"/" intoString: &empty];
 			[scan setScanLocation: [scan scanLocation] +1];
 			[scan scanUpToString:@" HTTP" intoString: &url];
-			
-			NSCalendarDate	*nsdate = [self convertDate: date];
-			NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: ip, @"ip", nsdate, @"date", url, @"url", 0L];
-			[dictionaryArray replaceObjectAtIndex:i withObject: dict];
-			
-			if( processor == processors-1 && i % 500 == 0)
-			{
-				[state setStringValue: [NSString stringWithFormat: @"analyzing: %2.2f %%", (float) (100. * (i-from) * processors) / (float) total]];
-				[state display];
-			}
 		}
 		
-		@catch (NSException *e) {
+		@catch (NSException *e)
+		{
+			NSLog( [lines objectAtIndex: i]);
 			NSLog(@"%@", e);
 		}
+		NSCalendarDate	*nsdate = [self convertDate: date];
+		NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: ip, @"ip", nsdate, @"date", url, @"url", 0L];
+		[dictionaryArray replaceObjectAtIndex:i withObject: dict];
+		
+		if( processor == processors-1 && i % 500 == 0)
+		{
+			[state setStringValue: [NSString stringWithFormat: @"analyzing: %2.2f %%", (float) (100. * (i-from) * processors) / (float) total]];
+			[state display];
+		}
+		
 		
 		[pool release];
 	}
