@@ -56,6 +56,7 @@ TODO:
 - OpenJPEG 1.3 for JPEG2000
 - Sync the DB list and DICOM Nodes on a remote location
 - Misc GUI bugs corrected
+- Web Service : consult your DB from an iPhone
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
