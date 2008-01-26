@@ -47,6 +47,10 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
+- Delete original series after resampling
+- Go to next key image
+- Log for autorouting
+
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?

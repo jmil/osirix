@@ -266,6 +266,8 @@
 						{
 //							values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
 							values[ i] = log( 0.5 * (1.0 - ([[teSequence objectAtIndex: i] fImage] [ pos] - background)));
+							
+//							abs (1 - 2*exp(-TI/T1) + exp(-TR/T1) )
 						}
 						
 						[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
