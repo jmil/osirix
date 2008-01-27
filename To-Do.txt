@@ -49,7 +49,6 @@
 TODO:
 - Delete original series after resampling
 - Go to next key image
-- Log for autorouting
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
