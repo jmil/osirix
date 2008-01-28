@@ -14,6 +14,7 @@
 - Editable image annotations (see Preferences)
 - DICOM CoverFlow, Icon Thumbnails and QuickLook plugins
 - Built-in HTTP Server with XML-RPC protocol for HIS/RIS Integration - See http://www.osirix-viewer.com/XML-RPC.pdf
+- Built-in Web Server: Browse the database from an iPhone and more!
 - High quality tele-radiology through MacOS 10.5 iChat Theater protocol
 - Layer ROIs from PNG, JPEG (The *ultimate* annotation tool)
 - Faster and more robust DB sharing
