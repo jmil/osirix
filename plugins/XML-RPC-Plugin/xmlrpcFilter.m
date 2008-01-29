@@ -34,6 +34,39 @@
 	
 	// ****************************************************************************************
 	
+	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"importFromURL"])
+	{
+		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
+		
+		NSError	*error = 0L;
+		NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
+		NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
+		if (1 == [keys count] || 1 == [values count])
+		{
+			int i;
+			NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
+			for( i = 0; i < [keys count]; i++)
+				[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
+			
+			// Ok, now, we have the parameters -> execute it !
+			
+			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: @"http://www.osirix-viewer.com/internet.dcm"]]];
+//			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: [paramDict valueForKey:@"url"]]]];
+			
+			if( [result count] == 0) NSLog(@"error.... addURLToDatabaseFiles failed");
+			
+			// Done, we can send the response to the sender
+			
+			NSString *xml = @"<?xml version=\"1.0\"?><methodResponse><params><param><value><struct><member><name>error</name><value>0</value></member></struct></value></param></params></methodResponse>";		// Simple answer, no errors
+			NSError *error = nil;
+			NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithXMLString:xml options:NSXMLNodeOptionsNone error:&error] autorelease];
+			[httpServerMessage setValue: doc forKey: @"NSXMLDocumentResponse"];
+			[httpServerMessage setValue: [NSNumber numberWithBool: YES] forKey: @"Processed"];		// To tell to other XML-RPC that we processed this order
+		}
+	}
+	
+	// ****************************************************************************************
+	
 	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"exportSelectedToPath"])
 	{
 		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters

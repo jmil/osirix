@@ -15,6 +15,7 @@
 		<li><a href="#Developing_on_Mac_OS_X">Developing on Mac OS X</a></li>
 		<li><a href="#Getting_OsiriX_Source_Code">Getting OsiriX Source Code</a></li>
 		<li><a href="#Creating_a_Plugin">Creating a Plugin</a></li>
+        <li><a href="#XML_RPC_support">XML-RPC support</a></li>
 		<li><a href="#The_Plugins_Architecture_of_OsiriX">The Plugins Architecture</a></li>
 		<li><a href="#Distributing_and_Installing_your_Plugin">Distribution & Installion</a></li>
 		<li><a href="#More_Help">More Help?</a></li>
@@ -82,8 +83,37 @@
 		</p>
 				
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
-				
-	<a name="The_Plugins_Architecture_of_OsiriX"><h2>The Plugins Architecture of OsiriX</h2></a>
+	
+    <a name="XML_RPC_support">
+    <h2>Adding support for XML-RPC messages - RIS/HIS Integration</h2>
+    </a>
+		<img class="icon" src="images/applescript_icon.png" />
+		<p>OsiriX is a DICOM Viewer, aka PACS Workstation, but it is not a HIS or a RIS software. If you <br>
+		  have such software installed, it can be useful to 'control' OsiriX or !get&quot; informations from/to an- <br>
+		  other application: <br>
+		  - an application running on the same computer. For example a Java application or a Web based <br>
+		  software <br>
+		  - an application running on the same computer, but in a different environment. For example in <br>
+		  Windows OS, in Parallels or VMware Fusion software. <br>
+		  - an application running on a different computer on the same network. For example a web <br>
+		  server application, like an ASP software. <br>
+		  This application should be able to control OsiriX to facilitate the integration. For example, the <br>
+		  other application should be able to: <br>
+		  - Check if a study is available in the OsiriX Database <br>
+		  - Open a specific study, and display the images <br>
+		  - Delete a study <br>
+		  - ... </p>
+		<p><br>
+		  With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX inte- <br>
+		  grates now an HTTP server with an XML-RPC protocol. It means that any software/computer <br>
+		  that knows your network address can execute methods in OsiriX. These methods can be built-in <br>
+		  in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences <br>
+		  window in OsiriX. </p>
+		<p>The documentation is available here: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/plugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
+		<p>A sample plugin is available in the Plugins folder in the SVN repository: XML-RPC-Plugin</p>
+		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+    
+<a name="The_Plugins_Architecture_of_OsiriX"><h2>The Plugins Architecture of OsiriX</h2></a>
 		<img class="icon" src="images/mfile_icon.png" />
 		<p>When OsiriX is launched, it will look in the 'plugin' folders for files with the <code>.osirixplugin</code> or <code>.plugin</code> extensions. It will then try to find if the plugin contains a sub-class of <code>PluginFilter</code> having a <code>-(long)filterImage:(NSString*)menuName;</code> method. OsiriX will then run once the <code>initPlugin</code> function if available.</p>
 		<p>Your plugin is a sub-class of <code>PluginFilter</code>. The <code>PluginFilter</code> class is defined in <code>PluginFilter.m</code>, available in the <code>OsiriX headers</code> folder. Don't modify this file!</p>
