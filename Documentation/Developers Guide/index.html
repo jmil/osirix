@@ -88,27 +88,20 @@
     <h2>Adding support for XML-RPC messages - RIS/HIS Integration</h2>
     </a>
 		<img class="icon" src="images/xmlrpc.png" />
-		<p>OsiriX is a DICOM Viewer, aka PACS Workstation, but it is not a HIS or a RIS software. If you <br>
-		  have such software installed, it can be useful to 'control' OsiriX or !get&quot; informations from/to an- <br>
-		  other application: <br>
-		  - an application running on the same computer. For example a Java application or a Web based <br>
-		  software <br>
-		  - an application running on the same computer, but in a different environment. For example in <br>
-		  Windows OS, in Parallels or VMware Fusion software. <br>
-		  - an application running on a different computer on the same network. For example a web <br>
-		  server application, like an ASP software. <br>
-		  This application should be able to control OsiriX to facilitate the integration. For example, the <br>
-		  other application should be able to: <br>
-		  - Check if a study is available in the OsiriX Database <br>
-		  - Open a specific study, and display the images <br>
-		  - Delete a study <br>
-		  - ... </p>
-		<p><br>
-		  With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX inte- <br>
-		  grates now an HTTP server with an XML-RPC protocol. It means that any software/computer <br>
-		  that knows your network address can execute methods in OsiriX. These methods can be built-in <br>
-		  in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences <br>
-		  window in OsiriX. </p>
+		<p>OsiriX is a DICOM Viewer, aka PACS Workstation, but it is not a HIS or a RIS software. If you have such software installed, it can be useful to 'control' OsiriX or !get&quot; informations from/to another application: </p>
+		<ul>
+			<li>an application running on the same computer. For example a Java application or a Web based software</li>
+			<li>an application running on the same computer, but in a different environment. For example in Windows OS, in Parallels or VMware Fusion software.</li>
+			<li>an application running on a different computer on the same network. For example a web server application, like an ASP software.</li>
+		</ul>
+		 <p>This application should be able to control OsiriX to facilitate the integration. For example, the other application should be able to:</p>
+		<ul>
+			<li>Check if a study is available in the OsiriX Database</li>
+			<li>Open a specific study, and display the images</li>
+			<li>Delete a study</li>
+			<li>...</li>
+		</ul>
+		<p>With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX integrates now an HTTP server with an XML-RPC protocol. It means that any software/computer that knows your network address can execute methods in OsiriX. These methods can be built-in in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences window in OsiriX. </p>
 		<p>The documentation is available here: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/plugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
 		<p>A sample plugin is available in the Plugins folder in the SVN repository: XML-RPC-Plugin</p>
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
