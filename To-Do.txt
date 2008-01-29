@@ -48,7 +48,6 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
-- Delete original series after resampling
 - Go to next key image
 
 - Preferences for Status menu in DB
