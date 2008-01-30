@@ -50,8 +50,8 @@
 			
 			// Ok, now, we have the parameters -> execute it !
 			
-			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: @"http://www.osirix-viewer.com/internet.dcm"]]];
-//			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: [paramDict valueForKey:@"url"]]]];
+//			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: @"http://www.osirix-viewer.com/internet.dcm"]]];
+			NSArray *result = [[BrowserController currentBrowser] addURLToDatabaseFiles: [NSArray arrayWithObject: [NSURL URLWithString: [paramDict valueForKey:@"url"]]]];
 			
 			if( [result count] == 0) NSLog(@"error.... addURLToDatabaseFiles failed");
 			
