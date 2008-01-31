@@ -51,7 +51,6 @@ TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
 
 - Go to next key image
-- DICOM FIELD WORD
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
