@@ -49,6 +49,7 @@
 
 TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
+- Merge Brush ROIs together
 
 - Merge Selected Brush ROIs
 - Go to next key image
