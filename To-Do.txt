@@ -46,9 +46,9 @@
 - Possibility to merge series or studies
 - Spline for ROIs - See Preferences Viewers
 - High Quality rendering for Curved-MPR
+- Brush ROI filters (Dilate/Erode/Open/Close) in 4D (if same name)
 
 TODO:
-- Brush ROI filters (Dilate/Erode/Open/Close) in 4D (if same name)
 - 3D ROIs in 4D
 
 - Possibility to add or remove studies from an album on a distant shared DB
