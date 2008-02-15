@@ -3,6 +3,7 @@
 - Misc GUI adjustments
 - OpenJPEG option for JPEG2000
 - Download DICOM Nodes list from an URL
+- Brush ROI filters (Dilate/Erode/Open/Close) in 4D (if same name)
 
 - 64 bits (Support up to 128-TB of RAM, instead of 4-GB)
 - Magnetic Windows
@@ -46,7 +47,6 @@
 - Possibility to merge series or studies
 - Spline for ROIs - See Preferences Viewers
 - High Quality rendering for Curved-MPR
-- Brush ROI filters (Dilate/Erode/Open/Close) in 4D (if same name)
 
 TODO:
 - 3D ROIs in 4D
