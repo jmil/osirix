@@ -53,8 +53,13 @@ TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
 - Merge Brush ROIs together
 
-- Merge Selected Brush ROIs
 - Go to next key image
+- Workspace for 4D viewer
+
+- Report modality - study description
+- Check decompression thread, if read from CD (ReadDicomCDRom)
+- Double-Click on Rotate tool : apply to front window
+- Resize window animate test: AppController
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
