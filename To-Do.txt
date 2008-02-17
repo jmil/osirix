@@ -52,6 +52,7 @@
 TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
 - Merge Brush ROIs together
+- Totoku 12 bits
 
 - Go to next key image
 - Workspace for 4D viewer
