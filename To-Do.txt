@@ -53,11 +53,11 @@ TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
 - Merge Brush ROIs together
 - Totoku 12 bits
+- Fix bugs related to MacOS 10.5.2 / Radeon2600 graphic boards
 - Navigator for 4D viewer
 
 - Go to next key image
 - Status/Comments in web http server
-- Reset MPR
 - Report modality - study description
 
 - Preferences for Status menu in DB
