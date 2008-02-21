@@ -56,6 +56,7 @@ TODO:
 - Navigator for 4D viewer
 
 - Go to next key image
+- Status/Comments in web http server
 - Reset MPR
 - Report modality - study description
 
