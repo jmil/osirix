@@ -56,7 +56,7 @@ TODO:
 - Navigator for 4D viewer
 
 - Go to next key image
-
+- Reset MPR
 - Report modality - study description
 
 - Preferences for Status menu in DB
