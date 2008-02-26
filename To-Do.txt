@@ -60,6 +60,7 @@ TODO:
 - Go to next key image
 - Status/Comments in web http server
 - Sort the series by image location
+- Test DICOM Print
 - Report modality - study description
 
 - Preferences for Status menu in DB
