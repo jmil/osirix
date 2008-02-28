@@ -1,15 +1,21 @@
-//
-//  VoiceClipController.mm
-//  VoiceClip
-//
-//  Created by Lance Pysher on 11/8/06.
-//  Copyright 2006 __MyCompanyName__. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 #import "VoiceClipController.h"
 #import <QTKit/QTKit.h>
 #import "browserController.h"
-#import"VoiceClipController.h"
+#import "VoiceClipController.h"
 #include "DCAudioFileRecorder.h"
 #include <sys/param.h>
 
@@ -22,16 +28,34 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 
 @implementation VoiceClipController
 
-- (id)init{
-	if (self = [super initWithWindowNibName:@"VoiceClip"]) {
-	_recording  = NO;
-	_audioExists = NO;
-	_recordImage = [[NSImage imageNamed:@"Capture_Record_off.tif"] retain];
+- (id)init
+{
+	if (self = [super initWithWindowNibName:@"VoiceClip"])
+	{
+		_recording  = NO;
+		_audioExists = NO;
+		_recordImage = [[NSImage imageNamed:@"Capture_Record_off.tif"] retain];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:@"NSWindowWillCloseNotification" object:nil];
 	}
 	return self;
 }
 
- - (void)reset{
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_recordImage release];
+	[_moviePath release];
+	[_movie release];
+	[super dealloc];
+}
+
+- (void)awakeFromNib;
+{
+	[progressBar setHidden:_audioExists];
+}
+
+ - (void)reset
+ {
 	NSLog (@"reset");
 	[self setRecording:NO];
 	[self setAudioExists:NO];
@@ -69,7 +93,7 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 		//create a temp File. Move when done recording
 		gFileName = CFStringCreateCopy( NULL, (CFStringRef) [NSString stringWithFormat:@".%@", path] );
 
-			
+		[progressBar setHidden:_audioExists];
 	}
  }
  
@@ -80,8 +104,14 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	
  }
 
-- (void)record{
+- (void)record
+{
 	NSLog(@"record");
+	_recording = YES;
+	
+	[progressBar setHidden:NO];
+	[progressBar startAnimation:self];
+	
 	OSStatus err = noErr;
 	
 	if(gIsRecording)
@@ -106,11 +136,13 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 	}
 	[self setRecordImage:[NSImage imageNamed:@"Capture_Record_on.tif"]];
 	gIsRecording = true;
-	_recording = YES;
-	
 }
 
-- (void)stopRecording{
+- (void)stopRecording
+{
+	[progressBar setHidden:YES];
+	[progressBar stopAnimation:self];
+	
 	QTMovie *movie;
 	OSStatus err = noErr;
 	NSError *error;
@@ -148,7 +180,8 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 }
 
 
-- (IBAction)recordAudio:(id)sender{
+- (IBAction)recordAudio:(id)sender
+{
 	NSLog(@"Record Audio");
 	if (_recording)
 		[self stopRecording];
@@ -195,12 +228,22 @@ AudioStreamBasicDescription	gAACFormat = {44100.0, kAudioFormatMPEG4AAC, kAudioF
 - (QTMovie *)movie{
 	return _movie;
 }
+
 - (void)setMovie:(QTMovie *)movie{
 	[_movie release];
 	_movie = [movie retain];
 }
 
-
-
+- (void)windowWillClose:(NSNotification *)notification;
+{
+	NSLog(@"windowWillClose");
+	if(_recording)
+	{
+		NSLog(@"will stop recording");
+		[self stopRecording];
+		NSLog(@"did stop");
+		[recordButton setState:NSOffState];
+	}
+}
 
 @end

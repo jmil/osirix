@@ -1,10 +1,16 @@
-//
-//  VoiceClipFilter.h
-//  Duplicate
-//
-//  Created by Lance Pysher 11/8/06.
-//  Copyright (c) 2006 OsiriX. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
@@ -12,8 +18,8 @@
 
 @class VoiceClipController;
 
-@interface VoiceClipFilter : PluginFilter {
-
+@interface VoiceClipFilter : PluginFilter 
+{
 	VoiceClipController *voiceClipController;
 }
 

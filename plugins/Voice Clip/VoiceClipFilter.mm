@@ -1,14 +1,20 @@
-//
-//  VoiceClipFilter.m
-//  Duplicate
-//
-//  Created by Lance Pysher 11/8/06.
-//  Copyright (c) 2006 OsiriX. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 #import "VoiceClipFilter.h"
 #import "browserController.h"
-#import"VoiceClipController.h"
+#import "VoiceClipController.h"
 #include "DCAudioFileRecorder.h"
 #include <sys/param.h>
 
@@ -18,7 +24,7 @@
 
 - (void) initPlugin
 {
-
+	
 }
 
 - (long) filterImage:(NSString*) menuName
@@ -33,6 +39,7 @@
 }
 
 - (void)dealloc{
+	NSLog(@"VoiceClipController dealloc");
 	[super dealloc];
 }
 
