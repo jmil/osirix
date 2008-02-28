@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4F0A4B6E09EA95EC007AB738 /* ROIPixelSpacing.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */; };
 		4F0A4B6F09EA95EC007AB738 /* ROIPixelSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */; };
-		4F33183B0D7634EB00DFE290 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F33183A0D7634EB00DFE290 /* Growl.framework */; };
 		4FAD27EA09CDCE77005A34B9 /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD27E909CDCE77005A34B9 /* AppController.h */; };
 		4FAD281B09CDD242005A34B9 /* AppControllerFiltersMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */; };
 		4FAD281F09CDD252005A34B9 /* AppControllerFiltersMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */; };
@@ -35,7 +34,6 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROIPixelSpacing.h; sourceTree = SOURCE_ROOT; };
 		4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROIPixelSpacing.m; sourceTree = SOURCE_ROOT; };
-		4F33183A0D7634EB00DFE290 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		4FAD27E909CDCE77005A34B9 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppControllerFiltersMenu.m; sourceTree = "<group>"; };
 		4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppControllerFiltersMenu.h; sourceTree = "<group>"; };
@@ -44,7 +42,7 @@
 		AB94F87F06820C3100733F34 /* SpineCounterFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SpineCounterFilter.m; sourceTree = "<group>"; };
 		AB94F88006820C3100733F34 /* SpineCounterFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SpineCounterFilter.h; sourceTree = "<group>"; };
 		AB94F88306820C4100733F34 /* SpineCounter_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SpineCounter_Prefix.pch; sourceTree = "<group>"; };
-		AB94F8DF0682170900733F34 /* SpineCounter.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpineCounter.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB94F8DF0682170900733F34 /* SpineCounter.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpineCounter.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
 		ABB7633A067FB2A8000912C1 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
 		ABB7633B067FB2A8000912C1 /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = dicomFile.h; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				4F33183B0D7634EB00DFE290 /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +106,6 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4F33183A0D7634EB00DFE290 /* Growl.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -127,7 +123,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB94F8DF0682170900733F34 /* SpineCounter.osirixplugin */,
+				AB94F8DF0682170900733F34 /* SpineCounter.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,7 +207,7 @@
 			name = SpineCounter;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB94F8DF0682170900733F34 /* SpineCounter.osirixplugin */;
+			productReference = AB94F8DF0682170900733F34 /* SpineCounter.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
