@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F0A4B6E09EA95EC007AB738 /* ROIPixelSpacing.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */; };
 		4F0A4B6F09EA95EC007AB738 /* ROIPixelSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */; };
+		4F33183B0D7634EB00DFE290 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F33183A0D7634EB00DFE290 /* Growl.framework */; };
 		4FAD27EA09CDCE77005A34B9 /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD27E909CDCE77005A34B9 /* AppController.h */; };
 		4FAD281B09CDD242005A34B9 /* AppControllerFiltersMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */; };
 		4FAD281F09CDD252005A34B9 /* AppControllerFiltersMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */; };
@@ -34,6 +35,7 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		4F0A4B6C09EA95EC007AB738 /* ROIPixelSpacing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROIPixelSpacing.h; sourceTree = SOURCE_ROOT; };
 		4F0A4B6D09EA95EC007AB738 /* ROIPixelSpacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROIPixelSpacing.m; sourceTree = SOURCE_ROOT; };
+		4F33183A0D7634EB00DFE290 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		4FAD27E909CDCE77005A34B9 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		4FAD281A09CDD242005A34B9 /* AppControllerFiltersMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppControllerFiltersMenu.m; sourceTree = "<group>"; };
 		4FAD281E09CDD252005A34B9 /* AppControllerFiltersMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppControllerFiltersMenu.h; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				4F33183B0D7634EB00DFE290 /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +109,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F33183A0D7634EB00DFE290 /* Growl.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -277,9 +281,19 @@
 		CE6A9A7E08AC840200D0C1EE /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc64,
+					i386,
+					x86_64,
+					ppc,
+				);
 				COPY_PHASE_STRIP = YES;
 				DEBUGGING_SYMBOLS = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -294,7 +308,7 @@
 				INSTALL_PATH = "@executable_path/../Plug-ins";
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -303,6 +317,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = SpineCounter;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -317,8 +332,18 @@
 		CE6A9A7F08AC840200D0C1EE /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc64,
+					i386,
+					x86_64,
+					ppc,
+				);
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -330,7 +355,7 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-undefined",
@@ -338,6 +363,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = SpineCounter;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -351,8 +377,18 @@
 		CE6A9A8008AC840200D0C1EE /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc64,
+					i386,
+					x86_64,
+					ppc,
+				);
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -363,7 +399,7 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-undefined",
@@ -371,6 +407,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = SpineCounter;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
