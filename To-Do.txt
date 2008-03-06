@@ -58,6 +58,8 @@ TODO:
 - Navigator for 4D viewer
 - Sort the series by image location
 
+- SAVE ROIS before opening another 4D viewer through 4d navigator
+
 - Go to next key image
 - Status/Comments in web http server
 - Test DICOM Print
