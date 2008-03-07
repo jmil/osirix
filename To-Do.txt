@@ -54,6 +54,7 @@ TODO:
 - Possibility to add or remove studies from an album on a distant shared DB
 - Merge Brush ROIs together (Growing Region Segmentation)
 - Totoku 12 bits screen support - Through a plugin
+- ITK 3.4.0
 
 - Navigator for 4D viewer
 - Sort the series by image location
