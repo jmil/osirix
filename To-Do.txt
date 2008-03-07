@@ -59,6 +59,7 @@ TODO:
 - Sort the series by image location
 
 - SAVE ROIS before opening another 4D viewer through 4d navigator
+- Mouse Down 4D : wrong series selected
 
 - Go to next key image
 - Status/Comments in web http server
