@@ -59,15 +59,13 @@ TODO:
 - Navigator for 4D viewer
 - Sort the series by image location
 
-- CHECK VOLUMIC DATA for 4D navigator
-- Distortion for brush ROI in 4D navigator
-
 - Relative sync even if it is same study
 - Go to next key image
 - Status/Comments in web http server
 - Test DICOM Print
 - Report modality - study description
 - Recalage PET-CT dans les 3 directions
+- Growing region in 4D
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
