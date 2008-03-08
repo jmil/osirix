@@ -59,9 +59,8 @@ TODO:
 - Navigator for 4D viewer
 - Sort the series by image location
 
+- CHECK VOLUMIC DATA for 4D navigator
 - Distortion for brush ROI in 4D navigator
-- SAVE ROIS before opening another 4D viewer through 4d navigator
-- Mouse Down 4D : wrong series selected
 
 - Relative sync even if it is same study
 - Go to next key image
