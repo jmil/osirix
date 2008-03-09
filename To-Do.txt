@@ -60,8 +60,6 @@ TODO:
 - Sort the series by image location
 
 - Distortion for brush ROI in 4D navigator <- Growing Region
-- Will versus Did Remove ROIs
-- Undo
 
 - Relative sync even if it is same study
 - Go to next key image
