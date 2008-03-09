@@ -380,9 +380,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CE39594A0D84227E00B67AF9</string>
+				<string>CE75F3E10D8434C20088F772</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>CE39594B0D84227E00B67AF9</string>
+				<string>CE75F3E20D8434C20088F772</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -516,9 +516,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>1CD10A99069EF8BA00B06720</string>
-		<string>CEDF83D50D84221900FD78D1</string>
 		<string>/Users/antoinerosset/osirix/iPhone OsiriX/iPhone OsiriX.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
