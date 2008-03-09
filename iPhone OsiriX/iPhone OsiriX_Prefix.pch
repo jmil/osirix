@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'iPhone OsiriX' target in the 'iPhone OsiriX' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
