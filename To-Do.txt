@@ -59,8 +59,6 @@ TODO:
 - Navigator for 4D viewer
 - Sort the series by image location
 
-- Distortion for brush ROI in 4D navigator <- Growing Region
-
 - Relative sync even if it is same study
 - Go to next key image
 - Status/Comments in web http server
