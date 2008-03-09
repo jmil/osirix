@@ -59,6 +59,8 @@ TODO:
 - Navigator for 4D viewer
 - Sort the series by image location
 
+- Reset position when apple-press for new viewer: WHY?
+
 - Relative sync even if it is same study
 - Go to next key image
 - Status/Comments in web http server
