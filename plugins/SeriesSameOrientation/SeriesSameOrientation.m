@@ -18,6 +18,8 @@
 		long imageSize, size;
 		NSArray *pixList = [viewerController pixList];
 		
+		id w = [viewerController startWaitWindow: @"Series Same Orientation"];
+		
 		imageSize = [curPix pwidth] * [curPix pheight];
 		size = sizeof(float) * [pixList count]/2 * imageSize;
 		
@@ -40,8 +42,6 @@
 			
 			if( equal == NO)	// Change the orientation of the image according to the selected image
 			{
-				NSLog(@"SeriesSameOrientation: %d", [pixList indexOfObject: p]);
-				
 				float vectorModel[ 9], vectorSensor[ 9];
 				
 				[p orientation: vectorSensor];
@@ -101,6 +101,8 @@
 				[p setOrientation: orientation];
 			}
 		}
+		
+		[viewerController endWaitWindow: w];
 		
 		// We modified the view: OsiriX please update the display!
 		[viewerController needsDisplayUpdate];

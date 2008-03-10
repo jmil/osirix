@@ -18,6 +18,8 @@
 		long imageSize, size;
 		NSArray *pixList = [viewerController pixList];
 		
+		id w = [viewerController startWaitWindow: @"Gantry Tilt Correction"];
+		
 		imageSize = [curPix pwidth] * [curPix pheight];
 		size = sizeof(float) * [pixList count]/2 * imageSize;
 		
@@ -115,6 +117,8 @@
 			}
 			else NSLog(@"ERROR GantryTiltCorrection : orientation is DIFFERENT");
 		}
+		
+		[viewerController endWaitWindow: w];
 		
 		// We modified the view: OsiriX please update the display!
 		[viewerController needsDisplayUpdate];
