@@ -58,11 +58,10 @@ TODO:
 - Navigator panel
 - Sort the series by any DICOM field (see Meta-Data window)
 - Gantry Tilt correction plugin
+- Growing region in 4D
 
-- Relative sync even if it is same study
 - Recalage PET-CT dans les 3 directions
 - Go to next key image
-- Growing region in 4D
 - Status/Comments in web http server
 - Test DICOM Print
 - Report modality - study description
