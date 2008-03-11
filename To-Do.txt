@@ -60,7 +60,9 @@ TODO:
 - Gantry Tilt correction plugin
 - Growing region in 4D
 
+- 4D Navigator: if existing viewer: select it the viewer controller window
 - Recalage PET-CT dans les 3 directions
+
 - Go to next key image
 - Status/Comments in web http server
 - Test DICOM Print
