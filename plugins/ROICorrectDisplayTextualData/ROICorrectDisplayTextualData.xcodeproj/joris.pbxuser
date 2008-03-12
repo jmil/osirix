@@ -1,0 +1,68 @@
+// !$*UTF8*$!
+{
+	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeArchitecture = i386;
+		activeBuildConfigurationName = Development;
+		activeTarget = 8D5B49AC048680CD000E48DA /* ROICorrectDisplayTextualData */;
+		codeSenseManager = A99E372B0D87BE910006774F /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					243,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 226999928;
+			PBXWorkspaceStateSaveDate = 226999928;
+		};
+		sourceControlManager = A99E372A0D87BE910006774F /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	8D5B49AC048680CD000E48DA /* ROICorrectDisplayTextualData */ = {
+		activeExec = 0;
+	};
+	A99E372A0D87BE910006774F /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	A99E372B0D87BE910006774F /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1281, 1092}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{901, 1904}";
+			sepNavWindowFrame = "{{265, 121}, {1340, 848}}";
+		};
+	};
+	ABB7633E067FB2A8000912C1 /* ROI.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1281, 3780}}";
+			sepNavSelRange = "{478, 0}";
+			sepNavVisRange = "{0, 1189}";
+			sepNavWindowFrame = "{{-1562, 422}, {1340, 848}}";
+		};
+	};
+}
