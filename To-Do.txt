@@ -61,7 +61,7 @@ TODO:
 - Growing region in 4D
 - Manually move 3D Data Set for manual registration (PET-CT / SPECT-CT)
 
-- 4D Navigator: if existing viewer: select it the viewer controller window
+- 4D Navigator: if existing viewer: select the viewer controller window
 
 - Go to next key image
 - Status/Comments in web http server
