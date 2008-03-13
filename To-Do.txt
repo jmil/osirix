@@ -63,6 +63,7 @@ TODO:
 
 - 4D Navigator: if existing viewer: select the viewer controller window
 
+- Composing/Merge images
 - Go to next key image
 - Status/Comments in web http server
 - Test DICOM Print
