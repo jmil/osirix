@@ -68,6 +68,7 @@ TODO:
 - Test DICOM Print
 - Report modality - study description
 - WADO Client/Server
+- check rowBytes system - do we need it?
 
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
