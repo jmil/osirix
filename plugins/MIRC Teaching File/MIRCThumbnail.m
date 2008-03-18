@@ -26,9 +26,8 @@
 		_path = [path retain];
 		
 		float			*fVolumePtr = 0L;
-		DCMPix *pix = [[DCMPix alloc] myinit:_path :0 :1 :fVolumePtr :0 :0];		
-		NSImage *im = (NSImage *)[pix computeWImage:YES :0 :0];
-		NSData *tiff = [im TIFFRepresentation];
+		DCMPix *pix = [[DCMPix alloc] myinit:_path :0 :1 :fVolumePtr :0 :0];
+		NSData *tiff = [[pix generateThumbnailImageWithWW: 0 WL: 0] TIFFRepresentation];
 		_image = [[NSImage alloc] initWithData:tiff];
 		[pix release];		
 	}
