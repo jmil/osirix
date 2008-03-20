@@ -63,6 +63,7 @@ TODO:
 - New Cross Reference Lines algorithm
 
 - Composing/Merge images
+- Annotations with TIFF image or non-nsmanagedobject ?!?!
 - PET-CT display SUV on CT
 - Go to next key image
 - Status/Comments in web http server

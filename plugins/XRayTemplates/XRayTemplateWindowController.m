@@ -367,8 +367,7 @@
 	NSPoint locationInWindow = [operation draggingLocation];
 	NSPoint locationInView = [[[operation draggingDestinationWindow] contentView] convertPoint:locationInWindow toView:(DCMView*)[(ViewerController*)destination imageView]];
 	NSPoint flippedLocationInView = locationInView;
-	flippedLocationInView.y = [[(ViewerController*)destination imageView] frame].size.height - flippedLocationInView.y ;
-	NSPoint openGLLocation = [(DCMView*)[(ViewerController*)destination imageView] ConvertFromView2GL:flippedLocationInView];
+	NSPoint openGLLocation = [(DCMView*)[(ViewerController*)destination imageView] ConvertFromNSView2GL:flippedLocationInView];
 	
 	// find the center of the template
 	NSArray *layerPoints = [newLayer points];

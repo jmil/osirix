@@ -5229,10 +5229,10 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		point[2].y=viewsize.size.height;
 		point[3].y=viewsize.size.height;
 		
-		point[0]=[crossAxiasView ConvertFromView2GL:point[0]];
-		point[1]=[crossAxiasView ConvertFromView2GL:point[1]];
-		point[2]=[crossAxiasView ConvertFromView2GL:point[2]];
-		point[3]=[crossAxiasView ConvertFromView2GL:point[3]];
+		point[0]=[crossAxiasView ConvertFromUpLeftView2GL:point[0]];
+		point[1]=[crossAxiasView ConvertFromUpLeftView2GL:point[1]];
+		point[2]=[crossAxiasView ConvertFromUpLeftView2GL:point[2]];
+		point[3]=[crossAxiasView ConvertFromUpLeftView2GL:point[3]];
 		
 		minx=maxx=point[0].x;
 		miny=maxy=point[0].y;
@@ -5426,10 +5426,10 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		point[2].y=viewsize.size.height;
 		point[3].y=viewsize.size.height;
 		
-		point[0]=[cPRView ConvertFromView2GL:point[0]];
-		point[1]=[cPRView ConvertFromView2GL:point[1]];
-		point[2]=[cPRView ConvertFromView2GL:point[2]];
-		point[3]=[cPRView ConvertFromView2GL:point[3]];
+		point[0]=[cPRView ConvertFromUpLeftView2GL:point[0]];
+		point[1]=[cPRView ConvertFromUpLeftView2GL:point[1]];
+		point[2]=[cPRView ConvertFromUpLeftView2GL:point[2]];
+		point[3]=[cPRView ConvertFromUpLeftView2GL:point[3]];
 		
 		minx=maxx=point[0].x;
 		miny=maxy=point[0].y;
@@ -5622,10 +5622,10 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		point[2].y=viewsize.size.height;
 		point[3].y=viewsize.size.height;
 		
-		point[0]=[originalView ConvertFromView2GL:point[0]];
-		point[1]=[originalView ConvertFromView2GL:point[1]];
-		point[2]=[originalView ConvertFromView2GL:point[2]];
-		point[3]=[originalView ConvertFromView2GL:point[3]];
+		point[0]=[originalView ConvertFromUpLeftView2GL:point[0]];
+		point[1]=[originalView ConvertFromUpLeftView2GL:point[1]];
+		point[2]=[originalView ConvertFromUpLeftView2GL:point[2]];
+		point[3]=[originalView ConvertFromUpLeftView2GL:point[3]];
 		
 		minx=maxx=point[0].x;
 		miny=maxy=point[0].y;

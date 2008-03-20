@@ -1976,8 +1976,7 @@ static long GetTextureNumFromTextureDim (long textureDimension, long maxTextureS
 	NSRect size = [self frame];
 	NSPoint eventLocation = [event locationInWindow];
 	NSPoint viewPt = [[[event window] contentView] convertPoint:eventLocation toView:self];
-//	tempPt.y = size.size.height - tempPt.y ;
-//	tempPt = [self ConvertFromView2GL:tempPt];
+//	tempPt = [self ConvertFromNSView2GL:tempPt];
 
 	for (i = 0; i < 5; i++)
 	{
@@ -2078,8 +2077,7 @@ static long GetTextureNumFromTextureDim (long textureDimension, long maxTextureS
 	NSRect size = [self frame];
 	NSPoint eventLocation = [event locationInWindow];
 	NSPoint tempPt = [[[event window] contentView] convertPoint:eventLocation toView:self];
-	tempPt.y = size.size.height - tempPt.y ;
-	tempPt = [self ConvertFromView2GL:tempPt];
+	tempPt = [self ConvertFromNSView2GL:tempPt];
 	
 	[self setControlPoint:[self draggingControlPoint]: tempPt];
 	if ([self align_state] == AL_TILE)
