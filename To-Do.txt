@@ -61,8 +61,10 @@ TODO:
 - Growing region in 4D
 - Manually move 3D Data Set for manual registration (PET-CT / SPECT-CT)
 - New Cross Reference Lines algorithm
+- Export screen capture in 16-bit DICOM
 
 - Composing/Merge images
+- Retest iChat
 - Annotations with TIFF image or non-nsmanagedobject ?!?!
 - PET-CT display SUV on CT
 - Go to next key image
