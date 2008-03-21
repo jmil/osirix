@@ -62,11 +62,10 @@ TODO:
 - Manually move 3D Data Set for manual registration (PET-CT / SPECT-CT)
 - New Cross Reference Lines algorithm
 - Export screen capture in 16-bit DICOM
+- PET-CT display SUV on CT for ROIs description
 
 - Composing/Merge images
-- Retest iChat
-- Annotations with TIFF image or non-nsmanagedobject ?!?!
-- PET-CT display SUV on CT
+- Re-Test iChat
 - Go to next key image
 - Status/Comments in web http server
 - Test DICOM Print
