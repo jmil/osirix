@@ -64,11 +64,12 @@ TODO:
 - Export screen capture in 16-bit DICOM
 - PET-CT display SUV on CT for ROIs description
 - Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
-
 - Composing/Merge images
+
 - Re-Test iChat
 - Status/Comments in web http server
 - Test DICOM Print
+
 - Report modality - study description
 - WADO Client/Server
 
