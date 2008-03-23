@@ -66,6 +66,7 @@ TODO:
 - Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
 - Composing/Merge images
 
+- Crop 'useful' image
 - Re-Test iChat
 - Status/Comments in web http server
 - Test DICOM Print
