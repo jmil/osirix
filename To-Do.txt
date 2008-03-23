@@ -64,11 +64,11 @@ TODO:
 - Export screen capture in 16-bit DICOM
 - PET-CT display SUV on CT for ROIs description
 - Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
-- Composing/Merge images
+- Flatten Fused Image (Merging/Stitching)
 
 - Crop 'useful' image
 - Re-Test iChat
-- Status/Comments in web http server
+- Status/Comments in web http server <- Joris, is it done? Version 3.1 is approaching...
 - Test DICOM Print
 
 - Report modality - study description
