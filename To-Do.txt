@@ -67,6 +67,7 @@ TODO:
 - Flatten Fused Image (Merging/Stitching)
 - Automatic version checking for plugins
 
+- MallocDebug
 - Re-Test iChat
 - Status/Comments in web http server <- Joris, is it done? Version 3.1 is approaching...
 - Test DICOM Print
