@@ -66,9 +66,9 @@ TODO:
 - Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
 - Flatten Fused Image (Merging/Stitching)
 - Automatic version checking for plugins
+- Status/Comments in web http server
 
 - Re-Test iChat
-- Status/Comments in web http server <- Joris, is it done? Version 3.1 is approaching... Put it under the name: 07.02.08 09:47 - 3 Series - MyComment - Status
 - Report modality - study description
 - WADO Client/Server
 
