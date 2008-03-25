@@ -1398,7 +1398,7 @@ static long GetTextureNumFromTextureDim (long textureDimension, long maxTextureS
 	[curDCM changeWLWW :127 : 256];
 
 	[curDCM setBaseAddr:[curDCM deTexturetiledImage:[curDCM baseAddr]: 1024]];
-	return_value = [super getRawPixels:width :height :spp :bpp :screenCapture :force8bits :removeGraphical];
+	return_value = [super getRawPixelsWidth:width height:height spp:spp bpp:bpp screenCapture:screenCapture force8bits:force8bits removeGraphical:removeGraphical squarePixels: NO allTiles: NO allowSmartCropping: NO origin: 0L spacing: 0L];
 	[curDCM setBaseAddr:[curDCM texturetiledImage:[curDCM baseAddr]: 1024]];
 	[self loadTextures];
 	[self setNeedsDisplay:YES];
