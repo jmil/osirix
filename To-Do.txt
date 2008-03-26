@@ -62,10 +62,11 @@ TODO:
 - Manually move 3D Data Set for manual registration (PET-CT / SPECT-CT)
 - New Cross Reference Lines algorithm
 - Export screen capture in 16-bit DICOM
-- PET-CT display SUV on CT for ROIs description
+- PET-CT display SUV on CT for ROIs info
 - Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
 - Flatten Fused Image (Merging/Stitching)
 - Automatic version checking for plugins
+- Copy 'linked' images to Database folder
 - Status/Comments in web http server
 
 - Re-Test iChat
