@@ -68,6 +68,7 @@ TODO:
 - Automatic version checking for plugins
 - Copy 'linked' images to Database folder
 - Status/Comments in web http server
+- Smart Cropping technology for image export/copy
 
 - Re-Test iChat
 - Report modality - study description
