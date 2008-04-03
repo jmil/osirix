@@ -55,6 +55,7 @@ TODO:
 - Merge Brush ROIs together (Growing Region Segmentation)
 - Totoku 12 bits screen support - Through a plugin
 - ITK 3.4.0
+- VTK latest available nightly build (4/1/08)
 - Navigator panel
 - Sort the series by any DICOM field (see Meta-Data window)
 - Gantry Tilt correction plugin
@@ -71,6 +72,7 @@ TODO:
 - Smart Cropping technology for image export/copy
 
 - Re-Test iChat
+- Crash growing region 64-bit
 - Report modality - study description
 - WADO Client/Server
 
