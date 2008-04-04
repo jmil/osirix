@@ -10,11 +10,11 @@
 
 @interface iPhone_OsiriXAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    UIToolbarController *toolbarController;
+	UITabBarController *tabBarController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) UIToolbarController *toolbarController;
+@property (nonatomic, retain) UITabBarController *tabBarController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application;
 

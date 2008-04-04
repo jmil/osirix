@@ -9,20 +9,22 @@
 #import "iPhone_OsiriXAppDelegate.h"
 
 #import "MyViewController.h"
+#import "StudiesViewController.h"
+#import "ImageViewController.h"
 
 UIImage *toolbarImageWithColor(CGSize imageSize, UIColor *color);
 
 @implementation iPhone_OsiriXAppDelegate
 
 @synthesize window;
-@synthesize toolbarController;
+@synthesize tabBarController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // Create window
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
 	 // Create a toolbar controller and an array to contain the view controllers
-	toolbarController = [[UIToolbarController alloc] init];
+	tabBarController = [[UITabBarController alloc] init];
 	NSMutableArray *viewControllers = [[NSMutableArray alloc] initWithCapacity:3];
 	
 	/*
@@ -31,41 +33,42 @@ UIImage *toolbarImageWithColor(CGSize imageSize, UIColor *color);
 	 typically you'd use a number of different controller classes.
 	 */
 	MyViewController *viewController;
-	CGSize imageSize = CGSizeMake(100, 46);
 	
-	viewController = [[MyViewController alloc] init];	
-	viewController.title = @"Red";
-	viewController.color = [UIColor redColor];
-	viewController.toolbarItem.image = toolbarImageWithColor(imageSize, viewController.color);
+	viewController = [[StudiesViewController alloc] init];	
+	viewController.title = @"Patients";
+	viewController.tabBarItem.image = [UIImage imageNamed:@"patients.png"];
+	[viewControllers addObject:viewController];
+	[viewController release];
 
+	viewController = [[ImageViewController alloc] init];	
+	viewController.title = @"Images";
+	viewController.tabBarItem.image = [UIImage imageNamed:@"images.png"];
 	[viewControllers addObject:viewController];
 	[viewController release];
 	
 	viewController = [[MyViewController alloc] init];	
-	viewController.title = @"Green";
-	viewController.color = [UIColor greenColor];
-	viewController.toolbarItem.image = toolbarImageWithColor(imageSize, viewController.color);
+	viewController.title = @"Q&R";
+	viewController.tabBarItem.image =[UIImage imageNamed:@"qr.png"];
 	[viewControllers addObject:viewController];
 	[viewController release];
 	
 	viewController = [[MyViewController alloc] init];	
-	viewController.title = @"Blue";
-	viewController.color = [UIColor blueColor];
-	viewController.toolbarItem.image = toolbarImageWithColor(imageSize, viewController.color);
+	viewController.title = @"Send";
+	viewController.tabBarItem.image =[UIImage imageNamed:@"send.png"];
 	[viewControllers addObject:viewController];
 	[viewController release];
-	
+		
 	// Add the view controllers to the toolbar controller
-	toolbarController.viewControllers = viewControllers;
+	tabBarController.viewControllers = viewControllers;
 	[viewControllers release];
 	
 	// Add the toolbar controller's current view as a subview of the window, then display the window
-	[window addSubview:toolbarController.view];
+	[window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
 }
 
 - (void)dealloc {
-    [toolbarController release];
+    [tabBarController release];
     [window release];
 	[super dealloc];
 }
