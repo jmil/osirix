@@ -71,8 +71,7 @@ TODO:
 - Status/Comments in web http server
 - Smart Cropping technology for image export/copy
 
-- Re-Test iChat
-- Crash growing region 64-bit
+- vtkWindow bug laptop - SetWindowName
 - Report modality - study description
 - WADO Client/Server
 
