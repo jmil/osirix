@@ -71,7 +71,6 @@ TODO:
 - Status/Comments in web http server
 - Smart Cropping technology for image export/copy
 
-- vtkWindow bug laptop - SetWindowName
 - Report modality - study description
 - WADO Client/Server
 
