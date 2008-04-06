@@ -207,9 +207,17 @@
 - (IBAction) openLogURL:(id) sender;
 {
 	[state setStringValue: @"downloading..."];		[state display];
-	[self analyze: [NSString stringWithContentsOfURL: [NSURL URLWithString: [urlString stringValue]]]];
 	
-	[[NSUserDefaults standardUserDefaults] setObject: [urlString stringValue] forKey: @"lastURL"];
+	NSString *str = [NSString stringWithContentsOfURL: [NSURL URLWithString: [urlString stringValue]]];
+	if( str)
+	{
+		[[NSFileManager defaultManager] removeFileAtPath: @"last_URL" handler: 0L];
+		[str writeToFile: @"last_URL" atomically: YES];
+		[self analyze: str];
+	
+		[[NSUserDefaults standardUserDefaults] setObject: [urlString stringValue] forKey: @"lastURL"];
+	}
+	else NSBeep();
 }
 
 @end
