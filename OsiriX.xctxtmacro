@@ -1,0 +1,34 @@
+/**
+    Objective C text macro specifications
+
+    Copyright © 2004-2007 Apple Inc. All rights reserved.
+
+*/
+
+(
+		{
+		Identifier = objc;
+        Name = "Objective C";
+        IsMenu = YES;
+        IncludeContexts = ( "xcode.lang.objc" );
+        ExcludeContexts = ( "xcode.lang.string", "xcode.lang.character", "xcode.lang.comment", "xcode.lang.c.preprocessor" );
+		},
+
+        {
+            Identifier = objc.dcmpix;
+            BasedOn = objc;
+            IsMenuItem = YES;
+            Name = "DCMPix";
+            TextString = "DCMPix *pix";
+            CompletionPrefix = pix;
+        },
+
+        {
+            Identifier = objc.newROI;
+            BasedOn = objc;
+            IsMenuItem = YES;
+            Name = "adds a new ROI";
+			TextString = "ROI *roi = [[ROI alloc] initWithType:<#!ROI Type!#> :<#!pixelSpacingX!#> :<#!pixelSpacingY!#> :<#!origin!#>];\nroi.name = <#!ROI name!#>;\nroi.comments = <#!ROI comments!#>;\nroi.points = <#!ROI points!#>;\n[[<#!viewer controller!#> imageView] roiSet:roi];\n[[<#!viewer controller!#> roiList] addObject:roi];\n[[NSNotificationCenter defaultCenter] postNotificationName:@\"roiChange\" object:roi userInfo:nil];\n[roi release];";
+            CompletionPrefix = roiadd;
+        },		
+)
