@@ -3725,7 +3725,7 @@ static BOOL				DICOMDIRCDMODE = NO;
 			NSString *pID = [[outlineViewArray objectAtIndex: i] valueForKey:@"patientID"];
 			
 			if( [pID isEqualToString:@""] == NO && [pID isEqualToString:@"0"] == NO)
-				[patientPredicateArray addObject: [NSPredicate predicateWithFormat:  @"(patientID == %@)", [[outlineViewArray objectAtIndex: i] valueForKey:@"patientID"]]];
+				[patientPredicateArray addObject: [NSPredicate predicateWithFormat:  @"(patientID == %@)", pID]];
 		}
 		
 		if( [patientPredicateArray count] > 0)
