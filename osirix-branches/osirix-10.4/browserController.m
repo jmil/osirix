@@ -3722,14 +3722,20 @@ static BOOL				DICOMDIRCDMODE = NO;
 		
 		for( i = 0; i < [outlineViewArray count] ; i++)
 		{
-			[patientPredicateArray addObject: [NSPredicate predicateWithFormat:  @"(patientID == %@)", [[outlineViewArray objectAtIndex: i] valueForKey:@"patientID"]]];
+			NSString *pID = [[outlineViewArray objectAtIndex: i] valueForKey:@"patientID"];
+			
+			if( [pID isEqualToString:@""] == NO && [pID isEqualToString:@"0"] == NO)
+				[patientPredicateArray addObject: [NSPredicate predicateWithFormat:  @"(patientID == %@)", [[outlineViewArray objectAtIndex: i] valueForKey:@"patientID"]]];
 		}
 		
-		[request setPredicate: [NSCompoundPredicate orPredicateWithSubpredicates: patientPredicateArray]];
-		error = 0L;
-		[originalOutlineViewArray release];
-		originalOutlineViewArray = [outlineViewArray retain];
-		outlineViewArray = [context executeFetchRequest:request error:&error];
+		if( [patientPredicateArray count] > 0)
+		{
+			[request setPredicate: [NSCompoundPredicate orPredicateWithSubpredicates: patientPredicateArray]];
+			error = 0L;
+			[originalOutlineViewArray release];
+			originalOutlineViewArray = [outlineViewArray retain];
+			outlineViewArray = [context executeFetchRequest:request error:&error];
+		}
 	}
 	else
 	{
