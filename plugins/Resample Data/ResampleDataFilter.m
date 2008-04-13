@@ -121,7 +121,7 @@
 		[viewerController endWaitWindow: waitWindow];
 		if(!isResampled)
 		{
-			NSRunAlertPanel(NSLocalizedString(@"Not enough memory", nil), NSLocalizedString(@"Your computer doesn't have enough RAM to complete the resampling", nil), NSLocalizedString(@"OK", nil), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"Not enough memory", nil), NSLocalizedString(@"Your computer doesn't have enough RAM to complete the resampling - Upgrade to OsiriX 64-bit to solve this problem.", nil), NSLocalizedString(@"OK", nil), nil, nil);
 		}
 	}
     //{
