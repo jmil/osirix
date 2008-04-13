@@ -71,7 +71,7 @@ TODO:
 - Status/Comments in web http server
 - Smart Cropping technology for image export/copy
 
-- Open polygon for 2D MPR
+- Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
 
