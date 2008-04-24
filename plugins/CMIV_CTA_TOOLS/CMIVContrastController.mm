@@ -555,12 +555,17 @@ if( originalViewController == 0L) return 0L;
 				if(roitype == tPlain)
 				{
 					unsigned char *textureBuffer= [curROI textureBuffer];
-					int textureOriginX,textureOriginY,textureWidth;
+					int textureOriginX,textureOriginY,textureWidth,textureHeight;
 					textureOriginX=lefttopx = [curROI textureUpLeftCornerX];
 					textureOriginY=lefttopy = [curROI textureUpLeftCornerY];
-					rightbottomx = [curROI textureDownRightCornerX]+1;
-					rightbottomy = [curROI textureDownRightCornerY]+1;
-					textureWidth = rightbottomx-lefttopx;
+					textureWidth=[curROI textureWidth];
+					textureHeight=[curROI textureHeight];
+					rightbottomx=lefttopx+textureWidth;
+					rightbottomy=lefttopy+textureHeight;
+					
+					//rightbottomx = [curROI textureDownRightCornerX]+1;
+					//rightbottomy = [curROI textureDownRightCornerY]+1;
+					//textureWidth = rightbottomx-lefttopx;
 					if(lefttopx>rightbottomx)
 					{	
 						lefttopx = [curROI textureDownRightCornerX];

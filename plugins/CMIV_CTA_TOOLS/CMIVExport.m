@@ -18,7 +18,7 @@ PURPOSE.
 =========================================================================*/
 
 #import "CMIVExport.h"
-
+#define VERBOSEMODE
 
 @implementation CMIVExport
 - (void) setSeriesDescription: (NSString*) desc
@@ -304,8 +304,6 @@ PURPOSE.
 		float numberBytes;
 		BOOL isSigned;
 		
-		NSLog(@"Current bpp: %d", bpp);
-		
 		switch( bpp)
 		{
 			case 8:			
@@ -578,6 +576,20 @@ PURPOSE.
 
 	FSRef	ref;
 
+	
+	if( [[NSUserDefaults standardUserDefaults] integerForKey: @"DATABASELOCATION"]==1)
+	{
+		NSString	*path;
+		BOOL		isDir = YES;
+		NSString* url=[[NSUserDefaults standardUserDefaults] stringForKey: @"DATABASELOCATIONURL"];
+		path = [url stringByAppendingPathComponent:@"/OsiriX Data"];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir)
+			return path;	
+#ifdef VERBOSEMODE
+		NSLog( @"incoming folder is url type");
+#endif
+	}
+
 
 	if( FSFindFolder (kOnAppropriateDisk, kDocumentsFolderType, kCreateFolder, &ref) == noErr )
 	{
@@ -585,11 +597,13 @@ PURPOSE.
 		BOOL		isDir = YES;
 		
 		FSRefMakePath(&ref, (UInt8 *)s, sizeof(s));
-		
+
 		path = [[NSString stringWithUTF8String:s] stringByAppendingPathComponent:@"/OsiriX Data"];
 		
 		if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) [[NSFileManager defaultManager] createDirectoryAtPath:path attributes:nil];
-		
+#ifdef VERBOSEMODE
+		NSLog( @"incoming folder is default type");
+#endif
 		return path;// not sure if s is in UTF8 encoding:  What's opposite of -[NSString fileSystemRepresentation]?
 	}
 

@@ -450,5 +450,6 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 - (void)mouseDraggedROISelector:(NSEvent *)event;
 
 - (void)deleteROIGroupID:(NSTimeInterval)groupID;
+- (NSPoint) ConvertFromUpLeftView2GL:(NSPoint) a;
 
 @end

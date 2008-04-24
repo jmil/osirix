@@ -8,7 +8,7 @@ This file is part of CMIV CTA image processing Plugin for OsiriX.
 
 Copyright (c) 2007,
 Center for Medical Image Science and Visualization (CMIV),
-Link�ping University, Sweden, http://www.cmiv.liu.se/
+Link‚àö‚àÇping University, Sweden, http://www.cmiv.liu.se/
 
 CMIV CTA image processing Plugin for OsiriX is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -28,64 +28,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 =========================================================================*/
 #import "CMIVVRcontroller.h"
 #import "QuicktimeExport.h"
+#import "DICOMExport.h"
 #include "VRMakeObject.h"
-
+#import <QTKit/QTKit.h>
+static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
+{
+	CMIVVRcontroller* controller = (CMIVVRcontroller*) ptr;
+	[controller resetClipPlane];
+}
 @implementation CMIVVRcontroller
 -(NSImage*) imageForFrame:(NSNumber*) cur maxFrame:(NSNumber*) max
 {
-	float* newVolumeData=[originalViewController volumePtr:[cur intValue]%maxMovieIndex];
-	[vrViewer movieChangeSource: newVolumeData];
-	if ([max intValue]==220*maxMovieIndex&&[cur intValue]%maxMovieIndex==0)
-	{
-		int iteminrow=20,itemincolumn=10;
-		int curint=[cur intValue]/maxMovieIndex;
-		if(  curint == 0)
-		{
-			[vrViewer Vertical: 45];
-			[vrViewer Vertical: 45];
-			verticalAngleForVR=90;
-		}
-		else
-		{
-			if( verticalAngleForVR==-90 ) 
-			{
-				aCamera->Roll(360/iteminrow);
-			}
-			else if( verticalAngleForVR==90) 
-			{
-				aCamera->Roll(-360/iteminrow);
-			}
-			else
-			{
-				[vrViewer Vertical: -verticalAngleForVR];
-			}
-			
-			if(curint%iteminrow==0)
-			{
-				if( verticalAngleForVR==-90 || verticalAngleForVR==90) 
-				{
-					[vrViewer Vertical: -45];
-					[vrViewer Vertical: -45];
-					aCamera->Azimuth(-360/iteminrow);
-				}
-				verticalAngleForVR-=180/itemincolumn;
-				if( verticalAngleForVR==-90 ) 
-				{
-					aCamera->Azimuth(360/iteminrow);
-					[vrViewer Vertical: -45];
-					[vrViewer Vertical: -45];
-				}
-				
-				
-			}
-			if( verticalAngleForVR!=-90 && verticalAngleForVR!=90)
-			{
-				aCamera->Azimuth(360/iteminrow);
-				aCamera->Elevation(verticalAngleForVR);
-			}
-		}
-	}
-	return [vrViewer nsimageQuicktime];
+	
+	int curangle=[cur intValue]/maxMovieIndex;
+	int cursegment=[cur intValue]%maxMovieIndex;
+	QTMovie			*mMovie = [imagesFor4DQTVR objectAtIndex:0];
+		QTTime			curTime;
+	NSImage* curimage;
+	long long timeValue =60*(cursegment*220+curangle);
+	long timeScale = 600;
+	curTime = QTMakeTime(timeValue, timeScale);
+	curimage=[mMovie frameImageAtTime:curTime];
+	
+	return curimage;
 	
 
 }
@@ -141,76 +106,225 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		}
 	}
-	return [vrViewer nsimageQuicktime];
+	NSImage* tempImage=[vrViewer nsimageQuicktime];
+	if ([max intValue]==220)
+	{
+		int iteminrow=20,itemincolumn=10;
+		if( [cur intValue] == 219)
+		{
+			aCamera->Roll(360/iteminrow);
+			[vrViewer Vertical: 45];
+			[vrViewer Vertical: 45];
+			verticalAngleForVR=0;
+		}
+	}
+	return tempImage;
+}
+- (int) prepareImageFor4DQTVR
+{
+	QTTime			curTime;
+	QTMovie			*mMovie = 0L;
+	
+
+	NSString		*fileName = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/TEMP/CMIV4DQTVR.mov"] ;
+	NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys: @"jpeg", QTAddImageCodecType, [NSNumber numberWithInt: codecHighQuality], QTAddImageCodecQuality, nil];	//qdrw , tiff, jpeg
+	[[QTMovie movie] writeToFile: fileName withAttributes: 0L];
+	
+	mMovie = [QTMovie movieWithFile:fileName error:nil];
+	[mMovie setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
+	
+	long long timeValue = 60;
+	long timeScale = 600;
+	
+	curTime = QTMakeTime(timeValue, timeScale);
+	
+	int i,j;
+	
+	NSImage* tempImage;
+	
+	for(i=0;i<maxMovieIndex;i++)
+	{
+		[segmentList selectRow:i byExtendingSelection:NO];
+		[self selectASegment:segmentList];
+		
+		for(j=0;j<220;j++)
+		{
+			NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
+			
+			tempImage=[self imageForVR:[NSNumber numberWithInt:j] maxFrame:[NSNumber numberWithInt:220]];
+			[mMovie addImage:tempImage forDuration:curTime withAttributes: myDict];
+			[pool release];
+		}
+	}
+	[imagesFor4DQTVR addObject:mMovie];
+	return [imagesFor4DQTVR count];
 }
 
 - (IBAction)capureImage:(id)sender
 {
-/*
-	FSRef				fsref;
-	FSSpec				spec, newspec;
 	if(!isSegmentVR)
 	{
-		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForFrame: maxFrame:) :220*maxMovieIndex];
+		int i;
+		float			o[ 9];
+		DCMPix *firstObject=[[originalViewController pixList] objectAtIndex: 0];
 
-		NSString* path, *newpath;
-		path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
-		if( path)
-		{
-			FSPathMakeRef((unsigned const char *)[path fileSystemRepresentation], &fsref, NULL);
-			FSGetCatalogInfo( &fsref, kFSCatInfoNone,NULL, NULL, &spec, NULL);
-			
-			FSMakeFSSpec(spec.vRefNum, spec.parID, "\ptempMovie", &newspec);
-			
-			VRObject_MakeObjectMovie (&spec,&newspec, 220*maxMovieIndex);	
-			
-			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
-			
-			newpath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"tempMovie"];
-			
-			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
-			
-			[[NSFileManager defaultManager] movePath: newpath  toPath: path handler: nil];
-			
-			//[[NSWorkspace sharedWorkspace] openFile:path];
-		}
+		DICOMExport		*dcmSequence = [[DICOMExport alloc] init];
 		
-		[mov release];
+			
+		[dcmSequence setSeriesNumber:6700 + [[NSCalendarDate date] minuteOfHour]  + [[NSCalendarDate date] secondOfMinute]];
+			[dcmSequence setSeriesDescription:@"4D VR"];
+			[dcmSequence setSourceFile: [firstObject sourceFile]];
+
+		[vrViewer renderImageWithBestQuality: YES waitDialog: NO];
+		for(i=0;i<maxMovieIndex;i++)
+		{
+			NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
+			float* newVolumeData=[originalViewController volumePtr:i];
+			[vrViewer movieChangeSource: newVolumeData];
+
+			volumeOfVRView = (vtkVolume * )[vrViewer volume]; 
+			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+			if([cutPlaneSwitch state] == NSOnState)
+				volumeMapper->AddClippingPlane(clipPlane1);
+			
+			[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:i ]];
+			[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:i ]];
+			[clutViewer updateView];
+			[clutViewer setCLUTtoVRViewWithoutRedraw];
+			[vrViewer display];
+
+
+			long	width, height, spp, bpp, err;
+				
+			unsigned char *dataPtr = [vrViewer getRawPixels:&width :&height :&spp :&bpp :YES :NO];
+				
+			if( dataPtr)
+			{
+				[vrViewer getOrientation: o];
+				[dcmSequence setOrientation: o];
+				
+				[dcmSequence setPixelData: dataPtr samplePerPixel:spp bitsPerPixel:bpp width: width height: height];
+					
+				err = [dcmSequence writeDCMFile: 0L];
+				
+				free( dataPtr);
+			}
+			
+			[pool release];
+
+
+				
+		}
+
+		[vrViewer endRenderImageWithBestQuality];
+
+			
+		
+			
+		[dcmSequence release];
+
+	
+	}
+	else
+	{
+		[vrViewer exportDCMCurrentImage];
+	}
+}
+- (IBAction)openQTVRExportDlg:(id)sender
+{
+	[NSApp beginSheet: qtvrsettingwin modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+- (IBAction)creatQTVRFromFile:(id)sender
+{
+	int                 result;
+    NSOpenPanel         *oPanel = [NSOpenPanel openPanel];
+
+    
+	
+    [oPanel setAllowsMultipleSelection:NO];
+    [oPanel setCanChooseDirectories:NO];
+    
+    result = [oPanel runModalForDirectory:0L file:nil types:nil];
+    
+    if (result == NSOKButton) 
+    {
+		
+		NSString* path;
+		path=[[oPanel filenames] objectAtIndex: 0];
+		
+		QTTime			curTime;
+		QTMovie			*mMovie = 0L;
+		
+		
+		
+		mMovie = [QTMovie movieWithFile:path error:nil];
+		[mMovie setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
+		
+		long long timeValue = 60;
+		long timeScale = 600;
+		
+		curTime = QTMakeTime(timeValue, timeScale);
+		imagesFor4DQTVR=[[NSMutableArray alloc] initWithCapacity: 0];
+		[imagesFor4DQTVR addObject:mMovie];
+
+		do
+		{
+			QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForFrame: maxFrame:) :220*maxMovieIndex];
+			path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
+			[mov release];
+		}while(path);
+		
+		[imagesFor4DQTVR removeAllObjects];
+		[imagesFor4DQTVR release];		
+	}
+}
+- (IBAction)closeQTVRExportDlg:(id)sender
+{
+	int tag =[sender tag];
+	[qtvrsettingwin orderOut:sender];
+    [NSApp endSheet:qtvrsettingwin returnCode:tag];
+}
+- (IBAction)exportQTVR:(id)sender
+{
+
+	//FSRef				fsref;
+	//FSSpec				spec, newspec;
+//	[vrViewer renderImageWithBestQuality: YES waitDialog: NO];
+	if(!isSegmentVR)
+	{
+//	[vrViewer renderImageWithBestQuality: YES waitDialog: NO];
+		[self closeQTVRExportDlg:sender];
+		imagesFor4DQTVR=[[NSMutableArray alloc] initWithCapacity: 0];
+		
+		[self prepareImageFor4DQTVR];
+		NSString* path;
+		do
+		{
+			QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForFrame: maxFrame:) :220*maxMovieIndex];
+			path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
+			[mov release];
+		}while(path);
+		
+		
+		[imagesFor4DQTVR removeAllObjects];
+		[imagesFor4DQTVR release];
+		NSString		*fileName = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/TEMP/CMIV4DQTVR.mov"] ;
+		[[NSFileManager defaultManager] removeFileAtPath:fileName handler:nil];
 	}
 	else
 	{
 		verticalAngleForVR = 0;
 		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForVR: maxFrame:) :220];
 		
-		NSString* path, *newpath;
+		NSString* path;
 		
 		path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
-		if( path)
-		{
-			FSPathMakeRef((unsigned const char *)[path fileSystemRepresentation], &fsref, NULL);
-			FSGetCatalogInfo( &fsref, kFSCatInfoNone,NULL, NULL, &spec, NULL);
-			
-			FSMakeFSSpec(spec.vRefNum, spec.parID, "\ptempMovie", &newspec);
-			
-			VRObject_MakeObjectMovie (&spec,&newspec, 220);	
-			
-			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
-			
-			newpath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"tempMovie"];
-			
-			[[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
-			
-			[[NSFileManager defaultManager] movePath: newpath  toPath: path handler: nil];
-			
-			//[[NSWorkspace sharedWorkspace] openFile:path];
-		}
-		
-		
-		
 		
 		[mov release];		
 	}
-	*/
+//	[vrViewer endRenderImageWithBestQuality];
+
+	
 }
 
 - (IBAction)endPanel:(id)sender
@@ -223,22 +337,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[window setReleasedWhenClosed:YES];
 	[window close];
 	//[window orderOut:sender];
+	unsigned int i,j;
+	for(i=0;i<[mutiplePhaseOpacityCurves count];i++)//evever segment or volume
+	{
+		for(j=0;j<[[mutiplePhaseOpacityCurves objectAtIndex:i] count];j++)//ever curve for each segment or volume
+		{
+			[[[mutiplePhaseOpacityCurves objectAtIndex:i] objectAtIndex:j] removeAllObjects];
+			[[[mutiplePhaseColorCurves objectAtIndex:i] objectAtIndex:j] removeAllObjects];
+		}
+		[[mutiplePhaseOpacityCurves objectAtIndex:i] removeAllObjects];
+		[[mutiplePhaseColorCurves objectAtIndex:i] removeAllObjects];
+	}
+
+	[mutiplePhaseOpacityCurves removeAllObjects];
+	[mutiplePhaseColorCurves removeAllObjects];
+	[mutiplePhaseOpacityCurves release];
+	[mutiplePhaseColorCurves release];
     [NSApp endSheet:window returnCode:[sender tag]];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	if(	inROIArray)
+	   [inROIArray removeAllObjects];
 
 	
-/*
-	if(isSegmentVR)
-	{
-		 unsigned int i;
-		 for( i = 0; i < [toolbarList count]; i++)
-		 {
-			 [[toolbarList objectAtIndex: i] setVisible: YES];
-			 
-		 }
-		 [toolbarList removeAllObjects];
-	}
-*/
 	[parent exitCurrentDialog];
 	
 }
@@ -300,6 +420,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (int) showVRPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner
 {
+	int err=0;
 
 	originalViewController=vc;	
 	parent = owner;
@@ -308,10 +429,105 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		isSegmentVR=0;
 	else
 		isSegmentVR=1;
+
 	if(isSegmentVR)
-		return [self initVRViewForSegmentalVR];
+		err= [self initVRViewForSegmentalVR];
 	else
-		return [self initVRViewForDynamicVR];
+		err= [self initVRViewForDynamicVR];
+
+	volumeOfVRView = (vtkVolume * )[vrViewer volume]; 
+	fixedPointVolumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+	volumeMapper=fixedPointVolumeMapper;
+	volumeImageData=(vtkImageData *)volumeMapper->GetInput();
+	realVolumedata=(unsigned short*)volumeImageData->GetScalarPointer();
+	clipPlane1=vtkPlane::New();
+	//volumeMapper->AddClippingPlane(clipPlane1);
+	double* tempcenter;
+	tempcenter=volumeOfVRView->GetCenter();
+	
+	clipPlane1->SetOrigin(tempcenter);
+	clipPlane1->SetNormal(1,0,0);
+	clipCallBack = vtkCallbackCommand::New();
+	clipCallBack->SetCallback( needAdjustClipPlane);
+	clipCallBack->SetClientData( self);
+	[vrViewer renderWindow]->AddObserver(vtkCommand::StartEvent, clipCallBack);
+	clipPlaneWidget=vtkPlaneWidget::New();
+	[self initCLUTView];
+	if(isSegmentVR)
+	{
+		[clutViewer setVRController:self];
+		[self initTaggedColorList];
+	}
+
+	
+	return err;
+	
+}
+ - (void)initTaggedColorList
+{
+	unsigned int i;
+	RGBColor	color;
+	ROI * tempROI;	
+	
+	for(i=0;i<[inROIArray count];i++)
+	{
+		tempROI = [inROIArray objectAtIndex: i];	
+		
+		if([tempROI respondsToSelector:@selector(color)])
+			color= [tempROI color];
+		else
+			color= [tempROI rgbcolor];
+		NSMutableArray *someColors = [[mutiplePhaseColorCurves objectAtIndex:i+1] objectAtIndex:0];
+		[someColors replaceObjectAtIndex:1 withObject:[NSColor colorWithDeviceRed:color.red/65536.0 green:color.green/65536.0 blue:color.blue/65536.0 alpha:1.0]];
+		[someColors replaceObjectAtIndex:2 withObject:[NSColor colorWithDeviceRed:color.red/65536.0 green:color.green/65536.0 blue:color.blue/65536.0 alpha:1.0]];
+	}		
+	
+}
+- (void) initCLUTView
+{
+
+	[clutViewer setVolumePointer:originalVolumeData width:imageWidth height:imageHeight numberOfSlices:imageAmount];
+	[clutViewer setHUmin:minInSeries HUmax:maxInSeries];
+	[clutViewer computeHistogram];
+	[clutViewer addCurveIfNeeded];
+	[clutViewer updateView];
+	[clutViewer setCLUTtoVRView:NO];
+	mutiplePhaseOpacityCurves=[[NSMutableArray alloc] initWithCapacity: 0];
+	mutiplePhaseColorCurves=[[NSMutableArray alloc] initWithCapacity: 0];
+	int i;
+	if(isSegmentVR)
+	{
+		for(i=0;i<[propertyDictList count];i++)
+		{
+			NSMutableArray* opacitycurves=[NSMutableArray arrayWithCapacity:0];
+			[mutiplePhaseOpacityCurves addObject:opacitycurves];
+			NSMutableArray* colorcurvers=[NSMutableArray arrayWithCapacity:0];
+			[mutiplePhaseColorCurves addObject:colorcurvers];
+			[clutViewer setCurves:opacitycurves];
+			[clutViewer setPointColors:colorcurvers];
+			[clutViewer newCurve:self];
+		}
+	}
+	else
+	{
+		for(i=0;i<maxMovieIndex;i++)
+		{
+			NSMutableArray* opacitycurves=[NSMutableArray arrayWithCapacity:0];
+			[mutiplePhaseOpacityCurves addObject:opacitycurves];
+			NSMutableArray* colorcurvers=[NSMutableArray arrayWithCapacity:0];
+			[mutiplePhaseColorCurves addObject:colorcurvers];
+			[clutViewer setCurves:opacitycurves];
+			[clutViewer setPointColors:colorcurvers];
+			[clutViewer newCurve:self];
+		}
+	}
+	[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:0 ]];
+	[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:0 ]];
+
+	//	[clutOpacityView newCurve:self];
+	//if(![view advancedCLUT])[[[clutPopup menu] itemAtIndex:0] setTitle:NSLocalizedString(@"16-bit CLUT", nil)];
+	//if(![view advancedCLUT])[self setCurCLUTMenu:NSLocalizedString(@"16-bit CLUT", nil)];
+	//[OpacityPopup setEnabled:NO];
 }
 - (int) initVRViewForSegmentalVR
 {
@@ -319,7 +535,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	DCMPix*				curPix = [[originalViewController pixList] objectAtIndex: [[originalViewController imageView] curImage]];;
 	NSArray				*pixList = [originalViewController pixList];
 
-	float maxInSeries,minInSeries;
+
 	maxInSeries = [curPix maxValueOfSeries];
 	minInSeries = [curPix minValueOfSeries];
 	imageWidth = [curPix pwidth];
@@ -328,7 +544,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	//initilize proptery list
 	propertyDictList = [[NSMutableArray alloc] initWithCapacity: 0];
 	
-	NSMutableArray *inROIArray = [[NSMutableArray alloc] initWithCapacity: 0];
+	inROIArray = [[NSMutableArray alloc] initWithCapacity: 0];
 	NSMutableArray *curRoiList = [originalViewController roiList];
 	
 	ROI * tempROI;	
@@ -479,13 +695,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	[window setFrame:screenrect display:YES ];	
+	[window setFrame:screenrect display:NO ];	
 	//initilize VR view	
 
 	originalVolumeData=[originalViewController volumePtr:0];
 	err = [vrViewer setPixSource:pixList :originalVolumeData ];
-	clutViewPoints=[colorViewer getPoints];
-	clutViewColors=[colorViewer getColors];
+	//clutViewPoints=[colorViewer getPoints];
+	//clutViewColors=[colorViewer getColors];
 	NSString	*str =  @"/" ;
 	
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: str];
@@ -514,6 +730,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	myVolumeProperty->SetSpecular(0.3);
 	myVolumeProperty->SetSpecularPower(15);
 	myVolumeProperty->SetShade( 1);
+
+
+
+	
 //	if( [[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask)
 //		myVolumeProperty->SetInterpolationTypeToNearest();
  //   else 
@@ -534,9 +754,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	float tempfloat;
 
-	volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+	fixedPointVolumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+	volumeMapper=fixedPointVolumeMapper;
 	volumeImageData=(vtkImageData *)volumeMapper->GetInput();
 	realVolumedata=(unsigned short*)volumeImageData->GetScalarPointer();
+	
+
 	unsigned int size=(unsigned int)(imageWidth*imageHeight*imageAmount);
 	for(i=0;i<size;i++)
 	{
@@ -600,28 +823,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	[segmentList setDataSource:self];	
-	//clean inROIArray
 
-	
-/*
-	NSArray				*winList = [NSApp windows];
-	toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
-	for( i = 0; i < [winList count]; i++)
-	{
-		if( [[winList objectAtIndex:i] toolbar])
-		{
-			NSToolbar *aToolbar=[[winList objectAtIndex:i] toolbar];
-			if([aToolbar isVisible])
-			{
-				[toolbarList addObject: aToolbar];
-				[aToolbar setVisible:NO];
-			}
-			
-			
-		}
-		
-	}
-	*/
 	size=imageWidth*imageHeight*imageAmount;
 	for(i=0;i<size;i++)
 	{
@@ -664,13 +866,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			
 		}
 		
-	[inROIArray removeAllObjects];	
+	
 	[self selectASegment:nil];
 	NSNotificationCenter *nc;
 	nc = [NSNotificationCenter defaultCenter];	
 	[nc addObserver: self selector: @selector(windowDidBecomeMain:) name:NSWindowDidBecomeMainNotification object:nil];
 
-		
+	//[self initCLUTView];
 	return err;
 
 }
@@ -681,11 +883,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSArray				*pixList = [originalViewController pixList];
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	[window setFrame:screenrect display:YES ];	
+	[window setFrame:screenrect display:NO ];	
 	//initilize VR view	
 
 	originalVolumeData=[originalViewController volumePtr:0];
 	err = [vrViewer setPixSource:pixList :originalVolumeData ];
+	DCMPix*				curPix = [[originalViewController pixList] objectAtIndex: [[originalViewController imageView] curImage]];;
+	maxInSeries = [curPix maxValueOfSeries];
+	minInSeries = [curPix minValueOfSeries];
+	imageWidth = [curPix pwidth];
+	imageHeight = [curPix pheight];
+	imageAmount = [pixList count];
 	
 	NSString	*str =  @"/" ;
 	
@@ -699,6 +907,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	
 
+	[self SetMusclarCLUT];
+
+	renderOfVRView = [vrViewer renderer];
+	aCamera = renderOfVRView->GetActiveCamera();
+	[opacitySlider setEnabled: NO];
+	[wlSlider setEnabled: NO];
+	[wwSlider setEnabled: NO];
+	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[segmentList setDataSource:self];	
+	[self initCLUTView];
+
+	return err;
+
+}
+- (IBAction)disableCLUTView:(id)sender
+{
+	if([sender state]== NSOnState)
+			[self SetMusclarCLUT];
+		else
+			[self initCLUTView];
+}
+- (void) SetMusclarCLUT
+{
 	NSDictionary		*aCLUT,*aOpacity;
 	NSArray				*array;
 	long				i;
@@ -735,23 +966,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 		[vrViewer setOpacity:array];
 	}
-
-	renderOfVRView = [vrViewer renderer];
-	aCamera = renderOfVRView->GetActiveCamera();
-
-	[opacitySlider setEnabled: NO];
-	[wlSlider setEnabled: NO];
-	[wwSlider setEnabled: NO];
-	[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
-	[segmentList setDataSource:self];	
-	return err;
-
 }
 - (int)numberOfRowsInTableView:(NSTableView *)tableView
 {
 	if([segmentList isEqual:tableView])
 	   {
-		return [propertyDictList count];
+		   if(isSegmentVR)
+		   {
+			   return [propertyDictList count];
+		   }
+		   else
+		   {
+			   return maxMovieIndex;
+		   }
 	   }
 
 	return 0;
@@ -765,19 +992,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	if( originalViewController == 0L) return 0L;
 	if([segmentList isEqual:tableView])
 	   {
+		   if(isSegmentVR)
+		   {
 		
-			if( [[tableColumn identifier] isEqualToString:@"Index"])
-			{
-				return [NSString stringWithFormat:@"%d", row+1];
-			} 
-			if( [[tableColumn identifier] isEqualToString:@"Name"])
-			{
-				return [[propertyDictList objectAtIndex:row] objectForKey:@"Name"];
-			}
-			if( [[tableColumn identifier] isEqualToString:@"Opacity"])
-			{
-				return [[propertyDictList objectAtIndex:row] objectForKey:@"Opacity"];
-			}
+				if( [[tableColumn identifier] isEqualToString:@"Index"])
+				{
+					return [NSString stringWithFormat:@"%d", row+1];
+				} 
+				if( [[tableColumn identifier] isEqualToString:@"Name"])
+				{
+					return [[propertyDictList objectAtIndex:row] objectForKey:@"Name"];
+				}
+				if( [[tableColumn identifier] isEqualToString:@"Opacity"])
+				{
+					return [[propertyDictList objectAtIndex:row] objectForKey:@"Opacity"];
+				}
+		   }
+		   else
+		   {
+			   if( [[tableColumn identifier] isEqualToString:@"Index"])
+			   {
+				   return [NSString stringWithFormat:@"%d", row+1];
+			   } 
+			   if( [[tableColumn identifier] isEqualToString:@"Name"])
+			   {
+				  return [NSString stringWithFormat:@"volume%d", row+1];
+			   }
+			   if( [[tableColumn identifier] isEqualToString:@"Not Available"])
+			   {
+				  return @"Opacity";
+			   }
+			   
+		   }
 	   }
 		   
 	
@@ -811,6 +1057,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	[vrViewer setWLWW: wl :ww];
 	
+}
+- (void)setAdvancedCLUT:(NSMutableDictionary*)clut lowResolution:(BOOL)lowRes
+{
+
+	unsigned row;
+	float x,maxx,maxval,offset,val,zoomfactor;
+	zoomfactor=2047/(maxInSeries-minInSeries);
+	myColorTransferFunction->RemoveAllPoints();
+	myOpacityTransferFunction->RemoveAllPoints();	
+	for(row=0;row<[mutiplePhaseOpacityCurves count];row++)
+	{
+	
+		NSArray *curves = [mutiplePhaseOpacityCurves objectAtIndex:row ];
+		NSArray *pointColors = [mutiplePhaseColorCurves objectAtIndex:row ];
+		if([mutiplePhaseColorCurves count]<=0)
+			continue;
+
+		offset = [[[propertyDictList objectAtIndex:row] objectForKey:@"RangeFrom"] floatValue];
+		offset += osirixOffset;
+		maxx=offset;
+		val = 0.0;
+		myOpacityTransferFunction->AddPoint (offset, val);
+		myColorTransferFunction->AddRGBPoint(offset,0,0,0);
+
+		unsigned int i,j;
+		for(i=0; i<[curves count]; i++)
+		{
+			NSMutableArray *aCurve = [NSMutableArray arrayWithArray:[curves objectAtIndex:i]];
+			NSMutableArray *someColors = [NSMutableArray arrayWithArray:[pointColors objectAtIndex:i]];
+			for(j=0; j<[aCurve count]; j++)
+			{
+				
+				x=[[aCurve objectAtIndex:j] pointValue].x;
+				x=offset+zoomfactor*(x-minInSeries);
+				val=[[aCurve objectAtIndex:j] pointValue].y * [[aCurve objectAtIndex:j] pointValue].y;
+				
+				if(maxx<x)
+				{
+					maxx=x;
+					maxval=val;
+				}
+				
+				
+				
+				myOpacityTransferFunction->AddPoint(x,val);
+				myColorTransferFunction->AddRGBPoint(x, [[someColors objectAtIndex:j] redComponent], [[someColors objectAtIndex:j] greenComponent], [[someColors objectAtIndex:j] blueComponent]);
+
+				
+			}
+			
+
+		}
+		myOpacityTransferFunction->AddPoint (offset+2047, maxval);
+		myColorTransferFunction->AddRGBPoint(offset+2047,1.0,1.0,1.0);
+
+	}
+
+
 }
 - (void)applyCLUT
 {
@@ -854,20 +1158,130 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)selectASegment:(id)sender
 {
 	unsigned int row = [segmentList selectedRow];
-	float opacity,ww,wl;
-	if(row>=0&&row<[propertyDictList count])
+
+	if(isSegmentVR)
 	{
-		opacity = [[[propertyDictList objectAtIndex: row] objectForKey:@"Opacity"] floatValue];
-		[opacitySlider setFloatValue: opacity];
-		ww = [[[propertyDictList objectAtIndex: row] objectForKey:@"WW"] floatValue];
-		wl = [[[propertyDictList objectAtIndex: row] objectForKey:@"WL"] floatValue];
-		[wwSlider setFloatValue: ww];
-		[wlSlider setFloatValue: wl];
-		[self restoreCLUTFromPropertyList:row];
-		[colorViewer display];
+		if(row>=0&&row<[propertyDictList count])
+		{
+			/*opacity = [[[propertyDictList objectAtIndex: row] objectForKey:@"Opacity"] floatValue];
+			[opacitySlider setFloatValue: opacity];
+			ww = [[[propertyDictList objectAtIndex: row] objectForKey:@"WW"] floatValue];
+			wl = [[[propertyDictList objectAtIndex: row] objectForKey:@"WL"] floatValue];
+			[wwSlider setFloatValue: ww];
+			[wlSlider setFloatValue: wl];
+			[self restoreCLUTFromPropertyList:row];
+			//[colorViewer display];*/
+			[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:row ]];
+			[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:row ]];
+			[clutViewer setClutChanged];
+			[clutViewer updateView];
+			
+			
+		}
+	}
+	else
+	{
+		if(row>=0&&row<maxMovieIndex)
+		{
+			float* newVolumeData=[originalViewController volumePtr:row];
+
+			[vrViewer movieChangeSource: newVolumeData];
+			volumeOfVRView = (vtkVolume * )[vrViewer volume]; 
+			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+			if([cutPlaneSwitch state] == NSOnState)
+				volumeMapper->AddClippingPlane(clipPlane1);
+
+			[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:row ]];
+			[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:row ]];
+			[clutViewer setClutChanged];
+			[clutViewer updateView];
+
+
+			
+		}
+		
+	}
+}
+- (IBAction)applyCLUTToAll:(id)sender
+{
+	unsigned int row = [segmentList selectedRow];
+	unsigned int i,j,k;
+	NSArray* tempcurve;
+	NSArray* tempcolor;
+	
+	for(i=0;i<[mutiplePhaseOpacityCurves count];i++)//evever segment or volume
+	{
+		if(i!=row)
+		{
+			for(j=0;j<[[mutiplePhaseOpacityCurves objectAtIndex:i] count];j++)//ever curve for each segment or volume
+			{
+				[[[mutiplePhaseOpacityCurves objectAtIndex:i] objectAtIndex:j] removeAllObjects];
+				[[[mutiplePhaseColorCurves objectAtIndex:i] objectAtIndex:j] removeAllObjects];
+			}
+			[[mutiplePhaseOpacityCurves objectAtIndex:i] removeAllObjects];
+			[[mutiplePhaseColorCurves objectAtIndex:i] removeAllObjects];
+			
+			
+			
+			for(j=0;j<[[mutiplePhaseOpacityCurves objectAtIndex:row] count];j++)//ever curve for each segment or volume
+			{
+				NSMutableArray* tempopacitycurve=[NSMutableArray arrayWithCapacity:0];
+				NSMutableArray* tempcolorcurver=[NSMutableArray arrayWithCapacity:0];
+				tempcurve=[[mutiplePhaseOpacityCurves objectAtIndex:row] objectAtIndex:j];
+				tempcolor=[[mutiplePhaseColorCurves objectAtIndex:row] objectAtIndex:j];
+				for(k=0;k<[tempcurve count];k++)
+				{
+					[tempopacitycurve addObject:[[tempcurve objectAtIndex:k] copy]];
+					[tempcolorcurver addObject:[[tempcolor objectAtIndex:k] copy]];
+				}
+				[[mutiplePhaseOpacityCurves objectAtIndex:i] addObject:tempopacitycurve];
+				[[mutiplePhaseColorCurves objectAtIndex:i] addObject:tempcolorcurver];	
+				
+			}
+		
+		}
 		
 	}
 	
+
+
+	
+}
+- (IBAction)switchBetweenVRTorMIP:(id)sender
+{
+	[vrViewer setMode:[sender selectedRow]];
+}
+- (IBAction)switchShadingONorOFF:(id)sender
+{
+	if(isSegmentVR)
+	{
+		if([sender state] == NSOnState)
+			myVolumeProperty->ShadeOn();
+		else
+			myVolumeProperty->ShadeOff();
+	}
+	else
+	{
+		if([sender state] == NSOnState)
+			[vrViewer activateShading:YES];
+		else
+			[vrViewer activateShading:NO];
+	}
+	float savedWl, savedWw;
+	[vrViewer getWLWW: &savedWl :&savedWw];
+	[vrViewer setWLWW: savedWl : savedWw];
+	
+	
+}
+- (IBAction)switchCutPlanONorOFF:(id)sender
+{
+	if([sender state] == NSOnState)
+		volumeMapper->AddClippingPlane(clipPlane1);
+	else		
+		volumeMapper->RemoveClippingPlane(clipPlane1);
+	float savedWl, savedWw;
+	[vrViewer getWLWW: &savedWl :&savedWw];
+	[vrViewer setWLWW: savedWl : savedWw];
 }
 - (void)restoreCLUTFromPropertyList:(int)index
 {
@@ -936,13 +1350,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	int tag=[sender tag];
 	if(tag==0)
+	{
 		[vrViewer coView:sender];
+		
+	}
 	else if(tag==4)
+	{
 		[vrViewer saView: sender];
+		
+	}
 	else if(tag==5)
+	{
 		[vrViewer saViewOpposite:sender];
+		
+	}
 	else if(tag==3)
+	{
 		[vrViewer axView:sender];
+		
+	}
 }
 - (void) windowDidBecomeMain:(NSNotification *)aNotification
 {
@@ -960,4 +1386,88 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}*/
 	
 }
+- (IBAction)setClipPlaneOrigin:(id)sender
+{
+	clipPlane1->SetOrigin(0,0,[sender floatValue]);
+}
+- (void)resetClipPlane
+{
+	double normal[3];
+	aCamera->GetViewPlaneNormal( normal);
+	int i;
+	for(i=0;i<3;i++)
+		normal[i]=-normal[i];
+	clipPlane1->SetNormal(normal);
+}
+-(NSString*)osirixDocumentPath
+{
+	char	s[1024];
+	
+	FSRef	ref;
+	
+	
+	if( FSFindFolder (kOnAppropriateDisk, kDocumentsFolderType, kCreateFolder, &ref) == noErr )
+	{
+		NSString	*path;
+		BOOL		isDir = YES;
+		
+		FSRefMakePath(&ref, (UInt8 *)s, sizeof(s));
+		
+		path = [[NSString stringWithUTF8String:s] stringByAppendingPathComponent:@"/OsiriX Data"];
+		
+		if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) [[NSFileManager defaultManager] createDirectoryAtPath:path attributes:nil];
+		
+		return path;// not sure if s is in UTF8 encoding:  What's opposite of -[NSString fileSystemRepresentation]?
+	}
+	
+	else
+		return nil;
+	
+}
+- (IBAction)changeToLinearInterpolation:(id)sender
+{
+
+	if(!rayCastVolumeMapper)
+	{
+		myVolumeProperty->SetAmbient(0.15);
+		myVolumeProperty->SetDiffuse(0.9);
+		myVolumeProperty->SetSpecular(0.3);
+		myVolumeProperty->SetSpecularPower(15);
+		myVolumeProperty->SetShade( 1);
+		myMapper=vtkVolumeRayCastMapper::New();
+		myCompositionFunction=vtkVolumeRayCastCompositeFunction::New();
+		myCompositionFunction->SetCompositeMethodToClassifyFirst();
+		myMapper->SetInput(volumeImageData);
+		myMapper->SetVolumeRayCastFunction(myCompositionFunction);
+
+
+
+		if( myMapper) myMapper->SetMinimumImageSampleDistance( 2.0);
+		if( myMapper) myMapper->SetSampleDistance( [[NSUserDefaults standardUserDefaults] floatForKey: @"BESTRENDERING"]);
+		if( myMapper) myMapper->SetMaximumImageSampleDistance( 6.0);
+		
+		
+		volumeOfVRView->SetProperty( myVolumeProperty);
+		
+		rayCastVolumeMapper=myMapper;
+	}
+
+	
+	if([sender state] == NSOnState)
+	{
+		myVolumeProperty->SetInterpolationTypeToLinear();
+		volumeMapper=rayCastVolumeMapper;
+		volumeOfVRView->SetMapper(volumeMapper);
+	}
+	else
+	{
+		myVolumeProperty->SetInterpolationTypeToNearest();
+		volumeMapper=fixedPointVolumeMapper;
+		volumeOfVRView->SetMapper(volumeMapper);
+	}
+	[vrViewer setWLWW: wholeVolumeWL :wholeVolumeWW];
+	
+	
+}
+
 @end

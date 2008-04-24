@@ -1605,7 +1605,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					color= [tempROI rgbcolor];
 			
 				ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:imageWidth textHeight:imageHeight textName:roiName positionX:0 positionY:0 spacingX:[curPix pixelSpacingY] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
-				textureBuffer=[tempROI textureBuffer];
+				textureBuffer=[newROI textureBuffer];
 				*textureBuffer=0x00;
 				*(textureBuffer+imageSize-1)=0x00;	
 				[newROI reduceTextureIfPossible];

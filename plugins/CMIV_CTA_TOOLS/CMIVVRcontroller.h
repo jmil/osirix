@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "PluginFilter.h"
 #import "CMIV_CTA_TOOLS.h"
 #import "VRView.h"
-#import "ColorTransferView.h"
+#import "CMIVCLUTOpacityView.h"
 #define id Id
 #include <vtkColorTransferFunction.h>
 #include <vtkRenderer.h>
@@ -46,6 +46,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vtkVolumeProperty.h>
 #include <vtkVolumeMapper.h>
 #include <vtkImageData.h>
+#include <vtkPlane.h>
+#include <vtkCallbackCommand.h>
+#include <vtkObject.h>
+#include <vtkPlaneWidget.h>
+#include <vtkVolumeRayCastMapper.h>
+#include <vtkVolumeRayCastCompositeFunction.h>
 #undef id
 
 
@@ -53,13 +59,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	IBOutlet NSWindow	*window;   
 	IBOutlet NSColorWell *colorControl;
-    IBOutlet ColorTransferView *colorViewer;
+    IBOutlet CMIVCLUTOpacityView *clutViewer;
     IBOutlet NSSlider *opacitySlider;
+	IBOutlet NSSlider *clipPlaneOriginSlider;
     IBOutlet NSTableView *segmentList;
     IBOutlet VRView *vrViewer;
     IBOutlet NSSlider *wlSlider;
     IBOutlet NSSlider *wwSlider;
     IBOutlet NSButton *wlwwForAll;
+	IBOutlet NSButton *shadingSwitch;
+	IBOutlet NSButton *cutPlaneSwitch;
+	IBOutlet NSWindow *qtvrsettingwin;   
 	int imageWidth,imageHeight,imageAmount; 	
 	ViewerController     *originalViewController;
 	float  wholeVolumeWL,wholeVolumeWW;
@@ -68,8 +78,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSMutableArray      *toolbarList;
 	NSMutableArray      *clutViewPoints;
 	NSMutableArray      *clutViewColors;
+	NSMutableArray      *mutiplePhaseOpacityCurves;
+	NSMutableArray      *mutiplePhaseColorCurves;
+	NSMutableArray      *imagesFor4DQTVR;
 	
 	float          *originalVolumeData;
+	float maxInSeries,minInSeries;
 	vtkRenderer *renderOfVRView;
 	vtkVolumeCollection *volumeCollectionOfVRView;
 	vtkVolume   *volumeOfVRView;
@@ -78,16 +92,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	vtkPiecewiseFunction	*myOpacityTransferFunction;
 	vtkPiecewiseFunction	*myGradientTransferFunction;
 	vtkVolumeMapper *volumeMapper;
+	vtkVolumeMapper *fixedPointVolumeMapper;
+	vtkVolumeMapper *rayCastVolumeMapper;
 	vtkImageData *volumeImageData;
 	vtkCamera *aCamera;
+	vtkPlane *clipPlane1;
+	vtkCallbackCommand *clipCallBack;
+	vtkPlaneWidget* clipPlaneWidget;
+	vtkVolumeRayCastMapper* myMapper;
+	vtkVolumeRayCastCompositeFunction* myCompositionFunction;
+
 	float verticalAngleForVR;
 	float osirixOffset;
 	unsigned short* realVolumedata;
 	long maxMovieIndex;
 	int  isSegmentVR;
 	CMIV_CTA_TOOLS* parent;	
+	NSMutableArray *inROIArray;
 }
 - (IBAction)capureImage:(id)sender;
+- (IBAction)exportQTVR:(id)sender;
 - (IBAction)endPanel:(id)sender;
 - (IBAction)setColorProtocol:(id)sender;
 - (IBAction)setOpacity:(id)sender;
@@ -95,7 +119,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)selectASegment:(id)sender;
 - (IBAction)changeVRDirection:(id)sender;
 - (IBAction)setBackgroundColor:(id)sender;
-
+- (IBAction)setClipPlaneOrigin:(id)sender;
+- (IBAction)applyCLUTToAll:(id)sender;
+- (IBAction)switchBetweenVRTorMIP:(id)sender;
+- (IBAction)switchShadingONorOFF:(id)sender;
+- (IBAction)switchCutPlanONorOFF:(id)sender;
+- (IBAction)openQTVRExportDlg:(id)sender;
+- (IBAction)closeQTVRExportDlg:(id)sender;
+- (IBAction)creatQTVRFromFile:(id)sender;
+- (IBAction)disableCLUTView:(id)sender;
+- (IBAction)changeToLinearInterpolation:(id)sender;
 - (int) initVRViewForSegmentalVR;
 - (int) initVRViewForDynamicVR;
 - (int) showVRPanel:(ViewerController *) vc :(CMIV_CTA_TOOLS*) owner;
@@ -116,4 +149,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (ViewerController*) viewer2D;
 -(NSImage*) imageForFrame:(NSNumber*) cur maxFrame:(NSNumber*) max;
 -(NSImage*) imageForVR:(NSNumber*) cur maxFrame:(NSNumber*) max;
+- (int) prepareImageFor4DQTVR;
+- (void)resetClipPlane;
+-(NSString*)osirixDocumentPath;
+- (void) SetMusclarCLUT;
+- (void)setAdvancedCLUT:(NSMutableDictionary*)clut lowResolution:(BOOL)lowRes;
+- (void)initTaggedColorList;
 @end

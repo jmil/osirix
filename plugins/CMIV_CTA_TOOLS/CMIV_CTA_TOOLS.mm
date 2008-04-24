@@ -35,6 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVScissorsController.h"
 #import "CMIVContrastPreview.h"
 #import "CMIVSaveResult.h"
+#import "CMIV_AutoSeeding.h"
+
 
 @implementation CMIV_CTA_TOOLS
 
@@ -52,6 +54,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int err=0;
 	if( [menuName isEqualToString:NSLocalizedString(@"Wizard For Coronary CTA", nil)] == YES)
 		[self gotoStepNo:1 ];
+	else if( [menuName isEqualToString:NSLocalizedString(@"Rib Cage Remove(Testing)", nil)] == YES)
+		err = [self startAutomaticSeeding:viewerController];
 	else if( [menuName isEqualToString:NSLocalizedString(@"VOI Cutter", nil)] == YES)
 		err = [self startChopper:viewerController];
 	else if ( [menuName isEqualToString:NSLocalizedString(@"MathMorph Tool", nil)] == YES)
@@ -60,7 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		err = [self startScissors:viewerController];	
 	else if ( [menuName isEqualToString:NSLocalizedString(@"Interactive Segmentation", nil)] == YES)
 		err = [self startContrast:viewerController];	
-	else if ( [menuName isEqualToString:NSLocalizedString(@"Segmental VR", nil)] == YES)
+	else if ( [menuName isEqualToString:NSLocalizedString(@"Tagged Volume Rendering", nil)] == YES)
 		err = [self startVR:viewerController];
 	else if ( [menuName isEqualToString:NSLocalizedString(@"Save Results", nil)] == YES)
 		err = [self saveResult:viewerController];
@@ -69,7 +73,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	return err;
 }
 
-
+- (int)  startAutomaticSeeding:(ViewerController *) vc
+{
+	int err=0;
+	CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
+	err=[autoSeedingController runAutoSeeding:vc:self];
+	currentController=autoSeedingController;
+	return err;
+	
+}
 
 - (int)  startChopper:(ViewerController *) vc
 {

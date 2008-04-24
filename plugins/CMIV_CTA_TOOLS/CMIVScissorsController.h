@@ -54,6 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSWindow	*loadPathWindow;
 	IBOutlet NSWindow	*exportCPRWindow;
 	IBOutlet NSWindow	*savePathWindow;
+	IBOutlet NSWindow	*exportMPRWindow;
     IBOutlet NSTextField *resampleText;
 	IBOutlet NSPopUpButton *pathListButton;
     IBOutlet NSSlider *axImageSlider;
@@ -84,6 +85,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSMenuItem *straightenedCPRSwitchMenu;
 	IBOutlet NSButton *straightenedCPRButton;	
 	IBOutlet NSButton *exportOrthogonalImagesButton;
+    IBOutlet NSSlider *exportStepSlider;
+    IBOutlet NSSlider *exportOViewFromSlider;
+    IBOutlet NSSlider *exportOViewToSlider;
+    IBOutlet NSSlider *exportCViewFromSlider;
+    IBOutlet NSSlider *exportCViewToSlider;
+    IBOutlet NSSlider *exportAxViewFromSlider;
+    IBOutlet NSSlider *exportAxViewToSlider;
+	IBOutlet NSTextField *exportSpacingXText;
+	IBOutlet NSTextField *exportSpacingYText;	
+	IBOutlet NSTextField *exportStepText;
+	IBOutlet NSTextField *exportOViewFromText;
+	IBOutlet NSTextField *exportOViewToText;
+	IBOutlet NSTextField *exportOViewAmountText;	
+	IBOutlet NSTextField *exportCViewFromText;
+	IBOutlet NSTextField *exportCViewToText;
+	IBOutlet NSTextField *exportCViewAmountText;
+	IBOutlet NSTextField *exportAxViewFromText;
+	IBOutlet NSTextField *exportAxViewToText;
+	IBOutlet NSTextField *exportAxViewAmountText;
+	
+	IBOutlet NSButton *exportOViewCurrentOnlyButton;	
+	IBOutlet NSButton *exportOViewAllButton;
+	
+
+	IBOutlet NSButton *exportCViewCurrentOnlyButton;	
+	IBOutlet NSButton *exportCViewAllButton;
+	
+
+	IBOutlet NSButton *exportAxViewCurrentOnlyButton;	
+	IBOutlet NSButton *exportAxViewAllButton;
 	
 	IBOutlet NSTextField *currentTips;
 	IBOutlet NSTabView *seedToolTipsTabView;
@@ -222,6 +253,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)removeCenterline:(id)sender;
 - (IBAction)switchStraightenedCPR:(id)sender;
 - (IBAction)exportOrthogonalDataset:(id)sender;
+- (IBAction)showExportDialog:(id)sender;
+- (IBAction)setExportDialogFromToSlider:(id)sender;
+- (IBAction)setExportDialogStepSlider:(id)sender;
+- (IBAction)setExportDialogFromToButton:(id)sender;
+- (IBAction)whyNoThickness:(id)sender;
 - (int) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (int) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (void)showPanelAsWizard:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
@@ -275,9 +311,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void)reHideToolbar;
 - (void)relocateAxViewSlider;
 - (float)TriCubic : (float*) p :(float *)volume : (int) xDim : (int) yDim :(int) zDim;
-- (ViewerController *) exportCrossSectionImages;
-- (ViewerController *) exportCViewImages;
-- (ViewerController *) exportOViewImages;
+- (ViewerController *) exportCrossSectionImages:(float)start:(float)step:(int)slicenumber;
+- (ViewerController *) exportCViewImages:(float)start:(float)step:(int)slicenumber;
+- (ViewerController *) exportOViewImages:(float)start:(float)step:(int)slicenumber;
 - (int) generateSlidingNormals:(int)npts:(double*)pointsxyz:(double*)ptnormals;
 - (int) generateUnitRobbin:(int)npts:(double*)inputpointsxyz:(double*)ptnormals:(double*)outputpointsxyz:(double)angle:(double)width;
 

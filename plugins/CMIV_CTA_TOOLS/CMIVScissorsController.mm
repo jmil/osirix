@@ -29,6 +29,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVScissorsController.h"
 #import "CMIV3DPoint.h"
 #import "CMIVSegmentCore.h"
+
+//#define VERBOSEMODE
+//print out some detail logs
+
+
+
 static		float						deg2rad = 3.14159265358979/180.0; 
 
 @implementation CMIVScissorsController
@@ -797,7 +803,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		NSLog( @"hide toolbar");
 	}*/
 	
-	
+#ifdef VERBOSEMODE
+	 NSLog( @"******************************CMIV_CTA_PLUGIN 2D View established!*************************************");
+#endif
 	return err;
 	
 }
@@ -1230,6 +1238,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 }
 - (void) updateOView
 {
+#ifdef VERBOSEMODE
+	NSLog( @"updating Oview");
+#endif
 	vtkImageData	*tempIm,*tempROIIm;
 	int				imExtent[ 6];
 
@@ -1304,7 +1315,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[curvedMPR2DPath setROIMode:currentPathMode];
 	tempIm->GetSpacing( oViewSpace);
 	tempIm->GetOrigin( oViewOrigin);	
-	
+#ifdef VERBOSEMODE
+	NSLog( @"Oview Updated");
+#endif
 }
 - (void) updatePageSliders
 {
@@ -1384,16 +1397,24 @@ lastCViewTranslate=0;
 }
 - (void) updateCView
 {
+#ifdef VERBOSEMODE
+	NSLog( @"updating Cview");
+#endif
 if(currentTool==5||isInCPROnlyMode)
 	[self updateCViewAsCurvedMPR];
 else 
 	[self updateCViewAsMPR];
 
-
+#ifdef VERBOSEMODE
+	NSLog( @"Cview Updated");
+#endif
 }
 
 - (void) updateAxView
 {
+#ifdef VERBOSEMODE
+	NSLog( @"updating Axview");
+#endif
 	if(currentTool==5||isInCPROnlyMode)
 	{
 		if(!isStraightenedCPR)
@@ -1454,6 +1475,9 @@ else
 	
 	
 	[crossAxiasView setIndex: 0 ];
+#ifdef VERBOSEMODE
+	NSLog( @"AXview Updated");
+#endif
 	
 }
 - (void) resetSliders
@@ -1671,6 +1695,10 @@ else
 					{
 						if([[roi points] count]==3)
 							[[roi points] removeLastObject];
+#ifdef VERBOSEMODE
+						NSLog( @"ROI drawing finished");
+#endif
+						
 
 					}
 					else
@@ -1680,6 +1708,9 @@ else
 						{
 							[[arrowPointsArray objectAtIndex:0] setPoint: [oViewEndPoint point]];
 						}
+#ifdef VERBOSEMODE
+						NSLog( @"ROI drawing");
+#endif
 					}
 				}
 
@@ -1730,16 +1761,16 @@ else
 				axViewTransform->Translate(cPRViewCenter.x,cPRViewCenter.y,0 );
 				axViewTransform->RotateZ(oViewToCViewZAngle);
 				axViewTransform->RotateX(90);
-				
-				[self updateCView];
-				[self updateAxView];
+
 				
 				tempPt.x=-cViewOrigin[0]/cViewSpace[0]-cPRROIRect.size.width/2;
 				tempPt.y=-cViewOrigin[1]/cViewSpace[1];
 				
 
 				
-
+#ifdef VERBOSEMODE
+				NSLog( @"updating CView Arrow");
+#endif
 				if(cViewArrow)
 				{
 
@@ -1752,9 +1783,22 @@ else
 					[[cViewArrowPointsArray objectAtIndex:1] setPoint: startPoint];
 					
 				}
+				
+#ifdef VERBOSEMODE
+				NSLog( @"updating CView Image");
+#endif
+				
+				[self updateCView];
+#ifdef VERBOSEMODE
+				NSLog( @"updating AxView Image");
+#endif
+				[self updateAxView];
 			
 			}
-			[cPRView setIndex:0];
+#ifdef VERBOSEMODE
+			NSLog( @"finished all roi update");
+#endif
+			//[cPRView setIndex:0];
 			
 		}
 		else if([sender isEqual:cViewArrow])
@@ -1864,6 +1908,8 @@ else
 }
 - (void) roiAdded: (NSNotification*) note
 {
+	
+
 	id sender =[note object];
 
 	
@@ -1979,6 +2025,9 @@ else
 				}
 				else if(currentTool == 7)
 				{
+#ifdef VERBOSEMODE
+					NSLog( @"ROI added");
+#endif
 					//delete other
 					unsigned int i;
 					isRemoveROIBySelf=1;
@@ -2006,7 +2055,9 @@ else
 					[arrowPointsArray addObject:lastPoint];
 					[lastPoint release];
 					oViewArrow=roi;
-
+#ifdef VERBOSEMODE
+					NSLog( @"Get OView ROI");
+#endif
 					
 					
 					//create roi in cview and axview
@@ -2024,12 +2075,18 @@ else
 					[[cViewROIList objectAtIndex: 0] addObject: newROI];
 					cViewArrow=newROI;
 					[newROI release];
+#ifdef VERBOSEMODE
+					NSLog( @"Created CView ROI");
+#endif
 					
 					curImage= [axViewPixList objectAtIndex:0];
 					newROI=[[ROI alloc] initWithType: tOval :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
 					[newROI setName:currentSeedName];
 					[[axViewROIList objectAtIndex: 0] addObject: newROI];
 					[newROI release];
+#ifdef VERBOSEMODE
+					NSLog( @"Created AxView ROI");
+#endif
 					
 					axCircleRect.size.width=10;
 					axCircleRect.size.height=10;
@@ -2053,7 +2110,12 @@ else
 					isRemoveROIBySelf=0;
 					cViewArrow=roi;
 					cViewArrowPointsArray=[cViewArrow points];
+#ifdef VERBOSEMODE
+					NSLog( @"Reset CView ROI's points");
+#endif
+					
 				}
+				
 			}
 		}
 	}
@@ -2588,6 +2650,9 @@ else
 
 - (IBAction)covertRegoinToSeeds:(id)sender
 {
+#ifdef VERBOSEMODE
+	NSLog( @"converting ROI to seeds");
+#endif
 	if(currentTool==6)
 	{
 		ROI* roi=[[cViewROIList objectAtIndex: 0] objectAtIndex: 0];
@@ -2868,6 +2933,9 @@ else
 	}
 	[[cViewROIList objectAtIndex:0] removeAllObjects];
 	[[axViewROIList objectAtIndex:0] removeAllObjects];
+#ifdef VERBOSEMODE
+	NSLog( @"converted ROI to seeds");
+#endif
 }
 
 - (void) fixHolesInBarrier:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker
@@ -4517,7 +4585,16 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 		if([ifExportCrossSectionButton state]== NSOnState)
 		{
-			new2DViewer=[self exportCrossSectionImages];
+			int imagenumber=([axImageSlider maxValue]-[axImageSlider minValue])/(minSpacing*2);
+			float step;
+			if(imagenumber>512)
+			{
+				imagenumber=512;
+				step=([axImageSlider maxValue]-[axImageSlider minValue])/512.0;
+			}
+			else
+				step=2*minSpacing;
+			new2DViewer=[self exportCrossSectionImages:[axImageSlider minValue]:step:imagenumber];
 			
 			if(isInCPROnlyMode&&parent&&new2DViewer)
 			{
@@ -4666,6 +4743,9 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		[originalViewController endWaitWindow: waitWindow];
 		
 	}
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];
+
 }
 - (IBAction)exportCenterlines:(id)sender
 {
@@ -4731,6 +4811,9 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		}
 		[temparray addObject:[NSString stringWithString:@"Centerlines"]];
 	}
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];
+
 	
 }
 - (void) creatROIfrom3DPath:(NSArray*)path:(NSString*)name:(NSMutableArray*)newViewerROIList
@@ -4869,6 +4952,9 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		}
 		
 	}
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	[window setFrame:screenrect display:YES ];
+
 }
 - (IBAction)removeCenterline:(id)sender
 {
@@ -5126,26 +5212,39 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 - (IBAction)exportOrthogonalDataset:(id)sender
 {
 
-	if(currentTool==5||isInCPROnlyMode)
+	int tag=[sender tag];
+	[exportMPRWindow orderOut:sender];
+    [NSApp endSheet:exportMPRWindow returnCode:tag];
+	if(tag)
 	{
-		NSRunAlertPanel(NSLocalizedString(@"CPR mode", nil), NSLocalizedString(@"In CPR mode, please use export CPR dialog.", nil), NSLocalizedString(@"OK", nil), nil, nil);
-		return;
-	}
 
-	id waitWindow = [originalViewController startWaitWindow:@"processing"];
-	ViewerController * newviewer;
-	newviewer=[self exportCrossSectionImages];
-	if(newviewer)
-		newviewer=[self exportCViewImages];
-	
-	if(newviewer)
-		newviewer=[self exportOViewImages];
-	
-	[originalViewController endWaitWindow: waitWindow];	
-	
+		id waitWindow = [originalViewController startWaitWindow:@"processing"];
+		ViewerController * newviewer;
+		float start;
+		
+		start=[exportAxViewFromText floatValue];
+		if(start>[exportAxViewToText floatValue])
+			start=[exportAxViewToText floatValue];	
+		newviewer=[self exportCrossSectionImages:start:[exportStepText floatValue]:[exportAxViewAmountText intValue]];
+		
+		start=[exportCViewFromText floatValue];
+		if(start>[exportCViewToText floatValue])
+			start=[exportCViewToText floatValue];	
+		if(newviewer)
+			newviewer=[self exportCViewImages:start:[exportStepText floatValue]:[exportCViewAmountText intValue]];
+		
+		start=[exportOViewFromText floatValue];
+		if(start>[exportOViewToText floatValue])
+			start=[exportOViewToText floatValue];		
+		
+		if(newviewer)
+			newviewer=[self exportOViewImages:start:[exportStepText floatValue]:[exportOViewAmountText intValue]];
+		
+		[originalViewController endWaitWindow: waitWindow];	
+	}	
 }
 
-- (ViewerController *) exportCrossSectionImages
+- (ViewerController *) exportCrossSectionImages:(float)start:(float)step:(int)slicenumber
 {
 	
 	NSPoint point[4];
@@ -5170,18 +5269,12 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	
 
 	
-	int imageNumber=([axImageSlider maxValue]-[axImageSlider minValue])/minSpacing;
+	int imageNumber=slicenumber;
 	float distanceofstep,currentdistance,startfromdistance;
 	int maxwidth=0,maxheight=0;
-	startfromdistance=[axImageSlider minValue];
+	startfromdistance=start;
 	currentdistance = [axImageSlider floatValue];
-	distanceofstep = minSpacing;
-	
-	if(imageNumber>512&&currentTool!=5&&!isInCPROnlyMode)
-	{
-		imageNumber=512;
-		distanceofstep=([axImageSlider maxValue]-[axImageSlider minValue])/512.0;
-	}
+	distanceofstep = step;
 	
 	
 	NSRect viewsize = [crossAxiasView frame];
@@ -5327,7 +5420,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		[newPix setOrientation: vector];
 		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
 		[newPix setPixelRatio:  axViewSpace[1] / axViewSpace[0]];
-		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceThickness: 0];
 		[newPix setSliceInterval: distanceofstep];
 
 	
@@ -5350,7 +5443,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 													:newData]; 
 	return new2DViewer;
 }
-- (ViewerController *) exportCViewImages
+- (ViewerController *) exportCViewImages:(float)start:(float)step:(int)slicenumber
 {
 	
 	NSPoint point[4];
@@ -5369,18 +5462,12 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	
 	
 	
-	int imageNumber=([cImageSlider maxValue]-[cImageSlider minValue])/minSpacing;
+	int imageNumber=slicenumber;
 	float distanceofstep,currentdistance,startfromdistance;
 	int maxwidth=0,maxheight=0;
-	startfromdistance=[cImageSlider minValue];
+	startfromdistance=start;
 	currentdistance = [cImageSlider floatValue];
-	distanceofstep = minSpacing;
-	
-	if(imageNumber>512)
-	{
-		imageNumber=512;
-		distanceofstep=([cImageSlider maxValue]-[cImageSlider minValue])/512.0;
-	}
+	distanceofstep = step;
 	
 	
 	NSRect viewsize = [cPRView frame];
@@ -5524,7 +5611,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		[newPix setOrientation: vector];
 		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
 		[newPix setPixelRatio:  cViewSpace[1] / cViewSpace[0]];
-		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceThickness: 0];
 		[newPix setSliceInterval: distanceofstep];
 		
 		
@@ -5547,7 +5634,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 													:newData]; 
 	return new2DViewer;
 }
-- (ViewerController *) exportOViewImages
+- (ViewerController *) exportOViewImages:(float)start:(float)step:(int)slicenumber
 {
 	
 	NSPoint point[4];
@@ -5566,19 +5653,12 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 	
 	
 	
-	int imageNumber=([oImageSlider maxValue]-[oImageSlider minValue])/minSpacing;
+	int imageNumber=slicenumber;
 	float distanceofstep,currentdistance,startfromdistance;
 	int maxwidth=0,maxheight=0;
-	startfromdistance=[oImageSlider minValue];
+	startfromdistance=start;
 	currentdistance = [oImageSlider floatValue];
-	distanceofstep = minSpacing;
-	
-	if(imageNumber>512)
-	{
-		imageNumber=512;
-		distanceofstep=([oImageSlider maxValue]-[oImageSlider minValue])/512.0;
-	}
-	
+	distanceofstep = step;
 	NSRect viewsize = [originalView frame];
 	maxwidth=viewsize.size.width/[originalView scaleValue];
 	maxheight=viewsize.size.height/[originalView scaleValue];
@@ -5720,7 +5800,7 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		[newPix setOrientation: vector];
 		[newPix setSliceLocation:startfromdistance+i*distanceofstep];
 		[newPix setPixelRatio:  oViewSpace[1] / oViewSpace[0]];
-		[newPix setSliceThickness: distanceofstep];
+		[newPix setSliceThickness: 0];
 		[newPix setSliceInterval: distanceofstep];
 		
 		
@@ -5743,5 +5823,124 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 													:newData]; 
 	return new2DViewer;
 }
+- (IBAction)showExportDialog:(id)sender
+{
+	
+    [exportOViewFromSlider setMaxValue:[oImageSlider maxValue]];
+	[exportOViewFromSlider setMinValue:[oImageSlider minValue]];
+	[exportOViewFromSlider setFloatValue:[oImageSlider floatValue]];
 
+	[exportOViewToSlider setMaxValue:[oImageSlider maxValue]];
+	[exportOViewToSlider setMinValue:[oImageSlider minValue]];
+	[exportOViewToSlider setFloatValue:[oImageSlider floatValue]];
+
+	[exportCViewFromSlider setMaxValue:[cImageSlider maxValue]];
+	[exportCViewFromSlider setMinValue:[cImageSlider minValue]];
+	[exportCViewFromSlider setFloatValue:[cImageSlider floatValue]];
+
+	[exportCViewToSlider setMaxValue:[cImageSlider maxValue]];
+	[exportCViewToSlider setMinValue:[cImageSlider minValue]];
+	[exportCViewToSlider setFloatValue:[cImageSlider floatValue]];
+
+	[exportAxViewFromSlider setMaxValue:[axImageSlider maxValue]];
+	[exportAxViewFromSlider setMinValue:[axImageSlider minValue]];
+	[exportAxViewFromSlider setFloatValue:[axImageSlider floatValue]];
+
+	[exportAxViewToSlider setMaxValue:[axImageSlider maxValue]];
+	[exportAxViewToSlider setMinValue:[axImageSlider minValue]];
+	[exportAxViewToSlider setFloatValue:[axImageSlider floatValue]];
+
+	[exportSpacingXText setFloatValue:xSpacing];
+	[exportSpacingYText setFloatValue:ySpacing];	
+	[exportStepText setFloatValue:2*minSpacing*[exportStepSlider floatValue]];
+	
+	[exportOViewFromText setFloatValue:[exportOViewFromSlider floatValue]];
+	[exportOViewToText setFloatValue:[exportOViewToSlider floatValue]];
+	[exportOViewAmountText setIntValue:1];	
+	[exportCViewFromText setFloatValue:[exportCViewFromSlider floatValue]];
+	[exportCViewToText setFloatValue:[exportCViewToSlider floatValue]];
+	[exportCViewAmountText setIntValue:1];
+	[exportAxViewFromText setFloatValue:[exportAxViewFromSlider floatValue]];
+	[exportAxViewToText setFloatValue:[exportAxViewToSlider floatValue]];
+	[exportAxViewAmountText setIntValue:1];
+	if(currentTool!=5&&!isInCPROnlyMode)
+		[NSApp beginSheet: exportMPRWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
+	else
+		NSRunAlertPanel(NSLocalizedString(@"Can not export CPR image", nil), NSLocalizedString(@"Please Exit CPR Mode.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+}
+- (IBAction)setExportDialogFromToSlider:(id)sender
+{
+	
+	[exportOViewFromText setFloatValue:[exportOViewFromSlider floatValue]];
+	[exportOViewToText setFloatValue:[exportOViewToSlider floatValue]];
+	[exportOViewAmountText setIntValue:(int)(fabs([exportOViewFromText floatValue]-[exportOViewToText floatValue])/[exportStepText floatValue]+1)];	
+	[exportCViewFromText setFloatValue:[exportCViewFromSlider floatValue]];
+	[exportCViewToText setFloatValue:[exportCViewToSlider floatValue]];
+	[exportCViewAmountText setIntValue:(int)(fabs([exportCViewFromText floatValue]-[exportCViewToText floatValue])/[exportStepText floatValue]+1)];
+	[exportAxViewFromText setFloatValue:[exportAxViewFromSlider floatValue]];
+	[exportAxViewToText setFloatValue:[exportAxViewToSlider floatValue]];
+	[exportAxViewAmountText setIntValue:(int)(fabs([exportAxViewFromText floatValue]-[exportAxViewToText floatValue])/[exportStepText floatValue]+1)];
+	
+}
+- (IBAction)setExportDialogStepSlider:(id)sender
+{
+	
+	[exportStepText setFloatValue:2*minSpacing*[exportStepSlider floatValue]];
+	[self setExportDialogFromToSlider:sender];
+}
+- (IBAction)setExportDialogFromToButton:(id)sender
+{
+	int tag=[sender tag];
+	switch(tag)
+	{
+		case 1:
+
+			[exportOViewFromSlider setFloatValue:[oImageSlider floatValue]];
+
+			[exportOViewToSlider setFloatValue:[oImageSlider floatValue]];
+	
+			break;
+		case 2:
+			
+			[exportOViewFromSlider setFloatValue:[exportOViewFromSlider minValue]];
+			
+			[exportOViewToSlider setFloatValue:[exportOViewToSlider maxValue]];
+			
+			break;
+		case 3:
+
+			[exportCViewFromSlider setFloatValue:[cImageSlider floatValue]];
+
+			[exportCViewToSlider setFloatValue:[cImageSlider floatValue]];
+			
+			break;
+		case 4:
+			[exportCViewFromSlider setFloatValue:[exportCViewFromSlider minValue]];
+			
+			[exportCViewToSlider setFloatValue:[exportCViewToSlider maxValue]];
+			
+			break;
+		case 5:
+
+			[exportAxViewFromSlider setFloatValue:[axImageSlider floatValue]];
+			
+			[exportAxViewToSlider setFloatValue:[axImageSlider floatValue]];
+			
+			break;
+		case 6:
+			
+			[exportAxViewFromSlider setFloatValue:[exportAxViewFromSlider minValue]];
+			
+			[exportAxViewToSlider setFloatValue:[exportAxViewToSlider maxValue]];
+			
+			break;
+	}
+	[self setExportDialogFromToSlider:sender];
+	
+	
+}
+- (IBAction)whyNoThickness:(id)sender
+{
+	NSRunAlertPanel(NSLocalizedString(@"Thickness", nil), NSLocalizedString(@"The reslice algorithm is trying to resample the volume with a plane which has no thickness. However you can choose the interval between slices by giving a step length.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+}
 @end

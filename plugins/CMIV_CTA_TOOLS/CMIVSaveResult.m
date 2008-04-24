@@ -8,7 +8,7 @@ This file is part of CMIV CTA image processing Plugin for OsiriX.
 
 Copyright (c) 2007,
 Center for Medical Image Science and Visualization (CMIV),
-Linköping University, Sweden, http://www.cmiv.liu.se/
+Link√∂ping University, Sweden, http://www.cmiv.liu.se/
 
 CMIV CTA image processing Plugin for OsiriX is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -29,6 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "CMIVSaveResult.h"
 #import "CMIVExport.h"
+#define VERBOSEMODE
+
 
 @implementation CMIVSaveResult
 
@@ -50,7 +52,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (IBAction)onSave:(id)sender
 {
-
+#ifdef VERBOSEMODE
+	NSLog( @"**********Start Exporting Data************");
+#endif
+	
 	[self findPreviewMatrix];
 	CMIVExport *exporter=[[CMIVExport alloc] init];
 	[exporter setSeriesDescription: [seriesName stringValue]];
@@ -61,7 +66,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[exporter exportCurrentSeries: originalViewController];
 	exportSeriesUID=[[exporter exportSeriesUID] retain];
 	[exporter release];	
-	
+#ifdef VERBOSEMODE
+	NSString* strwarning=[NSString stringWithString: @"**********Waiting OsiriX read Data************"];
+	strwarning=[strwarning stringByAppendingString:exportSeriesUID];
+	NSLog(strwarning);
+#endif
 	waitWindow = [originalViewController startWaitWindow:@"database updating..."];
 	databaseUpdateTimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openNewCreatedSeries:) userInfo:self repeats:YES] retain];
 	[okButton setEnabled: NO];
@@ -127,10 +136,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		isUpdated=NO;
 		for(i=1;i<[previewMatrix numberOfRows];i++)
 		{
-			NSManagedObject	*curSeries = [[previewMatrix cellAtRow: i column:0] representedObject];
+			NSManagedObject	*curSeries=nil;
+			id tempid= [[previewMatrix cellAtRow: i column:0] representedObject];
+			NSButtonCell *cell = [previewMatrix cellAtRow: i column:0];
+			if([cell image]!=nil)
+				if([tempid isKindOfClass:[NSManagedObject class]])
+					curSeries=tempid;
 			if(curSeries)
 			{
 				NSString* curSeriesUID=[curSeries primitiveValueForKey:@"seriesDICOMUID"];
+				
+#ifdef VERBOSEMODE
+				NSLog(curSeriesUID);
+#endif
 				if(curSeriesUID&&[curSeriesUID isEqualToString: exportSeriesUID])
 				{	
 
@@ -145,12 +163,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 						[self restoreROIs:roilist];
 					i=[previewMatrix numberOfRows];
 					isUpdated=YES;
+					
 
 				}
 			}
+			
 		}
 		if(!isUpdated)
-			NSRunAlertPanel(NSLocalizedString(@"Database update failed", nil), NSLocalizedString(@"DICOM might be exported, ROIs will be lost.Try restart OsiriX.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		{
+			NSRunAlertPanel(NSLocalizedString(@"Loading new series failed", nil), NSLocalizedString(@"DICOM have been exported, ROIs will be lost.Try restart OsiriX.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+#ifdef VERBOSEMODE
+			NSString* strwarning=[NSString stringWithFormat: @"searched %d to %d series",[previewMatrix numberOfRows],seriesBefore];
+			NSLog(strwarning);
+#endif
+		}
 		[self onCancel:nil];
 		
 	}
@@ -163,6 +189,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[databaseUpdateTimer release];
 			databaseUpdateTimer=nil;
 			NSRunAlertPanel(NSLocalizedString(@"Database update failed", nil), NSLocalizedString(@"DICOM might be exported, ROIs will be lost.Try restart OsiriX.", nil), NSLocalizedString(@"OK", nil), nil, nil);
+#ifdef VERBOSEMODE
+			NSString* strwarning=[NSString stringWithFormat: @"timeout after %d s to %d s",checkTime,[[NSUserDefaults standardUserDefaults] integerForKey:@"LISTENERCHECKINTERVAL"]];
+			NSLog(strwarning);
+#endif
+			
 			[self onCancel:nil];
 
 		}

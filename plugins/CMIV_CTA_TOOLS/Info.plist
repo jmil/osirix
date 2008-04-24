@@ -15,20 +15,21 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.3</string>
+	<string>1.1</string>
+	<key>NSPrincipalClass</key>
+	<string>CMIV_CTA_TOOLS</string>
 	<key>MenuTitles</key>
 	<array>
 		<string>Wizard For Coronary CTA</string>
+		<string>Rib Cage Remove(Testing)</string>
 		<string>VOI Cutter</string>
 		<string>MathMorph Tool</string>
 		<string>2D Views</string>
 		<string>Interactive Segmentation</string>
-		<string>Segmental VR</string>
+		<string>Tagged Volume Rendering</string>
 		<string>Save Results</string>
 		<string>About this Plug-in</string>
 	</array>
-	<key>NSPrincipalClass</key>
-	<string>CMIV_CTA_TOOLS</string>
 	<key>pluginType</key>
 	<string>other</string>
 </dict>

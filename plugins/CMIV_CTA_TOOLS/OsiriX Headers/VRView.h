@@ -130,8 +130,7 @@ typedef char* vtkMyCallbackVR;
 #endif
 
 #include <Accelerate/Accelerate.h>
-#import "ViewerController.h"
-#import "WaitRendering.h"
+
 
 #import "Schedulable.h"
 #import "Scheduler.h"

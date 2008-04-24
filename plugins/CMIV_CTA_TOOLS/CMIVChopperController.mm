@@ -289,7 +289,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[NSBundle loadNibNamed:@"Chopper_Panel" owner:self];
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	[window setFrame:screenrect display:YES ];
+	[window setFrame:screenrect display:NO ];
 
 
 	imageWidth = [curPix pwidth];
@@ -362,27 +362,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[nextStep setHidden:YES];
 			[wizardTips  setHidden:YES];
 		}
-	/*
-		{
-			NSArray				*winList = [NSApp windows];
-			unsigned int i;
-			toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
-			for( i = 0; i < [winList count]; i++)
-			{
-				if( [[winList objectAtIndex:i] toolbar])
-				{
-					NSToolbar *aToolbar=[[winList objectAtIndex:i] toolbar];
-					if([aToolbar isVisible])
-					{
-						[toolbarList addObject: aToolbar];
-						[aToolbar setVisible:NO];
-					}
-					
-					
-				}
-				
-			}
-		}*/
 	}
 	
 	return err;
