@@ -23,8 +23,26 @@
 		imageSize = [curPix pwidth] * [curPix pheight];
 		size = sizeof(float) * [pixList count]/2 * imageSize;
 		
-		float orientation[ 9];
+		for( DCMPix *p in pixList)
+		{
+			float o[ 9];
+			
+			[p orientation: o];
+			
+			for( int i = 0 ; i < 6 ; i++)
+			{
+				int r = o[ i]*1000.;
+				
+				o[i] = (float) r / 1000.;
+				
+				NSLog( @"%f", o[i]);
+			}
+			
+			[p setOrientation: o];
+			
+		}
 		
+		float orientation[ 9];		
 		[curPix orientation: orientation];
 		
 		for( DCMPix *p in pixList)
