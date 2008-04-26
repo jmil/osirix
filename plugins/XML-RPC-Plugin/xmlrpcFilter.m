@@ -34,6 +34,68 @@
 	
 	// ****************************************************************************************
 	
+	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"updateDICOMNode"])	//AETitle, Port, TransferSyntax
+	{
+		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
+		
+		NSError	*error = 0L;
+		NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
+		NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
+		if (3 == [keys count] || 3 == [values count])
+		{
+			int i;
+			NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
+			for( i = 0; i < [keys count]; i++)
+				[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
+			
+			NSLog( @"%@", paramDict);
+			
+			NSMutableArray *serversArray = [NSMutableArray arrayWithArray: [[NSUserDefaults standardUserDefaults] arrayForKey: @"SERVERS"]];
+			
+			BOOL found = NO;
+			
+			for( NSDictionary *d in serversArray)
+			{
+				if( [[d valueForKey:@"AETitle"] isEqualToString: [paramDict valueForKey:@"AETitle"]])
+				{
+					NSMutableDictionary *m = [NSMutableDictionary dictionaryWithDictionary: d];
+					
+					[m setObject: [httpServerMessage valueForKey: @"peerAddress"] forKey:@"Address"];
+					[m setObject: [paramDict valueForKey:@"Port"] forKey:@"Port"];
+					[m setObject: [NSNumber numberWithInt: [[paramDict valueForKey:@"TransferSyntax"] intValue]] forKey:@"Transfer Syntax"];
+					
+					found = YES;
+				}
+			}
+			
+			if( found == NO)
+			{
+				[serversArray addObject: [NSDictionary dictionaryWithObjectsAndKeys:	[httpServerMessage valueForKey: @"peerAddress"], @"Address",
+																						[paramDict valueForKey:@"AETitle"], @"AETitle",
+																						[paramDict valueForKey:@"Port"], @"Port",
+																						[NSNumber numberWithBool:YES] , @"QR",
+																						[NSNumber numberWithBool:YES] , @"Send",
+																						[paramDict valueForKey:@"AETitle"], @"Description",
+																						[NSNumber numberWithInt: [[paramDict valueForKey:@"TransferSyntax"] intValue]], @"Transfer Syntax",
+																						nil]];
+			}
+			
+			NSLog( @"%@", serversArray);
+			
+			[[NSUserDefaults standardUserDefaults] setObject: serversArray forKey:@"SERVERS"];
+			
+			// Done, we can send the response to the sender
+			
+			NSString *xml = @"<?xml version=\"1.0\"?><methodResponse><params><param><value><struct><member><name>error</name><value>0</value></member></struct></value></param></params></methodResponse>";		// Simple answer, no errors
+			NSError *error = nil;
+			NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithXMLString:xml options:NSXMLNodeOptionsNone error:&error] autorelease];
+			[httpServerMessage setValue: doc forKey: @"NSXMLDocumentResponse"];
+			[httpServerMessage setValue: [NSNumber numberWithBool: YES] forKey: @"Processed"];		// To tell to other XML-RPC that we processed this order
+		}
+	}
+
+	// ****************************************************************************************
+	
 	if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"importFromURL"])
 	{
 		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
