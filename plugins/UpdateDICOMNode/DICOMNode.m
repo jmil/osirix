@@ -19,7 +19,7 @@
 	NSString *port = [[NSUserDefaults standardUserDefaults] stringForKey: @"AEPORT"];
 	NSString *ts = @"0";
 	
-	NSString *xml = [NSString stringWithFormat:@"<?xml version=\"1.0\"?><methodCall><methodName>UpdateDICOMNode</methodName><params><param><value><struct><member><name>AETitle</name><value><string>%@</string></value></member><member><name>Port</name><value><string>%@</string></value></member><member><name>TransferSyntax</name><value><string>%@</string></value></member></struct></value></param></params></methodCall>", aet, port, ts, 0L];
+	NSString *xml = [NSString stringWithFormat:@"<?xml version=\"1.0\"?><methodCall><methodName>updateDICOMNode</methodName><params><param><value><struct><member><name>AETitle</name><value><string>%@</string></value></member><member><name>Port</name><value><string>%@</string></value></member><member><name>TransferSyntax</name><value><string>%@</string></value></member></struct></value></param></params></methodCall>", aet, port, ts, 0L];
 	
 	NSError *error = nil; 
 	NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithXMLString:xml options:NSXMLNodeOptionsNone error:&error] autorelease]; 
