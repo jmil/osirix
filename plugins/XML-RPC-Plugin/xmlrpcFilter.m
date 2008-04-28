@@ -64,7 +64,12 @@
 					[m setObject: [paramDict valueForKey:@"Port"] forKey:@"Port"];
 					[m setObject: [NSNumber numberWithInt: [[paramDict valueForKey:@"TransferSyntax"] intValue]] forKey:@"Transfer Syntax"];
 					
+					[serversArray removeObject: d];
+					[serversArray addObject: m];
+					
 					found = YES;
+					
+					break;
 				}
 			}
 			
