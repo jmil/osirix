@@ -50,26 +50,8 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
-- Fix bugs related to MacOS 10.5.2 / Radeon2600 graphic boards
-- Possibility to add or remove studies from an album on a distant shared DB
-- Merge Brush ROIs together (Growing Region Segmentation)
-- Totoku 12 bits screen support - Through a plugin
-- ITK 3.4.0
-- VTK latest available nightly build (4/1/08)
-- Navigator panel
-- Sort the series by any DICOM field (see Meta-Data window)
-- Gantry Tilt correction plugin
-- Growing region in 4D
-- Manually move 3D Data Set for manual registration (PET-CT / SPECT-CT)
-- New Cross Reference Lines algorithm
-- Export screen capture in 16-bit DICOM
-- PET-CT display SUV on CT for ROIs info
-- Go to next/previous key image shortkeys (ctrl-k, shift-ctrl-k)
-- Flatten Fused Image (Merging/Stitching)
-- Automatic version checking for plugins
-- Copy 'linked' images to Database folder
-- Status/Comments in web http server
-- Smart Cropping technology for image export/copy
+- Preferred syntax for retrieve during Q&R : OsiriX Client
+- On the fly compression/decompression for Q&R : OsiriX Server
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
