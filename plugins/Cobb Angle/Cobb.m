@@ -17,11 +17,20 @@
 	DCMPix *curPix;
 	curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
 	
+	pixelSpacingX = [curPix pixelSpacingX];
+	pixelSpacingY = [curPix pixelSpacingY];
+	
+	if( pixelSpacingX == 0 || pixelSpacingY == 0)
+	{
+		pixelSpacingX = 1;
+		pixelSpacingY = 1;
+	}
+	
 	NSPoint a1, a2, b1, b2;
-	a1 = NSMakePoint(u1.x * [curPix pixelSpacingX], u1.y * [curPix pixelSpacingY]);
-	a2 = NSMakePoint(u2.x * [curPix pixelSpacingX], u2.y * [curPix pixelSpacingY]);
-	b1 = NSMakePoint(v1.x * [curPix pixelSpacingX], v1.y * [curPix pixelSpacingY]);
-	b2 = NSMakePoint(v2.x * [curPix pixelSpacingX], v2.y * [curPix pixelSpacingY]);
+	a1 = NSMakePoint(u1.x * pixelSpacingX, u1.y * pixelSpacingY);
+	a2 = NSMakePoint(u2.x * pixelSpacingX, u2.y * pixelSpacingY);
+	b1 = NSMakePoint(v1.x * pixelSpacingX, v1.y * pixelSpacingY);
+	b2 = NSMakePoint(v2.x * pixelSpacingX, v2.y * pixelSpacingY);
 	
 	newROI = [viewerController newROI: tAngle];
 
@@ -56,10 +65,10 @@
 	c = NSMakePoint( xx, or1 + xx*slope1);
     
     NSPoint aa, bb, cc, dd;
-    aa = NSMakePoint(a.x / [curPix pixelSpacingX], a.y / [curPix pixelSpacingY]);
-    bb = NSMakePoint(b.x / [curPix pixelSpacingX], b.y / [curPix pixelSpacingY]);
-    cc = NSMakePoint(c.x / [curPix pixelSpacingX], c.y / [curPix pixelSpacingY]);
-    dd = NSMakePoint(d.x / [curPix pixelSpacingX], d.y / [curPix pixelSpacingY]);
+    aa = NSMakePoint(a.x / pixelSpacingX, a.y / pixelSpacingY);
+    bb = NSMakePoint(b.x / pixelSpacingX, b.y / pixelSpacingY);
+    cc = NSMakePoint(c.x / pixelSpacingX, c.y / pixelSpacingY);
+    dd = NSMakePoint(d.x / pixelSpacingX, d.y / pixelSpacingY);
 
 	[points addObject: [viewerController newPoint : bb.x : bb.y]];
 	[points addObject: [viewerController newPoint : cc.x : cc.y]];
