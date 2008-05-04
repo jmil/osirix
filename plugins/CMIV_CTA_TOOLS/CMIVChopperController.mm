@@ -259,17 +259,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[parent gotoStepNo:2];
 	else
 		[parent exitCurrentDialog];
-	
-	
-
 }
+
 - (void)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner
 {
 	isInWizardMode=YES;
 
 	[self showChopperPanel: vc:owner];
-	
 }
+
 - (int) showChopperPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner
 {
 	int err=0;
@@ -288,9 +286,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 	[NSBundle loadNibNamed:@"Chopper_Panel" owner:self];
-	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	[window setFrame:screenrect display:NO ];
-
+	
+	NSRect screenrect = [[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+	
+	[window setFrame:screenrect display:NO];
 
 	imageWidth = [curPix pwidth];
 	imageHeight = [curPix pheight];

@@ -455,6 +455,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[NSBundle loadNibNamed:@"SegPreview" owner:self];
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+
 	[window setFrame:screenrect display:YES ];	MPRFileList =[originalViewController fileList ];
 	DCMPix* curPix;	
 	curPix = [[originalViewController pixList] objectAtIndex: 0];

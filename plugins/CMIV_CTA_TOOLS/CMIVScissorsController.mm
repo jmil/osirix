@@ -662,11 +662,13 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	
 	
 	[NSBundle loadNibNamed:@"Scissors_Panel" owner:self];
-	 NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	 [window setFrame:screenrect display:YES ];
+	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+	
+	[window setFrame:screenrect display:YES ];
 	 
-	
-	
 	//initilize original view CPRView and Axial View;
 	err = [self initViews];
 	if(err)
@@ -4744,8 +4746,10 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 	}
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
 	[window setFrame:screenrect display:YES ];
-
 }
 - (IBAction)exportCenterlines:(id)sender
 {
@@ -4812,9 +4816,10 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		[temparray addObject:[NSString stringWithString:@"Centerlines"]];
 	}
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
 	[window setFrame:screenrect display:YES ];
-
-	
 }
 - (void) creatROIfrom3DPath:(NSArray*)path:(NSString*)name:(NSMutableArray*)newViewerROIList
 {
@@ -4953,9 +4958,13 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 	}
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+	
 	[window setFrame:screenrect display:YES ];
-
 }
+
 - (IBAction)removeCenterline:(id)sender
 {
 	unsigned int row = [centerlinesList selectedRow];

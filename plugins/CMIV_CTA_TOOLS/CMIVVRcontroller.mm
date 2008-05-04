@@ -695,6 +695,10 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+
 	[window setFrame:screenrect display:NO ];	
 	//initilize VR view	
 
@@ -883,6 +887,10 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	NSArray				*pixList = [originalViewController pixList];
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
+	screenrect.size.height -= 100;
+	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
+	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
+
 	[window setFrame:screenrect display:NO ];	
 	//initilize VR view	
 

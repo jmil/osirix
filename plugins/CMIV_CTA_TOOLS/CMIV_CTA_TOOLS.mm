@@ -152,10 +152,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		currentController=saver;
 	return err;
 }
+
 - (void) gotoStepNo:(int)stage
 {
-
-
 	if(currentController)
 		[currentController release];
 	currentController=nil;
