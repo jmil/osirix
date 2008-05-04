@@ -11,8 +11,18 @@
 {
 	ROI				*newROI;
 	
-	NSPoint	a1 = [[A objectAtIndex: 0] point], a2 = [[A objectAtIndex: 1] point], b1 = [[B objectAtIndex: 0] point], b2 = [[B objectAtIndex: 1] point];
-
+	NSPoint	u1 = [[A objectAtIndex: 0] point], u2 = [[A objectAtIndex: 1] point], v1 = [[B objectAtIndex: 0] point], v2 = [[B objectAtIndex: 1] point];
+ 
+	// PdB added
+	DCMPix *curPix;
+	curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
+	
+	NSPoint a1, a2, b1, b2;
+	a1 = NSMakePoint(u1.x * [curPix pixelSpacingX], u1.y * [curPix pixelSpacingY]);
+	a2 = NSMakePoint(u2.x * [curPix pixelSpacingX], u2.y * [curPix pixelSpacingY]);
+	b1 = NSMakePoint(v1.x * [curPix pixelSpacingX], v1.y * [curPix pixelSpacingY]);
+	b2 = NSMakePoint(v2.x * [curPix pixelSpacingX], v2.y * [curPix pixelSpacingY]);
+	
 	newROI = [viewerController newROI: tAngle];
 
 	// Points of this ROI (it's currently empty)
@@ -44,18 +54,24 @@
 	xx = (or2 - or1) / (slope1 - slope2);
 	
 	c = NSMakePoint( xx, or1 + xx*slope1);
-	
-	[points addObject: [viewerController newPoint : b.x : b.y]];
-	[points addObject: [viewerController newPoint : c.x : c.y]];
-	[points addObject: [viewerController newPoint : d.x : d.y]];
+    
+    NSPoint aa, bb, cc, dd;
+    aa = NSMakePoint(a.x / [curPix pixelSpacingX], a.y / [curPix pixelSpacingY]);
+    bb = NSMakePoint(b.x / [curPix pixelSpacingX], b.y / [curPix pixelSpacingY]);
+    cc = NSMakePoint(c.x / [curPix pixelSpacingX], c.y / [curPix pixelSpacingY]);
+    dd = NSMakePoint(d.x / [curPix pixelSpacingX], d.y / [curPix pixelSpacingY]);
+
+	[points addObject: [viewerController newPoint : bb.x : bb.y]];
+	[points addObject: [viewerController newPoint : cc.x : cc.y]];
+	[points addObject: [viewerController newPoint : dd.x : dd.y]];
 	[roiImageList addObject: newROI];
 	[newROI setROIMode: ROI_selected];
 	
 	
 	newROI = [viewerController newROI: tMesure];
 	points = [newROI points];
-	[points addObject: [viewerController newPoint : a.x : a.y]];
-	[points addObject: [viewerController newPoint : c.x : c.y]];
+	[points addObject: [viewerController newPoint : aa.x : aa.y]];
+	[points addObject: [viewerController newPoint : cc.x : cc.y]];
 	[roiImageList addObject: newROI];
 	[newROI setROIMode: ROI_selected];
 }

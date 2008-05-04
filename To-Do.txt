@@ -50,8 +50,8 @@
 - High Quality rendering for Curved-MPR
 
 TODO:
-- Preferred syntax for retrieve during Q&R : OsiriX Client
-- On the fly compression/decompression for Q&R : OsiriX Server
+- Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
+- On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
@@ -79,3 +79,82 @@ HUG:
 for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
 
 for i in `ls *.a`; do lipo -create "$i" "$i"i386 -output "$i"final; done
+
+
+VTK MODIFICATIONS : 
+
+- TURN OFF FREETYPE CACHE SUPPORT in vtkFreeTypeUtilities.h (//# define VTK_FREETYPE_CACHING_SUPPORTED) __ppc64__
+
+#if (__ppc64__) || (__ppc__)
+//# define VTK_FREETYPE_CACHING_SUPPORTED
+#else
+# define VTK_FREETYPE_CACHING_SUPPORTED
+#endif
+
+
+- Alpha rendering for freetype text : see below
+
+Index: Rendering/vtkFreeTypeUtilities.cxx
+===================================================================
+RCS file: /cvsroot/VTK/VTK/Rendering/vtkFreeTypeUtilities.cxx,v
+retrieving revision 1.29
+diff -r1.29 vtkFreeTypeUtilities.cxx
+160c160
+<   this->ImageCache   = NULL;
+---
+>   this->ImageCache   = NULL;cccc
+1250c1250
+< 
+---
+> 	  
+1258c1258,1259
+<           t_alpha = tprop_opacity * (*glyph_ptr / 255.0); 
+---
+>           t_alpha = tprop_opacity * (*glyph_ptr / 255.0);	// 
+> 		  
+1260c1261,1263
+<           data_alpha = (data_ptr[3] - data_min) / data_range;
+---
+>           
+> 		  data_alpha = (data_ptr[3] - data_min) / data_range;
+> 		  
+1262c1265,1266
+<             data_min + data_range * tprop_r);
+---
+>             data_min + data_range * tprop_r*t_alpha + 
+>                 (*data_ptr * data_alpha) * t_1_m_alpha);
+1263a1268
+> 		  
+1265c1270,1271
+<             data_min + data_range * tprop_g);
+---
+>             data_min + data_range * tprop_g*t_alpha + 
+>                 (*data_ptr * data_alpha) * t_1_m_alpha);
+1266a1273
+> 		  
+1268c1275,1276
+<             data_min + data_range * tprop_b);
+---
+>             data_min + data_range * tprop_b*t_alpha + 
+>                 (*data_ptr * data_alpha) * t_1_m_alpha);
+1269a1278
+> 		  
+1271a1281
+> 			
+Index: Rendering/vtkFreeTypeUtilities.h
+===================================================================
+RCS file: /cvsroot/VTK/VTK/Rendering/vtkFreeTypeUtilities.h,v
+retrieving revision 1.11
+diff -r1.11 vtkFreeTypeUtilities.h
+42c42
+< # define VTK_FREETYPE_CACHING_SUPPORTED
+---
+> //# define VTK_FREETYPE_CACHING_SUPPORTED
+Index: Rendering/vtkOpenGLFreeTypeTextMapper.cxx
+===================================================================
+RCS file: /cvsroot/VTK/VTK/Rendering/vtkOpenGLFreeTypeTextMapper.cxx,v
+retrieving revision 1.47
+diff -r1.47 vtkOpenGLFreeTypeTextMapper.cxx
+208a209,210
+> 	return;
+> 
