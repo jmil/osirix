@@ -83,9 +83,9 @@ for i in `ls *.a`; do lipo -create "$i" "$i"i386 -output "$i"final; done
 
 VTK MODIFICATIONS : 
 
-- SetWindowName : 0L
-
-- Retain/Release system in VTKCocoaWindow
+Done in VTKView.mm from OsiriX:
+	- SetWindowName : 0L
+	- Retain/Release system in VTKCocoaWindow
 
 - TURN OFF FREETYPE CACHE SUPPORT in vtkFreeTypeUtilities.h (//# define VTK_FREETYPE_CACHING_SUPPORTED) __ppc64__
 
