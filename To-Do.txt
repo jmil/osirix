@@ -53,6 +53,7 @@ TODO:
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 
+- Don't tile minimized windows !
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
@@ -88,7 +89,7 @@ Done in VTKView.mm from OsiriX:
 	- Retain/Release system in VTKCocoaWindow
 
 - TURN OFF FREETYPE CACHE SUPPORT in vtkFreeTypeUtilities.h (//# define VTK_FREETYPE_CACHING_SUPPORTED) __ppc64__
-
+IT SEEMS TO WORK IF WE DONT CHANGE THE SIZE....
 #if (__ppc64__) || (__ppc__)
 //# define VTK_FREETYPE_CACHING_SUPPORTED
 #else
