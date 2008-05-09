@@ -53,7 +53,6 @@ TODO:
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 
-- Don't tile minimized windows !
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
