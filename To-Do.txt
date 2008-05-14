@@ -53,10 +53,8 @@ TODO:
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 
-- Today, Today AM, Today PM
-- Query Patient : Don't reset the Date & Modality filter, clean the PatientID after search
 - Sync scrolling in thumbnails?
-- Same shortcut for Query This Patient
+- Order Q&R Presets
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
