@@ -55,7 +55,6 @@ TODO:
 
 - Today, Today AM, Today PM
 - Query Patient : Don't reset the Date & Modality filter, clean the PatientID after search
-- Query Patient Icon for DB window
 - Sync scrolling in thumbnails?
 - Same shortcut for Query This Patient
 
