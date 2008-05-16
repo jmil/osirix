@@ -54,7 +54,7 @@ TODO:
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 
 - Sync scrolling in thumbnails?
-- Order Q&R Presets
+- Series thumbnail in a separate window
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
