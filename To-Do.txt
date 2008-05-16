@@ -52,8 +52,8 @@
 TODO:
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
+- Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 
-- Sync scrolling in thumbnails?
 - Series thumbnail in a separate window
 
 - Reslice oblique : 2D MPR, Points?
