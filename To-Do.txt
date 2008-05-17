@@ -71,7 +71,6 @@ TODO:
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
-- MPR Ortho: oblique
 
 HUG:
 
