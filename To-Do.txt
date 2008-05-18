@@ -54,8 +54,6 @@ TODO:
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 
-- Series thumbnail in a separate window
-
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
