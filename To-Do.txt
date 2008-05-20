@@ -53,6 +53,7 @@ TODO:
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
+- 64-bit Space Navigator support
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
