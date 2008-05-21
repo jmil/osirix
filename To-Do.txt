@@ -54,6 +54,7 @@ TODO:
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 - 64-bit Space Navigator support
+- Auto-refresh results in Q&R window
 
 - Refresh Q&R
 - Word 2008 bug?
