@@ -56,10 +56,10 @@ TODO:
 - 64-bit Space Navigator support
 - Auto-refresh results in Q&R window
 
-- Bonjour pswd?
 - Destination DICOM dans Source
 - Auto-Retrieving
 - Word 2008 bug?
+
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
