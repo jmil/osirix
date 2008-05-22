@@ -56,7 +56,7 @@ TODO:
 - 64-bit Space Navigator support
 - Auto-refresh results in Q&R window
 
-- Refresh Q&R
+- Auto-Retrieve in Q&R
 - Word 2008 bug?
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
