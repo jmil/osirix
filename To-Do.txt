@@ -55,8 +55,8 @@ TODO:
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 - 64-bit Space Navigator support
 - Auto-refresh results in Q&R window
+- Destination DICOM in Source List
 
-- Destination DICOM dans Source
 - Auto-Retrieving
 - Word 2008 bug?
 
