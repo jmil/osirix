@@ -60,6 +60,7 @@ TODO:
 - Auto-Retrieving
 - Word 2008 bug?
 
+- CMIV tool
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
