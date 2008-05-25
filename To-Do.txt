@@ -55,11 +55,11 @@ TODO:
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 - 64-bit Space Navigator support
 - Auto-refresh results in Q&R window
+- Auto-Retrieving in Q&R window
 - Destination DICOM in Source List
+- Incompatibility between Office 2008 and OsiriX for reports - corrected
 
-- Auto-Retrieving
-- Word 2008 bug?
-
+- Display Study / Series in large
 - CMIV tool
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
