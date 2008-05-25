@@ -58,8 +58,8 @@ TODO:
 - Auto-Retrieving in Q&R window
 - Destination DICOM in Source List
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
+- Display Study / Series informations in large - Press Control key
 
-- Display Study / Series in large
 - CMIV tool
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
