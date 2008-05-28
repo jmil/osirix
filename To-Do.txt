@@ -62,7 +62,10 @@ TODO:
 
 - Shift Key for ROI ! Entire Series...
 - Status & Comments in Q&R window, if available...
+- Adding acquisition matrix 0018,1310 to annotations causes Osirix to crash on start up.
+
 - Plugin : volume evolution from diameter
+
 - CMIV tool
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
