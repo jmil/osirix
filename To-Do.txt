@@ -60,8 +60,11 @@ TODO:
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
 - Display Study / Series informations in large - Press Control key
 
-- AutoRetrieving : Growl
+- Shift Key for ROI ! Entire Series...
+- Status & Comments in Q&R window, if available...
+- Plugin : volume evolution from diameter
 - CMIV tool
+- Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
