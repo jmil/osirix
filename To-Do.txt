@@ -54,16 +54,14 @@ TODO:
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Option to sync all the preview list (thumbnails) of all opened viewers (See Viewer Preferences)
 - 64-bit Space Navigator support
-- Auto-refresh results in Q&R window
+- Auto-Refresh results in Q&R window
 - Auto-Retrieving in Q&R window
+- Auto-Routing : option to include previous studies
 - Destination DICOM in Source List
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
 - Display Study / Series informations in large - Press Control key
 
-- Shift Key for ROI ! Entire Series...
 - Status & Comments in Q&R window, if available...
-- Adding acquisition matrix 0018,1310 to annotations causes Osirix to crash on start up.
-
 - Plugin : volume evolution from diameter
 
 - CMIV tool
