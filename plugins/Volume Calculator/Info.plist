@@ -18,7 +18,7 @@
 	<string>1.0</string>
 	<key>MenuTitles</key>
 	<array>
-		<string>T2 Fit Map</string>
+		<string>Volume Calculator</string>
 	</array>
 	<key>NSPrincipalClass</key>
 	<string>VolumeCalculator</string>

@@ -1,5 +1,5 @@
 #import "VolumeCalculator.h"
-#import "Controller.h"
+#import "ControllerVolumeCalculator.h"
 
 @implementation VolumeCalculator
 
@@ -10,8 +10,7 @@
 
 - (long) filterImage:(NSString*) menuName
 {
-	// Display a nice window to thanks the user for using our powerful filter!
-	ControllerT2Fit* coWin = [[ControllerT2Fit alloc] init:self];
+	ControllerVolumeCalculator* coWin = [[ControllerVolumeCalculator alloc] init:self];
 	[coWin showWindow:self];
 	
 	return 0;
