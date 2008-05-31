@@ -218,23 +218,19 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 {
 	if( [note object] == [filter viewerController])
 	{
-		NSLog(@"Viewer Window will close.... We have to close!");
-		
+		[[NSNotificationCenter defaultCenter] removeObserver: self];
 		[self release];
 	}
 }
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-	NSLog(@"Window will close.... and release his memory...");
-	
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[self release];
 }
 
 - (void) dealloc
 {
-    NSLog(@"My window is deallocating a pointer");
-	
 	[curROI1 release];
 	curROI1 = 0L;
 	
