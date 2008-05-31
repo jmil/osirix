@@ -39,7 +39,7 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 	
 	if( [diameter1 floatValue] > 0 && [diameter2 floatValue] > 0)
 	{
-		float val = 100. - (100. * [volume1 floatValue] / [volume2 floatValue]);
+		float val = (100. * [volume1 floatValue] / [volume2 floatValue]) - 100;
 		
 		if( val > 0)
 			[change setStringValue: [NSString stringWithFormat: @"+%2.2f %%", val]];

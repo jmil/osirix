@@ -23,6 +23,10 @@
 	<key>NSPrincipalClass</key>
 	<string>VolumeCalculator</string>
 	<key>pluginType</key>
-	<string>imageFilter</string>
+	<string>roiTool</string>
+	<key>allowToolbarIcon</key>
+	<string>YES</string>
+	<key>ToolbarIcon</key>
+	<string>VolumeCalculator.tif</string>
 </dict>
 </plist>
