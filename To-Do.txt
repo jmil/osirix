@@ -61,9 +61,9 @@ TODO:
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
 - Display Study / Series informations in large - Press Control key
 - Volume Calculator Plugin
+- PowerPC G5 systems are again supported in 64-bit
 
 - Status & Comments in Q&R window, if available...
-- Plugin : volume evolution from diameter
 
 - CMIV tool
 - Ejection fraction plugin
