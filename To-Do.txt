@@ -62,6 +62,7 @@ TODO:
 - Display Study / Series informations in large - Press Control key
 - Volume Calculator Plugin
 - PowerPC G5 systems are again supported in 64-bit
+- Compiled with GCC 4.2
 
 - Status & Comments in Q&R window, if available...
 
