@@ -14,7 +14,7 @@
 {
 	IBOutlet		NSTextField			*diameter1, *diameter2;
 	IBOutlet		NSTextField			*volume1, *volume2;
-	IBOutlet		NSTextField			*change;
+	IBOutlet		NSTextField			*change, *changeTime;
 	
 	IBOutlet		NSWindow			*fillWindow;
 	

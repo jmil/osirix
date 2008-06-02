@@ -1,3 +1,4 @@
+- Compiled with GCC 4.2 : 3D Rendering are up to 100% faster !
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Sync all the preview list of all opened viewers (See Viewer Preferences)
@@ -10,7 +11,6 @@
 - Display Study / Series informations in large - Press Control key
 - Volume Calculator Plugin
 - PowerPC G5 systems are again supported in 64-bit
-- Compiled with GCC 4.2
 
 - Status & Comments in Q&R window, if available...
 

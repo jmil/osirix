@@ -29,12 +29,12 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 	
 	if( [diameter1 floatValue] > 0)
 	{
-		[volume1 setStringValue: [NSString stringWithFormat: @"%2.2f", [diameter1 floatValue] * [diameter1 floatValue] * [diameter1 floatValue] * pi / 6.]];
+		[volume1 setFloatValue: [diameter1 floatValue] * [diameter1 floatValue] * [diameter1 floatValue] * pi / 6.];
 	}
 	
 	if( [diameter2 floatValue] > 0)
 	{
-		[volume2 setStringValue: [NSString stringWithFormat: @"%2.2f", [diameter2 floatValue] * [diameter2 floatValue] * [diameter2 floatValue] * pi / 6.]];
+		[volume2 setFloatValue: [diameter2 floatValue] * [diameter2 floatValue] * [diameter2 floatValue] * pi / 6.];
 	}
 	
 	if( [diameter1 floatValue] > 0 && [diameter2 floatValue] > 0)
@@ -42,9 +42,11 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 		float val = (100. * [volume2 floatValue] / [volume1 floatValue]) - 100;
 		
 		if( val > 0)
-			[change setStringValue: [NSString stringWithFormat: @"+%2.2f %%", val]];
+			[change setStringValue: [NSString stringWithFormat: @"+%2.2f%%", val]];
 		else
-			[change setStringValue: [NSString stringWithFormat: @"%2.2f %%", val]];
+			[change setStringValue: [NSString stringWithFormat: @"%2.2f%%", val]];
+			
+		[changeTime setStringValue: [NSString stringWithFormat: @"x%2.2f", [volume2 floatValue] / [volume1 floatValue]]];
 	}
 }
 
@@ -154,7 +156,7 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 		if( lMm == 0)
 			lMm = lPix;
 		
-		[diameter1 setStringValue: [NSString stringWithFormat:@"%2.3f", lMm]];
+		[diameter1 setFloatValue: lMm];
 	}
 		
 	if( curROI2)
@@ -164,7 +166,7 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 		if( lMm == 0)
 			lMm = lPix;
 		
-		[diameter2 setStringValue: [NSString stringWithFormat:@"%2.3f", lMm]];
+		[diameter2 setFloatValue: lMm];
 	}
 	
 	[self compute: self];
@@ -197,7 +199,7 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 			if( lMm == 0)
 				lMm = lPix;
 		
-			[diameter1 setStringValue: [NSString stringWithFormat:@"%2.3f", lMm]];
+			[diameter1 setFloatValue: lMm];
 		}
 			
 		if( [note object] == curROI2)
@@ -207,7 +209,7 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 			if( lMm == 0)
 				lMm = lPix;
 		
-			[diameter2 setStringValue: [NSString stringWithFormat:@"%2.3f", lMm]];
+			[diameter2 setFloatValue: lMm];
 		}
 	}
 	
