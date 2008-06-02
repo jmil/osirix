@@ -1,4 +1,4 @@
-- Compiled with GCC 4.2 : 3D Rendering are up to 100% faster !
+- Compiled with GCC 4.2 : 3D Rendering are up to 100% faster with OsiriX-64 bit compared to OsiriX 32-bit
 - Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
 - On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
 - Sync all the preview list of all opened viewers (See Viewer Preferences)
