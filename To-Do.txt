@@ -11,6 +11,7 @@
 - Display Study / Series informations in large - Press Control key
 - Volume Calculator Plugin
 - PowerPC G5 systems are again supported in 64-bit
+- Compiled with GCC 4.2 : 3D renderings are 10% faster than previous version
 
 - Status & Comments in Q&R window, if available...
 
@@ -40,10 +41,19 @@ HUG:
 
 for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
 
-for i in `ls *.a`; do lipo -create "$i" "$i"i386 -output "$i"final; done
+for i in `ls *.*`; do mv "$i" "$i"ppc; done
+
+for i in `ls *.a`; do lipo -create "$i" "$i"intel -output "$i"final; done
 
 
 VTK MODIFICATIONS : 
+
+Optimizations:
+
+-march=nocona -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer
+
+ITK: remove Wmo long double in CMakeLists.txt, after generating
+__isnand dans vnl_math.cxx, remplacer avec __inline_isnand (voir math.h)
 
 Done in VTKView.mm from OsiriX:
 	- SetWindowName : 0L
