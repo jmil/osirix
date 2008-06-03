@@ -16,9 +16,9 @@
 - Status & Comments in Q&R window, if available...
 - Change behavior WL&WW in Propagate settings IN series
 - Q&R bug?
-
 - CMIV tool : size of windows
-- Ejection fraction plugin
+- Remove Ejection fraction plugin
+
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
