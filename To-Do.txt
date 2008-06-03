@@ -14,7 +14,6 @@
 - Compiled with GCC 4.2 : 3D renderings are 10% faster than previous version
 
 - Status & Comments in Q&R window, if available...
-- Change behavior WL&WW in Propagate settings IN series
 - Q&R bug?
 - CMIV tool : size of windows
 - Remove Ejection fraction plugin
