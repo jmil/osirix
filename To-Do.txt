@@ -15,7 +15,7 @@
 
 - Status & Comments in Q&R window, if available...
 - Change behavior WL&WW in Propagate settings IN series
-- 2D MPR measurements
+- Q&R bug?
 
 - CMIV tool : size of windows
 - Ejection fraction plugin
