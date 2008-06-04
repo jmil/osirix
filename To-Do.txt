@@ -6,6 +6,7 @@
 - Auto-Refresh results in Q&R window
 - Auto-Retrieving in Q&R window
 - Auto-Routing : option to include previous studies
+- Status & Comments field in Q&R window
 - DICOM destinations in Source List
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
 - Display Study / Series informations in large - Press Control key
@@ -13,7 +14,7 @@
 - PowerPC G5 systems are again supported in 64-bit
 - Compiled with GCC 4.2 : 3D renderings are 10% faster than previous version
 
-- Status & Comments in Q&R window, if available...
+- Copy Comments/Status between DB
 - Q&R bug?
 - CMIV tool : size of windows
 - Remove Ejection fraction plugin
@@ -22,6 +23,7 @@
 - Report modality - study description
 - WADO Client/Server
 
+- Multiple Modalities in Q&R
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
