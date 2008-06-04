@@ -15,7 +15,6 @@
 - Compiled with GCC 4.2 : 3D renderings are 10% faster than previous version
 
 - Copy Comments/Status between DB
-- Q&R bug?
 - CMIV tool : size of windows
 - Remove Ejection fraction plugin
 
