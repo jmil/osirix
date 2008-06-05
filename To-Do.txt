@@ -13,16 +13,17 @@
 - Volume Calculator Plugin
 - PowerPC G5 systems are again supported in 64-bit
 - Compiled with GCC 4.2 : 3D renderings are 10% faster than previous version
+- Copy Comments/Status when moving a study from/to another Database
 
-- Copy Comments/Status between DB
 - CMIV tool : size of windows
 - Remove Ejection fraction plugin
+- Popup Send Window
+- Check Box Modality in Q&R
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
 
-- Multiple Modalities in Q&R
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
