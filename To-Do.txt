@@ -17,8 +17,6 @@
 
 - CMIV tool : size of windows
 - Remove Ejection fraction plugin
-- Popup Send Window
-- Check Box Modality in Q&R
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
