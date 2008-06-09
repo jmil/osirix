@@ -14,8 +14,7 @@
 - Volume Calculator Plugin
 - Copy Comments/Status when moving a study from/to another Database
 
-- CMIV tool : size of windows
-- Remove Ejection fraction plugin
+- Ejection fraction plugin
 
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
