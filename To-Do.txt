@@ -8,6 +8,7 @@
 - Auto-Retrieving in Q&R window
 - Auto-Routing : option to include previous studies
 - Status & Comments field in Q&R window
+- Option to search by StudyDescription during Q&R
 - DICOM destinations in Source List
 - Incompatibility between Office 2008 and OsiriX for reports - corrected
 - Display Study / Series informations in large - Press Control key
@@ -15,7 +16,6 @@
 - Copy Comments/Status when moving a study from/to another Database
 
 - Ejection fraction plugin
-
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
