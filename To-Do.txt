@@ -15,6 +15,9 @@
 - Volume Calculator Plugin
 - Copy Comments/Status when moving a study from/to another Database
 
+- Close viewer -> Close ROI windows
+- keep reference line when screen shot
+
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
