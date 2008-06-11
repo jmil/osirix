@@ -19,6 +19,7 @@
 - Open ROI images
 - Option : Automatically mark ROI images, as key images
 
+- Save all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
