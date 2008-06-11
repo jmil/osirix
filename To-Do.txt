@@ -15,6 +15,10 @@
 - Volume Calculator Plugin
 - Copy Comments/Status when moving a study from/to another Database
 
+- Mark ROI image as key images
+- Open ROI images
+- Option : Automatically mark ROI images, as key images
+
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
