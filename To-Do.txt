@@ -25,6 +25,7 @@
 - Report modality - study description
 - WADO Client/Server
 
+- Password DB in keychain
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
