@@ -14,10 +14,8 @@
 - Display Study / Series informations in large - Press Control key
 - Volume Calculator Plugin
 - Copy Comments/Status when moving a study from/to another Database
-
-- Mark ROI image as key images
-- Open ROI images
-- Option : Automatically mark ROI images, as key images
+- Open ROIs images: Open only images containing ROIs - DB Contextual menu
+- Mark All ROIs images as Key Images - 2D Viewer menu
 
 - Save all ROIs of a study/series
 - Ejection fraction plugin
