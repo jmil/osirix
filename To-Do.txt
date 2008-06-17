@@ -17,6 +17,8 @@
 - Open ROIs images: Open only images containing ROIs - DB Contextual menu
 - Mark All ROIs images as Key Images - 2D Viewer menu
 
+- Copy report/ROIs between DB
+
 - Save all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
