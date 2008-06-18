@@ -17,6 +17,8 @@
 - Open ROIs images: Open only images containing ROIs - DB Contextual menu
 - Mark All ROIs images as Key Images - 2D Viewer menu
 
+- Update web 64bit %
+- Save comments/status when export/import
 - Copy report/ROIs between DB
 
 - Save all ROIs of a study/series
