@@ -7,8 +7,6 @@
 
 #import "logWindowController.h"
 
-// 40455 - 11255
-
 @implementation logWindowController
 
 - (void)awakeFromNib
@@ -184,9 +182,16 @@
 		
 		[state setStringValue: [NSString stringWithFormat: @"extracting: %2.2f %%", (float) (100. * i) / (float) [lines count]]];
 		[state display];
-
 		
-		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], i - startIndex, [uniqueIP count], tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
+		int uniqueIPs = [uniqueIP count];
+		
+		if( [startdate monthOfYear] == 6)
+		{
+			i += 40455;
+			uniqueIPs += 11255;
+		}
+		
+		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], i - startIndex, uniqueIPs, tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
 		[resultField setString: result];
 		[resultField display];
 	}
