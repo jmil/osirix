@@ -52,7 +52,7 @@
 		698777DC0DD0788500D8D738 /* VolumeGeneratorFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VolumeGeneratorFilter.h; sourceTree = "<group>"; };
 		698777DD0DD0788500D8D738 /* VolumeGeneratorFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeGeneratorFilter.m; sourceTree = "<group>"; };
 		698777E00DD078CD00D8D738 /* VolumeGenerator.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VolumeGenerator.pch; sourceTree = "<group>"; };
-		698777EA0DD0794C00D8D738 /* VolumeGenerator.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VolumeGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		698777EA0DD0794C00D8D738 /* VolumeGenerator.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VolumeGenerator.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		69BE1EFD0DFAB7DD00A78CED /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/VolumeGeneratorController.xib; sourceTree = "<group>"; };
 		69BE1F060DFABBD000A78CED /* VolumeGeneratorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeGeneratorController.h; sourceTree = "<group>"; };
 		69BE1F070DFABBD000A78CED /* VolumeGeneratorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeGeneratorController.m; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				698777EA0DD0794C00D8D738 /* VolumeGenerator.plugin */,
+				698777EA0DD0794C00D8D738 /* VolumeGenerator.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -246,7 +246,7 @@
 			name = VolumeGenerator;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = 698777EA0DD0794C00D8D738 /* VolumeGenerator.plugin */;
+			productReference = 698777EA0DD0794C00D8D738 /* VolumeGenerator.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -343,7 +343,7 @@
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = osirixplugin;
 			};
 			name = Development;
 		};
