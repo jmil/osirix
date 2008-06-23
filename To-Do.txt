@@ -18,7 +18,6 @@
 - Mark All ROIs images as Key Images - 2D Viewer menu
 
 - C-Find before auto-routing
-- Save comments/status when export/import
 - Save all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
