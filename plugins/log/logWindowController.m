@@ -194,6 +194,8 @@
 		if( [startdate monthOfYear] == [[NSCalendarDate date] monthOfYear] && [startdate yearOfCommonEra] == [[NSCalendarDate date] yearOfCommonEra])
 		{
 			i = (i * 31) / [[NSCalendarDate date] dayOfMonth];
+//			i += (i * (24 - [[NSCalendarDate date] hourOfDay]))/ 31;
+			
 			uniqueIPs = (uniqueIPs * 31) / [[NSCalendarDate date] dayOfMonth];
 		}
 		
