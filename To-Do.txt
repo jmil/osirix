@@ -1,24 +1,6 @@
-- Compiled with GCC 4.2 : 3D Rendering are up to 80% faster with OsiriX-64 bit compared to OsiriX 32-bit
-- PowerPC G5 systems are again supported in 64-bit
-- Preferred syntax for retrieve during Q&R : OsiriX Client (C-MOVE SCU)
-- On the fly compression/decompression for Q&R : OsiriX Server (C-MOVE SCP)
-- Sync all the preview list of all opened viewers (See Viewer Preferences)
-- 64-bit Space Navigator support
-- Auto-Refresh results in Q&R window
-- Auto-Retrieving in Q&R window
-- Auto-Routing : option to include previous studies
-- Status & Comments field in Q&R window
-- Option to search by StudyDescription during Q&R
-- DICOM destinations in Source List
-- Incompatibility between Office 2008 and OsiriX for reports - corrected
-- Display Study / Series informations in large - Press Control key
-- Volume Calculator Plugin
-- Copy Comments/Status when moving a study from/to another Database
-- Open ROIs images: Open only images containing ROIs - DB Contextual menu
-- Mark All ROIs images as Key Images - 2D Viewer menu
+- C-Find before auto-routing
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
-- C-Find before auto-routing
 - Save all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
