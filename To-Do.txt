@@ -7,7 +7,7 @@
 - Report modality - study description
 - WADO Client/Server
 
-- Magnifying glass
+- Magnifying glass - See ROI Image
 - Password DB in keychain
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node

@@ -192,15 +192,18 @@
 			uniqueIPs += 11255;
 		}
 		
+		ii = ii - startIndex ;
+		
 		if( [startdate monthOfYear] == [[NSCalendarDate date] monthOfYear] && [startdate yearOfCommonEra] == [[NSCalendarDate date] yearOfCommonEra])
 		{
+			
 			ii = (ii * 31) / [[NSCalendarDate date] dayOfMonth];
 			ii += ((float) ii * (24. - [[NSCalendarDate date] hourOfDay])/24.)/ 31.;
 			
 			uniqueIPs = (uniqueIPs * 31) / [[NSCalendarDate date] dayOfMonth];
 		}
 		
-		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], ii - startIndex, uniqueIPs, tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
+		[result appendString: [NSString stringWithFormat: @"month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], ii, uniqueIPs, tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
 		[resultField setString: result];
 		[resultField display];
 	}
