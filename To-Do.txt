@@ -1,12 +1,13 @@
 - C-Find before auto-routing
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
-- Save all ROIs of a study/series
+- Save/Load all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
 
+- Slider on growing region
 - Magnifying glass - See ROI Image
 - Password DB in keychain
 - Preferences for Status menu in DB
