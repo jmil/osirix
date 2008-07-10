@@ -8,6 +8,7 @@
 - WADO Client/Server
 
 - Slider on growing region
+- New ROI tool : Instant Segmentation (like Instant Alpha in iWork'08, but for region growing)
 - Magnifying glass - See ROI Image
 - Password DB in keychain
 - Preferences for Status menu in DB
