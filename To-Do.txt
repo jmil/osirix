@@ -7,6 +7,8 @@
 - Report modality - study description
 - WADO Client/Server
 
+- Move logs : TEST
+- Send a very large list, with missing links : TEST
 - New ROI tool : Instant Segmentation (like Instant Alpha in iWork'08, but for region growing)
 - Magnifying glass - See ROI Image
 - Password DB in keychain
