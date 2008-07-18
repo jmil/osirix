@@ -18,7 +18,6 @@
 - New smart filter editor (10.5)
 - NRRD: ITK IO
 - NSOperation
-- New series for keyimages
 - Perfusion
 - ROI enhancement
 - Worklist DICOM

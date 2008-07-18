@@ -17,7 +17,9 @@
 NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context)
 {
 	NSDate *d1 = [[v1 currentStudy] valueForKey:@"date"];
+	
 	NSDate *d2 = [[v2 currentStudy] valueForKey:@"date"];
+	
 	return [d1 compare: d2];
 }
 
@@ -93,6 +95,8 @@ NSInteger compareStudy(ViewerController *v1, ViewerController *v2, void *context
 	// All rois contained in the current series
 	
 	NSArray *orderedViewers = [[ViewerController getDisplayed2DViewers] sortedArrayUsingFunction: compareStudy context: 0];
+	
+	NSLog( @"%@", orderedViewers);
 	
 	for( ViewerController *v in orderedViewers)
 	{
