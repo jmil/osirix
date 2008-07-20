@@ -1,4 +1,5 @@
 - C-Find before auto-routing
+- Lens
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Save/Load all ROIs of a study/series
