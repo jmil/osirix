@@ -7,6 +7,11 @@
 
 #import "logWindowController.h"
 
+NSInteger sortByAddress(NSDictionary *roi1, NSDictionary *roi2, void *context)
+{
+	return [[roi1 objectForKey:@"ip"] compare: [roi2 objectForKey:@"ip"]];
+}
+
 @implementation logWindowController
 
 - (void)awakeFromNib
@@ -91,7 +96,7 @@
 		NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys: ip, @"ip", nsdate, @"date", url, @"url", 0L];
 		[dictionaryArray replaceObjectAtIndex:i withObject: dict];
 		
-		if( processor == processors-1 && i % 500 == 0)
+		if( processor == processors-1 && i % 2000 == 0)
 		{
 			[state setStringValue: [NSString stringWithFormat: @"analyzing: %2.2f %%", (float) (100. * (i-from) * processors) / (float) total]];
 			[state display];
@@ -164,13 +169,22 @@
 		float tiger = 0;
 		float leopard = 0;
 		
-		for( x = startIndex; x < i; x++)
+		id* objects = calloc( i-startIndex, sizeof(id));
+		[dictionaryArray getObjects: objects range: NSMakeRange( startIndex, i-startIndex)];
+		NSArray *a = [NSArray arrayWithObjects: objects count: i-startIndex]; 
+		free( objects);
+		
+		a = [a sortedArrayUsingFunction: sortByAddress context: 0];
+		
+		NSString *lastIp = 0L;
+		
+		for( NSDictionary *c in a)
 		{
-			NSDictionary *c = [dictionaryArray objectAtIndex: x];
 			NSString *ip = [c objectForKey:@"ip"];
 			
-			if( [uniqueIP containsObject: ip] == NO)
+			if( [ip isEqualToString: lastIp] == NO)
 			{
+				lastIp = ip;
 				[uniqueIP addObject: ip];
 				
 				NSString *url = [c objectForKey:@"url"];
