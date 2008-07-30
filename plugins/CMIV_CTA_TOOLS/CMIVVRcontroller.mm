@@ -31,6 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "DICOMExport.h"
 #include "VRMakeObject.h"
 #import <QTKit/QTKit.h>
+#import "VRView.h"
+
 static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 {
 	CMIVVRcontroller* controller = (CMIVVRcontroller*) ptr;
