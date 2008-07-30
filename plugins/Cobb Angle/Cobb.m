@@ -17,8 +17,8 @@
 	DCMPix *curPix;
 	curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
 	
-	pixelSpacingX = [curPix pixelSpacingX];
-	pixelSpacingY = [curPix pixelSpacingY];
+	float pixelSpacingX = [curPix pixelSpacingX];
+	float pixelSpacingY = [curPix pixelSpacingY];
 	
 	if( pixelSpacingX == 0 || pixelSpacingY == 0)
 	{
