@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVContrastPreview.h"
 #import "CMIVSegmentCore.h"
 #import "CMIV3DPoint.h"
+#import "VRView.h"
 @implementation CMIVContrastPreview
 
 - (IBAction)chooseASeed:(id)sender
@@ -773,10 +774,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 	ROI* testROI=[[ROI alloc] initWithType: tOval :xSpacing :ySpacing : NSMakePoint( 0, 0)];
-	if([testROI respondsToSelector:@selector(color)])
-		IsVersion2_6=YES;
-	else
-		IsVersion2_6=NO;
 	[testROI release];
 	resultPrivateROIList=[[NSMutableArray alloc] initWithCapacity: 0];
 	unsigned ii;
@@ -802,11 +799,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	tempROI = [choosenSeedsArray objectAtIndex:index];
 	roiName = [tempROI name];
-	
-	if(IsVersion2_6)
-		color= [tempROI color];
-	else
-		color= [tempROI rgbcolor];
+	color= [tempROI rgbcolor];
 	DCMPix* curPix;	
 	curPix = [resultPixList objectAtIndex: 0];
 	
@@ -1053,9 +1046,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				int seedIndex;
 				seedIndex = [seedList selectedRow];
 				tempROI = [choosenSeedsArray objectAtIndex: seedIndex];
-				if([tempROI respondsToSelector:@selector(color)])
-					color= [tempROI color];
-				else
+				if([tempROI respondsToSelector:@selector(rgbcolor)])
 					color= [tempROI rgbcolor];
 				roiName = [tempROI name];
 				[roi setColor:color];
@@ -1324,10 +1315,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:(int)rect.size.width textHeight:(int)rect.size.height textName:[roi name] positionX:(int)rect.origin.x positionY:(int)rect.origin.y spacingX:spaceX spacingY:spaceY imageOrigin:NSMakePoint( originX,  originY)];
 
 					[newROI setComments:[NSString stringWithFormat:@"%d",i+1]];
-					if(IsVersion2_6)
-						color= [roi color];
-					else
-						color= [roi rgbcolor];	
+					color= [roi rgbcolor];	
 						
 					[newROI setColor:color];
 					
@@ -1603,10 +1591,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				tempROI = [[resultROIList objectAtIndex: 0] objectAtIndex:j];
 				roiName = [tempROI name];
 				textureBuffer=[tempROI textureBuffer];
-				if(IsVersion2_6)
-					color= [tempROI color];
-				else
-					color= [tempROI rgbcolor];
+				color= [tempROI rgbcolor];
 			
 				ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:imageWidth textHeight:imageHeight textName:roiName positionX:0 positionY:0 spacingX:[curPix pixelSpacingY] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
 				textureBuffer=[newROI textureBuffer];
@@ -2473,11 +2458,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (float) minimumValue
 {
-	return 0;
+	return -1024;
 }
 - (float) maximumValue
 {
-	return 1000;
+	return 4096;
 }
 - (ViewerController*) viewer2D
 {

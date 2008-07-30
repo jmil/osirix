@@ -82,7 +82,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSMutableArray      *mutiplePhaseColorCurves;
 	NSMutableArray      *imagesFor4DQTVR;
 	
-	float          *originalVolumeData;
+	float  *originalVolumeData;
 	float maxInSeries,minInSeries;
 	vtkRenderer *renderOfVRView;
 	vtkVolumeCollection *volumeCollectionOfVRView;

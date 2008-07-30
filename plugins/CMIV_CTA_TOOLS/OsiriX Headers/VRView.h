@@ -5,7 +5,7 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -15,10 +15,11 @@
 
 
 #import <AppKit/AppKit.h>
-#import "VTKView.h"
 #import "DCMPix.h"
 
 #ifdef __cplusplus
+#import "VTKView.h"
+
 #define id Id
 #include "vtkCommand.h"
 #include "vtkProperty.h"
@@ -94,6 +95,7 @@
 class vtkMyCallbackVR;
 
 #else
+
 typedef char* vtkTransform;
 typedef char* vtkImageActor;
 typedef char* vtkImageMapToColors;
@@ -126,11 +128,16 @@ typedef char* vtkPlaneWidget;
 typedef char* vtkBoxWidget;
 typedef char* vtkVolumeRayCastCompositeFunction;
 
+typedef char* vtkRenderer;
+typedef char* vtkVolumeTextureMapper3D;
+typedef char* vtkOrientationMarkerWidget;
+
 typedef char* vtkMyCallbackVR;
 #endif
 
 #include <Accelerate/Accelerate.h>
-
+#import "ViewerController.h"
+#import "WaitRendering.h"
 
 #import "Schedulable.h"
 #import "Scheduler.h"
@@ -139,11 +146,26 @@ typedef char* vtkMyCallbackVR;
 @class DICOMExport;
 @class Camera;
 @class VRController;
+@class OSIVoxel;
 
+#import "CLUTOpacityView.h"
+
+/** \brief  Volume Rendering View
+*
+*   View for volume rendering and MIP
+*/
+
+#ifdef __cplusplus
 @interface VRView : VTKView <Schedulable>
+#else
+@interface VRView : NSView
+#endif
 {
 	NSTimer						*autoRotate, *startAutoRotate;
-	BOOL						rotate;
+	BOOL						rotate, flyto;
+	int							incFlyTo;
+	
+	float						flyToDestination[ 3];
 
 	int							projectionMode;
     NSMutableArray				*blendingPixList;
@@ -152,7 +174,7 @@ typedef char* vtkMyCallbackVR;
 	ViewerController			*blendingController;
 	char						*blendingData8;
 	vImage_Buffer				blendingSrcf, blendingDst8;
-	float						blendingWl, blendingWw;
+	float						blendingWl, blendingWw, measureLength;
 	vtkImageImport				*blendingReader;
 	
 	vtkFixedPointVolumeRayCastMapper		*blendingVolumeMapper;
@@ -168,10 +190,10 @@ typedef char* vtkMyCallbackVR;
 	BOOL						needToFlip, blendingNeedToFlip, firstTime;
 //	vtkImageFlip				*flip, *blendingFlip;
 	
-	IBOutlet NSWindow       *export3DWindow;
-	IBOutlet NSSlider		*framesSlider;
-	IBOutlet NSMatrix		*quality, *rotation, *orientation;
-	IBOutlet NSTextField	*pixelInformation;
+	IBOutlet NSWindow			*export3DWindow;
+	IBOutlet NSSlider			*framesSlider;
+	IBOutlet NSMatrix			*quality, *rotation, *orientation;
+	IBOutlet NSTextField		*pixelInformation;
 
 	IBOutlet NSWindow			*exportDCMWindow;
 	IBOutlet NSSlider			*dcmframesSlider;
@@ -185,13 +207,15 @@ typedef char* vtkMyCallbackVR;
 	IBOutlet NSMatrix		*projection;
 	
 	IBOutlet NSMatrix		*scissorStateMatrix;
+	IBOutlet NSColorWell	*backgroundColor;
+	
+	IBOutlet NSObjectController	*shadingController;
 	
 	long					numberOfFrames;
 	BOOL					bestRenderingMode;
 	float					rotationValue, factor;
 	long					rotationOrientation, renderingMode;
 	
-	NSTimer					*mouseModifiers;
 	NSArray					*currentOpacityArray;
     NSMutableArray			*pixList;
     DCMPix					*firstObject;
@@ -206,13 +230,14 @@ typedef char* vtkMyCallbackVR;
 
     short					currentTool;
 	float					wl, ww;
-	float					LOD;
+	float					LOD, lowResLODFactor;
 	float					cosines[ 9];
 	float					blendingcosines[ 9];
 	double					table[256][3];
 	double					alpha[ 256];
 
 	NSCursor				*cursor;
+	BOOL					cursorSet;
 	
     vtkRenderer				*aRenderer;
     vtkCamera				*aCamera;
@@ -236,7 +261,7 @@ typedef char* vtkMyCallbackVR;
 	vtkColorTransferFunction	*colorTransferFunction;
 	vtkTextActor				*textWLWW, *textX;
 	BOOL						isViewportResizable;
-	vtkTextActor				*oText[ 4];
+	vtkTextActor				*oText[ 4], oTextS[ 4];
 	char						WLWWString[ 200];
 	vtkImageImport				*reader;
 	vtkVolumeRayCastCompositeFunction  *compositeFunction;
@@ -248,7 +273,9 @@ typedef char* vtkMyCallbackVR;
 	
 	double						camPosition[ 3], camFocal[ 3];
 	
-	NSDate						*startRenderingTime;
+//	NSDate						*startRenderingTime;
+	
+	NSMutableArray				*ROIPoints;
 	
 	vtkPolyData					*ROI3DData;
 	vtkPolyDataMapper2D			*ROI3D;
@@ -258,7 +285,7 @@ typedef char* vtkMyCallbackVR;
 	vtkPolyDataMapper2D			*Line2D;
 	vtkActor2D					*Line2DActor;
 	vtkTextActor				*Line2DText;
-	vtkCallbackCommand			*cbStart;
+//	vtkCallbackCommand			*cbStart;
 	
 	BOOL						clamping;
 	
@@ -273,27 +300,60 @@ typedef char* vtkMyCallbackVR;
 	IBOutlet NSSlider			*point3DRadiusSlider;
 	IBOutlet NSColorWell		*point3DColorWell;
 	IBOutlet NSButton			*point3DPropagateToAll, *point3DSetDefault;
-	IBOutlet NSObject		*controller;
+	IBOutlet VRController		*controller;
 	float						point3DDefaultRadius, point3DDefaultColorRed, point3DDefaultColorGreen, point3DDefaultColorBlue, point3DDefaultColorAlpha;
 	
 	BOOL						_dragInProgress;
-	NSTimer						*_mouseDownTimer;
+	NSTimer						*_mouseDownTimer, *_rightMouseDownTimer;
 	NSImage						*destinationImage;
 	
-	NSPoint						_mouseLocStart;  // mouseDown start point
+	NSPoint						_mouseLocStart, _previousLoc;  // mouseDown start point
 	BOOL						_resizeFrame;
 	short						_tool;
 	
 	float						_startWW, _startWL, _startMin, _startMax;
+	
+	NSRect						savedViewSizeFrame;
+	
+	float						firstPixel, secondPixel;
+	
+	NSLock						*deleteRegion;
+	
+	IBOutlet CLUTOpacityView	*clutOpacityView;
+	BOOL						advancedCLUT;
+	NSData						*appliedCurves;
+	BOOL						appliedResolution;
+	BOOL						gDataValuesChanged;
+
+	float						verticalAngleForVR;
+	float						rotateDirectionForVR;
+	
+	BOOL						_contextualMenuActive;
+	
+	//Context for rendering to iChat
+	BOOL						_hasChanged;
+	float						iChatWidth, iChatHeight;
+	BOOL						iChatFrameIsSet;
+	
+	// 3DConnexion SpaceNavigator
+	NSTimer			*snCloseEventTimer;
+	BOOL			snStopped;
+	UInt16			snConnexionClientID;
 }
 
 + (BOOL) getCroppingBox:(double*) a :(vtkVolume *) volume :(vtkBoxWidget*) croppingBox;
 + (void) setCroppingBox:(double*) a :(vtkVolume *) volume;
+- (void) setCroppingBox:(double*) a;
+- (BOOL) croppingBox:(double*) a;
 
+- (void) exportDCMCurrentImage;
 - (void) renderImageWithBestQuality: (BOOL) best waitDialog: (BOOL) wait;
 - (void) endRenderImageWithBestQuality;
-
-- (void)changeColorWith:(NSColor*) color;
+- (void) resetAutorotate:(id) sender;
+- (void) setEngine: (long) engineID showWait:(BOOL) showWait;
+- (IBAction)changeColorWith:(NSColor*) color;
+- (IBAction)changeColor:(id)sender;
+- (NSColor*)backgroundColor;
 - (void) exportDICOMFile:(id) sender;
 -(unsigned char*) getRawPixels:(long*) width :(long*) height :(long*) spp :(long*) bpp :(BOOL) screenCapture :(BOOL) force8bits;
 -(void) set3DStateDictionary:(NSDictionary*) dict;
@@ -307,18 +367,27 @@ typedef char* vtkMyCallbackVR;
 -(void) setBlendingWLWW:(float) iwl :(float) iww;
 -(void) setBlendingCLUT:( unsigned char*) r : (unsigned char*) g : (unsigned char*) b;
 -(void) setBlendingFactor:(float) a;
--(NSDate*) startRenderingTime;
--(void) newStartRenderingTime;
--(void) deleteStartRenderingTime;
+//-(NSDate*) startRenderingTime;
+//-(void) newStartRenderingTime;
+//-(void) deleteStartRenderingTime;
 -(void) setOpacity:(NSArray*) array;
--(void) runRendering;
--(void) startRendering;
--(void) stopRendering;
+- (void) setLowResolutionCamera: (Camera*) cam;
+//-(void) runRendering;
+//-(void) startRendering;
+//-(void) stopRendering;
 -(void) setLOD:(float)f;
 -(void) setCurrentTool:(short) i;
+- (int) currentTool;
 -(id)initWithFrame:(NSRect)frame;
 -(short)setPixSource:(NSMutableArray*)pix :(float*) volumeData;
 -(void)dealloc;
+//Fly to point in world coordinates;
+- (void) flyTo:(float) x :(float) y :(float) z;
+// Fly to Volume Point 
+- (void) flyToVoxel:(OSIVoxel *)voxel;
+//Fly to 2D position on a slice;
+- (void) flyToPoint:(NSPoint)point  slice:(int)slice;
+- (void) processFlyTo;
 -(void) setWLWW:(float) wl :(float) ww;
 -(void) getWLWW:(float*) wl :(float*) ww;
 -(void) setBlendingPixSource:(ViewerController*) bC;
@@ -333,6 +402,7 @@ typedef char* vtkMyCallbackVR;
 -(NSImage*) nsimageQuicktime;
 -(NSImage*) nsimage:(BOOL) q;
 -(void) setCLUT:( unsigned char*) r : (unsigned char*) g : (unsigned char*) b;
+-(void)activateShading:(BOOL)on;
 -(IBAction) switchShading:(id) sender;
 -(long) shading;
 - (void) setEngine: (long) engineID;
@@ -343,8 +413,13 @@ typedef char* vtkMyCallbackVR;
 - (IBAction)setRenderMode:(id)sender;
 - (void) setBlendingMode: (long) modeID;
 -(NSImage*) nsimageQuicktime:(BOOL) renderingMode;
+- (vtkRenderer*) vtkRenderer;
+- (vtkCamera*) vtkCamera;
+- (void) setVtkCamera:(vtkCamera*)aVtkCamera;
+- (void)setCenterlineCamera: (Camera *) cam;
 - (void) setCamera: (Camera*) cam;
 - (Camera*) camera;
+- (Camera*) cameraWithThumbnail:(BOOL) produceThumbnail;
 - (IBAction) scissorStateButtons:(id) sender;
 - (void) updateScissorStateButtons;
 -(void) switchOrientationWidget:(id) sender;
@@ -353,8 +428,6 @@ typedef char* vtkMyCallbackVR;
 -(void) bestRendering:(id) sender;
 - (void) setMode: (long) modeID;
 - (long) mode;
--(void)resizeWindowToScale:(float)resizeScale;
-- (IBAction)resizeWindow:(id)sender;
 - (float) getResolution;
 
 - (BOOL) isViewportResizable;
@@ -387,16 +460,26 @@ typedef char* vtkMyCallbackVR;
 - (void) set3DPointAtIndex:(unsigned int) index Radius: (float) radius;
 - (IBAction) save3DPointsDefaultProperties: (id) sender;
 - (void) load3DPointsDefaultProperties;
-- (void) convert3Dto2Dpoint:(float*) pt3D :(float*) pt2D;
+- (void) convert3Dto2Dpoint:(double*) pt3D :(double*) pt2D;
+- (void)convert2DPoint:(float *)pt2D to3DPoint:(float *)pt3D;
 - (IBAction) setCurrentdcmExport:(id) sender;
 - (IBAction) switchToSeriesRadio:(id) sender;
 - (float) offset;
 - (float) valueFactor;
 - (void) setViewportResizable: (BOOL) boo;
 - (void) squareView:(id) sender;
-
+- (void) computeValueFactor;
 - (void) setRotate: (BOOL) r;
 - (float) factor;
+
+-(void) setViewSizeToMatrix3DExport;
+-(void) restoreViewSizeAfterMatrix3DExport;
+-(void) axView:(id) sender;
+-(void) coView:(id) sender;
+-(void) saViewOpposite:(id) sender;
+
+- (void)zoomMouseUp:(NSEvent *)theEvent;
+
 
 // export
 - (void) sendMail:(id) sender;
@@ -410,5 +493,37 @@ typedef char* vtkMyCallbackVR;
 //Dragging
 - (void) startDrag:(NSTimer*)theTimer;
 - (void)deleteMouseDownTimer;
+
+//Menus
+- (void)deleteRightMouseDownTimer;
+- (void) showMenu:(NSTimer*)theTimer;
+
+-(BOOL)actionForHotKey:(NSString *)hotKey;
+- (void)setAdvancedCLUT:(NSMutableDictionary*)clut lowResolution:(BOOL)lowRes;
+- (void)setAdvancedCLUTWithName:(NSString*)name;
+- (BOOL)advancedCLUT;
+- (VRController*)controller;
+- (BOOL)isRGB;
+
+- (vtkFixedPointVolumeRayCastMapper*)volumeMapper;
+- (void)setVolumeMapper:(vtkFixedPointVolumeRayCastMapper*)aVolumeMapper;
+- (vtkVolume*)volume;
+- (void)setVolume:(vtkVolume*)aVolume;
+- (char*)data8;
+- (void)setData8:(char*)data;
+
+- (void)drawImage:(NSImage *)image inBounds:(NSRect)rect;
+- (BOOL)checkHasChanged;
+- (void)setIChatFrame:(BOOL)boo;
+- (void)_iChatStateChanged:(NSNotification *)aNotification;
+
+- (void)yaw:(float)degrees;
+- (void)panX:(float)x Y:(float)y;
+
+- (void)recordFlyThru;
+
+// 3DConnexion SpaceNavigator
+- (void)connect2SpaceNavigator;
+void VRSpaceNavigatorMessageHandler(io_connect_t connection, natural_t messageType, void *messageArgument);
 
 @end

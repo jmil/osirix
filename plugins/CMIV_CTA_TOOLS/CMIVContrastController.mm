@@ -838,10 +838,9 @@ if( originalViewController == 0L) return 0L;
 			}
 			roiName = [curROI name];
 			
-			if([curROI respondsToSelector:@selector(color)])
-				color= [curROI color];
-			else
+			if([curROI respondsToSelector:@selector(rgbcolor)])
 				color= [curROI rgbcolor];
+			
 			unsigned int i;	
 			for(i=0;i<[roiList count];i++)
 			{

@@ -5,7 +5,7 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -18,6 +18,8 @@
 #import <Foundation/Foundation.h>
 #import <QuickTime/QuickTime.h>
 
+
+/** \brief QuickTime export */
 @interface QuicktimeExport : NSObject {
 
 	id						object;
@@ -35,9 +37,8 @@
 	IBOutlet NSTextField	*rateValue;
 }
 
++ (NSString*) generateQTVR:(NSString*) srcPath frames:(int) frames;
 - (id) initWithSelector:(id) o :(SEL) s :(long) f;
-//- (void) setCodec:(unsigned long) codec :(long) quality;
-//- (NSString*) generateMovie :(BOOL) openIt :(BOOL) produceFiles :(NSString*) name;
 - (NSString*) createMovieQTKit:(BOOL) openIt :(BOOL) produceFiles :(NSString*) name;
 - (IBAction) setRate:(id) sender;
 - (IBAction) changeExportType:(id) sender;

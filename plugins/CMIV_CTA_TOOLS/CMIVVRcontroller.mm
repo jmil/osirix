@@ -473,8 +473,8 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	{
 		tempROI = [inROIArray objectAtIndex: i];	
 		
-		if([tempROI respondsToSelector:@selector(color)])
-			color= [tempROI color];
+		if([tempROI respondsToSelector:@selector(rgbcolor)])
+			color= [tempROI rgbcolor];
 		else
 			color= [tempROI rgbcolor];
 		NSMutableArray *someColors = [[mutiplePhaseColorCurves objectAtIndex:i+1] objectAtIndex:0];
@@ -639,9 +639,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 		[bArray addObject: [NSNumber numberWithFloat:0.0]];
 		[xArray addObject: [NSNumber numberWithFloat:0.0]];
 		
-		if([tempROI respondsToSelector:@selector(color)])
-			color= [tempROI color];
-		else
+		if([tempROI respondsToSelector:@selector(rgbcolor)])
 			color= [tempROI rgbcolor];
 		[rArray addObject: [NSNumber numberWithFloat:color.red/65536.0]];		
 		[gArray addObject: [NSNumber numberWithFloat:color.green /65536.0]];		
@@ -673,7 +671,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	
 	curProperyDict = [propertyDictList objectAtIndex: 0];
 
-	wholeVolumeWW = [propertyDictList count]*2048;
+	wholeVolumeWW = 2048;	//[propertyDictList count]*
 	wholeVolumeWL = wholeVolumeWW/2;
 		
 	if([curPix SUVConverted])
@@ -687,11 +685,6 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 		
 		return 0;
 	}	
-	
-
-	
-
-		
 	
 	[NSBundle loadNibNamed:@"VR_Panel" owner:self];	
 	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
@@ -1344,11 +1337,11 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 
 - (float) minimumValue
 {
-	return 0;
+	return -1024;
 }
 - (float) maximumValue
 {
-	return 1000;
+	return 4096;
 }
 - (ViewerController*) viewer2D
 {

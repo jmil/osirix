@@ -886,7 +886,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 }
 - (int) initViews
 {
-
+	[[NSUserDefaults standardUserDefaults] setFloat: 1 forKey: @"ROIArrowThickness"];
 
 	long                size;
 	NSArray				*pixList = [originalViewController pixList];
@@ -1142,10 +1142,6 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	cprImageBuffer=0L;
 	
 	ROI* testROI=[[ROI alloc] initWithType: tOval :xSpacing :ySpacing : NSMakePoint( 0, 0)];
-	if([testROI respondsToSelector:@selector(color)])
-		IsVersion2_6=YES;
-	else
-		IsVersion2_6=NO;
 	[testROI release];	
 	
 	return 0;
@@ -2066,6 +2062,7 @@ else
 					DCMPix * curImage= [cViewPixList objectAtIndex:0];
 					ROI* newROI=[[ROI alloc] initWithType: tArrow :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
 					[newROI setName:currentSeedName];
+					[newROI setThickness: 1];
 					lastPoint=[[MyPoint alloc] initWithPoint:NSMakePoint(0,0)];
 					cViewArrowPointsArray=[newROI points];
 					[cViewArrowPointsArray addObject: lastPoint];
@@ -2344,9 +2341,7 @@ else
 			ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:(int)rect.size.width textHeight:(int)rect.size.height textName:[roi name] positionX:(int)rect.origin.x positionY:(int)rect.origin.y spacingX:spaceX spacingY:spaceY imageOrigin:NSMakePoint( originX,  originY)];
 			[newROI setComments:[NSString stringWithFormat:@"%d",i+1]];
 			
-			if(IsVersion2_6)
-				color= [roi color];
-			else
+			if(IsVersion2_6 == NO)
 				color= [roi rgbcolor];		
 			
 			[newROI setColor:color];
@@ -5416,7 +5411,6 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 				
 		DCMPix	*newPix = [firstPix copy];
 		[newPix setPwidth: maxwidth];
-		[newPix setRowBytes: maxwidth];
 		[newPix setPheight: maxheight];
 		
 		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
@@ -5607,7 +5601,6 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 		DCMPix	*newPix = [firstPix copy];
 		[newPix setPwidth: maxwidth];
-		[newPix setRowBytes: maxwidth];
 		[newPix setPheight: maxheight];
 		
 		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
@@ -5796,7 +5789,6 @@ int vtkRibbonFilter::GeneratePoints(vtkIdType offset,
 		
 		DCMPix	*newPix = [firstPix copy];
 		[newPix setPwidth: maxwidth];
-		[newPix setRowBytes: maxwidth];
 		[newPix setPheight: maxheight];
 		
 		[newPix setfImage:(float*) (newVolumeData + i*maxwidth*maxheight )];
