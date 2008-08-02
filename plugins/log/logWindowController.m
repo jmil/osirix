@@ -200,16 +200,11 @@ NSInteger sortByAddress(NSDictionary *roi1, NSDictionary *roi2, void *context)
 		int uniqueIPs = [uniqueIP count];
 		int ii = i;
 		
-		if( [startdate monthOfYear] == 6)
-		{
-			ii += 40455;
-			uniqueIPs += 11255;
-		}
-		
 		ii = ii - startIndex ;
 		
 		if( [startdate monthOfYear] == [[NSCalendarDate date] monthOfYear] && [startdate yearOfCommonEra] == [[NSCalendarDate date] yearOfCommonEra])
 		{
+			[result appendString: [NSString stringWithFormat: @"*** uncorrected month: %d : hits: %d unique ip: %d (10.4: %.2f %% 10.5: %.2f %%)\r", [startdate monthOfYear], ii, uniqueIPs, tiger * 100. / (tiger+leopard), leopard * 100. / (tiger+leopard)]];
 			
 			ii = (ii * 31) / [[NSCalendarDate date] dayOfMonth];
 			ii += ((float) ii * (24. - [[NSCalendarDate date] hourOfDay])/24.)/ 31.;
