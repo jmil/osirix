@@ -9,7 +9,7 @@
 - WADO Client/Server
 
 - Test DICOM Printing
-- Test Bonjour checkDBUpToDate
+- Test Bonjour checkDBUpToDate - ReTest async write with XRAID
 - Add accession number to Web interface
 - New ROI tool : Instant Segmentation (like Instant Alpha in iWork'08, but for region growing)
 - Magnifying glass - See ROI Image
