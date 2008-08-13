@@ -1,3 +1,6 @@
+Course: preferences file, Console.App, Sample.app
+
+
 - C-Find before auto-routing
 - Lens
 - Database optimizations : manage up to 200'000 studies, with more than 100 millions of images
