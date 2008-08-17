@@ -1,6 +1,7 @@
 Course: preferences file, Console.App, Sample.app
 
 - Compressed transfers
+- Spothlight
 
 - C-Find before auto-routing
 - Lens
