@@ -1,4 +1,5 @@
-Course: preferences file, Console.App, Sample.app
+Course: preferences file (X-Code), Console.App, Sample.app
+Curved MPR : Cardiac CT
 
 - Compressed transfers
 - Spothlight
