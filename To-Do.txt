@@ -3,6 +3,7 @@ Curved MPR : Cardiac CT
 Compressed transfers
 Spothlight
 OTPEDIA
+Sync : X, Y, Z, scale, ...
 
 - Test multiple screens
 - C-Find before auto-routing
