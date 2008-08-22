@@ -1,9 +1,8 @@
-Course: preferences file (X-Code), Console.App, Sample.app
 Curved MPR : Cardiac CT
 Compressed transfers
-Spothlight
-OTPEDIA
-Sync : X, Y, Z, scale, ...
+Customized Annotations
+Double-Click
+MAgnetic Windows
 
 - Test multiple screens
 - C-Find before auto-routing
