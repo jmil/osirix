@@ -5,7 +5,7 @@
 #import "Cobb.h"
 #import "ROI.h"
 
-@implementation Cobb
+@implementation CobbFilter
 
 - (void) create: (NSArray*) A :(NSArray*) B :(NSMutableArray*) roiImageList
 {
@@ -101,20 +101,16 @@
 	
 	ROI		*line[ 2];
 	
-	int i, total = 0;
+	int  total = 0;
 	
 	// Is there 2 lines in this image?
 	total = 0;
-	for( i = 0; i < [roiImageList count]; i++)
+	for( ROI *curROI in roiImageList)
 	{
-		ROI *curROI = [roiImageList objectAtIndex: i];
-		
 		if( [curROI type] == tMesure)
 		{
 			if( total < 2) line[ total] = curROI;
 			total ++;
-			
-			[curROI setROIMode: ROI_sleep];
 		}
 	}
 	
@@ -122,20 +118,17 @@
 	{
 		// Is there 2 SELECTED lines in this image?
 		total = 0;
-		for( i = 0; i < [roiImageList count]; i++)
+		for( ROI *curROI in roiImageList)
 		{
-			ROI *curROI = [roiImageList objectAtIndex: i];
 			long mode = [curROI ROImode];
 			
 			if( [curROI type] == tMesure && (mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing))
 			{
 				if( total < 2)
 				{
-					line[ total] = [roiImageList objectAtIndex: i];
+					line[ total] = curROI;
 					total ++;
 				}
-				
-				[curROI setROIMode: ROI_sleep];
 			}
 		}
 		
@@ -146,6 +139,9 @@
 			return 0;
 		}
 	}
+	
+	for( ROI *curROI in roiImageList)
+		[curROI setROIMode: ROI_sleep];
 	
 	[self create: [line[ 0] points] : [line[ 1] points] :roiImageList];
 		

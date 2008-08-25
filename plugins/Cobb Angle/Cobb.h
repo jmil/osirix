@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
 
-@interface Cobb : PluginFilter {
+@interface CobbFilter : PluginFilter {
 
 }
 
