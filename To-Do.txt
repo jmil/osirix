@@ -1,5 +1,4 @@
 Curved MPR : Cardiac CT
-Compressed transfers
 
 - Test multiple screens
 - C-Find before auto-routing
