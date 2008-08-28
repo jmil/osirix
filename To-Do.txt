@@ -1,9 +1,5 @@
 Curved MPR : Cardiac CT
 
-- Bassin Ostéosynthèse
-- Masse pulmonaire
-- PET-CT
-
 - Test multiple screens
 - C-Find before auto-routing
 - Lens
