@@ -1,6 +1,8 @@
-Curved MPR : Cardiac CT
+- Check wl&ww fusion
 
-- Test multiple screens
+- Curved MPR : Cardiac CT
+
+- Albums column in DB
 - C-Find before auto-routing
 - Lens
 - Database optimizations : manage up to 200'000 studies, with more than 100 millions of images
