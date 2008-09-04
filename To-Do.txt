@@ -1,15 +1,12 @@
-- Check wl&ww fusion
-
-- Curved MPR : Cardiac CT
 
 - Albums column in DB
 - C-Find before auto-routing
 - Lens
 - Database optimizations : manage up to 200'000 studies, with more than 100 millions of images
 - Merge Volume
+- Save/Load all ROIs of a series
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
-- Save/Load all ROIs of a study/series
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
