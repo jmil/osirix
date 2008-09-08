@@ -22,7 +22,7 @@
 
 		if(!templatePanelFound)
 			windowController = [[XRayTemplateWindowController alloc] initWithWindowNibName:@"TemplatePanel"];
-			
+		
 		[windowController showWindow:self];
 	}
 	else if([menuName isEqualToString:@"Arthroplasty Templating"])

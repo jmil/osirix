@@ -27,8 +27,13 @@
 		viewDirection = XRayTemplateAnteriorPosteriorDirection;
 		flipTemplatesHorizontally = NO;
 		
-		templates = [[NSMutableArray arrayWithCapacity:0] retain];
-		[self findTemplates];
+//		[self loadTemplateArray];
+//		if(!templates)
+//		{
+			templates = [[NSMutableArray arrayWithCapacity:0] retain];
+			[self findTemplates];
+//			[self saveTemplateArray];
+//		}
 		
 		[templatesTableView selectRow:0 byExtendingSelection:NO];
 		[self setPDFDocument:templatesTableView];
@@ -610,5 +615,22 @@
 //{
 //	flipTemplatesHorizontally = NO;
 //}
+
+- (void)saveTemplateArray;
+{
+	NSString *resourcePath = [[NSBundle bundleForClass:@"XRayTemplatesPluginFilter"] resourcePath];
+	NSString *path = [resourcePath stringByAppendingPathComponent:@"templateArray.nsarray"];
+	[templates writeToFile:path atomically:YES];
+}
+
+- (void)loadTemplateArray;
+{
+	NSString *resourcePath = [[NSBundle bundleForClass:@"XRayTemplatesPluginFilter"] resourcePath];
+	NSString *path = [resourcePath stringByAppendingPathComponent:@"templateArray.nsarray"];
+
+	[templates release];
+	templates = [NSArray arrayWithContentsOfFile:path];
+	[templates retain];
+}
 
 @end

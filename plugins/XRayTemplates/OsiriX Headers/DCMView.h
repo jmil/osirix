@@ -325,6 +325,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 - (void) setCrossCoordinates:(float) x :(float) y :(BOOL) update;
 - (void) setCross:(long) x :(long)y :(BOOL) update;
 - (void) setMPRAngle: (float) vectorMPR;
+- (NSPoint) ConvertFromNSView2GL:(NSPoint) a;
 - (NSPoint) ConvertFromView2GL:(NSPoint) a;
 - (NSPoint) ConvertFromGL2View:(NSPoint) a;
 - (void) cross3D:(float*) x :(float*) y :(float*) z;

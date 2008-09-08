@@ -60,4 +60,7 @@
 - (NSString*)nameForTemplateAtIndex:(int)index;
 - (NSArray*)textualDataForTemplateAtIndex:(int)index;
 
+- (void)saveTemplateArray;
+- (void)loadTemplateArray;
+
 @end

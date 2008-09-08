@@ -14,6 +14,7 @@
 #define STANDARD_MAGNIFICATION_FACTOR 1.15
 
 #import </usr/include/objc/objc-class.h>
+// Method Swizzle (Only compatible with Mac OS 10.4 and 10.5 32 bit)
 void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
 {
 	#ifndef __LP64__
@@ -39,6 +40,77 @@ void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
         }
 	#endif
 }
+
+
+// Method Swizzle compatible with Mac OS 10.5 Leopard (32 bit & 64 bit)
+
+// if the origSel isn't present in the class, pull it up from where it exists then do the swizzle
+BOOL MethodSwizzleLeopard(Class klass, SEL origSel, SEL altSel, BOOL forInstance) {
+    // First, make sure the class isn't nil
+	if (klass != nil) {
+		Method origMethod = NULL, altMethod = NULL;
+		
+		// Next, look for the methods
+		Class iterKlass = (forInstance ? klass : klass->isa);
+		unsigned int methodCount = 0;
+		Method *mlist = class_copyMethodList(iterKlass, &methodCount);
+		if (mlist != NULL) {
+			int i;
+			for (i = 0; i < methodCount; ++i) {
+				
+				if (method_getName(mlist[i]) == origSel) {
+					origMethod = mlist[i];
+					break;
+				}
+				if (method_getName(mlist[i]) == altSel) {
+					altMethod = mlist[i];
+					break;
+				}
+			}
+		}
+		
+		if (origMethod == NULL || altMethod == NULL) {
+			// one or both methods are not in the immediate class
+			// try searching the entire hierarchy
+			// remember, iterKlass is the class we care about - klass || klass->isa
+			// class_getInstanceMethod on a metaclass is the same as class_getClassMethod on the real class
+			BOOL pullOrig = NO, pullAlt = NO;
+			if (origMethod == NULL) {
+				origMethod = class_getInstanceMethod(iterKlass, origSel);
+				pullOrig = YES;
+			}
+			if (altMethod == NULL) {
+				altMethod = class_getInstanceMethod(iterKlass, altSel);
+				pullAlt = YES;
+			}
+			
+			// die now if one of the methods doesn't exist anywhere in the hierarchy
+			// this way we won't make any changes to the class if we can't finish
+			if (origMethod == NULL || altMethod == NULL) {
+				return NO;
+			}
+			
+			// we can safely assume one of the two methods, at least, will be pulled
+			// pull them up
+			size_t listSize = sizeof(Method);
+			if (pullOrig && pullAlt) listSize += sizeof(Method); // need 2 methods
+			if (pullOrig) {
+				class_addMethod(iterKlass, method_getName(origMethod), method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+			}
+			if (pullAlt) {
+				class_addMethod(iterKlass, method_getName(altMethod), method_getImplementation(altMethod), method_getTypeEncoding(altMethod));
+			}
+		}
+		
+		// now swizzle
+		method_exchangeImplementations(origMethod, altMethod);
+		
+		return YES;
+	}
+	return NO;
+}
+
+
 
 @interface DCMView (myMethods)
 
@@ -171,7 +243,8 @@ void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    MethodSwizzle([DCMView class], @selector(myKeyDown:), @selector(keyDown:));
+    //MethodSwizzle([DCMView class], @selector(myKeyDown:), @selector(keyDown:));
+	MethodSwizzleLeopard([DCMView class], @selector(myKeyDown:), @selector(keyDown:), YES);
 	
 	[super dealloc];
 }
@@ -213,8 +286,8 @@ void MethodSwizzle(Class aClass, SEL orig_sel, SEL alt_sel)
 	
 [stepByStep showFirstStep];
 	
-    MethodSwizzle([DCMView class], @selector(keyDown:), @selector(myKeyDown:));
-	
+    //MethodSwizzle([DCMView class], @selector(keyDown:), @selector(myKeyDown:));
+	MethodSwizzleLeopard([DCMView class], @selector(keyDown:), @selector(myKeyDown:), YES);
 	
 	
 NSLog(@"showWindow END");
@@ -279,10 +352,10 @@ NSLog(@"showWindow END");
 	if(roi==nil) return;
 	if(roi==infoBoxROI) return;
 
-//	NSLog(@"roiChanged");
-//	NSLog(@"roi name : %@", [roi name]);
-//	NSLog(@"roi type : %d", [roi type]);
-//	NSLog(@"roi uniqueID : %@", [roi valueForKey:@"uniqueID"]);
+	NSLog(@"roiChanged");
+	NSLog(@"roi name : %@", [roi name]);
+	NSLog(@"roi type : %d", [roi type]);
+	NSLog(@"roi uniqueID : %@", [roi valueForKey:@"uniqueID"]);
 
 	if(pointerROI)
 	{
@@ -320,23 +393,23 @@ NSLog(@"showWindow END");
 		}
 	}
 
-	if(point1Axis!=nil)
-		if(roi==point1Axis)
-			[self updatePointsAxis];
+//	if(point1Axis!=nil)
+//		if(roi==point1Axis)
+//			[self updatePointsAxis];
 
-	if(point2Axis!=nil)
-		if(roi==point2Axis)
-			[self updatePointsAxis];
+//	if(point2Axis!=nil)
+//		if(roi==point2Axis)
+//			[self updatePointsAxis];
 				
-	if(point1Axis!=nil && point2Axis!=nil)
-	{
-		if(roi==point1Axis || roi==point2Axis )//|| roi==horizontalAxis)
-		{
-			[self updatePointsAxis];
-			[self computeLegInequalityMeasurement];
-			[self updateInfoBoxROI];
-		}
-	}	
+//	if(point1Axis!=nil && point2Axis!=nil)
+//	{
+//		if(roi==point1Axis || roi==point2Axis )//|| roi==horizontalAxis)
+//		{
+//			[self updatePointsAxis];
+//			[self computeLegInequalityMeasurement];
+//			[self updateInfoBoxROI];
+//		}
+//	}	
 	
 	if(cupLayer!=nil)
 	{
@@ -405,6 +478,7 @@ NSLog(@"showWindow END");
 	{
 		if([roi type]==t2DPoint)
 		{
+			NSLog(@"[roi type]==t2DPoint");
 			if(point1==nil && roi!=point2)
 			{
 				point1 = roi;
@@ -1494,6 +1568,7 @@ float distanceNSPoint(NSPoint p1, NSPoint p2)
 			
 		if(firstTime)
 		{
+			NSLog(@"firstTime");
 			point1Axis = [[ROI alloc] initWithType:tMesure :[[horizontalAxis valueForKey:@"pixelSpacingX"] floatValue] :[[horizontalAxis valueForKey:@"pixelSpacingY"] floatValue] :[[horizontalAxis valueForKey:@"imageOrigin"] pointValue]];
 		}
 		
@@ -1513,6 +1588,7 @@ float distanceNSPoint(NSPoint p1, NSPoint p2)
 		
 		if(!firstTime)
 		{
+				NSLog(@"! firstTime");
 			if([[[point1Axis points] objectAtIndex:0] x] != pt0.x || [[[point1Axis points] objectAtIndex:0] y] != pt0.y || [[[point1Axis points] objectAtIndex:1] x] != pt1.x || [[[point1Axis points] objectAtIndex:1] y] != pt1.y)
 			{
 				[[point1Axis points] removeAllObjects];
@@ -1524,6 +1600,7 @@ float distanceNSPoint(NSPoint p1, NSPoint p2)
 
 		if(needSetPoints)	
 		{
+				NSLog(@"needSetPoints");
 			[point1Axis setPoints:[NSArray arrayWithObjects:[MyPoint point:pt0], [MyPoint point:pt1], nil]];
 
 			if(firstTime)
@@ -1539,6 +1616,7 @@ float distanceNSPoint(NSPoint p1, NSPoint p2)
 				[[[viewerController roiList] objectAtIndex:[[viewerController imageView] curImage]] addObject:point1Axis];
 			}
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:point1Axis userInfo:nil];
+			NSLog(@"postNotificationName roiChange");
 		}
 	}
 	
