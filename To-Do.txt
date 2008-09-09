@@ -6,6 +6,7 @@
 - Merge Volume
 - Save/Load all ROIs of a series
 
+- Spotlight : No index: . or .noindex
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
