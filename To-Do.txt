@@ -1,3 +1,8 @@
+- machine name in shared bonjour default name
+- Bone removing for all modalities
+- 16-bit clut bug
+- http web portal bug
+
 
 - Albums column in DB
 - C-Find before auto-routing
