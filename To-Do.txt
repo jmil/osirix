@@ -4,6 +4,9 @@
 - http web portal bug : QT generation
 - Export/Import smart albums
 - Font size for ROIs
+- Crosshair short cut
+- Add more messages to crowl : send failed?
+- Upgrade dcm4chee installation page on web site.
 
 - Remove: hanging protocols, DICOM SR Reports
 
