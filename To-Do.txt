@@ -1,8 +1,11 @@
 - machine name in shared bonjour default name
-- Bone removing for all modalities
+- Bone removing for all modalities - GUI
 - 16-bit clut bug
-- http web portal bug
+- http web portal bug : QT generation
+- Export/Import smart albums
+- Font size for ROIs
 
+- Remove: hanging protocols, DICOM SR Reports
 
 - Albums column in DB
 - C-Find before auto-routing
