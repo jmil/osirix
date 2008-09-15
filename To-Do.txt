@@ -1,12 +1,11 @@
-- machine name in shared bonjour default name
 - Bone removing for all modalities - GUI
 - 16-bit clut bug
 - http web portal bug : QT generation
 - Export/Import smart albums
 - Font size for ROIs
-- Crosshair short cut
 - Add more messages to crowl : send failed?
 - Upgrade dcm4chee installation page on web site.
+- Dont change 'date added' for ROIs adding
 
 - Remove: hanging protocols, DICOM SR Reports
 
