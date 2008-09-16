@@ -3,6 +3,7 @@
 - Export/Import smart albums
 - Font size for ROIs
 - Upgrade dcm4chee installation page on web site.
+- Q&R save sources?
 
 - Remove: hanging protocols, DICOM SR Reports
 
