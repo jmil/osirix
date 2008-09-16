@@ -4,6 +4,8 @@
 - Font size for ROIs
 - Upgrade dcm4chee installation page on web site.
 - Q&R save sources
+- When printing -> Smooth font?
+- Add a small 'now' button for auto Q&R
 
 - Remove: hanging protocols, DICOM SR Reports
 
