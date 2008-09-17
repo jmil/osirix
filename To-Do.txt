@@ -4,6 +4,7 @@
 - Font size for ROIs
 - Upgrade dcm4chee installation page on web site.
 - When printing -> Smooth font? -> Test cubic interpolation
+- If only few images: from :0 to :0
 - Q&R save sources
 
 - Albums column in DB
