@@ -1,10 +1,14 @@
 - Bone removing for all modalities - GUI
 - http web portal bug : QT generation
-- Export/Import smart albums
-- Font size for ROIs
-- Upgrade dcm4chee installation page on web site
+- Font size for ROIs : shift +-
+- ROI size: ctrl +-
 - Q&R save sources
+- Upgrade dcm4chee installation page on web site
+- Open Key Images AND ROIs Images
+- DCM Framework warning message
+- DICOM Print : close window after print
 
+- Export/Import Albums (Contextual menu)
 - Albums column in DB
 - C-Find before auto-routing
 - Lens
