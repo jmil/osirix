@@ -2,9 +2,7 @@
 - http web portal bug : QT generation
 - Export/Import smart albums
 - Font size for ROIs
-- Upgrade dcm4chee installation page on web site.
-- When printing -> Smooth font? -> Test cubic interpolation
-- If only few images: from :0 to :0
+- Upgrade dcm4chee installation page on web site
 - Q&R save sources
 
 - Albums column in DB
