@@ -3,7 +3,6 @@
 - Font size for ROIs : shift +-
 - Q&R save sources
 - Upgrade dcm4chee installation page on web site
-- Turn Off propagate settings in Series if Open Key images and ROIs in a study ?
 - Export/Import Albums (Contextual menu)
 
 - Open ROIs And Key Images from Database Window
