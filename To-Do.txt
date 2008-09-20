@@ -1,10 +1,11 @@
 - Bone removing for all modalities - GUI
-- http web portal bug : QT generation
-- Font size for ROIs : shift +-
 - Q&R save sources
+- http web portal bug : QT generation
 - Upgrade dcm4chee installation page on web site
-- Export/Import Albums (Contextual menu)
+- Abort for iDisk transfers
 
+- Possibly to change the font size for ROIs
+- Export/Import Albums (Contextual menu)
 - Open ROIs And Key Images from Database Window
 - Albums column in DB
 - C-Find before auto-routing
