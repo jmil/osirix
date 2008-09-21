@@ -1,10 +1,10 @@
 - Bone removing for all modalities - GUI
-- Q&R save sources
 - Abort for iDisk transfers
 - http web portal bug : QT generation
 - Upgrade dcm4chee installation page on web site
 
-- Possibly to change the font size for ROIs
+- Option to save DICOM Nodes in Q&R Presets
+- Option to change the font size for ROIs
 - Export/Import Albums (Contextual menu)
 - Open ROIs And Key Images from Database Window
 - Albums column in DB
@@ -13,7 +13,7 @@
 - Database optimizations : manage up to 200'000 studies, with more than 100 millions of images
 - Merge Volume
 - Save/Load all ROIs of a series
-- DATABASE and INCOMING folders are renamed ".noindex" extensions
+- DATABASE and INCOMING folders are renamed ".noindex" extensions, avoiding Spotlight indexing
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Ejection fraction plugin
