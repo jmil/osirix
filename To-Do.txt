@@ -1,8 +1,8 @@
 - Bone removing for all modalities - GUI
 - Q&R save sources
+- Abort for iDisk transfers
 - http web portal bug : QT generation
 - Upgrade dcm4chee installation page on web site
-- Abort for iDisk transfers
 
 - Possibly to change the font size for ROIs
 - Export/Import Albums (Contextual menu)
