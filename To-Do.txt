@@ -1,7 +1,5 @@
 - Bone removing for all modalities - GUI
-- Abort for iDisk transfers
 - http web portal bug : QT generation
-- Upgrade dcm4chee installation page on web site
 
 - Option to save DICOM Nodes in Q&R Presets
 - Option to change the font size for ROIs
