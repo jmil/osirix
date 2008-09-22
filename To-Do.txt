@@ -1,6 +1,7 @@
 - Bone removing for all modalities - GUI
 - http web portal bug : QT generation
 - CMIV bug in 64b
+- Spine plugin
 
 - Option to save DICOM Nodes in Q&R Presets
 - Option to change the font size for ROIs
