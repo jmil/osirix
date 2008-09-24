@@ -98,8 +98,6 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 					[vrViewer Vertical: -45];
 					[vrViewer Vertical: -45];
 				}
-				
-				
 			}
 			if( verticalAngleForVR!=-90 && verticalAngleForVR!=90)
 			{

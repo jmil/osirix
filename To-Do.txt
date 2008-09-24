@@ -1,8 +1,8 @@
-- Bone removing for all modalities - GUI
 - http web portal bug : QT generation
 - CMIV bug in 64b
 - Spine plugin
 
+- Option to edit VR Bone Removing parameters : Click + Alternate key
 - Option to save DICOM Nodes in Q&R Presets
 - Option to change the font size for ROIs
 - Export/Import Albums (Contextual menu)
