@@ -3,6 +3,7 @@
 - Spine plugin
 - Multiple Screen bug
 - Check dcm file : dciodvfy
+- EF plugin
 
 - Option to edit VR Bone Removing parameters : Click + Alternate key
 - Option to save DICOM Nodes in Q&R Presets
