@@ -2,9 +2,10 @@
 - CMIV bug in 64b
 - Spine plugin
 - Multiple Screen bug
-- Check dcm file : dciodvfy
+- Test DICOM Print color : color and color conversion
 - EF plugin
 
+- DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
 - Option to save DICOM Nodes in Q&R Presets
 - Option to change the font size for ROIs
