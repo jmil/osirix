@@ -2,6 +2,7 @@
 - Spine plugin
 - Multiple Screen bug : check
 - Test DICOM Print color : check color and color conversion
+- Add accession number to Web interface
 
 - DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
@@ -23,9 +24,6 @@
 - Report modality - study description
 - WADO Client/Server
 - Hanging Protocol
-
-- Test DICOM Printing
-- Add accession number to Web interface
 
 - Password DB in keychain
 - Preferences for Status menu in DB
