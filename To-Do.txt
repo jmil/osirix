@@ -2,7 +2,6 @@
 - Spine plugin
 - Multiple Screen bug : check
 - Test DICOM Print color : check color and color conversion
-- EF plugin
 
 - DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
@@ -18,8 +17,8 @@
 - Save/Load all ROIs of a series
 - DATABASE and INCOMING folders are renamed ".noindex" extensions, avoiding Spotlight indexing
 
+- Fixed Window Tiling ?
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
-- Ejection fraction plugin
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
