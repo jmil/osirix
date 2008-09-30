@@ -1,9 +1,9 @@
 - CMIV bug in 64b ?
 - Spine plugin
-- Multiple Screen bug : check
 - Test DICOM Print color : check color and color conversion
 - Add accession number to Web interface
 
+- Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
 - Option to save DICOM Nodes in Q&R Presets
