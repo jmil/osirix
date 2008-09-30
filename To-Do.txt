@@ -1,7 +1,6 @@
 - CMIV bug in 64b ?
 - Spine plugin
 - Test DICOM Print color : check color and color conversion
-- Add accession number to Web interface
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
