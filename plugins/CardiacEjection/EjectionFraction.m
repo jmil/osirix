@@ -17,13 +17,15 @@ static double cPipi	= 3.141592653589793238;
 - (BOOL) checkData
 {
  // Long axis length must be non zero
-  if (fLengthDias == 0.0 || fLengthSys == 0.0) {
+  if (fLengthDias == 0.0 || fLengthSys == 0.0)
+  {
 	NSRunInformationalAlertPanel(@"Ejection Fraction", @"Long axis length should be non zero for diastolic and systolic regions", @"OK", 0L, 0L);
     return NO;
   };//endif
   
   // MONOPLANE
-  if (fLongAxisDias * fLongAxisSys > 0.0) {
+  if (fLongAxisDias * fLongAxisSys > 0.0)
+  {
     fMethod = efMonoplane;
     // compute ejection fraction
     fVolDias = (8.0 * fLongAxisDias * fLongAxisDias) /
@@ -36,7 +38,8 @@ static double cPipi	= 3.141592653589793238;
   }//endif
     
   // BIPLANE
-  if (fHorLongAxisDias * fHorLongAxisSys * fVerLongAxisDias * fVerLongAxisSys> 0.0) {
+  if (fHorLongAxisDias * fHorLongAxisSys * fVerLongAxisDias * fVerLongAxisSys> 0.0)
+  {
     fMethod = efBiplane;
     // compute ejection fraction
     fVolDias = (8.0 * fHorLongAxisDias * fVerLongAxisDias) /
@@ -49,7 +52,8 @@ static double cPipi	= 3.141592653589793238;
   }//endif
     
   // HEMIELLIPSE
-  if (fShortAxisDias * fShortAxisSys > 0.0) {
+  if (fShortAxisDias * fShortAxisSys > 0.0)
+  {
     fMethod = efHemiEllipse;
     // compute ejection fraction
     fVolDias = (5.0 * fShortAxisDias * fLengthDias) / 6.0;
@@ -60,7 +64,8 @@ static double cPipi	= 3.141592653589793238;
   }//endif
     
   // SIMPSON
-  if (fMitralDias * fPapiDias * fMitralSys * fPapiSys > 0.0) {
+  if (fMitralDias * fPapiDias * fMitralSys * fPapiSys > 0.0)
+  {
     fMethod = efSimpson;
     // compute ejection fraction
     fVolDias = fLengthDias * (fMitralDias + 2.0 * fPapiDias / 3.0) / 2.0;
@@ -72,8 +77,8 @@ static double cPipi	= 3.141592653589793238;
     
   // TEICHHOLZ
   fMethod = efTeichholz;
-  fVolDias = 11.8 - (1.27 * fLengthDias) + (0.068 * fLengthDias * fLengthDias);
-  fVolSys  = 11.8 - (1.27 * fLengthSys) + (0.068 * fLengthSys * fLengthSys);
+  fVolDias = 7.0 * fLengthDias*fLengthDias*fLengthDias / (2.4 + fLengthDias);
+  fVolSys  = 7.0 * fLengthSys*fLengthSys*fLengthSys / (2.4 + fLengthSys);
   fEF = (int) ((fVolDias - fVolSys) * 100 / fVolDias);
   return YES;
 }
