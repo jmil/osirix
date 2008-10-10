@@ -1,6 +1,5 @@
 - CMIV bug in 64b ?
 - Spine plugin
-- Plugin update: always at user level?
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
