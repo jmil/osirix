@@ -16,7 +16,6 @@
 - Save/Load all ROIs of a series
 - DATABASE and INCOMING folders are renamed ".noindex" extensions, avoiding Spotlight indexing
 
-- Fixed Window Tiling ?
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
