@@ -1,7 +1,6 @@
 - CMIV bug in 64b ?
 - Spine plugin
 - Check JPEG to DICOM
-- Sync Series 64-bit G5
 - Secondary Capture as Key Images?
 
 - Option to mark ROI images as key images : Viewer Preferences
