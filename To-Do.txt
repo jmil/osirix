@@ -3,7 +3,6 @@
 - Check JPEG to DICOM
 - Scroll through series
 - Secondary Capture as Key Images?
-- Save aliases images on the middle image ONLY if not key images opened...
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
