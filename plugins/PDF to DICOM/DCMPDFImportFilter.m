@@ -177,7 +177,7 @@
 			//NSLog(@"pdf: %@", [dcmObject description]);
 			
 			//get Incoming Folder Path;
-			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING/PDF%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], _studyID, _imageNumber];
+			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/PDF%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], _studyID, _imageNumber];
 			//destination = [NSString stringWithFormat: @"%@/Desktop/%@.dcm", NSHomeDirectory(), _docTitle]; 
 		
 			if ([dcmObject writeToFile:destination withTransferSyntax:[DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax] quality:DCMLosslessQuality atomically:YES])
