@@ -14,6 +14,13 @@
 
 - (long) filterImage:(NSString*) menuName
 {
+	float vecteur;
+	
+	if( [menuName isEqualToString: @"Vector Up"])
+		vecteur = -1.;
+	else
+		vecteur = 1.;
+
 		DCMPix *curPix = [[viewerController pixList] objectAtIndex: [[viewerController imageView] curImage]];
 		long imageSize, size;
 		NSArray *pixList = [viewerController pixList];
@@ -25,23 +32,42 @@
 		
 		for( DCMPix *p in pixList)
 		{
-			float o[ 9];
+			double o[ 9];
 			
-			[p orientation: o];
+			[p orientationDouble: o];
 			
 			for( int i = 0 ; i < 6 ; i++)
 			{
-				int r = o[ i]*1000.;
+				int r = ( vecteur * o[ i]*1000);
+				
+				o[i] = (float) r / 1000;
+				
+				NSLog( @"%f", o[i]);
+			}
+			
+			[p setOrientationDouble: o];
+			
+		}
+
+		for( DCMPix *p in pixList)
+		{
+			double o[ 3];
+			
+			[p originDouble: o];
+			
+			for( int i = 0 ; i < 3 ; i++)
+			{
+				int r = ( o[ i]*1000.);
 				
 				o[i] = (float) r / 1000.;
 				
 				NSLog( @"%f", o[i]);
 			}
 			
-			[p setOrientation: o];
+			[p setOriginDouble: o];
 			
 		}
-		
+
 		float orientation[ 9];		
 		[curPix orientation: orientation];
 		

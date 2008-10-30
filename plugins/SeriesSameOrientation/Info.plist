@@ -18,7 +18,8 @@
 	<string>1.1</string>
 	<key>MenuTitles</key>
 	<array>
-		<string>Series Same Orientation</string>
+		<string>Vector Up</string>
+		<string>Vector Down</string>
 	</array>
 	<key>NSPrincipalClass</key>
 	<string>SeriesSameOrientation</string>
