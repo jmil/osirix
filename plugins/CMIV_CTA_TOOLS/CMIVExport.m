@@ -160,7 +160,7 @@ PURPOSE.
 	{
 		BOOL			isDir = YES;
 		long			index = 0;
-		NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING"] ;
+		NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING.noindex"] ;
 		//[NSString stringWithString:@"/Users/chuwa/output"];
 		//	[stringByAppendingPathComponent:@"/INCOMING"];
 
@@ -524,7 +524,7 @@ PURPOSE.
 				BOOL			isDir = YES;
 				long			index = 0;
 				NSString		*temppath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/TEMP"] ;
-				NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING"] ;
+				NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING.noindex"] ;
 				NSString *dstPath,*tempdstPath;
 				//[NSString stringWithString:@"/Users/chuwa/output"];
 				//	[stringByAppendingPathComponent:@"/INCOMING"];

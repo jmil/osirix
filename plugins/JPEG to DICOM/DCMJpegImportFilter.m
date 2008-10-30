@@ -19,7 +19,7 @@
 {
 	NSArray *topLevelObjects;
 	NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
-	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"ConversionInfo" bundle:thisBundle];
+	NSNib *nib = [[[NSNib alloc] initWithNibNamed:@"ConversionInfo" bundle:thisBundle] autorelease];
 	[nib instantiateNibWithOwner:self topLevelObjects:&topLevelObjects];
 	[datePicker setDateValue:[NSDate date]];
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -195,7 +195,7 @@
 
 			//get Incoming Folder Path;
 			//documentsDirectory() is a function not listed in the header files for OsiriX
-			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING/JTD%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], studyID, imageNumber];
+			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], studyID, imageNumber];
 			[dcmObject writeToFile:destination withTransferSyntax:ts quality:DCMLosslessQuality atomically:YES];
 
 		}
