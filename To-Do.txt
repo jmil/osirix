@@ -1,5 +1,5 @@
 - Spine plugin
-- activate: scroll through series, patient level dcm editing
+- activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
 
 - Option to mark ROI images as key images : Viewer Preferences
