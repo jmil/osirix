@@ -4,8 +4,6 @@
 - ROI activate new features: unselectable, lock : ROI manager
 - Add study level pour edit smart albums.
 
-- Test XML-RPC escaping characters
-
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
