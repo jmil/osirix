@@ -1,4 +1,3 @@
-- CLUT PET-CT fused
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
