@@ -4,7 +4,7 @@
 - ROI activate new features: unselectable, lock : ROI manager
 - Add study level pour edit smart albums.
 
-- Check %lu, %ld, %li
+- Test switch user DICOM Listener
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
