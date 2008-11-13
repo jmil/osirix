@@ -3,6 +3,7 @@
 - Secondary Capture as Key Images?
 - ROI activate new features: unselectable, lock : ROI manager
 - Add study level pour edit smart albums.
+- Add isSigned, offset for getrawdata
 - Copy-Paste-Save brush ROIs
 
 - Test switch user DICOM Listener
