@@ -7,6 +7,8 @@
 - Add study level pour edit smart albums
 - Add menu for export db list as file
 
+- Test Safari 64-bit
+
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
 - Option to edit VR Bone Removing parameters : Click + Alternate key
