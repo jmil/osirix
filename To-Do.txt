@@ -1,11 +1,14 @@
 - Bugs: Brush ROI, PET-CT clut, anonymize bug
 
+- ROIs in multi frame??
+
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
 - ROI activate new features: unselectable, lock : ROI manager
 - Add study level pour edit smart albums
 - Add menu for export db list as file
+- Add export to automatically export to export dicom 2DMPR, VR, ...
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
