@@ -1,7 +1,5 @@
 - Bugs: Brush ROI, PET-CT clut, anonymize bug
 
-- ROIs in multi frame??
-
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
