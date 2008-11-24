@@ -5,6 +5,7 @@
 - Add study level pour edit smart albums
 - Add menu for export db list as file
 - Add export to automatically export to export dicom 2DMPR, VR, ...
+- Graph 4D comme histo
 
 - Option to mark ROI images as key images : Viewer Preferences
 - DICOM Validator of David Clunie is now included in the Meta-Data window
