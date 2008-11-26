@@ -1,4 +1,4 @@
-- Test iPhone Transfer syntax
+- Check Transfer Syntax - Bonjour
 
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
