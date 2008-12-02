@@ -1,7 +1,7 @@
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix)
 - Multi frame MR Philips
-- Transmit IP in web QR
+- Transmit IP/port in web QR
 
 - Presentation Developer keynote + pdf
 - Spine plugin
