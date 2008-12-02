@@ -1,5 +1,9 @@
-- Check Transfer Syntax - Bonjour
+- FD Field DICOM Store 64'bit
+- Sync : -> If blended -> propagate next (cerebrix)
+- Multi frame MR Philips
+- Transmit IP in web QR
 
+- Presentation Developer keynote + pdf
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
@@ -8,21 +12,6 @@
 - Add menu for export db list as file
 - Add export to automatically export to export dicom 2DMPR, VR, ...
 - Graph 4D comme histo
-
-- Option to mark ROI images as key images : Viewer Preferences
-- DICOM Validator of David Clunie is now included in the Meta-Data window
-- Option to edit VR Bone Removing parameters : Click + Alternate key
-- Option to save DICOM Nodes in Q&R Presets
-- Option to change the font size for ROIs
-- Export/Import Albums (Contextual menu)
-- Open ROIs And Key Images from Database Window
-- Albums column in DB
-- C-Find before auto-routing
-- Lens
-- Database optimizations : manage up to 200'000 studies, with more than 100 millions of images
-- Merge Volume
-- Save/Load all ROIs of a series
-- DATABASE and INCOMING folders are renamed ".noindex" extensions, avoiding Spotlight indexing
 
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Reslice oblique : 2D MPR, Points?
