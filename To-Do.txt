@@ -1,9 +1,11 @@
 - FD Field DICOM Store 64'bit
-- Sync : -> If blended -> propagate next (cerebrix)
+- Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - Multi frame MR Philips
 - Transmit IP/port in web QR
-
+- 3D Rendering color wheel problem
 - Presentation Developer keynote + pdf
+- BILINEAR by default
+
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
