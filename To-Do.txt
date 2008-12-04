@@ -5,6 +5,7 @@
 - 3D Rendering color wheel problem
 - Presentation Developer keynote + pdf
 - BILINEAR by default
+- Web: 64-bit & mailing list
 
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
