@@ -2,7 +2,6 @@
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - Multi frame MR Philips
 - Transmit IP/port in web QR
-- 3D Rendering color wheel problem
 - Presentation Developer keynote + pdf
 - BILINEAR by default
 - Web: 64-bit & mailing list
