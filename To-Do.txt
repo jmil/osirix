@@ -1,9 +1,7 @@
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - Multi frame MR Philips
-- Transmit IP/port in web QR
 - Presentation Developer keynote + pdf
-- Web: 64-bit & mailing list
 
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
