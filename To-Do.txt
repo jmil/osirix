@@ -3,7 +3,6 @@
 - Multi frame MR Philips
 - Transmit IP/port in web QR
 - Presentation Developer keynote + pdf
-- BILINEAR by default
 - Web: 64-bit & mailing list
 
 - Spine plugin
