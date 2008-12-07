@@ -1,6 +1,7 @@
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - Multi frame MR Philips
+- VTK memory leak applied ?
 
 - Spine plugin
 - activate: scroll through series, patient level dcm editing, full 32-bit pipeline
@@ -63,6 +64,19 @@ IT SEEMS TO WORK IF WE DONT CHANGE THE SIZE....
 # define VTK_FREETYPE_CACHING_SUPPORTED
 #endif
 
+- WARNING MEMORY LEAK IN SetCocoaManager (vtkCocoaRenderWindowInteractor and vtkCocoaRenderWindow) :
+
+if (manager == NULL)
+    {
+    NSMutableDictionary* cocoaManager = 
+      reinterpret_cast<NSMutableDictionary *>(this->CocoaManager);
+    #ifdef __OBJC_GC__
+      [[NSGarbageCollector defaultCollector]
+        enableCollectorForPointer:cocoaManager];
+    #else
+      [cocoaManager release];
+    #endif
+    }
 
 - Alpha rendering for freetype text : see below
 
