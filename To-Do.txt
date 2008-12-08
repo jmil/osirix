@@ -47,7 +47,7 @@ VTK MODIFICATIONS :
 
 Optimizations:
 
--march=nocona -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer
+-ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer
 
 ITK: remove Wmo long double in CMakeLists.txt, after generating
 __isnand dans vnl_math.cxx, remplacer avec __inline_isnand (voir math.h)
@@ -79,6 +79,14 @@ if (manager == NULL)
     }
 
 - Alpha rendering for freetype text : see below
+
+- Switch default gcc compiler
+
+cd /usr/bin
+sudo rm gcc
+sudo ln -s gcc-4.2 gcc
+sudo rm c++
+sudo ln -s c++-4.2 c++
 
 Index: Rendering/vtkFreeTypeUtilities.cxx
 ===================================================================
