@@ -1,11 +1,10 @@
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - Multi frame MR Philips
-- VTK memory leak applied ?
 
 - Autoselect format for printing
 - Spine plugin
-- activate: scroll through series, patient level dcm editing, full 32-bit pipeline
+- Activate: scroll through series, patient level dcm editing, full 32-bit pipeline
 - Secondary Capture as Key Images?
 - ROI activate new features: unselectable, lock : ROI manager
 - Add study level pour edit smart albums
@@ -34,7 +33,6 @@
 HUG:
 
 - Routage colloques
-- Demandes numerisees
 - Rapport images -> DPI
 
 for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
@@ -153,3 +151,46 @@ diff -r1.47 vtkOpenGLFreeTypeTextMapper.cxx
 208a209,210
 > 	return;
 > 
+
+----------------
+x
+Hardware: MacPro 8 cores 2.8 GHz - 6 GB of RAM
+Dataset: Colonic CT - 1mm/1mm 965 images
+Function: 3D Growing Region to segment the colonic lumen
+32 bit: 22 secs
+64 bit: 5 secs
+----------------
+x
+Hardware: MacPro 8 cores 2.8 GHz - 6 GB of RAM
+Dataset: CTA Lower Limbs - 1mm/1mm 1020 images
+Function: Bone Removing Segmentation in 3D Volume Rendering
+32 bit: 38 secs
+64 bit: 9 secs
+----------------
+x
+Hardware: iMac 2.8 GHz 2.8 GHz - 4 GB of RAM
+Dataset: CTA Lower Limbs - 1mm/1mm 1020 images
+Function: Bone Removing Segmentation in 3D Volume Rendering
+32 bit: 128 secs
+64 bit: 31 secs
+----------------
+x
+Hardware: iMac 2.8 GHz - 4 GB of RAM
+Dataset: Thoracic CT - 1mm/1mm 760 images
+Function: 360 Rotation in 3D Volume Rendering
+32 bit: 138 secs
+64 bit: 85 secs
+----------------
+x
+Hardware: iMac 2.8 GHz - 4 GB of RAM
+Dataset: CTA - multiple series
+Function: Loading a large series
+32 bit: cannot load a series larger than 1'400 CT images
+64 bit: can load without slowness a series of 3'200 CT images
+----------------
+x
+Hardware: MacPro 8 cores 2.8 GHz - 8 GB of RAM
+Dataset: CTA - multiple series
+Function: Loading a large series
+32 bit: cannot load a series larger than 1'400 CT images
+64 bit: can load without slowness a series of 6'500 CT images
