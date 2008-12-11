@@ -1,4 +1,5 @@
 - Better support for multi-frame CT/MR format (0x5200 group)
+- Better performance for multi-frame files
 
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
