@@ -3,6 +3,7 @@
 
 - FD Field DICOM Store 64'bit
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
+- Test multi threaded loading system over bonjour
 
 - Autoselect format for printing
 - Spine plugin
