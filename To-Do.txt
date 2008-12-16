@@ -6,6 +6,7 @@
 - Test multi threaded loading system over bonjour
 - Bonjour Move log
 
+- Display ONLY the SAME patient
 - Autoselect format for printing
 - Spine plugin
 - Activate: scroll through series, patient level dcm editing, full 32-bit pipeline
