@@ -148,6 +148,15 @@
 		</ul>
 		<p>See the examples (open source plugins that you will find in the <code>plugins/</code> directory) to understand how to use these objects. Look at the headers files of these objects to find which functions are available and how to call them.</p>
 		
+		<p>The <code>pluginType</code> field of the <code>info.plist</code> file contains one of the following name:<p> 
+		<ul>
+			<li><code>imageFilter</code>: your plug-in will appear in the ‘Image Filters’ menu</li>
+			<li><code>roiTool</code>: your plug-in will appear in the ‘ROIs tools’ menu</li>
+			<li><code>other</code>: your plug-in will appear in the ‘Others’ menu</li>
+			<li><code>fusionFilter</code>: your plug-in will appear in the ‘Fusion’ window</li>
+			<li><code>Database</code>: your plug-in will appear in the ‘Database’ menu</li>
+		</ul>
+		
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 		
 		<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing & Installing your Plugin</h2></a>
