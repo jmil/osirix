@@ -345,6 +345,13 @@
 	[oYText setIntValue: originHeight];
 	[oZText setIntValue: originZ];
 	
+	if( [curPix sliceInterval] == 0)
+	{
+		[oZText setEnabled: NSOffState];
+		[ZText setEnabled: NSOffState];
+		[zSlider setEnabled: NSOffState];
+	}
+	
 	[self setXYZValue: XText];
 	
 	[NSApp beginSheet: window modalForWindow:[NSApp keyWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
