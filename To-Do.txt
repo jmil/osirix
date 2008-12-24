@@ -2,7 +2,6 @@
 - Better performance for multi-frame files
 - Multi-frame images are now available at the image level in the DB
 
-- Resample bug if no interval?
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 
 - Display ONLY the SAME patient
