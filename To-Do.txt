@@ -1,6 +1,7 @@
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files
 - Multi-frame images are now available at the image level in the DB
+- Multi-threaded loading function, ready for best performance on SSD drive
 
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 
