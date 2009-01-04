@@ -4,7 +4,6 @@
 - Multi-threaded loading function, ready for best performances on SSD drive
 
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
-- KeyImage for multi-frame new mode
 
 - 3D Distance for Curved MPR
 - Display ONLY the SAME patient
