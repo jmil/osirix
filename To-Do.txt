@@ -4,6 +4,7 @@
 - Multi-threaded loading function, ready for best performances on SSD drive
 - Option to mark Secondary Capture images as Key Images
 - Patient Level for DICOM Editor
+- Scroll Through Series option - See 2D Viewer Preferences
 
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 
