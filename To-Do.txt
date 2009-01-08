@@ -8,6 +8,7 @@
 - Scroll Through Series option - See 2D Viewer Preferences
 - Full 32-bit pipeline (experimental) - See 2D Viewer Preferences
 - Option to only allow a user to display images of the same patient
+- Export Database Displayed List as a tab separated file
 
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 
@@ -15,11 +16,8 @@
 - Autoselect format for printing
 - Spine plugin
 - ROI activate new features: unselectable, lock : ROI manager
-- Add study level pour edit smart albums
-- Add menu for export db list as file
 - Add export to automatically export to export dicom 2DMPR, VR, ...
 - Graph 4D comme histo
-
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Reslice oblique : 2D MPR, Points?
 - Report modality - study description
