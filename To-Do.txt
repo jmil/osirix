@@ -9,10 +9,14 @@
 - Full 32-bit pipeline (experimental) - See 2D Viewer Preferences
 - Option to only allow a user to display images of the same patient
 - Export Database Displayed List as a tab separated file
+- Regenerate DICOM comments field (see Database Preferences)
 
+- 3D Distance for Curved MPR?
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 
-- 3D Distance for Curved MPR
+- 8bit TIFF export
+- Zoom level for parallel 3D projections
+
 - Autoselect format for printing
 - Spine plugin
 - ROI activate new features: unselectable, lock : ROI manager
@@ -23,6 +27,7 @@
 - Report modality - study description
 - WADO Client/Server
 - Hanging Protocol
+- 4D Support for DICOM Export in 2D Viewer
 
 - Password DB in keychain
 - Preferences for Status menu in DB
