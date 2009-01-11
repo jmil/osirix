@@ -10,12 +10,12 @@
 - Option to only allow a user to display images of the same patient
 - Export Database Displayed List as a tab separated file
 - Regenerate DICOM comments field (see Database Preferences)
+- Scale level for parallel 3D projections
+- Option to lock / unlock ROIs
+- Option to make ROIs selectable / unselectable
 
-- 3D Distance for Curved MPR?
 - Sync : -> If blended -> propagate next (cerebrix) + Sync before?
-
-- 8bit TIFF export
-- Zoom level for parallel 3D projections
+- T2 fit map
 
 - Autoselect format for printing
 - Spine plugin
