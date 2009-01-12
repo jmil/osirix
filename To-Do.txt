@@ -17,6 +17,7 @@
 - T2 fit map
 
 - Autoselect format for printing
+- 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
 - Add export to automatically export to export dicom 2DMPR, VR, ...
 - Graph 4D comme histo
@@ -25,7 +26,6 @@
 - Report modality - study description
 - WADO Client/Server
 - Hanging Protocol
-- 4D Support for DICOM Export in 2D Viewer
 
 - Password DB in keychain
 - Preferences for Status menu in DB
