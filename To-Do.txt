@@ -14,12 +14,10 @@
 - Option to lock / unlock ROIs
 - Option to make ROIs selectable / unselectable
 
-- Sync : -> If blended -> propagate next (cerebrix) + Sync before?
 - T2 fit map
 
 - Autoselect format for printing
 - Spine plugin
-- ROI activate new features: unselectable, lock : ROI manager
 - Add export to automatically export to export dicom 2DMPR, VR, ...
 - Graph 4D comme histo
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
