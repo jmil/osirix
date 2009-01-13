@@ -14,8 +14,6 @@
 - Option to lock / unlock ROIs
 - Option to make ROIs selectable / unselectable
 
-- T2 fit map
-
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
