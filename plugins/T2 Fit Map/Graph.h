@@ -3,7 +3,7 @@
 //  Mapping
 //
 //  Created by Antoine Rosset on Tue Aug 03 2004.
-//  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2004 OsiriX. All rights reserved.
 //
 
 #import <AppKit/AppKit.h>

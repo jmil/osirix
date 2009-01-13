@@ -3,7 +3,7 @@
 //  Mapping
 //
 //  Created by Antoine Rosset on Mon Aug 02 2004.
-//  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2004 OsiriX. All rights reserved.
 //
 
 #include "math.h"
@@ -229,50 +229,97 @@
 	meanMode = [[mode selectedCell] tag];
 	
 	if( meanMode)
-	{
 		NSLog(@"mean mode");
-	}
 	else
-	{
 		NSLog(@"pixels mode");
-	}
 	
 	int position = 0;
-	for( NSArray *teSequence in pixListArrays)
+	
+	if( curROI.type == tPlain)
 	{
-		dstImage = [[pixListC objectAtIndex: position] fImage];
-		position++;
-		
-		// Loop through all images contained in the current series
-		for( x = 0; x < [firstPix pwidth]; x++)
+		for( NSArray *teSequence in pixListArrays)
 		{
-			for( y = 0; y < [firstPix pheight]; y++)
+			dstImage = [[pixListC objectAtIndex: position] fImage];
+			position++;
+			
+			// Loop through all images contained in the current series
+			for( x = 0; x < [firstPix pwidth]; x++)
 			{
-				if( [firstPix isInROI: curROI :NSMakePoint(x, y)])
+				for( y = 0; y < [firstPix pheight]; y++)
 				{
-					if( meanMode)
+					if( [firstPix isInROI: curROI :NSMakePoint( x,  y)])
 					{
-					//	minValue = slope * factor;
-						dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
-					}
-					else
-					{
-						float values[ 1000];
-						long pos = x + y*[firstPix pwidth];
-						
-						for( i = 0; i < [teSequence count]; i++)
+						if( meanMode)
 						{
-							values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+							//	minValue = slope * factor;
+							dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
 						}
-						
-						[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
-						
-						dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
-					//	if( slope*factor < minValue) minValue = -slope * factor;
+						else
+						{
+							float values[ 1000];
+							long pos = x + y*[firstPix pwidth];
+							
+							for( i = 0; i < [teSequence count]; i++)
+							{
+								values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+							}
+							
+							[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
+							
+							dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
+							//	if( slope*factor < minValue) minValue = -slope * factor;
+						}
 					}
 				}
 			}
 		}
+	}
+	else
+	{
+		NSArray *ptsTemp = [curROI splinePoints];
+		
+		NSPoint *pts = (NSPoint*) malloc( [ptsTemp count] * sizeof(NSPoint));
+		int no = [ptsTemp count];
+		for( int i = 0; i < no; i++) pts[ i] = [[ptsTemp objectAtIndex: i] point];
+		
+		for( NSArray *teSequence in pixListArrays)
+		{
+			dstImage = [[pixListC objectAtIndex: position] fImage];
+			position++;
+			
+			// Loop through all images contained in the current series
+			for( x = 0; x < [firstPix pwidth]; x++)
+			{
+				for( y = 0; y < [firstPix pheight]; y++)
+				{
+					if( [DCMPix IsPoint:NSMakePoint(x, y) inPolygon: pts size: no])
+					{
+						if( meanMode)
+						{
+						//	minValue = slope * factor;
+							dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
+						}
+						else
+						{
+							float values[ 1000];
+							long pos = x + y*[firstPix pwidth];
+							
+							for( i = 0; i < [teSequence count]; i++)
+							{
+								values[ i] = log( [[teSequence objectAtIndex: i] fImage] [ pos] - background);
+							}
+							
+							[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
+							
+							dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
+						//	if( slope*factor < minValue) minValue = -slope * factor;
+						}
+					}
+				}
+			}
+		}
+		
+		free( pts);
 	}
 	
 	// We modified the pixels: OsiriX please update the display!
