@@ -13,11 +13,12 @@
 - Scale level for parallel 3D projections
 - Option to lock / unlock ROIs
 - Option to make ROIs selectable / unselectable
+- Option to not delete studies if the comment field is filled (db auto-cleaning)
+- Option to unify multiple patients/studies as the same patient
 
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
-- Add export to automatically export to export dicom 2DMPR, VR, ...
 - Graph 4D comme histo
 - ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
 - Reslice oblique : 2D MPR, Points?
