@@ -31,9 +31,6 @@
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
 - Batch export in 2D-MPR
-- New smart filter editor (10.5)
-- NRRD: ITK IO
-- NSOperation
 - Perfusion
 - ROI enhancement
 - Worklist DICOM
