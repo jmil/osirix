@@ -3,7 +3,7 @@
 - Multi-frame images are now available at the image level in the DB
 - Multi-threaded loading function, ready for best performances on SSD drives
 - Option to mark Secondary Capture images as Key Images
-- Option to send Secondary Capture images
+- Option to automatically send Secondary Capture images to a DICOM node
 - Patient Level for DICOM Editor
 - Scroll Through Series option - See 2D Viewer Preferences
 - Full 32-bit pipeline (experimental) - See 2D Viewer Preferences
