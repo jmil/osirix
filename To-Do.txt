@@ -1,5 +1,4 @@
 - BUG du RGB : store-scp ? fPlanar?
-- Reslice SC? Creation date?
 
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
