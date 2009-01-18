@@ -1,3 +1,4 @@
+- Pomme press -> Send -> Move cursor?
 - BUG du RGB : store-scp ? fPlanar?
 
 - Better support for multi-frame CT/MR format (0x5200 group)
