@@ -11,10 +11,12 @@
 - Export Database Displayed List as a tab separated file
 - Regenerate DICOM comments field (see Database Preferences)
 - Scale level for parallel 3D projections
+- Big-Endian Encoded DICOM files are now natively supported
 - Option to lock / unlock ROIs
 - Option to make ROIs selectable / unselectable
 - Option to not delete studies if the comment field is filled (db auto-cleaning)
 - Option to unify multiple patients/studies as the same patient
+- SPECT-CT fusion support
 
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
