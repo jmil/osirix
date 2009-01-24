@@ -1,3 +1,5 @@
+GE: PatientBirthDate?
+
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
 - Multi-frame images are now available at the image level in the DB
