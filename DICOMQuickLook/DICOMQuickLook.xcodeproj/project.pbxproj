@@ -1030,7 +1030,6 @@
 		CE8CF43F0C2EA56200537400 /* PapyInitModules3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4000C2EA56200537400 /* PapyInitModules3.h */; };
 		CE8CF4400C2EA56200537400 /* PapyPrivFunctionDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4010C2EA56200537400 /* PapyPrivFunctionDef3.h */; };
 		CE8CF4410C2EA56200537400 /* PapyMemSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4020C2EA56200537400 /* PapyMemSystem.h */; };
-		CE8CF4420C2EA56200537400 /* PapyMemorySystemMac3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4030C2EA56200537400 /* PapyMemorySystemMac3.h */; };
 		CE8CF4430C2EA56200537400 /* PapyEnumImageGroups3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4040C2EA56200537400 /* PapyEnumImageGroups3.h */; };
 		CE8CF4440C2EA56200537400 /* PapyWild3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4050C2EA56200537400 /* PapyWild3.h */; };
 		CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */; };
@@ -1059,6 +1058,7 @@
 		CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A30C2EA48400537400 /* tiffiop.h */; };
 		CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
 		CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
+		CECBA1640F2C762B00ADD482 /* jpeg_memsrc.c in Sources */ = {isa = PBXBuildFile; fileRef = CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */; };
 		CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */; };
 		CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE52DC20C7474520044205E /* libjasper2.a */; };
 		F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */; };
@@ -1689,7 +1689,6 @@
 		CE8CF4000C2EA56200537400 /* PapyInitModules3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyInitModules3.h; path = ../osirix/Papyrus3/PapyInitModules3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF4010C2EA56200537400 /* PapyPrivFunctionDef3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyPrivFunctionDef3.h; path = ../osirix/Papyrus3/PapyPrivFunctionDef3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF4020C2EA56200537400 /* PapyMemSystem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyMemSystem.h; path = ../osirix/Papyrus3/PapyMemSystem.h; sourceTree = SOURCE_ROOT; };
-		CE8CF4030C2EA56200537400 /* PapyMemorySystemMac3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyMemorySystemMac3.h; path = ../osirix/Papyrus3/PapyMemorySystemMac3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF4040C2EA56200537400 /* PapyEnumImageGroups3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyEnumImageGroups3.h; path = ../osirix/Papyrus3/PapyEnumImageGroups3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF4050C2EA56200537400 /* PapyWild3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyWild3.h; path = ../osirix/Papyrus3/PapyWild3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyTypeDef3.h; path = ../osirix/Papyrus3/PapyTypeDef3.h; sourceTree = SOURCE_ROOT; };
@@ -2147,6 +2146,7 @@
 		CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DICOMToNSString.m; path = ../osirix/DICOMToNSString.m; sourceTree = SOURCE_ROOT; };
 		CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Development/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
+		CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jpeg_memsrc.c; path = ../osirix/Papyrus3/jpeg_memsrc.c; sourceTree = SOURCE_ROOT; };
 		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
 		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -2826,6 +2826,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8CF3DB0C2EA56200537400 /* DicomDir */,
+				CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */,
 				CE8CF3E10C2EA56200537400 /* PapyFileSystemUnix3.c */,
 				CE8CF3E20C2EA56200537400 /* PapyEallocUnix3.c */,
 				CE8CF3E30C2EA56200537400 /* PapyDataSetWrite3.c */,
@@ -2860,7 +2861,6 @@
 				CE8CF4000C2EA56200537400 /* PapyInitModules3.h */,
 				CE8CF4010C2EA56200537400 /* PapyPrivFunctionDef3.h */,
 				CE8CF4020C2EA56200537400 /* PapyMemSystem.h */,
-				CE8CF4030C2EA56200537400 /* PapyMemorySystemMac3.h */,
 				CE8CF4040C2EA56200537400 /* PapyEnumImageGroups3.h */,
 				CE8CF4050C2EA56200537400 /* PapyWild3.h */,
 				CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */,
@@ -3527,7 +3527,6 @@
 				CE8CF43F0C2EA56200537400 /* PapyInitModules3.h in Headers */,
 				CE8CF4400C2EA56200537400 /* PapyPrivFunctionDef3.h in Headers */,
 				CE8CF4410C2EA56200537400 /* PapyMemSystem.h in Headers */,
-				CE8CF4420C2EA56200537400 /* PapyMemorySystemMac3.h in Headers */,
 				CE8CF4430C2EA56200537400 /* PapyEnumImageGroups3.h in Headers */,
 				CE8CF4440C2EA56200537400 /* PapyWild3.h in Headers */,
 				CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */,
@@ -4600,6 +4599,7 @@
 				CE9CEFB30C75CA1400752D4B /* DefaultsOsiriX.m in Sources */,
 				CE9CEFD20C75CA9F00752D4B /* DICOMToNSString.m in Sources */,
 				A92CCDD50CA7DA6600800211 /* altivecFunctions.c in Sources */,
+				CECBA1640F2C762B00ADD482 /* jpeg_memsrc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
