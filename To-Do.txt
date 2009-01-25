@@ -19,6 +19,7 @@ GE: PatientBirthDate?
 - Option to not delete studies if the comment field is filled (db auto-cleaning)
 - Option to unify multiple patients/studies as the same patient
 - SPECT-CT fusion support
+- DICOM QuickLook version 1.1
 
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer

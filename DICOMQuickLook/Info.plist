@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
@@ -24,13 +24,13 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-        <string>com.osirix.dicomQLgenerator</string>
+	<string>com.osirix.dicomQLgenerator</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1</string>
+	<string>1.1</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1</string>
 	<key>CFPlugInDynamicRegisterFunction</key>
 	<string></string>
 	<key>CFPlugInDynamicRegistration</key>
@@ -49,13 +49,13 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
-    <key>QLSupportsConcurrentRequests</key>
-    <false/>
-    <key>QLNeedsToBeRunInMainThread</key>
-    <true/>
-    <key>QLPreviewWidth</key>
-    <real>512</real>
-    <key>QLPreviewHeight</key>
-    <real>512</real>
+	<key>QLSupportsConcurrentRequests</key>
+	<false/>
+	<key>QLNeedsToBeRunInMainThread</key>
+	<true/>
+	<key>QLPreviewWidth</key>
+	<real>512</real>
+	<key>QLPreviewHeight</key>
+	<real>512</real>
 </dict>
 </plist>
