@@ -182,7 +182,7 @@
 	long				i, x, y;
 	unsigned char		*emptyData;
 	float				*dstImage;
-	float				factor, threshold, thresholdSet, minValue, background;
+	float				factor, thresholdSet, minValue, background;
 	
 	BOOL				meanMode;
 	
@@ -224,18 +224,11 @@
 	thresholdSet = 0;
 	minValue = 99999;
 	
-	NSLog(@"Threshold:%0.0f", threshold);
-	
 	meanMode = [[mode selectedCell] tag];
-	
-	if( meanMode)
-		NSLog(@"mean mode");
-	else
-		NSLog(@"pixels mode");
 	
 	int position = 0;
 	
-	if( curROI.type == tPlain)
+	if( curROI.type == tPlain || curROI == nil)
 	{
 		for( NSArray *teSequence in pixListArrays)
 		{
@@ -247,12 +240,15 @@
 			{
 				for( y = 0; y < [firstPix pheight]; y++)
 				{
-					if( [firstPix isInROI: curROI :NSMakePoint( x,  y)])
+					if( curROI == nil || [firstPix isInROI: curROI :NSMakePoint( x,  y)])
 					{
 						if( meanMode)
 						{
 							//	minValue = slope * factor;
-							dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
+							if( slope < 0)
+								dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
+							else
+								dstImage[ x + y*[firstPix pwidth]] = 0;
 						}
 						else
 						{
@@ -266,8 +262,10 @@
 							
 							[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
 							
-							dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
-							//	if( slope*factor < minValue) minValue = -slope * factor;
+							if( slope < 0)
+								dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
+							else
+								dstImage[ x + y*[firstPix pwidth]] = 0;
 						}
 					}
 				}
@@ -297,7 +295,10 @@
 						if( meanMode)
 						{
 						//	minValue = slope * factor;
-							dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
+							if( slope < 0)
+								dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
+							else
+								dstImage[ x + y*[firstPix pwidth]] = 0;
 						}
 						else
 						{
@@ -311,8 +312,10 @@
 							
 							[self computeLinearRegression: [teSequence count] :TEValues :values :&intercept :&slope];
 							
-							dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
-						//	if( slope*factor < minValue) minValue = -slope * factor;
+							if( slope < 0)
+								dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
+							else
+								dstImage[ x + y*[firstPix pwidth]] = 0;
 						}
 					}
 				}
@@ -358,7 +361,7 @@
 
 - (id) init:(MappingT2FitFilter*) f 
 {
-	long i;
+	int i;
 	
 	self = [super initWithWindowNibName:@"ControllerT2Fit"];
 		
@@ -369,65 +372,6 @@
 	filter = f;
 	blendedWindow = [[filter viewerController] blendedWindow];
 
-
-
-	NSArray *pixListA = [[filter viewerController] pixList];
-	
-	// Try to identify if it is a volumic TE sequence: multiple volumes of TE sequence
-	
-	float origin[ 3];
-	int interval = 0;
-	
-	origin[0] = [[pixListA objectAtIndex:0] originX];
-	origin[1] = [[pixListA objectAtIndex:0] originY];
-	origin[2] = [[pixListA objectAtIndex:0] originZ];
-	
-	for( DCMPix *pix in pixListA)
-	{
-		if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
-		{
-			interval = 1;
-			break;
-		}
-	}
-	
-	if( interval)
-	{
-		interval = 0;
-		for( i = 1; i < [pixListA count]; i++)
-		{
-			interval++;
-			if( [[pixListA objectAtIndex: i] originX] == origin[0] && [[pixListA objectAtIndex: i] originY] == origin[1] && [[pixListA objectAtIndex: i] originZ] == origin[2]) break;
-		}
-	}
-	
-	BOOL volumic = NO;
-	
-	if( interval != [pixListA count] && interval != 0)
-	{
-		NSLog( @"It's maybe a volumic TE sequence");
-		
-		volumic = YES;
-		
-		origin[0] = [[pixListA objectAtIndex:0] originX];
-		origin[1] = [[pixListA objectAtIndex:0] originY];
-		origin[2] = [[pixListA objectAtIndex:0] originZ];
-		
-		for( i = 0; i < [pixListA count]; i += interval)
-		{
-			DCMPix *pix = [pixListA objectAtIndex: i];
-			
-			if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
-			{
-				NSLog( @"No... it's not a volumic TE sequence.... but WHAT is it????");
-				volumic = NO;
-			}
-		}
-		
-		if( volumic)
-			NSLog(@"yes! it's a volumic sequence");
-	}
-	
 	[pixListArrays release];
 	pixListArrays = [[NSMutableArray array] retain];
 	
@@ -436,37 +380,112 @@
 	
 	[fileListResult release];
 	fileListResult = [[NSMutableArray array] retain];
-	
-	if( volumic)
+
+	if( [[filter viewerController] maxMovieIndex] > 1)
 	{
-		for( int s = 0; s < interval; s++)
+		// Its a 4D series
+		NSArray *pixList = [[filter viewerController] pixList];
+		
+		for( int x = 0 ; x < [pixList count] ; x++)
 		{
 			NSMutableArray *l = [NSMutableArray array];
 			
-			for( i = s; i < [pixListA count]; i += interval)
-				[l addObject: [pixListA objectAtIndex: i]];
+			for( i = 0 ; i < [[filter viewerController] maxMovieIndex] ; i++)
+				[l addObject: [[[filter viewerController] pixList: i] objectAtIndex: x]];
 			
 			[pixListArrays addObject: l];
-			
-			[pixListResult addObject: [[[pixListA objectAtIndex: s] copy] autorelease]];
-			[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: s]];
+			[pixListResult addObject: [[[l objectAtIndex:0] copy] autorelease]];
+			[fileListResult addObject: [[[filter viewerController] fileList: i] objectAtIndex: 0]];
 		}
 	}
 	else
 	{
-		[pixListArrays addObject: pixListA];
-		[pixListResult addObject: [[[pixListA objectAtIndex:0] copy] autorelease]];
-		[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: 0]];
+		NSArray *pixListA = [[filter viewerController] pixList];
+		
+		// Try to identify if it is a volumic TE sequence: multiple volumes of TE sequence
+		
+		float origin[ 3];
+		int interval = 0;
+		
+		origin[0] = [[pixListA objectAtIndex:0] originX];
+		origin[1] = [[pixListA objectAtIndex:0] originY];
+		origin[2] = [[pixListA objectAtIndex:0] originZ];
+		
+		for( DCMPix *pix in pixListA)
+		{
+			if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
+			{
+				interval = 1;
+				break;
+			}
+		}
+		
+		if( interval)
+		{
+			interval = 0;
+			for( i = 1; i < [pixListA count]; i++)
+			{
+				interval++;
+				if( [[pixListA objectAtIndex: i] originX] == origin[0] && [[pixListA objectAtIndex: i] originY] == origin[1] && [[pixListA objectAtIndex: i] originZ] == origin[2]) break;
+			}
+		}
+		
+		BOOL volumic = NO;
+		
+		if( interval != [pixListA count] && interval != 0)
+		{
+			NSLog( @"It's maybe a volumic TE sequence");
+			
+			volumic = YES;
+			
+			origin[0] = [[pixListA objectAtIndex:0] originX];
+			origin[1] = [[pixListA objectAtIndex:0] originY];
+			origin[2] = [[pixListA objectAtIndex:0] originZ];
+			
+			for( i = 0; i < [pixListA count]; i += interval)
+			{
+				DCMPix *pix = [pixListA objectAtIndex: i];
+				
+				if( [pix originX] != origin[0] && [pix originY] != origin[1] && [pix originZ] != origin[2])
+				{
+					NSLog( @"No... it's not a volumic TE sequence.... but WHAT is it????");
+					volumic = NO;
+				}
+			}
+			
+			if( volumic)
+				NSLog(@"yes! it's a volumic sequence");
+		}
+		
+		if( volumic)
+		{
+			for( int s = 0; s < interval; s++)
+			{
+				NSMutableArray *l = [NSMutableArray array];
+				
+				for( i = s; i < [pixListA count]; i += interval)
+					[l addObject: [pixListA objectAtIndex: i]];
+				
+				[pixListArrays addObject: l];
+				
+				[pixListResult addObject: [[[pixListA objectAtIndex: s] copy] autorelease]];
+				[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: s]];
+			}
+		}
+		else
+		{
+			[pixListArrays addObject: pixListA];
+			[pixListResult addObject: [[[pixListA objectAtIndex:0] copy] autorelease]];
+			[fileListResult addObject: [[[filter viewerController] fileList] objectAtIndex: 0]];
+		}
 	}
-
+	
 	for ( DCMPix *p in pixListResult)
 	{
 		[p setEchotime: 0L];
 	}
-
-
-	// Try to find the TEs...
 	
+	// Try to find the TEs...
 	for( i = 0; i < [[pixListArrays objectAtIndex: 0] count]; i++)
 	{
 		TEValues[ i] = [[[[pixListArrays objectAtIndex: 0] objectAtIndex: i] echotime] floatValue] / 1000.;
