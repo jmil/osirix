@@ -1,4 +1,4 @@
-- PowerPC 64-bit display bug
+- PowerPC 64-bit display bug : TEST
 - Presentation Context sur XRAID...
 
 - Better support for multi-frame CT/MR format (0x5200 group)
