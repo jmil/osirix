@@ -1,6 +1,4 @@
 - Test VTKEdge
-- PowerPC 64-bit display bug : TEST
-- Presentation Context sur XRAID... : TEST, test multiple C-Move
 
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
