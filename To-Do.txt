@@ -20,6 +20,7 @@
 - Option to unify multiple patients/studies as the same patient
 - SPECT-CT fusion support
 - DICOM QuickLook version 1.1
+- Better support for C-Move, C-Store and C-Find
 
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
