@@ -249,6 +249,9 @@
 								dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
 							else
 								dstImage[ x + y*[firstPix pwidth]] = 0;
+							
+							if( dstImage[ x + y*[firstPix pwidth]] > 2000)
+								dstImage[ x + y*[firstPix pwidth]] = 2000;
 						}
 						else
 						{
@@ -266,6 +269,9 @@
 								dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
 							else
 								dstImage[ x + y*[firstPix pwidth]] = 0;
+							
+							if( dstImage[ x + y*[firstPix pwidth]] > 2000)
+								dstImage[ x + y*[firstPix pwidth]] = 2000;
 						}
 					}
 				}
@@ -299,6 +305,9 @@
 								dstImage[ x + y*[firstPix pwidth]] = factor /-slope;
 							else
 								dstImage[ x + y*[firstPix pwidth]] = 0;
+							
+							if( dstImage[ x + y*[firstPix pwidth]] > 2000)
+								dstImage[ x + y*[firstPix pwidth]] = 2000;
 						}
 						else
 						{
@@ -316,6 +325,9 @@
 								dstImage[ x + y*[firstPix pwidth]] = factor / -slope;
 							else
 								dstImage[ x + y*[firstPix pwidth]] = 0;
+							
+							if( dstImage[ x + y*[firstPix pwidth]] > 2000)
+								dstImage[ x + y*[firstPix pwidth]] = 2000;
 						}
 					}
 				}
