@@ -13,16 +13,20 @@
 
 + (void) initialize
 {
-	NSString *frameworkPath=[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
+	NSString *frameworkPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
         
-	NSBundle *framework=[NSBundle bundleWithPath:frameworkPath];
+	NSBundle *framework = [NSBundle bundleWithPath:frameworkPath];
   
-	if([framework load])
+    NSError *error = nil;
+	
+	NSLog( [framework executablePath]);
+	
+	if([framework loadAndReturnError: &error])
 		NSLog(@"Framework loaded");
 	else
 	{
-		NSLog(@"Error, framework failed to load\nAborting.");
-			exit(1);
+		NSLog( frameworkPath);
+		NSLog( @"Error, framework failed to load: %@", error);
 	}
 }
 
