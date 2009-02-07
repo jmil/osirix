@@ -3,7 +3,7 @@
 //  ROI-Enhancement
 //
 //  Created by rossetantoine on Thu Jun 17 2004.
-//  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2004 Antoine Rosset. All rights reserved.
 //
 
 #import <AppKit/AppKit.h>

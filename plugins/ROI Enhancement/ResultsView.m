@@ -3,7 +3,7 @@
 //  ROI-Enhancement
 //
 //  Created by rossetantoine on Thu Jun 17 2004.
-//  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2004 Antoine Rosset. All rights reserved.
 //
 
 #import "ResultsView.h"
@@ -12,21 +12,15 @@
 
 - (void) dealloc
 {
-	if(minValues) free( minValues);
-	if(maxValues) free( maxValues);
-	if(meanValues) free( meanValues);
-	
 	[super dealloc];
 }
 
-- (id)initWithFrame:(NSRect)frame {
+- (id)initWithFrame:(NSRect)frame
+{
     self = [super initWithFrame:frame];
     if (self)
 	{
-        // Initialization code here.
-		minValues = 0L;
-		maxValues = 0L;
-		meanValues = 0L;
+		
     }
     return self;
 }
@@ -37,6 +31,8 @@
 	meanValues = meanPtr;
 	maxValues = maxPtr;
 	minValues = minPtr;
+	
+	[self setNeedsDisplay: YES];
 }
 
 - (void)drawRect:(NSRect)rect
@@ -49,7 +45,7 @@
 	[[NSColor colorWithDeviceRed:1.0 green:1.0 blue:0.2 alpha:1.0] set];
 	NSRectFill( rect);
 
-	if( minValue == 0L) return;
+	if( minValues == 0L) return;
 	
 	// Find the max and min values of the arrays
 	minValue = maxValue = minValues[ 0];

@@ -14,9 +14,9 @@
 		AB37E67E06822B9A00244A70 /* ROI-Enhancement_Prefix.pch in Resources */ = {isa = PBXBuildFile; fileRef = AB37E67D06822B9A00244A70 /* ROI-Enhancement_Prefix.pch */; };
 		AB37E69B06822C3900244A70 /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37E69906822C3900244A70 /* ResultsController.m */; };
 		AB37E69C06822C3900244A70 /* ResultsController.h in Headers */ = {isa = PBXBuildFile; fileRef = AB37E69A06822C3900244A70 /* ResultsController.h */; };
-		AB37E69E06822CB700244A70 /* ResultsROI.nib in Resources */ = {isa = PBXBuildFile; fileRef = AB37E69D06822CB700244A70 /* ResultsROI.nib */; };
 		AB37E6AE06822D7F00244A70 /* ResultsView.h in Headers */ = {isa = PBXBuildFile; fileRef = AB37E6AC06822D7F00244A70 /* ResultsView.h */; };
 		AB37E6AF06822D7F00244A70 /* ResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37E6AD06822D7F00244A70 /* ResultsView.m */; };
+		AB66AC810F3D775B001B6DD5 /* ResultsROI.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB66AC800F3D775B001B6DD5 /* ResultsROI.xib */; };
 		ABB76340067FB2A8000912C1 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB76339067FB2A8000912C1 /* DCMPix.h */; };
 		ABB76341067FB2A8000912C1 /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633A067FB2A8000912C1 /* DCMView.h */; };
 		ABB76342067FB2A8000912C1 /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633B067FB2A8000912C1 /* dicomFile.h */; };
@@ -24,22 +24,37 @@
 		ABB76344067FB2A8000912C1 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633D067FB2A8000912C1 /* PluginFilter.h */; };
 		ABB76345067FB2A8000912C1 /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633E067FB2A8000912C1 /* ROI.h */; };
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
+		ABFD638D0F3B4C9E00592B90 /* GraphX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFD638C0F3B4C9E00592B90 /* GraphX.framework */; };
+		ABFD63960F3B4CB600592B90 /* GraphX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = ABFD638C0F3B4C9E00592B90 /* GraphX.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ABFD639B0F3B4CBC00592B90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ABFD63960F3B4CB600592B90 /* GraphX.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB37E67906822B8F00244A70 /* ROI-EnhancementFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "ROI-EnhancementFilter.h"; sourceTree = "<group>"; };
 		AB37E67A06822B8F00244A70 /* ROI-EnhancementFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "ROI-EnhancementFilter.m"; sourceTree = "<group>"; };
 		AB37E67D06822B9A00244A70 /* ROI-Enhancement_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "ROI-Enhancement_Prefix.pch"; sourceTree = "<group>"; };
 		AB37E69906822C3900244A70 /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
 		AB37E69A06822C3900244A70 /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
-		AB37E69D06822CB700244A70 /* ResultsROI.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ResultsROI.nib; sourceTree = "<group>"; };
 		AB37E6AC06822D7F00244A70 /* ResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsView.h; sourceTree = "<group>"; };
 		AB37E6AD06822D7F00244A70 /* ResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsView.m; sourceTree = "<group>"; };
+		AB66AC800F3D775B001B6DD5 /* ResultsROI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultsROI.xib; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
 		ABB7633A067FB2A8000912C1 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
 		ABB7633B067FB2A8000912C1 /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = dicomFile.h; sourceTree = "<group>"; };
@@ -48,6 +63,7 @@
 		ABB7633E067FB2A8000912C1 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		ABC38D7306823F62006E9132 /* ROI-Enhancement.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ROI-Enhancement.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABFD638C0F3B4C9E00592B90 /* GraphX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GraphX.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				ABFD638D0F3B4C9E00592B90 /* GraphX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +104,8 @@
 			isa = PBXGroup;
 			children = (
 				8D5B49B7048680CD000E48DA /* Info.plist */,
-				AB37E69D06822CB700244A70 /* ResultsROI.nib */,
+				ABFD638C0F3B4C9E00592B90 /* GraphX.framework */,
+				AB66AC800F3D775B001B6DD5 /* ResultsROI.xib */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -97,7 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				ABB76338067FB2A8000912C1 /* OsiriX Headers */,
-				AB2C26750677B0C400A08910 /* CreateROIFilter */,
+				AB2C26750677B0C400A08910 /* Classes */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -135,7 +153,7 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
-		AB2C26750677B0C400A08910 /* CreateROIFilter */ = {
+		AB2C26750677B0C400A08910 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				AB37E67906822B8F00244A70 /* ROI-EnhancementFilter.h */,
@@ -145,7 +163,7 @@
 				AB37E6AC06822D7F00244A70 /* ResultsView.h */,
 				AB37E6AD06822D7F00244A70 /* ResultsView.m */,
 			);
-			name = CreateROIFilter;
+			name = Classes;
 			sourceTree = "<group>";
 		};
 		ABB76338067FB2A8000912C1 /* OsiriX Headers */ = {
@@ -194,6 +212,7 @@
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				8D5B49B5048680CD000E48DA /* Rez */,
+				ABFD639B0F3B4CBC00592B90 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -229,7 +248,7 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				AB37E67E06822B9A00244A70 /* ROI-Enhancement_Prefix.pch in Resources */,
-				AB37E69E06822CB700244A70 /* ResultsROI.nib in Resources */,
+				AB66AC810F3D775B001B6DD5 /* ResultsROI.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,12 +294,16 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = "";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ROI-Enhancement_Prefix.pch";
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
@@ -290,9 +313,10 @@
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
-				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
+					"-weak_framework",
+					GraphX,
 					"-undefined",
 					dynamic_lookup,
 				);
@@ -318,6 +342,7 @@
 					ppc64,
 					x86_64,
 				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
