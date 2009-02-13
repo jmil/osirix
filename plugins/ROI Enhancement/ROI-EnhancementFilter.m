@@ -10,6 +10,26 @@
 
 @implementation ROIEnhancementFilter
 
++ (void) initialize
+{
+	NSString *frameworkPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
+	NSBundle *framework = [NSBundle bundleWithPath:frameworkPath];
+	NSError *error = nil;
+	
+	if([framework loadAndReturnError: &error])
+	{
+	
+	}
+	else
+	{
+		NSLog( frameworkPath);
+		NSLog( @"%@", [framework executablePath]);
+		NSLog( @"%@", [framework infoDictionary]);
+		NSLog( @"%@", [framework executableArchitectures]);
+		NSLog(@"Error, framework failed to load\nAborting: %@", error);
+	}
+}
+
 - (long) filterImage:(NSString*) menuName
 {
 	NSMutableArray  *pixList;

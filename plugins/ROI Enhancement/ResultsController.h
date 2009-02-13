@@ -7,17 +7,18 @@
 //
 
 #import <AppKit/AppKit.h>
-
 #import <WebKit/WebView.h>
 #import "ROI.h"
-#import "ResultsView.h"
 #import "ViewerController.h"
 #import "DCMView.h"
+#import "GraphX/CTScatterPlotView.h"
+#import "PlotData.h"
 
 @interface ResultsController : NSWindowController
 {
-	IBOutlet	ResultsView		*view;
-	IBOutlet	NSTextField		*roiName;
+	IBOutlet CTScatterPlotView *plotMean, *plotMin, *plotMax;
+	IBOutlet PlotData *plotMeanData, *plotMinData, *plotMaxData;
+	IBOutlet NSTextField *roiName;
 	
 	ROI* curROI;
 	float *rmean, *rmin, *rmax;
@@ -26,5 +27,6 @@
 }
 
 - (id) initWithROI:(ROI*) roi viewer:(ViewerController*) v;
+- (void) updateData;
 
 @end

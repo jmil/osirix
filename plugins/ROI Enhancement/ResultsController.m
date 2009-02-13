@@ -66,6 +66,36 @@
 	curROI = [roi retain];
 	viewerController = v;
 	
+	[self updateData];
+	
+	plotMean.showTitle = NO;
+	plotMean.showXLabel = NO;
+	plotMean.showYLabel = NO;
+	
+	plotMin.showTitle = NO;
+	plotMin.showXLabel = NO;
+	plotMin.showYLabel = NO;
+	
+	plotMin.showXGrid = NO;
+	plotMin.showXTickMarks = NO;
+	plotMin.showYGrid = NO;
+	plotMin.showYTickMarks = NO;
+	plotMin.showBackground = NO;
+	plotMin.showCurve = YES;
+	plotMin.showFill = NO;
+	
+	plotMax.showTitle = NO;
+	plotMax.showXLabel = NO;
+	plotMax.showYLabel = NO;
+	
+	plotMax.showXGrid = NO;
+	plotMax.showXTickMarks = NO;
+	plotMax.showYGrid = NO;
+	plotMax.showYTickMarks = NO;
+	plotMax.showBackground = NO;
+	plotMax.showCurve = YES;
+	plotMax.showFill = NO;
+	
 	return self;
 }
 
@@ -145,6 +175,34 @@
 		}
 		
 	}
+	
+	[plotMinData setValue: rmin number: num];
+	[plotMaxData setValue: rmax number: num];
+	[plotMeanData setValue: rmean number: num];
+	
+	[plotMean setNeedsDisplay: YES];
+	[plotMin setNeedsDisplay: YES];
+	[plotMax setNeedsDisplay: YES];
+	
+	plotMean.xMin = 0;
+	plotMean.xMax = num-1;
+
+	for( int x = 0 ; x < num; x++)
+	{
+		if( rmin[x] < plotMean.yMin)
+			plotMean.yMin = rmin[ x];
+			
+		if( rmax[x] > plotMean.yMax)
+			plotMean.yMax = rmax[ x];
+	}
+	
+	plotMin.xMin = plotMax.xMin = plotMean.xMin;
+	plotMin.xMax = plotMax.xMax = plotMean.xMax;
+	plotMin.xScale = plotMax.xScale = plotMean.xScale;
+	
+	plotMin.yMin = plotMax.yMin = plotMean.yMin;
+	plotMin.yMax = plotMax.yMax = plotMean.yMax;
+	plotMin.yScale = plotMax.yScale = plotMean.yScale;
 }
 
 -(void) removeROI:(NSNotification*)note
@@ -169,9 +227,7 @@
 }
 
 - (void) dealloc
-{
-	[view setArrays: 0 :nil :nil :nil];
-	
+{	
 	if( rmean) free( rmean);
 	if( rmin) free( rmin);
 	if( rmax) free( rmax);
