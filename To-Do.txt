@@ -1,5 +1,4 @@
 - Enlarge institution field
-- Update dciodvfy
 - Test VTKEdge
 - JPEG (PEREIRA GOMES LUCIANA)
 
@@ -24,6 +23,7 @@
 - SPECT-CT fusion support
 - DICOM QuickLook version 1.1
 - Better support for C-Move, C-Store and C-Find
+- DICOM Validator tool, updated to latest version (Feb.2009)
 
 - Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
