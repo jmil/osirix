@@ -11,25 +11,6 @@
 
 @implementation ResultsController
 
-+ (void) initialize
-{
-	NSString *frameworkPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
-        
-	NSBundle *framework = [NSBundle bundleWithPath:frameworkPath];
-  
-    NSError *error = nil;
-	
-	NSLog( [framework executablePath]);
-	
-	if([framework loadAndReturnError: &error])
-		NSLog(@"Framework loaded");
-	else
-	{
-		NSLog( frameworkPath);
-		NSLog( @"Error, framework failed to load: %@", error);
-	}
-}
-
 - (void)getPoint:(NSPointPointer *)point atIndex:(unsigned)index
 {		
 	if( index < 0)

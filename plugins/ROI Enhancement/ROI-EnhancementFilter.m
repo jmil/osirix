@@ -32,6 +32,23 @@
 
 - (long) filterImage:(NSString*) menuName
 {
+
+	NSString *frameworkPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
+        
+	NSBundle *framework = [NSBundle bundleWithPath:frameworkPath];
+  
+    NSError *error = nil;
+	
+	NSLog( [framework executablePath]);
+	
+	if([framework loadAndReturnError: &error])
+		NSLog(@"Framework loaded");
+	else
+	{
+		NSLog( frameworkPath);
+		NSLog( @"Error, framework failed to load: %@", error);
+	}
+	
 	NSMutableArray  *pixList;
 	NSMutableArray  *roiSeriesList;
 	NSMutableArray  *roiImageList;
