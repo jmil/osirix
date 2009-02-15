@@ -25,6 +25,7 @@
 - Better support for C-Move, C-Store and C-Find
 - DICOM Validator tool, updated to latest version (Feb.2009)
 
+- C-GET
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
 - Graph 4D comme histo
