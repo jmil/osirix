@@ -1,5 +1,6 @@
 - Test VTKEdge
 - JPEG (PEREIRA GOMES LUCIANA)
+- Autoselect format for printing
 
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
@@ -24,7 +25,6 @@
 - Better support for C-Move, C-Store and C-Find
 - DICOM Validator tool, updated to latest version (Feb.2009)
 
-- Autoselect format for printing
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
 - Graph 4D comme histo
