@@ -1,5 +1,4 @@
 - Test VTKEdge
-- JPEG (PEREIRA GOMES LUCIANA)
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
