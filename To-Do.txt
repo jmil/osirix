@@ -1,6 +1,5 @@
 - Test VTKEdge
 - C-GET
-- Curved-MPR Sag
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
