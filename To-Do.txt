@@ -1,5 +1,6 @@
 - Test VTKEdge
 - C-GET
+- Length position in VR rescale
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
