@@ -1,6 +1,5 @@
 - Test VTKEdge
 - C-GET
-- PET CLUT for CT in Ortho MPR PET-CT?
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
