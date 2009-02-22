@@ -27,6 +27,13 @@
 - DICOM Validator tool, updated to latest version (Feb.2009)
 - Support for FujiPrivateCR SOP Class UID
 
+
+Cours
+- Basics:
+- dmg, export dicom cd, html export
+- web server
+
+
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
 - Graph 4D comme histo
