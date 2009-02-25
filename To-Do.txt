@@ -2,6 +2,9 @@
 - C-GET
 - Opacity settings in main menu
 - 16-bit CLUT Editor Icon - Close button
+- Check next patient
+
+- Test FlyThru
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
@@ -43,6 +46,7 @@ Cours
 - Report modality - study description
 - WADO Client/Server
 - Hanging Protocol
+- Ad SR in VR
 
 - Password DB in keychain
 - Preferences for Status menu in DB
