@@ -3,6 +3,7 @@
 - Opacity settings in main menu
 - 16-bit CLUT Editor Icon - Close button
 - Check next patient
+- PowerCrust option in 3D VR
 
 - Update VRPanel?
 
