@@ -4,7 +4,7 @@
 - 16-bit CLUT Editor Icon - Close button
 - Check next patient
 
-- Test FlyThru
+- Update VRPanel?
 
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
