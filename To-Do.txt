@@ -5,7 +5,9 @@
 - PowerCrust option in 3D VR
 
 - Update VRPanel?
+- Test New MPR sys with non-square pixels...
 
+- A new MPR viewer: 3D MPR
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
