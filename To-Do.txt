@@ -5,9 +5,9 @@
 - PowerCrust option in 3D VR
 
 - Update VRPanel?
-- Test New MPR sys with non-square pixels...
 - Preset: SuperSampling Center
-- Save as JPEG in VR: ReRender??
+- dontRender
+- fillROI is now very slow....
 
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
