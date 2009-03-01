@@ -6,8 +6,7 @@
 
 - Update VRPanel?
 - Preset: SuperSampling Center
-- dontRender
-- fillROI is now very slow....
+- PET-CT
 
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
