@@ -1,6 +1,5 @@
 - Test VTKEdge
 - C-GET
-- Opacity settings in main menu
 - 16-bit CLUT Editor Icon - Close button
 - PowerCrust option in 3D VR
 
