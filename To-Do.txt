@@ -1,10 +1,10 @@
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
-- PowerCrust option in 3D VR
 
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
+- Export MIP images in 16-bit
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
 - Better performance for multi-frame files, up to 10 times faster for reading
