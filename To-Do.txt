@@ -4,10 +4,6 @@
 - 16-bit CLUT Editor Icon - Close button
 - PowerCrust option in 3D VR
 
-- Update VRPanel?
-- Preset: SuperSampling Center
-- PET-CT
-
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
 - Automatically adjust printing layout
