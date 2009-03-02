@@ -2,6 +2,7 @@
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
 
+- Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
 - Export MIP images in 16-bit
