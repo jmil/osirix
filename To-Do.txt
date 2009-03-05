@@ -1,3 +1,4 @@
+- Use DICOMDIR
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
