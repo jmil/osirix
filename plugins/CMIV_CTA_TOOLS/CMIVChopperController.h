@@ -40,16 +40,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vtkTransform.h>
 #include <vtkImageReslice.h>
 #undef id
-@interface CMIVChopperController : NSObject
+@interface CMIVChopperController : NSWindowController
 {
-	IBOutlet NSWindow	*window;
     IBOutlet NSTextField *imageFrom;
     IBOutlet NSSlider *imageFromSlider;
     IBOutlet NSTextField *imageTo;
     IBOutlet NSSlider *imageToSlider;
     IBOutlet NSTextField *leftTopX;
     IBOutlet NSTextField *leftTopY;
-    IBOutlet DCMView *originalView;
+    IBOutlet CMIVDCMView *originalView;
     IBOutlet NSSlider *originalViewSlider;
     IBOutlet CMIVDCMView *reformView;
     IBOutlet NSSlider *reformViewSlider;
@@ -72,6 +71,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	DCMPix			*curPix;
 	
 	ViewerController     *originalViewController;
+	NSData               *originalViewVolumeData;
+	NSArray              *originalViewPixList;
 	
 	double				vtkOriginalX,vtkOriginalY,vtkOriginalZ;
 	double				sliceThickness;
@@ -83,6 +84,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	CMIV_CTA_TOOLS* parent;
 	BOOL isInWizardMode;
 	BOOL isSelectAll;
+	NSRect screenrect;
 	
 }
 - (IBAction)changeReformView:(id)sender;
@@ -93,8 +95,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)setCurrentToImageFromTo:(id)sender;
 - (IBAction)setReformViewIndex:(id)sender;
 - (IBAction)selectAll:(id)sender;
-- (int) showChopperPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner;
-- (void)showPanelAsWizard:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner;
+- (id) showChopperPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner;
+- (id)showPanelAsWizard:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner;
 - (void) updateAllTextField;
 - (void) updateImageFromToSliders;
 - (void) updateALLROIs;
@@ -102,5 +104,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) defaultToolModified: (NSNotification*) note;
 - (void) changeWLWW: (NSNotification*) note;
 - (int)  initReformView;
-- (void) reHideToolbar;
+- (int)reduceTheVolume:(NSArray*)bordersArray:(ViewerController *) vc;
 @end

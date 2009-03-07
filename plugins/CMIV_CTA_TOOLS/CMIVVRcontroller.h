@@ -55,9 +55,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef id
 
 
-@interface CMIVVRcontroller : NSObject
+@interface CMIVVRcontroller : NSWindowController
 {
-	IBOutlet NSWindow	*window;   
+
 	IBOutlet NSColorWell *colorControl;
     IBOutlet CMIVCLUTOpacityView *clutViewer;
     IBOutlet NSSlider *opacitySlider;
@@ -70,8 +70,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSButton *shadingSwitch;
 	IBOutlet NSButton *cutPlaneSwitch;
 	IBOutlet NSWindow *qtvrsettingwin;   
+	IBOutlet NSButton *showVolumeSwitch;
 	int imageWidth,imageHeight,imageAmount; 	
 	ViewerController     *originalViewController;
+	ViewerController     *blendingController;
+	NSData               *originalViewVolumeData;
+	NSArray              *originalViewPixList;
+
 	float  wholeVolumeWL,wholeVolumeWW;
 	NSMutableArray      *propertyDictList;	
 	NSMutableDictionary *curProperyDict;
@@ -100,6 +105,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	vtkCallbackCommand *clipCallBack;
 	vtkPlaneWidget* clipPlaneWidget;
 	vtkVolumeRayCastMapper* myMapper;
+	vtkVolumeMapper *blendedVolumeMapper;
 	vtkVolumeRayCastCompositeFunction* myCompositionFunction;
 
 	float verticalAngleForVR;
@@ -109,10 +115,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int  isSegmentVR;
 	CMIV_CTA_TOOLS* parent;	
 	NSMutableArray *inROIArray;
+	NSRect screenrect;
+	NSMutableArray *isShowingVolumeArray;
+	unsigned char* colorMapFromFile;
 }
 - (IBAction)capureImage:(id)sender;
 - (IBAction)exportQTVR:(id)sender;
-- (IBAction)endPanel:(id)sender;
 - (IBAction)setColorProtocol:(id)sender;
 - (IBAction)setOpacity:(id)sender;
 - (IBAction)setWLWW:(id)sender;
@@ -128,10 +136,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)closeQTVRExportDlg:(id)sender;
 - (IBAction)creatQTVRFromFile:(id)sender;
 - (IBAction)disableCLUTView:(id)sender;
+- (IBAction)addCLUTToAllVolume:(id)sender;
 - (IBAction)changeToLinearInterpolation:(id)sender;
+- (IBAction)endPanel:(id)sender;
+- (IBAction)changeBlendingFactor:(id)sender;
 - (int) initVRViewForSegmentalVR;
 - (int) initVRViewForDynamicVR;
-- (int) showVRPanel:(ViewerController *) vc :(CMIV_CTA_TOOLS*) owner;
+- (id) showVRPanel:(ViewerController *) vc :(CMIV_CTA_TOOLS*) owner;
 - (void) applyCLUT;
 - (void) applyOpacity;
 - (void)restoreCLUTFromPropertyList:(int)index;
@@ -146,6 +157,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //to cheat VRView
 - (float) minimumValue;
 - (float) maximumValue;
+- (float) blendingMinimumValue;
+- (float) blendingMaximumValue;
 - (ViewerController*) viewer2D;
 -(NSImage*) imageForFrame:(NSNumber*) cur maxFrame:(NSNumber*) max;
 -(NSImage*) imageForVR:(NSNumber*) cur maxFrame:(NSNumber*) max;
@@ -155,4 +168,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) SetMusclarCLUT;
 - (void)setAdvancedCLUT:(NSMutableDictionary*)clut lowResolution:(BOOL)lowRes;
 - (void)initTaggedColorList;
+- (void) initCLUTView;
+- (void)setBlendVolumeCLUT;
+- (int)loadMaskFromTempFolder;
 @end

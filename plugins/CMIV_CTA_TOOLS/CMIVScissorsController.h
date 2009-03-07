@@ -39,30 +39,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVSlider.h"
 #import "CMIVWindow.h"
 #import "CMIVDCMView.h"
+#import "CMIVVesselPlotView.h"
 #define id Id
 #include <vtkImageImport.h>
 #include <vtkTransform.h>
 #include <vtkImageReslice.h>
 #include <vtkImageData.h>
 #include <vtkMath.h>
+#include <vtkContourFilter.h>
+#include <vtkPolyDataConnectivityFilter.h>
+#include <vtkPolyData.h>
 #include "spline.h"
 #undef id
 
-@interface CMIVScissorsController : NSObject
+@interface CMIVScissorsController : NSWindowController
 {
-	IBOutlet CMIVWindow	*window;
-	IBOutlet NSWindow	*loadPathWindow;
+
+
 	IBOutlet NSWindow	*exportCPRWindow;
-	IBOutlet NSWindow	*savePathWindow;
 	IBOutlet NSWindow	*exportMPRWindow;
+	IBOutlet NSWindow	*polygonMeasureWindow;
     IBOutlet NSTextField *resampleText;
 	IBOutlet NSPopUpButton *pathListButton;
-    IBOutlet NSSlider *axImageSlider;
-    IBOutlet NSSlider *cImageSlider;
+    IBOutlet CMIVSlider *axImageSlider;
+    IBOutlet CMIVSlider *cImageSlider;
     IBOutlet CMIVDCMView *cPRView;
     IBOutlet CMIVDCMView *crossAxiasView;
     IBOutlet CMIVSlider *cYRotateSlider;
-    IBOutlet NSSlider *oImageSlider;
+    IBOutlet CMIVSlider *oImageSlider;
     IBOutlet CMIVDCMView *originalView;
     IBOutlet CMIVSlider *oXRotateSlider;
     IBOutlet CMIVSlider *oYRotateSlider;
@@ -73,18 +77,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     IBOutlet NSSlider *brushWidthSlider;
     IBOutlet NSSegmentedControl *brushStatSegment;
     IBOutlet NSTextField *brushWidthText;
-	IBOutlet NSButton *crossShowButton;	
-	IBOutlet NSPopUpButton *pathModifyButton;
+	IBOutlet NSButton *oViewCrossShowButton;	
+	IBOutlet NSButton *cViewCrossShowButton;
+	IBOutlet NSButton *axViewCrossShowButton;
+	IBOutlet NSButton *showAnnotationButton;
 	IBOutlet NSButton *nextButton;
 	IBOutlet NSButton *previousButton;
 	IBOutlet NSButton *convertToSeedButton;
 	IBOutlet NSButton *continuePlantingButton;
 	IBOutlet NSButton *cancelButton;
 	IBOutlet NSButton *saveButton;
+	IBOutlet NSButton *autoSeedingButton;
     IBOutlet NSTableView *centerlinesList;
 	IBOutlet NSMenuItem *straightenedCPRSwitchMenu;
-	IBOutlet NSButton *straightenedCPRButton;	
-	IBOutlet NSButton *exportOrthogonalImagesButton;
+	IBOutlet NSButton *straightenedCPRButton;
+	IBOutlet NSMatrix *seedingToolMatrix;
+
     IBOutlet NSSlider *exportStepSlider;
     IBOutlet NSSlider *exportOViewFromSlider;
     IBOutlet NSSlider *exportOViewToSlider;
@@ -104,6 +112,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSTextField *exportAxViewFromText;
 	IBOutlet NSTextField *exportAxViewToText;
 	IBOutlet NSTextField *exportAxViewAmountText;
+	IBOutlet NSSlider *exportAxViewCPRStepSlider;
+	IBOutlet NSTextField *exportAxViewCPRStepText;
+	IBOutlet NSTextField *exportAxViewCPRAmountText;
+	IBOutlet NSTextField *axViewLengthText;
+	IBOutlet NSButton *captureOViewButton;
+	IBOutlet NSButton *captureCViewButton;
+	IBOutlet NSButton *captureAxViewButton;
 	
 	IBOutlet NSButton *exportOViewCurrentOnlyButton;	
 	IBOutlet NSButton *exportOViewAllButton;
@@ -116,6 +131,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSButton *exportAxViewCurrentOnlyButton;	
 	IBOutlet NSButton *exportAxViewAllButton;
 	
+	IBOutlet NSButton *exportAxViewBrushROIButton;
+	IBOutlet NSButton *exportAxViewPolygonROIButton;
+	
 	IBOutlet NSTextField *currentTips;
 	IBOutlet NSTabView *seedToolTipsTabView;
     IBOutlet NSSlider *resampleRatioSlider;
@@ -127,7 +145,62 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSTextField *oViewRotateXText;
 	IBOutlet NSTextField *oViewRotateYText;
 	IBOutlet NSTextField *cViewRotateYText;
-	IBOutlet NSButton *ifExportCrossSectionButton;	
+	IBOutlet NSButton *ifExportCrossSectionButton;
+	
+	
+	IBOutlet NSButton *caculateAreaButton;	
+	IBOutlet NSButton *caculateMinDiameterButton;
+	IBOutlet NSButton *caculateMaxDiameterButton;	
+	IBOutlet NSButton *caculateMeanDiameterButton;
+	IBOutlet NSButton *caculateMinHuButton;	
+	IBOutlet NSButton *caculateMaxHuButton;
+	IBOutlet NSButton *caculateMeanHuButton;	
+	
+	IBOutlet NSButton *autoSaveButton;	
+	
+		
+	IBOutlet NSMatrix *basketMatrix;
+	IBOutlet NSScrollView *basketScrollView;
+	
+	IBOutlet NSTextField *vesselAnalysisParaStr1;
+	IBOutlet NSTextField *vesselAnalysisParaStr2;
+	IBOutlet NSTextField *vesselAnalysisParaStr3;
+	IBOutlet NSTextField *vesselAnalysisParaStr4;
+	IBOutlet NSTextField *vesselAnalysisParaStr5;
+	IBOutlet NSTextField *vesselAnalysisParaStr6;
+
+	IBOutlet NSTextField *vesselAnalysisParaStepText;
+
+	IBOutlet NSSlider *vesselAnalysisParaStepSlider;	
+	IBOutlet NSButton *vesselAnalysisParaShowShortAxisOption;
+	IBOutlet NSButton *vesselAnalysisParaShowLongAxisOption;
+	IBOutlet NSButton *vesselAnalysisParaShowMeanAxisOption;
+	IBOutlet NSButton *vesselAnalysisParaSmoothOption;
+	IBOutlet NSButton *vesselAnalysisParaAutoRefineOption;
+	IBOutlet NSSlider *axViewAreaSlider;
+	IBOutlet NSTextField *axViewAreathText;
+	IBOutlet NSSlider *axViewSigemaSlider;
+	IBOutlet NSTextField *axViewSigemaText;	
+	IBOutlet NSSlider *axViewUpperThresholdSlider;
+	IBOutlet NSTextField *axViewUpperThresholdText;
+	IBOutlet NSSlider *axViewLowerThresholdSlider;
+	IBOutlet NSTextField *axViewLowerThresholdText;
+	IBOutlet NSComboBox *vesselAnalysisParaSetNameCombo;
+	IBOutlet NSButton *vesselAnalysisShowAllParaButton;
+	IBOutlet CMIVVesselPlotView *plotView;
+	IBOutlet NSView* vesselAnalysisPanel;
+	IBOutlet NSPopUpButton *vesselAnalysisPlotSourceButton;
+	IBOutlet NSButton *creatCenterlineButton;
+	IBOutlet NSButton *removeCenterlineButton;
+	IBOutlet NSButton *exportCenterlineButton;
+	IBOutlet NSButton *exportCPRButton;
+	IBOutlet NSTextField *centerlineTapTips;
+	IBOutlet NSButton *ClipUpperCenterlineButton;
+	IBOutlet NSButton *CliplowerCenterlineButton;
+	IBOutlet NSButton *repulsorButton;
+	IBOutlet NSView *exportView;
+	
+	IBOutlet NSButton *cancelSegmentationButton;
 	
 	int      imageWidth,imageHeight,imageAmount,imageSize;
 	float    sliceThickness;
@@ -136,25 +209,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	float    centerX,centerY,centerZ; //for lock center , not useful now
 	float    preOViewXAngle,PreOViewYAngle,preOViewPosition;
 	float    oViewRotateAngleX,oViewRotateAngleY,cViewRotateAngleY;
+	float    axViewLowerThresholdFloat,axViewUpperThresholdFloat;
+	float    *axViewConnectednessCostMap;
+	unsigned char *connectednessROIBuffer;
+	int     connectednessROIBufferMaxSize;
+	int     axViewConnectednessCostMapMaxSize;
+	int		axViewCostMapWidth,axViewCostMapHeight;
+	
 	NSArray             *fileList;	
 	ViewerController     *originalViewController;
+	NSData               *originalViewVolumeData;
+	NSArray              *originalViewPixList;
+
 	DCMPix* curPix;
 
 	BOOL     roiShowNameOnly, roiShowTextOnlyWhenSeleted;
-	BOOL     isInWizardMode;
-	BOOL     isInCPROnlyMode;
+	int     isInWizardMode;
+	BOOL     isInitialWithCPRMode;
 	BOOL     isStraightenedCPR;
-	float               *volumeData;
+	float               *volumeData,*fuzzyConectednessMap;
 	unsigned short int  *contrastVolumeData;
 	vtkImageReslice		*oViewSlice;
-	vtkImageImport		*reader,*roiReader;
+	vtkImageImport		*reader,*roiReader,*axROIReader,*axLevelSetMapReader;
 	vtkTransform		*oViewBasicTransform,*oViewUserTransform;
-	vtkTransform		*inverseTransform;
+	vtkTransform		*inverseTransform,*inverseAxViewTransform;
 	vtkTransform		*cViewTransform;
 	vtkTransform        *axViewTransform,*axViewTransformForStraightenCPR, *avViewinverseTransform;
 	vtkImageReslice     *cViewSlice;
 	vtkImageReslice     *axViewSlice;
 	vtkImageReslice     *oViewROISlice;
+	vtkImageReslice     *axViewROISlice;
+	vtkContourFilter	*axROIOutlineFilter;
+	vtkPolyDataConnectivityFilter	*axViewPolygonfilter;
+	vtkPolyDataConnectivityFilter	*axViewPolygonfilter2;
 	///////////////
 	ROI                 *curvedMPR2DPath;
 	NSMutableArray      *curvedMPR3DPath;
@@ -173,9 +260,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	NSMutableArray      *contrastList;	
 	NSMutableArray      *totalROIList;
-	NSMutableArray      *toolbarList;	
+	
 	NSMutableArray      *cpr3DPaths;
 	NSMutableArray      *centerlinesNameArrays;
+	NSMutableArray      *centerlinesLengthArrays;
 	int                  uniIndex;
 	int                  isRemoveROIBySelf;
 	int                  isChangingWWWLBySelf;
@@ -187,13 +275,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSRect   axCircleRect;
 	int      centerIsLocked;
 	float    lastOViewXAngle,lastOViewYAngle,lastOViewTranslate;
-	float    lastCViewTranslate;
+	float    lastCViewTranslate,lastAxViewTranslate;
+	float    lastOViewZAngle,lastCViewZAngle,lastAxViewZAngle;
 	double	 oViewSpace[3], oViewOrigin[3];
 	double	 cViewSpace[3], cViewOrigin[3];
 	double   axViewSpace[3],axViewOrigin[3];
 	NSPoint  cPRViewCenter,cViewArrowStartPoint;
 	float    oViewToCViewZAngle,cViewToAxViewZAngle;
-	BOOL     IsVersion2_6;
 	CMIV_CTA_TOOLS* parent;
 	NSColor* currentSeedColor;
 	NSString *currentSeedName;
@@ -207,15 +295,61 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int interpolationMode;
 	ROI* oViewArrow;
 	ROI* cViewArrow;
+	ROI* axViewMeasurePolygon;
+	ROI* cViewMeasurePolygon;
+	ROI* axViewNOResultROI;
 	NSMutableArray  *arrowPointsArray;
 	NSMutableArray  *cViewArrowPointsArray;
 	ROI* oViewMeasureLine;
 	NSMutableArray  *measureLinePointsArray;
+	NSRect screenrect;
+	NSMutableArray* seriesNeedToExport;
+	float maxSpacing;
+	int aortamarker;
+	float* vesselnessMap;
+	NSData	*parentVesselnessMap;
+	NSData	*parentFuzzyConectednessData;
+	int needShowSegmentROI;
+	NSMutableArray* basketImageArray;
+	NSMutableArray* basketImageROIArray;
+	int axViewROIMode;
+	int cViewMPRorCPRMode;
+	float maxWidthofCPR;
+	int currentViewMode;
 	
+	NSMutableArray   *vesselAnalysisMeanHu;
+	NSMutableArray   *vesselAnalysisMaxHu;
+	NSMutableArray   *vesselAnalysisArea;
+	NSMutableArray   *vesselAnalysisLongDiameter;
+	NSMutableArray   *vesselAnalysisShortDiameter;
+	NSMutableArray   *vesselAnalysisCentersInLongtitudeSection;
+	float vesselAnalysisLongitudeStep,vesselAnalysisCrossSectionStep;
+	float vesselAnalysisMaxLongitudeDiameter;
+	int isDrawingACenterline;
+	BOOL isNeedSmoothImgBeforeSegment;
+	float levelsetCurvatureScaling;
+
+	NSMutableArray   *reference3Dpoints;
+	ROI               *referenceCurvedMPR2DPath;
 	
+	float lastLevelsetDiameter;//not useful at all but further test should be done
+	NSRect axViewLevelsetRect;
 	
+	BOOL cViewMeasureNeedToUpdate;
+	BOOL axViewMeasureNeedToUpdate;
+	id activeView;
+	BOOL needSaveCenterlines;
+
+	
+	NSTimer* autoSegmentTimer;
+	int timeCountDown;
+	BOOL needSaveSeeds;
 }
+
+
+
 - (IBAction)addSeed:(id)sender;
+- (IBAction)changeSeedingTool:(id)sender;
 - (IBAction)changeDefaultTool:(id)sender;
 - (IBAction)changeSeedColor:(id)sender;
 - (IBAction)changeSeedName:(id)sender;
@@ -224,9 +358,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)onOK:(id)sender;
 - (IBAction)pageAxView:(id)sender;
 - (IBAction)pageCView:(id)sender;
+- (void)	onlyPageAxView:(id)sender;
+- (void)	onlyPageCView:(id)sender;
 - (IBAction)pageOView:(id)sender;
 - (IBAction)removeSeed:(id)sender;
 - (IBAction)rotateXCView:(id)sender;
+- (IBAction)rotateYCView:(id)sender;
+- (void)	rotateZCView:(float)angle;
+- (void)	rotateZAxView:(float)angle;
 - (IBAction)rotateXOView:(id)sender;
 - (IBAction)rotateYOView:(id)sender;
 - (void)    rotateZOView:(float)angle;
@@ -236,10 +375,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)setBrushWidth:(id)sender;
 - (IBAction)setBrushMode:(id)sender;
 - (IBAction)crossShow:(id)sender;
+- (IBAction)showAnnotations:(id)sender;
 - (IBAction)covertRegoinToSeeds:(id)sender;
-- (IBAction)setPathMode:(id)sender;
-- (IBAction)showLoadPathDialog:(id)sender;
-- (IBAction)endLoadPathDialog:(id)sender;
+
 - (IBAction)goNextStep:(id)sender;
 - (IBAction)goPreviousStep:(id)sender;
 - (IBAction)continuePlanting:(id)sender;
@@ -248,20 +386,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)endCPRImageDialog:(id)sender;
 - (IBAction)setResampleRatio:(id)sender;
 - (IBAction)exportCenterlines:(id)sender;
-- (IBAction)showCenterlinesDialog:(id)sender;
-- (IBAction)endCenterlinesDialog:(id)sender;
 - (IBAction)removeCenterline:(id)sender;
 - (IBAction)switchStraightenedCPR:(id)sender;
 - (IBAction)exportOrthogonalDataset:(id)sender;
-- (IBAction)showExportDialog:(id)sender;
+- (IBAction)batchExport:(id)sender;
 - (IBAction)setExportDialogFromToSlider:(id)sender;
 - (IBAction)setExportDialogStepSlider:(id)sender;
 - (IBAction)setExportDialogFromToButton:(id)sender;
 - (IBAction)whyNoThickness:(id)sender;
-- (int) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
-- (int) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
-- (void)showPanelAsWizard:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
-- (void)showPanelAsCPROnly:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+- (IBAction)setAxViewThreshold:(id)sender;
+- (IBAction)changAxViewCPRStep:(id)sender;
+- (IBAction)changAxViewROIArea:(id)sender;
+- (IBAction)changLeveSetSigema:(id)sender;
+- (IBAction)endPolygonMeasureDialog:(id)sender;
+- (IBAction)refineCenterlineWithCrossSection:(id)sender;
+//- (IBAction)startCrossSectionRegionGrowing:(id)sender;
+- (IBAction)openABPointFile:(id)sender;
+- (IBAction)exportCenterlineToText:(id)sender;
+- (IBAction)exportSingleImageToBasket:(id)sender;
+- (IBAction)deleteImageInBasket:(id)sender;
+- (IBAction)emptyImageInBasket:(id)sender;
+- (IBAction)saveImagesInBasket:(id)sender;
+
+- (IBAction)vesselAnalysisSetStep:(id)sender;
+- (IBAction)vesselAnalysisChoiceADefaultParaset:(id)sender;
+- (IBAction)vesselAnalysisStart:(id)sender;
+- (IBAction)vesselAnalysisShowAllPara:(id)sender;
+- (IBAction)vesselAnalysisSetNeedRefineCenterline:(id)sender;
+- (IBAction)vesselAnalysisSetUseSmoothFilter:(id)sender;
+- (IBAction)vesselAnalysisParaInitialize:(id)sender;
+- (IBAction)vesselAnalysisSetNewSource:(id)sender;
+
+- (IBAction)creatCenterLine:(id)sender;
+- (IBAction)clipCenterLine:(id)sender;
+
+- (IBAction)cancelAutoSegmentaion:(id)sender;
+
+- (IBAction)changeROIShowingInAxView:(id)sender;
+
+- (id) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+- (id) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+- (int) showPolygonMeasurementPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+- (id)showPanelAsWizard:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+- (id)showPanelAsCPROnly:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (int) initViews;
 - (int) initSeedsList;
 - (int) reloadSeedsFromExportedROI;
@@ -283,11 +450,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) cAndAxViewReset;
 - (void) defaultToolModified: (NSNotification*) note;
 - (void) creatROIListFromSlices:(NSMutableArray*) roiList :(int) width:(int)height:(short unsigned int*)im :(float)spaceX:(float)spaceY:(float)originX:(float)originY;
+- (void) creatCPRROIListFromFuzzyConnectedness:(NSMutableArray*) roiList :(int) width:(int)height:(float *)im:(float)spaceX:(float)spaceY:(float)originX:(float)originY;
+- (void) creatAxROIListFromFuzzyConnectedness:(NSMutableArray*) roiList :(int) width:(int)height:(float *)im:(float)spaceX:(float)spaceY:(float)originX:(float)originY;
 - (void) reCaculateCPRPath:(NSMutableArray*) roiList :(int) width :(int)height :(float)spaceX: (float)spaceY : (float)spaceZ :(float)originX :(float)originY:(float)originZ;
 - (void) changeCurrentTool:(int) tag;
 - (void) fixHolesInBarrier:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker;
 - (NSMutableArray *) create3DPathFromROIs:(NSString*) roiName;
-- (void) resample3DPath:(float)step;
+- (void) resample3DPath:(float)step:(NSMutableArray*)apath;
+- (void)changAmongMPRCPRAndAnalysis:(int)modeindex;
 	//for tableview
 - (int)numberOfRowsInTableView:(NSTableView *)tableView;
 - (id)tableView:(NSTableView *)tableView
@@ -308,7 +478,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) setCurrentCPRPathWithPath:(NSArray*)path:(float)resampelrate;
 - (void) convertCenterlinesToVTKCoordinate:(NSArray*)centerlines;
 - (void) creatROIfrom3DPath:(NSArray*)path:(NSString*)name:(NSMutableArray*)newViewerROIList;
-- (void)reHideToolbar;
 - (void)relocateAxViewSlider;
 - (float)TriCubic : (float*) p :(float *)volume : (int) xDim : (int) yDim :(int) zDim;
 - (ViewerController *) exportCrossSectionImages:(float)start:(float)step:(int)slicenumber;
@@ -316,5 +485,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (ViewerController *) exportOViewImages:(float)start:(float)step:(int)slicenumber;
 - (int) generateSlidingNormals:(int)npts:(double*)pointsxyz:(double*)ptnormals;
 - (int) generateUnitRobbin:(int)npts:(double*)inputpointsxyz:(double*)ptnormals:(double*)outputpointsxyz:(double)angle:(double)width;
-
+-(int) thresholdLeveLSetAlgorithm:(float*)imgdata :(int)imgwidth: (int)imgheight :(int)offsetx :(int)offsety :(float)spaceX :(float)spaceY :(float)curscale :(float)lowerthreshold: (float)upperthreshold :(float)initdis :(unsigned char*)outrgndata :(ROI*)outroi:(int)seedmode;
+-(NSPoint)polygonCenterOfMass:(NSArray*)ptarray;
+- (float)signedPolygonArea:(NSArray*)ptarray;
+- (void)  creatPolygonROIsMeasurementROIsForViewController;
+- (void)  exportPolygonROIsInformation;
+-(void) removeMeasurementROIs;
+-(float) measureAPolygonROI:(ROI*)aPolygon:(NSMutableArray*)axisesPoints;
+//-(void)crossSectionRegionGrowing:(id)parameters;
+-(float)findingCenterOfSegment:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
+//-(void)createAortaRootSeeds:(int)centerx:(int)centery;
+//-(void)createVentricleRootSeeds;
+- (id)showPanelAsAutomaticWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner;
+//-(void)plantSeedsForTopAndBottom;
+//-(int) LinearRegression:(double*)data :(int)rows:(double*)a:(double*)b;
+-(void)findingGravityCenterOfSegment:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
+//-(void)plantExtraSeedsForRightCoronaryArtery;
+//-(void)plantExtraSeedsForLeftCoronaryArtery;
+- (void)saveCurrentSeeds;
+- (void)loadSavedSeeds;
+- (DCMPix*)getCurPixFromOView:(float*)imgdata:(int)imgwidth:(int)imgheight:(NSMutableArray*)imgROIs;
+- (DCMPix*)getCurPixFromCView:(float*)imgdata:(int)imgwidth:(int)imgheight:(NSMutableArray*)imgROIs;
+- (DCMPix*)getCurPixFromAxView:(float*)imgdata:(int)imgwidth:(int)imgheight:(NSMutableArray*)imgROIs;
+- (void) createEven3DPathForCPR:(int*)pwidth :(int*)pheight;
+- (void)showMPRExportDialog;
+- (void)syncWithPlot;
+- (void)initCenterList;
+- (void)initVesselAnalysis;
+- (float) measureDiameterOfLongitudePolygon:(ROI*)aroi:(float)step:(float)length:(float)xspace :(NSMutableArray*)diameterarray:(NSMutableArray*)centerptarray;
+-(void) recaculateAllCenterlinesLength;
+-(double)caculateLengthOfAPath:(NSArray*)apath;
+- (void)loadVesselnessMap;
+-(void)mergeVesselnessAndIntensityMap:(float*)img:(float*)vesselimg:(int)size;
+//- (IBAction)loadSegmentationResult:(id)sender;
+-(void)loadDirectionData:(unsigned char*)outData;
+- (void) saveDirectionMap:(unsigned char*)outData;
+-(void)creatPolygonROIsMeasurementROIsForAImage:(NSMutableArray*)imgroilist:(DCMPix*) curImage:(BOOL)addMin:(BOOL)addMax:(BOOL)addMean;
+-(void)performLongitudeSectionAnalysis;
+- (IBAction)refineCenterlineWithLongitudeSection:(id)sender;
+- (IBAction)refineCenterline:(id)sender;
+- (void) dcmViewMouseDown: (NSNotification*) note;
+-(void) dcmViewMouseUp: (NSNotification*) note;
+-(void)updateCViewMeasureAfterROIChanged;
+-(void)updateAxViewMeasureAfterROIChanged;
+- (int)inverseMatrix:(float*)inm :(float*)outm;
+-(BOOL)saveCenterlinesInPatientsCoordination;
+-(BOOL)loadCenterlinesInPatientsCoordination;
+-(void)changeSegmentButtonTitle:(id)sender;
 @end

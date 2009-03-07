@@ -22,14 +22,8 @@
 		B917308F0D9908C7005A0FF9 /* CMIV_AutoSeeding.h in Headers */ = {isa = PBXBuildFile; fileRef = B917308B0D9908C6005A0FF9 /* CMIV_AutoSeeding.h */; };
 		B91730900D9908C7005A0FF9 /* CMIV_AutoSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = B917308C0D9908C6005A0FF9 /* CMIV_AutoSeeding.m */; };
 		B91730910D9908C7005A0FF9 /* CMIVAutoSeedingCore.h in Headers */ = {isa = PBXBuildFile; fileRef = B917308D0D9908C7005A0FF9 /* CMIVAutoSeedingCore.h */; };
-		B91730920D9908C7005A0FF9 /* CMIVAutoSeedingCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B917308E0D9908C7005A0FF9 /* CMIVAutoSeedingCore.m */; };
 		B928762C0B344BD800183AEC /* DCMObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B928762B0B344BD800183AEC /* DCMObject.h */; };
-		B92F00510DC07F3800DAAFF3 /* libvtkGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B92F004D0DC07F3800DAAFF3 /* libvtkGraphics.a */; };
-		B92F00520DC07F3800DAAFF3 /* libvtkImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B92F004E0DC07F3800DAAFF3 /* libvtkImaging.a */; };
-		B92F00530DC07F3800DAAFF3 /* libvtkVolumeRendering.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B92F004F0DC07F3800DAAFF3 /* libvtkVolumeRendering.a */; };
-		B92F00540DC07F3800DAAFF3 /* libvtkWidgets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B92F00500DC07F3800DAAFF3 /* libvtkWidgets.a */; };
 		B930E81E0B0B490400434C33 /* CMIVSegmentCore.h in Headers */ = {isa = PBXBuildFile; fileRef = B930E81C0B0B490400434C33 /* CMIVSegmentCore.h */; };
-		B930E81F0B0B490400434C33 /* CMIVSegmentCore.m in Sources */ = {isa = PBXBuildFile; fileRef = B930E81D0B0B490400434C33 /* CMIVSegmentCore.m */; };
 		B95EA4360C54F418005A35CB /* logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B95EA4350C54F418005A35CB /* logo.jpg */; };
 		B95F5BD50D3E6CD2003D201B /* DICOMExport.h in Headers */ = {isa = PBXBuildFile; fileRef = B95F5BD40D3E6CD2003D201B /* DICOMExport.h */; };
 		B969E7B00D111DC700868834 /* CMIVWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = B969E7AE0D111DC700868834 /* CMIVWindow.h */; };
@@ -53,7 +47,6 @@
 		B99792090D3E391B004D8613 /* Save_Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = B99792010D3E391B004D8613 /* Save_Panel.xib */; };
 		B997920A0D3E391B004D8613 /* Scissors_Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = B99792020D3E391B004D8613 /* Scissors_Panel.xib */; };
 		B997920B0D3E391B004D8613 /* SegPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = B99792030D3E391B004D8613 /* SegPreview.xib */; };
-		B997920C0D3E391B004D8613 /* Spoon_Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = B99792040D3E391B004D8613 /* Spoon_Panel.xib */; };
 		B997920D0D3E391B004D8613 /* VR_Panel.xib in Resources */ = {isa = PBXBuildFile; fileRef = B99792050D3E391B004D8613 /* VR_Panel.xib */; };
 		B99ECAD30BC82DC1003C7DEB /* QuicktimeExport.h in Headers */ = {isa = PBXBuildFile; fileRef = B99ECAD20BC82DC1003C7DEB /* QuicktimeExport.h */; };
 		B9A4171F0B4BAF4D009AEE95 /* CMIV3DPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */; };
@@ -72,7 +65,7 @@
 		B9B29B070B145C1F00DE2C1F /* Move.tif in Resources */ = {isa = PBXBuildFile; fileRef = B9B29B040B145C1F00DE2C1F /* Move.tif */; };
 		B9B29B080B145C1F00DE2C1F /* Rotate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B29B050B145C1F00DE2C1F /* Rotate.tiff */; };
 		B9B29B910B147D2600DE2C1F /* CMIVScissorsController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B29B8F0B147D2600DE2C1F /* CMIVScissorsController.h */; };
-		B9B29B920B147D2600DE2C1F /* CMIVScissorsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9B29B900B147D2600DE2C1F /* CMIVScissorsController.mm */; };
+		B9B29B920B147D2600DE2C1F /* CMIVScissorsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9B29B900B147D2600DE2C1F /* CMIVScissorsController.mm */; settings = {COMPILER_FLAGS = "-I ../../osirix/ITK180 -I ../../osirix/ITK180/Code -I ../../osirix/ITK180/Code/Algorithms -I ../../osirix/ITK180/Code/BasicFilters -I ../../osirix/ITK180/Code/Common -I ../../osirix/ITK180/Code/Numerics -I ../../osirix/ITK180/Code/IO -I ../../osirix/ITK180/Code/Numerics/FEM -I ../../osirix/ITK180/Code/Numerics/Statistics -I ../../osirix/ITK180/Code/SpatialObject -I ../../osirix/ITK180/Code/Utilities/MetaIO -I ../../osirix/ITK180/Code/Utilities/expat -I ../../osirix/ITK180/Code/Utilities/NrrdIO -I ../../osirix/ITK180/Code/Utilities/DICOMParser -I ../../osirix/ITK180/Utilities -I ../../osirix/ITK180/Utilities/vxl/vcl -I ../../osirix/ITK180/Utilities/vxl/core"; }; };
 		B9B419320B36AFA700AD244F /* DCMCalendarDate.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B419310B36AFA700AD244F /* DCMCalendarDate.h */; };
 		B9B4195D0B36C8FC00AD244F /* CMIVExport.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B4195B0B36C8FC00AD244F /* CMIVExport.h */; };
 		B9B4195E0B36C8FC00AD244F /* CMIVExport.m in Sources */ = {isa = PBXBuildFile; fileRef = B9B4195C0B36C8FC00AD244F /* CMIVExport.m */; };
@@ -80,8 +73,47 @@
 		B9B419830B36E26F00AD244F /* DCMAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = B9B419820B36E26F00AD244F /* DCMAttribute.h */; };
 		B9B4F79A0B245953002E9350 /* Rectangle.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B4F7990B245953002E9350 /* Rectangle.tiff */; };
 		B9B702040CA5460D00CF333E /* Length.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9B702030CA5460D00CF333E /* Length.tiff */; };
-		B9C031F20B0753280020A4AD /* CMIVSpoonController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C031F00B0753280020A4AD /* CMIVSpoonController.h */; };
-		B9C033C30B075FB20020A4AD /* CMIVSpoonController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */; };
+		B9C3BAAE0F5D9B89001D6931 /* CMIVAutoSeedingCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9C3BAAA0F5D9B89001D6931 /* CMIVAutoSeedingCore.mm */; settings = {COMPILER_FLAGS = "-I ../../osirix/ITK180 -I ../../osirix/ITK180/Code -I ../../osirix/ITK180/Code/Algorithms -I ../../osirix/ITK180/Code/BasicFilters -I ../../osirix/ITK180/Code/Common -I ../../osirix/ITK180/Code/Numerics -I ../../osirix/ITK180/Code/IO -I ../../osirix/ITK180/Code/Numerics/FEM -I ../../osirix/ITK180/Code/Numerics/Statistics -I ../../osirix/ITK180/Code/SpatialObject -I ../../osirix/ITK180/Code/Utilities/MetaIO -I ../../osirix/ITK180/Code/Utilities/expat -I ../../osirix/ITK180/Code/Utilities/NrrdIO -I ../../osirix/ITK180/Code/Utilities/DICOMParser -I ../../osirix/ITK180/Utilities -I ../../osirix/ITK180/Utilities/vxl/vcl -I ../../osirix/ITK180/Utilities/vxl/core"; }; };
+		B9C3BAAF0F5D9B89001D6931 /* CMIVSegmentCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9C3BAAB0F5D9B89001D6931 /* CMIVSegmentCore.mm */; settings = {COMPILER_FLAGS = "-I ../../osirix/ITK180 -I ../../osirix/ITK180/Code -I ../../osirix/ITK180/Code/Algorithms -I ../../osirix/ITK180/Code/BasicFilters -I ../../osirix/ITK180/Code/Common -I ../../osirix/ITK180/Code/Numerics -I ../../osirix/ITK180/Code/IO -I ../../osirix/ITK180/Code/Numerics/FEM -I ../../osirix/ITK180/Code/Numerics/Statistics -I ../../osirix/ITK180/Code/SpatialObject -I ../../osirix/ITK180/Code/Utilities/MetaIO -I ../../osirix/ITK180/Code/Utilities/expat -I ../../osirix/ITK180/Code/Utilities/NrrdIO -I ../../osirix/ITK180/Code/Utilities/DICOMParser -I ../../osirix/ITK180/Utilities -I ../../osirix/ITK180/Utilities/vxl/vcl -I ../../osirix/ITK180/Utilities/vxl/core"; }; };
+		B9C3BAB00F5D9B89001D6931 /* CMIVVesselPlotView.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C3BAAC0F5D9B89001D6931 /* CMIVVesselPlotView.h */; };
+		B9C3BAB10F5D9B89001D6931 /* CMIVVesselPlotView.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C3BAAD0F5D9B89001D6931 /* CMIVVesselPlotView.m */; };
+		B9C3BAB60F5D9BC0001D6931 /* camera.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9C3BAB20F5D9BC0001D6931 /* camera.tiff */; };
+		B9C3BAB70F5D9BC0001D6931 /* CTAICON.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B9C3BAB30F5D9BC0001D6931 /* CTAICON.tiff */; };
+		B9C3BAB80F5D9BC0001D6931 /* Repulsor.tif in Resources */ = {isa = PBXBuildFile; fileRef = B9C3BAB40F5D9BC0001D6931 /* Repulsor.tif */; };
+		B9C3BAB90F5D9BC0001D6931 /* trash.icns in Resources */ = {isa = PBXBuildFile; fileRef = B9C3BAB50F5D9BC0001D6931 /* trash.icns */; };
+		B9C3BAF20F5D9CF6001D6931 /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C3BAF00F5D9CF6001D6931 /* browserController.h */; };
+		B9C3BAF30F5D9CF6001D6931 /* OSIWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C3BAF10F5D9CF6001D6931 /* OSIWindowController.h */; };
+		B9C3BAF60F5D9D0E001D6931 /* ROISRConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C3BAF50F5D9D0E001D6931 /* ROISRConverter.h */; };
+		B9C3BB8D0F5DD425001D6931 /* libITKAlgorithms.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB6F0F5DD425001D6931 /* libITKAlgorithms.a */; };
+		B9C3BB8E0F5DD425001D6931 /* libITKBasicFilters.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB700F5DD425001D6931 /* libITKBasicFilters.a */; };
+		B9C3BB8F0F5DD425001D6931 /* libITKCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB710F5DD425001D6931 /* libITKCommon.a */; };
+		B9C3BB900F5DD425001D6931 /* libITKDICOMParser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB720F5DD425001D6931 /* libITKDICOMParser.a */; };
+		B9C3BB910F5DD425001D6931 /* libITKEXPAT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB730F5DD425001D6931 /* libITKEXPAT.a */; };
+		B9C3BB920F5DD425001D6931 /* libITKFEM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB740F5DD425001D6931 /* libITKFEM.a */; };
+		B9C3BB930F5DD425001D6931 /* libitkgdcm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB750F5DD425001D6931 /* libitkgdcm.a */; };
+		B9C3BB940F5DD425001D6931 /* libITKIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB760F5DD425001D6931 /* libITKIO.a */; };
+		B9C3BB950F5DD425001D6931 /* libitkjpeg8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB770F5DD425001D6931 /* libitkjpeg8.a */; };
+		B9C3BB960F5DD425001D6931 /* libitkjpeg12.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB780F5DD425001D6931 /* libitkjpeg12.a */; };
+		B9C3BB970F5DD425001D6931 /* libitkjpeg16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB790F5DD425001D6931 /* libitkjpeg16.a */; };
+		B9C3BB980F5DD425001D6931 /* libITKMetaIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7A0F5DD425001D6931 /* libITKMetaIO.a */; };
+		B9C3BB990F5DD425001D6931 /* libITKniftiio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7B0F5DD425001D6931 /* libITKniftiio.a */; };
+		B9C3BB9A0F5DD425001D6931 /* libITKNrrdIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7C0F5DD425001D6931 /* libITKNrrdIO.a */; };
+		B9C3BB9B0F5DD425001D6931 /* libITKNumerics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7D0F5DD425001D6931 /* libITKNumerics.a */; };
+		B9C3BB9C0F5DD425001D6931 /* libitkopenjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7E0F5DD425001D6931 /* libitkopenjpeg.a */; };
+		B9C3BB9D0F5DD426001D6931 /* libitkpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB7F0F5DD425001D6931 /* libitkpng.a */; };
+		B9C3BB9E0F5DD426001D6931 /* libITKSpatialObject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB800F5DD425001D6931 /* libITKSpatialObject.a */; };
+		B9C3BB9F0F5DD426001D6931 /* libITKStatistics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB810F5DD425001D6931 /* libITKStatistics.a */; };
+		B9C3BBA00F5DD426001D6931 /* libitksys.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB820F5DD425001D6931 /* libitksys.a */; };
+		B9C3BBA10F5DD426001D6931 /* libitksys.afinal in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB830F5DD425001D6931 /* libitksys.afinal */; };
+		B9C3BBA20F5DD426001D6931 /* libitktestlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB840F5DD425001D6931 /* libitktestlib.a */; };
+		B9C3BBA30F5DD426001D6931 /* libitktiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB850F5DD425001D6931 /* libitktiff.a */; };
+		B9C3BBA40F5DD426001D6931 /* libitkv3p_netlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB860F5DD425001D6931 /* libitkv3p_netlib.a */; };
+		B9C3BBA50F5DD426001D6931 /* libitkvcl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB870F5DD425001D6931 /* libitkvcl.a */; };
+		B9C3BBA60F5DD426001D6931 /* libitkvnl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB880F5DD425001D6931 /* libitkvnl.a */; };
+		B9C3BBA70F5DD426001D6931 /* libitkvnl_algo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB890F5DD425001D6931 /* libitkvnl_algo.a */; };
+		B9C3BBA80F5DD426001D6931 /* libitkvnl_inst.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB8A0F5DD425001D6931 /* libitkvnl_inst.a */; };
+		B9C3BBA90F5DD426001D6931 /* libitkzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB8B0F5DD425001D6931 /* libitkzlib.a */; };
+		B9C3BBAA0F5DD426001D6931 /* libITKznz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9C3BB8C0F5DD425001D6931 /* libITKznz.a */; };
 		B9C596A10D127F810082FCAF /* CMIVDCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = B9C5969D0D127F810082FCAF /* CMIVDCMView.h */; };
 		B9C596A20D127F810082FCAF /* CMIVDCMView.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C5969E0D127F810082FCAF /* CMIVDCMView.m */; };
 		B9CACF5B0B049C510099ADCE /* CMIVChopperController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9E3A0440B048ED300387A56 /* CMIVChopperController.mm */; };
@@ -1378,7 +1410,7 @@
 		B9E39DEC0B0364AB00387A56 /* CMIV_CTA_TOOLS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B9E39DEB0B0364AB00387A56 /* CMIV_CTA_TOOLS_Prefix.pch */; };
 		B9E3A0450B048ED300387A56 /* CMIVChopperController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E3A0430B048ED300387A56 /* CMIVChopperController.h */; };
 		B9FB33550B0A1FD000A5A87A /* CMIVContrastController.h in Headers */ = {isa = PBXBuildFile; fileRef = B9FB33530B0A1FD000A5A87A /* CMIVContrastController.h */; };
-		B9FB33560B0A1FD000A5A87A /* CMIVContrastController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */; };
+		B9FB33560B0A1FD000A5A87A /* CMIVContrastController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */; settings = {COMPILER_FLAGS = "-I ../../osirix/ITK180 -I ../../osirix/ITK180/Code -I ../../osirix/ITK180/Code/Algorithms -I ../../osirix/ITK180/Code/BasicFilters -I ../../osirix/ITK180/Code/Common -I ../../osirix/ITK180/Code/Numerics -I ../../osirix/ITK180/Code/IO -I ../../osirix/ITK180/Code/Numerics/FEM -I ../../osirix/ITK180/Code/Numerics/Statistics -I ../../osirix/ITK180/Code/SpatialObject -I ../../osirix/ITK180/Code/Utilities/MetaIO -I ../../osirix/ITK180/Code/Utilities/expat -I ../../osirix/ITK180/Code/Utilities/NrrdIO -I ../../osirix/ITK180/Code/Utilities/DICOMParser -I ../../osirix/ITK180/Utilities -I ../../osirix/ITK180/Utilities/vxl/vcl -I ../../osirix/ITK180/Utilities/vxl/core"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1400,14 +1432,8 @@
 		B917308B0D9908C6005A0FF9 /* CMIV_AutoSeeding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIV_AutoSeeding.h; sourceTree = "<group>"; };
 		B917308C0D9908C6005A0FF9 /* CMIV_AutoSeeding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIV_AutoSeeding.m; sourceTree = "<group>"; };
 		B917308D0D9908C7005A0FF9 /* CMIVAutoSeedingCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVAutoSeedingCore.h; sourceTree = "<group>"; };
-		B917308E0D9908C7005A0FF9 /* CMIVAutoSeedingCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVAutoSeedingCore.m; sourceTree = "<group>"; };
 		B928762B0B344BD800183AEC /* DCMObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMObject.h; sourceTree = "<group>"; };
-		B92F004D0DC07F3800DAAFF3 /* libvtkGraphics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkGraphics.a; path = ../../osirix/Binaries/VTKLibs/libvtkGraphics.a; sourceTree = SOURCE_ROOT; };
-		B92F004E0DC07F3800DAAFF3 /* libvtkImaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkImaging.a; path = ../../osirix/Binaries/VTKLibs/libvtkImaging.a; sourceTree = SOURCE_ROOT; };
-		B92F004F0DC07F3800DAAFF3 /* libvtkVolumeRendering.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkVolumeRendering.a; path = ../../osirix/Binaries/VTKLibs/libvtkVolumeRendering.a; sourceTree = SOURCE_ROOT; };
-		B92F00500DC07F3800DAAFF3 /* libvtkWidgets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvtkWidgets.a; path = ../../osirix/Binaries/VTKLibs/libvtkWidgets.a; sourceTree = SOURCE_ROOT; };
 		B930E81C0B0B490400434C33 /* CMIVSegmentCore.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVSegmentCore.h; sourceTree = "<group>"; };
-		B930E81D0B0B490400434C33 /* CMIVSegmentCore.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CMIVSegmentCore.m; sourceTree = "<group>"; };
 		B95EA4350C54F418005A35CB /* logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo.jpg; sourceTree = "<group>"; };
 		B95F5BD40D3E6CD2003D201B /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMExport.h; sourceTree = "<group>"; };
 		B969E7AE0D111DC700868834 /* CMIVWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVWindow.h; sourceTree = "<group>"; };
@@ -1431,7 +1457,6 @@
 		B99792010D3E391B004D8613 /* Save_Panel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Save_Panel.xib; sourceTree = "<group>"; };
 		B99792020D3E391B004D8613 /* Scissors_Panel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Scissors_Panel.xib; sourceTree = "<group>"; };
 		B99792030D3E391B004D8613 /* SegPreview.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegPreview.xib; sourceTree = "<group>"; };
-		B99792040D3E391B004D8613 /* Spoon_Panel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Spoon_Panel.xib; sourceTree = "<group>"; };
 		B99792050D3E391B004D8613 /* VR_Panel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VR_Panel.xib; sourceTree = "<group>"; };
 		B99ECAD20BC82DC1003C7DEB /* QuicktimeExport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QuicktimeExport.h; sourceTree = "<group>"; };
 		B9A4171D0B4BAF4D009AEE95 /* CMIV3DPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIV3DPoint.h; sourceTree = "<group>"; };
@@ -1458,8 +1483,47 @@
 		B9B419820B36E26F00AD244F /* DCMAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMAttribute.h; sourceTree = "<group>"; };
 		B9B4F7990B245953002E9350 /* Rectangle.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Rectangle.tiff; sourceTree = "<group>"; };
 		B9B702030CA5460D00CF333E /* Length.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Length.tiff; sourceTree = "<group>"; };
-		B9C031F00B0753280020A4AD /* CMIVSpoonController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CMIVSpoonController.h; sourceTree = "<group>"; };
-		B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVSpoonController.mm; sourceTree = "<group>"; };
+		B9C3BAAA0F5D9B89001D6931 /* CMIVAutoSeedingCore.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVAutoSeedingCore.mm; sourceTree = "<group>"; };
+		B9C3BAAB0F5D9B89001D6931 /* CMIVSegmentCore.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMIVSegmentCore.mm; sourceTree = "<group>"; };
+		B9C3BAAC0F5D9B89001D6931 /* CMIVVesselPlotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVVesselPlotView.h; sourceTree = "<group>"; };
+		B9C3BAAD0F5D9B89001D6931 /* CMIVVesselPlotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVVesselPlotView.m; sourceTree = "<group>"; };
+		B9C3BAB20F5D9BC0001D6931 /* camera.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = camera.tiff; sourceTree = "<group>"; };
+		B9C3BAB30F5D9BC0001D6931 /* CTAICON.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CTAICON.tiff; sourceTree = "<group>"; };
+		B9C3BAB40F5D9BC0001D6931 /* Repulsor.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Repulsor.tif; sourceTree = "<group>"; };
+		B9C3BAB50F5D9BC0001D6931 /* trash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = trash.icns; sourceTree = "<group>"; };
+		B9C3BAF00F5D9CF6001D6931 /* browserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = browserController.h; sourceTree = "<group>"; };
+		B9C3BAF10F5D9CF6001D6931 /* OSIWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIWindowController.h; sourceTree = "<group>"; };
+		B9C3BAF50F5D9D0E001D6931 /* ROISRConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROISRConverter.h; sourceTree = "<group>"; };
+		B9C3BB6F0F5DD425001D6931 /* libITKAlgorithms.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKAlgorithms.a; path = ../../osirix/ITK180/bin/libITKAlgorithms.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB700F5DD425001D6931 /* libITKBasicFilters.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKBasicFilters.a; path = ../../osirix/ITK180/bin/libITKBasicFilters.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB710F5DD425001D6931 /* libITKCommon.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKCommon.a; path = ../../osirix/ITK180/bin/libITKCommon.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB720F5DD425001D6931 /* libITKDICOMParser.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKDICOMParser.a; path = ../../osirix/ITK180/bin/libITKDICOMParser.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB730F5DD425001D6931 /* libITKEXPAT.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKEXPAT.a; path = ../../osirix/ITK180/bin/libITKEXPAT.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB740F5DD425001D6931 /* libITKFEM.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKFEM.a; path = ../../osirix/ITK180/bin/libITKFEM.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB750F5DD425001D6931 /* libitkgdcm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkgdcm.a; path = ../../osirix/ITK180/bin/libitkgdcm.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB760F5DD425001D6931 /* libITKIO.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKIO.a; path = ../../osirix/ITK180/bin/libITKIO.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB770F5DD425001D6931 /* libitkjpeg8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkjpeg8.a; path = ../../osirix/ITK180/bin/libitkjpeg8.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB780F5DD425001D6931 /* libitkjpeg12.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkjpeg12.a; path = ../../osirix/ITK180/bin/libitkjpeg12.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB790F5DD425001D6931 /* libitkjpeg16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkjpeg16.a; path = ../../osirix/ITK180/bin/libitkjpeg16.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7A0F5DD425001D6931 /* libITKMetaIO.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKMetaIO.a; path = ../../osirix/ITK180/bin/libITKMetaIO.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7B0F5DD425001D6931 /* libITKniftiio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKniftiio.a; path = ../../osirix/ITK180/bin/libITKniftiio.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7C0F5DD425001D6931 /* libITKNrrdIO.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKNrrdIO.a; path = ../../osirix/ITK180/bin/libITKNrrdIO.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7D0F5DD425001D6931 /* libITKNumerics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKNumerics.a; path = ../../osirix/ITK180/bin/libITKNumerics.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7E0F5DD425001D6931 /* libitkopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkopenjpeg.a; path = ../../osirix/ITK180/bin/libitkopenjpeg.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB7F0F5DD425001D6931 /* libitkpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkpng.a; path = ../../osirix/ITK180/bin/libitkpng.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB800F5DD425001D6931 /* libITKSpatialObject.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKSpatialObject.a; path = ../../osirix/ITK180/bin/libITKSpatialObject.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB810F5DD425001D6931 /* libITKStatistics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKStatistics.a; path = ../../osirix/ITK180/bin/libITKStatistics.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB820F5DD425001D6931 /* libitksys.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitksys.a; path = ../../osirix/ITK180/bin/libitksys.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB830F5DD425001D6931 /* libitksys.afinal */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitksys.afinal; path = ../../osirix/ITK180/bin/libitksys.afinal; sourceTree = SOURCE_ROOT; };
+		B9C3BB840F5DD425001D6931 /* libitktestlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitktestlib.a; path = ../../osirix/ITK180/bin/libitktestlib.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB850F5DD425001D6931 /* libitktiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitktiff.a; path = ../../osirix/ITK180/bin/libitktiff.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB860F5DD425001D6931 /* libitkv3p_netlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkv3p_netlib.a; path = ../../osirix/ITK180/bin/libitkv3p_netlib.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB870F5DD425001D6931 /* libitkvcl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkvcl.a; path = ../../osirix/ITK180/bin/libitkvcl.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB880F5DD425001D6931 /* libitkvnl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkvnl.a; path = ../../osirix/ITK180/bin/libitkvnl.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB890F5DD425001D6931 /* libitkvnl_algo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkvnl_algo.a; path = ../../osirix/ITK180/bin/libitkvnl_algo.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB8A0F5DD425001D6931 /* libitkvnl_inst.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkvnl_inst.a; path = ../../osirix/ITK180/bin/libitkvnl_inst.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB8B0F5DD425001D6931 /* libitkzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libitkzlib.a; path = ../../osirix/ITK180/bin/libitkzlib.a; sourceTree = SOURCE_ROOT; };
+		B9C3BB8C0F5DD425001D6931 /* libITKznz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libITKznz.a; path = ../../osirix/ITK180/bin/libITKznz.a; sourceTree = SOURCE_ROOT; };
 		B9C5969D0D127F810082FCAF /* CMIVDCMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMIVDCMView.h; sourceTree = "<group>"; };
 		B9C5969E0D127F810082FCAF /* CMIVDCMView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMIVDCMView.m; sourceTree = "<group>"; };
 		B9DD41920B06426D00F17150 /* vtk__Int64Array.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = vtk__Int64Array.h; path = ../../osirix/VTKHeaders/vtk__Int64Array.h; sourceTree = SOURCE_ROOT; };
@@ -2766,10 +2830,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				B92F00510DC07F3800DAAFF3 /* libvtkGraphics.a in Frameworks */,
-				B92F00520DC07F3800DAAFF3 /* libvtkImaging.a in Frameworks */,
-				B92F00530DC07F3800DAAFF3 /* libvtkVolumeRendering.a in Frameworks */,
-				B92F00540DC07F3800DAAFF3 /* libvtkWidgets.a in Frameworks */,
+				B9C3BB8D0F5DD425001D6931 /* libITKAlgorithms.a in Frameworks */,
+				B9C3BB8E0F5DD425001D6931 /* libITKBasicFilters.a in Frameworks */,
+				B9C3BB8F0F5DD425001D6931 /* libITKCommon.a in Frameworks */,
+				B9C3BB900F5DD425001D6931 /* libITKDICOMParser.a in Frameworks */,
+				B9C3BB910F5DD425001D6931 /* libITKEXPAT.a in Frameworks */,
+				B9C3BB920F5DD425001D6931 /* libITKFEM.a in Frameworks */,
+				B9C3BB930F5DD425001D6931 /* libitkgdcm.a in Frameworks */,
+				B9C3BB940F5DD425001D6931 /* libITKIO.a in Frameworks */,
+				B9C3BB950F5DD425001D6931 /* libitkjpeg8.a in Frameworks */,
+				B9C3BB960F5DD425001D6931 /* libitkjpeg12.a in Frameworks */,
+				B9C3BB970F5DD425001D6931 /* libitkjpeg16.a in Frameworks */,
+				B9C3BB980F5DD425001D6931 /* libITKMetaIO.a in Frameworks */,
+				B9C3BB990F5DD425001D6931 /* libITKniftiio.a in Frameworks */,
+				B9C3BB9A0F5DD425001D6931 /* libITKNrrdIO.a in Frameworks */,
+				B9C3BB9B0F5DD425001D6931 /* libITKNumerics.a in Frameworks */,
+				B9C3BB9C0F5DD425001D6931 /* libitkopenjpeg.a in Frameworks */,
+				B9C3BB9D0F5DD426001D6931 /* libitkpng.a in Frameworks */,
+				B9C3BB9E0F5DD426001D6931 /* libITKSpatialObject.a in Frameworks */,
+				B9C3BB9F0F5DD426001D6931 /* libITKStatistics.a in Frameworks */,
+				B9C3BBA00F5DD426001D6931 /* libitksys.a in Frameworks */,
+				B9C3BBA10F5DD426001D6931 /* libitksys.afinal in Frameworks */,
+				B9C3BBA20F5DD426001D6931 /* libitktestlib.a in Frameworks */,
+				B9C3BBA30F5DD426001D6931 /* libitktiff.a in Frameworks */,
+				B9C3BBA40F5DD426001D6931 /* libitkv3p_netlib.a in Frameworks */,
+				B9C3BBA50F5DD426001D6931 /* libitkvcl.a in Frameworks */,
+				B9C3BBA60F5DD426001D6931 /* libitkvnl.a in Frameworks */,
+				B9C3BBA70F5DD426001D6931 /* libitkvnl_algo.a in Frameworks */,
+				B9C3BBA80F5DD426001D6931 /* libitkvnl_inst.a in Frameworks */,
+				B9C3BBA90F5DD426001D6931 /* libitkzlib.a in Frameworks */,
+				B9C3BBAA0F5DD426001D6931 /* libITKznz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2802,13 +2892,16 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B9C3BAB20F5D9BC0001D6931 /* camera.tiff */,
+				B9C3BAB30F5D9BC0001D6931 /* CTAICON.tiff */,
+				B9C3BAB40F5D9BC0001D6931 /* Repulsor.tif */,
+				B9C3BAB50F5D9BC0001D6931 /* trash.icns */,
 				B99791FE0D3E391B004D8613 /* AboutDlg.xib */,
 				B99791FF0D3E391B004D8613 /* Chopper_Panel.xib */,
 				B99792000D3E391B004D8613 /* Contrast_Panel.xib */,
 				B99792010D3E391B004D8613 /* Save_Panel.xib */,
 				B99792020D3E391B004D8613 /* Scissors_Panel.xib */,
 				B99792030D3E391B004D8613 /* SegPreview.xib */,
-				B99792040D3E391B004D8613 /* Spoon_Panel.xib */,
 				B99792050D3E391B004D8613 /* VR_Panel.xib */,
 				B9B295EA0B085E9B00505F84 /* ICON */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
@@ -2865,20 +2958,20 @@
 		AB2C26750677B0C400A08910 /* CMIV_CTA_TOOLS */ = {
 			isa = PBXGroup;
 			children = (
+				B9C3BAAC0F5D9B89001D6931 /* CMIVVesselPlotView.h */,
+				B9C3BAAD0F5D9B89001D6931 /* CMIVVesselPlotView.m */,
 				B917308B0D9908C6005A0FF9 /* CMIV_AutoSeeding.h */,
 				B917308C0D9908C6005A0FF9 /* CMIV_AutoSeeding.m */,
 				B917308D0D9908C7005A0FF9 /* CMIVAutoSeedingCore.h */,
-				B917308E0D9908C7005A0FF9 /* CMIVAutoSeedingCore.m */,
+				B9C3BAAA0F5D9B89001D6931 /* CMIVAutoSeedingCore.mm */,
 				B9E39DE70B03648700387A56 /* CMIV_CTA_TOOLS.h */,
 				B9E39DE80B03648700387A56 /* CMIV_CTA_TOOLS.mm */,
 				B9ADCE050B3B31CD008B5B9C /* CMIVSaveResult.h */,
 				B9ADCE060B3B31CD008B5B9C /* CMIVSaveResult.m */,
 				B930E81C0B0B490400434C33 /* CMIVSegmentCore.h */,
-				B930E81D0B0B490400434C33 /* CMIVSegmentCore.m */,
+				B9C3BAAB0F5D9B89001D6931 /* CMIVSegmentCore.mm */,
 				B9E3A0430B048ED300387A56 /* CMIVChopperController.h */,
 				B9E3A0440B048ED300387A56 /* CMIVChopperController.mm */,
-				B9C031F00B0753280020A4AD /* CMIVSpoonController.h */,
-				B9C031F10B0753280020A4AD /* CMIVSpoonController.mm */,
 				B9FB33530B0A1FD000A5A87A /* CMIVContrastController.h */,
 				B9FB33540B0A1FD000A5A87A /* CMIVContrastController.mm */,
 				B9B07E980B67A703008879EF /* CMIVContrastPreview.h */,
@@ -2908,6 +3001,9 @@
 		ABB76338067FB2A8000912C1 /* OsiriX Headers */ = {
 			isa = PBXGroup;
 			children = (
+				B9C3BAF50F5D9D0E001D6931 /* ROISRConverter.h */,
+				B9C3BAF00F5D9CF6001D6931 /* browserController.h */,
+				B9C3BAF10F5D9CF6001D6931 /* OSIWindowController.h */,
 				B95F5BD40D3E6CD2003D201B /* DICOMExport.h */,
 				B99604070C130ED100924E8C /* VRMakeObject.h */,
 				B98CF5570BE2BF8D00ED53C4 /* DCMDataContainer.h */,
@@ -2933,6 +3029,36 @@
 		B95D84090D9CFD4000FFCC05 /* itklib */ = {
 			isa = PBXGroup;
 			children = (
+				B9C3BB6F0F5DD425001D6931 /* libITKAlgorithms.a */,
+				B9C3BB700F5DD425001D6931 /* libITKBasicFilters.a */,
+				B9C3BB710F5DD425001D6931 /* libITKCommon.a */,
+				B9C3BB720F5DD425001D6931 /* libITKDICOMParser.a */,
+				B9C3BB730F5DD425001D6931 /* libITKEXPAT.a */,
+				B9C3BB740F5DD425001D6931 /* libITKFEM.a */,
+				B9C3BB750F5DD425001D6931 /* libitkgdcm.a */,
+				B9C3BB760F5DD425001D6931 /* libITKIO.a */,
+				B9C3BB770F5DD425001D6931 /* libitkjpeg8.a */,
+				B9C3BB780F5DD425001D6931 /* libitkjpeg12.a */,
+				B9C3BB790F5DD425001D6931 /* libitkjpeg16.a */,
+				B9C3BB7A0F5DD425001D6931 /* libITKMetaIO.a */,
+				B9C3BB7B0F5DD425001D6931 /* libITKniftiio.a */,
+				B9C3BB7C0F5DD425001D6931 /* libITKNrrdIO.a */,
+				B9C3BB7D0F5DD425001D6931 /* libITKNumerics.a */,
+				B9C3BB7E0F5DD425001D6931 /* libitkopenjpeg.a */,
+				B9C3BB7F0F5DD425001D6931 /* libitkpng.a */,
+				B9C3BB800F5DD425001D6931 /* libITKSpatialObject.a */,
+				B9C3BB810F5DD425001D6931 /* libITKStatistics.a */,
+				B9C3BB820F5DD425001D6931 /* libitksys.a */,
+				B9C3BB830F5DD425001D6931 /* libitksys.afinal */,
+				B9C3BB840F5DD425001D6931 /* libitktestlib.a */,
+				B9C3BB850F5DD425001D6931 /* libitktiff.a */,
+				B9C3BB860F5DD425001D6931 /* libitkv3p_netlib.a */,
+				B9C3BB870F5DD425001D6931 /* libitkvcl.a */,
+				B9C3BB880F5DD425001D6931 /* libitkvnl.a */,
+				B9C3BB890F5DD425001D6931 /* libitkvnl_algo.a */,
+				B9C3BB8A0F5DD425001D6931 /* libitkvnl_inst.a */,
+				B9C3BB8B0F5DD425001D6931 /* libitkzlib.a */,
+				B9C3BB8C0F5DD425001D6931 /* libITKznz.a */,
 			);
 			name = itklib;
 			sourceTree = "<group>";
@@ -2976,10 +3102,6 @@
 		B9D6B3F90D3ED3D800916A3F /* vtklib */ = {
 			isa = PBXGroup;
 			children = (
-				B92F004D0DC07F3800DAAFF3 /* libvtkGraphics.a */,
-				B92F004E0DC07F3800DAAFF3 /* libvtkImaging.a */,
-				B92F004F0DC07F3800DAAFF3 /* libvtkVolumeRendering.a */,
-				B92F00500DC07F3800DAAFF3 /* libvtkWidgets.a */,
 			);
 			name = vtklib;
 			sourceTree = "<group>";
@@ -5584,7 +5706,6 @@
 				B9DD4B9F0B06426E00F17150 /* vtkXYPlotWidget.h in Headers */,
 				B9DD4BA00B06426E00F17150 /* vtkXYZMolReader.h in Headers */,
 				B9DD4BA10B06426E00F17150 /* vtkZLibDataCompressor.h in Headers */,
-				B9C031F20B0753280020A4AD /* CMIVSpoonController.h in Headers */,
 				B9FB33550B0A1FD000A5A87A /* CMIVContrastController.h in Headers */,
 				B930E81E0B0B490400434C33 /* CMIVSegmentCore.h in Headers */,
 				B96B0F170B10AF5E0044D904 /* ColorTransferView.h in Headers */,
@@ -5612,6 +5733,10 @@
 				B917308F0D9908C7005A0FF9 /* CMIV_AutoSeeding.h in Headers */,
 				B91730910D9908C7005A0FF9 /* CMIVAutoSeedingCore.h in Headers */,
 				B909F0840D9F7F71002C42B5 /* CMIVBuketPirortyQueue.h in Headers */,
+				B9C3BAB00F5D9B89001D6931 /* CMIVVesselPlotView.h in Headers */,
+				B9C3BAF20F5D9CF6001D6931 /* browserController.h in Headers */,
+				B9C3BAF30F5D9CF6001D6931 /* OSIWindowController.h in Headers */,
+				B9C3BAF60F5D9D0E001D6931 /* ROISRConverter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5680,8 +5805,11 @@
 				B99792090D3E391B004D8613 /* Save_Panel.xib in Resources */,
 				B997920A0D3E391B004D8613 /* Scissors_Panel.xib in Resources */,
 				B997920B0D3E391B004D8613 /* SegPreview.xib in Resources */,
-				B997920C0D3E391B004D8613 /* Spoon_Panel.xib in Resources */,
 				B997920D0D3E391B004D8613 /* VR_Panel.xib in Resources */,
+				B9C3BAB60F5D9BC0001D6931 /* camera.tiff in Resources */,
+				B9C3BAB70F5D9BC0001D6931 /* CTAICON.tiff in Resources */,
+				B9C3BAB80F5D9BC0001D6931 /* Repulsor.tif in Resources */,
+				B9C3BAB90F5D9BC0001D6931 /* trash.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5704,9 +5832,7 @@
 			files = (
 				B98D355E0C4CE6E100DA7EA2 /* spline.C in Sources */,
 				B9FB33560B0A1FD000A5A87A /* CMIVContrastController.mm in Sources */,
-				B9C033C30B075FB20020A4AD /* CMIVSpoonController.mm in Sources */,
 				B9CACF5B0B049C510099ADCE /* CMIVChopperController.mm in Sources */,
-				B930E81F0B0B490400434C33 /* CMIVSegmentCore.m in Sources */,
 				B96B0F220B10B1B60044D904 /* CMIVVRcontroller.mm in Sources */,
 				B98C76540D313003004CBA19 /* CMIVCLUTOpacityView.mm in Sources */,
 				B9B29B920B147D2600DE2C1F /* CMIVScissorsController.mm in Sources */,
@@ -5719,8 +5845,10 @@
 				B9C596A20D127F810082FCAF /* CMIVDCMView.m in Sources */,
 				B9E39DEA0B03648700387A56 /* CMIV_CTA_TOOLS.mm in Sources */,
 				B91730900D9908C7005A0FF9 /* CMIV_AutoSeeding.m in Sources */,
-				B91730920D9908C7005A0FF9 /* CMIVAutoSeedingCore.m in Sources */,
 				B909F0850D9F7F71002C42B5 /* CMIVBuketPirortyQueue.m in Sources */,
+				B9C3BAAE0F5D9B89001D6931 /* CMIVAutoSeedingCore.mm in Sources */,
+				B9C3BAAF0F5D9B89001D6931 /* CMIVSegmentCore.mm in Sources */,
+				B9C3BAB10F5D9B89001D6931 /* CMIVVesselPlotView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5744,8 +5872,11 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CMIV_CTA_TOOLS_Prefix.pch;
+				GCC_VERSION = 4.2;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -5756,8 +5887,11 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../osirix/Binaries/VTKLibs",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/ITK/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/ITKbin/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/ITK180/bin\"";
 				LIBRARY_STYLE = Bundle;
 				MACH_O_TYPE = mh_bundle;
 				OTHER_CFLAGS = "";
@@ -5796,8 +5930,12 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../osirix/Binaries/VTKLibs",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/ITK/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/ITKbin/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/ITK180/bin\"";
 				LIBRARY_STYLE = Bundle;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (

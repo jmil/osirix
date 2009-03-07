@@ -40,7 +40,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSWindow	*window;
     IBOutlet NSTextField *seriesName;
     IBOutlet NSTextField *seriesNumber;
-	IBOutlet NSButton *needSaveROI;
 	IBOutlet NSButton *okButton;
 	ViewerController     *originalViewController;
 	CMIV_CTA_TOOLS* parent;
@@ -54,8 +53,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)onCancel:(id)sender;
 - (IBAction)onSave:(id)sender;
 - (id) showSaveResultPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner;
-- (void)findPreviewMatrix;
-- (void)openNewCreatedSeries:(id) sender;
--(void)backupROIs:(NSMutableArray*)roilist;
--(void)restoreROIs:(NSMutableArray*)roilist;
+- (void) exportSeries:(ViewerController *) vc:(NSString*)sname:(int)snumber:(CMIV_CTA_TOOLS*) owner;
 @end

@@ -1,31 +1,31 @@
 /*=========================================================================
-Author: Chunliang Wang (chunliang.wang@imv.liu.se)
-
-
-Program:  CMIV CTA image processing Plugin for OsiriX
-
-This file is part of CMIV CTA image processing Plugin for OsiriX.
-
-Copyright (c) 2007,
-Center for Medical Image Science and Visualization (CMIV),
-Linköping University, Sweden, http://www.cmiv.liu.se/
-
-CMIV CTA image processing Plugin for OsiriX is free software;
-you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option)
-any later version.
-
-CMIV CTA image processing Plugin for OsiriX is distributed in
-the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-=========================================================================*/
+ Author: Chunliang Wang (chunliang.wang@imv.liu.se)
+ 
+ 
+ Program:  CMIV CTA image processing Plugin for OsiriX
+ 
+ This file is part of CMIV CTA image processing Plugin for OsiriX.
+ 
+ Copyright (c) 2007,
+ Center for Medical Image Science and Visualization (CMIV),
+ Link√∂ping University, Sweden, http://www.cmiv.liu.se/
+ 
+ CMIV CTA image processing Plugin for OsiriX is free software;
+ you can redistribute it and/or modify it under the terms of the
+ GNU General Public License as published by the Free Software 
+ Foundation, either version 3 of the License, or (at your option)
+ any later version.
+ 
+ CMIV CTA image processing Plugin for OsiriX is distributed in
+ the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ =========================================================================*/
 
 #import "CMIVChopperController.h"
 
@@ -35,8 +35,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 @implementation CMIVChopperController
-
-
 
 - (IBAction)changeReformView:(id)sender
 {
@@ -53,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[curReformROI setROIRect:coronalROIRect];
 	}
 	[self setReformViewIndex:reformViewSlider ];
-
+	
 }
 
 - (IBAction)setImageFromTo:(id)sender
@@ -81,7 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (IBAction)setCurrentToImageFromTo:(id)sender
 {
-
+	
 	if([sender tag])
 		iImageTo= imageAmount - [ originalView curImage ];
 	else
@@ -100,12 +98,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	roiRect.origin.x = [leftTopX intValue];
 	roiRect.origin.y = [leftTopY intValue];
 	roiRect.size.width = [rightBottomX intValue] - [leftTopX intValue];
-	roiRect.size.height  = [rightBottomY intValue] - [leftTopX intValue];
+	roiRect.size.height  = [rightBottomY intValue] - [leftTopY intValue];
 	
 	coronalROIRect.origin.x = roiRect.origin.x;
-
+	
 	coronalROIRect.size.width = roiRect.size.width ;
-
+	
 	
 	sagittalROIRect.origin.x = roiRect.origin.y / ratioXtoY ;
 	sagittalROIRect.size.width = roiRect.size.height / ratioXtoY;
@@ -113,9 +111,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[self updateALLROIs];
 }
 
-- (IBAction)endPanel:(id)sender
+- (void)windowWillClose:(NSNotification *)notification
 {
-	NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
 
 	if(reader)
 	{
@@ -124,14 +121,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		rotate->Delete();
 		
 	}
-	//if(outputVolumeData)
-	//	free(outputVolumeData);
+
 	unsigned int i;
 	for( i = 0; i < [[originalViewController pixList] count]; i++)
 	{
 		[[roiListAxial objectAtIndex:i] removeAllObjects];
 	}
-	
+	[originalView setDrawing: NO];
+	[reformView setDrawing: NO];
 	[roiListAxial removeAllObjects];
 	[roiListAxial release];
 	[curAxialROI release];
@@ -142,20 +139,123 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     [reformPixList removeAllObjects];
 	[reformPixList release];
 	[reformView setTranlateSlider:nil];
-    if( [sender tag]&&!isSelectAll)   //User clicks OK Button
-    {
+   
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+
+	[[self window] setDelegate:nil];	
+	[originalViewController release];
+	[originalViewVolumeData release];
+	[originalViewPixList release];
+	[self release];
+	
+}
+- (int)reduceTheVolume:(NSArray*)bordersArray:(ViewerController *) vc
+{
+	
+	float				*srcImage, *dstImage;
+	int                 x,y,z;
+	long                size;
+	NSArray				*pixList = [vc pixList];
+	curPix = [pixList objectAtIndex: 0];
+	float vectors[9];
+	[curPix orientation:vectors];			
+	imageWidth=[curPix pwidth];
+	int tempint;
+	int x1=[[bordersArray objectAtIndex:0] intValue];
+	int x2=[[bordersArray objectAtIndex:1] intValue];
+	int y1=[[bordersArray objectAtIndex:2] intValue];
+	int y2=[[bordersArray objectAtIndex:3] intValue];
+	int z1=[[bordersArray objectAtIndex:4] intValue];
+	int z2=[[bordersArray objectAtIndex:5] intValue];
+	if(x1>x2)
+	{
+		tempint = x1;
+		x1=x2;
+		x2=tempint;
+	}
+	if(y1>y2)
+	{
+		tempint = y1;
+		y1=y2;
+		y2=tempint;
+	}
+	if(z1>z2)
+	{
+		tempint = z1;
+		z1=z2;
+		z2=tempint;
+	}
+	if(z1<0)
+		z1=0;
+	if(z2>=[pixList count])
+		z2=[pixList count]-1;
+	
+	size = sizeof(float) * (x2-x1+1) * (y2-y1+1) * (z2-z1+1);
+	id waitWindow = [vc startWaitWindow:@"producing new volume"];
+	
+	outputVolumeData = (float*) malloc(size);
+	if( !outputVolumeData)
+	{
+		NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		[vc endWaitWindow: waitWindow];
+		return 1;	
+	}
+	
+	for( z = z1; z <= z2; z++)
+	{
+		curPix = [pixList objectAtIndex: z];
 		
-		float				*srcImage, *dstImage;
-		int                 x,y,z;
-		int                 x1,x2,y1,y2,z1,z2;
-		long                size;
-		NSArray				*pixList = [originalViewController pixList];
-		x1 = [leftTopX intValue];
-		x2 = [rightBottomX intValue];
-		y1 = [leftTopY intValue];
-		y2 = [rightBottomY intValue];
-		z1 = imageAmount - [imageFrom intValue];
-		z2 = imageAmount - [imageTo intValue];
+		srcImage = [curPix  fImage];
+		dstImage = outputVolumeData + (x2-x1+1) * (y2-y1+1) * (z-z1);
+		
+		for(y = y1;y <= y2; y++)
+			for(x = x1; x <= x2; x++)
+				*( dstImage + (x2-x1+1)*(y-y1) + x-x1) = *( srcImage + imageWidth*y + x);
+	}	
+	
+	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+	NSData	*newData = [NSData dataWithBytesNoCopy:outputVolumeData length: size freeWhenDone:YES];
+	float origin[3];
+	for( z = z1 ; z <= z2; z ++)
+	{
+		curPix = [pixList objectAtIndex: z];
+		DCMPix	*copyPix = [curPix copy];
+		[newPixList addObject: copyPix];
+		[copyPix release];
+		[newDcmList addObject: [[vc fileList] objectAtIndex: z]];
+		[[newPixList lastObject] setPwidth: x2-x1+1];
+		[[newPixList lastObject] setPheight: y2-y1+1];
+		origin[0]=[curPix originX]+x1*[curPix pixelSpacingX]*vectors[0]+y1*[curPix pixelSpacingY]*vectors[3];
+		origin[1]=[curPix originY]+x1*[curPix pixelSpacingX]*vectors[1]+y1*[curPix pixelSpacingY]*vectors[4];
+		origin[2]=[curPix originZ]+x1*[curPix pixelSpacingX]*vectors[2]+y1*[curPix pixelSpacingY]*vectors[5];
+		[copyPix setOrigin:origin];
+		[[newPixList lastObject] setfImage: (float*) (outputVolumeData + (x2-x1+1)* (y2-y1+1)* (z-z1))];
+		[[newPixList lastObject] setTot: (z2-z1+1)];
+		[[newPixList lastObject] setFrameNo: 0];
+		[[newPixList lastObject] setID: (z-z1)];
+		
+	}
+	
+	// Replace A series
+
+	[vc replaceSeriesWith:newPixList :newDcmList :newData];
+
+	
+	[vc endWaitWindow: waitWindow];
+	return 0;
+	
+}
+- (IBAction)endPanel:(id)sender
+{	
+    if( [sender tag]&&!isSelectAll)   //User clicks OK Button
+	{	
+		int x1 = [leftTopX intValue];
+		int x2 = [rightBottomX intValue];
+		int y1 = [leftTopY intValue];
+		int y2 = [rightBottomY intValue];
+		int z1 = imageAmount - [imageFrom intValue];
+		int z2 = imageAmount - [imageTo intValue];
 		int tempint;
 		if(x1>x2)
 		{
@@ -175,125 +275,102 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			z1=z2;
 			z2=tempint;
 		}
+		if(x1<0)
+			x1=0;
+		if(x2>=imageWidth)
+			x2=imageWidth-1;
+		if(y1<0)
+			y1=0;
+		if(y2>=imageHeight)
+			y2=imageHeight-1;
 		if(z1<0)
 			z1=0;
 		if(z2>=imageAmount)
 			z2=imageAmount-1;
-		
-		size = sizeof(float) * (x2-x1+1) * (y2-y1+1) * (z2-z1+1);
-		id waitWindow = [originalViewController startWaitWindow:@"processing"];
-		
-		outputVolumeData = (float*) malloc(size);
-		if( !outputVolumeData)
-		{
-			NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
-			[originalViewController endWaitWindow: waitWindow];
-			return ;	
-		}
-		
-		for( z = z1; z <= z2; z++)
-		{
-			curPix = [pixList objectAtIndex: z];
-			
-			srcImage = [curPix  fImage];
-			dstImage = outputVolumeData + (x2-x1+1) * (y2-y1+1) * (z-z1);
-			
-			for(y = y1;y <= y2; y++)
-				for(x = x1; x <= x2; x++)
-					*( dstImage + (x2-x1+1)*(y-y1) + x-x1) = *( srcImage + imageWidth*y + x);
-		}	
-		
-		NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
-		NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
-		NSData	*newData = [NSData dataWithBytesNoCopy:outputVolumeData length: size freeWhenDone:YES];
-		for( z = z1 ; z <= z2; z ++)
-		{
-			curPix = [pixList objectAtIndex: z];
-			DCMPix	*copyPix = [curPix copy];
-			[newPixList addObject: copyPix];
-			[copyPix release];
-			[newDcmList addObject: [[originalViewController fileList] objectAtIndex: z]];
-			[[newPixList lastObject] setPwidth: x2-x1+1];
-			[[newPixList lastObject] setPheight: y2-y1+1];
-			[[newPixList lastObject] setfImage: (float*) (outputVolumeData + (x2-x1+1)* (y2-y1+1)* (z-z1))];
-			[[newPixList lastObject] setTot: (z2-z1+1)];
-			[[newPixList lastObject] setFrameNo: (z-z1+1)];
-			[[newPixList lastObject] setID: (z-z1+1)];
-			
-		}
-		
-		// CREATE A SERIES
-		if([sender tag])
-		{
-			[originalViewController replaceSeriesWith:newPixList
-												     :newDcmList
-												     :newData];
-	
-		}
 
-		[originalViewController endWaitWindow: waitWindow];
+		NSMutableArray* subvolumedimensionarray=[NSMutableArray arrayWithCapacity:0];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:x1]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:x2]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:y1]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:y2]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:z1]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:z2]];
+		curPix=[[originalViewController pixList] objectAtIndex:0];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:[curPix originX]]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:[curPix originY]]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:[curPix originZ]]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:imageWidth]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:imageHeight]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithInt:imageAmount]];
+		float origin[3];
+		float vectors[9];
+		[curPix orientation:vectors];
+		curPix=[[originalViewController pixList] objectAtIndex: z1];
+		origin[0]=[curPix originX]+x1*[curPix pixelSpacingX]*vectors[0]+y1*[curPix pixelSpacingY]*vectors[3];
+		origin[1]=[curPix originY]+x1*[curPix pixelSpacingX]*vectors[1]+y1*[curPix pixelSpacingY]*vectors[4];
+		origin[2]=[curPix originZ]+x1*[curPix pixelSpacingX]*vectors[2]+y1*[curPix pixelSpacingY]*vectors[5];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:origin[0]]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:origin[1]]];
+		[subvolumedimensionarray addObject:[NSNumber numberWithFloat:origin[2]]];
+		[parent cleanDataOfWizard];
+		NSMutableDictionary* dic=[parent dataOfWizard];
+
+		[dic setObject:subvolumedimensionarray forKey:@"SubvolumesDimension"];
+		[parent saveCurrentStep];
 		
-		if([sender tag])
+		if(![self reduceTheVolume:subvolumedimensionarray:originalViewController]&&[sender tag])
 		{
 			[originalViewController checkEverythingLoaded];
 			[[originalViewController window] setTitle:@"VOI"];
 		}
-		
-	}
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[window setReleasedWhenClosed:YES];
-	[window close];
-    [NSApp endSheet:window returnCode:[sender tag]];
-//	[originalView release];
-//	[reformView release];
-	/*
-	for( i = 0; i < [toolbarList count]; i++)
-	{
-		[[toolbarList objectAtIndex: i] setVisible: YES];
-		
-	}
-	[toolbarList removeAllObjects];*/
 	
-	[pool release];
+	}
+    
 	if([sender tag]==2)
 		[parent gotoStepNo:2];
 	else
-		[parent exitCurrentDialog];
-}
+		[parent cleanSharedData];
+	[[self window] performClose:sender];
+	
 
-- (void)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner
+}
+- (id)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner
 {
 	isInWizardMode=YES;
-
-	[self showChopperPanel: vc:owner];
+	
+	return [self showChopperPanel: vc:owner];
+	
 }
-
-- (int) showChopperPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner
+- (id) showChopperPanel:(ViewerController *) vc:(CMIV_CTA_TOOLS*) owner
 {
+	//initialize the window
+	self = [super initWithWindowNibName:@"Chopper_Panel"];
+	[[self window] setDelegate:self];
 	int err=0;
 	originalViewController=vc;
 	parent = owner;
+	originalViewVolumeData=[vc volumeData];
+	originalViewPixList=[vc pixList];
+	
+	[originalViewController retain];
+	[originalViewVolumeData retain];
+	[originalViewPixList retain];
+	
+	isSelectAll=NO;
 	curPix = [[originalViewController pixList] objectAtIndex: [[originalViewController imageView] curImage]];;
-	NSArray				*pixList = [originalViewController pixList];
+	NSMutableArray		*pixList = [originalViewController pixList];
 	NSArray             *fileList =[originalViewController fileList ];
-
+	
 	if( [curPix isRGB])
 	{
 		NSRunAlertPanel(NSLocalizedString(@"no RGB Support", nil), NSLocalizedString(@"This plugin doesn't surpport RGB images, please convert this series into BW images first", nil), NSLocalizedString(@"OK", nil), nil, nil);
 		
 		return 0;
 	}	
-
 	
-	[NSBundle loadNibNamed:@"Chopper_Panel" owner:self];
 	
-	NSRect screenrect = [[[originalViewController window] screen] visibleFrame];
-	screenrect.size.height -= 100;
-	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
-	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
 	
-	[window setFrame:screenrect display:NO];
-
+	
 	imageWidth = [curPix pwidth];
 	imageHeight = [curPix pheight];
 	imageAmount = [pixList count];
@@ -323,7 +400,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[curAxialROI setName:roiName];
 	[curAxialROI setROIRect:roiRect];
 	[curAxialROI setColor:color];
-
+	
 	roiListAxial = [[NSMutableArray alloc] initWithCapacity: 0];
 	unsigned int i;
 	for( i = 0; i < [pixList count]; i++)
@@ -345,20 +422,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[curReformROI setROIMode:ROI_selected];
 	if(!err)
 	{
-	
+		
 		[self  updateImageFromToSliders];
 		[self updateAllTextField];
 		
 		[reformView setTranlateSlider:reformViewSlider];
+		[reformView setHorizontalSlider:nil];			
 		
 		NSNotificationCenter *nc;
 		nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(defaultToolModified:) name:@"defaultToolModified" object:nil];
 		[nc addObserver:self selector:@selector(roiChanged:) name:@"roiChange" object:nil];
 		[nc	addObserver: self selector: @selector(changeWLWW:) name: @"changeWLWW" object: nil];
-		[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];
-		[nc addObserver: self selector: @selector(windowDidBecomeMain:) name:NSWindowDidBecomeMainNotification object:nil];
 
+		// show the window
+		screenrect=[[[originalViewController window] screen] visibleFrame];
+		[[self window]setFrame:screenrect display:NO animate:NO];
+		[super showWindow:parent];
+		[[self window] makeKeyAndOrderFront:parent];
+		[[self window] display];
+		
 		if(!isInWizardMode)
 		{
 			[nextStep setHidden:YES];
@@ -366,7 +449,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 	
-	return err;
+	return self;
 	
 }
 - (void) updateAllTextField
@@ -414,7 +497,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 -(void) roiChanged: (NSNotification*) note
 {
-
+	
 	id sender = [note object];
 	
 	if( sender)
@@ -466,7 +549,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				else
 					[curReformROI setROIRect:coronalROIRect];
 				[reformView setIndex: 0];
-
+				
 				
 				
 				
@@ -500,10 +583,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				{
 					if(lefttopx<0)
 						lefttopx=0;
-
+					
 					if(rightbottomx>=imageHeight)
 						rightbottomx=imageHeight-1;
-
+					
 					
 					sagittalROIRect.origin.x = lefttopx;
 					sagittalROIRect.origin.y = lefttopy;
@@ -514,7 +597,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					iImageTo = (int)(sagittalROIRect.size.height * ratioYtoThick + sagittalROIRect.origin.y * ratioYtoThick+1);
 					roiRect.origin.y = sagittalROIRect.origin.x *ratioXtoY;			
 					roiRect.size.height = sagittalROIRect.size.width * ratioXtoY;
-		
+					
 					coronalROIRect.origin.y = (iImageFrom-1) / ratioYtoThick ;
 					coronalROIRect.size.height = (iImageTo-iImageFrom-1)/ ratioYtoThick;
 					
@@ -536,12 +619,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					iImageFrom = (int)(coronalROIRect.origin.y * ratioYtoThick+1);
 					iImageTo = (int)(coronalROIRect.size.height * ratioYtoThick + coronalROIRect.origin.y * ratioYtoThick+1);
 					
-
+					
 					roiRect.origin.x = coronalROIRect.origin.x ;
-
+					
 					roiRect.size.width = coronalROIRect.size.width ;
-				
-
+					
+					
 					sagittalROIRect.origin.y = (iImageFrom-1)/ ratioYtoThick ;
 					sagittalROIRect.size.height = (iImageTo-iImageFrom-1)/ ratioYtoThick ;
 					
@@ -551,7 +634,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					iImageFrom = 1 ;
 				if(iImageTo > imageAmount)
 					iImageTo = imageAmount;
-
+				
 				[curAxialROI setROIRect:roiRect];
 				[originalView setIndex: [originalView curImage ]];
 				[self updateImageFromToSliders];
@@ -560,14 +643,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 	
-
-		return;
+	
+	return;
 }
 - (int)  initReformView
 {
-
+	
 	long                size;
-
+	
 	NSArray				*pixList = [originalViewController pixList];
 	size = sizeof(float) * imageWidth * imageHeight * imageAmount;
 	outputVolumeData=[originalViewController volumePtr:0];
@@ -579,7 +662,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[curPix orientation:vectors];			
 	vtkOriginalX = ([curPix originX] ) * vectors[0] + ([curPix originY]) * vectors[1] + ([curPix originZ] )*vectors[2];
 	vtkOriginalY = ([curPix originX] ) * vectors[3] + ([curPix originY]) * vectors[4] + ([curPix originZ] )*vectors[5];
-	 vtkOriginalZ = ([curPix originX] ) * vectors[6] + ([curPix originY]) * vectors[7] + ([curPix originZ] )*vectors[8];
+	vtkOriginalZ = ([curPix originX] ) * vectors[6] + ([curPix originY]) * vectors[7] + ([curPix originZ] )*vectors[8];
 	sliceThickness = [curPix sliceInterval];   
 	if( sliceThickness == 0)
 	{
@@ -590,7 +673,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	ratioXtoThick = [curPix pixelSpacingX]/sliceThickness;
 	ratioYtoThick = [curPix pixelSpacingY]/sliceThickness;
 	ratioXtoY = [curPix pixelSpacingX]/[curPix pixelSpacingY];
-		
+	
 	reader = vtkImageImport::New();
 	reader->SetWholeExtent(0, imageWidth-1, 0, imageHeight-1, 0, imageAmount-1);
 	reader->SetDataSpacing( [curPix pixelSpacingX], [curPix pixelSpacingY], sliceThickness);
@@ -616,7 +699,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	rotate->SetResliceTransform( sliceTransform);
 	rotate->SetResliceAxesOrigin( 0, 0, 0);
 	
-
+	
 	
 	
 	//	rotate->SetTransformInputSampling( false);
@@ -640,7 +723,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	reformPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[reformPixList addObject: mypix];
-
+	
 	reformFileList = [originalViewController fileList ];
 	
 	//initlize roi 
@@ -668,13 +751,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[curReformROI setROIRect:coronalROIRect];
 	[curReformROI setColor:color];
 	roiListReform = [[NSMutableArray alloc] initWithCapacity: 0];
-
+	
 	[roiListReform addObject:[NSMutableArray arrayWithCapacity:0]];
 	[[roiListReform objectAtIndex:0] addObject:curReformROI];
-
-
 	
-
+	
+	
+	
 	[reformView setDCM:reformPixList :reformFileList :roiListReform :0 :'i' :YES];
 	[reformView setStringID:roiName];
 	[reformView setIndexWithReset: 0 :YES];
@@ -712,14 +795,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		sliceTransform->RotateY( -90);
 		sliceTransform->RotateZ( 90);
 		sliceTransform->Translate( 0, 0 ,-( vtkOriginalX + [curPix pixelSpacingX]*i));
-
+		
 	}
 	else
 	{
 		sliceTransform->RotateX( -90);
 		sliceTransform->Translate( 0, 0 , vtkOriginalY + [curPix pixelSpacingY]*i);
 	}
-
+	
 	
 	rotate->SetResliceAxesOrigin( 0, 0, 0);
 	vtkImageData	*tempIm;
@@ -741,7 +824,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[mypix release];
 	[reformView setIndex: 0 ];
 	
-
+	
 	
 	
 }
@@ -755,21 +838,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 		iww = [otherPix ww];
 		iwl = [otherPix wl];
-
-
+		
+		
 		if( [reformPixList containsObject: otherPix])
 		{
-
+			
 			if( iww != [originalView curWW] || iwl != [originalView curWL])
 				[originalView setWLWW:iwl :iww];
-
+			
 		}
 		else
 		{
-
+			
 			if( iww != [reformView curWW] || iwl != [reformView curWL])
 				[reformView setWLWW:iwl :iww];
-
+			
 		}
 	}
 	
@@ -803,19 +886,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[self updateAllTextField];
 	isSelectAll=YES;
 }
-- (void) windowDidBecomeMain:(NSNotification *)aNotification
-{
-	[self reHideToolbar];
-}
 
-- (void) reHideToolbar
-{/*
-	unsigned int i;
-	for( i = 0; i < [toolbarList count]; i++)
-	{
-		[[toolbarList objectAtIndex: i] setVisible: NO];
-		
-	}*/
-	
-}
 @end

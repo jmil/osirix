@@ -37,11 +37,28 @@
 
 @interface CMIV_AutoSeeding : NSObject {
 	ViewerController     *originalViewController;
+	NSArray* controllersPixList;
 	CMIV_CTA_TOOLS* parent;
 	long      imageWidth,imageHeight,imageAmount,imageSize;
+	float aortaMaxHu;
+	float*	volumeData;
+	NSData* vesselnessMapData;
+	float vesselnessMapSpacing;
+
 }
--(int)runAutoSeeding:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
+-(int)runAutoSeeding:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner:(NSArray*)pixList:(float*)volumePtr:(BOOL)ribRemoval:(BOOL)centerlineTracking:(BOOL)needVesselEnhance;
 -(void)replaceOriginImage:(unsigned char*)outData;
--(void)exportResults:(unsigned char*)outData:(long*)origin:(long*)dimesion;
--(void)readROIFromViewer:(unsigned char*)colorData;
+-(int)resampleImage:(float*)input:(float*)output:(long*)indimesion:(long*)outdimesion;
+-(int)createCoronaryVesselnessMap:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner:(float)startscale:(float)endscale:(float)scalestep:(float)targetspacing:(float)rescaleMax:(BOOL)needSaveVesselnessMap;
+-(void)rescaleVolume:(float*)img:(int)size:(float)tagetscale;
+- (void)saveCurrentSeeds: (unsigned short*)seedData:(int)size;
+- (void) runSegmentationAndSkeletonization:(unsigned short*)seedData:(float*)volumeData1;
+- (void) useSeedDataToInitializeDirectionData:(unsigned short*)seedData:(float*)inputData:(float*)outputData:(unsigned char*)directionData:(int)volumeSize;
+- (void) prepareForCaculateLength:(unsigned short*)dismap:(unsigned char*)directionData;
+- (void) prepareForCaculateWightedLength:(float*)outputData:(unsigned char*)directionData;
+- (int)inverseMatrix:(float*)inm :(float*)outm;
+- (void) saveCenterlinesToPatientCoordinate:(NSArray*)centerlines:(NSArray*)centerlinesNameList;
+- (int) searchBackToCreatCenterlines:(NSMutableArray *)acenterline:(int)endpointindex:(unsigned char*)directionData;
+-(void)enhanceVolumeWithVesselness;
+-(void)deEnhanceVolumeWithVesselness;
 @end

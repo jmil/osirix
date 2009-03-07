@@ -74,8 +74,6 @@
 	[contextualMenu release];
 	[undoManager release];
 	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	[super dealloc];
 }
 
@@ -258,8 +256,8 @@
 	NSPoint pt1, pt2, pt3, pt4;
 	
 	pt1 = NSMakePoint(12, 0.0);
-	pt2 = NSMakePoint(202, sqrt(0.027));
-	pt3 = NSMakePoint(404, sqrt(0.133));
+	pt2 = NSMakePoint(202, sqrt(0.147));
+	pt3 = NSMakePoint(404, sqrt(0.283));
 	pt4 = NSMakePoint(549, sqrt(0.682));
 
 	float shift = 40.0;
@@ -317,7 +315,72 @@
 	vrViewLowResolution = NO;
 	[self updateView];
 }
-
+- (void)newTrapezoidCurve
+{
+	NSMutableArray *theNewCurve = [NSMutableArray arrayWithCapacity:4];
+	
+	NSPoint pt1, pt2, pt3, pt4;
+	
+	pt1 = NSMakePoint(-550, 0.0);
+	pt2 = NSMakePoint(-410, sqrt(0.027));
+	pt3 = NSMakePoint(-320, sqrt(0.027));
+	pt4 = NSMakePoint(-170, 0.0);
+	
+	float shift = 40.0;
+	
+	if(pt1.x<HUmin || pt4.x>HUmax)
+	{
+		float middle = (HUmin + HUmax)/2.0;
+		float length = HUmax - HUmin;
+		pt1.x = middle - 0.05*length;
+		pt2.x = middle;
+		pt3.x = middle + 0.05*length;
+		pt4.x = middle + 0.1*length;
+		shift = 0.01*length;
+	}
+	
+	BOOL needsShift = NO;
+	NSPoint c1, c2;
+	int i;
+	for (i=0; i<[curves count]; i++)
+	{
+		c1 = [[[curves objectAtIndex:i] objectAtIndex:0] pointValue];
+		c2 = [[[curves objectAtIndex:i] lastObject] pointValue];
+		needsShift = (pt1.x>c1.x-shift && pt1.x<c1.x+shift) || (pt4.x>c2.x-shift && pt4.x<c2.x+shift);
+		
+		if(needsShift)
+		{
+			pt1.x += shift;
+			pt2.x += shift;
+			pt3.x += shift;
+			pt4.x += shift;
+			i=-1;
+			needsShift = NO;
+		}
+	}
+	
+	[theNewCurve addObject:[NSValue valueWithPoint:pt1]];
+	[theNewCurve addObject:[NSValue valueWithPoint:pt2]];
+	[theNewCurve addObject:[NSValue valueWithPoint:pt3]];
+	[theNewCurve addObject:[NSValue valueWithPoint:pt4]];
+	
+	NSMutableArray *theColors = [NSMutableArray arrayWithCapacity:4];
+	[theColors addObject:[NSColor colorWithDeviceRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+	[theColors addObject:[NSColor colorWithDeviceRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+	[theColors addObject:[NSColor colorWithDeviceRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+	[theColors addObject:[NSColor colorWithDeviceRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+	
+	[self addCurveAtindex:0 withPoints:theNewCurve colors:theColors];
+	
+	// select the new curve
+	NSPoint controlPoint = [self controlPointForCurveAtIndex:0];
+	selectedPoint = controlPoint;
+	
+	nothingChanged = NO;
+	clutChanged = YES;
+	vrViewLowResolution = NO;
+	[self updateView];
+}
 //- (void)fillCurvesInRect:(NSRect)rect;
 //{
 //	int i, j;

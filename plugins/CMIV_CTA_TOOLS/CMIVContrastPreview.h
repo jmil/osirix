@@ -53,12 +53,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vtkTransformFilter.h>
 #undef id
 
-@interface CMIVContrastPreview : NSObject
+@interface CMIVContrastPreview : NSWindowController
 {
     IBOutlet CMIVDCMView *mprView;
     IBOutlet NSTableView *seedList;
     IBOutlet CMIVDCMView *resultView;
-	IBOutlet CMIVWindow *window;
 	IBOutlet NSWindow	*skeletonWindow;
     IBOutlet NSSlider *mprPageSlider;
 	IBOutlet NSSlider *resultPageSlider;
@@ -92,7 +91,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSTextField *oViewRotateYText;
 	
 	ViewerController     *originalViewController;
-	NSMutableArray      *toolbarList;
+	NSData               *originalViewVolumeData;
+	NSArray              *originalViewPixList;
+
 	BOOL     roiShowNameOnly, roiShowTextOnlyWhenSeleted;
 	float *inputData ;
 	float *outputData ;
@@ -142,12 +143,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int  lastResultSliderPos;
 	int interpolationMode;
 	
-	BOOL   IsVersion2_6;
+
 	float osirixOffset;
 	float osirixValueFactor;
 	CMIV_CTA_TOOLS* parent;
 	BOOL isInWizardMode;
-
+	NSRect screenrect;
+	NSData*            parentSeedData;
+	NSData*            parentInputData;
+	NSData*            parentOutputData;
+	NSData*            parentColorData;
+	NSData*            parentDirectionData;
+	NSMutableArray* endPointsArray;
+	NSMutableArray* endPointROIsArray;
+	NSMutableArray* manualCenterlinesArray;
+	NSMutableArray* manualCenterlineROIsArray;
+	float               defaultROIThickness;
+	float  maxHuofRootSeeds;
 
 }
 - (IBAction)chooseASeed:(id)sender;
@@ -173,9 +185,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)changeVRMode:(id)sender;
 - (IBAction)changeVRColor:(id)sender;
 - (IBAction)changeVRDirection:(id)sender;
+- (IBAction)loadAEndPointForCenterline:(id)sender;
+
 - (void)    rotateZMPRView:(float)angle;
-- (int) showPreviewPanel:(ViewerController *) vc:(float*)inData:(float*)outData:(unsigned char*)colData:(unsigned char*)direData;
-- (void)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner;
+- (id) showPreviewPanel:(ViewerController *) vc:(float*)inData:(float*)outData:(unsigned char*)colData:(unsigned char*)direData;
+- (id)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner;
 - (int) initViews;
 - (void)setSeedLists:(NSMutableArray *)choosenseedList: (NSMutableArray *)showSeedList;
 - (void)resultViewUpdateROI:(int)index;
@@ -226,6 +240,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    forTableColumn:(NSTableColumn *)aTableColumn
 			  row:(int)rowIndex;
 - (void) checkRootSeeds:(NSArray*)roiList;
-- (void)reHideToolbar;
 - (void)creatNewResultROI:(int)index;
+- (void)saveNewPlantedSeeds;
+- (void) updateAllCenterlines;
+- (void) reCaculateCPRPath:(NSMutableArray*) roiList :(int) width :(int)height :(float)spaceX: (float)spaceY : (float)spaceZ :(float)originX :(float)originY:(float)originZ;
+- (void) convertCenterlinesToVTKCoordinate:(NSArray*)centerlines;
 @end

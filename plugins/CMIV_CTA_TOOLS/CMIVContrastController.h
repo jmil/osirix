@@ -67,9 +67,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (int) exportToROIs:(float *)inputData :(float *)outputData :(unsigned char *)colorData;
 - (int) exportToSeries:(float *)inputData :(float *)outputData :(unsigned char *)colorData;
 - (int) exportToCenterLines:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData;
-- (int) exportToConnectednessMap:(float *)inputData :(float *)outputData :(unsigned char *)colorData;
-- (int) smoothInputData:(float *)inputData;
-- (int) enhanceInputData:(float *)inputData;
+- (int) exportToTempFolder:(float *)inputData :(float *)outputData :(unsigned char *)colorData;
 - (int) createCenterlines:(float *)inputData :(float *)outputData :(unsigned char *)directData :(unsigned char *)colorData :(NSMutableArray*)roilist;
 - (BOOL) prepareForSkeletonizatin:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData;
 - (int)plantRootSeeds:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData;
@@ -89,5 +87,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    setObjectValue:(id)anObject
    forTableColumn:(NSTableColumn *)aTableColumn
 			  row:(int)rowIndex;
-
 @end

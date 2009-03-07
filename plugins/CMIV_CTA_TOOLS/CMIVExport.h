@@ -50,7 +50,7 @@ enum DCM_CompressionQuality {DCMLosslessQuality, DCMHighQuality, DCMMediumQualit
 	int					exportInstanceNumber, exportSeriesNumber;
 	NSString			*exportSeriesUID;
 	NSString			*exportSeriesDescription;
-	
+	NSString			*sopInstanceUID;
 	long				ww, wl;
 	float				spacingX, spacingY;
 	float				sliceThickness;

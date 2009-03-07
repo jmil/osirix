@@ -12,7 +12,11 @@
 @interface CMIVDCMView : DCMView {
 	NSSlider* tranlateSlider;
 	NSSlider* horizontalSlider;
+	id dcmViewWindowController;
+	
 }
+
 -(void)setTranlateSlider:(NSSlider*) aSlider;
 -(void)setHorizontalSlider:(NSSlider*) aSlider;
+-(void)setDcmViewWindowController:(id)vc;
 @end

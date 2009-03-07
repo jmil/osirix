@@ -18,6 +18,8 @@ PURPOSE.
 =========================================================================*/
 
 #import "CMIVExport.h"
+#import "BrowserController.h"
+#import "ROISRConverter.h"
 
 #define VERBOSEMODE
 
@@ -161,8 +163,6 @@ PURPOSE.
 		BOOL			isDir = YES;
 		long			index = 0;
 		NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING.noindex"] ;
-		//[NSString stringWithString:@"/Users/chuwa/output"];
-		//	[stringByAppendingPathComponent:@"/INCOMING"];
 
 		if (![[NSFileManager defaultManager] fileExistsAtPath:OUTpath isDirectory:&isDir] && isDir) [[NSFileManager defaultManager] createDirectoryAtPath:OUTpath attributes:nil];
 		
@@ -195,88 +195,12 @@ PURPOSE.
 		{
 			return 1;
 		}
-		NSString* sopUID= [dcmDst attributeValueWithName:@"SOPInstanceUID"]	;
+		
 		[dcmDst newSeriesInstanceUID ];
 		[dcmDst newSOPInstanceUID];
-		sopUID= [dcmDst attributeValueWithName:@"SOPInstanceUID"]	;
+		sopInstanceUID=[dcmDst attributeValueWithName:@"SOPInstanceUID"];
 		DCMCalendarDate *seriesDate = acquisitionDate;
 		DCMCalendarDate *seriestime = acquisitionDate;
-		
-		if( spacingX != 0 && spacingY != 0)
-		{
-			if( spacingX != spacingY)	// Convert to square pixels
-			{
-				if( bpp == 16)
-				{
-					vImage_Buffer	srcVimage, dstVimage;
-					long			newHeight = ((float) height * spacingY) / spacingX;
-					
-					newHeight /= 2;
-					newHeight *= 2;
-					
-					squaredata = malloc( newHeight * width * bpp/8);
-					
-					float	*tempFloatSrc = malloc( height * width * sizeof( float));
-					float	*tempFloatDst = malloc( newHeight * width * sizeof( float));
-					
-					if( squaredata != 0L && tempFloatSrc != 0L && tempFloatDst != 0L)
-					{
-						long err;
-						
-						// Convert Source to float
-						srcVimage.data = data;
-						srcVimage.height =  height;
-						srcVimage.width = width;
-						srcVimage.rowBytes = width* bpp/8;
-						
-						dstVimage.data = tempFloatSrc;
-						dstVimage.height =  height;
-						dstVimage.width = width;
-						dstVimage.rowBytes = width*sizeof( float);
-						
-						err = vImageConvert_16UToF(&srcVimage, &dstVimage, 0,  1, 0);
-						//	if( err) NSLog(@"%d", err);
-						
-						// Scale the image
-						srcVimage.data = tempFloatSrc;
-						srcVimage.height =  height;
-						srcVimage.width = width;
-						srcVimage.rowBytes = width*sizeof( float);
-						
-						dstVimage.data = tempFloatDst;
-						dstVimage.height =  newHeight;
-						dstVimage.width = width;
-						dstVimage.rowBytes = width*sizeof( float);
-						
-						err = vImageScale_PlanarF( &srcVimage, &dstVimage, 0L, 0);
-						//	if( err) NSLog(@"%d", err);
-						
-						// Convert Destination to 16 bits
-						srcVimage.data = tempFloatDst;
-						srcVimage.height =  newHeight;
-						srcVimage.width = width;
-						srcVimage.rowBytes = width*sizeof( float);
-						
-						dstVimage.data = squaredata;
-						dstVimage.height =  newHeight;
-						dstVimage.width = width;
-						dstVimage.rowBytes = width* bpp/8;
-						
-						err = vImageConvert_FTo16U( &srcVimage, &dstVimage, 0,  1, 0);
-						//	if( err) NSLog(@"%d", err);
-						
-						spacingY = spacingX;
-						height = newHeight;
-						
-						data = squaredata;
-						
-						free( tempFloatSrc);
-						free( tempFloatDst);
-					}
-				}
-			}
-		}
-		
 		NSNumber *rows = [NSNumber numberWithInt: height];
 		NSNumber *columns  = [NSNumber numberWithInt: width];
 
@@ -459,44 +383,83 @@ PURPOSE.
 
 	NSArray *fileList = [originalViewController fileList]; 
 	NSArray	*pixList = [originalViewController pixList];
+	NSArray *roiList = [originalViewController roiList];
 	unsigned int ii;
 	float* inputData=[originalViewController volumePtr:0];
 	float o[ 9];
 	DCMPix			*curPix = [[originalViewController imageView] curDCM];
 	width=[curPix pwidth];
 	height=[curPix pheight];
+	int maxImgSize=width*height;
+	for(ii=0;ii<[pixList count];ii++)
+	{
+		curPix=[pixList objectAtIndex:ii];
+		if([curPix pwidth]*[curPix pheight]>maxImgSize)
+		{
+			maxImgSize=[curPix pwidth]*[curPix pheight];
+		}
+		
+	}
 	spp=1;
 	bpp=16;	
 	vImage_Buffer	srcf, dst8;
-	srcf.height = height;
-	srcf.width = width;
-	srcf.rowBytes = width * sizeof( float);
-	
-	dst8.height =  height;
-	dst8.width = width;
-	dst8.rowBytes = width * sizeof( short);
 				
-	data=(unsigned char	*)malloc(width*height*spp*bpp/8);
-	dicomFileData=(unsigned char	*)malloc(width*height*spp*bpp/8+100000);
+	data=(unsigned char	*)malloc(maxImgSize*spp*bpp/8);
+	dicomFileData=(unsigned char	*)malloc(maxImgSize*spp*bpp/8+100000);
 
 	tempuint= (unsigned int*) data;
-	dst8.data = data;
+	
+	
+	NSString		*temppath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/TEMP"] ;
+	NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING.noindex"] ;
+	NSString		*roifolderpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/ROIs"] ;
+	BOOL			isDir = YES;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:temppath isDirectory:&isDir] && isDir)
+		[[NSFileManager defaultManager] createDirectoryAtPath:temppath attributes:nil];
+	isDir = YES;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:OUTpath isDirectory:&isDir] && isDir)
+		[[NSFileManager defaultManager] createDirectoryAtPath:OUTpath attributes:nil];
+	isDir = YES;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:roifolderpath isDirectory:&isDir] && isDir)
+		[[NSFileManager defaultManager] createDirectoryAtPath:roifolderpath attributes:nil];
+	NSManagedObject* fakeDicomImage=[fileList objectAtIndex:0];
+	
+	NSManagedObject* study = [fakeDicomImage valueForKeyPath:@"series.study"];
+	
+	NSString* backupSOPIns=[[fakeDicomImage valueForKey:@"sopInstanceUID"] retain];
+	NSNumber* backupInsNum=[[fakeDicomImage valueForKey:@"instanceNumber"] retain];
+	
+	
 	if(data&&fileList&&originalViewController)
 	{
 		id waitWindow = [originalViewController startWaitWindow:@"writing to disk..."];	
-
+		NSMutableArray* addedROIFiles=[[NSMutableArray alloc] initWithCapacity:0];
 
 		for(ii=0;ii<[fileList count];ii++)
 		{	
 			NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
 						long	err;
+			curPix=[pixList objectAtIndex: ii];
+			
+			width=[curPix pwidth];
+			height=[curPix pheight];
+			srcf.height = height;
+			srcf.width = width;
+			srcf.rowBytes = width * sizeof( float);
+			srcf.data = [curPix fImage];
+			
+			dst8.height =  height;
+			dst8.width = width;
+			dst8.rowBytes = width * sizeof( short);
+			dst8.data = data;
+			
 
 			
-			srcf.data = inputData+ii*width*height;
-			vImageConvert_FTo16U( &srcf, &dst8, -1024,  1, 0);	//By default, we use a 1024 rescale intercept !!
-			[self setSourceFile: [[fileList objectAtIndex:[originalViewController indexForPix:ii]] valueForKey:@"completePath"]];
 			
-			curPix=[pixList objectAtIndex: ii];
+			vImageConvert_FTo16U( &srcf, &dst8, -1024,  1, 0);	//By default, we use a 1024 rescale intercept !!
+			[self setSourceFile: [[fileList objectAtIndex:ii] valueForKey:@"completePath"]];
+			
+			
 
 			[self setPixelSpacing: [curPix pixelSpacingX]:[curPix pixelSpacingY]];
 
@@ -518,20 +481,12 @@ PURPOSE.
 			//[imageView sendSyncMessage:1];
 			//[imageView display];
 			//[originalViewController adjustSlider];
-			[pool release];
+			
+
 			if(tlength)
 			{
-				BOOL			isDir = YES;
 				long			index = 0;
-				NSString		*temppath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/TEMP"] ;
-				NSString		*OUTpath = [[self osirixDocumentPath] stringByAppendingPathComponent:@"/INCOMING.noindex"] ;
 				NSString *dstPath,*tempdstPath;
-				//[NSString stringWithString:@"/Users/chuwa/output"];
-				//	[stringByAppendingPathComponent:@"/INCOMING"];
-				
-				if (![[NSFileManager defaultManager] fileExistsAtPath:temppath isDirectory:&isDir] && isDir)
-					[[NSFileManager defaultManager] createDirectoryAtPath:temppath attributes:nil];
-				
 				do
 				{
 					tempdstPath = [NSString stringWithFormat:@"%@/%d", temppath, index];
@@ -540,9 +495,6 @@ PURPOSE.
 				while( [[NSFileManager defaultManager] fileExistsAtPath:tempdstPath] == YES);
 				
 				index = 0;
-				isDir = YES;
-				if (![[NSFileManager defaultManager] fileExistsAtPath:OUTpath isDirectory:&isDir] && isDir)
-					[[NSFileManager defaultManager] createDirectoryAtPath:OUTpath attributes:nil];
 				
 				do
 				{
@@ -550,24 +502,41 @@ PURPOSE.
 					index++;
 				}
 				while( [[NSFileManager defaultManager] fileExistsAtPath:dstPath] == YES);
-				/*
-				NSMutableData* tempData=[[NSMutableData alloc] initWithBytesNoCopy: dicomFileData length:tlength freeWhenDone:NO];
-				[tempData writeToFile: dstPath atomically:YES];
-				[tempData release];
-				 */
-				
+					
 				FILE* tempFile;
 				tempFile= fopen([tempdstPath cString],"wb");
 				fwrite(dicomFileData,sizeof(char),tlength,tempFile);
 				fclose(tempFile);
 				[[NSFileManager defaultManager] copyPath:tempdstPath  toPath:dstPath handler:nil];
 				[[NSFileManager defaultManager] removeFileAtPath:tempdstPath handler:nil];
+				if([[roiList objectAtIndex:ii] count])
+				{
+					tempdstPath=[NSString stringWithFormat:@"/%@ %d-%d.dcm",sopInstanceUID, [curPix ID], [curPix frameNo]];
+					tempdstPath=[roifolderpath stringByAppendingPathComponent:tempdstPath];
+					[fakeDicomImage setValue:sopInstanceUID forKey:@"sopInstanceUID"];
+					[fakeDicomImage setValue:[NSNumber numberWithInt:[curPix ID]] forKey:@"instanceNumber"];
+				
+					NSString	*aROIpath = [ROISRConverter archiveROIsAsDICOM: [roiList objectAtIndex:ii]  toPath: tempdstPath forImage:fakeDicomImage ];
+					if(aROIpath)
+						[addedROIFiles addObject:aROIpath];
+					else
+						[addedROIFiles addObject:tempdstPath];//sometime aROIpath will be nil but the ROI is all right, donot know why
+				}
 				
 			}
+			[pool release];
 
 		}
+
+		[fakeDicomImage setValue:backupSOPIns forKey:@"sopInstanceUID"];
+		[fakeDicomImage setValue:backupInsNum forKey:@"instanceNumber"];
+		[backupSOPIns release];
+		[backupInsNum release];
 		free( data);
 		free(dicomFileData);
+		[[BrowserController currentBrowser] addFilesToDatabase: addedROIFiles];
+		[addedROIFiles release];
+		[[BrowserController currentBrowser] saveDatabase: 0L];
 		[originalViewController endWaitWindow: waitWindow];
 	}
 }

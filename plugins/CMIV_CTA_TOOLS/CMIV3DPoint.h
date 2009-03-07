@@ -34,15 +34,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import <Cocoa/Cocoa.h>
 
 
-@interface CMIV3DPoint : NSObject {
-	float x,y,z;
+@interface CMIV3DPoint : NSObject<NSCopying>
+{
+	float x,y,z,fValue;
 
 }
-- (float)x;
-- (float)y;
-- (float)z;
-- (void)setX:(float)newValue;
-- (void)setY:(float)newValue;
-- (void)setZ:(float)newValue;
-
+@property float x,y,z,fValue;
+- (id) copyWithZone:(NSZone *)zone;
 @end

@@ -30,17 +30,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVSegmentCore.h"
 #import "CMIVContrastController.h"
 #import "CMIV3DPoint.h"
-/*
+
 #define id Id
 #include "itkMultiThreader.h"
 #include "itkImage.h"
 #include "itkImportImageFilter.h"
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
-//#include "itkRecursiveGaussianImageFilter.h"
+#include "itkRecursiveGaussianImageFilter.h"
 #include "itkHessianRecursiveGaussianImageFilter.h"
-//#include "itkHessian3DToVesselnessMeasureImageFilter.h"
+#include "itkHessian3DToVesselnessMeasureImageFilter.h"
+#include "itkCannyEdgeDetectionImageFilter.h"
+#include "itkHoughTransform2DCirclesImageFilter.h"
 #undef id
-*/
+
 
 @implementation CMIVContrastController
 
@@ -82,7 +84,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[outROIArray release];
 	[outputColorList release];
 	if(tag!=2)
-		[parent exitCurrentDialog];
+		[parent cleanSharedData];
 	
 }
 - (IBAction)onOk:(id)sender
@@ -114,7 +116,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			free(directionData);
 		if([exportConnectednessChechBox state]== NSOnState)
 		{
-			err=[self exportToConnectednessMap:inputData :outputData:colorData];
+			err=[self exportToTempFolder:inputData :outputData:colorData];
 			outputData=nil;
 			
 		}
@@ -204,7 +206,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[dic setObject:seedROIList  forKey:@"ROIList"];
 		if([neighborhoodModeMatrix selectedRow])
 			[dic setObject:[NSNumber numberWithInt:6] forKey:@"CFCTNeighborhood"];
-		[parent setDataofWizard:dic];
+		//[parent setDataofWizard:dic];
 		[self onCancel: sender];
 		[parent gotoStepNo:3];
 
@@ -236,10 +238,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
 	imageSize=imageWidth * imageHeight;
 	
+	//if([exportConnectednessChechBox state]== NSOnState)
+	//	ifUseSmoothFilter=1;
 	// get memory first
 	if(ifUseSmoothFilter)
 	{
-		inputData = (float*) malloc( size);
+		inputData = [originalViewController volumePtr:0];
 		if( !inputData)
 		{
 			NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
@@ -248,7 +252,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		
 		//err=[self smoothInputData:inputData];
-		err=[self enhanceInputData:inputData];
+		//err=[self enhanceInputData:inputData];
+		//err=[self CannyEdgeDetection:inputData];
 		if(err)
 		{
 			NSRunAlertPanel(NSLocalizedString(@"no enough to smooth input data", nil), NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"OK", nil), nil, nil);
@@ -257,7 +262,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			outputData=0L;
 			colorData=0L;
 			return ;	
-		}		
+		}	
+		return;
 		
 	}
 	else
@@ -350,9 +356,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	for(rowIndex=0;rowIndex<[outROIArray count];rowIndex++)
 		if([[outROIArray objectAtIndex:rowIndex] ROImode]== ROI_selected)
 			[outputColorList addObject: [NSNumber numberWithInt:rowIndex+1]];
+	//get spacing
+	float sliceThickness = [curPix sliceInterval];   
+	if( sliceThickness == 0)
+	{
+		NSLog(@"Slice interval = slice thickness!");
+		sliceThickness = [curPix sliceThickness];
+	}
+	float spacing[3];
+	
+	spacing[0]=[curPix pixelSpacingX];
+	spacing[1]=[curPix pixelSpacingY];
+	spacing[2]=sliceThickness;
+	
 	//start seed growing	
 	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
-	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
+	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount Spacing:spacing];
 	if([neighborhoodModeMatrix selectedRow])
 		[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directionData];
 	else
@@ -763,7 +782,7 @@ if( originalViewController == 0L) return 0L;
 		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
 	}
 	[temparray addObject:tempstr];
-	
+	[[self window] makeKeyAndOrderFront:parent];
 	return 0;
 	
 }
@@ -885,7 +904,7 @@ if( originalViewController == 0L) return 0L;
 		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
 	}
 	[temparray addObject:tempstr];
-	
+	[[self window] makeKeyAndOrderFront:parent];
 	return 0;
 }
 - (int) exportToSeries:(float *)inputData :(float *)outputData :(unsigned char *)colorData
@@ -971,6 +990,7 @@ if( originalViewController == 0L) return 0L;
 		
 		
 	}
+	[[self window] makeKeyAndOrderFront:parent];
 	return 0;
 	
 }
@@ -1036,256 +1056,49 @@ if( originalViewController == 0L) return 0L;
 		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
 	}
 	[temparray addObject:tempstr];
-	
+	[[self window] makeKeyAndOrderFront:parent];
 	return err;
 	
 	
 }
-- (int) exportToConnectednessMap:(float *)inputData :(float *)outputData :(unsigned char *)colorData
+- (int) exportToTempFolder:(float *)inputData :(float *)outputData :(unsigned char *)colorData
 {
-	
-	int z;
-	float               originRatio;
-	NSArray				*pixList = [originalViewController pixList];
-	DCMPix				*curPix = [pixList objectAtIndex: 0];
-	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
-	
-	if(!outputData)
-		return 1;	
-	
-	
-	// CREATE A NEW SERIES TO CONTAIN THIS NEW SERIES
-	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
-	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
-	NSData	*newData = [NSData dataWithBytesNoCopy:outputData length: size freeWhenDone:YES];
-	for( z = 0 ; z < imageAmount; z ++)
+	[parent cleanDataOfWizard];
+	unsigned int i;
+	unsigned int size= imageWidth * imageHeight * imageAmount;
+	char colornum=(char)[outROIArray count];
+	for(i=0;i<size;i++)
+		if(*(colorData+i)>colornum)
+			*(colorData+i)=0x00;
+	size = sizeof(unsigned char ) * imageWidth * imageHeight * imageAmount;
+	NSData	*newData = [[NSData alloc] initWithBytesNoCopy:colorData length: size freeWhenDone:NO];
+	NSMutableDictionary* dic=[parent dataOfWizard];
+	[dic setObject:newData forKey:@"MaskMap"];
+	[dic setObject:[NSString stringWithString:@"MaskMap"] forKey:@"Step"];
+	[dic setObject:[NSNumber numberWithInt:size] forKey:@"MaskMapSize"];
+	NSMutableArray* seedsnamearray=[NSMutableArray arrayWithCapacity:0];
+	NSMutableArray* seedscolorR=[NSMutableArray arrayWithCapacity:0];
+	NSMutableArray* seedscolorG=[NSMutableArray arrayWithCapacity:0];
+	NSMutableArray* seedscolorB=[NSMutableArray arrayWithCapacity:0];
+
+	for(i=0;i<[outROIArray count];i++)
 	{
-		curPix = [pixList objectAtIndex: z];
-		originRatio=[curPix pixelRatio];
+		ROI* temproi=[outROIArray objectAtIndex:i];
+		[seedsnamearray addObject:[temproi name]];
+		RGBColor color= [temproi rgbcolor];
+		[seedscolorR addObject:[NSNumber numberWithInt:color.red]];
+		[seedscolorG addObject:[NSNumber numberWithInt:color.green]];
+		[seedscolorB addObject:[NSNumber numberWithInt:color.blue]];
 		
-		DCMPix	*copyPix = [curPix copy];
-		
-		[newPixList addObject: copyPix];
-		[copyPix release];
-		[newDcmList addObject: [[originalViewController fileList] objectAtIndex: z]];
-		
-		[[newPixList lastObject] setPwidth: imageWidth];
-		[[newPixList lastObject] setPheight: imageHeight];
-		
-		[[newPixList lastObject] setfImage: (float*) (outputData + imageWidth * imageHeight * z)];
-		[[newPixList lastObject] setTot: imageAmount];
-		[[newPixList lastObject] setFrameNo: z];
-		[[newPixList lastObject] setID: z];
-		
-		[[newPixList lastObject] setPixelSpacingX: ([curPix pixelSpacingX]) ];
-		[[newPixList lastObject] setPixelSpacingY: ([curPix pixelSpacingY]) ];
-		
-		[[newPixList lastObject] setPixelRatio: originRatio];
-		
-		[[newPixList lastObject] setSliceInterval: 0];
 	}
-	
-	// CREATE A SERIES
-	ViewerController *new2DViewer;
-	new2DViewer = [originalViewController newWindow	:newPixList
-													:newDcmList
-													:newData];  
-	NSString* tempstr=[NSString stringWithString:@"Connectedness Map"];
-	[new2DViewer checkEverythingLoaded];
-	[[new2DViewer window] setTitle:tempstr];
-	NSMutableArray	*temparray=[[parent dataOfWizard] objectForKey: @"VCList"];
-	if(!temparray)
-	{
-		temparray=[NSMutableArray arrayWithCapacity:0];
-		[[parent dataOfWizard] setObject:temparray forKey:@"VCList"];
-	}
-	[temparray addObject:new2DViewer];
-	temparray=[[parent dataOfWizard] objectForKey: @"VCTitleList"];
-	if(!temparray)
-	{
-		temparray=[NSMutableArray arrayWithCapacity:0];
-		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
-	}
-	[temparray addObject:tempstr];
-	
-	outputData = nil;
+	[dic setObject:seedsnamearray forKey:@"SeedNameArray"];
+	[dic setObject:seedscolorR forKey:@"SeedsColorR"];
+	[dic setObject:seedscolorG forKey:@"SeedsColorG"];
+	[dic setObject:seedscolorB forKey:@"SeedsColorB"];
+	[parent saveCurrentStep];
+	[newData release];
+	[parent cleanDataOfWizard];
 	return 0;
-	
-}
-- (int) smoothInputData:(float *)inputData
-{
-	/*
-	NSArray				*pixList = [originalViewController pixList];
-	DCMPix				*curPix = [pixList objectAtIndex: 0];
-	
-	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
-	
-	
-	float* inputData=[originalViewController volumePtr:0];
-	
-	// edge preserving smooth filter part
-	
-	// Input image
-	typedef float InternalPixelType;
-	typedef itk::Image< InternalPixelType, 3 > InternalImageType; 
-	typedef itk::ImportImageFilter< InternalPixelType, 3 > ImportFilterType;
-	
-	ImportFilterType::Pointer importFilter;
-	
-	itk::MultiThreader::SetGlobalDefaultNumberOfThreads( MPProcessors());
-	
-	importFilter = ImportFilterType::New();
-	
-	ImportFilterType::SizeType itksize;
-	itksize[0] = imageWidth; // size along X
-	itksize[1] = imageHeight; // size along Y
-	itksize[2] = imageAmount;// size along Z
-		
-		ImportFilterType::IndexType start;
-	start.Fill( 0 );
-	
-	ImportFilterType::RegionType region;
-	region.SetIndex( start );
-	region.SetSize( itksize );
-	importFilter->SetRegion( region );
-	
-	double origin[ 3 ];
-	origin[0] = [curPix originX]; // X coordinate
-	origin[1] = [curPix originY]; // Y coordinate
-	origin[2] = [curPix originZ]; // Z coordinate
-	importFilter->SetOrigin( origin );
-	
-	double spacing[ 3 ];
-	spacing[0] = [curPix pixelSpacingX]; // along X direction
-	spacing[1] = [curPix pixelSpacingY]; // along Y direction
-	spacing[2] = [curPix sliceInterval]; // along Z direction
-	importFilter->SetSpacing( spacing ); 
-	
-	const bool importImageFilterWillOwnTheBuffer = false;
-	importFilter->SetImportPointer( inputData, itksize[0] * itksize[1] * itksize[2], importImageFilterWillOwnTheBuffer);
-	NSLog(@"ITK Image allocated");
-	
-	
-	//filter
-	typedef itk::GradientAnisotropicDiffusionImageFilter < InternalImageType, InternalImageType > FilterType;
-	FilterType::Pointer smoothFilter;
-	
-	smoothFilter = FilterType::New();
-	
-	
-	
-	smoothFilter->SetInput(importFilter->GetOutput());	
-	
- 	
-	smoothFilter->SetNumberOfIterations( 5 ); // 5 typically   
-	smoothFilter->SetConductanceParameter( 3.0 ); // 3.0 typically
-	smoothFilter->SetTimeStep( 0.125 );
-	
-	try
-	{
-		smoothFilter->Update();
-	}
-	catch( itk::ExceptionObject & excep )
-	{
-		return 1;
-	}
-	float* smoothOutput=smoothFilter->GetOutput()->GetBufferPointer();
-	memcpy(inputData, smoothOutput, size);
-	 */
-	
-	return 0;
-	
-}
-- (int) enhanceInputData:(float *)inputData
-{
-	
-	/*
-	NSArray				*pixList = [originalViewController pixList];
-	DCMPix				*curPix = [pixList objectAtIndex: 0];
-	
-	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
-	
-	
-	float* inputData=[originalViewController volumePtr:0];
-	
-	// edge preserving smooth filter part
-	
-	// Input image
-	const     unsigned int        Dimension       = 3;
-	typedef   float               InputPixelType;
-	typedef   float               OutputPixelType;
-	
-	typedef   itk::Image< InputPixelType, Dimension >   InputImageType;
-	typedef   itk::Image< OutputPixelType, Dimension >  OutputImageType;
-	
-	typedef   itk::HessianRecursiveGaussianImageFilter<InputImageType >  HessianFilterType;
-
-//	typedef   itk::Hessian3DToVesselnessMeasureImageFilter<OutputPixelType > VesselnessMeasureFilterType;
-	
-	typedef itk::ImportImageFilter< InputPixelType, Dimension > ImportFilterType;
-
-	ImportFilterType::Pointer importFilter;
-	
-	//itk::MultiThreader::SetGlobalDefaultNumberOfThreads( MPProcessors());
-	
-	importFilter = ImportFilterType::New();
-	
-	ImportFilterType::SizeType itksize;
-	itksize[0] = imageWidth; // size along X
-	itksize[1] = imageHeight; // size along Y
-	itksize[2] = imageAmount;// size along Z
-		
-		ImportFilterType::IndexType start;
-	start.Fill( 0 );
-	
-	ImportFilterType::RegionType region;
-	region.SetIndex( start );
-	region.SetSize( itksize );
-	importFilter->SetRegion( region );
-	
-	double origin[ 3 ];
-	origin[0] = [curPix originX]; // X coordinate
-	origin[1] = [curPix originY]; // Y coordinate
-	origin[2] = [curPix originZ]; // Z coordinate
-	importFilter->SetOrigin( origin );
-	
-	double spacing[ 3 ];
-	spacing[0] = [curPix pixelSpacingX]; // along X direction
-	spacing[1] = [curPix pixelSpacingY]; // along Y direction
-	spacing[2] = [curPix sliceInterval]; // along Z direction
-	importFilter->SetSpacing( spacing ); 
-	
-	const bool importImageFilterWillOwnTheBuffer = false;
-	importFilter->SetImportPointer( inputData, itksize[0] * itksize[1] * itksize[2], importImageFilterWillOwnTheBuffer);
-	NSLog(@"ITK Image allocated");
-	
-	
-	HessianFilterType::Pointer hessianFilter = HessianFilterType::New();
-//	VesselnessMeasureFilterType::Pointer vesselnessFilter =	VesselnessMeasureFilterType::New();
-	
-	hessianFilter->SetInput( importFilter->GetOutput() );
-
-	hessianFilter->SetSigma(5);
-
-//	vesselnessFilter->SetInput( hessianFilter->GetOutput() );
-
-//	vesselnessFilter->SetAlpha1(0.5);
-//	vesselnessFilter->SetAlpha2(2.0);
-	try
-	{
-		hessianFilter->Update();
-	}
-	catch( itk::ExceptionObject & excep )
-	{
-		return 1;
-	}
-//	float* enhanceOutput=hessianFilter->GetOutput()->GetBufferPointer();
-//	memcpy(inputData, enhanceOutput, size);
-	 */
-	
-	return 0;
-
-	
 }
 - (int) createCenterlines:(float *)inputData :(float *)outputData :(unsigned char *)directData:(unsigned char *)colorData:(NSMutableArray*)roilist
 {
@@ -1316,12 +1129,19 @@ if( originalViewController == 0L) return 0L;
 	
 	
 
+	//get spacing
+	float spacing[3];
+	
+	spacing[0]=[curPix pixelSpacingX];
+	spacing[1]=[curPix pixelSpacingY];
+	spacing[2]=sliceThickness;
+	
 	
 	
 	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
 	NSMutableArray *centerlinesList=[[NSMutableArray alloc] initWithCapacity: 0];
 	NSMutableArray *centerlinesNameList=[[NSMutableArray alloc] initWithCapacity: 0];
-	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
+	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount Spacing:spacing];
 	
 	if([neighborhoodModeMatrix selectedRow])
 		[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directData];
@@ -1339,7 +1159,7 @@ if( originalViewController == 0L) return 0L;
 		return 1;
 	}	
 	[self prepareForCaculateLength:pdismap:directData];
-	[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directData :minValueInCurSeries];
+	[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directData :minValueInCurSeries needSmooth:YES];
 	
 	free(pdismap);
 	
@@ -1358,6 +1178,11 @@ if( originalViewController == 0L) return 0L;
 			[centerlinesList addObject:[NSMutableArray arrayWithCapacity:0]];
 			unsigned char colorindex;
 			int len=[self searchBackToCreatCenterlines: centerlinesList: endindex:directData:&colorindex];
+			if(colorindex<1)
+			{
+				[centerlinesList removeLastObject];
+				continue;
+			}
 			NSString *pathName = [[outROIArray objectAtIndex:colorindex-1] name];
 			*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
 			[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];
@@ -1567,7 +1392,7 @@ if( originalViewController == 0L) return 0L;
 			branchlen++;
 		pointerToUpper = ((*(directionData + endpointindex))&0x3f);
 		*(directionData + endpointindex)=pointerToUpper|0x40;
-		int itemp;
+		int itemp=0;
 		switch(pointerToUpper)
 		{
 			case 1: itemp =  (-imageSize-imageWidth-1);
@@ -1675,10 +1500,10 @@ if( originalViewController == 0L) return 0L;
 	color.blue = 0;
 	color.green = 0;
 	unsigned char * textureBuffer;
-	DCMPix* curPix;
+	DCMPix* curPix=nil;
 	NSArray* pixList=[originalViewController pixList];
 	CMIV3DPoint* temp3dpoint;
-	NSString* roiName;
+	NSString* roiName=nil;
 	int x,y,z;
 	int pointIndex=0;
 	unsigned int i,j;
@@ -1711,6 +1536,7 @@ if( originalViewController == 0L) return 0L;
 		NSRect roiRect;
 		roiRect.origin.x=x;
 		roiRect.origin.y=y;
+		roiRect.size.width=roiRect.size.height=1;
 		ROI *endPointROI = [[ROI alloc] initWithType: t2DPoint :[curPix pixelSpacingX] :[curPix pixelSpacingY] : NSMakePoint( [curPix originX], [curPix originY])];
 		[endPointROI setName:roiName];
 		[endPointROI setROIRect:roiRect];

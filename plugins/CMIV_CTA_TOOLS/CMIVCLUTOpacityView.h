@@ -176,6 +176,6 @@
 #pragma mark Cursor
 - (void)setCursorLabelWithText:(NSString*)text;
 -(void)setVRController:(NSObject*)controller;
-
+- (void)newTrapezoidCurve;
 
 @end

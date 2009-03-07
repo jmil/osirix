@@ -31,31 +31,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 @implementation CMIV3DPoint
-
-- (float)x
+@synthesize x,y,z,fValue;
+- (id) copyWithZone:(NSZone *)zone
 {
-	return x;
-}
-- (float)y
-{
-	return y;
-}
-- (float)z
-{
-	return z;
-}
-- (void)setX:(float)newValue
-{
-	x=newValue;
-}
-- (void)setY:(float)newValue
-{
-	y=newValue;
-	
-}
-- (void)setZ:(float)newValue
-{
-	z=newValue;	
+	CMIV3DPoint*apoint=[[[self class] allocWithZone:zone] init];
+	[apoint setX:x];
+	[apoint setY:y];
+	[apoint setZ:z];
+	return apoint;
 }
 
 @end

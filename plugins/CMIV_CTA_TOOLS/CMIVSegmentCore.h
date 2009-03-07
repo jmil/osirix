@@ -57,8 +57,9 @@ unsigned char* colorOfData;
 float minValueInCurSeries;
 float weightThreshold,weightWholeValue;
 unsigned short* distanceMap;
+float xSpacing,ySpacing,zSpacing;
 }
-- (void) setImageWidth:(long) width Height:(long) height Amount: (long) amount;  
+- (void) setImageWidth:(long) width Height:(long) height Amount: (long) amount Spacing:(float*)spacing;  
 - (void) startShortestPathSearchAsFloat:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers;
 - (void) startShortestPathSearchAsFloatWith6Neighborhood:(float *) pIn Out:(float *) pOut Direction: (unsigned char*) pPointers;
 - (void) optimizedContinueLoop:(float *) pIn Out:(float *) pOut :(unsigned char*) pMarker Direction: (unsigned char*) pPointers;
@@ -68,8 +69,18 @@ unsigned short* distanceMap;
 - (float) lengthOfParentWithWeightFunction:(int)pointer;
 - (void) caculateColorMapFromPointerMap: (unsigned char*) pColor: (unsigned char*) pPointers;
 - (unsigned char) colorOfParent:(int)pointer;
-- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut:(unsigned short*)pDistanceMap Pointer:(unsigned char*) pPointers :(float)minAtEdge;
+- (void) localOptmizeConnectednessTree:(float *)pIn :(float *)pOut:(unsigned short*)pDistanceMap Pointer:(unsigned char*) pPointers :(float)minAtEdge needSmooth:(BOOL)isNeedSmooth;
 - (void) runFirstRoundFasterWith26Neigbhorhood;
 - (void) checkSaturatedPoints;
-
+- (int) enhanceInputData:(float *)inputData;
+-(BOOL)checkForCircle:(int)pointer:(int)target:(int*)deepth;
+-(void)refineCenterline:(NSMutableArray*)apath:(float*)weightmap;
+-(int)searchLocalMaximum:(int)index;
+-(NSMutableArray*) pathToLocalMaximun:(int)index reverse:(BOOL)needreverse;
+-(int)onedimensionIndexLookUp:(int)direction;
+-(int)ifTwoPointsIsNeighbors:(int)index1:(int)index2;
+-(int)findNextUpperNeighborInDirectionMap:(int)index;
+-(int)dungbeetleSearching:(NSMutableArray*)apath:(float*)weightmap Pointer:(unsigned char*) pPointers;
+-(void)calculateFuzzynessMap:(float*)inData Out:(float*)outData  withDirection:(unsigned char*) dData Minimum:(float)minf;
+-(float)getUpperNeighborValueOf:(int)index;
 @end

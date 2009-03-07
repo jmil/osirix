@@ -50,28 +50,76 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
 
+
 @interface CMIV_CTA_TOOLS : PluginFilter {
 	
 	IBOutlet NSWindow	*window;
+	IBOutlet NSWindow	*aboutWindow;
+	IBOutlet NSWindow	*advanceSettingWindow;
+	IBOutlet NSLevelIndicator *autoSeedingIndicator;
+	IBOutlet NSButton	*autoRibCageRemovalButton;
+	IBOutlet NSButton	*autoSegmentButton;
+	IBOutlet NSButton	*autoVesselEnhanceButton;
+	IBOutlet NSButton	*autoCenterlineButton;
+	IBOutlet NSButton	*autoWatchOnReceivingButton;
+	IBOutlet NSTextField *autoWatchOnReceivingKeyWordTextField;
+	IBOutlet NSTextField *autoCleanCachDaysText;
+	NSString* autoWatchOnReceivingKeyWordString;
 	NSMutableDictionary* dataOfWizard;
 	NSObject* currentController;
+	NSObject* autosaver;
+	int autoSaveSeriesNumber;
+	BOOL ifAutoSeedingOnReceive;
+	int performRibCageRemoval;
+	int performCenterlineTracking;
+	int performVesselEnhance;
+	BOOL ifVesselEnhanced;
+	int autoCleanCachDays;
 
 }
+@property BOOL ifVesselEnhanced;
 - (IBAction)closeAboutDlg:(id)sender;
 - (IBAction)openCMIVWebSite:(id)sender;
 - (IBAction)mailToAuthors:(id)sender;
+- (IBAction) showAboutDlg:(id)sender;
+- (void) showAutoSeedingDlg;
+- (void) autoSeedingIndicatorStep:(NSNotification *)note;
+- (IBAction)clickAutoSeeding:(id)sender;
+- (IBAction)closeAutoSeedingDlg:(id)sender;
+- (IBAction) showAdvancedSettingDlg:(id)sender;
+- (IBAction)closeAdvancedSettingDlg:(id)sender;
+
 - (long) filterImage:(NSString*) menuName;
 - (int)  startChopper:(ViewerController *) vc;
-- (int)  startSpoon:(ViewerController *) vc;
+//- (int)  startSpoon:(ViewerController *) vc;
 - (int)  startScissors:(ViewerController *) vc;
 - (int)  startContrast:(ViewerController *) vc;
+- (int)  startPolygonMeasure:(ViewerController *) vc;
 - (int)  startVR:(ViewerController *) vc;
 - (int)  saveResult:(ViewerController *) vc;
+
 - (void) gotoStepNo:(int)stage;
 - (NSMutableDictionary*) dataOfWizard;
 - (void) setDataofWizard:(NSMutableDictionary*) dic;
 - (void) cleanDataOfWizard;
-- (void) exitCurrentDialog;
-- (void) showAboutDlg;
+- (void) cleanSharedData;
+
 - (int)  startAutomaticSeeding:(ViewerController *) vc;
+- (NSString*)osirixDocumentPath;
+
+- (void)cleanUpCachFolder;
+- (void)notifyExportFinished;
+- (void)addedToDB:(NSNotification *)note;
+- (int)saveIntermediateData:(NSString*)seriesUid;
+
+- (int)compressSeedsData:(NSData*)seedsData:(NSMutableArray*)compressedArray;
+-(int)uncompressSeedsData:(NSData*)seedsData:(NSMutableArray*)compressedArray;
+- (int)loadIntermediateDataForVolumeCropping:(NSMutableDictionary*)savedData;
+- (int)loadIntermediateDataForSeedPlanting:(NSMutableDictionary*)savedData;
+- (int)loadIntermediateDataForCPRViewing:(NSMutableDictionary*)savedData;
+- (int)checkIntermediatDataForFreeMode:(int)userRespond;
+- (int)checkIntermediatDataForWizardMode:(int)userRespond;
+- (void)saveCurrentStep;
+- (BOOL)loadVesselnessMap:(float*)volumeData:(float*)origin:(float*)spacing:(long*)dimension;
+-(void)checkMaxValueForSeedingIndicator;
 @end

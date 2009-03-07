@@ -10,6 +10,12 @@
 
 @implementation CMIVWindow
 
+-(void) dealloc
+{
+	NSLog(@"CMIVPluginWindow Dealloc.");
+	[super dealloc];
+	
+}
 
 -(void)setHorizontalSlider:(NSSlider*) aSlider
 {
@@ -23,6 +29,7 @@
 {
 	tranlateSlider=aSlider;
 }
+
 - (void)scrollWheel:(NSEvent *)theEvent
 {
 	CGFloat x,y,z=0;

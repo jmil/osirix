@@ -1,35 +1,35 @@
 /*=========================================================================
-Author: Chunliang Wang (chunliang.wang@imv.liu.se)
-
-
-Program:  CMIV CTA image processing Plugin for OsiriX
-
-This file is part of CMIV CTA image processing Plugin for OsiriX.
-
-Copyright (c) 2007,
-Center for Medical Image Science and Visualization (CMIV),
-Linkšping University, Sweden, http://www.cmiv.liu.se/
-
-CMIV CTA image processing Plugin for OsiriX is free software;
-you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option)
-any later version.
-
-CMIV CTA image processing Plugin for OsiriX is distributed in
-the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-=========================================================================*/
+ Author: Chunliang Wang (chunliang.wang@imv.liu.se)
+ 
+ 
+ Program:  CMIV CTA image processing Plugin for OsiriX
+ 
+ This file is part of CMIV CTA image processing Plugin for OsiriX.
+ 
+ Copyright (c) 2007,
+ Center for Medical Image Science and Visualization (CMIV),
+ Linkšping University, Sweden, http://www.cmiv.liu.se/
+ 
+ CMIV CTA image processing Plugin for OsiriX is free software;
+ you can redistribute it and/or modify it under the terms of the
+ GNU General Public License as published by the Free Software 
+ Foundation, either version 3 of the License, or (at your option)
+ any later version.
+ 
+ CMIV CTA image processing Plugin for OsiriX is distributed in
+ the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ =========================================================================*/
 #import "CMIVContrastPreview.h"
 #import "CMIVSegmentCore.h"
 #import "CMIV3DPoint.h"
-#import "VRView.h"
+#import "CMIV_AutoSeeding.h"
 @implementation CMIVContrastPreview
 
 - (IBAction)chooseASeed:(id)sender
@@ -41,8 +41,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (IBAction)chooseATool:(id)sender
 {
-		int tag=[sender tag];
-	if(tag!=4&& tag>=0)
+	int tag=[sender tag];
+	if(tag<4&& tag>=0)
 	{
 		[mprView setCurrentTool:tag];
 		[resultView setCurrentTool:tag];
@@ -53,8 +53,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		[mprView setCurrentTool:tPlain];
 		[resultView setCurrentTool:tWL];
-		[vrView setCurrentTool: tag];
+		[vrView setCurrentTool: t3DRotate];
 	}
+	else if(tag==5)
+	{
+		[mprView setCurrentTool:t2DPoint];
+		[resultView setCurrentTool:tWL];
+		[vrView setCurrentTool: t3DRotate];
+	}
+	
 }
 
 - (IBAction)setBrushWidth:(id)sender
@@ -77,10 +84,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	seedNumber=[self plantNewSeeds];
 	if(seedNumber)
 	{
-		
+		float spacing[3];
+		spacing[0]=xSpacing;
+		spacing[1]=ySpacing;
+		spacing[2]=zSpacing;
 		
 		CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
-		[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
+		[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount Spacing:spacing];
 		if(segmentNeighborhood==6)
 			[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData  Direction: directionData];
 		else 
@@ -92,16 +102,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[segmentCoreFunc release];
 		
 	}
+	[self updateAllCenterlines];
 	[self updateResultView];
 	[self updateVRView];
 	[originalViewController endWaitWindow: waitWindow];	
 	NSLog( @"step 3.1 finish update");
 	
-
-		
+	
+	
 }
-
-- (IBAction)finishAdjustion:(id)sender
+- (void)saveNewPlantedSeeds
 {
 	NSArray				*pixList = [originalViewController pixList];
 	unsigned int i;
@@ -122,6 +132,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	if(isInWizardMode)
 		[self checkRootSeeds:roiList];
 	[[originalViewController window] setTitle:@"Seeds Planted"];
+	
+}
+- (IBAction)finishAdjustion:(id)sender
+{
+	[self saveNewPlantedSeeds];
 	[self onCancel: sender];
 	
 }
@@ -173,16 +188,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	//creat roi list
 	double	 space[3], origin[3];
-	tempROIIm = mprViewROISlice->GetOutput();
-	tempROIIm->Update();
-	tempROIIm->GetWholeExtent( imExtent);
-	tempROIIm->GetSpacing( space);
-	tempROIIm->GetOrigin( origin);	
-	
-	isRemoveROIBySelf=1;
-	//to avoid 2.7.5fc3 put those ROIs into autorelease pool
-	if(!IsVersion2_6)
+	if(newSeedsBuffer)
 	{
+		tempROIIm = mprViewROISlice->GetOutput();
+		tempROIIm->Update();
+		tempROIIm->GetWholeExtent( imExtent);
+		tempROIIm->GetSpacing( space);
+		tempROIIm->GetOrigin( origin);	
+		
+		isRemoveROIBySelf=1;
+		//to avoid those ROIs remove seeds when autorelease pool
+
 		unsigned i;
 		ROI* tempROI;
 		NSString* emptystr=[NSString stringWithString:@""];
@@ -192,14 +208,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[tempROI setComments:emptystr];
 			//[tempROI setPix:nil];
 		}
+
+		
+		[[MPRROIList objectAtIndex: 0] removeAllObjects];
+		isRemoveROIBySelf=0;
+		short unsigned int *imROI = (short unsigned int*) tempROIIm->GetScalarPointer();	
+		[self creatROIListFromSlices:[MPRROIList objectAtIndex: 0] :imExtent[ 1]-imExtent[ 0]+1  :imExtent[ 3]-imExtent[ 2]+1 :imROI : space[0]:space[1]:origin[0]:origin[1]];
 	}
 	
-	[[MPRROIList objectAtIndex: 0] removeAllObjects];
-	isRemoveROIBySelf=0;
-	short unsigned int *imROI = (short unsigned int*) tempROIIm->GetScalarPointer();	
-	[self creatROIListFromSlices:[MPRROIList objectAtIndex: 0] :imExtent[ 1]-imExtent[ 0]+1  :imExtent[ 3]-imExtent[ 2]+1 :imROI : space[0]:space[1]:origin[0]:origin[1]];
-
-	
+	if([endPointsArray count])
+			[self reCaculateCPRPath:[MPRROIList objectAtIndex: 0] :imExtent[ 1]-imExtent[ 0]+1  :imExtent[ 3]-imExtent[ 2]+1 :space[0]:space[1]:space[2]:origin[0]:origin[1]:origin[3]];
 	[MPRPixList removeAllObjects];
 	[MPRPixList addObject: mypix];
 	[mypix release];
@@ -244,7 +262,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[resultFileList removeAllObjects];
 	[resultFileList addObject: [MPRFileList objectAtIndex: index]];
 	[resultView setIndex: 0];
-
+	
 	
 }
 - (void) resetMPRSliders
@@ -320,29 +338,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[mprPageSlider setIntValue:0];
 	
 	lastMPRViewTranslate=0;
-
+	
 	
 }
-
-- (IBAction)onCancel:(id)sender
+- (BOOL)windowShouldClose:(id)window
 {
-	int tag=[sender tag];
-	[window setHorizontalSlider:nil];
-	[window setVerticalSlider:nil];
-	[window setTranlateSlider:nil];
+	[tab2D3DView selectLastTabViewItem:self];
+	return YES;
+}
+- (void)windowWillClose:(NSNotification *)notification
+{
+	
+	[resultView setDrawing: NO];
+	[mprView setDrawing: NO];
+	[[self window] setHorizontalSlider:nil];
+	[[self window] setVerticalSlider:nil];
+	[[self window] setTranlateSlider:nil];
 	[resultView setTranlateSlider:nil];
-	if([[tab2D3DView tabViewItems] count]>1) 
-	{
-		NSWindow* superwindow=[vrView window];
-		NSNotification* note=[NSNotification notificationWithName:@"cheat" object:superwindow];
-		[vrView windowWillClose:note];
-	}
+	[seedList setDataSource: nil];
+	[resultView setDrawing: NO];
+	[mprView setDrawing: NO];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[window setReleasedWhenClosed:YES];
-	[window close];
-    [NSApp endSheet:window returnCode:[sender tag]];
-	[[NSUserDefaults standardUserDefaults] setBool:roiShowNameOnly forKey: @"ROITEXTNAMEONLY"];
-	[[NSUserDefaults standardUserDefaults] setBool:roiShowTextOnlyWhenSeleted forKey:@"ROITEXTIFSELECTED"];	
+	if(!roiShowNameOnly)
+		[[NSUserDefaults standardUserDefaults] setBool:roiShowNameOnly forKey: @"ROITEXTNAMEONLY"];
+	if(!roiShowTextOnlyWhenSeleted)
+		[[NSUserDefaults standardUserDefaults] setBool:roiShowTextOnlyWhenSeleted forKey:@"ROITEXTIFSELECTED"];
+	[[NSUserDefaults standardUserDefaults] setFloat:defaultROIThickness forKey:@"ROIThickness"];
+	
+	float origin[3],spacing[3];
+	long dimension[3];
+	origin[0]=vtkOriginalX;origin[1]=vtkOriginalY;origin[2]=vtkOriginalZ;
+	spacing[0]=xSpacing;spacing[1]=ySpacing;spacing[2]=zSpacing;
+	dimension[0]=imageWidth;dimension[1]=imageHeight;dimension[2]=imageAmount;
+	if(parent.ifVesselEnhanced==YES )
+	{
+		id waitWindow = [originalViewController startWaitWindow:@"removing vessel enhancement"];	
+		int size=imageWidth*imageHeight*imageAmount*sizeof(float);
+		if(!outputData)
+			outputData=(float*)malloc(size);
+		if([parent loadVesselnessMap:outputData:origin:spacing:dimension])
+		{
+			size=imageWidth*imageHeight*imageAmount;
+			int i;
+			for(i=0;i<size;i++)
+				inputData[i]-=3*outputData[i];
+		}
+		[originalViewController endWaitWindow: waitWindow];
+	}
+	
 	if(!isInWizardMode)
 	{
 		if(outputData)
@@ -353,15 +396,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			free(newSeedsBuffer);
 		[choosenSeedsArray release];
 		[showSeedsArray release];
-
-	}
-
 		
-	unsigned int i;
+	}
 	
-	for(i=0;i<[MPRROIList count];i++)
-		[[MPRROIList objectAtIndex: i] removeAllObjects];
-
+	[endPointsArray release];
+	[endPointROIsArray release];
+	[manualCenterlinesArray release];
+	[manualCenterlineROIsArray release];
+	
+	
+	
+	unsigned int i;
+	NSString* emptystr=[NSString stringWithString:@""];
+	for(i=0;i<[[MPRROIList objectAtIndex: 0] count];i++)
+		[[[MPRROIList objectAtIndex: 0] objectAtIndex: i] setComments:emptystr];	
+	[MPRPixList release];
+	[MPRROIList release];
+	
+	for(i=0;i<[newSeedsROIList  count];i++)
+		[[newSeedsROIList objectAtIndex: i] setComments:emptystr];		
 	[newSeedsROIList removeAllObjects ];
 	
 	if(reader)
@@ -373,94 +426,127 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		mprViewUserTransform->Delete();
 		mprViewROISlice->Delete();
 		///////////////
-
+		
 		
 	}		
 	
 	
 	
-	for(i=0;i<[resultROIList count];i++)
-	{
-		[[resultROIList objectAtIndex: i] removeAllObjects];
-	}
-	[resultROIList removeAllObjects];
-	[resultPixList removeAllObjects];
-	[resultFileList removeAllObjects];
-	[resultPrivateROIList removeAllObjects];
+
+	[resultROIList release];
+	[resultPixList release];
+	[resultFileList release];
 	[resultPrivateROIList release];
-	for(i=0;i<[MPRROIList count];i++)
-	{
-		[[MPRROIList objectAtIndex: i] removeAllObjects];
-	}
-	[MPRROIList removeAllObjects];
+
 	
-	/*
-
-	for( i = 0; i < [toolbarList count]; i++)
-	{
-		[[toolbarList objectAtIndex: i] setVisible: YES];
-		
-	}
-	[toolbarList removeAllObjects];
-
-	*/
-	if(tag!=2)
-	{
-		for(i=0;i<[centerlinesList count];i++)
-			[[centerlinesList objectAtIndex:i] removeAllObjects];
-		[centerlinesList removeAllObjects];
-		[centerlinesList release];
-		[centerlinesNameList removeAllObjects];
-		[centerlinesNameList release];
-		[parent exitCurrentDialog];
-	}
+	[[self window] setDelegate:nil];	
+	[originalViewController release];
+	[originalViewVolumeData release];
+	[originalViewPixList release];
+	
+	if(choosenSeedsArray )
+		[choosenSeedsArray   release];
+	if(showSeedsArray)  								
+		[showSeedsArray      release];
+	if(newSeedsROIList )  								
+		[newSeedsROIList     release];
+	if(parentSeedData )    							
+		[parentSeedData      release];
+	if(parentInputData )   								
+		[parentInputData     release];
+	if(parentOutputData)   								
+		[parentOutputData    release];
+	if(parentDirectionData)							
+		[parentDirectionData release];
+	if(parentColorData)    								
+		[parentColorData     release];
+	
+	[self release];
 }
-- (void)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner
+-(void) dealloc
+{
+	
+	[super dealloc];
+	[vrView prepareForRelease];
+}
+- (IBAction)onCancel:(id)sender
+{
+	CMIV_CTA_TOOLS* tempparent=parent;
+	int tag=[sender tag];
+	[[self window] performClose:sender];
+	if(tag==2)
+	{
+		[tempparent gotoStepNo:4];
+	}
+	
+	
+	
+}
+- (id)showPanelAsWizard:(ViewerController *) vc:(	CMIV_CTA_TOOLS*) owner
 {
 	float *indata,*outdata;
 	unsigned char* colordata,*directdata;
-	NSData	*newData;
 	parent=owner;
 	isInWizardMode=YES;
-	choosenSeedsArray=[[parent dataOfWizard] objectForKey:@"SeedList"];
-	showSeedsArray=[[parent dataOfWizard] objectForKey:@"ShownColorList"];
-	newSeedsROIList=[[parent dataOfWizard] objectForKey:@"ROIList"];
-	newData=[[parent dataOfWizard] objectForKey:@"SeedData"];	
-	newSeedsBuffer = (unsigned short int*)[newData bytes];
-
-	newData=[[parent dataOfWizard] objectForKey:@"InputData"];
-	indata =(float *)[newData bytes];
-	newData=[[parent dataOfWizard] objectForKey:@"OutputData"];
-	outdata = (float *)[newData bytes];
-	newData=[[parent dataOfWizard] objectForKey:@"DirectionData"];
-	directdata=(unsigned char*)[newData bytes];
-	newData=[[parent dataOfWizard] objectForKey:@"ColorData"];
-	colordata=(unsigned char*)[newData bytes];
-	NSNumber* neighborNumber=[[parent dataOfWizard] objectForKey:@"CFCTNeighborhood"];
-	segmentNeighborhood = 26;
-	if(neighborNumber)
-		segmentNeighborhood=[neighborNumber intValue];
+	choosenSeedsArray    =[[parent dataOfWizard] objectForKey:@"SeedList"];
+	showSeedsArray       =[[parent dataOfWizard] objectForKey:@"ShownColorList"];
+	newSeedsROIList      =[[parent dataOfWizard] objectForKey:@"ROIList"];
+	parentSeedData       =[[parent dataOfWizard] objectForKey:@"SeedData"];	
+	parentInputData      =[[parent dataOfWizard] objectForKey:@"InputData"];
+	parentOutputData     =[[parent dataOfWizard] objectForKey:@"OutputData"];
+	parentDirectionData  =[[parent dataOfWizard] objectForKey:@"DirectionData"];
+	parentColorData      =[[parent dataOfWizard] objectForKey:@"ColorData"];
+	if(parentColorData==nil || parentDirectionData==nil || parentOutputData==nil || parentInputData==nil || parentSeedData==nil || newSeedsROIList==nil || showSeedsArray==nil || choosenSeedsArray==nil)
+	{
+		NSLog(@"Parameter incomplete from step 2");
+		return nil;
+	}
 	
+	[choosenSeedsArray   retain];
+	[showSeedsArray      retain];
+	[newSeedsROIList     retain];
+	[parentSeedData      retain];
+	[parentInputData     retain];
+	[parentOutputData    retain];
+	[parentDirectionData retain];
+	[parentColorData     retain];
+	
+	[parent cleanSharedData];
+	
+	defaultROIThickness=[[NSUserDefaults standardUserDefaults] floatForKey:@"ROIThickness"];
+	
+	newSeedsBuffer = (unsigned short int*)[parentSeedData bytes];
+	indata =(float *)[parentInputData bytes];
+	outdata = (float *)[parentOutputData bytes];
+	directdata=(unsigned char*)[parentDirectionData bytes];
+	colordata=(unsigned char*)[parentColorData bytes];	
+	segmentNeighborhood = 26;
 
-	[self showPreviewPanel:vc :indata :outdata :colordata :directdata];
+	return [self showPreviewPanel:vc :indata :outdata :colordata :directdata];
 	
 }
-- (int) showPreviewPanel:(ViewerController *) vc:(float*)inData:(float*)outData:(unsigned char*)colData:(unsigned char*)direData
+- (id) showPreviewPanel:(ViewerController *) vc:(float*)inData:(float*)outData:(unsigned char*)colData:(unsigned char*)direData
 {
+	//initialize the window
+	self = [super initWithWindowNibName:@"SegPreview"];
+	[[self window] setDelegate:self];
+	
+	//prepare images and VRT view
 	int err=0;
 	originalViewController=vc;	
+	originalViewVolumeData=[vc volumeData];
+	originalViewPixList=[vc pixList];
+	
+	[originalViewController retain];
+	[originalViewVolumeData retain];
+	[originalViewPixList retain];
+	
 	inputData = inData;
 	outputData = outData;
 	colorData = colData;
 	directionData = direData;
 	
-	[NSBundle loadNibNamed:@"SegPreview" owner:self];
-	NSRect screenrect=[[[originalViewController window] screen] visibleFrame];
-	screenrect.size.height -= 100;
-	if( screenrect.size.height > 1100) screenrect.size.height = 1100;
-	if( screenrect.size.width > 1900) screenrect.size.width = 1900;
-
-	[window setFrame:screenrect display:YES ];	MPRFileList =[originalViewController fileList ];
+	MPRFileList =[originalViewController fileList ];
 	DCMPix* curPix;	
 	curPix = [[originalViewController pixList] objectAtIndex: 0];
 	imageWidth = [curPix pwidth];
@@ -475,56 +561,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	if(err!=1)
 	{
-	
-
+		
+		
 		[self updateMPRView];
 		[self resetMPRSliders];
 		[self setBrushWidth: brushWidthSlider];
 		if(!isInWizardMode)
 			[wizardTips setHidden: YES];
-		[NSApp beginSheet: window modalForWindow:[originalViewController window] modalDelegate:self didEndSelector:nil contextInfo:nil];	
+		// show the window
+		screenrect=[[[originalViewController window] screen] visibleFrame];
+		[[self window]setFrame:screenrect display:NO animate:NO];
+		[super showWindow:parent];
+		[[self window] makeKeyAndOrderFront:parent];
+		[[self window] setLevel:NSFloatingWindowLevel];
+		[[self window] display];
+		
 		id waitWindow = [originalViewController startWaitWindow:@"processing"];	
 		//[window setWindowController: self];
-
-
-				//hide other segments
+		
+		
+		//hide other segments
 		if(err!=2)
 		{
 			osirixOffset=[vrView offset] ;
 			osirixValueFactor=[vrView valueFactor] ;
 			renderOfVRView = [vrView renderer];
-			//volumeCollectionOfVRView = renderOfVRView->GetVolumes();
-			volumeOfVRView = (vtkVolume * )[vrView volume];//volumeOfVRView = (vtkVolume * )volumeCollectionOfVRView->GetItemAsObject (0);
+			
+			volumeOfVRView = (vtkVolume * )[vrView volume];
 			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
 			volumeImageData=(vtkImageData *)volumeMapper->GetInput();
 			volumeDataOfVR=(unsigned short*)volumeImageData->GetScalarPointer();
 			[self updateVRView];
 		}
-		/*
-		 NSArray				*winList = [NSApp windows];
-
-		toolbarList = [[NSMutableArray alloc] initWithCapacity: 0];
-		unsigned int i;
-		for( i = 0; i < [winList count]; i++)
-		{
-			if( [[winList objectAtIndex:i] toolbar])
-			{
-				NSToolbar *aToolbar=[[winList objectAtIndex:i] toolbar];
-				if([aToolbar isVisible])
-				{
-					[toolbarList addObject: aToolbar];
-					[aToolbar setVisible:NO];
-				}
-				
-				
-			}
-			
-		}
-		 */
-		[window setHorizontalSlider:mprYRotateSlider];
-		[window setVerticalSlider:mprXRotateSlider];
-		[window setTranlateSlider:mprPageSlider];
+		[[self window] setHorizontalSlider:mprYRotateSlider];
+		[[self window] setVerticalSlider:mprXRotateSlider];
+		[[self window] setTranlateSlider:mprPageSlider];
 		[resultView setTranlateSlider:resultPageSlider];
+		[resultView setHorizontalSlider:nil];
+		[mprView setHorizontalSlider:nil];
+		[mprView setTranlateSlider:nil];
+		
 		roiShowTextOnlyWhenSeleted=[[NSUserDefaults standardUserDefaults] boolForKey:@"ROITEXTIFSELECTED"];
 		roiShowNameOnly=[[NSUserDefaults standardUserDefaults] boolForKey: @"ROITEXTNAMEONLY"];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey: @"ROITEXTNAMEONLY"];
@@ -541,13 +617,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[nc	addObserver: self selector: @selector(changeWLWW:) name: @"changeWLWW" object: nil];	
 		[nc	addObserver: self selector: @selector(crossMove:) name: @"crossMove" object: nil];	
 		[nc	addObserver: self selector: @selector(Display3DPoint:) name: @"Display3DPoint" object: nil];
-		[nc addObserver: self selector: @selector(windowDidBecomeMain:) name:NSWindowDidBecomeMainNotification object:nil];
 		[seedList setDataSource: self];
 		
 		[originalViewController endWaitWindow: waitWindow];	
+		
 	}
 	
-	return err;
+	endPointsArray=[[NSMutableArray alloc] initWithCapacity:0];
+	endPointROIsArray=[[NSMutableArray alloc] initWithCapacity:0];
+	manualCenterlinesArray=[[NSMutableArray alloc] initWithCapacity:0];
+	manualCenterlineROIsArray=[[NSMutableArray alloc] initWithCapacity:0];
+	return self;
 	
 }
 
@@ -557,8 +637,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	
 	long                size;
-	NSArray				*pixList = [originalViewController pixList];
-
+	NSMutableArray				*pixList = [originalViewController pixList];
+	
 	size = sizeof(short unsigned int) * imageWidth * imageHeight * imageAmount;
 	if( !newSeedsBuffer)
 	{
@@ -665,15 +745,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	tempIm->GetWholeExtent( imExtent);
 	tempIm->GetSpacing( space);
 	tempIm->GetOrigin( origin);	
+	float iwl, iww;
+	iww = [[originalViewController imageView] curWW] ;
+	iwl = [[originalViewController imageView] curWL] ;
 	
 	float *im = (float*) tempIm->GetScalarPointer();
 	DCMPix*		mypix = [[DCMPix alloc] initwithdata:(float*) im :32 :imExtent[ 1]-imExtent[ 0]+1 :imExtent[ 3]-imExtent[ 2]+1 :space[0] :space[1] :origin[0] :origin[1] :origin[2]];
-	[mypix copySUVfrom: curPix];	
+	[mypix copySUVfrom: curPix];
+	[mypix changeWLWW:iwl :iww];
 	
 	MPRPixList = [[NSMutableArray alloc] initWithCapacity:0];
 	[MPRPixList addObject: mypix];
 	[mypix release];	
-
+	
 	MPRROIList = [[NSMutableArray alloc] initWithCapacity:0];
 	[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
 	[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
@@ -690,32 +774,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	float scale=[mprView scaleValue];
 	[mprView setScaleValue:scale*0.9];
 	
-	float iwl, iww;
-	iww = [[originalViewController imageView] curWW] ;
-	iwl = [[originalViewController imageView] curWL] ;
-	[mprView setWLWW:iwl :iww];
+	
 	
 	int i;
-	for( i = 0; i < imageAmount; i++)
-	{
-		[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
-	}
+//	for( i = 0; i < imageAmount; i++)
+//	{
+//		[MPRROIList addObject:[NSMutableArray arrayWithCapacity:0]];
+//	}
 	
 	
 	
-
-
+	
+	
 	
 	//create result data
 	// CREATE A NEW SERIES TO CONTAIN THIS NEW SERIES
-	resultPixList = [NSMutableArray arrayWithCapacity: 0];
+	resultPixList = [[NSMutableArray alloc] initWithCapacity: 0];
 	resultROIList = [[NSMutableArray alloc] initWithCapacity: 0];
-	resultFileList = [NSMutableArray arrayWithCapacity: 0];
+	resultFileList = [[NSMutableArray alloc] initWithCapacity: 0];
 	resultViewROIMode=1;
 	[resultROIList addObject:[NSMutableArray arrayWithCapacity:0]];
 	
 	i=imageAmount/2;
-
+	
 	curPix = [pixList objectAtIndex: i];
 	
 	DCMPix	*copyPix = [curPix copy];
@@ -725,23 +806,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[[resultPixList lastObject] setfImage: (float*) (outputData + imageSize * i)];
 	[resultFileList addObject: [MPRFileList objectAtIndex: i]];
-
+	
 	
 	[resultPageSlider setMaxValue: imageAmount-1];
 	[resultPageSlider setIntValue:imageAmount/2];
 	lastResultSliderPos=imageAmount/2;
-
+	
 	[resultView setDCM:resultPixList :resultFileList :resultROIList :0 :'i' :YES];
 	[resultView setIndexWithReset: 0 :YES];
 	viewName = [NSString stringWithString:@"Original"];
 	[resultView setStringID: viewName];
-
+	
 	[resultView setOrigin: NSMakePoint(0,0)];
 	[resultView setCurrentTool:tWL];
-
 	
 	
-
+	
+	
 	[vrView setRotate: NO];
 	int err=[vrView setPixSource:pixList :inputData];
 	NSString	*str =  @"/" ;
@@ -759,7 +840,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[vrView setMode: 1];
 		NSDictionary		*aOpacity;
 		NSArray				*array;
-
+		
 		
 		aOpacity = [[[NSUserDefaults standardUserDefaults] dictionaryForKey: @"OPACITY"] objectForKey: NSLocalizedString(@"Logarithmic Inverse Table", nil)];
 		if( aOpacity)
@@ -769,12 +850,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[vrView setOpacity:array];
 		}
 	}
-
+	
+	
+	
 	
 
-	
-	ROI* testROI=[[ROI alloc] initWithType: tOval :xSpacing :ySpacing : NSMakePoint( 0, 0)];
-	[testROI release];
 	resultPrivateROIList=[[NSMutableArray alloc] initWithCapacity: 0];
 	unsigned ii;
 	for(ii=0;ii<[choosenSeedsArray count];ii++)
@@ -799,14 +879,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	tempROI = [choosenSeedsArray objectAtIndex:index];
 	roiName = [tempROI name];
+	
+
 	color= [tempROI rgbcolor];
+	
 	DCMPix* curPix;	
 	curPix = [resultPixList objectAtIndex: 0];
 	
 	ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:imageWidth textHeight:imageHeight textName:roiName positionX:0 positionY:0 spacingX:[curPix pixelSpacingX] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
 	
-//	[newROI reduceTextureIfPossible];
-
+	//	[newROI reduceTextureIfPossible];
+	
 	
 	
 	[newROI setColor:color];
@@ -851,48 +934,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			
 			
 		}	
+		for(i=0;i<[endPointsArray count];i++)
+		{
+			CMIV3DPoint* apoint=[endPointsArray objectAtIndex:i];
+			int z;
+			z=(int)[apoint z];
+			if(z==index)
+				[[resultROIList objectAtIndex: 0] addObject: [endPointROIsArray objectAtIndex:i] ];
+		}			
 	}	
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)tableView
 {
-   if([seedList isEqual:tableView])
-   {
-	   return [choosenSeedsArray count];
-   }
+	if([seedList isEqual:tableView])
+	{
+		return [choosenSeedsArray count];
+	}
 	return 0;
 	
 }
 
 - (id)tableView:(NSTableView *)tableView
-    objectValueForTableColumn:(NSTableColumn *)tableColumn
+objectValueForTableColumn:(NSTableColumn *)tableColumn
             row:(int)row
 {
 	
 	if([seedList isEqual:tableView])
-   {
-	   if( [[tableColumn identifier] isEqualToString:@"Name"])
-	   {
-		   return [[choosenSeedsArray objectAtIndex:row] name];
-	   }
-	   if( [[tableColumn identifier] isEqualToString:@"IfExport"])
-	   {
-		   unsigned int i;
-		   int colorIndex;
-		   for(i=0;i< [showSeedsArray count];i++)
-		   {
-			  colorIndex = [[showSeedsArray objectAtIndex:i] intValue];
-			  if(colorIndex-1==row)
-				   return  [NSNumber numberWithBool:YES];
-		   }
-		   
-		   return   [NSNumber numberWithBool:NO];
-		   
-		   
-		   
-	   }		
-	   
-   }
+	{
+		if( [[tableColumn identifier] isEqualToString:@"Name"])
+		{
+			return [[choosenSeedsArray objectAtIndex:row] name];
+		}
+		if( [[tableColumn identifier] isEqualToString:@"IfExport"])
+		{
+			unsigned int i;
+			int colorIndex;
+			for(i=0;i< [showSeedsArray count];i++)
+			{
+				colorIndex = [[showSeedsArray objectAtIndex:i] intValue];
+				if(colorIndex-1==row)
+					return  [NSNumber numberWithBool:YES];
+			}
+			
+			return   [NSNumber numberWithBool:NO];
+			
+			
+			
+		}		
+		
+	}
 	
 	
 	return 0L;
@@ -922,7 +1013,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				[showSeedsArray addObject:[NSNumber numberWithInt:rowIndex+1]];
 				[self updateResultView];
 				[self updateVRView];
-
+				
 			}
 			else
 			{
@@ -934,7 +1025,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 						[showSeedsArray removeObjectAtIndex:i];
 						[self updateResultView];
 						[self updateVRView];
-
+						
 					}
 				}	
 			}
@@ -964,15 +1055,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int size=imageWidth*imageHeight*imageAmount*sizeof(unsigned char);
 	memset(colorData,0,size);
 	/*
-	size=imageHeight*imageAmount;
-	itemp=0;
-	for(i=0;i<size;i++)
-	{
-		*(colorData+(itemp>>3))|=(0x01<<(itemp&0x07));
-		itemp+=imageWidth;
-	}
-*/
-
+	 size=imageHeight*imageAmount;
+	 itemp=0;
+	 for(i=0;i<size;i++)
+	 {
+	 *(colorData+(itemp>>3))|=(0x01<<(itemp&0x07));
+	 itemp+=imageWidth;
+	 }
+	 */
+	
 	for(i=0;i<[newSeedsROIList count];i++)
 	{
 		colorIndex=0;
@@ -1010,7 +1101,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 								for(kk=0;kk<3;kk++)
 								{
 									if(x-1+kk<imageWidth && x-1+kk>=0 && y-1+jj<imageHeight && y-1+jj>=0 && z-1+ii<imageAmount && z-1+ii>=0)
-									*(colorData+(itemp>>3))|=(0x01<<(itemp&0x07));
+										*(colorData+(itemp>>3))|=(0x01<<(itemp&0x07));
 									itemp++;
 								}
 								itemp=itemp-3+imageWidth;
@@ -1020,11 +1111,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 						}
 						seedNumber++;
 					}
-				
+					
 				}
 			}
 	[seedIndexToColorIndexList release];
-
+	
 	return seedNumber;
 }
 - (void) roiAdded: (NSNotification*) note
@@ -1046,8 +1137,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				int seedIndex;
 				seedIndex = [seedList selectedRow];
 				tempROI = [choosenSeedsArray objectAtIndex: seedIndex];
-				if([tempROI respondsToSelector:@selector(rgbcolor)])
-					color= [tempROI rgbcolor];
+
+				color= [tempROI rgbcolor];
 				roiName = [tempROI name];
 				[roi setColor:color];
 				[roi setName:roiName];
@@ -1056,19 +1147,60 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					uniIndex++;
 					NSString *indexstr=[NSString stringWithFormat:@"%d",uniIndex];
 					[roi setComments:indexstr];	
-					unsigned int i;
-					for(i=0;i<[[MPRROIList objectAtIndex: 0] count];i++)
-					{
-						[[roi pix] retain];
-					}
+					//unsigned int i;
+					//for(i=0;i<[[MPRROIList objectAtIndex: 0] count];i++)
+					//{
+					//	[[roi pix] retain];
+					//}
 					DCMPix * curImage= [MPRPixList objectAtIndex:0];
 					ROI* newROI=[[ROI alloc] initWithType: tROI :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
 					[newROI setName:roiName];
 					[newROI setComments:indexstr];	
 					[newROI setColor:color];
-
+					
 					[newSeedsROIList addObject:newROI];
 					
+				}
+				else if([roi type]==t2DPoint)
+				{
+					float curXSpacing,curYSpacing;
+					float point[3];
+					curXSpacing=[[roi pix] pixelSpacingX];
+					curYSpacing=[[roi pix] pixelSpacingY];
+
+					point[0] = [roi rect].origin.x*curXSpacing+[[roi pix] originX];
+					point[1] = [roi rect].origin.y*curYSpacing+[[roi pix] originY];
+					point[2] = 0;
+					mprViewUserTransform->TransformPoint(point,point);
+					
+					point[0]=lround((point[0]-vtkOriginalX)/xSpacing);
+					point[1]=lround((point[1]-vtkOriginalY)/ySpacing);
+					point[2]=lround((point[2]-vtkOriginalZ)/zSpacing);
+					CMIV3DPoint* anewpoint=[[CMIV3DPoint alloc] init];
+					[anewpoint setX:point[0]];
+					[anewpoint setY:point[1]];
+					[anewpoint setZ:point[2]];
+					NSRect roiRect;
+					roiRect.origin.x=point[0];
+					roiRect.origin.y=point[1];
+					roiRect.size.width=roiRect.size.height=1;
+					DCMPix * curPix= [resultPixList objectAtIndex:0];
+					ROI *endPointROI = [[ROI alloc] initWithType: t2DPoint :[curPix pixelSpacingX] :[curPix pixelSpacingY] : NSMakePoint( [curPix originX], [curPix originY])];
+					[endPointROI setName:[[NSNumber numberWithInt:[endPointsArray count]] stringValue]];
+					[endPointROI setROIRect:roiRect];
+					RGBColor color;
+					color.red = 65535;
+					color.blue = 0;
+					color.green = 0;
+					[endPointROI setColor: color];
+					[endPointROIsArray addObject:endPointROI];
+					[endPointsArray addObject:anewpoint];
+					[endPointROI release];
+					//[self updateAllCenterlines];
+					[resultPageSlider setFloatValue:point[2]];
+					lastResultSliderPos=point[2];
+					//[self pageResultView:resultPageSlider];
+					[self updateResultView];
 				}
 				
 			}
@@ -1081,7 +1213,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) roiChanged: (NSNotification*) note
 {
 	id sender = [note object];
-
+	
 	if([[MPRROIList objectAtIndex: 0] containsObject: sender] )
 	{
 		ROI* roi=(ROI*)sender;
@@ -1181,7 +1313,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		}
 	}
-		
+	
 }
 
 - (void) roiRemoved: (NSNotification*) note
@@ -1234,7 +1366,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		}
 	}
-			
+	
 }
 - (void) creatROIListFromSlices:(NSMutableArray*) roiList :(int) width:(int)height:(short unsigned int*)im:(float)spaceX:(float)spaceY:(float)originX:(float)originY
 {
@@ -1289,45 +1421,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				
 			}
 		}
-			
-			for(i=0;i<[newSeedsROIList count];i++)
-			{
-				roi=[newSeedsROIList objectAtIndex:i];
-				rect = [roi rect];
 	
-				if(rect.origin.x>=0)
+	for(i=0;i<[newSeedsROIList count];i++)
+	{
+		roi=[newSeedsROIList objectAtIndex:i];
+		rect = [roi rect];
+		
+		if(rect.origin.x>=0)
+		{
+			rect.size.width+=1;
+			rect.size.height+=1; 
+			unsigned char* textureBuffer= (unsigned char*)malloc((int)(rect.size.width *rect.size.height));
+			
+			for(y=0;y<rect.size.height;y++)
+				for(x=0;x<rect.size.width;x++)
 				{
-					rect.size.width+=1;
-					rect.size.height+=1; 
-					unsigned char* textureBuffer= (unsigned char*)malloc((int)(rect.size.width *rect.size.height));
-					
-					for(y=0;y<rect.size.height;y++)
-						for(x=0;x<rect.size.width;x++)
-						{
-							int ii=(int)((y+rect.origin.y)*width+x+rect.origin.x);
-							int jj=(int)(y*rect.size.width + x);
-							if(*(im+ii)==i+1)
-								*(textureBuffer+jj)=0xff;
-							else 
-								*(textureBuffer+jj)=0x00;
-						}
-							
-					ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:(int)rect.size.width textHeight:(int)rect.size.height textName:[roi name] positionX:(int)rect.origin.x positionY:(int)rect.origin.y spacingX:spaceX spacingY:spaceY imageOrigin:NSMakePoint( originX,  originY)];
-
-					[newROI setComments:[NSString stringWithFormat:@"%d",i+1]];
-					color= [roi rgbcolor];	
-						
-					[newROI setColor:color];
-					
-					[newROI setROIMode:ROI_selected];
-					//[newROI setParentROI:roi];
-					[roiList addObject:newROI];
-					[newROI release];
-					free(textureBuffer);
+					int ii=(int)((y+rect.origin.y)*width+x+rect.origin.x);
+					int jj=(int)(y*rect.size.width + x);
+					if(*(im+ii)==i+1)
+						*(textureBuffer+jj)=0xff;
+					else 
+						*(textureBuffer+jj)=0x00;
 				}
-			}
 			
+			ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:(int)rect.size.width textHeight:(int)rect.size.height textName:[roi name] positionX:(int)rect.origin.x positionY:(int)rect.origin.y spacingX:spaceX spacingY:spaceY imageOrigin:NSMakePoint( originX,  originY)];
 			
+			[newROI setComments:[NSString stringWithFormat:@"%d",i+1]];
+
+			color= [roi rgbcolor];	
+			
+			[newROI setColor:color];
+			
+			[newROI setROIMode:ROI_selected];
+			//[newROI setParentROI:roi];
+			[roiList addObject:newROI];
+			[newROI release];
+			free(textureBuffer);
+		}
+	}
+	
+	
 }
 
 - (void) changeWLWW: (NSNotification*) note
@@ -1355,36 +1488,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			[resultView setIndex: 0];
 			if( iww != [mprView curWW] || iwl != [mprView curWL])
 				[mprView setWLWW:iwl :iww];				
-
+			
 		}
 		
 	}
 	
-
+	
 }
 - (void) crossMove:(NSNotification*) note
 {
-	   if([[[note userInfo] objectForKey:@"action"] isEqualToString:@"dragged"] == YES)
-	   {
-		   float oX,oY;
-		   vtkImageData	*tempIm;
-		   double		space[ 3], origin[ 3];
-		   tempIm = mprViewSlice->GetOutput();
-		   tempIm->Update();
-		   tempIm->GetSpacing( space);
-		   tempIm->GetOrigin( origin);	
-		   
-		   [mprView getCrossCoordinates: &oX  :&oY];
-		   oY=-oY;
-		   oX=oX*space[0]+origin[0];
-		   oY=oY*space[1]+origin[1];
-		   if(!(oX==0&&oY==0))
-		   {
-			   mprViewUserTransform->Translate(oX,oY,0);
-	
-			   
-		   }
-	   }
+	if([[[note userInfo] objectForKey:@"action"] isEqualToString:@"dragged"] == YES)
+	{
+		float oX,oY;
+		vtkImageData	*tempIm;
+		double		space[ 3], origin[ 3];
+		tempIm = mprViewSlice->GetOutput();
+		tempIm->Update();
+		tempIm->GetSpacing( space);
+		tempIm->GetOrigin( origin);	
+		
+		[mprView getCrossCoordinates: &oX  :&oY];
+		oY=-oY;
+		oX=oX*space[0]+origin[0];
+		oY=oY*space[1]+origin[1];
+		if(!(oX==0&&oY==0))
+		{
+			mprViewUserTransform->Translate(oX,oY,0);
+			
+			
+		}
+	}
 	if([[[note userInfo] objectForKey:@"action"] isEqualToString:@"mouseUp"] == YES)
 	{	
 		float angle= [mprView angle];
@@ -1426,7 +1559,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (void) exportUnderMaskToImages
 {
-
+	
 	NSArray				*pixList = [originalViewController pixList];
 	DCMPix				*curPix = [pixList objectAtIndex: 0];
 	
@@ -1450,8 +1583,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	ViewerController *new2DViewer;
 	new2DViewer = [originalViewController newWindow	:newPixList
-													:newDcmList
-													:newData];  
+				   :newDcmList
+				   :newData];  
 	
 	NSString* tempstr=[NSString stringWithString:@"Results of "];
 	unsigned int i;
@@ -1478,7 +1611,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	
 	[temparray addObject:tempstr];
-	
+	[[self window] makeKeyAndOrderFront:parent];
 	
 }
 - (void) exportToSeparateSeries
@@ -1513,8 +1646,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		ViewerController *new2DViewer;
 		new2DViewer = [originalViewController newWindow	:newPixList
-														:newDcmList
-														:newData];  
+					   :newDcmList
+					   :newData];  
 		
 		NSString* tempstr=[NSString stringWithString:@"Results of "];
 		unsigned int i;
@@ -1544,6 +1677,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		
 		
 	}
+	[[self window] makeKeyAndOrderFront:parent];
 }
 - (void) exportToROIs
 {
@@ -1571,8 +1705,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	ViewerController *new2DViewer=0L;
 	new2DViewer = [originalViewController newWindow	:newPixList
-													:newDcmList
-													:newData];  
+				   :newDcmList
+				   :newData];  
 	if(new2DViewer)
 	{
 		ROI* tempROI;
@@ -1592,7 +1726,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				roiName = [tempROI name];
 				textureBuffer=[tempROI textureBuffer];
 				color= [tempROI rgbcolor];
-			
+				
 				ROI *newROI=[[ROI alloc] initWithTexture:textureBuffer textWidth:imageWidth textHeight:imageHeight textName:roiName positionX:0 positionY:0 spacingX:[curPix pixelSpacingY] spacingY:[curPix pixelSpacingY]  imageOrigin:NSMakePoint( [curPix originX], [curPix originY])];
 				textureBuffer=[newROI textureBuffer];
 				*textureBuffer=0x00;
@@ -1631,82 +1765,83 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[temparray addObject:tempstr];
 		
 	}
+	[[self window] makeKeyAndOrderFront:parent];
 }
 - (void) exportToPreResult
 {
-
-		NSArray				*pixList = [originalViewController pixList];
-		DCMPix				*curPix = [pixList objectAtIndex: 0];
+	
+	NSArray				*pixList = [originalViewController pixList];
+	DCMPix				*curPix = [pixList objectAtIndex: 0];
+	
+	long size=sizeof(float)*imageWidth*imageHeight*imageAmount;
+	float* volumeData=(float*)malloc(size);
+	unsigned char* choosenColorList;
+	int choosenColorNumber=[showSeedsArray count];
+	int isAChoosenColor;
+	float offset=maxValueInCurSeries-minValueInCurSeries;
+	float curOffset=0;
+	size=sizeof(unsigned char)*choosenColorNumber;
+	choosenColorList=(unsigned char*)malloc(size);
+	size=imageAmount*imageSize;
+	int i,j;
+	for(i=0;i<choosenColorNumber;i++)
+		*(choosenColorList+i) = (unsigned char) [[showSeedsArray objectAtIndex:i] intValue];
+	for(i=0;i<size;i++)
+	{
+		isAChoosenColor=0;
+		for(j=0;j<choosenColorNumber;j++)
+			if(*(choosenColorList+j)==*(colorData+i))
+			{
+				isAChoosenColor=1;
+				curOffset=offset*j;
+			}
+		if(isAChoosenColor)
+			*(volumeData+i)=*(inputData+i)+curOffset;
+		else
+			*(volumeData+i)=minValueInCurSeries;
 		
-		long size=sizeof(float)*imageWidth*imageHeight*imageAmount;
-		float* volumeData=(float*)malloc(size);
-		unsigned char* choosenColorList;
-		int choosenColorNumber=[showSeedsArray count];
-		int isAChoosenColor;
-		float offset=maxValueInCurSeries-minValueInCurSeries;
-		float curOffset;
-		size=sizeof(unsigned char)*choosenColorNumber;
-		choosenColorList=(unsigned char*)malloc(size);
-		size=imageAmount*imageSize;
-		int i,j;
-		for(i=0;i<choosenColorNumber;i++)
-			*(choosenColorList+i) = (unsigned char) [[showSeedsArray objectAtIndex:i] intValue];
-		for(i=0;i<size;i++)
-		{
-			isAChoosenColor=0;
-			for(j=0;j<choosenColorNumber;j++)
-				if(*(choosenColorList+j)==*(colorData+i))
-				{
-					isAChoosenColor=1;
-					curOffset=offset*j;
-				}
-			if(isAChoosenColor)
-				*(volumeData+i)=*(inputData+i)+curOffset;
-			else
-				*(volumeData+i)=minValueInCurSeries;
-				
-			
-		}
 		
-		free(choosenColorList);
+	}
+	
+	free(choosenColorList);
+	
+	NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
+	NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
+	NSData	*newData = [NSData dataWithBytesNoCopy:volumeData length: size freeWhenDone:YES];
+	int z;
+	for( z = 0 ; z < imageAmount; z ++)
+	{
+		curPix = [pixList objectAtIndex: z];
+		DCMPix	*copyPix = [curPix copy];
+		[newPixList addObject: copyPix];
+		[copyPix release];
+		[newDcmList addObject: [[originalViewController fileList] objectAtIndex: z]];
 		
-		NSMutableArray	*newPixList = [NSMutableArray arrayWithCapacity: 0];
-		NSMutableArray	*newDcmList = [NSMutableArray arrayWithCapacity: 0];
-		NSData	*newData = [NSData dataWithBytesNoCopy:volumeData length: size freeWhenDone:YES];
-		int z;
-		for( z = 0 ; z < imageAmount; z ++)
-		{
-			curPix = [pixList objectAtIndex: z];
-			DCMPix	*copyPix = [curPix copy];
-			[newPixList addObject: copyPix];
-			[copyPix release];
-			[newDcmList addObject: [[originalViewController fileList] objectAtIndex: z]];
-			
-			[[newPixList lastObject] setfImage: (float*) (volumeData + imageSize * z)];
-		}
-		ViewerController *new2DViewer;
-		new2DViewer = [originalViewController newWindow	:newPixList
-														:newDcmList
-														:newData];  
-		NSString* tempstr=[NSString stringWithString:@"Mixture"];
-		[new2DViewer checkEverythingLoaded];
-		[[new2DViewer window] setTitle:tempstr];
-		NSMutableArray	*temparray=[[parent dataOfWizard] objectForKey: @"VCList"];
-		if(!temparray)
-		{
-			temparray=[NSMutableArray arrayWithCapacity:0];
-			[[parent dataOfWizard] setObject:temparray forKey:@"VCList"];
-		}
-		[temparray addObject:new2DViewer];
-		temparray=[[parent dataOfWizard] objectForKey: @"VCTitleList"];
-		if(!temparray)
-		{
-			temparray=[NSMutableArray arrayWithCapacity:0];
-			[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
-		}
-		[temparray addObject:tempstr];
-		
-
+		[[newPixList lastObject] setfImage: (float*) (volumeData + imageSize * z)];
+	}
+	ViewerController *new2DViewer;
+	new2DViewer = [originalViewController newWindow	:newPixList
+				   :newDcmList
+				   :newData];  
+	NSString* tempstr=[NSString stringWithString:@"Mixture"];
+	[new2DViewer checkEverythingLoaded];
+	[[new2DViewer window] setTitle:tempstr];
+	NSMutableArray	*temparray=[[parent dataOfWizard] objectForKey: @"VCList"];
+	if(!temparray)
+	{
+		temparray=[NSMutableArray arrayWithCapacity:0];
+		[[parent dataOfWizard] setObject:temparray forKey:@"VCList"];
+	}
+	[temparray addObject:new2DViewer];
+	temparray=[[parent dataOfWizard] objectForKey: @"VCTitleList"];
+	if(!temparray)
+	{
+		temparray=[NSMutableArray arrayWithCapacity:0];
+		[[parent dataOfWizard] setObject:temparray forKey:@"VCTitleList"];
+	}
+	[temparray addObject:tempstr];
+	[[self window] makeKeyAndOrderFront:parent];
+	
 }
 - (IBAction)rotateXMPRView:(id)sender
 {
@@ -1849,7 +1984,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			*(volumeData+i)=*(inputData+i);
 		else
 			*(volumeData+i)=minValueInCurSeries;
-			
+		
 		
 	}
 	
@@ -1879,7 +2014,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			*(volumeData+i)=(unsigned short)((*(inputData+i)+osirixOffset)*osirixValueFactor);
 		else
 			*(volumeData+i)=0;
-				
+		
 	}
 	
 	free(choosenColorList);
@@ -1901,7 +2036,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) Display3DPoint:(NSNotification*) note
 {
 	float x,y,z;
-
+	
 	x = [[[note userInfo] valueForKey:@"x"] intValue];
 	y = [[[note userInfo] valueForKey:@"y"] intValue];
 	z = [[[note userInfo] valueForKey:@"z"] intValue];
@@ -1914,70 +2049,434 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 	[self updateMPRView];
 	[self resetMPRSliders];	
+	
+}
+- (void) reCaculateCPRPath:(NSMutableArray*) roiList :(int) width :(int)height :(float)spaceX: (float)spaceY : (float)spaceZ :(float)originX :(float)originY:(float)originZ
+{
+	unsigned i;
+	for(i=0;i<[manualCenterlineROIsArray count];i++)
+	
+	{
+		ROI* curvedMPR2DPath=[manualCenterlineROIsArray objectAtIndex:i];
+		NSArray* curvedMPR3DPath=[manualCenterlinesArray objectAtIndex:i];
+		
+		NSMutableArray* points2D=[curvedMPR2DPath points];
+		[roiList addObject: curvedMPR2DPath];
+		unsigned int i;
+		CMIV3DPoint* a3DPoint;
+		float position[3];
+		
+		
+		float x,y;
+		NSPoint tempPoint;
+		tempPoint.x=-1;
+		tempPoint.y=-1;
+		for(i=[points2D count];i<[curvedMPR3DPath count];i++)
+		{
+			MyPoint *mypt = [[MyPoint alloc] initWithPoint: NSMakePoint(0,0)];
+			
+			[points2D addObject: mypt];
+			
+			[mypt release];
+			
+		}
+		int j=0;
+		for(i=0;i<[curvedMPR3DPath count];i++)
+		{
+			a3DPoint=[curvedMPR3DPath objectAtIndex: i];
+			position[0]=[a3DPoint x];
+			position[1]=[a3DPoint y];
+			position[2]=[a3DPoint z];
+			inverseTransform->TransformPoint(position,position);
+			x = (position[0]-originX)/spaceX;
+			y = (position[1]-originY)/spaceY;
+			if(tempPoint.x==x&&tempPoint.y==y)
+			{
+				[points2D removeLastObject];
+			}
+			else
+			{
+				tempPoint.x=x;
+				tempPoint.y=y;
+				[[points2D objectAtIndex:j] setPoint: tempPoint];
+				j++;
+			}
+			
+		}
+		[curvedMPR2DPath setROIMode:ROI_sleep];
+	}	
+	[roiList addObjectsFromArray:manualCenterlineROIsArray];
 
+	
+}
+
+- (IBAction)loadAEndPointForCenterline:(id)sender
+{
+	NSOpenPanel         *oPanel = [NSOpenPanel openPanel];
+    [oPanel setAllowsMultipleSelection:NO];
+    [oPanel setCanChooseDirectories:NO];
+    
+    long result = [oPanel runModalForDirectory:0L file:nil types:[NSArray arrayWithObject:@"txt"]];
+	float x,y,z;
+    if (result == NSOKButton) 
+    {
+
+		NSString* pointstr=[NSString stringWithContentsOfFile:[[oPanel filenames] objectAtIndex:0]];
+		NSArray* lines=[pointstr componentsSeparatedByString:@"\n"];
+
+		NSArray* nums=[[lines objectAtIndex:[lines count]-2] componentsSeparatedByString:@" "];
+		x=[[nums objectAtIndex:0] floatValue];
+		y=[[nums objectAtIndex:1] floatValue];
+		z=[[nums objectAtIndex:2] floatValue];	
+	}
+	mprViewBasicTransform->Identity();
+	mprViewBasicTransform->Translate( x, y, z );
+	mprViewUserTransform->Identity ();
+	
+	x=(int)(x/xSpacing);
+	y=(int)(y/ySpacing);
+	z=(int)(z/zSpacing);
+	CMIV3DPoint* anewpoint=[[CMIV3DPoint alloc] init];
+	[anewpoint setX:x];
+	[anewpoint setY:y];
+	[anewpoint setZ:z];
+	NSRect roiRect;
+	roiRect.origin.x=x;
+	roiRect.origin.y=y;
+	roiRect.size.width=roiRect.size.height=1;
+	DCMPix * curPix= [MPRPixList objectAtIndex:0];
+	ROI *endPointROI = [[ROI alloc] initWithType: t2DPoint :[curPix pixelSpacingX] :[curPix pixelSpacingY] : NSMakePoint( [curPix originX], [curPix originY])];
+	[endPointROI setName:[[NSNumber numberWithInt:[endPointsArray count]] stringValue]];
+	[endPointROI setROIRect:roiRect];
+	RGBColor color;
+	color.red = 65535;
+	color.blue = 0;
+	color.green = 0;
+	[endPointROI setColor: color];
+	[endPointROIsArray addObject:endPointROI];
+	[endPointsArray addObject:anewpoint];
+	[endPointROI release];
+	[self updateAllCenterlines];
+	[resultPageSlider setFloatValue:z];
+
+	[self pageResultView:resultPageSlider];
+	
+	
+}
+- (void) updateAllCenterlines
+{
+	return;
+	if([endPointsArray count]<1)
+		return;
+	[manualCenterlinesArray removeAllObjects];
+	[manualCenterlineROIsArray removeAllObjects];
+	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
+	float spacing[3];
+	spacing[0]=xSpacing;
+	spacing[1]=ySpacing;
+	spacing[2]=zSpacing;
+	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount Spacing:spacing];
+	unsigned i;
+	for(i=0;i<[endPointsArray count];i++)
+	{
+		NSMutableArray* apath=[NSMutableArray arrayWithCapacity:0];
+		CMIV3DPoint* apoint=[endPointsArray objectAtIndex:i];
+		CMIV3DPoint* anewpoint=[[CMIV3DPoint alloc] init];
+		[anewpoint setX:[apoint x]];
+		[anewpoint setY:[apoint y]];
+		[anewpoint setZ:[apoint z]];
+		[apath addObject:anewpoint];
+		float spacing[3];
+		spacing[0]=xSpacing;
+		spacing[1]=ySpacing;
+		spacing[2]=zSpacing;
+		
+		[segmentCoreFunc dungbeetleSearching:apath :inputData Pointer:directionData];
+
+		
+		[manualCenterlinesArray addObject:apath];
+		ROI* temproi;
+		
+	
+		DCMPix * curImage= [MPRPixList objectAtIndex:0];
+		temproi=[[ROI alloc] initWithType: tOPolygon :[curImage pixelSpacingX] :[curImage pixelSpacingY] : NSMakePoint( [curImage originX], [curImage originY])];
+		NSString *roiName = [NSString stringWithString:@"Centerline"];
+		RGBColor color;
+		color.red = 65535;
+		color.blue = 0;
+		color.green =0;
+		[temproi setName:roiName];
+		[temproi setColor: color];
+		
+		[temproi setThickness:1.0];
+		NSMutableArray* points2D=[temproi points];
+		[points2D removeAllObjects];
+		unsigned j;
+		for(j=0;j<[apath count];j++)
+		{
+			MyPoint *mypt = [[MyPoint alloc] initWithPoint: NSMakePoint(0,0)];
+			
+			[points2D addObject: mypt];
+			
+			[mypt release];
+			
+			
+		}
+		[temproi setROIMode:ROI_sleep];
+		
+		[manualCenterlineROIsArray addObject:temproi];
+		
+		[temproi release];
+		
+		
+	}
+	[self convertCenterlinesToVTKCoordinate:manualCenterlinesArray];
+	[[NSUserDefaults standardUserDefaults] setFloat:defaultROIThickness forKey:@"ROIThickness"];
+	[segmentCoreFunc release];
+	
+}
+- (void) convertCenterlinesToVTKCoordinate:(NSArray*)centerlines
+{
+	CMIV3DPoint* temppoint;
+	float x,y,z;
+	unsigned int i,j;
+	for(i=0;i<[centerlines count];i++)
+		for(j=0;j<[[centerlines objectAtIndex: i] count];j++)
+		{
+			temppoint=[[centerlines objectAtIndex:i] objectAtIndex: j];
+			x= [temppoint x];
+			y= [temppoint y];
+			z= [temppoint z];
+			[temppoint setX: vtkOriginalX + x*xSpacing+xSpacing*0.5];
+			[temppoint setY: vtkOriginalY + y*ySpacing+ySpacing*0.5];
+			[temppoint setZ: vtkOriginalZ + z*zSpacing+zSpacing*0.5];
+			
+		}
+	
+}
+- (void)saveCurrentSeeds
+{
+	[parent cleanDataOfWizard];
+	int size = sizeof(short unsigned int) * imageWidth * imageHeight * imageAmount;
+	NSData	*newData = [[NSData alloc] initWithBytesNoCopy:newSeedsBuffer length: size freeWhenDone:NO];
+	NSMutableDictionary* dic=[parent dataOfWizard];
+	[dic setObject:newData forKey:@"SeedMap"];
+	NSMutableArray* seedsnamearray=[NSMutableArray arrayWithCapacity:0];
+	NSMutableArray* rootseedsarray=[NSMutableArray arrayWithCapacity:0];
+	unsigned int i;
+	for(i=0;i<[newSeedsROIList count];i++)
+	{
+		ROI* temproi=[newSeedsROIList objectAtIndex:i];
+		[seedsnamearray addObject:[temproi name]];
+		if([temproi type]==tOval)
+			[rootseedsarray addObject:[NSNumber numberWithInt:i]];
+		
+	}
+	[dic setObject:seedsnamearray forKey:@"SeedNameArray"];
+	[dic setObject:rootseedsarray forKey:@"RootSeedArray"];
+
+	[parent saveCurrentStep];
+	[newData release];
+	[parent cleanDataOfWizard];
 }
 
 - (IBAction)createSkeleton:(id)sender
 {
-	int tag=[sender tag];
-	if(tag<=1)
-	{
-		[skeletonWindow orderOut:sender];
-		[NSApp endSheet:skeletonWindow returnCode:tag];
+	
+	
+	NSLog( @"start step 4");
+	//get parameters
+	float  pathWeightLength,lengthThreshold,weightThreshold;
+	weightThreshold=[thresholdForDistalEnd floatValue] ;
+	lengthThreshold=[thresholdForBranch floatValue];
+	if(lengthThreshold<5.0)
+		lengthThreshold=5.0;
+	lengthThreshold/=minSpacing;
+	
+	id waitWindow = [originalViewController startWaitWindow:@"processing"];	
+	if([saveBeforeSkeletonization state]== NSOnState)
+		[self saveCurrentSeeds];
+		//[self saveNewPlantedSeeds];
+	
+	if(![self prepareForSkeletonizatin])
+	{	
+		NSRunAlertPanel(NSLocalizedString(@"no root seeds are found, try seed planting again", nil), NSLocalizedString(@"no root seeds", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		[originalViewController endWaitWindow: waitWindow];
+		
+		
+		return;
 	}
-	if(tag)
+	
+	CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
+	centerlinesList=[[NSMutableArray alloc] initWithCapacity: 0];
+	centerlinesNameList=[[NSMutableArray alloc] initWithCapacity: 0];
+	float spacing[3];
+	spacing[0]=xSpacing;
+	spacing[1]=ySpacing;
+	spacing[2]=zSpacing;
+	
+
+	[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount Spacing:spacing];
+	//[parent loadVesselnessMap:inputData];
+	if(segmentNeighborhood==6)
+		[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directionData];
+	else 
+		[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData :colorData Direction: directionData];
+	unsigned short* pdismap=nil;
+	if([[tab2D3DView tabViewItems] count]>1)  
+		pdismap = volumeDataOfVR;
+	else
+		pdismap = (unsigned short*)malloc(imageSize*imageAmount*sizeof(unsigned short));
+	if(!pdismap)
 	{
-
-
-		NSLog( @"start step 4");
-		//get parameters
-		float  pathWeightLength,lengthThreshold,weightThreshold;
-		weightThreshold=[thresholdForDistalEnd floatValue] ;
-		lengthThreshold=[thresholdForBranch floatValue];
-		if(lengthThreshold<5.0)
-			lengthThreshold=5.0;
-		lengthThreshold/=minSpacing;
-		
-		id waitWindow = [originalViewController startWaitWindow:@"processing"];	
-		
-		if(![self prepareForSkeletonizatin])
-		{	
-			NSRunAlertPanel(NSLocalizedString(@"no root seeds are found, try seed planting again", nil), NSLocalizedString(@"no root seeds", nil), NSLocalizedString(@"OK", nil), nil, nil);
-			[originalViewController endWaitWindow: waitWindow];
-
-
-			return;
-		}
-		
-		CMIVSegmentCore *segmentCoreFunc = [[CMIVSegmentCore alloc] init];
-		centerlinesList=[[NSMutableArray alloc] initWithCapacity: 0];
-		centerlinesNameList=[[NSMutableArray alloc] initWithCapacity: 0];
-		[segmentCoreFunc setImageWidth:imageWidth Height: imageHeight Amount: imageAmount];
-		if(segmentNeighborhood==6)
-			[segmentCoreFunc startShortestPathSearchAsFloatWith6Neighborhood:inputData Out:outputData Direction: directionData];
-		else 
-			[segmentCoreFunc startShortestPathSearchAsFloat:inputData Out:outputData :colorData Direction: directionData];
-		unsigned short* pdismap=nil;
-		if([[tab2D3DView tabViewItems] count]>1)  
-			pdismap = volumeDataOfVR;
-		else
-			pdismap = (unsigned short*)malloc(imageSize*imageAmount*sizeof(unsigned short));
-		if(!pdismap)
+		NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM to build distance map", nil), NSLocalizedString(@"OK", nil), nil, nil);
+		return;
+	}
+	//relase some space for next step
+	if(parentColorData)    								
+		[parentColorData  release];
+	else
+		free(colorData);
+	colorData=nil;
+	parentColorData=nil;
+	if(parentSeedData )    							
+		[parentSeedData      release];
+	else
+		free(newSeedsBuffer);
+	newSeedsBuffer=nil;
+	parentSeedData=nil;
+	float origin[3];
+	long dimension[3];
+	origin[0]=vtkOriginalX;origin[1]=vtkOriginalY;origin[2]=vtkOriginalZ;
+	spacing[0]=xSpacing;spacing[1]=ySpacing;spacing[2]=zSpacing;
+	dimension[0]=imageWidth;dimension[1]=imageHeight;dimension[2]=imageAmount;
+	if(parent.ifVesselEnhanced==NO && ![parent loadVesselnessMap:outputData:origin:spacing:dimension])
+	{
+		NSLog( @"creating low resolution vesselness map");
+		CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
+		int err=[autoSeedingController createCoronaryVesselnessMap: originalViewController:  parent:1.5:4.0:0.5:1.5:maxHuofRootSeeds:NO];
+		if(err)
 		{
-			NSRunAlertPanel(NSLocalizedString(@"no enough RAM", nil), NSLocalizedString(@"no enough RAM to build distance map", nil), NSLocalizedString(@"OK", nil), nil, nil);
-			return;
+			NSLog( @"failed to create vesselnessmap");
+						
+		}
+		else
+		{
+			NSMutableDictionary* dic=[parent dataOfWizard];
+			NSData* vesselnessData=[dic objectForKey:@"VesselnessMap"];
+			NSNumber* vesselnessmapspacing=[dic objectForKey:@"VesselnessMapTargetSpacing"];
+			float* smallvolumedata=(float*)[vesselnessData bytes];
+			if(smallvolumedata)
+			{
+				
+				long dimension[3],newdimension[3];
+				float spacing[3];
+				dimension[0] = imageWidth;
+				dimension[1] = imageHeight;
+				dimension[2] = imageAmount;	
+				spacing[0]=xSpacing;
+				spacing[1]=ySpacing;
+				spacing[2]=zSpacing;
+				
+				float targetspacing=[vesselnessmapspacing floatValue];
+				newdimension[0]=dimension[0]*spacing[0]/targetspacing;
+				newdimension[1]=dimension[1]*spacing[1]/targetspacing;
+				newdimension[2]=dimension[2]*spacing[2]/targetspacing;
+				
+				int err=[autoSeedingController resampleImage:smallvolumedata:outputData:newdimension:dimension];
+				
+				
+				if(err)
+					NSLog( @"failed to resample vesselnessmap");
+				[parent cleanDataOfWizard];
+			}
+				
 		}
 		
-		[self prepareForCaculateLength:pdismap];
-		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries];
-
-		int* indexForEachSeeds=(int*)malloc(sizeof(int)*[choosenSeedsArray count]);
-		unsigned int i;
-		for(i=0;i<[choosenSeedsArray count];i++)
-			*(indexForEachSeeds+i)=0;
+		[autoSeedingController release];
 		
+		
+		
+	}
+	NSLog( @"optimizing connectedness tree");
+	
+	int jj;
+	int size=imageWidth*imageHeight*imageAmount;
+	for(jj=0;jj<size;jj++)
+		*(outputData+jj)=(*(outputData+jj))*3;//+(*(inputData+jj));
+	//for test
+	//for(jj=0;jj<size;jj++)
+	//	*(inputData+jj)+=(*(outputData+jj));
+
+	
+	//if([parent loadVesselnessMap:outputData])
+	{
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:YES];
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:NO];
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:NO];
+	}
+	/*else
+	{
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:YES];
+		NSLog( @"optimizing connectedness tree");
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:NO];
+		NSLog( @"optimizing connectedness tree");
+		[self prepareForCaculateLength:pdismap];
+		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:NO];
+	}
+	NSLog( @"finish optimizing connectedness tree");*/
+
+
+	
+	int unknownCenterlineCounter=0;
+	int* indexForEachSeeds=(int*)malloc(sizeof(int)*[choosenSeedsArray count]);
+	unsigned int i;
+	for(i=0;i<[choosenSeedsArray count];i++)
+		*(indexForEachSeeds+i)=0;
+	
+	if([endPointsArray count])
+	{
+		for(i=0;i<[endPointsArray count];i++)
+		{
+			CMIV3DPoint* apoint=[endPointsArray objectAtIndex:i];
+			float x,y,z;
+			x=[apoint x];
+			y=[apoint y];
+			z=[apoint z];
+			
+			if(x>0&&x<imageWidth-1&&y>0&&y<imageHeight-1&&z>0&&z<imageAmount-1)
+			{
+				NSMutableArray* apath=[NSMutableArray arrayWithCapacity:0];
+				[apath addObject:apoint];
+				
+				unsigned char colorindex;
+				int lastptindex=[segmentCoreFunc dungbeetleSearching:apath :outputData Pointer:directionData];
+				//int len=[self searchBackToCreatCenterlines: centerlinesList: endindex :&colorindex];
+				colorindex=(*(directionData + lastptindex))&0x3f;
+				if(colorindex>0&&(int)colorindex<=(signed)[choosenSeedsArray count])
+				{
+					NSString *pathName = [[choosenSeedsArray objectAtIndex:colorindex-1] name];
+					*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
+				[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];				}
+				else
+					[centerlinesNameList addObject: [NSString stringWithFormat:@"unknown%d",unknownCenterlineCounter++] ];
+				[centerlinesList addObject:apath];
+				
+			}
+			
+
+		}
+	}
+	//else
+	{
 		do
 		{
+			NSLog( @"finding new branches");
 			[self prepareForCaculateWightedLength];
 			int endindex=[segmentCoreFunc caculatePathLengthWithWeightFunction:inputData:outputData Pointer: directionData:weightThreshold:maxValueInCurSeries];
 			pathWeightLength = *(outputData+endindex);
@@ -1986,10 +2485,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				[centerlinesList addObject:[NSMutableArray arrayWithCapacity:0]];
 				unsigned char colorindex;
 				int len=[self searchBackToCreatCenterlines: centerlinesList: endindex :&colorindex];
+				if(colorindex<1)
+				{
+					[centerlinesList removeLastObject];
+					continue;
+					//colorindex=1;
+					
+				}
 				NSString *pathName = [[choosenSeedsArray objectAtIndex:colorindex-1] name];
 				*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
 				[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];
-			
+				
 				if(len < lengthThreshold)
 				{
 					[[centerlinesList lastObject] removeAllObjects];
@@ -1999,45 +2505,122 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			}
 		}while( pathWeightLength>0);
+	}	
+	//[parent loadVesselnessMap:outputData];
+	/* //trying new method for centerline searching
+	for(i=0;i<[centerlinesList count];i++)
+	{
+		NSMutableArray* apath=[NSMutableArray arrayWithCapacity:0];
+	
+		CMIV3DPoint* apoint=[[centerlinesList objectAtIndex:i] objectAtIndex:0];
+		CMIV3DPoint*anewpoint=[[CMIV3DPoint alloc] init];
+		[anewpoint setX:[apoint x]];
+		[anewpoint setY:[apoint y]];
+		[anewpoint setZ:[apoint z]];
+		[apath addObject:anewpoint];
+		[anewpoint release];
+		
+		[segmentCoreFunc dungbeetleSearching:apath :outputData Pointer:directionData];
+		i++;
+		[centerlinesList insertObject:apath atIndex:i];
+		[centerlinesNameList insertObject:[NSString stringWithString:@"dungv"] atIndex:i];
+		
+		apath=[NSMutableArray arrayWithCapacity:0];
+		apoint=[[centerlinesList objectAtIndex:i-1] objectAtIndex:0];
+		anewpoint=[[CMIV3DPoint alloc] init];
+		[anewpoint setX:[apoint x]];
+		[anewpoint setY:[apoint y]];
+		[anewpoint setZ:[apoint z]];
+		[apath addObject:anewpoint];
+		[anewpoint release];
+		
+		[segmentCoreFunc dungbeetleSearching:apath :inputData Pointer:directionData];
+		i++;
+		[centerlinesList insertObject:apath atIndex:i];
+		[centerlinesNameList insertObject:[NSString stringWithString:@"dungi"] atIndex:i];
 		
 		
-
 		
-		[segmentCoreFunc release];
-		[updateButton setEnabled: NO]; 
-		[skeletonztionButton setEnabled:NO];
-		[exportButton removeItemAtIndex: 3];
-		[exportButton removeItemAtIndex: 1];
-		[[exportButton itemAtIndex:1 ] setTitle:@"Export Skeleton"] ;
-		[thresholdSlider setFloatValue:[thresholdSlider minValue]];
-		[thresholdSlider setEnabled: NO];
-		float ww,wl;
-		ww=[resultView curWW];
-		wl=[resultView curWL];
-		[resultView setWLWW:wl:ww];
-		[originalViewController endWaitWindow: waitWindow];
-		if(isInWizardMode)
+		NSMutableArray* anewline=[NSMutableArray arrayWithCapacity:0];
+		unsigned j;
+		for(j=0;j<[[centerlinesList objectAtIndex:i-2] count];j++)
 		{
-			if([saveBeforeSkeletonization state]== NSOnState)
-				[self finishAdjustion:skeletonztionButton];
+			CMIV3DPoint* apoint=[[centerlinesList objectAtIndex:i-2] objectAtIndex:j];
+			CMIV3DPoint*anewpoint=[[CMIV3DPoint alloc] init];
+			[anewpoint setX:[apoint x]];
+			[anewpoint setY:[apoint y]];
+			[anewpoint setZ:[apoint z]];
+			[anewline addObject:anewpoint];
+			[anewpoint release];
+		}
+		[segmentCoreFunc refineCenterline:anewline :outputData];
+		i++;
+		[centerlinesList insertObject:anewline atIndex:i];
+		[centerlinesNameList insertObject:[NSString stringWithString:@"refinedv"] atIndex:i];
+		
+		//anewline=[NSMutableArray arrayWithCapacity:0];
+
+		//for(j=0;j<[[centerlinesList objectAtIndex:i-1] count];j++)
+		//{
+		//	CMIV3DPoint* apoint=[[centerlinesList objectAtIndex:i-1] objectAtIndex:j];
+		//	CMIV3DPoint*anewpoint=[[CMIV3DPoint alloc] init];
+		//	[anewpoint setX:[apoint x]];
+		//	[anewpoint setY:[apoint y]];
+		//	[anewpoint setZ:[apoint z]];
+		//	[anewline addObject:anewpoint];
+		//	[anewpoint release];
+		//}
+		//[segmentCoreFunc refineCenterline:anewline :outputData];
+		
+		//i++;
+		//[centerlinesList insertObject:anewline atIndex:i];
+		//[centerlinesNameList insertObject:[NSString stringWithString:@"refinedvvvv"] atIndex:i];
+		
+		
+	}*/
+	
+	
+	NSLog( @"found all branches");
+
+	[segmentCoreFunc release];
+	[updateButton setEnabled: NO]; 
+	[skeletonztionButton setEnabled:NO];
+	[exportButton removeItemAtIndex: 3];
+	[exportButton removeItemAtIndex: 1];
+	[[exportButton itemAtIndex:1 ] setTitle:@"Export Skeleton"] ;
+	[thresholdSlider setFloatValue:[thresholdSlider minValue]];
+	[thresholdSlider setEnabled: NO];
+	float ww,wl;
+	ww=[resultView curWW];
+	wl=[resultView curWL];
+	[resultView setWLWW:wl:ww];
+	[originalViewController endWaitWindow: waitWindow];
+	if(isInWizardMode)
+	{
+		
+		for(i=0;(signed)i<imageSize*imageAmount;i++)
+			if((*(directionData+i))&0x80)
+				*(outputData+i)=-50;
 			else
-				[self onCancel: sender];
-			[parent cleanDataOfWizard];
-			[[parent dataOfWizard] setObject:centerlinesList forKey:@"CenterlinesList"] ;
-			[[parent dataOfWizard] setObject:centerlinesNameList forKey:@"CenterlinesNameList"] ;
-			[centerlinesList release];	
-			[centerlinesNameList release];
+				*(outputData+i)=*(inputData+i);
 
-			[parent gotoStepNo:4];
-		}
-		else
-		{
-			[self createROIfrom3DPaths:centerlinesList:centerlinesNameList];
-			[self replaceDistanceMap];//should release memory
-		}
+		[parent cleanDataOfWizard];
+		//[[parent dataOfWizard] setObject:parentOutputData  forKey:@"OutputData"];
 
-
+		
+		[[parent dataOfWizard] setObject:centerlinesList forKey:@"CenterlinesList"] ;
+		[[parent dataOfWizard] setObject:centerlinesNameList forKey:@"CenterlinesNameList"] ;
+		[centerlinesList release];	
+		[centerlinesNameList release];
+		
+		[self onCancel: sender];
 	}
+	else
+	{
+		[self createROIfrom3DPaths:centerlinesList:centerlinesNameList];
+		[self replaceDistanceMap];//should release memory
+	}
+	
 	
 }
 - (BOOL) prepareForSkeletonizatin
@@ -2067,12 +2650,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		else
 		{
-			//*(directionData+i)=0x40;
+			*(directionData+i)=0x00;
 			*(outputData+i)=minValueInCurSeries;
 		}
 		
 	}
-
+	
 	if([self plantRootSeeds]<1)
 		return NO;
 	
@@ -2087,7 +2670,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (int)plantRootSeeds
 {
 	int seedNumber=0;
-
+	maxHuofRootSeeds=minValueInCurSeries;
 	if(isInWizardMode)// inherited from history
 	{
 		unsigned k;
@@ -2111,7 +2694,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				if((*(newSeedsBuffer+i))==(*(rootColorList+j)))
 				{
 					*(directionData+i)=(*(colorData+i))| 0x80;
-					*(outputData+i)=*(inputData+i);		
+					*(outputData+i)=*(inputData+i);	
+					if(*(inputData+i)>maxHuofRootSeeds)
+						maxHuofRootSeeds=*(inputData+i);
 					seedNumber++;
 				}
 			}
@@ -2123,7 +2708,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		unsigned int i,j;
 		NSArray* roiList= [originalViewController roiList] ;
 		ROI* tempROI;
-
+		
 		int x,y;
 		int lefttopx, lefttopy,rightbottomx,rightbottomy;
 		int textureOriginX,textureOriginY,textureWidth;
@@ -2134,7 +2719,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				if([[tempROI comments] isEqualToString: @"root"]&&[tempROI type]==tPlain)
 				{
 					unsigned char *textureBuffer= [tempROI textureBuffer];
-		
+					
 					textureOriginX=lefttopx = [tempROI textureUpLeftCornerX];
 					textureOriginY=lefttopy = [tempROI textureUpLeftCornerY];
 					rightbottomx = [tempROI textureDownRightCornerX]+1;
@@ -2165,16 +2750,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							if(*(textureBuffer+(y-textureOriginY)*textureWidth+x-textureOriginX))
 							{
 								*(directionData+i*imageWidth*imageHeight + y*imageWidth + x)=(*(colorData+i*imageWidth*imageHeight + y*imageWidth + x)) | 0x80;
-								*(outputData+i*imageWidth*imageHeight + y*imageWidth + x)=*(inputData+i*imageWidth*imageHeight + y*imageWidth + x);		
+								*(outputData+i*imageWidth*imageHeight + y*imageWidth + x)=*(inputData+i*imageWidth*imageHeight + y*imageWidth + x);	
+								if(*(inputData+i*imageWidth*imageHeight + y*imageWidth + x)>maxHuofRootSeeds)
+									maxHuofRootSeeds=*(inputData+i*imageWidth*imageHeight + y*imageWidth + x);
 								seedNumber++;
 							}					
-								
+					
 					
 				}
 			}	
 	}		
 	return seedNumber;
-
+	
 }
 - (void) prepareForCaculateLength:(unsigned short*)dismap
 {
@@ -2238,24 +2825,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			pointIndex++;
 			[newROI release];
 		}
-	temp3dpoint=[[pathsList objectAtIndex:i] objectAtIndex: 0];
-	x=[temp3dpoint x];
-	y=[temp3dpoint y];
-	z=[temp3dpoint z];
-	NSRect roiRect;
-	roiRect.origin.x=x;
-	roiRect.origin.y=y;
-	ROI *endPointROI = [[ROI alloc] initWithType: t2DPoint :[curPix pixelSpacingX] :[curPix pixelSpacingY] : NSMakePoint( [curPix originX], [curPix originY])];
-	[endPointROI setName:roiName];
-	[endPointROI setROIRect:roiRect];
-	[[resultROIList objectAtIndex: z] addObject:endPointROI];
-	[endPointROI release];
+		temp3dpoint=[[pathsList objectAtIndex:i] objectAtIndex: 0];
+		x=[temp3dpoint x];
+		y=[temp3dpoint y];
+		z=[temp3dpoint z];
+		NSRect roiRect;
+		roiRect.origin.x=x;
+		roiRect.origin.y=y;
+		ROI *endPointROI = [[ROI alloc] initWithType: t2DPoint :[curPix pixelSpacingX] :[curPix pixelSpacingY] : NSMakePoint( [curPix originX], [curPix originY])];
+		[endPointROI setName:roiName];
+		[endPointROI setROIRect:roiRect];
+		[[resultROIList objectAtIndex: z] addObject:endPointROI];
+		[endPointROI release];
 	}
 	
 }
 - (int) searchBackToCreatCenterlines:(NSMutableArray *)pathsList:(int)endpointindex:(unsigned char*)color
 {
-
+	
 	int branchlen=0;
 	int x,y,z;
 	unsigned char pointerToUpper;
@@ -2275,7 +2862,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			branchlen++;
 		pointerToUpper = ((*(directionData + endpointindex))&0x3f);
 		*(directionData + endpointindex)=pointerToUpper|0x40;
-		int itemp;
+		int itemp=0;
 		switch(pointerToUpper)
 		{
 			case 1: itemp =  (-imageSize-imageWidth-1);
@@ -2367,7 +2954,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[new3DPoint setZ: z];
 		[[pathsList lastObject] addObject: new3DPoint];
 		
-					
+		
 		
 	}while(!((*(directionData + endpointindex))&0x80));
 	
@@ -2382,17 +2969,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	size=imageAmount*imageSize;
 	for(i=0;i<size;i++)
 	{
-			*(outputData+i)=*(inputData+i);
-
+		*(outputData+i)=*(inputData+i);
+		
 	}
 	
 }
 - (float)valueAfterConvolutionAt:(int)x:(int)y:(int)z
 {
 	int ii,jj,kk;
-	float sum;
+	float sum=0;
 	int xx,yy,zz;
-
+	
 	for(ii=-1;ii<2;ii++)
 		for(jj=-1;jj<2;jj++)
 			for(kk=-1;kk<2;kk++)
@@ -2405,7 +2992,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				else
 					sum+=minValueInCurSeries;
 				
-
+				
 			}
 	sum=sum/27;
 	return sum;
@@ -2416,8 +3003,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		[vrView setMode: 1];
 	else
 		[vrView setMode: 0];
-
-
+	
+	
 	
 }
 - (IBAction)changeVRColor:(id)sender
@@ -2458,15 +3045,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (float) minimumValue
 {
-	return -1024;
+	return 0;
 }
 - (float) maximumValue
 {
-	return 4096;
+	return 1000;
 }
 - (ViewerController*) viewer2D
 {
-return originalViewController;
+	return originalViewController;
 }
 - (IBAction)changeVRDirection:(id)sender
 {
@@ -2486,7 +3073,7 @@ return originalViewController;
 {
 	if(!isInWizardMode)
 		[saveBeforeSkeletonization setHidden: YES];
-	[NSApp beginSheet: skeletonWindow modalForWindow:window modalDelegate:self didEndSelector:nil contextInfo:nil];
+	[NSApp beginSheet: skeletonWindow modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
 }
 - (void) checkRootSeeds:(NSArray*)roiList
 {
@@ -2511,22 +3098,7 @@ return originalViewController;
 				}
 		}
 	}
-		
-}
-- (void) windowDidBecomeMain:(NSNotification *)aNotification
-{
-	[self reHideToolbar];
+	
 }
 
-- (void)reHideToolbar
-{
-	/*
-	unsigned int i;
-	for( i = 0; i < [toolbarList count]; i++)
-	{
-		[[toolbarList objectAtIndex: i] setVisible: NO];
-		
-	}*/
-
-}
 @end

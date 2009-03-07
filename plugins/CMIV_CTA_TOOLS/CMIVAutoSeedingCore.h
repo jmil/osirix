@@ -33,7 +33,9 @@
 
 
 #import <Cocoa/Cocoa.h>
-
+#define AORTAMARKER 1
+#define BARRIERMARKER 2
+#define OTHERMARKER 3
 
 @interface CMIVAutoSeedingCore : NSObject {
 	float* inputData;
@@ -43,11 +45,15 @@
 	float curveWeightFactor,distanceWeightFactor,intensityWeightFactor,gradientWeightFactor;
 	unsigned char* directorMapBuffer;
 	long* weightMapBuffer;
+	float* curSliceWeightMapBuffer;
+	float* lastSliceWeightMapBuffer;
 	long* costMapBuffer;
 	float zoomFactor;
+	float xSpacing,ySpacing,zSpacing;
+	float xOrigin,yOrigin,zOrigin;
 
 }
--(int)autoCroppingBasedOnLungSegment:(float*)inData :(unsigned char*)outData:(float)threshold:(float)diameter: (long*)origin:(long*)dimension:(float)zoomfactor;
+-(int)autoCroppingBasedOnLungSegment:(float*)inData :(unsigned char*)outData:(float)threshold:(float)diameter: (long*)origin:(long*)dimension:(float*)spacing:(float)zoomfactor;
 -(void)lungSegmentation:(float*)inData :(unsigned char*)outData:(float)diameter;
 -(void)closingVesselHoles:(unsigned char*)img2d8bit :(float)diameter;
 -(int)findingHeart:(float*)inData:(unsigned char*)outData:(long*)origin:(long*)dimension;
@@ -55,10 +61,31 @@
 -(int)convertParameterFunctionIntoCircle:(long)x:(long)y:(float*)curve:(float*)precurve:(unsigned char*)img2d8bit:(float*)image;
 -(void)fillAreaInsideCircle:(long*)pcenterx:(long*)pcentery:(unsigned char*)img2d8bit:(float*)curve:(float*)precurve;
 //-(int)relabelConnectedArea2D:(unsigned char)binaryimg;
--(void)finding2DMinimiumCostPath:(long)centerx:(long)centery:(float*)curve:(float*)precurve:(unsigned char*)img2d8bit:(float*)image:(long)startangle:(long)endangle;
+-(int)finding2DMinimiumCostPath:(long)centerx:(long)centery:(float*)curve:(float*)precurve:(unsigned char*)img2d8bit:(float*)image:(long)startangle:(long)endangle;
 -(long)dijkstraAlgorithm:(long)width:(long)height:(long)costrange:(long*)weightmap:(unsigned char*)directormap;//return the bridge point between two seeds
 -(void)intensityRelatedWeightMap:(long)width:(long)height:(long*)weightmap;
--(void)distanceReleatedWeightMap:(long)startangle:(long)minradius:(long)width:(long)height:(float*)precurve:(long*)weightmap;
+-(void)distanceReleatedWeightMap:(long)startangle:(long)minradius:(long)width:(long)height:(float*)precurve:(float*)weightmap;
 -(int)connectedComponetsLabeling2D:(unsigned char*)img2d8bit:(unsigned char*)preSlice:(long*)buffer;
 -(void)smoothOutput:(unsigned char*)outData;
+-(float)findAorta:(float*)inData:(long*)origin:(long*)dimension:(float*)spacing;
+-(int)removeUnrelatedCircles:(NSMutableArray*)circles;
+-(int)detectCircles:(NSMutableArray*) circlesArray:(int)nslices;
+-(void)exportCircles:(NSArray*)circles;
+-(int)findFirstCenter:(unsigned char*)firstSlice;
+//-(void)noiseRemoveUsingOpeningAtHighResolution:(unsigned char*)inputData:(int)width:(int)height:(int)amount:(int)kenelsize;
+//-(void)closeVesselHolesIn2D:(unsigned char*)imgdata:(int)width:(int)height:(int)amount:(int)kernelsize;
+//-(void)fillCirleKernel:(unsigned char*)buf:(int)size;
+//-(void)erode2DBinaryImage:(unsigned char*)img:(unsigned char*)imgbuffer:(int)width:(int)height:(unsigned char*)kernel:(int)kernelsize;
+//-(void)dilate2DBinaryImage:(unsigned char*)img:(unsigned char*)imgbuffer:(int)width:(int)height:(unsigned char*)kernel:(int)kernelsize;
+//-(int)closeVesselHoles:(unsigned char*)inData:(int)width:(int)height:(int)amount:(float*)samplespacing:(int)kenelsize;
+- (int) vesselnessFilter:(float *)inputData:(float*)outData:(long*)dimension:(float*)imgspacing:(float)startscale:(float)endscale:(float)scalestep;
+-(float)caculateAortaMaxIntensity:(float*)img:(int)imgwidth:(int)imgheight:(int)centerx:(int)centery:(int)radius;
+-(int)crossectionGrowingWithinVolume:(float*)volumeData ToSeedVolume:(unsigned short*)seedData Dimension:(long*)dim Spacing:(float*)spacing StartPt:(float*)ptxyz Threshold:(float)threshold Diameter:(float)diameter;
+-(float)compareOverlappedRegion:(unsigned char*)firstRegion:(unsigned char*)secondRegion:(int)regionSize;
+-(float)findingIncirleCenterOfRegion:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
+-(void)findingGravityCenterOfRegion:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
+-(int) LinearRegression:(double*)data :(int)rows:(double*)a:(double*)b;
+- (void) fixHolesInBarrierInVolume:(unsigned short*)contrastVolumeData:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker;
+-(float)findingMaxDistanceToGravityCenterOfRegion:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
+-(BOOL) detectAorticValve:(float*)inputimg:(unsigned char*)segmenresult:(int)width:(int)height:(int*)center:(float)radius:(double*)spacing;
 @end

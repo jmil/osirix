@@ -10,6 +10,21 @@
 
 
 @implementation CMIVDCMView
+
+- (id) windowController
+{
+	return dcmViewWindowController;
+}
+- (BOOL) is2DViewer
+{
+
+//	[super is2DViewer];
+	return NO;
+}
+-(void)setDcmViewWindowController:(id)vc
+{
+	dcmViewWindowController=vc;
+}
 -(void)setTranlateSlider:(NSSlider*) aSlider
 {
 	tranlateSlider=aSlider;
@@ -74,6 +89,16 @@
 	}
 	if(tranlateSlider==nil&&horizontalSlider==nil)
 		[[self nextResponder] scrollWheel:theEvent];
+}
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"cmivCTAViewMouseDown" object:self userInfo: [NSDictionary dictionaryWithObject:@"mouseDown" forKey:@"action"]];
+	[super mouseDown:theEvent];
+}
+- (void)mouseUp:(NSEvent *)theEvent
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"cmivCTAViewMouseUp" object:self userInfo: [NSDictionary dictionaryWithObject:@"mouseUp" forKey:@"action"]];
+	[super mouseUp:theEvent];
 }
 - (void)keyDown:(NSEvent *)event
 {
