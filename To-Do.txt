@@ -1,3 +1,9 @@
+- VTK recompiled
+
+- Origin bug when thick slab
+- scrollwheel bug
+- VR mode RGB
+
 - MultiCores for gradients
 - Test VTKEdge
 - C-GET
@@ -59,10 +65,6 @@ Cours
 - ROI enhancement
 - Worklist DICOM
 
-HUG:
-
-- Routage colloques
-- Rapport images -> DPI
 
 for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
 
