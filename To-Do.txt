@@ -3,6 +3,8 @@
 - Origin bug when thick slab
 - scrollwheel bug
 - VR mode RGB
+- double-click
+- In classic VR: save/reload state including clipping range
 
 - MultiCores for gradients
 - Test VTKEdge
