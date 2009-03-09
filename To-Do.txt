@@ -1,5 +1,4 @@
 - In classic VR: save/reload state including clipping range
-- Starting point
 
 - Test VTKEdge
 - C-GET
