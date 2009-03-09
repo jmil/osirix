@@ -1,12 +1,8 @@
-- VTK recompiled
-
 - Rotate 2D viewer -> atan2
 - scrollwheel bug
-- VR mode RGB
 - double-click
 - In classic VR: save/reload state including clipping range
 
-- MultiCores for gradients
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
