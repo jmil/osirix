@@ -1,6 +1,3 @@
-- Rotate 2D viewer -> atan2
-- scrollwheel bug
-- double-click
 - In classic VR: save/reload state including clipping range
 
 - Test VTKEdge
