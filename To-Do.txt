@@ -1,6 +1,6 @@
 - VTK recompiled
 
-- Origin bug when thick slab
+- Rotate 2D viewer -> atan2
 - scrollwheel bug
 - VR mode RGB
 - double-click
