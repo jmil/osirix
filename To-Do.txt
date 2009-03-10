@@ -1,5 +1,3 @@
-- In classic VR: save/reload state including clipping range
-
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
