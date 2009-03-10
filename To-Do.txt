@@ -3,7 +3,6 @@
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
-- AutoSend dans Flythru export not working?
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
