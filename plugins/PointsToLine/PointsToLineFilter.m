@@ -17,6 +17,7 @@
 {
 	// Find the first 2 points
 	ROI *pt1 = nil, *pt2 = nil;
+	DCMPix *pt1pix = nil, *pt2pix = nil;
 	
 	// All rois contained in the current series
 	NSArray *roiSeriesList = [viewerController roiList];
@@ -27,20 +28,30 @@
 		{
 			if( [roi type] == t2DPoint && [roi.comments isEqualToString: @"generated"] == NO)
 			{
-				if( pt1 == nil) pt1 = roi;
-				else if( pt2 == nil) pt2 = roi;
+				if( pt1 == nil)
+				{
+					pt1 = roi;
+					pt1pix = [[viewerController pixList] objectAtIndex: [roiSeriesList indexOfObject: roisImageList]];
+				}
+				else if( pt2 == nil)
+				{
+					pt2 = roi;
+					pt2pix = [[viewerController pixList] objectAtIndex: [roiSeriesList indexOfObject: roisImageList]];
+				}
 			}
 		}
 	}
+	
+	[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"ROITEXTIFSELECTED"];
 	
 	if( pt1 && pt2)
 	{
 		float pt1_3D[ 3], pt2_3D[ 3];
 		
 		// Convert 2D position in 3D DICOM world
-		[[pt1 pix] convertPixX: pt1.rect.origin.x pixY: pt1.rect.origin.y toDICOMCoords: pt1_3D];
+		[pt1pix convertPixX: pt1.rect.origin.x pixY: pt1.rect.origin.y toDICOMCoords: pt1_3D];
 		
-		[[pt2 pix] convertPixX: pt2.rect.origin.x pixY: pt2.rect.origin.y toDICOMCoords: pt2_3D];
+		[pt2pix convertPixX: pt2.rect.origin.x pixY: pt2.rect.origin.y toDICOMCoords: pt2_3D];
 		
 		// Get the direction vector
 		float vec[ 3];
@@ -93,7 +104,7 @@
 			[[[viewerController roiList] objectAtIndex: sc[ 2]] addObject: newROI];
 			[[viewerController imageView] setNeedsDisplay:YES];
 		}
-		while( curPos[ 0] < pt1_3D[ 0] && curPos[ 1] < pt1_3D[ 1] && curPos[ 2] < pt1_3D[ 2]);
+		while( fabs( curPos[ 0] - pt1_3D[ 0]) > 2 || fabs( curPos[ 1] - pt1_3D[ 1]) > 2 || fabs( curPos[ 2] - pt1_3D[ 2]) > 2);
 	}
 	
 	return 0; // No Errors
