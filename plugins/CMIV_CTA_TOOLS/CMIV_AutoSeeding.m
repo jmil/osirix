@@ -436,7 +436,8 @@
 	unsigned short*pdismap=seedData;
 	{
 		[self prepareForCaculateLength:pdismap:directionData];
-		memset(outputData,0x00,size*sizeof(float));//localOptmizeConnectednessTree using outputData+=mean(inputData)
+		size=imageWidth * imageHeight * imageAmount*sizeof(float);
+		memset(outputData,0x00,size);//localOptmizeConnectednessTree using outputData+=mean(inputData)
 		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:YES];
 		[self prepareForCaculateLength:pdismap:directionData];
 		[segmentCoreFunc localOptmizeConnectednessTree:inputData :outputData :pdismap Pointer: directionData :minValueInCurSeries needSmooth:NO];

@@ -170,7 +170,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	err=[autoSeedingController runAutoSeeding:vc:self:[vc pixList]:[vc volumePtr]:performRibCageRemoval:performCenterlineTracking:performVesselEnhance];
 	[autoSeedingController release];
 	if(!err)
-		[self checkIntermediatDataForWizardMode:1]; 
+	{
+		if(performCenterlineTracking!=1)
+			[self checkIntermediatDataForWizardMode:1]; 
+		else
+			[self checkIntermediatDataForFreeMode:1]; 
+	}
 
 	return err;
 	
@@ -754,7 +759,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		if(imageWidth*imageHeight*imageAmount*(signed)sizeof(unsigned short)==seedsDataSize)
 		{
 			if(userRespond==1)
-				nrespond=1;
+				nrespond=-1;
 			else if(userRespond==0)
 				nrespond=0;
 			else
