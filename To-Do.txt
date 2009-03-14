@@ -1,6 +1,7 @@
 - Test VTKEdge
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
+- Crash volume tumor
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
