@@ -3,6 +3,9 @@
 - 16-bit CLUT Editor Icon - Close button
 - Crash volume tumor
 
+- Check dealloc for retain properties
+- Open with rotation
+
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D MPR
