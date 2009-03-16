@@ -639,7 +639,7 @@
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* XRayTemplatesPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRayTemplatesPlugin_Prefix.pch; sourceTree = "<group>"; };
-		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A925459E0BDF5DBF000B6082 /* Credits.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Credits.txt; sourceTree = "<group>"; };
 		A92545A70BDF5DBF000B6082 /* HUDButtonFillN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonFillN.tiff; sourceTree = "<group>"; };
 		A92545A80BDF5DBF000B6082 /* HUDButtonFillP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonFillP.tiff; sourceTree = "<group>"; };
