@@ -2,9 +2,8 @@
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
 - Crash volume tumor
-
+- Best button
 - Convolution doesnt work on 32-bit pipeline
-- Check dealloc for retain properties
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
@@ -35,12 +34,10 @@
 - DICOM Validator tool, updated to latest version (Feb.2009)
 - Support for FujiPrivateCR SOP Class UID
 
-
 Cours
 - Basics:
 - dmg, export dicom cd, html export
 - web server
-
 
 - 4D Support for DICOM Export in 2D Viewer
 - Spine plugin
