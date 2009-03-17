@@ -3,6 +3,7 @@
 - 16-bit CLUT Editor Icon - Close button
 - Crash volume tumor
 
+- Convolution doesnt work on 32-bit pipeline
 - Check dealloc for retain properties
 
 - Clipping Plane option in 3D VR/MIP viewer
