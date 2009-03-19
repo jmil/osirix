@@ -4,6 +4,7 @@
 - Crash volume tumor
 - Best button
 - Convolution doesnt work on 32-bit pipeline
+- Check if volumic & non-rgb
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
