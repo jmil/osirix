@@ -2,7 +2,6 @@
 - C-GET
 - 16-bit CLUT Editor Icon - Close button
 - Crash volume tumor
-- Best button
 - Convolution doesnt work on 32-bit pipeline
 - Check if volumic & non-rgb
 - Delete series -> reselect new thumbnails
