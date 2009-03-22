@@ -4,6 +4,8 @@
 - Crash volume tumor
 - Convolution doesnt work on 32-bit pipeline
 
+- PET-CT tests
+
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D-MPR (it replaces the old 2D-MPR)
