@@ -6,7 +6,7 @@
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
-- A new MPR viewer: 3D MPR
+- A new MPR viewer: 3D-MPR (it replaces the old 2D-MPR)
 - Export MIP images in 16-bit
 - Automatically adjust printing layout
 - Better support for multi-frame CT/MR format (0x5200 group)
@@ -17,7 +17,7 @@
 - Option to automatically send Secondary Capture images to a DICOM node
 - Patient Level for DICOM Editor
 - Scroll Through Series option - See 2D Viewer Preferences
-- Full 32-bit pipeline (experimental) - See 2D Viewer Preferences
+- Full 32-bit OpenGL pipeline (experimental) - See 2D Viewer Preferences
 - Option to only allow a user to display images of the same patient
 - Export Database Displayed List as a tab separated file
 - Regenerate DICOM comments field (see Database Preferences)
