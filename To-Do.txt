@@ -1,8 +1,8 @@
 - Test VTKEdge
 - C-GET
-- 16-bit CLUT Editor Icon - Close button
+- 16-bit CLUT Editor Icon
 - Crash volume tumor
-- Convolution doesnt work on 32-bit pipeline
+- SC for volume
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
