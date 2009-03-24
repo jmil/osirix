@@ -1,8 +1,8 @@
 - Test VTKEdge
 - C-GET
-- 16-bit CLUT Editor Icon
 - Crash volume tumor
 - SC for volume
+- 3d state supersampling...
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
