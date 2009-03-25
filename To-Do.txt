@@ -1,5 +1,6 @@
 - Test VTKEdge
 - C-GET
+- Check Loupe
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
