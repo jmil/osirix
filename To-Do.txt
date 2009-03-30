@@ -172,3 +172,4 @@ diff -r1.47 vtkOpenGLFreeTypeTextMapper.cxx
 > 	return;
 > 
 
+make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64" LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
