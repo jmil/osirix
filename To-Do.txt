@@ -173,3 +173,7 @@ diff -r1.47 vtkOpenGLFreeTypeTextMapper.cxx
 > 
 
 make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64" LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64"
+
+OpenJPEG 64bit support:
+m = (int*)opj_malloc(sizeof(int) * (dwt_decode_max_resolution(tr, i)+5));
+h.mem = v.mem = (int*)( (unsigned long)m + 16 - ( (unsigned long)m % 16 ) ) ;
