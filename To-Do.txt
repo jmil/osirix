@@ -1,4 +1,3 @@
-- Test VTKEdge
 - C-GET
 
 - Clipping Plane option in 3D VR/MIP viewer
@@ -29,6 +28,7 @@
 - Better support for C-Move, C-Store and C-Find
 - DICOM Validator tool, updated to latest version (Feb.2009)
 - Support for FujiPrivateCR SOP Class UID
+- Better JPEG2000 support
 
 Cours
 - Basics:
