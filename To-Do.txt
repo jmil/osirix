@@ -1,4 +1,5 @@
 - C-GET
+- Right click MPRController
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
