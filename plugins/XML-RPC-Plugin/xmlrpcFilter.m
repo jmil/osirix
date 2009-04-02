@@ -33,13 +33,13 @@
 	@try
 	{
 		NSMutableDictionary	*httpServerMessage = [note object];
+		NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];
+		NSString *encoding = [doc characterEncoding];
 		
 		// ****************************************************************************************
 		
 		if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"updateDICOMNode"])	//AETitle, Port, TransferSyntax
 		{
-			NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
-			
 			NSError	*error = 0L;
 			NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
 			NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
@@ -48,9 +48,16 @@
 				int i;
 				NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
 				for( i = 0; i < [keys count]; i++)
-					[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
-				
-				NSLog( @"%@", paramDict);
+				{
+					id value;
+					
+					if( [encoding isEqualToString:@"UTF-8"] == NO &&  [[[values objectAtIndex: i] objectValue] isKindOfClass:[NSString class]])
+						value = [(NSString*)CFXMLCreateStringByUnescapingEntities(NULL, (CFStringRef)[[values objectAtIndex: i] objectValue], NULL) autorelease];
+					else
+						value = [[values objectAtIndex: i] objectValue];
+					
+					[paramDict setValue: value  forKey: [[keys objectAtIndex: i] objectValue]];
+				}
 				
 				NSMutableArray *serversArray = [NSMutableArray arrayWithArray: [[NSUserDefaults standardUserDefaults] arrayForKey: @"SERVERS"]];
 				
@@ -105,8 +112,6 @@
 		
 		if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"importFromURL"])
 		{
-			NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
-			
 			NSError	*error = 0L;
 			NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
 			NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
@@ -114,8 +119,20 @@
 			{
 				int i;
 				NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
+				
 				for( i = 0; i < [keys count]; i++)
-					[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
+				{
+					id value;
+					
+					NSLog( [[values objectAtIndex: i] objectValue]);
+					
+					if( [encoding isEqualToString:@"UTF-8"] == NO &&  [[[values objectAtIndex: i] objectValue] isKindOfClass:[NSString class]])
+						value = [(NSString*)CFXMLCreateStringByUnescapingEntities(NULL, (CFStringRef)[[values objectAtIndex: i] objectValue], NULL) autorelease];
+					else
+						value = [[values objectAtIndex: i] objectValue];
+					
+					[paramDict setValue: value  forKey: [[keys objectAtIndex: i] objectValue]];
+				}
 				
 				// Ok, now, we have the parameters -> execute it !
 				
@@ -146,8 +163,6 @@
 		
 		if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"exportSelectedToPath"])
 		{
-			NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
-			
 			NSError	*error = 0L;
 			NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
 			NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
@@ -156,7 +171,16 @@
 				int i;
 				NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
 				for( i = 0; i < [keys count]; i++)
-					[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
+				{
+					id value;
+					
+					if( [encoding isEqualToString:@"UTF-8"] == NO &&  [[[values objectAtIndex: i] objectValue] isKindOfClass:[NSString class]])
+						value = [(NSString*)CFXMLCreateStringByUnescapingEntities(NULL, (CFStringRef)[[values objectAtIndex: i] objectValue], NULL) autorelease];
+					else
+						value = [[values objectAtIndex: i] objectValue];
+					
+					[paramDict setValue: value  forKey: [[keys objectAtIndex: i] objectValue]];
+				}
 				
 				// Ok, now, we have the parameters -> execute it !
 				
@@ -181,8 +205,6 @@
 		
 		if( [[httpServerMessage valueForKey: @"MethodName"] isEqualToString: @"openSelectedWithTiling"])
 		{
-			NSXMLDocument *doc = [httpServerMessage valueForKey:@"NSXMLDocument"];						// We need the parameters
-			
 			NSError	*error = 0L;
 			NSArray *keys = [doc nodesForXPath:@"methodCall/params//member/name" error:&error];
 			NSArray *values = [doc nodesForXPath:@"methodCall/params//member/value" error:&error];
@@ -191,7 +213,16 @@
 				int i;
 				NSMutableDictionary *paramDict = [NSMutableDictionary dictionary];
 				for( i = 0; i < [keys count]; i++)
-					[paramDict setValue: [[values objectAtIndex: i] objectValue] forKey: [[keys objectAtIndex: i] objectValue]];
+				{
+					id value;
+					
+					if( [encoding isEqualToString:@"UTF-8"] == NO &&  [[[values objectAtIndex: i] objectValue] isKindOfClass:[NSString class]])
+						value = [(NSString*)CFXMLCreateStringByUnescapingEntities(NULL, (CFStringRef)[[values objectAtIndex: i] objectValue], NULL) autorelease];
+					else
+						value = [[values objectAtIndex: i] objectValue];
+					
+					[paramDict setValue: value  forKey: [[keys objectAtIndex: i] objectValue]];
+				}
 				
 				// Ok, now, we have the parameters -> execute it !
 				
