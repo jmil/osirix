@@ -1,4 +1,7 @@
 - C-GET
+- Merge SR with VR
+- ROI Manager (series level)
+- Hanging Protocols
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
