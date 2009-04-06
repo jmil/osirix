@@ -2,8 +2,7 @@
 - Merge SR with VR
 - ROI Manager (series level)
 - Hanging Protocols
-- waitforassociation alert window : main thread
-- similar name
+- similar name : soundex
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality

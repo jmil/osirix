@@ -87,11 +87,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	[super dealloc];
 	
 }
-- (void) addedToDB:(NSNotification *)note{
+- (void) addedToDB:(NSNotification *)note
+{
 	NSArray* fileList = [[note userInfo] objectForKey:@"OsiriXAddToDBArray"] ;
-	NSLog( @"%d files added",[fileList count]);
 	[self cleanUpCachFolder];
-	NSLog(@"cmiv plugin delete old files");
 	//[fileList retain];
 	//[NSThread detachNewThreadSelector: @selector(startAutoProg:) toTarget: self withObject: nil];	
 	
