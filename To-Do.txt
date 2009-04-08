@@ -3,7 +3,6 @@
 - ROI Manager (series level)
 - Hanging Protocols
 - similar name : soundex
-- arrow direction for 3d mpr export
 - Auto-adjust printing bug
 
 - Clipping Plane option in 3D VR/MIP viewer
