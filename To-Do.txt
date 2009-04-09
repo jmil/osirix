@@ -3,7 +3,6 @@
 - ROI Manager (series level)
 - Hanging Protocols
 - similar name : soundex
-- Auto-adjust printing bug
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
