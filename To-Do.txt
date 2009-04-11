@@ -3,6 +3,8 @@
 - ROI Manager (series level)
 - Hanging Protocols
 - similar name : soundex
+- Option for JPEG2000 export
+- SN sys Bonjour
 
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
