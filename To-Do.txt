@@ -3,6 +3,9 @@
 - ROI Manager (series level)
 - Hanging Protocols
 
+- soundex activate
+- JP2000 compression activate
+
 - Clipping Plane option in 3D VR/MIP viewer
 - Super Sampling for Volume Rendering: Better rendering quality
 - A new MPR viewer: 3D-MPR (it replaces the old 2D-MPR)
