@@ -1,4 +1,5 @@
 - C-GET
+- DICOM TLS
 - Merge SR with VR
 - ROI Manager (series level)
 - Hanging Protocols
