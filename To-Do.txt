@@ -4,6 +4,8 @@
 - ROI Manager (series level)
 - Hanging Protocols
 
+- Date + Seed in Installer
+
 - soundex activate
 - JP2000 compression activate
 
