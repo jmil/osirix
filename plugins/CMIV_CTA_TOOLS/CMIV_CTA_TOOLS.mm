@@ -89,13 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (void) addedToDB:(NSNotification *)note
 {
-	NSArray* fileList = [[note userInfo] objectForKey:@"OsiriXAddToDBArray"] ;
 	[self cleanUpCachFolder];
-	//[fileList retain];
-	//[NSThread detachNewThreadSelector: @selector(startAutoProg:) toTarget: self withObject: nil];	
-	
-	
-	
 }
 
 
