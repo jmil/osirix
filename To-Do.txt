@@ -3,6 +3,7 @@
 - Merge SR with VR
 - ROI Manager (series level)
 - Hanging Protocols
+- Compression settings (JP2K, modality, ...)
 
 - Date + Seed in Installer
 
