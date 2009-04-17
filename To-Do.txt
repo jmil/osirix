@@ -5,8 +5,7 @@
 - Hanging Protocols
 - Compression settings (JP2K, modality, ...)
 
-- Date + Seed in Installer
-
+- 2D points in MPR
 - soundex activate
 - JP2000 compression activate
 
