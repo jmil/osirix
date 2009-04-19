@@ -5,7 +5,6 @@
 - Hanging Protocols
 - Compression settings (JP2K, modality, ...)
 
-- 2D points in MPR
 - soundex activate
 - JP2000 compression activate
 
