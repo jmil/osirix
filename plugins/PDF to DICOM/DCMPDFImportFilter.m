@@ -3,12 +3,8 @@
 //  
 //
 
-//  Copyright (c) 2005 Macrad, LL. All rights reserved.
-//
-
 #import "DCMPDFImportFilter.h"
 #import <OsiriX/DCM.h>
-//#import <OsiriX/DCMEncapsulatedPDF.h>
 
 #import "browserController.h"
 
@@ -16,9 +12,13 @@
 
 - (long) filterImage:(NSString*) menuName
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	self.addtoCurrentStudy = [[NSUserDefaults standardUserDefaults] boolForKey: @"PDFtoDICOMaddToCurrentStudy"];
+	
 	if (_addtoCurrentStudy)
 		[self studyInfo];
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	NSDate *date = [datePicker dateValue];
 	_studyDate = [DCMCalendarDate dicomDateWithDate:date];
 	_studyTime = [DCMCalendarDate dicomTimeWithDate:date];
@@ -37,8 +37,9 @@
 	[openPanel setTitle:NSLocalizedString(@"Import", nil)];
 	[openPanel setMessage:NSLocalizedString(@"Select PDF or folder of PDFs to convert to DICOM", nil)];
 	
-	if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]] == NSOKButton){
-		_docTitle = [studyDesciptionID stringValue];
+	if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]] == NSOKButton)
+	{
+		self.docTitle = [studyDesciptionID stringValue];
 		
 		DCMObject *dcmObject = [DCMObject dcmObject];
 		[dcmObject newStudyInstanceUID];
@@ -98,9 +99,12 @@
 	
 	_studyInstanceUID = nil;
 	_seriesInstanceUID = nil;
-
+	
+	
+	[[NSUserDefaults standardUserDefaults] setBool: _addtoCurrentStudy forKey: @"PDFtoDICOMaddToCurrentStudy"];
+	
 	[pool release];
-	//JF20070211 (it was returning the error code) return -1;
+	
 	return 0;
 }
 

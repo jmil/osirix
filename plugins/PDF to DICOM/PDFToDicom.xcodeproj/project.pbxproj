@@ -67,7 +67,6 @@
 				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
-				7E6CE363088FE908009FBFBD /* ConversionInfo.nib */,
 			);
 			name = Duplicate;
 			sourceTree = "<group>";
@@ -86,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				8D5B49B7048680CD000E48DA /* Info.plist */,
+				7E6CE363088FE908009FBFBD /* ConversionInfo.nib */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
