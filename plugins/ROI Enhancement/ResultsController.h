@@ -12,12 +12,12 @@
 #import "ViewerController.h"
 #import "DCMView.h"
 #import "GraphX/CTScatterPlotView.h"
-#import "PlotData.h"
+//#import "PlotData.h"
 
 @interface ResultsController : NSWindowController
 {
 	IBOutlet CTScatterPlotView *plotMean, *plotMin, *plotMax;
-	IBOutlet PlotData *plotMeanData, *plotMinData, *plotMaxData;
+//	IBOutlet PlotData *plotMeanData, *plotMinData, *plotMaxData;
 	IBOutlet NSTextField *roiName;
 	
 	ROI* curROI;

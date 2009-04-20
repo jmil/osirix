@@ -157,9 +157,9 @@
 		
 	}
 	
-	[plotMinData setValue: rmin number: num];
-	[plotMaxData setValue: rmax number: num];
-	[plotMeanData setValue: rmean number: num];
+//	[plotMinData setValue: rmin number: num];
+//	[plotMaxData setValue: rmax number: num];
+//	[plotMeanData setValue: rmean number: num];
 	
 	[plotMean setNeedsDisplay: YES];
 	[plotMin setNeedsDisplay: YES];

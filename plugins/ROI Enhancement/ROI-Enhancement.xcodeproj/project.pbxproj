@@ -24,8 +24,6 @@
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
 		ABFD638D0F3B4C9E00592B90 /* GraphX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFD638C0F3B4C9E00592B90 /* GraphX.framework */; };
 		ABFD63960F3B4CB600592B90 /* GraphX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = ABFD638C0F3B4C9E00592B90 /* GraphX.framework */; };
-		CE4B2DA90F3F318A00AEE742 /* PlotData.h in Headers */ = {isa = PBXBuildFile; fileRef = CE4B2DA70F3F318A00AEE742 /* PlotData.h */; };
-		CE4B2DAA0F3F318A00AEE742 /* PlotData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4B2DA80F3F318A00AEE742 /* PlotData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,8 +60,6 @@
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		ABC38D7306823F62006E9132 /* ROI-Enhancement.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ROI-Enhancement.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFD638C0F3B4C9E00592B90 /* GraphX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GraphX.framework; sourceTree = "<group>"; };
-		CE4B2DA70F3F318A00AEE742 /* PlotData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlotData.h; sourceTree = "<group>"; };
-		CE4B2DA80F3F318A00AEE742 /* PlotData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlotData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,8 +156,6 @@
 				AB37E67906822B8F00244A70 /* ROI-EnhancementFilter.h */,
 				AB37E69906822C3900244A70 /* ResultsController.m */,
 				AB37E69A06822C3900244A70 /* ResultsController.h */,
-				CE4B2DA80F3F318A00AEE742 /* PlotData.m */,
-				CE4B2DA70F3F318A00AEE742 /* PlotData.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -196,7 +190,6 @@
 				ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */,
 				AB37E67B06822B8F00244A70 /* ROI-EnhancementFilter.h in Headers */,
 				AB37E69C06822C3900244A70 /* ResultsController.h in Headers */,
-				CE4B2DA90F3F318A00AEE742 /* PlotData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +264,6 @@
 			files = (
 				AB37E67C06822B8F00244A70 /* ROI-EnhancementFilter.m in Sources */,
 				AB37E69B06822C3900244A70 /* ResultsController.m in Sources */,
-				CE4B2DAA0F3F318A00AEE742 /* PlotData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
