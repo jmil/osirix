@@ -7,7 +7,7 @@
 
 - soundex activate
 - JP2000 compression activate
-- Drag and drop 1 file, a umlaut
+- Drag and drop 1 file
 
 Cours
 - Basics:
