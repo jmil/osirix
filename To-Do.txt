@@ -61,7 +61,7 @@ IT SEEMS TO WORK IF WE DONT CHANGE THE SIZE....
 # define VTK_FREETYPE_CACHING_SUPPORTED
 #endif
 
-for i in `ls *.dylib`; do install_name_tool -id @executable_path/FrameWorks/"$i" "$i"; done
+for i in `ls *.dylib`; do install_name_tool -id @executable_path/../Frameworks/"$i" "$i"; done
 
 - WARNING MEMORY LEAK IN SetCocoaManager (vtkCocoaRenderWindowInteractor and vtkCocoaRenderWindow) :
 
