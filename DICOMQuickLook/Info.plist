@@ -57,5 +57,31 @@
 	<real>512</real>
 	<key>QLPreviewHeight</key>
 	<real>512</real>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>DICOM</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.nema.dicom</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://dicom.nema.org</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>com.apple.ostype</key>
+				<string>DICM</string>
+				<key>public.filename-extension</key>
+				<array>
+					<string>dcm</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>Application/dicom</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
