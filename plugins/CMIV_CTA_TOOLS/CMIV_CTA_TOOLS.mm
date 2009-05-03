@@ -46,7 +46,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToDB:) name:@"OsirixAddToDBNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(autoSeedingIndicatorStep:) name:@"CMIVLeveIndicatorStep" object:nil];
+	//autoseeding parameters
+	minimumImagesForEachSeriesToAutoSeeding=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIVAutoSeedingMinimumImagesForEachSeries"];
+	if(minimumImagesForEachSeriesToAutoSeeding<50)
+	{
+		minimumImagesForEachSeriesToAutoSeeding=175;
+		[[NSUserDefaults standardUserDefaults] setInteger:minimumImagesForEachSeriesToAutoSeeding forKey:@"CMIVAutoSeedingMinimumImagesForEachSeries"];
+		//correct history problem disable autoseeding first
+		ifAutoSeedingOnReceive=NO;
+		[[NSUserDefaults standardUserDefaults] setBool:ifAutoSeedingOnReceive forKey:@"CMIVAutoSeedingOnReceive"];
+	}
 	ifAutoSeedingOnReceive=[[NSUserDefaults standardUserDefaults] boolForKey:@"CMIVAutoSeedingOnReceive"];
+
+	seriesNeedToAutomaticProcess=[[NSMutableArray alloc] initWithCapacity:0];
+	isAutoSeeding=NO;
 	performRibCageRemoval=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIVAutoRibRemoval"];
 	if(performRibCageRemoval==0)//if key not found
 	{
@@ -63,7 +76,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	if(performCenterlineTracking==-1)
 		performCenterlineTracking=0;
-	autoWatchOnReceivingKeyWordString=[[NSUserDefaults standardUserDefaults] stringForKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
 	performVesselEnhance=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIVAutoVesselEnhance"];
 	if(performVesselEnhance==0)
 	{
@@ -82,6 +94,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 -(void) dealloc
 {
+	[seriesNeedToAutomaticProcess release];
 	[self cleanUpCachFolder];
 	NSLog(@"cmiv plugin delete old files");
 	[super dealloc];
@@ -89,7 +102,118 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 - (void) addedToDB:(NSNotification *)note
 {
-	[self cleanUpCachFolder];
+	if(!ifAutoSeedingOnReceive)
+		return;
+	NSArray* fileList = [[note userInfo] objectForKey:@"OsiriXAddToDBArray"] ;
+	//[fileList retain];
+	//	
+	autoWatchOnReceivingStudyDesciptionFilterString=[[NSUserDefaults standardUserDefaults] stringForKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	autoWatchOnReceivingSeriesDesciptionFilterString=[[NSUserDefaults standardUserDefaults] stringForKey:@"CMIVAutoWatchSeriesDescriptionKeyWord"];
+	if(!autoWatchOnReceivingStudyDesciptionFilterString)
+	{
+		autoWatchOnReceivingStudyDesciptionFilterString=[NSString stringWithString:@"coronary"];
+		[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingStudyDesciptionFilterString forKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	}
+	if(!autoWatchOnReceivingSeriesDesciptionFilterString)
+	{
+		autoWatchOnReceivingSeriesDesciptionFilterString=[NSString stringWithString:@"cor"];
+		[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingSeriesDesciptionFilterString forKey:@"CMIVAutoWatchSeriesDescriptionKeyWord"];
+	}
+	
+	autoWatchOnReceivingSeriesDesciptionFilterString=[autoWatchOnReceivingSeriesDesciptionFilterString lowercaseString];
+	autoWatchOnReceivingStudyDesciptionFilterString= [autoWatchOnReceivingStudyDesciptionFilterString lowercaseString];
+	NSManagedObject			*image, *series, *study;
+	NSString* seriesDesciption, *studyDescription;
+	unsigned i,j;
+	for(i=0;i<[fileList count];i++)
+	{
+		image=[fileList objectAtIndex:i];
+		if(![[image valueForKey:@"modality"] isEqualToString:@"CT"])
+			continue;
+		series=[image valueForKey:@"series"];
+		study=[series valueForKey:@"study"];
+		seriesDesciption=[series valueForKey:@"name"];
+		studyDescription=[study valueForKey:@"studyName"];
+		seriesDesciption=[seriesDesciption lowercaseString];
+		studyDescription=[studyDescription lowercaseString];
+		NSRange find1,find2;
+		find1=[seriesDesciption rangeOfString:autoWatchOnReceivingSeriesDesciptionFilterString];
+		find2=[studyDescription rangeOfString:autoWatchOnReceivingStudyDesciptionFilterString];
+		if([autoWatchOnReceivingSeriesDesciptionFilterString length]==0)
+			find1.location=1;
+		if([autoWatchOnReceivingStudyDesciptionFilterString length]==0)
+			find2.location=1;
+		if(find1.location==NSNotFound||find2.location==NSNotFound)
+			continue;
+		BOOL alreadyInTheList=NO;
+		for(j=0;j<[seriesNeedToAutomaticProcess count];j++)
+		{
+			if([[series valueForKey:@"seriesDICOMUID"] isEqualToString:[[seriesNeedToAutomaticProcess objectAtIndex:j] valueForKey:@"seriesDICOMUID"]])
+			{
+				alreadyInTheList=YES;
+				break;
+			}
+		}
+		if(!alreadyInTheList)
+			[seriesNeedToAutomaticProcess addObject:series];
+		
+	}
+
+	if(!isAutoSeeding&&[seriesNeedToAutomaticProcess count])
+		[NSThread detachNewThreadSelector: @selector(startAutoProg:) toTarget: self withObject: nil];
+	return;
+
+		
+}
+
+-(void) startAutoProg:(id) sender
+{
+	isAutoSeeding=YES;
+	while([seriesNeedToAutomaticProcess count])
+	{
+		sleep(60);
+		NSManagedObject	 *series=[seriesNeedToAutomaticProcess objectAtIndex:0];
+		if(series&&![series isFault])
+		{
+			NSArray	*fileList = [[series valueForKey:@"images"] allObjects] ;
+			if(fileList&&[fileList count]>minimumImagesForEachSeriesToAutoSeeding)
+			{
+				NSAutoreleasePool   *pool = [[NSAutoreleasePool alloc] init];
+				NSMutableArray* pixList =[[NSMutableArray alloc] initWithCapacity:0];
+				CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
+				@try
+				{
+					NSData*volumeData=[autoSeedingController loadImageFromSeries:series To:pixList];
+					if(volumeData)
+					{
+						float* imgbuff=(float*)[volumeData bytes];
+			//			float* testbuff=[viewerController volumePtr];
+			//			memcpy(testbuff, imgbuff, [volumeData length]);
+						
+						[autoSeedingController runAutoSeeding:nil:self:pixList:imgbuff:1:1:1];
+						
+						[volumeData release];
+					}
+				}
+				@catch( NSException *ne)
+				{
+					NSLog(@"CMIV CTA Plugin: failed to auto proceed series- %@", [series valueForKey:@"name"]);
+				}
+				
+				[pixList release];
+				
+				[seriesNeedToAutomaticProcess removeObject:series];
+				[autoSeedingController release];
+				[pool release];
+			}
+		}
+		else
+		{
+			[seriesNeedToAutomaticProcess removeObjectAtIndex:0];
+			NSLog(@"CMIV CTA Plugin: failed to auto proceed series- %@", [series valueForKey:@"name"]);
+		}
+	}
+	isAutoSeeding=NO;
 }
 
 
@@ -122,7 +246,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		//float* volumeData=[viewerController volumePtr:0];
 		//err = [self loadVesselnessMap:volumeData];
 	}
-
+	else if ( [menuName isEqualToString:NSLocalizedString(@"Smooth Filter 5", nil)] == YES)
+	{
+		CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
+		err=[autoSeedingController smoothingImages3D:viewerController:self:5];
+		[autoSeedingController release];
+		
+	}
+	else if ( [menuName isEqualToString:NSLocalizedString(@"Smooth Filter 10", nil)] == YES)
+	{
+		CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
+		err=[autoSeedingController smoothingImages3D:viewerController:self:10];
+		[autoSeedingController release];
+		
+	}
 	else
 		[self showAboutDlg:nil];
 	
@@ -401,12 +538,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	else
 		[autoVesselEnhanceButton setState:NSOffState];
 	[autoCleanCachDaysText setIntValue:autoCleanCachDays];
-	[autoWatchOnReceivingKeyWordTextField setStringValue:autoWatchOnReceivingKeyWordString];
+	autoWatchOnReceivingStudyDesciptionFilterString=[[NSUserDefaults standardUserDefaults] stringForKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	autoWatchOnReceivingSeriesDesciptionFilterString=[[NSUserDefaults standardUserDefaults] stringForKey:@"CMIVAutoWatchSeriesDescriptionKeyWord"];
+	if(!autoWatchOnReceivingStudyDesciptionFilterString)
+	{
+		autoWatchOnReceivingStudyDesciptionFilterString=[NSString stringWithString:@"coronary"];
+		[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingStudyDesciptionFilterString forKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	}
+	if(!autoWatchOnReceivingSeriesDesciptionFilterString)
+	{
+		autoWatchOnReceivingSeriesDesciptionFilterString=[NSString stringWithString:@"cor"];
+		[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingSeriesDesciptionFilterString forKey:@"CMIVAutoWatchSeriesDescriptionKeyWord"];
+	}
+	
+	[autoWatchOnReceivingKeyWordTextField1 setStringValue:autoWatchOnReceivingStudyDesciptionFilterString];
+	[autoWatchOnReceivingKeyWordTextField2 setStringValue:autoWatchOnReceivingSeriesDesciptionFilterString];
+
 }
 
 - (IBAction)closeAdvancedSettingDlg:(id)sender
 {
-	autoWatchOnReceivingKeyWordString=[autoWatchOnReceivingKeyWordTextField stringValue];
+	autoWatchOnReceivingStudyDesciptionFilterString=[autoWatchOnReceivingKeyWordTextField1 stringValue];
+	autoWatchOnReceivingSeriesDesciptionFilterString=[autoWatchOnReceivingKeyWordTextField2 stringValue];
 	if([autoCenterlineButton state]==NSOnState)
 		performCenterlineTracking=1;
 	else
@@ -421,10 +574,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
 
 	if([autoWatchOnReceivingButton state]==NSOnState)
-		ifAutoSeedingOnReceive=1;
+		ifAutoSeedingOnReceive=YES;
 	else
-		ifAutoSeedingOnReceive=-1;
-	[[NSUserDefaults standardUserDefaults] setInteger:ifAutoSeedingOnReceive forKey:@"CMIVAutoSeedingOnReceive"];
+		ifAutoSeedingOnReceive=NO;
+	[[NSUserDefaults standardUserDefaults] setBool:ifAutoSeedingOnReceive forKey:@"CMIVAutoSeedingOnReceive"];
 	
 	if([autoVesselEnhanceButton state]==NSOnState)
 		performVesselEnhance=1;
@@ -436,8 +589,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		performCenterlineTracking=0;
 	if(performRibCageRemoval==-1)
 		performRibCageRemoval=0;
-	if(ifAutoSeedingOnReceive==-1)
-		ifAutoSeedingOnReceive=0;
+
 	if(performVesselEnhance==-1)
 		performVesselEnhance=0;
 	autoCleanCachDays=[autoCleanCachDaysText intValue];
@@ -447,8 +599,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	}
 	[[NSUserDefaults standardUserDefaults] setInteger:autoCleanCachDays forKey:@"CMIVAutoCleanCachDays"];
 
-	autoWatchOnReceivingKeyWordString=[autoWatchOnReceivingKeyWordTextField stringValue];
-	[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingKeyWordString forKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	autoWatchOnReceivingStudyDesciptionFilterString=[autoWatchOnReceivingKeyWordTextField1 stringValue];
+	autoWatchOnReceivingSeriesDesciptionFilterString=[autoWatchOnReceivingKeyWordTextField2 stringValue];
+	[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingStudyDesciptionFilterString forKey:@"CMIVAutoWatchStudyDescriptionKeyWord"];
+	[[NSUserDefaults standardUserDefaults] setObject:autoWatchOnReceivingSeriesDesciptionFilterString forKey:@"CMIVAutoWatchSeriesDescriptionKeyWord"];
+	
+	[self cleanUpCachFolder];
+
 	[advanceSettingWindow close];
     [NSApp endSheet:advanceSettingWindow returnCode:[sender tag]];
 	[self checkMaxValueForSeedingIndicator];

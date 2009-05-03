@@ -71,6 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSButton *cutPlaneSwitch;
 	IBOutlet NSWindow *qtvrsettingwin;   
 	IBOutlet NSButton *showVolumeSwitch;
+	IBOutlet NSMatrix	*toolsMatrix;
 	int imageWidth,imageHeight,imageAmount; 	
 	ViewerController     *originalViewController;
 	ViewerController     *blendingController;
@@ -118,6 +119,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSRect screenrect;
 	NSMutableArray *isShowingVolumeArray;
 	unsigned char* colorMapFromFile;
+	
 }
 - (IBAction)capureImage:(id)sender;
 - (IBAction)exportQTVR:(id)sender;
@@ -140,6 +142,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)changeToLinearInterpolation:(id)sender;
 - (IBAction)endPanel:(id)sender;
 - (IBAction)changeBlendingFactor:(id)sender;
+- (IBAction)saveDirection:(id)sender;
+- (IBAction)loadAdvancedCLUT:(id)sender;
 - (int) initVRViewForSegmentalVR;
 - (int) initVRViewForDynamicVR;
 - (id) showVRPanel:(ViewerController *) vc :(CMIV_CTA_TOOLS*) owner;
@@ -151,15 +155,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	// Table view data source methods
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView;
 - (id)tableView:(NSTableView *)aTableView
-    objectValueForTableColumn:(NSTableColumn *)aTableColumn
-			row:(int)rowIndex;
+objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex;
 
-//to cheat VRView
-- (float) minimumValue;
-- (float) maximumValue;
-- (float) blendingMinimumValue;
-- (float) blendingMaximumValue;
-- (ViewerController*) viewer2D;
+
 -(NSImage*) imageForFrame:(NSNumber*) cur maxFrame:(NSNumber*) max;
 -(NSImage*) imageForVR:(NSNumber*) cur maxFrame:(NSNumber*) max;
 - (int) prepareImageFor4DQTVR;
@@ -170,5 +168,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void)initTaggedColorList;
 - (void) initCLUTView;
 - (void)setBlendVolumeCLUT;
-- (int)loadMaskFromTempFolder;
+- (int)loadMaskFromTempFolder;			
+- (void)applyAdvancedCLUT:(NSDictionary*)dict;
+
+//to cheat VRView
+- (float) minimumValue;
+- (float) maximumValue;
+- (float) blendingMinimumValue;
+- (float) blendingMaximumValue;
+- (ViewerController*) viewer2D;
+
+- (NSMatrix*) toolsMatrix;
+- (NSMutableArray*) curPixList;
+- (NSString*) style;
 @end

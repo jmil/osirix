@@ -30,6 +30,8 @@
 #import "CMIVSegmentCore.h"
 #import "CMIV3DPoint.h"
 #import "CMIV_AutoSeeding.h"
+#import "CMIVSegmentCore.h"
+#import "QuicktimeExport.h"
 @implementation CMIVContrastPreview
 
 - (IBAction)chooseASeed:(id)sender
@@ -245,6 +247,7 @@
 - (void) updateResultView
 {
 	int index= [resultPageSlider intValue];
+	[resultView setTranlateSlider:resultPageSlider];
 	
 	[self resultViewUpdateROI:index];
 	
@@ -580,19 +583,6 @@
 		//[window setWindowController: self];
 		
 		
-		//hide other segments
-		if(err!=2)
-		{
-			osirixOffset=[vrView offset] ;
-			osirixValueFactor=[vrView valueFactor] ;
-			renderOfVRView = [vrView renderer];
-			
-			volumeOfVRView = (vtkVolume * )[vrView volume];
-			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
-			volumeImageData=(vtkImageData *)volumeMapper->GetInput();
-			volumeDataOfVR=(unsigned short*)volumeImageData->GetScalarPointer();
-			[self updateVRView];
-		}
 		[[self window] setHorizontalSlider:mprYRotateSlider];
 		[[self window] setVerticalSlider:mprXRotateSlider];
 		[[self window] setTranlateSlider:mprPageSlider];
@@ -618,7 +608,31 @@
 		[nc	addObserver: self selector: @selector(crossMove:) name: @"crossMove" object: nil];	
 		[nc	addObserver: self selector: @selector(Display3DPoint:) name: @"Display3DPoint" object: nil];
 		[seedList setDataSource: self];
+
+		//hide other segments
+		if(err!=2)
+		{
+			osirixOffset=[vrView offset] ;
+			osirixValueFactor=[vrView valueFactor] ;
+			renderOfVRView = [vrView renderer];
+			
+			volumeOfVRView = (vtkVolume * )[vrView volume];
+			volumeMapper=(vtkVolumeMapper *) volumeOfVRView->GetMapper() ;
+			//if( volumeMapper) volumeMapper->SetMinimumImageSampleDistance( 2.0);
+			volumeImageData=(vtkImageData *)volumeMapper->GetInput();
+			volumeDataOfVR=(unsigned short*)volumeImageData->GetScalarPointer();
+			[self updateVRView];
+		}
 		
+		if(parent.ifVesselEnhanced==YES)
+		{
+			[vesselEnhancedNotice setHidden:NO];
+			NSColor *color = [NSColor redColor];
+			
+			[vesselEnhancedNotice setTextColor:color];
+		}
+		else
+			[vesselEnhancedNotice setHidden:YES];
 		[originalViewController endWaitWindow: waitWindow];	
 		
 	}
@@ -627,6 +641,21 @@
 	endPointROIsArray=[[NSMutableArray alloc] initWithCapacity:0];
 	manualCenterlinesArray=[[NSMutableArray alloc] initWithCapacity:0];
 	manualCenterlineROIsArray=[[NSMutableArray alloc] initWithCapacity:0];
+	
+	//mistery bug happens when DCMView.h is not updated, scaleValue will be 0, without following code.
+	NSGraphicsContext *context = [NSGraphicsContext currentContext];
+	NSPoint apoint;
+	apoint.x=1;
+	apoint.y=1;
+	NSEvent* virtualMouseDownEvent=[NSEvent mouseEventWithType:NSRightMouseDown location:apoint
+												 modifierFlags:nil timestamp:GetCurrentEventTime() windowNumber: 0 context:context eventNumber: nil clickCount:1 pressure:nil];
+	NSEvent* virtualMouseUpEvent = [NSEvent mouseEventWithType:NSRightMouseUp location:apoint
+												 modifierFlags:nil timestamp:GetCurrentEventTime() windowNumber: 0 context:context eventNumber: nil clickCount:1 pressure:nil];
+	[mprView mouseDown:virtualMouseDownEvent];
+	[mprView mouseUp:virtualMouseUpEvent];
+	//mistery bug above
+	
+	
 	return self;
 	
 }
@@ -765,7 +794,20 @@
 	NSString *viewName = [NSString stringWithString:@"Original"];
 	[mprView setStringID: viewName];
 	[mprView setMPRAngle: 0.0];
-	[mprView setCross: 0 :0 :YES];
+	[mprView showCrossHair];
+	float crossX=-origin[0]/space[0];
+	float crossY=origin[1]/space[1];
+	
+	if(crossX<0)
+		crossX=0;
+	else if(crossX>imExtent[ 1]-imExtent[ 0])
+		crossX=imExtent[ 1]-imExtent[ 0];
+	if(crossY>0)
+		crossY=0;
+	else if(crossY<-(imExtent[ 3]-imExtent[ 2] ))
+		crossY=-(imExtent[ 3]-imExtent[ 2] );
+	[mprView setCrossCoordinates:crossX:crossY :YES];
+
 	
 	[mprView setIndexWithReset: imageAmount/2 :YES];
 	[mprView setOrigin: NSMakePoint(0,0)];
@@ -1336,6 +1378,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 					short unsigned int marker=(short unsigned int)[commentstr intValue];
 					if(marker&&marker<=[newSeedsROIList count])
 					{
+						[[newSeedsROIList objectAtIndex: marker-1 ] setComments:nil];
 						[newSeedsROIList removeObjectAtIndex: marker-1 ];
 						unsigned int i;
 						for(i = 0;i<[[MPRROIList objectAtIndex: 0] count];i++)
@@ -2013,7 +2056,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 		if(isAChoosenColor&&((*(outputData+i))>=thresholdValue))
 			*(volumeData+i)=(unsigned short)((*(inputData+i)+osirixOffset)*osirixValueFactor);
 		else
-			*(volumeData+i)=0;
+			*(volumeData+i)=1;
 		
 	}
 	
@@ -2026,6 +2069,8 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 		return;
 	else
 		[self createUnsignedShortVolumDataUnderMask:volumeDataOfVR];
+
+
 	float ww,wl;
 	[vrView getWLWW: &wl :&ww];
 	[vrView setWLWW: wl : ww];
@@ -2286,9 +2331,15 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	
 	NSLog( @"start step 4");
 	//get parameters
+	skeletonParaLengthThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterLengthThreshold"];
+	skeletonParaEndHuThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterBranchEndThreshold"];
+	if(skeletonParaLengthThreshold<5.0)
+		skeletonParaLengthThreshold=10.0;
+	if(skeletonParaEndHuThreshold<=0.0)
+		skeletonParaEndHuThreshold=100.0;
 	float  pathWeightLength,lengthThreshold,weightThreshold;
-	weightThreshold=[thresholdForDistalEnd floatValue] ;
-	lengthThreshold=[thresholdForBranch floatValue];
+	weightThreshold=skeletonParaEndHuThreshold ;
+	lengthThreshold=skeletonParaLengthThreshold;
 	if(lengthThreshold<5.0)
 		lengthThreshold=5.0;
 	lengthThreshold/=minSpacing;
@@ -2856,7 +2907,8 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	[new3DPoint setY: y];
 	[new3DPoint setZ: z];
 	[[pathsList lastObject] addObject: new3DPoint];
-	
+	[new3DPoint release];
+
 	do{
 		if(!(*(directionData + endpointindex)&0x40))
 			branchlen++;
@@ -2947,13 +2999,16 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 				break;
 		}
 		
+		if(x<0||y<0||z<0||x>=imageWidth||y>=imageHeight||z>=imageAmount)
+			break;
 		endpointindex+=itemp;
 		new3DPoint=[[CMIV3DPoint alloc] init] ;
 		[new3DPoint setX: x];
 		[new3DPoint setY: y];
 		[new3DPoint setZ: z];
 		[[pathsList lastObject] addObject: new3DPoint];
-		
+		[new3DPoint release];
+
 		
 		
 	}while(!((*(directionData + endpointindex))&0x80));
@@ -3043,18 +3098,32 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	else
 		[vrView setCLUT: 0L :0L :0L];	
 }
+//just for cheat
 - (float) minimumValue
 {
-	return 0;
+	return minValueInCurSeries;
 }
 - (float) maximumValue
 {
-	return 1000;
+	return maxValueInCurSeries;
 }
 - (ViewerController*) viewer2D
 {
 	return originalViewController;
 }
+- (NSMutableArray*) curPixList
+{
+	return [originalViewController pixList];
+}
+- (NSString*) style
+{
+	return @"standard";
+}
+- (NSMatrix*) toolsMatrix
+{
+	return toolsMatrix;
+}
+////////////////////////////////////
 - (IBAction)changeVRDirection:(id)sender
 {
 	int tag=[sender tag];
@@ -3067,13 +3136,43 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	else if(tag==3)
 		[vrView axView:sender];
 }
--(NSMutableArray*) curPixList { return [originalViewController pixList];}
 
 - (IBAction)showSkeletonDialog:(id)sender
 {
 	if(!isInWizardMode)
 		[saveBeforeSkeletonization setHidden: YES];
+	skeletonParaLengthThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterLengthThreshold"];
+	skeletonParaEndHuThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterBranchEndThreshold"];
+	skeletonParaCalThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterCalciumThreshold"];
+	if(skeletonParaLengthThreshold<5.0)
+		skeletonParaLengthThreshold=10.0;
+	if(skeletonParaEndHuThreshold<=0.0)
+		skeletonParaEndHuThreshold=100.0;
+	if(skeletonParaCalThreshold<200.0)
+		skeletonParaCalThreshold=650.0;
+	[thresholdForBranch setFloatValue:skeletonParaLengthThreshold];
+	[thresholdForDistalEnd setFloatValue:skeletonParaEndHuThreshold];
+	[skeletonParaCalciumThreshold setFloatValue:skeletonParaCalThreshold];
 	[NSApp beginSheet: skeletonWindow modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+}
+- (IBAction)endSkeletonDialog:(id)sender
+{
+	if([sender tag])
+	{
+		skeletonParaLengthThreshold=[thresholdForBranch floatValue];
+		skeletonParaEndHuThreshold=[thresholdForDistalEnd floatValue];
+		skeletonParaCalThreshold=[skeletonParaCalciumThreshold floatValue];
+		if(skeletonParaLengthThreshold>5.0)
+			[[NSUserDefaults standardUserDefaults] setFloat:skeletonParaLengthThreshold forKey:@"CMIVSkeletonParameterLengthThreshold"];
+		if(skeletonParaEndHuThreshold>0.0)
+			[[NSUserDefaults standardUserDefaults] setFloat:skeletonParaEndHuThreshold forKey:@"CMIVSkeletonParameterBranchEndThreshold"];
+		if(skeletonParaCalThreshold>200.0)
+			[[NSUserDefaults standardUserDefaults] setFloat:skeletonParaCalThreshold forKey:@"CMIVSkeletonParameterCalciumThreshold"];
+		
+	}
+	[skeletonWindow orderOut:sender];
+    [NSApp endSheet:skeletonWindow returnCode:[sender tag]];
+
 }
 - (void) checkRootSeeds:(NSArray*)roiList
 {

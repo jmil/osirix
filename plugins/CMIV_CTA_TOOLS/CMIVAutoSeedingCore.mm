@@ -3069,4 +3069,75 @@ else
 	}
 }
 
+#pragma mark-
+#pragma mark 5 smoothing Filter
+- (int) smoothingFilter:(float *)inData:(float*)outData:(long*)dimension:(float*)imgspacing:(int)iteration
+{
+	
+	imageWidth=dimension[0];
+	imageHeight=dimension[1];
+	imageAmount=dimension[2];
+	
+	long size = sizeof(float) * imageWidth * imageHeight * imageAmount;
+	
+	
+	const     unsigned int        Dimension       = 3;
+	typedef   float               InputPixelType;
+	typedef   float               OutputPixelType;
+	
+	typedef   itk::Image< InputPixelType, Dimension >   InputImageType;
+	typedef   itk::Image< OutputPixelType, Dimension >  OutputImageType;
+	
+	typedef itk::ImportImageFilter< InputPixelType, Dimension > ImportFilterType;
+	
+	ImportFilterType::Pointer importFilter;
+	
+	itk::MultiThreader::SetGlobalDefaultNumberOfThreads( MPProcessors());
+	
+	importFilter = ImportFilterType::New();
+	
+	ImportFilterType::SizeType itksize;
+	itksize[0] = imageWidth; // size along X
+	itksize[1] = imageHeight; // size along Y
+	itksize[2] = imageAmount;// size along Z
+	
+	ImportFilterType::IndexType start;
+	start.Fill( 0 );
+	
+	ImportFilterType::RegionType region;
+	region.SetIndex( start );
+	region.SetSize( itksize );
+	importFilter->SetRegion( region );
+	
+	double origin[ 3 ];
+	origin[0] = 0; // X coordinate
+	origin[1] = 0; // Y coordinate
+	origin[2] = 0; // Z coordinate
+	importFilter->SetOrigin( origin );
+	
+	double spacing[ 3 ];
+	spacing[0] = imgspacing[0]; // along X direction
+	spacing[1] = imgspacing[1]; // along Y direction
+	spacing[2] = imgspacing[2]; // along Z direction
+	importFilter->SetSpacing( spacing ); 
+	
+	const bool importImageFilterWillOwnTheBuffer = false;
+	importFilter->SetImportPointer( inData, itksize[0] * itksize[1] * itksize[2], importImageFilterWillOwnTheBuffer);
+	NSLog(@"ITK Image allocated");
+	
+
+	typedef   itk::CurvatureAnisotropicDiffusionImageFilter< 	InputImageType, 	InputImageType >  SmoothingFilterType;
+	SmoothingFilterType::Pointer smoothing = SmoothingFilterType::New();
+	smoothing->SetTimeStep( 0.0625 );
+	smoothing->SetNumberOfIterations(  iteration );
+	smoothing->SetConductanceParameter( 3.0 );
+	smoothing->SetInput( importFilter->GetOutput() );
+	smoothing->Update();
+	void* smoothedInputImg=smoothing->GetOutput()->GetBufferPointer();
+	memcpy(outData, smoothedInputImg, sizeof(float) * imageWidth * imageHeight * imageAmount);
+	return 0;
+	
+	
+}
+
 @end

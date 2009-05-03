@@ -90,6 +90,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSTextField *oViewRotateXText;
 	IBOutlet NSTextField *oViewRotateYText;
 	
+	IBOutlet NSMatrix	*toolsMatrix;
+	IBOutlet NSTextField *skeletonParaCalciumThreshold;
+	IBOutlet NSTextField *vesselEnhancedNotice;
+
+	
 	ViewerController     *originalViewController;
 	NSData               *originalViewVolumeData;
 	NSArray              *originalViewPixList;
@@ -160,6 +165,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSMutableArray* manualCenterlineROIsArray;
 	float               defaultROIThickness;
 	float  maxHuofRootSeeds;
+	float skeletonParaLengthThreshold,skeletonParaEndHuThreshold,skeletonParaCalThreshold;
+	
 
 }
 - (IBAction)chooseASeed:(id)sender;
@@ -181,6 +188,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)showCross:(id)sender;
 - (IBAction)createSkeleton:(id)sender;
 - (IBAction)showSkeletonDialog:(id)sender;
+- (IBAction)endSkeletonDialog:(id)sender;
 
 - (IBAction)changeVRMode:(id)sender;
 - (IBAction)changeVRColor:(id)sender;
@@ -223,11 +231,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - (int)plantNewSeeds;
 - (int)plantRootSeeds;
-- (float) minimumValue;
-- (float) maximumValue;
 
-- (ViewerController*) viewer2D;
--(NSMutableArray*) curPixList;
 - (void)createROIfrom3DPaths:(NSArray*)pathsList:(NSArray*)namesList;
 
 	// Table view data source methods
@@ -245,4 +249,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void) updateAllCenterlines;
 - (void) reCaculateCPRPath:(NSMutableArray*) roiList :(int) width :(int)height :(float)spaceX: (float)spaceY : (float)spaceZ :(float)originX :(float)originY:(float)originZ;
 - (void) convertCenterlinesToVTKCoordinate:(NSArray*)centerlines;
+
+//only to cheat vrView
+- (float) minimumValue;
+- (float) maximumValue;
+- (ViewerController*) viewer2D;
+-(NSMutableArray*) curPixList;
+- (NSMatrix*) toolsMatrix;
+- (NSMutableArray*) curPixList;
+- (NSString*) style;
+
+
 @end

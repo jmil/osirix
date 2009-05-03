@@ -2557,6 +2557,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					
 					
 					int xx,yy,zz,iitemp,ipointer;
+					if(pointerToUpper==0)
+						continue;
 					switch(pointerToUpper)
 					{
 						case 1: iitemp =  (-imageSize-imageWidth-1);

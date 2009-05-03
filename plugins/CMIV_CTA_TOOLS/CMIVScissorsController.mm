@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "CMIVScissorsController.h"
 #import "CMIV3DPoint.h"
 #import "CMIVSegmentCore.h"
+#import "QuicktimeExport.h"
 
 #define id Id
 //#include "itkConnectedThresholdImageFilter.h"
@@ -437,7 +438,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[seedToolTipsTabView selectTabViewItem:[seedToolTipsTabView tabViewItemAtIndex:3]];
 		[seedToolTipsTabView removeTabViewItem:[seedToolTipsTabView tabViewItemAtIndex:2]];	
 		//[seedToolTipsTabView removeTabViewItem:[seedToolTipsTabView tabViewItemAtIndex:1]];
-		
+		isInitialWithCPRMode=YES;
 
 		[self changAmongMPRCPRAndAnalysis:1];
 	}
@@ -476,6 +477,9 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[[self window] setHorizontalSlider:oXRotateSlider];
 		[[self window] setVerticalSlider:oImageSlider];
 		[[self window] setTranlateSlider:oYRotateSlider];
+		
+		[cPRView setHorizontalSlider:cImageSlider];
+		[cPRView setTranlateSlider:cYRotateSlider ];
 	}
 	[originalView setHorizontalSlider:nil];
 	[originalView setTranlateSlider:nil];
@@ -526,6 +530,23 @@ static		float						deg2rad = 3.14159265358979/180.0;
 #ifdef VERBOSEMODE
 	NSLog( @"******************************CMIV_CTA_PLUGIN 2D View established!*************************************");
 #endif
+	//mistery bug happens when DCMView.h is not updated, scaleValue will be 0, without following code.
+	NSGraphicsContext *context = [NSGraphicsContext currentContext];
+	NSPoint apoint;
+	apoint.x=1;
+	apoint.y=1;
+	NSEvent* virtualMouseDownEvent=[NSEvent mouseEventWithType:NSRightMouseDown location:apoint
+										modifierFlags:nil timestamp:GetCurrentEventTime() windowNumber: 0 context:context eventNumber: nil clickCount:1 pressure:nil];
+	NSEvent* virtualMouseUpEvent = [NSEvent mouseEventWithType:NSRightMouseUp location:apoint
+										  modifierFlags:nil timestamp:GetCurrentEventTime() windowNumber: 0 context:context eventNumber: nil clickCount:1 pressure:nil];
+	[originalView mouseDown:virtualMouseDownEvent];
+	[originalView mouseUp:virtualMouseUpEvent];
+	[cPRView mouseDown:virtualMouseDownEvent];
+	[cPRView mouseUp:virtualMouseUpEvent];
+	[crossAxiasView mouseDown:virtualMouseDownEvent];
+	[crossAxiasView mouseUp:virtualMouseUpEvent];
+	//mistery bug above
+	
 	return self;
 	
 }
@@ -695,7 +716,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[self recaculateAllCenterlinesLength];
 	[centerlinesList reloadData];
 	[cImageSlider setEnabled: NO];
-	[cYRotateSlider setEnabled: NO];
+	//[cYRotateSlider setEnabled: NO];
 
 	return self;
 	
@@ -758,7 +779,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		[self convertCenterlinesToVTKCoordinate:cpr3DPaths];
 		[self setCurrentCPRPathWithPath:[cpr3DPaths objectAtIndex: 0]:[resampleRatioSlider floatValue]];
 		[cImageSlider setEnabled: NO];
-		[cYRotateSlider setEnabled: NO];
+		//[cYRotateSlider setEnabled: NO];
 		[self recaculateAllCenterlinesLength];
 		[centerlinesList reloadData];
 
@@ -843,8 +864,8 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	[[self window] setHorizontalSlider:oXRotateSlider];
 	[[self window] setVerticalSlider:oImageSlider];
 	[[self window] setTranlateSlider:oYRotateSlider];
-	[cPRView setHorizontalSlider:nil];
-	[cPRView setTranlateSlider:nil];
+	[cPRView setHorizontalSlider:cImageSlider];
+	[cPRView setTranlateSlider:cYRotateSlider];
 	
 	
 	if(modeindex==0)
@@ -864,12 +885,14 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(showcross==1)
 		{
 			[axViewCrossShowButton setState:NSOnState];
+			[crossAxiasView showCrossHair];
 			[self updateAxView];
 		}
 		showcross=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIV2DViewShowCViewCrossHair"];
 		if(showcross==1)
 		{
 			[cViewCrossShowButton setState:NSOnState];
+			[cPRView showCrossHair];
 			[self updateCView];
 		}
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"ROITEXTIFSELECTED"];
@@ -882,8 +905,10 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		axViewROIMode=0;
 		cViewMPRorCPRMode=1;
 		[cPRView setCrossCoordinates:-9999 :-9999 :YES];
+		[cPRView hideCrossHair];
 		[cViewCrossShowButton setState:NSOffState];
 		[crossAxiasView setCrossCoordinates:-9999 :-9999 :YES];
+		[crossAxiasView hideCrossHair];
 		[axViewCrossShowButton setState:NSOffState];
 
 		[repulsorButton setEnabled:NO];
@@ -911,8 +936,10 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		}
 		[repulsorButton setEnabled:YES];
 		[cPRView setCrossCoordinates:-9999 :-9999 :YES];
+		[cPRView hideCrossHair];
 		[cViewCrossShowButton setState:NSOffState];
 		[crossAxiasView setCrossCoordinates:-9999 :-9999 :YES];
+		[crossAxiasView hideCrossHair];
 		[axViewCrossShowButton setState:NSOffState];
 		
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ROITEXTIFSELECTED"];
@@ -994,7 +1021,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	oViewRotateAngleX=0;
 	oViewRotateAngleY=0;
 	cViewRotateAngleY=0;
-	centerIsLocked=0;
+
 	
 	reader = vtkImageImport::New();
 	reader->SetWholeExtent(0, imageWidth-1, 0, imageHeight-1, 0, imageAmount-1);
@@ -1064,6 +1091,30 @@ static		float						deg2rad = 3.14159265358979/180.0;
 
 	oViewUserTransform->RotateX(-90);
 	
+	centerIsLocked=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIVLockMPRCenter"];
+	if(centerIsLocked)
+	{
+		[centerLock setState:NSOnState];
+		NSString* path=[parent osirixDocumentPath];
+		NSString	*str =  [path stringByAppendingString:@"/CMIVCTACache/VRT.sav"];
+		
+		NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: str];
+		NSArray* matrixarray=[dict objectForKey:@"MPRTranformMatrix"];
+		if(matrixarray&&[matrixarray count]==16)
+		{
+			double matrix[16];
+			int i;
+			for(i=0;i<16;i++)
+				matrix[i]=[[matrixarray objectAtIndex:i] doubleValue];
+			oViewBasicTransform->Identity();
+			oViewUserTransform->SetMatrix(matrix);
+		}
+		else
+			[centerLock setState:NSOffState];
+		
+	}
+	
+	
 	inverseTransform = (vtkTransform*)oViewUserTransform->GetLinearInverse();
 	
 	
@@ -1129,6 +1180,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	NSString *viewName = [NSString stringWithString:@"Original"];
 	[originalView setStringID: viewName];
 	[originalView setMPRAngle: 0.0];
+	[originalView showCrossHair];
 	
 	[originalView setIndexWithReset: 0 :YES];
 	[originalView setOrigin: NSMakePoint(0,0)];
@@ -1191,7 +1243,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	//	viewName = [NSString stringWithString:@"Original"];
 	[cPRView setStringID: viewName];
 	[cPRView setMPRAngle: 0.0];
-
+	[cPRView showCrossHair];
 	
 	[cPRView setIndexWithReset: 0 :YES];
 	[cPRView setOrigin: NSMakePoint(0,0)];
@@ -1210,7 +1262,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	else if(crossY<-(imExtent[ 3]-imExtent[ 2] ))
 		crossY=-(imExtent[ 3]-imExtent[ 2] );
 	[cPRView setCrossCoordinates:crossX:crossY :YES];
-	
+
 	
 	axViewSlice = vtkImageReslice::New();
 	axViewSlice->SetAutoCropOutput( true);
@@ -1265,8 +1317,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	viewName = [NSString stringWithString:@"Original"];
 	[crossAxiasView setStringID: viewName];
 	[crossAxiasView setMPRAngle: 0.0];
-	//	[cPRView setMPRAngle: 0.0];
-	//	[cPRView setCross: 0 :0 :YES];
+	[crossAxiasView showCrossHair];
 	
 	[crossAxiasView setIndexWithReset: 0 :YES];
 	[crossAxiasView setOrigin: NSMakePoint(0,0)];
@@ -1287,7 +1338,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	else if(crossY<-(imExtent[ 3]-imExtent[ 2] ))
 		crossY=-(imExtent[ 3]-imExtent[ 2] );
 	[crossAxiasView setCrossCoordinates:crossX:crossY :YES];
-//	if(!isInWizardMode)
+
 	{
 	
 		int showcross=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIV2DViewShowAxViewCrossHair"];
@@ -1299,6 +1350,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(showcross!=1)
 		{
 			[crossAxiasView setCrossCoordinates:-9999 :-9999 :YES];
+			[crossAxiasView hideCrossHair];
 			[axViewCrossShowButton setState:NSOffState];
 		}
 		showcross=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIV2DViewShowCViewCrossHair"];
@@ -1310,6 +1362,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(showcross!=1)
 		{
 			[cPRView setCrossCoordinates:-9999 :-9999 :YES];
+			[cPRView hideCrossHair];
 			[cViewCrossShowButton setState:NSOffState];
 		}
 		showcross=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIV2DViewShowOViewCrossHair"];
@@ -1321,18 +1374,11 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(showcross!=1)
 		{
 			[originalView setCrossCoordinates:-9999 :-9999 :YES];
+			[originalView hideCrossHair];
 			[oViewCrossShowButton setState:NSOffState];
 		}
 	}
-//	else
-//	{
-//		[oViewCrossShowButton setState:NSOnState];
-//		[cViewCrossShowButton setState:NSOffState];
-//		[cViewCrossShowButton setEnabled:NO];
-//		[axViewCrossShowButton setState:NSOffState];
-//		[axViewCrossShowButton setEnabled:NO];
-//		
-//	}
+
 	
 	return 0;
 	
@@ -1501,7 +1547,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		lastAxViewTranslate=0;
 		
 		[cImageSlider setEnabled: YES];
-		[cYRotateSlider setEnabled: YES];
+		//[cYRotateSlider setEnabled: YES];
 
 	}
 	else {
@@ -1516,12 +1562,12 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(isStraightenedCPR)
 		{
 			[cImageSlider setEnabled: NO];
-			[cYRotateSlider setEnabled: YES];
+			//[cYRotateSlider setEnabled: YES];
 		}
 		else
 		{
 			[cImageSlider setEnabled: NO];
-			[cYRotateSlider setEnabled: NO];
+			//[cYRotateSlider setEnabled: NO];
 		}
 		
 		
@@ -1676,6 +1722,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	lastOViewYAngle=0;
 	
 	[cYRotateSlider setFloatValue: 0];	
+	lastCViewYAngle=0;
 	[cViewRotateYText setFloatValue: 0];
 	
 	[self updatePageSliders];		
@@ -1747,6 +1794,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if([axViewCrossShowButton state]==NSOnState)
 		{
 			[axViewCrossShowButton setState:NSOffState];
+			[crossAxiasView hideCrossHair];
 			[self updateAxView];
 		}
 		if(!contrastVolumeData)
@@ -1763,6 +1811,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		if(showcross==1)
 		{
 			[axViewCrossShowButton setState:NSOnState];
+			[crossAxiasView showCrossHair];
 			[self updateAxView];
 		}
 
@@ -1940,14 +1989,40 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	
 	if([centerLock state]== NSOnState)
 	{
-		centerIsLocked=1;
+		NSMutableArray* matrixArray=[NSMutableArray arrayWithCapacity:16];
+		vtkMatrix4x4 * aMatrix = oViewUserTransform->GetMatrix();
+		int i,j;
+		for(i=0;i<4;i++)
+			for(j=0;j<4;j++)
+			{
+				double tempdouble=aMatrix->GetElement(i, j);
+				[matrixArray addObject:[NSNumber numberWithDouble:tempdouble]];
+			}
+		NSString* path=[parent osirixDocumentPath];
+		NSString	*str =  [path stringByAppendingString:@"/CMIVCTACache/VRT.sav"];
 		
-		[oImageSlider setEnabled: NO]; 
+		NSMutableDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: str];
+		
+		if(!dict)
+			dict=[NSMutableDictionary dictionary];
+		[dict setObject:matrixArray forKey:@"MPRTranformMatrix"];
+		
+		
+		
+		[dict writeToFile:str atomically:YES];
+		centerIsLocked=1;
+
+		[[NSUserDefaults standardUserDefaults] setInteger:centerIsLocked forKey:@"CMIVLockMPRCenter"];
+	
+		
 	}
 	else
 	{
 		centerIsLocked=0;
-		[oImageSlider setEnabled: YES]; 
+		
+		[[NSUserDefaults standardUserDefaults] setInteger:centerIsLocked forKey:@"CMIVLockMPRCenter"];
+		[self resetOriginalView:self];
+		
 	}
 	
 	[self updateOView];
@@ -1957,14 +2032,12 @@ static		float						deg2rad = 3.14159265358979/180.0;
 }
 - (IBAction)changOriginalViewDirection:(id)sender
 {
-	if(!centerIsLocked)
-	{
-		float origin[3]={0,0,0};
-		oViewUserTransform->TransformPoint(origin,origin);
-		oViewBasicTransform->Identity();
-		oViewBasicTransform->Translate( origin[0], origin[1], origin[2] );
-		
-	}
+
+	float origin[3]={0,0,0};
+	oViewUserTransform->TransformPoint(origin,origin);
+	oViewBasicTransform->Identity();
+	oViewBasicTransform->Translate( origin[0], origin[1], origin[2] );
+
 	
 	oViewUserTransform->Identity();	
 	oViewUserTransform->RotateX(-90);
@@ -2129,7 +2202,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	else
 		interpolationMode=1;
 	
-	if(angle!=0||interpolationMode)
+	if(angle-lastCViewYAngle!=0||interpolationMode)
 	{
 		cViewTransform->Identity();
 		cViewTransform->Translate(cPRViewCenter.x,cPRViewCenter.y,0 );
@@ -2137,8 +2210,13 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		cViewTransform->RotateY(-90);
 		
 		cViewTransform->RotateY(angle);	
-		
-		[self updateCView];
+		if(currentViewMode==1&&!isStraightenedCPR)
+		{
+			[oYRotateSlider setFloatValue:[oYRotateSlider floatValue]+angle-lastCViewYAngle];
+			[oYRotateSlider performClick:sender];
+		}
+		else
+			[self updateCView];
 		
 		[cImageSlider setFloatValue:0];
 		lastCViewTranslate=0;
@@ -2153,6 +2231,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 				
 			}
 		}
+		lastCViewYAngle=angle;
 	}		
 	
 	
@@ -2176,7 +2255,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 		cViewTransform->RotateY(-90);
 		
 		cViewTransform->RotateY(angle);	
-		
+
 		[self updateCView];
 		
 		[cImageSlider setFloatValue:0];
@@ -2192,6 +2271,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 				
 			}
 		}
+		
 	}		
 	
 	
@@ -2406,6 +2486,7 @@ static		float						deg2rad = 3.14159265358979/180.0;
 						[cImageSlider setMaxValue: ([cImageSlider maxValue]-oX)];
 						[cImageSlider setMinValue: ([cImageSlider minValue]-oX)];
 						[cYRotateSlider setFloatValue: 0];
+						lastCViewYAngle=0;
 					}
 				}
 			}
@@ -2603,25 +2684,43 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	if(sender==axViewCrossShowButton)
 	{
 		if([sender state]==NSOnState)
+		{
 			showcross=1;
+			[crossAxiasView showCrossHair];
+		}
 		else
+		{
 			showcross=-1;
-		[[NSUserDefaults standardUserDefaults] setInteger:showcross forKey:@"CMIV2DViewShowAxViewCrossHair"];	
+			[crossAxiasView hideCrossHair];
+		}
+		[[NSUserDefaults standardUserDefaults] setInteger:showcross forKey:@"CMIV2DViewShowAxViewCrossHair"];
 	}
 	if(sender==cViewCrossShowButton)
 	{
 		if([sender state]==NSOnState)
+		{
 			showcross=1;
+			[cPRView showCrossHair];
+		}
 		else
+		{
 			showcross=-1;
+			[cPRView hideCrossHair];
+		}
 		[[NSUserDefaults standardUserDefaults] setInteger:showcross forKey:@"CMIV2DViewShowCViewCrossHair"];	
 	}
 	if(sender==oViewCrossShowButton)
 	{
 		if([sender state]==NSOnState)
+		{
 			showcross=1;
+			[originalView showCrossHair];
+		}
 		else
+		{
 			showcross=-1;
+			[originalView hideCrossHair];
+		}
 		[[NSUserDefaults standardUserDefaults] setInteger:showcross forKey:@"CMIV2DViewShowOViewCrossHair"];	
 	}
 	
@@ -2646,7 +2745,11 @@ static		float						deg2rad = 3.14159265358979/180.0;
 	cViewTransform->Identity();
 	cViewTransform->RotateY(-90);
 	[cImageSlider setFloatValue: 0];
-	[cYRotateSlider setFloatValue:0];
+	if(currentViewMode==0)
+	{
+		[cYRotateSlider setFloatValue:0];
+		lastCViewYAngle=0;
+	}
 	cPRViewCenter.x=0;
 	cPRViewCenter.y=0;
 	oViewToCViewZAngle=0;
@@ -3532,6 +3635,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 {
 	vtkImageData	*tempIm;
 	int				imExtent[ 6];
+	BOOL drawingArrawTool=NO;
 	if(interpolationMode)
 		cViewSlice->SetInterpolationModeToCubic();
 	else
@@ -3585,6 +3689,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 			[[points objectAtIndex:1] setPoint: start];
 			[[points objectAtIndex:0] setPoint: end];
 			cViewArrowStartPoint=start;
+			drawingArrawTool=YES;
 			
 		}
 		else if([roi type]==tMesure)
@@ -3595,7 +3700,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 		}
 		
 	}
-	if([cViewCrossShowButton state]== NSOnState)
+	if([cViewCrossShowButton state]== NSOnState&&!drawingArrawTool)
 	{
 		float crossX,crossY;
 		crossX=-cViewOrigin[0]/cViewSpace[0];
@@ -3896,9 +4001,9 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	if(isStraightenedCPR)
 	{
 		isStraightenedCPR = NO;
-		[cPRView setTranlateSlider:nil];
+		//[cPRView setTranlateSlider:nil];
 		[straightenedCPRSwitchMenu setTitle:@"Straightened CPR"];
-		[cYRotateSlider setEnabled: NO];
+		//[cYRotateSlider setEnabled: NO];
 		axViewSlice->SetResliceTransform( axViewTransform);
 		if(fuzzyConectednessMap)
 			axViewROISlice->SetResliceTransform( axViewTransform);
@@ -3910,14 +4015,14 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 		isStraightenedCPR = YES;
 		
 		[straightenedCPRSwitchMenu setTitle:@"Curved MPR"];
-		[cYRotateSlider setEnabled: YES];
+		//[cYRotateSlider setEnabled: YES];
 		axViewSlice->SetResliceTransform( axViewTransformForStraightenCPR);
 		if(fuzzyConectednessMap)
 			axViewROISlice->SetResliceTransform( axViewTransformForStraightenCPR);
 
 		[straightenedCPRButton setState:NSOnState];	
 		[self relocateAxViewSlider];
-		[cPRView setTranlateSlider:cYRotateSlider];
+		//[cPRView setTranlateSlider:cYRotateSlider];
 		
 		
 	}
@@ -4079,6 +4184,34 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 		[self showCPRImageDialog:sender];
 	}
 }
+- (IBAction)quicktimeExport:(id)sender
+{
+	
+	//FSRef				fsref;
+	//FSSpec				spec, newspec;
+	//	[vrViewer renderImageWithBestQuality: YES waitDialog: NO];
+	{
+		QuicktimeExport *mov = [[QuicktimeExport alloc] initWithSelector: self : @selector(imageForQuickTime: maxFrame:) :20];
+		
+		NSString* path;
+		
+		path=[mov createMovieQTKit:YES :NO :[[[originalViewController fileList] objectAtIndex:0] valueForKeyPath:@"series.study.name"]];
+		
+		[mov release];		
+	}
+	//	[vrViewer endRenderImageWithBestQuality];
+	
+	
+}
+-(NSImage*) imageForQuickTime:(NSNumber*) cur maxFrame:(NSNumber*) max
+{
+	
+	[oYRotateSlider setFloatValue:([cur intValue]*18-180)];
+	[self rotateYOView:oYRotateSlider];
+	NSImage* tempImage=[originalView nsimage];
+
+	return tempImage;
+}
 
 - (IBAction)showCPRImageDialog:(id)sender
 {
@@ -4196,6 +4329,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 						if(currentangle>180)
 							currentangle-=360;
 						[cYRotateSlider setFloatValue: currentangle ];
+						lastCViewYAngle=currentangle;
 						[self updateCView];
 					}
 					else

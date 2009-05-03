@@ -274,7 +274,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	NSRect   cPRROIRect;
 	NSRect   axCircleRect;
 	int      centerIsLocked;
-	float    lastOViewXAngle,lastOViewYAngle,lastOViewTranslate;
+	float    lastOViewXAngle,lastOViewYAngle,lastOViewTranslate,lastCViewYAngle;
 	float    lastCViewTranslate,lastAxViewTranslate;
 	float    lastOViewZAngle,lastCViewZAngle,lastAxViewZAngle;
 	double	 oViewSpace[3], oViewOrigin[3];
@@ -423,7 +423,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (IBAction)cancelAutoSegmentaion:(id)sender;
 
 - (IBAction)changeROIShowingInAxView:(id)sender;
-
+- (IBAction)quicktimeExport:(id)sender;
 - (id) showPanelAfterROIChecking:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (id) showScissorsPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
 - (int) showPolygonMeasurementPanel:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner;
@@ -532,4 +532,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -(BOOL)saveCenterlinesInPatientsCoordination;
 -(BOOL)loadCenterlinesInPatientsCoordination;
 -(void)changeSegmentButtonTitle:(id)sender;
+-(NSImage*) imageForQuickTime:(NSNumber*) cur maxFrame:(NSNumber*) max;
 @end

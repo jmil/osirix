@@ -88,4 +88,5 @@
 - (void) fixHolesInBarrierInVolume:(unsigned short*)contrastVolumeData:(int)minx :(int)maxx :(int)miny :(int)maxy :(int)minz :(int)maxz :(short unsigned int) marker;
 -(float)findingMaxDistanceToGravityCenterOfRegion:(unsigned char*)buffer:(int)width:(int)height:(int*)center;
 -(BOOL) detectAorticValve:(float*)inputimg:(unsigned char*)segmenresult:(int)width:(int)height:(int*)center:(float)radius:(double*)spacing;
+- (int) smoothingFilter:(float *)inData:(float*)outData:(long*)dimension:(float*)imgspacing:(int)iteration;
 @end

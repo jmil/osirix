@@ -61,4 +61,8 @@
 - (int) searchBackToCreatCenterlines:(NSMutableArray *)acenterline:(int)endpointindex:(unsigned char*)directionData;
 -(void)enhanceVolumeWithVesselness;
 -(void)deEnhanceVolumeWithVesselness;
+-(int)smoothingImages3D:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner:(int)iteration;
+- (NSData*)loadImageFromSeries:(NSManagedObject*)series To:(NSMutableArray*)pixList;
+-(void) computeIntervalAndFlipIfNeeded: (NSMutableArray*) pixList;
+- (void) flipData:(char*) ptr :(long) no :(long) x :(long) y;
 @end

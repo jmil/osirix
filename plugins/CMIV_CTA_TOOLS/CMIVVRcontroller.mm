@@ -182,7 +182,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 		{
 			NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
 			float* newVolumeData=[originalViewController volumePtr:i];
-			[vrViewer movieBlendingChangeSource:i];
+			//[vrViewer movieBlendingChangeSource:i];
 			[vrViewer movieChangeSource: newVolumeData];
 			[self setBlendVolumeCLUT];
 			
@@ -193,15 +193,18 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 			
 			[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:i ]];
 			[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:i ]];
+			[clutViewer setClutChanged];
 			[clutViewer updateView];
-			[clutViewer setCLUTtoVRViewWithoutRedraw];
-			[vrViewer display];
+	//		[clutViewer setCLUTtoVRViewWithoutRedraw];
+//			[vrViewer display];
+			[vrViewer renderImageWithBestQuality: YES waitDialog: NO display: YES];
+			
 			
 			
 			long	width, height, spp, bpp, err;
 			
 			unsigned char *dataPtr = [vrViewer getRawPixels:&width :&height :&spp :&bpp :YES :NO];
-			
+			[vrViewer endRenderImageWithBestQuality];
 			if( dataPtr)
 			{
 				[vrViewer getOrientation: o];
@@ -834,11 +837,12 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	err = [vrViewer setPixSource:pixList :originalVolumeData ];
 	//clutViewPoints=[colorViewer getPoints];
 	//clutViewColors=[colorViewer getColors];
-
-	NSString	*str =  @"/" ;
+	NSString* path=[parent osirixDocumentPath];
+	NSString	*str =  [path stringByAppendingString:@"/CMIVCTACache/VRT.sav"];
 	
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: str];
-	
+//	if(dict)
+//		[self applyAdvancedCLUT:dict];
 
 	if( err != 0)
 	{
@@ -873,6 +877,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	//   else 
 	//		myVolumeProperty->SetInterpolationTypeToLinear();// can not use linear interpolation because the CT value jump at edge
 	volumeOfVRView->SetProperty( myVolumeProperty);
+	
 	//	myGradientTransferFunction = vtkPiecewiseFunction::New();
 	//	myGradientTransferFunction->AddPoint(3,0.0);
 	//	myGradientTransferFunction->AddPoint(4,1.0);
@@ -964,7 +969,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	[self applyCLUT];
 	// show the window
 	screenrect=[[[originalViewController window] screen] visibleFrame];
-	[[self window]setFrame:screenrect display:NO animate:NO];
+	//[[self window]setFrame:screenrect display:NO animate:NO];
 	[super showWindow:parent];
 	
 	[segmentList setDataSource:self];	
@@ -1047,10 +1052,12 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 	imageHeight = [curPix pheight];
 	imageAmount = [pixList count];
 	
-	NSString	*str =  @"/" ;
+	NSString* path=[parent osirixDocumentPath];
+	NSString	*str =  [path stringByAppendingString:@"/CMIVCTACache/VRT.sav"];
 	
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: str];
-	
+//	if(dict)
+//		[self applyAdvancedCLUT:dict];
 	[vrViewer set3DStateDictionary:dict];
 	if( err != 0)
 	{
@@ -1407,7 +1414,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 			if([cutPlaneSwitch state] == NSOnState)
 			{
 				volumeMapper->AddClippingPlane(clipPlane1);
-				blendedVolumeMapper->AddClippingPlane(clipPlane1);
+				//blendedVolumeMapper->AddClippingPlane(clipPlane1);
 			}
 			
 			[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:row ]];
@@ -1497,12 +1504,12 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	if([sender state] == NSOnState)
 	{
 		volumeMapper->AddClippingPlane(clipPlane1);
-		blendedVolumeMapper->AddClippingPlane(clipPlane1);
+		//blendedVolumeMapper->AddClippingPlane(clipPlane1);
 	}
 	else	
 	{
 		volumeMapper->RemoveClippingPlane(clipPlane1);
-		blendedVolumeMapper->RemoveClippingPlane(clipPlane1);
+		//blendedVolumeMapper->RemoveClippingPlane(clipPlane1);
 	}
 	float savedWl, savedWw;
 	[vrViewer getWLWW: &savedWl :&savedWw];
@@ -1566,6 +1573,18 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 - (float) maximumValue
 {
 	return 1000;
+}
+- (NSMatrix*) toolsMatrix
+{
+	return toolsMatrix;
+}
+- (NSMutableArray*) curPixList
+{
+	return [originalViewController pixList];
+}
+- (NSString*) style
+{
+	return @"standard";
 }
 - (float) blendingMinimumValue
 {
@@ -1637,12 +1656,17 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 }
 - (IBAction)setClipPlaneOrigin:(id)sender
 {
-	clipPlane1->SetOrigin(0,0,[sender floatValue]);
+	double* tempcenter;
+	tempcenter=volumeOfVRView->GetCenter();
+	tempcenter[1]+=[sender doubleValue];
+	clipPlane1->SetOrigin(tempcenter);
+
 }
 - (void)resetClipPlane
 {
 	double normal[3];
 	aCamera->GetViewPlaneNormal( normal);
+//	aCamera->GetViewUp( normal);
 	int i;
 	for(i=0;i<3;i++)
 		normal[i]=-normal[i];
@@ -1714,7 +1738,8 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	}
 	else
 	{
-		myVolumeProperty->SetInterpolationTypeToNearest();
+		//myVolumeProperty->SetInterpolationTypeToNearest();
+		myVolumeProperty->SetInterpolationTypeToLinear();
 		volumeMapper=fixedPointVolumeMapper;
 		volumeOfVRView->SetMapper(volumeMapper);
 	}
@@ -1722,5 +1747,93 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	
 	
 }
+- (IBAction)saveDirection:(id)sender
+{
+	NSString* path=[parent osirixDocumentPath];
+	
+	NSMutableDictionary *dict = [vrViewer get3DStateDictionary];
 
+	NSArray *curves = [clutViewer convertCurvesForPlist];
+	NSArray *colors = [clutViewer convertPointColorsForPlist];
+	[dict setObject:curves forKey:@"16bitClutCurves"];
+	[dict setObject:colors forKey:@"16bitClutColors"];
+
+	
+	NSString	*str =  [path stringByAppendingString:@"/CMIVCTACache/VRT.sav"];
+	
+
+	[dict writeToFile:str atomically:YES];
+	
+}
+-(void)applyAdvancedCLUT:(NSDictionary*)dict
+{
+	
+	NSMutableArray *curves = [CMIVCLUTOpacityView convertCurvesFromPlist:[dict objectForKey:@"16bitClutCurves"]];
+	NSMutableArray *colors = [CMIVCLUTOpacityView convertPointColorsFromPlist:[dict objectForKey:@"16bitClutColors"]];
+	
+	NSMutableDictionary *clut = [NSMutableDictionary dictionaryWithCapacity:2];
+	[clut setObject:curves forKey:@"curves"];
+	[clut setObject:colors forKey:@"colors"];
+	
+
+	unsigned int row = [segmentList selectedRow];
+	unsigned int i,j,k;
+	NSArray* tempcurve;
+	NSArray* tempcolor;
+	
+	i=row;
+	{
+			
+			[[mutiplePhaseOpacityCurves objectAtIndex:i] removeAllObjects];
+			[[mutiplePhaseColorCurves objectAtIndex:i] removeAllObjects];
+			
+			
+			
+			for(j=0;j<[curves count];j++)//ever curve for each segment or volume
+			{
+				NSMutableArray* tempopacitycurve=[NSMutableArray arrayWithCapacity:0];
+				NSMutableArray* tempcolorcurver=[NSMutableArray arrayWithCapacity:0];
+				tempcurve=[curves objectAtIndex:j];
+				tempcolor=[colors objectAtIndex:j];
+				for(k=0;k<[tempcurve count];k++)
+				{
+					[tempopacitycurve addObject:[[tempcurve objectAtIndex:k] copy]];
+					[tempcolorcurver addObject:[[tempcolor objectAtIndex:k] copy]];
+				}
+				[[mutiplePhaseOpacityCurves objectAtIndex:i] addObject:tempopacitycurve];
+				[[mutiplePhaseColorCurves objectAtIndex:i] addObject:tempcolorcurver];	
+				
+			}
+		
+			
+		}
+	
+	[clutViewer setCurves:[mutiplePhaseOpacityCurves objectAtIndex:row ]];
+	[clutViewer setPointColors:[mutiplePhaseColorCurves objectAtIndex:row ]];
+	[clutViewer setClutChanged];
+	[clutViewer updateView];
+	//[vrViewer setAdvancedCLUT:clut lowResolution:NO];
+}
+- (IBAction)loadAdvancedCLUT:(id)sender
+{
+	int                 result;
+    NSOpenPanel         *oPanel = [NSOpenPanel openPanel];
+	
+    
+	[oPanel setCanSelectHiddenExtension:YES];
+	[oPanel setRequiredFileType:@"clut"];
+    [oPanel setAllowsMultipleSelection:NO];
+    [oPanel setCanChooseDirectories:NO];
+    
+    result = [oPanel runModalForDirectory:0L file:nil types:nil];
+    
+    if (result == NSOKButton) 
+    {
+		NSString* path;
+		path=[[oPanel filenames] objectAtIndex: 0];
+		NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
+		if(dict)
+			[self applyAdvancedCLUT:dict];
+	}		
+}
 @end

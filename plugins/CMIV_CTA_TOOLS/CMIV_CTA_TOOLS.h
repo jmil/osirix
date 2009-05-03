@@ -62,9 +62,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	IBOutlet NSButton	*autoVesselEnhanceButton;
 	IBOutlet NSButton	*autoCenterlineButton;
 	IBOutlet NSButton	*autoWatchOnReceivingButton;
-	IBOutlet NSTextField *autoWatchOnReceivingKeyWordTextField;
+	IBOutlet NSTextField *autoWatchOnReceivingKeyWordTextField1;
+	IBOutlet NSTextField *autoWatchOnReceivingKeyWordTextField2;
 	IBOutlet NSTextField *autoCleanCachDaysText;
-	NSString* autoWatchOnReceivingKeyWordString;
+	NSString* autoWatchOnReceivingSeriesDesciptionFilterString;
+	NSString* autoWatchOnReceivingStudyDesciptionFilterString;
 	NSMutableDictionary* dataOfWizard;
 	NSObject* currentController;
 	NSObject* autosaver;
@@ -75,6 +77,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	int performVesselEnhance;
 	BOOL ifVesselEnhanced;
 	int autoCleanCachDays;
+	NSMutableArray* seriesNeedToAutomaticProcess;
+	BOOL isAutoSeeding;
+	unsigned int minimumImagesForEachSeriesToAutoSeeding;
 
 }
 @property BOOL ifVesselEnhanced;
@@ -122,4 +127,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 - (void)saveCurrentStep;
 - (BOOL)loadVesselnessMap:(float*)volumeData:(float*)origin:(float*)spacing:(long*)dimension;
 -(void)checkMaxValueForSeedingIndicator;
+
+-(void) startAutoProg:(id) sender;
+
 @end

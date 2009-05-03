@@ -87,7 +87,7 @@
 	[contextualMenu addItemWithTitle:NSLocalizedString(@"Send to back", nil) action:@selector(sendToBack:) keyEquivalent:@""];
 	[contextualMenu addItemWithTitle:NSLocalizedString(@"Remove All Curves", nil) action:@selector(removeAllCurves:) keyEquivalent:@""];
 	[contextualMenu addItem:[NSMenuItem separatorItem]];
-	[contextualMenu addItemWithTitle:NSLocalizedString(@"Save...", nil) action:@selector(chooseNameAndSave:) keyEquivalent:@""];
+	[contextualMenu addItemWithTitle:NSLocalizedString(@"Save...", nil) action:@selector(save:) keyEquivalent:@""];
 }
 
 #pragma mark -
@@ -1914,20 +1914,41 @@ zoomFixedPoint = [sender floatValue] / [sender maxValue] * drawingRect.size.widt
 
 - (IBAction)save:(id)sender;
 {
-	if([sender tag]==1)
-	{
-		if([[clutSavedName stringValue] length]>0)
-		{
-			[self saveWithName:[clutSavedName stringValue]];
-			[chooseNameAndSaveWindow orderOut:self];
-			[NSApp endSheet:chooseNameAndSaveWindow];
-		}
+	//if([sender tag]==1)
+//	{
+//		if([[clutSavedName stringValue] length]>0)
+//		{
+//			[self saveWithName:[clutSavedName stringValue]];
+//			[chooseNameAndSaveWindow orderOut:self];
+//			[NSApp endSheet:chooseNameAndSaveWindow];
+//		}
+//	}
+//	else
+//	{
+//		[chooseNameAndSaveWindow orderOut:self];
+//		[NSApp endSheet:chooseNameAndSaveWindow];
+//	}	
+	NSSavePanel     *panel = [NSSavePanel savePanel];
+	
+	[panel setCanSelectHiddenExtension:YES];
+	[panel setRequiredFileType:@"clut"];
+	NSString* filename=[NSString stringWithString:@"newCLUT"];
+	
+	if( [panel runModalForDirectory:0L file:filename] == NSFileHandlingPanelOKButton)	
+    {
+		
+		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
+		
+		NSArray *cur_curves = [self convertCurvesForPlist];
+		NSArray *cur_colors = [self convertPointColorsForPlist];
+		[dict setObject:cur_curves forKey:@"16bitClutCurves"];
+		[dict setObject:cur_colors forKey:@"16bitClutColors"];
+		
+		[dict writeToFile:[panel filename] atomically:YES];
+		
 	}
-	else
-	{
-		[chooseNameAndSaveWindow orderOut:self];
-		[NSApp endSheet:chooseNameAndSaveWindow];
-	}	
+	
+		
 }
 
 - (void)saveWithName:(NSString*)name;

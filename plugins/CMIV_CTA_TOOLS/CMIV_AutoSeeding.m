@@ -33,6 +33,7 @@
 #import "CMIVSegmentCore.h"
 #include <Accelerate/Accelerate.h>
 #import "CMIV3DPoint.h"
+#import "browserController.h"
 #define TOPOTHERSEEDS 4
 #define BOTTOMOTHERSEEDS 5
 @implementation CMIV_AutoSeeding
@@ -146,7 +147,7 @@
 		//[aNewCircle release];
 		free(smallVolumeData);
 		radius=radius/2;
-		aortaMaxHu=[coreAlgorithm caculateAortaMaxIntensity:(volumeData+(int)(imageSize*(origin[2]*targetspacing/spacing[2]))):imageWidth:imageHeight:origin[0]*targetspacing/spacing[0]:origin[1]*targetspacing/spacing[1]:radius*targetspacing/spacing[0]];
+		aortaMaxHu=[coreAlgorithm caculateAortaMaxIntensity:(volumeData+imageSize*((int)(origin[2]*targetspacing/spacing[2]))):imageWidth:imageHeight:origin[0]*targetspacing/spacing[0]:origin[1]*targetspacing/spacing[1]:radius*targetspacing/spacing[0]];
 		NSLog( @"tracing aortat ");
 		unsigned short* seedData=(unsigned short*)malloc(dimension[0]*dimension[1]*dimension[2]*sizeof(unsigned short));
 
@@ -264,7 +265,9 @@
 	[dic setObject:seedsnamearray forKey:@"SeedNameArray"];
 	[dic setObject:rootseedsarray forKey:@"RootSeedArray"];
 	//[dic setObject:[NSNumber numberWithInt:uniIndex] forKey:@"UniIndex"];
-	[parent saveCurrentStep];
+	
+	NSString* seriesUid=[[[controllersPixList objectAtIndex:0] seriesObj] valueForKey:@"seriesInstanceUID"];
+	[parent saveIntermediateData:seriesUid];
 	[parent cleanDataOfWizard];
 }
 
@@ -345,11 +348,6 @@
 {
 	
 	long size =  imageWidth * imageHeight * imageAmount;
-//	if(vesselnessMap)
-//		[self mergeVesselnessAndIntensityMap:volumeData:vesselnessMap:size];
-	//vesselnessMap=nil;
-//	[parentVesselnessMap release];
-//	parentVesselnessMap=nil;
 	
 	size = sizeof(float) * imageWidth * imageHeight * imageAmount;
 	float               *inputData=0L, *outputData=0L;
@@ -402,7 +400,10 @@
 		sliceThickness = [curPix sliceThickness];
 	}
 	spacing[2]=sliceThickness;
-	
+	float minSpacing=spacing[0];
+	if(minSpacing>spacing[1])minSpacing=spacing[1];
+	if(minSpacing>spacing[2])minSpacing=spacing[2];
+	minSpacing/=2;
 	for(i=0;i<size;i++)
 		*(outputData+i)=minValueInCurSeries;
 	
@@ -429,6 +430,7 @@
 		{
 			directionData[i]=0x80|BARRIERMARKER;
 			outputData[i]=minValueInCurSeries;
+			//inputData[i]=-10000;
 		}
 	free(colorData);
 	size=imageWidth * imageHeight * imageAmount*sizeof(short);
@@ -448,9 +450,16 @@
 	NSMutableArray* centerlinesList=[NSMutableArray arrayWithCapacity:0];
 	NSMutableArray* centerlinesNameList=[NSMutableArray arrayWithCapacity:0];
 	
+	
+	float skeletonParaLengthThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterLengthThreshold"];
+	float skeletonParaEndHuThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterBranchEndThreshold"];
+	if(skeletonParaLengthThreshold<5.0)
+		skeletonParaLengthThreshold=10.0;
+	if(skeletonParaEndHuThreshold<=0.0)
+		skeletonParaEndHuThreshold=100.0;
 	float pathWeightLength=0;
-	float weightThreshold=100;
-	unsigned lengthThreshold=10.0/spacing[0];
+	float weightThreshold=skeletonParaEndHuThreshold;
+	float lengthThreshold=skeletonParaLengthThreshold/minSpacing;
 	{
 		do
 		{
@@ -464,67 +473,13 @@
 				int len=[self searchBackToCreatCenterlines: apath: endindex:directionData];
 				if(len >= lengthThreshold)
 				{
+//					if(colorindex!=AORTAMARKER)
+//						continue;
 					[centerlinesNameList addObject: [NSString stringWithFormat:@"coronary%d",unknownCenterlineCounter++] ];
 					[centerlinesList addObject:apath];
 				}
 				else
 					break;
-//				[centerlinesList addObject:[NSMutableArray arrayWithCapacity:0]];
-//				unsigned char colorindex;
-//				int len=[self searchBackToCreatCenterlines: centerlinesList: endindex :&colorindex];
-//				if(colorindex<1)
-//				{
-//					[centerlinesList removeLastObject];
-//					continue;
-//					//colorindex=1;
-//					
-//				}
-//				NSString *pathName = [[choosenSeedsArray objectAtIndex:colorindex-1] name];
-//				*(indexForEachSeeds+colorindex-1)=*(indexForEachSeeds+colorindex-1)+1;
-//				[centerlinesNameList addObject: [pathName stringByAppendingFormat:@"%d",*(indexForEachSeeds+colorindex-1)] ];
-//				
-//				if(len < lengthThreshold)
-//				{
-//					[[centerlinesList lastObject] removeAllObjects];
-//					[centerlinesList removeLastObject];
-//					[centerlinesNameList removeLastObject]; 
-//					pathWeightLength=-1;
-//				}
-				//////////////////////////////////////////
-	//			CMIV3DPoint* apoint=[[CMIV3DPoint alloc] init];
-//				int x,y,z;
-//				z=endindex/imageSize;
-//				y=(endindex-z*imageSize)/imageWidth;
-//				x=endindex-z*imageSize-y*imageWidth;
-//				[apoint setX:x];
-//				[apoint setY:y];
-//				[apoint setZ:z];
-//		
-//				
-//				if(x>0&&x<imageWidth-1&&y>0&&y<imageHeight-1&&z>0&&z<imageAmount-1)
-//				{
-//					NSMutableArray* apath=[NSMutableArray arrayWithCapacity:0];
-//					[apath addObject:apoint];
-//					
-//
-//					[segmentCoreFunc dungbeetleSearching:apath :outputData Pointer:directionData];
-//					//int len=[self searchBackToCreatCenterlines: centerlinesList: endindex :&colorindex];
-//	
-//					if([apath count] >= lengthThreshold)
-//					{
-//						[centerlinesNameList addObject: [NSString stringWithFormat:@"coronary%d",unknownCenterlineCounter++] ];
-//						[centerlinesList addObject:apath];
-//					}
-//					else
-//						break;
-//					
-//					
-//				}
-//				else
-//				{
-//					NSLog(@"crossing the borders");
-//					break;
-//				}
 				
 			}
 		}while( pathWeightLength>0);
@@ -608,7 +563,9 @@
 	
 	[dic setObject:cpr3DPathsForSave forKey:@"CenterlineArrays"];
 	[dic setObject:centerlinesNameList forKey:@"CenterlinesNames"];
-	[parent saveCurrentStep];
+	NSString* seriesUid=[[[controllersPixList objectAtIndex:0] seriesObj] valueForKey:@"seriesInstanceUID"];
+	[parent saveIntermediateData:seriesUid];
+
 
 
 	
@@ -723,12 +680,15 @@
 	float* smalloutputVolumeData=(float*)malloc(size);
 	if(smallVolumeData&&smalloutputVolumeData)
 	{
+		float skeletonParaCalciumThreshold=[[NSUserDefaults standardUserDefaults] floatForKey:@"CMIVSkeletonParameterCalciumThreshold"];
+		if(skeletonParaCalciumThreshold<200.0)
+			skeletonParaCalciumThreshold=650.0;
 		
 		[self resampleImage:volumeData:smallVolumeData:dimension:newdimension];
 		int i,totalsize=newdimension[0]*newdimension[1]*newdimension[2];
 		for(i=0;i<totalsize;i++)
 		{
-			if(smallVolumeData[i]<0||smallVolumeData[i]>600)
+			if(smallVolumeData[i]<0||smallVolumeData[i]>skeletonParaCalciumThreshold)
 				smallVolumeData[i]=0;
 			smalloutputVolumeData[i]=0;
 		}
@@ -739,7 +699,7 @@
 		[self resampleImage:volumeData:smallVolumeData:dimension:newdimension];
 		for(i=0;i<totalsize;i++)
 		{
-			if(smallVolumeData[i]>600)
+			if(smallVolumeData[i]>skeletonParaCalciumThreshold)
 				smalloutputVolumeData[i]=-1000;
 		}
 	}
@@ -780,7 +740,10 @@
 
 	[newData release];
 	if(needSaveVesselnessMap)
-		[parent saveCurrentStep];
+	{
+		NSString* seriesUid=[[[controllersPixList objectAtIndex:0] seriesObj] valueForKey:@"seriesInstanceUID"];
+		[parent saveIntermediateData:seriesUid];
+	}
 
 	return err;
 	
@@ -894,6 +857,7 @@
 {
 	
 	int branchlen=0;
+	unsigned char startpointcoloindex;
 	int x,y,z;
 	unsigned char pointerToUpper;
 	z = endpointindex/imageSize ;
@@ -906,6 +870,7 @@
 	[new3DPoint setY: y];
 	[new3DPoint setZ: z];
 	[acenterline addObject: new3DPoint];
+	[new3DPoint release];
 	
 	do{
 		if(!(*(directionData + endpointindex)&0x40))
@@ -997,21 +962,471 @@
 				break;
 		}
 		
+		if(x<0||y<0||z<0||x>=imageWidth||y>=imageHeight||z>=imageAmount)
+			break;
+		
 		endpointindex+=itemp;
 		new3DPoint=[[CMIV3DPoint alloc] init] ;
 		[new3DPoint setX: x];
 		[new3DPoint setY: y];
 		[new3DPoint setZ: z];
 		[acenterline addObject: new3DPoint];
+		[new3DPoint release];
+
 		
 		
 		
 	}while(!((*(directionData + endpointindex))&0x80));
 	
-
+	startpointcoloindex=(*(directionData + endpointindex))&0x3f;
 	
 	return branchlen;
 	
+}
+-(int)smoothingImages3D:(ViewerController *) vc: (CMIV_CTA_TOOLS*) owner:(int)iteration
+{	
+	id waitWindow;
+
+	parent=owner;
+	if(vc)
+		originalViewController=vc;
+	if(originalViewController)
+		waitWindow=[originalViewController startWaitWindow:@"processing"];
+	int err=0;
+	if(vc)
+		controllersPixList=[vc pixList];
+	DCMPix* curPix = [controllersPixList objectAtIndex: 0];
+	
+	
+	
+	long origin[3],dimension[3];
+	float spacing[3];
+	dimension[0] = [curPix pwidth];
+	dimension[1] = [curPix pheight];
+	dimension[2] = [controllersPixList count];	
+	imageWidth = [curPix pwidth];
+	imageHeight = [curPix pheight];
+	imageAmount = [controllersPixList count];	
+	imageSize= imageWidth*imageHeight;
+	
+	origin[0]=origin[1]=origin[2]=0;
+	spacing[0]=[curPix pixelSpacingX];
+	spacing[1]=[curPix pixelSpacingY];
+	float sliceThickness = [curPix sliceInterval];   
+	if( sliceThickness == 0)
+	{
+		NSLog(@"Slice interval = slice thickness!");
+		sliceThickness = [curPix sliceThickness];
+	}
+	spacing[2]=sliceThickness;
+	
+	if(vc)
+		volumeData=[originalViewController volumePtr:0];
+	
+	
+	CMIVAutoSeedingCore* coreAlgorithm=[[CMIVAutoSeedingCore alloc] init];
+	NSLog( @"vesselness filter start");
+	
+	err=[coreAlgorithm smoothingFilter:volumeData:volumeData:dimension:spacing:iteration];
+	[coreAlgorithm release];
+	if(vc)
+		[originalViewController endWaitWindow: waitWindow];
+	if(originalViewController)
+	{
+		DCMView* origninImageView=[originalViewController imageView];
+		float wl,ww;
+		[origninImageView getWLWW:&wl :&ww];
+		[origninImageView setWLWW:wl :ww];
+	}
+	return err;
+	
+}
+- (NSData*)loadImageFromSeries:(NSManagedObject*)series To:(NSMutableArray*)pixList
+{
+	unsigned long memsize=0, mem = 0;
+	BOOL multiFrame=NO;
+	
+	NSManagedObject*  curFile;
+	NSData*volumeNSData;
+	NSArray	*fileList = [[series valueForKey:@"images"] allObjects] ;
+	
+	if(!fileList||[fileList count]<1||!pixList)
+		return nil;
+	
+	@try
+	{
+		// Sort images with "instanceNumber"
+		NSSortDescriptor * sort = [[NSSortDescriptor alloc] initWithKey:@"instanceNumber" ascending:YES];
+		NSArray * sortDescriptors = [NSArray arrayWithObject: sort];
+		[sort release];
+		
+		fileList = [fileList sortedArrayUsingDescriptors: sortDescriptors];
+	}
+	
+	@catch (NSException * e)
+	{
+		NSLog( [e description]);
+	}
+	
+	
+	
+	for( curFile in fileList )
+	{
+		long h = [[curFile valueForKey:@"height"] intValue];
+		long w = [[curFile valueForKey:@"width"] intValue];
+		
+		w += 2;
+		
+		if( w*h < 256*256)
+		{
+			w = 256;
+			h = 256;
+		}
+		
+		memsize += w * h;
+		
+	}
+	float* fVolumePtr = (float*)malloc( memsize * sizeof(float));
+	
+	
+	if( fVolumePtr )
+	{
+		volumeNSData = [[NSData alloc] initWithBytesNoCopy:fVolumePtr length:memsize*sizeof( float) freeWhenDone:YES];
+		NSArray *loadList = fileList;
+		{
+			//multiframe==NO
+			unsigned long i;
+			for(i = 0; i < [loadList count]; i++ )
+			{
+				NSManagedObject*  curFile = [loadList objectAtIndex: i];
+				DCMPix* dcmPix = [[DCMPix alloc] myinit: [curFile valueForKey:@"completePath"] :i :[loadList count] :fVolumePtr+mem :0 :[[curFile valueForKeyPath:@"series.id"] intValue] isBonjour:NO imageObj:curFile];
+				
+				if( dcmPix )
+				{
+					mem += [[curFile valueForKey:@"width"] intValue] * [[curFile valueForKey:@"height"] intValue];
+					
+					[pixList addObject: dcmPix];
+					
+					[dcmPix release];
+				}
+				else
+				{
+					NSLog( @"not readable: %@", [curFile valueForKey:@"completePath"] );
+				}
+			}
+		}
+		
+		if( [pixList count] != [loadList count] && multiFrame == NO )
+		{
+			[volumeNSData release];
+			return nil;
+			
+		}
+		//opening images refered to in viewerPix[0] in the adequate viewer
+		
+		if( [pixList count] > 0 && multiFrame == NO)
+		{
+			NSAutoreleasePool   *pool = [[NSAutoreleasePool alloc] init];
+			long				i;
+			
+			
+			for( i = 0 ; i < [pixList count]; i++)
+			{
+				
+				
+				{
+					if ([fileList count] == [pixList count]) // I'm not quite sure what this line does, but I'm afraid to take it out. 
+						[[BrowserController currentBrowser] getLocalDCMPath:[fileList objectAtIndex: i] : 5]; // Anyway, we are not guarantied to have as many files as pixs, so that is why I put in the if() - Joel
+					else
+						[[BrowserController currentBrowser] getLocalDCMPath:[fileList objectAtIndex: 0] : 5]; 
+					
+					
+					DCMPix* pix = [pixList objectAtIndex: i];
+					
+					[pix CheckLoad];
+				}
+				
+							}
+			
+			
+			
+			//if( stopThreadLoadImage == NO)	 
+			{	
+				float maxValueOfSeries = -100000;
+				float minValueOfSeries = 100000;
+				
+				
+				for( i = 0 ; i < [pixList count]; i++)	 
+				{
+					DCMPix* pix = [pixList objectAtIndex: i];
+					
+					if( maxValueOfSeries < [pix fullwl] + [pix fullww]/2) maxValueOfSeries = [pix fullwl] + [pix fullww]/2;
+					if( minValueOfSeries > [pix fullwl] - [pix fullww]/2) minValueOfSeries = [pix fullwl] - [pix fullww]/2;
+				}
+				
+				
+				
+				for( i = 0 ; i < [pixList count]; i++)	 
+				{
+					[[pixList objectAtIndex: i] setMaxValueOfSeries: maxValueOfSeries];
+					[[pixList objectAtIndex: i] setMinValueOfSeries: minValueOfSeries];
+				}
+				
+			}
+			[self computeIntervalAndFlipIfNeeded:  pixList];
+
+			
+			[pool release];
+		}
+		else
+		{
+			[volumeNSData release];
+			volumeNSData=nil;
+		}
+		return volumeNSData;
+	}
+	else
+		return nil;
+	
+}
+
+-(void) computeIntervalAndFlipIfNeeded: (NSMutableArray*) pixList
+{
+	
+	double				interval=0; 
+	unsigned				i;
+	
+	if( [pixList count] > 1)
+	{
+		
+		double		vectors[ 9], vectorsB[ 9];
+		BOOL		equalVector = YES;
+		
+		[[pixList objectAtIndex:0] orientationDouble: vectors];
+		[[pixList objectAtIndex:1] orientationDouble: vectorsB];
+		
+		for( i = 0; i < 9; i++)
+		{
+			const double epsilon = fabs(vectors[ i] - vectorsB[ i]);
+			if (epsilon > 1e-6)
+			{
+				equalVector = NO;
+				break;
+			}
+		}
+		
+		BOOL equalZero = YES;
+		
+		for( i = 0; i < 9; i++)
+		{
+			if( vectors[ i] != 0) { equalZero = NO; break;}
+			if( vectorsB[ i] != 0) { equalZero = NO; break;}
+		}
+		
+		if( equalVector == YES && equalZero == NO)
+		{
+			if( fabs( vectors[6]) > fabs(vectors[7]) && fabs( vectors[6]) > fabs(vectors[8]))
+			{
+				interval = [[pixList objectAtIndex:0] originX] - [[pixList objectAtIndex:1] originX];
+				
+				if( interval == 0 && [pixList count] > 2)
+					interval = [[pixList objectAtIndex:1] originX] - [[pixList objectAtIndex:2] originX];
+				
+				if( vectors[6] > 0) interval = -( interval);
+				else interval = ( interval);
+				
+			}
+			
+			if( fabs( vectors[7]) > fabs(vectors[6]) && fabs( vectors[7]) > fabs(vectors[8]))
+			{
+				interval = [[pixList objectAtIndex:0] originY] - [[pixList objectAtIndex:1] originY];
+				
+				if( interval == 0 && [pixList count] > 2)
+					interval = [[pixList objectAtIndex:1] originY] - [[pixList objectAtIndex:2] originY];
+				
+				if( vectors[7] > 0) interval = -( interval);
+				else interval = ( interval);
+				
+				
+			}
+			
+			if( fabs( vectors[8]) > fabs(vectors[6]) && fabs( vectors[8]) > fabs(vectors[7]))
+			{
+				interval = [[pixList objectAtIndex:0] originZ] - [[pixList objectAtIndex:1] originZ];
+				
+				if( interval == 0 && [pixList count] > 2)
+					interval = [[pixList objectAtIndex:1] originZ] - [[pixList objectAtIndex:2] originZ];
+				
+				if( vectors[8] > 0) interval = -( interval);
+				else interval = ( interval);
+				
+				//			if( vectors[8] > 0) orientationVector = eAxialPos;
+				//				else orientationVector = eAxialNeg;
+				//				
+				//				[orientationMatrix selectCellWithTag: 0];
+				//				if( interval != 0) [orientationMatrix setEnabled: YES];
+				//				currentOrientationTool = 0;
+			}
+			
+			//		if( originalOrientation == -1)
+			//			{
+			//				switch( orientationVector)
+			//				{
+			//					case eAxialPos:
+			//					case eAxialNeg:
+			//						originalOrientation = 0;
+			//						break;
+			//						
+			//					case eCoronalNeg:
+			//					case eCoronalPos:
+			//						originalOrientation = 1;
+			//						break;
+			//						
+			//					case eSagittalNeg:
+			//					case eSagittalPos:
+			//						originalOrientation = 2;
+			//						break;
+			//				}
+			//			}
+			
+			double interval3d;
+			double xd = [[pixList objectAtIndex: 1] originX] - [[pixList objectAtIndex: 0] originX];
+			double yd = [[pixList objectAtIndex: 1] originY] - [[pixList objectAtIndex: 0] originY];
+			double zd = [[pixList objectAtIndex: 1] originZ] - [[pixList objectAtIndex: 0] originZ];
+			
+			interval3d = sqrt(xd*xd + yd*yd + zd*zd);
+			
+			if( interval3d == 0 && [pixList count] > 2)
+			{
+				xd = [[pixList objectAtIndex: 2] originX] - [[pixList objectAtIndex: 1] originX];
+				yd = [[pixList objectAtIndex: 2] originY] - [[pixList objectAtIndex: 1] originY];
+				zd = [[pixList objectAtIndex: 2] originZ] - [[pixList objectAtIndex: 1] originZ];
+				
+				interval3d = sqrt(xd*xd + yd*yd + zd*zd);
+			}
+			
+			xd /= interval3d;
+			yd /= interval3d;
+			zd /= interval3d;
+			
+			if( interval == 0 && [[pixList objectAtIndex: 0] originX] == 0 && [[pixList objectAtIndex: 0] originY] == 0 && [[pixList objectAtIndex: 0] originZ] == 0)
+			{
+				interval = [[pixList objectAtIndex:0] spacingBetweenSlices];
+				if( interval)
+				{
+					interval3d = -interval;
+					
+					
+					float v[ 9], o[ 3];
+					
+					o[ 0] = 0; o[ 1] = 0; o[ 2] = 0;
+					
+					v[ 0] = 1;	v[ 1] = 0;	v[ 2] = 0;
+					v[ 3] = 0;	v[ 4] = 1;	v[ 5] = 0;
+					v[ 6] = 1;	v[ 7] = 0;	v[ 8] = 1;
+					
+					for( DCMPix *pix in pixList)
+					{
+						[pix setOrientation: v];
+						[pix setOrigin: o];
+						o[ 2] += interval;
+					}
+				}
+			}
+			
+			// FLIP DATA !!!!!! FOR 3D TEXTURE MAPPING !!!!!
+			if( interval < 0 )
+			{
+				BOOL sameSize = YES;
+				
+				DCMPix	*firstObject = [pixList objectAtIndex: 0];
+				
+				for(  i = 0 ; i < [pixList count]; i++)
+				{
+					if( [firstObject pheight] != [[pixList objectAtIndex: i] pheight] ) sameSize = NO;
+					if( [firstObject pwidth] != [[pixList objectAtIndex: i] pwidth] ) sameSize = NO;
+				}
+				
+				if( sameSize)
+				{
+					if( interval3d)
+						interval = fabs( interval3d);	//interval3d;	//-interval;
+					else
+						interval = fabs( interval);
+					
+					firstObject = [pixList objectAtIndex: 0];
+					
+					float	*volumeDataPtr = [firstObject fImage];
+					//	flipData
+					[self flipData: (char*) volumeDataPtr :[pixList count] :[firstObject pwidth] :[firstObject pheight]];
+					
+					for(  i = 0 ; i < [pixList count]; i++)
+					{
+						long offset = ([pixList count]-1-i)*[firstObject pheight] * [firstObject pwidth];
+						
+						[[pixList objectAtIndex: i] setfImage: volumeDataPtr + offset];
+						[[pixList objectAtIndex: i] setSliceInterval: interval];
+					}
+					
+					id tempObj;
+					
+					for( i = 0; i < [pixList count]/2 ; i++)
+					{
+						tempObj = [[pixList objectAtIndex: i] retain];
+						[pixList replaceObjectAtIndex: i withObject:[pixList objectAtIndex: [pixList count]-i-1]];
+						[pixList replaceObjectAtIndex: [pixList count]-i-1 withObject: tempObj];
+						[tempObj release];
+						
+					}
+					
+					
+					
+					for( i = 0; i < [pixList count]; i++)
+					{
+						[[pixList objectAtIndex: i] setArrayPix: pixList :i];
+						[[pixList objectAtIndex: i] setID: i];
+					}
+					
+				}
+				else NSLog( @"sameSize = NO");
+			}
+			else
+			{
+				if( interval3d)
+				{
+					if( interval < 0) interval = -interval3d;
+					else interval = interval3d;
+				}
+				else
+				{
+					if( interval < 0) interval = -interval;
+					else interval = interval;
+				}
+				
+				for( i = 0; i < [pixList count]; i++)
+				{
+					[[pixList objectAtIndex: i] setSliceInterval: interval];
+				}
+				
+			}
+			
+			
+		}
+	}
+	
+	
+	return ;
+}
+- (void) flipData:(char*) ptr :(long) no :(long) x :(long) y
+{
+		
+	vImage_Buffer src, dest;
+	src.height = dest.height = no;
+	src.width = dest.width = x*y;
+	src.rowBytes = dest.rowBytes = x*y*4;
+	src.data = dest.data = ptr;
+	vImageVerticalReflect_PlanarF ( &src, &dest, 0);
+
 }
 
 @end
