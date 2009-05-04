@@ -675,15 +675,14 @@
 	ratioXtoY = [curPix pixelSpacingX]/[curPix pixelSpacingY];
 	
 	reader = vtkImageImport::New();
+	
 	reader->SetWholeExtent(0, imageWidth-1, 0, imageHeight-1, 0, imageAmount-1);
 	reader->SetDataSpacing( [curPix pixelSpacingX], [curPix pixelSpacingY], sliceThickness);
 	reader->SetDataOrigin( vtkOriginalX,vtkOriginalY,vtkOriginalZ );
 	//reader->SetDataOrigin(  [firstObject originX],[firstObject originY],[firstObject originZ]);
 	reader->SetDataExtentToWholeExtent();
-	reader->SetDataScalarTypeToFloat();
-	
 	reader->SetImportVoidPointer(outputVolumeData);
-	
+	reader->SetDataScalarTypeToFloat();
 	
 	
 	sliceTransform = vtkTransform::New();
