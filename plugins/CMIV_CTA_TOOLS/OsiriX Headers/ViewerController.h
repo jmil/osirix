@@ -15,8 +15,6 @@
 #import <Cocoa/Cocoa.h>
 #import <AppKit/AppKit.h>
 
-
-
 @class DCMView;
 @class OpacityTransferView;
 @class ColorTransferView;
@@ -30,12 +28,17 @@
 @class DICOMExport;
 @class KeyObjectPopupController;
 @class VRController;
-@class MPR2DController;
 @class OrthogonalMPRViewer;
 @class OrthogonalMPRPETCTViewer;
 @class SRController;
 @class EndoscopyViewer;
-@class VRPROController;
+//@class VRPROController;
+@class ViewerController;
+@class MPRController;
+
+@interface NSObject(OsiriXPluginDraggingDestination)
+- (BOOL)performPluginDragOperation:(id <NSDraggingInfo>)sender destination:(ViewerController*)vc;
+@end
 
 #import "Schedulable.h"
 #import "Scheduler.h"
@@ -58,6 +61,7 @@ enum
 {
 	NSLock	*ThreadLoadImageLock;
 	NSLock	*roiLock;
+	NSConditionLock *subLoadingThread;
 	
 	IBOutlet StudyView		*studyView;
 			SeriesView		*seriesView;
@@ -108,6 +112,7 @@ enum
 	IBOutlet NSButton		*subCtrlOnOff;
 			 long			subCtrlMaskID;
 			 NSPoint		subCtrlMinMax;
+			 BOOL			subCtrlMinMaxComputed;
 	IBOutlet NSTextField	*subCtrlMaskText;
 
 			 NSPoint		subCtrlOffset;
@@ -137,7 +142,6 @@ enum
 	IBOutlet NSTextField    *CommentsEditField;
 	
 	IBOutlet NSButton		*keyImageCheck;
-	
 	
 	IBOutlet NSWindow		*ThickIntervalWindow;
     IBOutlet NSTextField    *customInterval;
@@ -225,7 +229,7 @@ enum
 	IBOutlet NSMatrix		*roiRenameMatrix;
 	IBOutlet NSWindow		*roiRenameWindow;
 	
-	NSString				*curConvMenu, *curWLWWMenu, *curCLUTMenu, *curOpacityMenu;
+	NSString				*curConvMenu, *curWLWWMenu, *curCLUTMenu, *backCurCLUTMenu, *curOpacityMenu;
 	
 	IBOutlet NSTextField    *stacksFusion;
 	IBOutlet NSSlider       *sliderFusion;
@@ -314,6 +318,7 @@ enum
 //	BOOL					windowIsMovedByTheUser;
 	
 	ViewerController		*registeredViewer;
+	ViewerController        *blendedWindow;
 	
 	NSMutableArray			*retainedToolbarItems;
 	
@@ -325,9 +330,25 @@ enum
 }
 
 @property(readonly) short currentOrientationTool;
+@property(readonly) volatile float loadingPercentage;
+
+@property(readonly) NSTimer	*timer;
+@property(readonly) NSButton *keyImageCheck;
+
+/** Accessors for plugins using blending window */
+@property(readonly) NSWindow *blendingTypeWindow;
+@property(readonly) NSButton *blendingTypeMultiply;
+@property(readonly) NSButton *blendingTypeSubtract;
+@property(readonly) NSSegmentedControl *blendingTypeRGB;
+@property(readonly) NSPopUpButton *blendingPlugins;
+@property(readonly) NSButton *blendingResample;
+
+/** Return the 'dragged' window, the destination window is contained in the 'viewerController' object of the 'PluginFilter' object */
+@property(retain) ViewerController *blendedWindow;
 
 /** Array of all 2D Viewers */
 + (NSMutableArray*) getDisplayed2DViewers;
++ (void) closeAllWindows;
 
 /**  Create a new 2D Viewer
 * @param pixList Array of DCMPix objects
@@ -355,7 +376,7 @@ enum
 - (void) replaceSeriesWith:(NSMutableArray*)newPixList :(NSMutableArray*)newDcmList :(NSData*) newData;
 
 /** Return the 'dragged' window, the destination window is contained in the 'viewerController' object of the 'PluginFilter' object */
--(ViewerController*) blendedWindow;
+- (ViewerController*) blendedWindow;
 
 /**  Display a Wait window with the message
 * @param message  The message for the Wait window to display */
@@ -385,9 +406,6 @@ enum
 - (float*) volumePtr: (long) i;
 - (NSData*)volumeData;
 - (NSData*)volumeData:(long) i;
-
-/** Return the index into fileList that coresponds to the index in pixList */
-- (long) indexForPix: (long) pixIndex;
 
 /**  Return the image pane object */
 - (DCMView*) imageView;
@@ -424,7 +442,7 @@ enum
 - (IBAction) roiDeleteAll:(id) sender;
 
 /**  methods to access global variables */
-+ (long) numberOf2DViewer;
++ (int) numberOf2DViewer;
 
 // UNDOCUMENTED FUNCTIONS
 // For more informations: rossetantoine@bluewin.ch
@@ -435,6 +453,7 @@ enum
 *  This method calls - (id) prepareObjectForUndo:(NSString*) string get the undo object
 */
 - (void) addToUndoQueue:(NSString*) string;
+- (void) removeLastItemFromUndoQueue;
 
 /** Prepare for Undo
 *  returns the undo object
@@ -474,6 +493,7 @@ enum
 
 /** Set the postprocessed flag */
 - (void) setPostprocessed:(BOOL) v;
+- (BOOL) isPostprocessed;
 
 /** returns postprocessed status */
 - (BOOL) postprocessed;
@@ -547,6 +567,7 @@ enum
 - (void) roiLoadFromSeries: (NSString*) filename;
 - (void) offsetMatrixSetting: (int) twentyFiveCodes;
 - (IBAction) mergeBrushROI: (id) sender;
+- (IBAction) mergeBrushROI: (id) sender ROIs: (NSArray*) s ROIList: (NSMutableArray*) roiList;
 - (IBAction) subSumSlider:(id) sender;
 - (IBAction) subSharpen:(id) sender;
 - (void) displayWarningIfGantryTitled;
@@ -566,6 +587,7 @@ enum
 - (void) changeImageData:(NSMutableArray*)f :(NSMutableArray*)d :(NSData*) v :(BOOL) applyTransition;
 - (IBAction) loadSerie:(id) sender;
 - (IBAction) loadPatient:(id) sender;
+- (void) loadSeries:(NSNumber*) t;
 - (void) offFullScreen;
 - (float) frame4DRate;
 - (long) maxMovieIndex;
@@ -626,6 +648,7 @@ enum
 - (void) blendingMode:(id) sender;
 - (ViewerController*) blendingController;
 - (void)blendWithViewer:(ViewerController *)bc blendingType:(int)blendingType;
+- (void)blendingSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 - (void) computeContextualMenu;
 
 /** Modality of the study */
@@ -657,7 +680,6 @@ enum
 //- (IBAction) MPRViewer:(id) sender;
 - (IBAction) VRVPROViewer:(id) sender;
 - (IBAction) VRViewer:(id) sender;
-- (IBAction) MPR2DViewer:(id) sender;
 - (IBAction) blendWindows:(id) sender;
 
 /** Action to open the OrthogonalMPRViewer */
@@ -680,7 +702,6 @@ enum
 - (void) exportJPEG:(id) sender;
 
 /** Notification to close all windows */
-- (void)closeAllWindows:(NSNotification *)note;
 - (NSMutableArray*) generateROINamesArray;
 - (ThickSlabController*) thickSlabController;
 - (IBAction) AddOpacity:(id) sender;
@@ -737,6 +758,7 @@ enum
 
 - (NSArray*) roisWithComment: (NSString*) comment;
 - (NSArray*) roiNames;
+- (void) deleteROI: (ROI*) roi;
 - (void) deleteSeriesROIwithName: (NSString*) name;
 - (void) renameSeriesROIwithName: (NSString*) name newName:(NSString*) newName;
 - (void)setStandardRect:(NSRect)rect;
@@ -760,7 +782,7 @@ enum
 // functions s that plugins can also play with globals
 + (ViewerController *) draggedController;
 + (void) setDraggedController:(ViewerController *) controller;
-- clear8bitRepresentations;
+- (void) clear8bitRepresentations;
 -(void) ApplyConvString:(NSString*) str;
 - (void)checkView:(NSView *)aView :(BOOL) OnOff;
 - (IBAction) applyConvolutionOnSource:(id) sender;
@@ -770,7 +792,6 @@ enum
 - (void)setToolbarReportIconForItem:(NSToolbarItem *)item;
 - (void)updateReportToolbarIcon:(NSNotification *)note;
 - (IBAction) setOrientationTool:(id) sender;
-- (void)setOrientationToolFrom2DMPR:(id)sender;
 - (void) setWindowTitle:(id) sender;
 - (IBAction) printSlider:(id) sender;
 - (void) setConv:(short*) matrix :(short) size :(short) norm;
@@ -789,6 +810,7 @@ enum
 - (void)selectROI:(ROI*)roi deselectingOther:(BOOL)deselectOther;
 - (void)deselectAllROIs;
 - (void) refreshToolbar;
+- (void) redrawToolbar;
 - (void) reloadAnnotations;
 - (NSScrollView*) previewMatrixScrollView;
 
@@ -934,7 +956,7 @@ enum
 /** Returns the VRPROController for this ViewerController; creating one if necessary 
 * See VRController for modes
 */
-- (VRPROController*)openVRVPROViewerForMode:(NSString *)mode;
+//- (VRPROController*)openVRVPROViewerForMode:(NSString *)mode;
 
 /** Returns the OrthogonalMPRViewer for this ViewerController; creating one if necessary */
 - (OrthogonalMPRViewer *)openOrthogonalMPRViewer;
@@ -942,14 +964,15 @@ enum
 /** Returns the OrthogonalMPRPETCTViewer for this ViewerController; creating one if necessary */
 - (OrthogonalMPRPETCTViewer *)openOrthogonalMPRPETCTViewer;
 
-/** Returns the MPR2DController for this ViewerController; creating one if necessary */
-- (MPR2DController *)openMPR2DViewer;
-
 /** Returns the EndoscopyViewer for this ViewerController; creating one if necessary */
 - (EndoscopyViewer *)openEndoscopyViewer;
 
 /** Returns the SRController for this ViewerController; creating one if necessary */
 - (SRController *)openSRViewer;
+
+/** Returns the MPRController for this ViewerController; creating one if necessary */
+- (MPRController *)openMPRViewer;
+- (IBAction)mprViewer:(id)sender;
 
 /** Current SeriesView */
 - (SeriesView *) seriesView;
@@ -991,9 +1014,17 @@ enum
 /** Ungroup ROI */
 - (IBAction)ungroupSelectedROIs:(id)sender;
 
+/**  Lock selected ROI together */
+- (IBAction) lockSelectedROIs:(id)sender;
+/** Unlock ROI */
+- (IBAction) unlockSelectedROIs:(id)sender;
+
+- (IBAction) makeSelectedROIsUnselectable:(id)sender;
+- (IBAction) makeAllROIsSelectable:(id)sender;
+
 - (void) turnOffSyncSeriesBetweenStudies:(id) sender;
-- (void) exportDICOMFileInt:(int)screenCapture withName:(NSString*)name;
-- (void) exportDICOMFileInt:(int)screenCapture withName:(NSString*)name allViewers: (BOOL) allViewers;
+- (NSDictionary*) exportDICOMFileInt:(int)screenCapture withName:(NSString*)name;
+- (NSDictionary*) exportDICOMFileInt:(int)screenCapture withName:(NSString*)name allViewers: (BOOL) allViewers;
 
 #pragma mark-
 #pragma mark 12 Bit

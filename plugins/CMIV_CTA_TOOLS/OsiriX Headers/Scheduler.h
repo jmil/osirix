@@ -5,7 +5,7 @@
   All rights reserved.
   Distributed under GNU - GPL
   
-  See http://homepage.mac.com/rossetantoine/osirix/copyright.html for details.
+  See http://www.osirix-viewer.com/copyright.html for details.
 
      This software is distributed WITHOUT ANY WARRANTY; without even
      the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -17,10 +17,16 @@
 
 @protocol Schedulable;
 
+#ifdef id
+#define redefineID
+#undef id
+#endif
+
+/** \brief Does multithreading scheduling*/
 @interface Scheduler : NSObject {
     @private
     id _delegate;                               // Delegate
-    id <Schedulable> _schedulableObject;        // Object which has work units to be scheduled
+    NSObject <Schedulable> *_schedulableObject;        // Object which has work units to be scheduled
     NSMutableSet *_workUnitsRemaining;          // Work units not yet performed in schedule
     NSLock *_remainingUnitsLock;                // Lock to keep the remaining work units set consistent
     BOOL _scheduleWasCancelled;                 // Flag set when schedule is cancelled
@@ -28,8 +34,8 @@
     unsigned _numberOfDetachedThreads;          // The current number of worker threads detached.
 }
 
--(id)initForSchedulableObject:(id <Schedulable>)schedObj andNumberOfThreads:(unsigned)numThreads;
--(id)initForSchedulableObject:(id <Schedulable>)schedObj;
+-(id)initForSchedulableObject:(NSObject <Schedulable>*)schedObj andNumberOfThreads:(unsigned)numThreads;
+-(id)initForSchedulableObject:(NSObject <Schedulable>*)schedObj;
 -(void)dealloc;
 
 -(void)performScheduleForWorkUnits:(NSSet *)workUnits;
@@ -65,3 +71,8 @@
 -(void)schedulerDidFinishSchedule:(Scheduler *)scheduler;
 
 @end
+
+#ifdef redefineID
+#define id Id
+#undef redefineID
+#endif

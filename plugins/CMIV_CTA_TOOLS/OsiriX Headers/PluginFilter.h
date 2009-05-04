@@ -37,12 +37,12 @@
 - (long) filterImage: (NSString*) menuName;
 
 /** This function is the entry point of Pre-Process plugins */
-- (long) processFiles: (NSArray*) files;
+- (long) processFiles: (NSMutableArray*) files;
 
 /** This function is the entry point of Report plugins 
-* action = @"dateReport"	-> return NSDate date of creation or modification of the report, 0L if no report available
-* action = @"deleteReport"	-> return 0L, delete the report
-* action = @"openReport"   -> return 0L, open and display the report, create a new one if no report available 
+* action = @"dateReport"	-> return NSDate date of creation or modification of the report, nil if no report available
+* action = @"deleteReport"	-> return nil, delete the report
+* action = @"openReport"   -> return nil, open and display the report, create a new one if no report available 
 */
 - (id) report: (NSManagedObject*) study action:(NSString*) action;
 

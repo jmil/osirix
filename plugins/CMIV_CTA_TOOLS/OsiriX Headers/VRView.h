@@ -1,16 +1,16 @@
 /*=========================================================================
- Program:   OsiriX
- 
- Copyright (c) OsiriX Team
- All rights reserved.
- Distributed under GNU - GPL
- 
- See http://www.osirix-viewer.com/copyright.html for details.
- 
- This software is distributed WITHOUT ANY WARRANTY; without even
- the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- PURPOSE.
- =========================================================================*/
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://www.osirix-viewer.com/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 
 
@@ -22,7 +22,6 @@
 
 #define id Id
 #include "vtkCommand.h"
-#include "vtkProperty.h"
 #include "vtkActor.h"
 #include "vtkPolyData.h"
 #include "vtkRenderer.h"
@@ -50,7 +49,6 @@
 #include "vtkPlanes.h"
 #include "vtkPlaneSource.h"
 #include "vtkBoxWidget.h"
-#include "vtkPlaneWidget.h"
 #include "vtkPiecewiseFunction.h"
 #include "vtkPiecewiseFunction.h"
 #include "vtkColorTransferFunction.h"
@@ -85,7 +83,7 @@
 #include "vtkOrientationMarkerWidget.h"
 #include "vtkVolumeTextureMapper2D.h"
 #include "vtkVolumeTextureMapper3D.h"
-//#include "OsiriXFixedPointVolumeRayCastMapper.h"
+#include "OsiriXFixedPointVolumeRayCastMapper.h"
 
 #include "vtkCellArray.h"
 #include "vtkProperty2D.h"
@@ -125,7 +123,6 @@ typedef char* vtkPolyDataMapper2D;
 typedef char* vtkColorTransferFunction;
 typedef char* vtkActor2D;
 typedef char* vtkMyCallback;
-typedef char* vtkPlaneWidget;
 typedef char* vtkBoxWidget;
 typedef char* vtkVolumeRayCastCompositeFunction;
 
@@ -138,7 +135,7 @@ typedef char* vtkMyCallbackVR;
 
 #include <Accelerate/Accelerate.h>
 #import "ViewerController.h"
-//#import "WaitRendering.h"
+#import "WaitRendering.h"
 
 #import "Schedulable.h"
 #import "Scheduler.h"
@@ -148,13 +145,13 @@ typedef char* vtkMyCallbackVR;
 @class Camera;
 @class VRController;
 @class OSIVoxel;
-
+@class CLUTOpacityView;
 //#import "CLUTOpacityView.h"
 
 /** \brief  Volume Rendering View
- *
- *   View for volume rendering and MIP
- */
+*
+*   View for volume rendering and MIP
+*/
 
 #ifdef __cplusplus
 @interface VRView : VTKView <Schedulable>
@@ -167,7 +164,7 @@ typedef char* vtkMyCallbackVR;
 	int							incFlyTo;
 	
 	float						flyToDestination[ 3];
-	
+
 	int							projectionMode;
     NSMutableArray				*blendingPixList;
     DCMPix						*blendingFirstObject;
@@ -178,7 +175,7 @@ typedef char* vtkMyCallbackVR;
 	float						blendingWl, blendingWw, measureLength;
 	vtkImageImport				*blendingReader;
 	
-//	OsiriXFixedPointVolumeRayCastMapper *blendingVolumeMapper;
+	OsiriXFixedPointVolumeRayCastMapper *blendingVolumeMapper;
 	vtkVolumeTextureMapper3D	*blendingTextureMapper;
 	
 	vtkVolume					*blendingVolume;
@@ -194,13 +191,14 @@ typedef char* vtkMyCallbackVR;
 	IBOutlet NSSlider			*framesSlider;
 	IBOutlet NSMatrix			*quality, *rotation, *orientation;
 	IBOutlet NSTextField		*pixelInformation;
-	
+
 	IBOutlet NSWindow			*exportDCMWindow;
 	IBOutlet NSSlider			*dcmframesSlider;
 	IBOutlet NSMatrix			*dcmExportMode, *dcmquality, *dcmrotation, *dcmorientation;
 	IBOutlet NSBox				*dcmBox;
-	IBOutlet NSTextField		*dcmSeriesName;
 	IBOutlet NSMatrix			*dcmExportDepth;
+	IBOutlet NSTextField		*dcmSeriesName;
+	NSString					*dcmSeriesString;
 	
 	IBOutlet NSWindow       *export3DVRWindow;
 	IBOutlet NSMatrix		*VRFrames;
@@ -227,7 +225,7 @@ typedef char* vtkMyCallbackVR;
 	unsigned char			*dataFRGB;
 	char					*data8;
 	vImage_Buffer			srcf, dst8;
-	
+
     short					currentTool;
 	float					wl, ww;
 	float					LOD, lowResLODFactor;
@@ -235,25 +233,24 @@ typedef char* vtkMyCallbackVR;
 	float					blendingcosines[ 9];
 	double					table[256][3];
 	double					alpha[ 256];
-	
+
 	NSCursor				*cursor;
 	BOOL					cursorSet;
 	
     vtkRenderer				*aRenderer;
     vtkCamera				*aCamera;
-	
+
     vtkActor				*outlineRect;
     vtkPolyDataMapper		*mapOutline;
     vtkOutlineFilter		*outlineData;
 	
 	vtkMyCallbackVR				*cropcallback;
-	vtkPlaneWidget				*planeWidget;
 	vtkOrientationMarkerWidget	*orientationWidget;
 	vtkBoxWidget				*croppingBox;
 	double						initialCroppingBoxBounds[6];
 	// MAPPERS
 	
-//	OsiriXFixedPointVolumeRayCastMapper *volumeMapper;
+	OsiriXFixedPointVolumeRayCastMapper *volumeMapper;
 	vtkVolumeTextureMapper3D		*textureMapper;
 	
 	vtkVolume					*volume;
@@ -269,7 +266,7 @@ typedef char* vtkMyCallbackVR;
 	
 	vtkColorTransferFunction	*red, *green, *blue;
 	BOOL						noWaitDialog, isRGB, isBlendingRGB, ROIUPDATE;
-//	WaitRendering				*splash;
+	WaitRendering				*splash;
 	
 	double						camPosition[ 3], camFocal[ 3];
 	
@@ -316,12 +313,12 @@ typedef char* vtkMyCallbackVR;
 	
 	NSLock						*deleteRegion;
 	
-//	IBOutlet CLUTOpacityView	*clutOpacityView;
+	IBOutlet CLUTOpacityView	*clutOpacityView;
 	BOOL						advancedCLUT;
 	NSData						*appliedCurves;
 	BOOL						appliedResolution;
 	BOOL						gDataValuesChanged;
-	
+
 	float						verticalAngleForVR;
 	float						rotateDirectionForVR;
 	
@@ -342,21 +339,29 @@ typedef char* vtkMyCallbackVR;
 	
 	BOOL			bestRenderingWasGenerated;
 	float superSampling;
-	BOOL dontResetImage;
+	BOOL dontResetImage, keep3DRotateCentered;
+	int fullDepthMode;
 }
 
-@property BOOL clipRangeActivated;
+@property BOOL clipRangeActivated, keep3DRotateCentered, dontResetImage, bestRenderingMode;
 @property int projectionMode;
 @property double clippingRangeThickness;
+@property float lowResLODFactor;
+@property long renderingMode;
+@property (readonly) NSArray* currentOpacityArray;
+@property (retain) DICOMExport *exportDCM;
+@property (retain) NSString *dcmSeriesString;
 
 + (BOOL) getCroppingBox:(double*) a :(vtkVolume *) volume :(vtkBoxWidget*) croppingBox;
 + (void) setCroppingBox:(double*) a :(vtkVolume *) volume;
+- (void) setBlendingCroppingBox:(double*) a;
 - (void) setCroppingBox:(double*) a;
 - (BOOL) croppingBox:(double*) a;
 - (void) showCropCube:(id) sender;
 - (void) restoreFullDepthCapture;
 - (void) prepareFullDepthCapture;
-- (float*) imageInFullDepthWidth: (long*) w height:(long*) h;
+- (float*) imageInFullDepthWidth: (long*) w height:(long*) h isRGB:(BOOL*) isRGB;
+- (float*) imageInFullDepthWidth: (long*) w height:(long*) h isRGB:(BOOL*) rgb blendingView:(BOOL) blendingView;
 - (NSDictionary*) exportDCMCurrentImage;
 - (NSDictionary*) exportDCMCurrentImageIn16bit: (BOOL) fullDepth;
 - (void) renderImageWithBestQuality: (BOOL) best waitDialog: (BOOL) wait;
@@ -373,6 +378,7 @@ typedef char* vtkMyCallbackVR;
 -(void) set3DStateDictionary:(NSDictionary*) dict;
 -(NSMutableDictionary*) get3DStateDictionary;
 - (void) setBlendingEngine: (long) engineID;
+- (void) setBlendingEngine: (long) engineID showWait:(BOOL) showWait;
 - (void) getShadingValues:(float*) ambient :(float*) diffuse :(float*) specular :(float*) specularpower;
 - (void) setShadingValues:(float) ambient :(float) diffuse :(float) specular :(float) specularpower;
 -(void) movieChangeSource:(float*) volumeData;
@@ -389,9 +395,11 @@ typedef char* vtkMyCallbackVR;
 //-(void) runRendering;
 //-(void) startRendering;
 //-(void) stopRendering;
+- (float) LOD;
 -(void) setLOD:(float)f;
 -(void) setCurrentTool:(short) i;
 - (int) currentTool;
+- (int) _tool;
 -(id)initWithFrame:(NSRect)frame;
 -(short)setPixSource:(NSMutableArray*)pix :(float*) volumeData;
 -(void)dealloc;
@@ -404,6 +412,7 @@ typedef char* vtkMyCallbackVR;
 - (void) processFlyTo;
 -(void) setWLWW:(float) wl :(float) ww;
 -(void) getWLWW:(float*) wl :(float*) ww;
+-(void) getBlendingWLWW:(float*) iwl :(float*) iww;
 -(void) setBlendingPixSource:(ViewerController*) bC;
 -(IBAction) endQuicktimeSettings:(id) sender;
 -(IBAction) endDCMExportSettings:(id) sender;
@@ -444,9 +453,12 @@ typedef char* vtkMyCallbackVR;
 - (double) getResolution;
 - (void) getCosMatrix: (float *) cos;
 - (void) getOrigin: (float *) origin;
-
+- (void) getOrigin: (float *) origin windowCentered:(BOOL) wc;
+- (void) getOrigin: (float *) origin windowCentered:(BOOL) wc sliceMiddle:(BOOL) sliceMiddle;
+- (void) getOrigin: (float *) origin windowCentered:(BOOL) wc sliceMiddle:(BOOL) sliceMiddle blendedView:(BOOL) blendedView;
 - (BOOL) isViewportResizable;
 - (void) setViewportResizable: (BOOL) boo;
+- (void) scrollInStack: (float) delta;
 
 // 3D Points
 - (BOOL) get3DPixelUnder2DPositionX:(float) x Y:(float) y pixel: (long*) pix position:(float*) position value:(float*) val;
@@ -487,14 +499,20 @@ typedef char* vtkMyCallbackVR;
 - (void) setRotate: (BOOL) r;
 - (float) factor;
 - (float) imageSampleDistance;
--(void) setViewSizeToMatrix3DExport;
--(void) restoreViewSizeAfterMatrix3DExport;
--(void) axView:(id) sender;
--(void) coView:(id) sender;
--(void) saViewOpposite:(id) sender;
+- (float) blendingImageSampleDistance;
+- (void) setViewSizeToMatrix3DExport;
+- (void) restoreViewSizeAfterMatrix3DExport;
+- (void) axView:(id) sender;
+- (void) coView:(id) sender;
+- (void) saViewOpposite:(id) sender;
 - (void) render;
+- (void) renderBlendedVolume;
+- (void) goToCenter;
 - (void)zoomMouseUp:(NSEvent *)theEvent;
-
+- (void) setWindowCenter: (NSPoint) loc;
+- (NSPoint) windowCenter;
+- (double) getClippingRangeThicknessInMm;
+- (void) setLODLow:(BOOL) l;
 
 // export
 - (void) sendMail:(id) sender;
@@ -521,8 +539,8 @@ typedef char* vtkMyCallbackVR;
 - (void)setController:(VRController*)aController;
 - (BOOL)isRGB;
 
-//- (OsiriXFixedPointVolumeRayCastMapper*)volumeMapper;
-//- (void)setVolumeMapper:(OsiriXFixedPointVolumeRayCastMapper*)aVolumeMapper;
+- (OsiriXFixedPointVolumeRayCastMapper*)volumeMapper;
+- (void)setVolumeMapper:(OsiriXFixedPointVolumeRayCastMapper*)aVolumeMapper;
 - (vtkVolume*)volume;
 - (void)setVolume:(vtkVolume*)aVolume;
 - (char*)data8;

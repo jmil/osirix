@@ -45,14 +45,15 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 //DICOM TAGS
 
 //	orientation
-	Point3D				*origin;
+//	Point3D				*origin;
+	BOOL				isOriginDefined;
 	double				originX /**< x position of image origin */ , originY /**< y Position of image origin */ , originZ /**< Z position of image origin*/;
 	double				orientation[ 9];  /**< pointer to orientation vectors  */
 	NSString			*frameOfReferenceUID;
 
 //	pixel representation
 	BOOL				fIsSigned;
-	short				bitsAllocated, bitsStored, spp;
+	short				bitsAllocated, bitsStored;
     float               slope, offset;
 
 //	image size
@@ -157,9 +158,8 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	BOOL				fixed8bitsWLWW;	
     float               maxValueOfSeries, minValueOfSeries;
 	
-	
-	NSString			*convertedDICOM;	
-	BOOL				generated;	
+	BOOL				generated;
+	NSString			*generatedName;
 	NSLock				*checking;
 	
 	BOOL				useVOILUT;
@@ -173,11 +173,21 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	
 /** custom annotations */
 	NSMutableDictionary *annotationsDictionary;
-	NSMutableDictionary *cachedPapyGroups;
 	
 /** 12 bit monitors */
 	BOOL				isLUT12Bit;
 	unsigned char		*LUT12baseAddr;
+	
+	BOOL				full32bitPipeline, needToCompute8bitRepresentation;
+
+/** Papyrus Loading variables */	
+	
+	NSString			*modalityString;
+	unsigned short		clutEntryR, clutEntryG, clutEntryB;
+	unsigned short		clutDepthR, clutDepthG, clutDepthB;
+	unsigned char		*clutRed, *clutGreen, *clutBlue;
+	int					realwidth;
+	BOOL				fSetClut, fSetClut16;
 }
 
 @property long frameNo;
@@ -197,7 +207,7 @@ Note setter is different to not break existing usage. :-( */
 
 /** WW & WL */
 @property(readonly) float ww, wl, fullww, fullwl;
-@property float savedWW, savedWL;
+@property float savedWW, savedWL, *subtractedfImage;
 
 @property(readonly) float slope, offset;
 
@@ -217,6 +227,7 @@ Note setter is different to not break existing usage. :-( */
 
 /** Slice location */
 @property(readonly) double originX, originY, originZ;
+@property(readonly) BOOL isOriginDefined;
 
 /** Frame Of Reference UID */
 @property(copy) NSString *frameOfReferenceUID;
@@ -264,12 +275,14 @@ Note setter is different to not break existing usage. :-( */
 
 @property(readonly) short stack, stackMode;
 @property(readonly) BOOL generated;
+@property(retain) NSString *generatedName;
 @property(retain) NSString *sourceFile;
 
 /** Database links */
-@property(readonly) NSManagedObject *imageObj, *seriesObj;
-@property(readonly) NSString *srcFile;
-@property(readonly) NSMutableDictionary *annotationsDictionary;
+@property(readonly) NSManagedObject *seriesObj;
+@property(retain) NSManagedObject *imageObj;
+@property(retain) NSString *srcFile;
+@property(retain) NSMutableDictionary *annotationsDictionary;
 
 // Properties (aka accessors) needed for SUV calculations
 @property(readonly) float philipsFactor;
@@ -279,7 +292,7 @@ Note setter is different to not break existing usage. :-( */
 @property float radionuclideTotalDoseCorrected;
 @property(retain) NSCalendarDate *acquisitionTime;
 @property(retain) NSCalendarDate *radiopharmaceuticalStartTime;
-@property BOOL SUVConverted;
+@property BOOL SUVConverted, full32bitPipeline, needToCompute8bitRepresentation;
 @property(readonly) BOOL hasSUV;
 @property float decayFactor;
 @property(retain) NSString *units, *decayCorrection;
@@ -302,7 +315,7 @@ Note setter is different to not break existing usage. :-( */
 */
 + (BOOL) IsPoint:(NSPoint) x inPolygon:(NSPoint*) poly size:(int) count; 
 
-
+- (void) compute8bitRepresentation;
 - (void) changeWLWW:(float)newWL :(float)newWW;  /**< Change window level to window width to the new values */
 - (void) computePixMinPixMax;  /**< Compute the min and max values in the image */
 
@@ -434,15 +447,15 @@ Note setter is different to not break existing usage. :-( */
 - (void) imageArithmeticMultiplication:(DCMPix*) sub;
 - (float*) multiplyImages :(float*) input :(float*) subfImage;
 - (void) imageArithmeticSubtraction:(DCMPix*) sub;
+- (void) imageArithmeticSubtraction:(DCMPix*) sub absolute:(BOOL) abs;
 - (float*) arithmeticSubtractImages :(float*) input :(float*) subfImage;
-
+-(float*) arithmeticSubtractImages :(float*) input :(float*) subfImage absolute:(BOOL) abs;
 //DSA
 - (void) setSubSlidersPercent: (float) p gamma: (float) g zero: (float) z;
 - (void) setSubSlidersPercent: (float) p;
 - (NSPoint) subMinMax:(float*)input :(float*)subfImage;
 - (void) setSubtractedfImage:(float*)mask :(NSPoint)smm;
 - (float*) subtractImages:(float*)input :(float*)subfImage;
-
 - (BOOL) isLoaded;
 - (void) fImageTime:(float)newTime;
 - (float) fImageTime;
@@ -456,6 +469,7 @@ Note setter is different to not break existing usage. :-( */
 - (void) positionerSecondaryAngle:(NSNumber*)newPositionerSecondaryAngle;
 - (NSNumber*) positionerSecondaryAngle;
 + (NSPoint) originDeltaBetween:(DCMPix*) pix1 And:(DCMPix*) pix2;
++ (NSPoint) originCorrectedAccordingToOrientation: (DCMPix*) pix1;
 - (void) setBlackIndex:(int) i;
 + (NSImage*) resizeIfNecessary:(NSImage*) currentImage dcmPix: (DCMPix*) dcmPix;
 - (void) DCMPixShutterRect:(long)x:(long)y:(long)w:(long)h;
@@ -475,16 +489,15 @@ Note setter is different to not break existing usage. :-( */
 - (short) normalization;
 - (short) kernelsize;
 - (DCMPix*) renderWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
+- (DCMPix*) renderWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF backgroundOffset: (float) bgO;
 - (NSRect) usefulRectWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
 - (DCMPix*) mergeWithDCMPix:(DCMPix*) o offset:(NSPoint) oo;
 - (DCMPix*) renderInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
 - (DCMPix*) renderInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF smartCrop: (BOOL) smartCrop;
 - (NSImage*) renderNSImageInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
-- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element papyLink:(short)fileNb;
-- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element DCMLink:(DCMObject*)dcmObject;
 /**  calls 
 * myinit:(NSString*) s :(long) pos :(long) tot :(float*) ptr :(long) f :(long) ss isBonjour:(BOOL) hello imageObj: (NSManagedObject*) iO
-* with hello = NO and iO = 0L
+* with hello = NO and iO = nil
 */
 - (id) myinit:(NSString*) s :(long) pos :(long) tot :(float*) ptr :(long) f :(long) ss;
 
@@ -621,12 +634,14 @@ Note setter is different to not break existing usage. :-( */
 
 /** Clears the papyrus group cache */
 - (void) clearCachedPapyGroups;
+- (void) clearCachedDCMFrameworkFiles;
++ (void) purgeCachedDictionaries;
 
 /** Returns a pointer the the papyrus group
 * @param group group
 * @param fileNb papyrus file
 */
-- (void *) getPapyGroup: (int)group fileNb: (int)fileNb;
+- (void *) getPapyGroup: (int)group;
 
 /** create ROIs from RTSTRUCT */
 - (void)createROIsFromRTSTRUCT: (DCMObject*)dcmObject;
@@ -635,7 +650,8 @@ Note setter is different to not break existing usage. :-( */
 
 /** Custom Annotations */
 - (void)loadCustomImageAnnotationsPapyLink:(int)fileNb DCMLink:(DCMObject*)dcmObject;
-
+- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element papyLink:(short)fileNb;
+- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element DCMLink:(DCMObject*)dcmObject;
 
 /** Set flag to anonymize the annotations */
 + (BOOL) setAnonymizedAnnotations: (BOOL) v;

@@ -212,7 +212,7 @@ static void needAdjustClipPlane(vtkObject*,unsigned long c, void* ptr, void*)
 				
 				[dcmSequence setPixelData: dataPtr samplePerPixel:spp bitsPerPixel:bpp width: width height: height];
 				
-				err = [dcmSequence writeDCMFile: 0L];
+				[dcmSequence writeDCMFile: 0L];
 				
 				free( dataPtr);
 			}

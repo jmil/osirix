@@ -14,13 +14,6 @@
 
 
 #import <Cocoa/Cocoa.h>
-/*
-#import "DCMView.h"
-#import "MyOutlineView.h"
-#import "PreviewView.h"
-#import "QueryController.h"
-#import "AnonymizerWindowController.h"
-*/
 
 @class MPR2DController;
 @class NSCFDate;
@@ -37,6 +30,8 @@
 @class DCMPix;
 @class StructuredReportController;
 @class BrowserMatrix;
+@class PluginManagerController;
+@class WaitRendering;
 
 enum RootTypes{PatientRootType, StudyRootType, RandomRootType};
 enum simpleSearchType {PatientNameSearch, PatientIDSearch};
@@ -58,7 +53,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
 	NSDateFormatter			*DateTimeFormat, *DateOfBirthFormat, *TimeFormat, *TimeWithSecondsFormat, *DateTimeWithSecondsFormat;
 	
-	
+	NSRect					visibleScreenRect[ 40];
 	NSString				*currentDatabasePath;
 	BOOL					isCurrentDatabaseBonjour;
 	NSString				*transferSyntax;
@@ -83,8 +78,6 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
 	NSNumberFormatter		*numFmt;
     
-//	NSData					*notFoundDataThumbnail;
-	
     DCMPix                  *curPreviewPix;
     
     NSTimer                 *timer, *IncomingTimer, *matrixDisplayIcons, *refreshTimer, *databaseCleanerTimer, *bonjourTimer, *deleteQueueTimer, *autoroutingQueueTimer;
@@ -100,7 +93,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
 	NSMutableArray			*albumNoOfStudiesCache;
 	
-    volatile BOOL           shouldDie, bonjourDownloading;
+    volatile BOOL			bonjourDownloading;
 	
 	NSArray							*outlineViewArray, *originalOutlineViewArray;
 	NSArray							*matrixViewArray;
@@ -146,7 +139,6 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
 	IBOutlet NSWindow				*editSmartAlbum;
 	IBOutlet NSTextField			*editSmartAlbumName, *editSmartAlbumQuery;
-	IBOutlet NSPredicateEditor		*editSmartAlbumPredicate;
 	
 	IBOutlet NSDrawer				*albumDrawer;
 	
@@ -201,7 +193,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
 	NSString						*fixedDocumentsDirectory;
 	
-	char							cfixedDocumentsDirectory[ 1024];
+	char							cfixedDocumentsDirectory[ 4096], cfixedIncomingDirectory[ 4096];
 	
 	NSTimeInterval					databaseLastModification;
 	
@@ -211,7 +203,8 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSLock							*deleteQueue, *deleteInProgress;
 	
 	NSMutableArray					*autoroutingQueueArray;
-	NSLock							*autoroutingQueue, *autoroutingInProgress, *matrixLoadIconsLock;
+	NSLock							*autoroutingQueue, *autoroutingInProgress;
+	NSMutableDictionary				*autoroutingPreviousStudies;
 	
 	NSConditionLock					*processorsLock;
 	NSLock							*decompressArrayLock, *decompressThreadRunning;
@@ -222,6 +215,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	IBOutlet NSView					*reportTemplatesView;
 	IBOutlet NSImageView			*reportTemplatesImageView;
 	IBOutlet NSPopUpButton			*reportTemplatesListPopUpButton;
+	int								reportToolbarItemType;
 	
 	NSConditionLock					*newFilesConditionLock;
 	NSMutableArray					*viewersListToReload, *viewersListToRebuild;
@@ -233,10 +227,19 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSImage							*downloadingOsiriXIcon;
 	NSImage							*currentIcon;
 	
-	BOOL							rtstructProgressBar;  // make visible
+	BOOL							ROIsAndKeyImagesButtonAvailable;
+	
+	BOOL							rtstructProgressBar;
 	float							rtstructProgressPercent;
 	
-	int								DicomDirScanDepth;
+	BOOL							avoidRecursive;
+	
+	IBOutlet PluginManagerController *pluginManagerController;
+	NSTimeInterval					lastCheckIncoming;
+	
+	WaitRendering					*waitOpeningWindow;
+	
+	BOOL							checkForMountedFiles;
 }
 
 @property(readonly) NSDateFormatter *DateTimeFormat;
@@ -244,6 +247,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 @property(readonly) NSDateFormatter *TimeFormat;
 @property(readonly) NSDateFormatter *TimeWithSecondsFormat;
 @property(readonly) NSDateFormatter *DateTimeWithSecondsFormat;
+@property(readonly) NSRecursiveLock *checkIncomingLock;
 
 @property(readonly) NSArray *matrixViewArray;
 @property(readonly) NSMatrix *oMatrix;
@@ -267,7 +271,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 
 @property(readonly) NSString *documentsDirectory;
 @property(readonly) NSString *fixedDocumentsDirectory;
-@property(readonly) char *cfixedDocumentsDirectory;
+@property(readonly) char *cfixedDocumentsDirectory, *cfixedIncomingDirectory;
 
 @property(retain) NSString *searchString;
 @property(retain) NSPredicate *fetchPredicate;
@@ -276,6 +280,8 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 
 @property BOOL rtstructProgressBar;
 @property float rtstructProgressPercent;
+
+@property(readonly) PluginManagerController *pluginManagerController;
 
 + (BrowserController*) currentBrowser;
 + (void) replaceNotAdmitted:(NSMutableString*) name;
@@ -298,8 +304,9 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) addFileToDeleteQueue:(NSString*) file;
 - (NSString*) getNewFileDatabasePath: (NSString*) extension;
 - (NSString*) getNewFileDatabasePath: (NSString*) extension dbFolder: (NSString*) dbFolder;
-- (NSManagedObjectModel *)managedObjectModel;
-- (NSManagedObjectContext *)managedObjectContext;
+- (NSManagedObjectModel *) managedObjectModel;
+- (NSManagedObjectContext *) managedObjectContext;
+- (NSManagedObjectContext *) defaultManagerObjectContext;
 - (NSArray*) childrenArray: (NSManagedObject*) item;
 - (NSArray*) childrenArray: (NSManagedObject*) item onlyImages:(BOOL) onlyImages;
 - (NSArray*) imagesArray: (NSManagedObject*) item;
@@ -323,6 +330,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) addDICOMDIR:(NSString*) dicomdir :(NSMutableArray*) files;
 -(NSMutableArray*) copyFilesIntoDatabaseIfNeeded:(NSMutableArray*) filesInput;
 -(NSMutableArray*) copyFilesIntoDatabaseIfNeeded:(NSMutableArray*) filesInput async: (BOOL) async;
+- (NSMutableArray*)copyFilesIntoDatabaseIfNeeded: (NSMutableArray*)filesInput async: (BOOL)async COPYDATABASE: (BOOL) COPYDATABASE COPYDATABASEMODE:(int) COPYDATABASEMODE;
 -(ViewerController*) loadSeries :(NSManagedObject *)curFile :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
 -(void) loadNextPatient:(NSManagedObject *) curImage :(long) direction :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
 -(void) loadNextSeries:(NSManagedObject *) curImage :(long) direction :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
@@ -331,7 +339,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) queryDICOM:(id) sender;
 -(void) exportQuicktimeInt:(NSArray*) dicomFiles2Export :(NSString*) path :(BOOL) html;
 - (IBAction) delItem:(id) sender;
-- (void) delItemMatrix: (NSManagedObject*) obj;
+- (void) delObjects:(NSMutableArray*) objectsToDelete;
 - (IBAction) selectFilesAndFoldersToAdd:(id) sender;
 - (void) showDatabase:(id)sender;
 -(IBAction) matrixPressed:(id)sender;
@@ -342,13 +350,14 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
 - (BOOL) validateToolbarItem: (NSToolbarItem *) toolbarItem;
-- (NSArray*) exportDICOMFileInt:(NSString*) location files:(NSArray*) filesToExport objects:(NSArray*) dicomFiles2Export;
-
+- (NSArray*) exportDICOMFileInt:(NSString*) location files:(NSMutableArray*) filesToExport objects:(NSMutableArray*) dicomFiles2Export;
+- (void) processOpenViewerDICOMFromArray:(NSArray*) toOpenArray movie:(BOOL) movieViewer viewer: (ViewerController*) viewer;
+- (void) setDatabaseValue:(id) object item:(id) item forKey:(NSString*) key;
 - (void) setupToolbar;
-
+- (void) addAlbumsFile: (NSString*) file;
 - (NSString*) getDatabaseFolderFor: (NSString*) path;
 - (NSString*) getDatabaseIndexFileFor: (NSString*) path;
-
+- (IBAction) copyToDBFolder: (id) sender;
 - (void) setCurrentBonjourService:(int) index;
 - (IBAction)customize:(id)sender;
 - (IBAction)showhide:(id)sender;
@@ -368,26 +377,29 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (IBAction)setTimeIntervalType: (id)sender;
 - (IBAction) endCustomInterval:(id) sender;
 - (IBAction) customIntervalNow:(id) sender;
+- (IBAction) saveDBListAs:(id) sender;
 - (IBAction) openDatabase:(id) sender;
 - (IBAction) createDatabase:(id) sender;
 - (void) openDatabaseIn:(NSString*) a Bonjour:(BOOL) isBonjour;
-
+- (void) browserPrepareForClose;
 - (IBAction) endReBuildDatabase:(id) sender;
 - (IBAction) ReBuildDatabase:(id) sender;
 - (IBAction) ReBuildDatabaseSheet: (id)sender;
 - (void) previewSliderAction:(id) sender;
 - (void) addHelpMenu;
-- (NSString*) _findFirstDicomdirOnCDMedia: (NSString*)startDirectory found:(BOOL) found;
++ (NSString*) _findFirstDicomdirOnCDMedia: (NSString*)startDirectory found:(BOOL) found;
 + (BOOL)isItCD:(NSString*) path;
 - (void)storeSCPComplete:(id)sender;
 - (NSMutableArray *) filesForDatabaseOutlineSelection :(NSMutableArray*) correspondingDicomFile;
 - (NSMutableArray *) filesForDatabaseOutlineSelection :(NSMutableArray*) correspondingManagedObjects onlyImages:(BOOL) onlyImages;
 - (NSMutableArray *) filesForDatabaseMatrixSelection :(NSMutableArray*) correspondingManagedObjects;
 - (NSMutableArray *) filesForDatabaseMatrixSelection :(NSMutableArray*) correspondingManagedObjects onlyImages:(BOOL) onlyImages;
-
+- (void)setToolbarReportIconForItem: (NSToolbarItem *)item;
+- (void)executeAutorouting: (NSArray *)newImages;
 - (void) resetListenerTimer;
 - (IBAction) smartAlbumHelpButton:(id) sender;
-
+- (IBAction) regenerateAutoComments:(id) sender;
+- (DCMPix *)previewPix:(int)i;
 - (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray;
 - (NSArray*) addFilesAndFolderToDatabase:(NSArray*) filenames;
 - (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM safeRebuild:(BOOL) safeProcess produceAddedFiles:(BOOL) produceAddedFiles;
@@ -405,6 +417,12 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) pdfPreview:(id)sender;
 - (IBAction)importRawData:(id)sender;
 - (void) setBurnerWindowControllerToNIL;
+- (BOOL) checkBurner;
+
+- (NSArray*) KeyImages: (id) sender;
+- (NSArray*) ROIImages: (id) sender;
+- (NSArray*) ROIsAndKeyImages: (id) sender;
+- (NSArray*) ROIsAndKeyImages: (id) sender sameSeries: (BOOL*) sameSeries;
 
 - (void) refreshColumns;
 - (void) outlineViewRefresh;
@@ -412,7 +430,9 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (IBAction) albumButtons: (id)sender;
 - (NSArray*) albumArray;
 - (void) refreshSmartAlbums;
+- (void) refreshAlbums;
 - (void) waitForRunningProcesses;
+- (void) checkResponder;
 
 - (NSArray*) imagesPathArray: (NSManagedObject*) item;
 
@@ -420,13 +440,15 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) autoCleanDatabaseDate:(id) sender;
 
 - (void) refreshDatabase:(id) sender;
+- (void) syncReportsIfNecessary;
 - (void) syncReportsIfNecessary: (int) index;
 - (void) removeAllMounted;
 
 //bonjour
 - (void) getDICOMROIFiles:(NSArray*) files;
 - (void) setBonjourDatabaseValue:(NSManagedObject*) obj value:(id) value forKey:(NSString*) key;
-- (void)setServiceName:(NSString*) title;
+- (void) setServiceName:(NSString*) title;
+- (NSString*) serviceName;
 - (IBAction)toggleBonjourSharing:(id) sender;
 - (void) setBonjourSharingEnabled:(BOOL) boo;
 - (void) bonjourWillPublish;
@@ -436,9 +458,11 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) displayBonjourServices;
 - (NSString*) askPassword;
 - (void) resetToLocalDatabase;
+- (void) switchToDefaultDBIfNeeded;
 - (void) createContextualMenu;
 - (void) checkIncomingThread:(id) sender;
 - (void) checkIncoming:(id) sender;
+- (void) checkIncomingNow:(id) sender;
 - (NSArray*) openSubSeries: (NSArray*) toOpenArray;
 - (IBAction) checkMemory:(id) sender;
 - (IBAction) buildAllThumbnails:(id) sender;
@@ -453,6 +477,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (NSString *)documentsDirectoryFor:(int) mode url:(NSString*) url;
 - (NSString *)setFixedDocumentsDirectory;
 - (IBAction)showLogWindow: (id)sender;
+- (void) resetLogWindowController;
 
 - (NSString *)folderPathResolvingAliasAndSymLink:(NSString *)path;
 
@@ -468,7 +493,12 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 
 - (NSArray *)databaseSelection;
 
+- (void) importCommentsAndStatusFromDictionary:(NSDictionary*) d;
+- (NSDictionary*) dictionaryWithCommentsAndStatus:(NSManagedObject *)s;
+- (void) importReport:(NSString*) path UID: (NSString*) uid;
+
 - (void) newFilesGUIUpdateRun:(int) state;
+- (void) newFilesGUIUpdateRun: (int) state viewersListToReload: (NSMutableArray*) cReload viewersListToRebuild: (NSMutableArray*) cRebuild;
 - (void) newFilesGUIUpdate:(id) sender;
 
 - (IBAction) decompressSelectedFiles:(id) sender;
@@ -491,6 +521,11 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 + (NSString*) TimeFormat:(NSDate*) t;
 
 - (int) findObject:(NSString*) request table:(NSString*) table execute: (NSString*) execute elements:(NSString**) elements;
+
+- (void) executeSend :(NSArray*) samePatientArray server:(NSDictionary*) server dictionary:(NSDictionary*) dict;
+
+- (void)writeMovie:(NSArray*)imagesArray name:(NSString*)fileName;
+- (void) buildThumbnail:(NSManagedObject*) series;
 
 /******Notifactions posted by browserController***********
 @"NewStudySelectedNotification" with userinfo key @"Selected Study" posted when a newStudy is selected in the browser

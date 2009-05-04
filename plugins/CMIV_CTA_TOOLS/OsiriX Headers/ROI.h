@@ -12,9 +12,6 @@
      PURPOSE.
 =========================================================================*/
 
-
-
-
 #import <Foundation/Foundation.h>
 #import "MyPoint.h"
 
@@ -54,7 +51,7 @@ enum
 *	tDynAngle = Dynamic Angle\n
 */
 
-@interface ROI : NSObject <NSCoding>
+@interface ROI : NSObject <NSCoding, NSCopying>
 {
 	NSLock			*roiLock;
 	
@@ -87,7 +84,7 @@ enum
 	NSString		*name;
 	NSString		*comments;
 	
-	float			pixelSpacingX, pixelSpacingY;
+	double			pixelSpacingX, pixelSpacingY;
 	NSPoint			imageOrigin;
 	
 	// **** **** **** **** **** **** **** **** **** **** TRACKING
@@ -105,8 +102,8 @@ enum
 	
 	float			mousePosMeasure;
 	
-	StringTexture			*stringTex;
-	NSMutableDictionary		*stanStringAttrib;
+	StringTexture	*stringTex;
+	NSMutableDictionary	*stanStringAttrib;
 	
 	ROI*			parentROI;
 	
@@ -134,12 +131,20 @@ enum
 	NSTimeInterval	groupID;		// timestamp of a ROI group. Grouped ROI will be selected/deleted together.
 	
 	BOOL			displayTextualData;
+	
+	BOOL			locked;
+	BOOL			selectable;
+	BOOL			isAliased;
+	int				originalIndexForAlias;
 }
 
+@property NSPoint imageOrigin;
 @property(readonly) int textureWidth, textureHeight;
 @property(readonly) int textureDownRightCornerX,textureDownRightCornerY, textureUpLeftCornerX, textureUpLeftCornerY;
 @property(readonly) unsigned char *textureBuffer;
 @property float opacity;
+@property int originalIndexForAlias;
+@property BOOL locked, selectable, isAliased;
 @property(retain) NSString *name, *comments;
 @property(readonly) long type;
 @property(setter=setROIMode:) long ROImode;
@@ -154,12 +159,17 @@ enum
 @property(setter=setColor:) RGBColor rgbcolor;
 @property float thickness;
 @property(retain) ROI *parentROI;
-@property double sliceThickness;
+@property double sliceThickness, pixelSpacingX, pixelSpacingY;
+
+- (void) setColor:(RGBColor) a globally: (BOOL) g;
+- (void) setThickness:(float) a globally: (BOOL) g;
+- (void) setOpacity:(float)newOpacity globally: (BOOL) g;
 
 /** Set default ROI name (if not set, then default name is the currentTool) */
 + (void) setDefaultName:(NSString*) n;
 /** Return the default name */
 + (NSString*) defaultName;
++ (void) setFontHeight: (float) f;
 
 - (void) setDefaultName:(NSString*) n;
 - (NSString*) defaultName;

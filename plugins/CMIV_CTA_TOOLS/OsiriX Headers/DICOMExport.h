@@ -17,7 +17,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class DCMObject;
-
+@class DCMExportPlugin;
 
 /** \brief Export image as DICOM  */
 @interface DICOMExport : NSObject
@@ -28,6 +28,8 @@
 		// Raw data support
 		unsigned char		*data;
 		long				width, height, spp, bpp;
+		BOOL				isSigned, modalityAsSource;
+		int					offset;
 		
 		// NSImage support
 		NSImage				*image;
@@ -58,12 +60,16 @@
 		width:				(long) iwidth
 		height:				(long) iheight;
 
+- (void) setSigned: (BOOL) s;
+- (void) setOffset: (int) o;
+
 // Set Pixel Data from a NSImage
 - (long) setPixelNSImage:	(NSImage*) iimage;
 
 // Write the image data
-- (long) writeDCMFile: (NSString*) dstPath;
-
+- (NSString*) writeDCMFile: (NSString*) dstPath;
+- (NSString*) writeDCMFile: (NSString*) dstPath withExportDCM:(DCMExportPlugin*) dcmExport;
+- (void) setModalityAsSource: (BOOL) v;
 - (NSString*) seriesDescription;
 - (void) setSeriesDescription: (NSString*) desc;
 - (void) setSeriesNumber: (long) no;
@@ -73,4 +79,5 @@
 - (void) setOrientation: (float*) o;
 - (void) setPosition: (float*) p;
 - (void) setSlicePosition: (float) p;
+- (NSString*) SOPInstanceUID;
 @end
