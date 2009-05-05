@@ -7,6 +7,9 @@
 //
 
 #import "AreaDataSet.h"
+#import <GRLineDataSet.h>
+#import <GRAxes.h>
+#import "Chart.h"
 
 @implementation AreaDataSet
 @synthesize min = _min, max = _max, displayed = _displayed;
@@ -22,6 +25,38 @@
 -(void)setDisplayed:(BOOL)displayed {
 	_displayed = displayed;
 	[_chart setNeedsDisplay: YES];
+}
+
+-(void)drawRect:(NSRect)dirtyRect {
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	// only draw if displayed
+	if (!_displayed)
+		return;
+	
+	[[[_min propertyForKey: GRDataSetPlotColor] colorWithAlphaComponent: 0.25] setFill];
+	
+	NSBezierPath* path = [NSBezierPath bezierPath];
+	
+	for (int x = [_chart xMin]; x <= [_chart xMax]; ++x) {
+		double y = [[_min dataSource] chart:_chart yValueForDataSet:_min element:x];
+		NSPoint p = [[_chart axes] locationForXValue:x yValue:y];
+		if ([path isEmpty])
+			[path moveToPoint:p];
+		else [path lineToPoint:p];
+	}
+	
+	for (int x = [_chart xMax]; x >= [_chart xMin]; --x) {
+		double y = [[_max dataSource] chart:_chart yValueForDataSet:_max element:x];
+		NSPoint p = [[_chart axes] locationForXValue:x yValue:y];
+		[path lineToPoint:p];
+	}
+	
+	[path closePath];
+	[path fill];
+	
+	[context restoreGraphicsState];
 }
 
 @end

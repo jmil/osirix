@@ -15,6 +15,7 @@
 #import <ViewerController.h>
 #import "ROIList.h"
 #import <ROI.h>
+#import "Options.h"
 
 NSString* ChartChanged = @"ChartChanged";
 
@@ -173,49 +174,24 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
-	NSGraphicsContext* context = [NSGraphicsContext currentContext];
-	[context saveGraphicsState];
-	
 	[super drawRect:NSMakeRect(0, 0, 0, 0)];
-//	[context restoreGraphicsState];
 	
 	if (_drawBackground) {
+		NSGraphicsContext* context = [NSGraphicsContext currentContext];
+		[context saveGraphicsState];
+
 		[(NSColor*)[[self axes] propertyForKey:GRAxesBackgroundColor] setFill];
 		[NSBezierPath fillRect:[[self axes] plotRect]];
-	}
-	
-	for (unsigned i = 0; i < [_areaDataSets count]; ++i) {
-		AreaDataSet* areaDataSet = [_areaDataSets objectAtIndex:i];
 
-		// only draw displayed areas
-		if (![areaDataSet displayed])
-			continue;
-		
-		[[[[areaDataSet min] propertyForKey: GRDataSetPlotColor] colorWithAlphaComponent: 0.5] setFill];
-		
-		NSBezierPath* path = [NSBezierPath bezierPath];
-		
-		for (int x = _xMin; x <= _xMax; ++x) {
-			double y = [[[areaDataSet min] dataSource] chart:self yValueForDataSet:[areaDataSet min] element:x];
-			NSPoint p = [[self axes] locationForXValue:x yValue:y];
-			if ([path isEmpty])
-				[path moveToPoint:p];
-			else [path lineToPoint:p];
-		}
-		
-		for (int x = _xMax; x >= _xMin; --x) {
-			double y = [[[areaDataSet max] dataSource] chart:self yValueForDataSet:[areaDataSet max] element:x];
-			NSPoint p = [[self axes] locationForXValue:x yValue:y];
-			[path lineToPoint:p];
-		}
-		
-		[path closePath];
-		[path fill];
+		[context restoreGraphicsState];
 	}
 	
-	[context restoreGraphicsState];
+	for (unsigned i = 0; i < [_areaDataSets count]; ++i)
+		[[_areaDataSets objectAtIndex:i] drawRect: dirtyRect];
 
 	[super drawRect:dirtyRect];
+	
+	[[_interface options] updateYRange];
 }
 
 @end

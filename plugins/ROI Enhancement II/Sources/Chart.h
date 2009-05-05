@@ -37,4 +37,6 @@ extern NSString* ChartChanged;
 -(void)addAreaDataSet:(AreaDataSet*)dataSet;
 -(void)removeAreaDataSet:(AreaDataSet*)dataSet;	
 
+-(double)chart:(GRChartView*)chart yValueForDataSet:(GRDataSet*)dataSet element:(NSInteger)element;
+
 @end

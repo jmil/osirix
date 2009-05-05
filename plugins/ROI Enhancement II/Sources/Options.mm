@@ -132,7 +132,8 @@
 	[_yRangeMin setEnabled:!logscale && constrain];
 	[_yRangeMax setEnabled:!logscale && constrain];
 	
-	if (!logscale) [[[_interface chart] axes] setProperty:GRAxesLinearScale forKey:GRAxesYAxisScale];
+	[[[_interface chart] axes] setProperty:(logscale? GRAxesLog10Scale : GRAxesLinearScale) forKey:GRAxesYAxisScale];
+
 	// affect the range
 	if (logscale) {
 		[[_interface chart] constrainYRangeFrom:1];
@@ -140,9 +141,8 @@
 		if (constrain)
 			[[_interface chart] constrainYRangeFrom:[_yRangeMin floatValue] to:[_yRangeMax floatValue]];
 		else [[_interface chart] freeYRange];
-	if (logscale) [[[_interface chart] axes] setProperty:GRAxesLog10Scale forKey:GRAxesYAxisScale];
 	
-	if (!constrain) [self updateYRange];
+	[self updateYRange];
 	
 	// defaults
 	[self setDefaultBool:constrain forKey:@"ranges.y.constrain"];
@@ -154,9 +154,11 @@
 }
 
 -(void)updateYRange {
-	// TODO: display current range
-	[_yRangeMin setFloatValue:[[[[_interface chart] axes] propertyForKey:GRAxesYPlotMin] floatValue]];
-	[_yRangeMax setFloatValue:[[[[_interface chart] axes] propertyForKey:GRAxesYPlotMax] floatValue]];
+	if ([_logscaleYRange state] || ![_constrainYRange state]) { // display current range
+		NSRect r = [[[_interface chart] axes] plotRect];
+		[_yRangeMin setFloatValue:[[[_interface chart] axes] yValueAtPoint: NSMakePoint(r.origin.x, r.origin.y)]];
+		[_yRangeMax setFloatValue:[[[_interface chart] axes] yValueAtPoint: NSMakePoint(r.origin.x, r.origin.y+r.size.height)]];
+	}
 }
 
 -(IBAction)decorationsChanged:(id)sender {

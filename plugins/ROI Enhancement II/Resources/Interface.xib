@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="264"/>
+			<integer value="5" id="13"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1219,7 +1219,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<boolean value="YES" id="5"/>
 						<integer value="1040"/>
-						<integer value="5"/>
+						<reference ref="13"/>
 						<integer value="11" id="19"/>
 						<integer value="1" id="9"/>
 						<boolean value="NO" id="6"/>

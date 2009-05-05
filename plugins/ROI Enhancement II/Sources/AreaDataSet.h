@@ -23,5 +23,6 @@
 @property BOOL displayed;
 
 -(id)initWithOwnerChart:(Chart*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max;
+-(void)drawRect:(NSRect)dirtyRect;
 
 @end
