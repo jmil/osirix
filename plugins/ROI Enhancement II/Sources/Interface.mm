@@ -23,8 +23,12 @@ const NSString* FileTypeDICOM = @"dicom";
 @synthesize decimalFormatter = _decimalFormatter;
 
 -(id)initForViewer:(ViewerController*)viewer {
-	self = [super initWithWindowNibName: @"Interface"];
+	self = [super initWithWindowNibName:@"Interface"];
 	_viewer = [viewer retain];
+	[self window]; // triggers nib loading
+	
+	[_roiList loadViewerROIs];
+	
 	return self;
 }
 
@@ -34,22 +38,22 @@ const NSString* FileTypeDICOM = @"dicom";
 
 -(IBAction)saveAsPDF:(id)sender {
 	NSSavePanel* panel = [NSSavePanel savePanel];
-	[panel setRequiredFileType: FileTypePDF];
+	[panel setRequiredFileType:FileTypePDF];
 	[panel beginSheetForDirectory:NULL file:NULL modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveAsPanelDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
 
 -(IBAction)saveAsDICOM:(id)sender {
 	NSSavePanel* panel = [NSSavePanel savePanel];
-	[panel setRequiredFileType: FileTypeDICOM];
+	[panel setRequiredFileType:FileTypeDICOM];
 	[panel beginSheetForDirectory:NULL file:NULL modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveAsPanelDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
 
 -(void)saveAsPanelDidEnd:(NSSavePanel*)panel returnCode:(int)code contextInfo:(void*)contextInfo {
     if (code == NSOKButton) {
-		NSData *data = [_chart dataWithPDFInsideRect: [_chart bounds]];
-		if ([[panel requiredFileType] isEqualToString: FileTypeDICOM])
+		NSData *data = [_chart dataWithPDFInsideRect:[_chart bounds]];
+		if ([[panel requiredFileType] isEqualToString:FileTypeDICOM])
 			; // TODO: save data as DICOM
-		else [data writeToFile: [panel filename] atomically: YES];
+		else [data writeToFile:[panel filename] atomically:YES];
 	}
 }
 

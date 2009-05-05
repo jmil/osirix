@@ -9,7 +9,7 @@
 //
 
 enum ROISel {
-	ROIMin, ROIMean, ROIMax, ROIMinMax
+	ROIMin, ROIMean, ROIMax
 };
 
 #import <Cocoa/Cocoa.h>
@@ -33,7 +33,8 @@ enum ROISel {
 @property BOOL displayed;
 
 -(id)init:(ROI*)roi forList:(ROIList*)_roiList;
-	
+-(void)updateDisplayed;
+
 @end;
 
 
@@ -52,6 +53,7 @@ enum ROISel {
 @property(readonly, retain) Interface* interface;
 
 -(void)awakeFromNib;
+-(void)loadViewerROIs;
 
 -(unsigned)countOfDisplayedROIs;
 -(ROIRec*)findRecordByROI:(ROI*)roi;
@@ -68,7 +70,7 @@ enum ROISel {
 -(void)displaySelectedROIs:(id)sender;
 -(void)displayCheckedROIs:(id)sender;
 
--(void)changedMin:(BOOL)min mean:(BOOL)mean max:(BOOL)max;
+-(void)changedMin:(BOOL)min mean:(BOOL)mean max:(BOOL)max fill:(BOOL)fill;
 
 @end
 

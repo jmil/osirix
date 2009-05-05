@@ -16,12 +16,12 @@
 	if (initialized) return;
 	initialized = YES;
 	
-	//	NSString* frameworkPath = [[[NSBundle bundleForClass: [self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
-	//	NSBundle* framework = [NSBundle bundleWithPath: frameworkPath];
+	//	NSString* frameworkPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/GraphX.framework"];
+	//	NSBundle* framework = [NSBundle bundleWithPath:frameworkPath];
 	//	NSLog(@"Loading framework: %@", framework);
 	//	
 	//	NSError* error = NULL;
-	//	if(![framework loadAndReturnError: &error]) {
+	//	if(![framework loadAndReturnError:&error]) {
 	//		NSLog(@"GraphX load error: %@", error);
 	//		NSLog(@"\tExecutable: %@", [framework executablePath]);
 	//		NSLog(@"\tInfo: %@", [framework infoDictionary]);
@@ -33,7 +33,7 @@
 -(long)filterImage:(NSString*)menuName
 {
 	// TODO: what happens if the viewer is closed and the plugin window isn't?
-	[[[[Interface alloc] initForViewer: viewerController] window] makeKeyAndOrderFront: NULL];
+	[[[[Interface alloc] initForViewer:viewerController] window] makeKeyAndOrderFront:NULL];
 	return 0;
 }
 

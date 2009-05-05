@@ -9,30 +9,19 @@
 #import "AreaDataSet.h"
 
 @implementation AreaDataSet
+@synthesize min = _min, max = _max, displayed = _displayed;
 
--(id)initWithOwnerChart:(GRChartView*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max {
-	self = [super initWithOwnerChart: chart];
+-(id)initWithOwnerChart:(Chart*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max {
+	self = [super init];
+	_chart = chart;
 	_min = min;
 	_max = max;
-	
-	
-	
 	return self;
 }
 
-/*-(CDAnonymousStruct1)xIntervalAtIndex:(unsigned)index {
-	NSLog(@"xIntervalAtIndex");
-	CDAnonymousStruct1 retVal;
-	retVal._field1 = 2.1;
-	retVal._field2 = index*index;
-	return retVal;
+-(void)setDisplayed:(BOOL)displayed {
+	_displayed = displayed;
+	[_chart setNeedsDisplay: YES];
 }
-
--(BOOL)supportsRangesOnAxis:(unsigned)axis {
-	return NO;
-//	BOOL r = [super supportsRangesOnAxis: axis];
-//	NSLog(@"%x supportsRangesOnAxis:%d = %d", self, axis, r);
-//	return r;
-}*/
 
 @end

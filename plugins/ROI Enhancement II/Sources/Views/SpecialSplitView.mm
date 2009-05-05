@@ -12,15 +12,15 @@
 @implementation SpecialSplitView
 
 -(void)awakeFromNib {
-	[self setDelegate: self];
+	[self setDelegate:self];
 	// save the right subview's standard width for future usage
-	rightSubviewWidth = [(NSView*)[[self subviews] objectAtIndex: 1] frame].size.width;
+	rightSubviewWidth = [(NSView*)[[self subviews] objectAtIndex:1] frame].size.width;
 }
 
 // keep the right subview's size constant
 -(void)splitView:(NSSplitView*)sender resizeSubviewsWithOldSize:(NSSize)oldSize {
-	NSView* left = (NSView*)[[sender subviews] objectAtIndex: 0];
-	NSView* right = (NSView*)[[sender subviews] objectAtIndex: 1];
+	NSView* left = (NSView*)[[sender subviews] objectAtIndex:0];
+	NSView* right = (NSView*)[[sender subviews] objectAtIndex:1];
 	
 	NSRect splitFrame = [sender frame];
 	CGFloat dividerThickness = [sender dividerThickness];
@@ -31,11 +31,11 @@
 	
 	leftFrame.size.height = splitFrame.size.height;
 	leftFrame.size.width = availableWidth - rightFrame.size.width;
-	[left setFrame: leftFrame];
+	[left setFrame:leftFrame];
 	
 	rightFrame.origin.x = leftFrame.origin.x + leftFrame.size.width + dividerThickness;
 	rightFrame.size.height = splitFrame.size.height;
-	[right setFrame: rightFrame];
+	[right setFrame:rightFrame];
 }
 
 // constrain the divider position to either match the right subview's width or to hide it

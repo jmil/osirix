@@ -15,7 +15,7 @@
 	IBOutlet Interface* _interface;
 	NSMutableDictionary* _userDefaults;
 	// curves
-	IBOutlet NSButton *_meanCurve, *_minCurve, *_maxCurve;
+	IBOutlet NSButton *_meanCurve, *_minCurve, *_maxCurve, *_minmaxFill;
 	// ranges
 	IBOutlet NSPopUpButton* _xRangeSelection;
 	IBOutlet NSTextField *_xRangeMin, *_xRangeMax;
@@ -38,5 +38,6 @@
 -(BOOL)min;
 -(BOOL)mean;
 -(BOOL)max;
+-(BOOL)fill;
 
 @end

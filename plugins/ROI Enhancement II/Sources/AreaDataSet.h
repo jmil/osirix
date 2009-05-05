@@ -9,14 +9,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <GRDataSet.h>
-@class GRChartView, GRLineDataSet;
+@class GRLineDataSet, GRChartView, Chart;
 
-@interface AreaDataSet : GRDataSet {
+@interface AreaDataSet : NSObject {
 	GRLineDataSet* _min;
 	GRLineDataSet* _max;
+	Chart* _chart;
+	BOOL _displayed;
 }
 
--(id)initWithOwnerChart:(GRChartView*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max;
+@property(readonly) GRLineDataSet* min;
+@property(readonly) GRLineDataSet* max;
+@property BOOL displayed;
+
+-(id)initWithOwnerChart:(Chart*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max;
 
 @end
