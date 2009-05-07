@@ -44,6 +44,9 @@
 		5989607E0F9EFBE200BEFEE4 /* GRXYDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */; };
 		598960830F9EFC5E00BEFEE4 /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598960820F9EFC5E00BEFEE4 /* GraphKit.framework */; };
 		59D64E7C0FAF36D60021E211 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59D64E7A0FAF36D60021E211 /* InfoPlist.strings */; };
+		59D655E00FB195730021E211 /* UserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D655DE0FB195730021E211 /* UserDefaults.h */; };
+		59D655E10FB195730021E211 /* UserDefaults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D655DF0FB195730021E211 /* UserDefaults.mm */; };
+		59D656C60FB1C8020021E211 /* DICOMExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D656C50FB1C8020021E211 /* DICOMExport.h */; };
 		59E53C1A0FAF17E1004AE16E /* AreaDataSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E53C180FAF17E1004AE16E /* AreaDataSet.mm */; };
 		59E53C1B0FAF17E1004AE16E /* AreaDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E53C190FAF17E1004AE16E /* AreaDataSet.h */; };
 		8D5B49AE048680CD000E48DA /* ROI_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF630370AF2F00C91783 /* ROI_Prefix.pch */; };
@@ -106,6 +109,9 @@
 		598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRXYDataSet.h; sourceTree = "<group>"; };
 		598960820F9EFC5E00BEFEE4 /* GraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphKit.framework; path = /System/Library/PrivateFrameworks/GraphKit.framework; sourceTree = "<absolute>"; };
 		59D64E7B0FAF36D60021E211 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59D655DE0FB195730021E211 /* UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDefaults.h; path = Sources/UserDefaults.h; sourceTree = "<group>"; };
+		59D655DF0FB195730021E211 /* UserDefaults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UserDefaults.mm; path = Sources/UserDefaults.mm; sourceTree = "<group>"; };
+		59D656C50FB1C8020021E211 /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMExport.h; sourceTree = "<group>"; };
 		59E53C180FAF17E1004AE16E /* AreaDataSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AreaDataSet.mm; path = Sources/AreaDataSet.mm; sourceTree = "<group>"; };
 		59E53C190FAF17E1004AE16E /* AreaDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AreaDataSet.h; path = Sources/AreaDataSet.h; sourceTree = "<group>"; };
 		AB5D36050680E57E00F4007A /* ROI Enhancement II.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ROI Enhancement II.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +177,8 @@
 				59E53C180FAF17E1004AE16E /* AreaDataSet.mm */,
 				5971319C0FA6F7E100FA0701 /* Options.h */,
 				5971319E0FA6F7E100FA0701 /* Options.mm */,
+				59D655DE0FB195730021E211 /* UserDefaults.h */,
+				59D655DF0FB195730021E211 /* UserDefaults.mm */,
 				596DB80E0FAF0BD400FEE841 /* Views */,
 			);
 			name = Classes;
@@ -226,6 +234,7 @@
 		597715660FA97FAF003CBDE8 /* OsiriX Headers */ = {
 			isa = PBXGroup;
 			children = (
+				59D656C50FB1C8020021E211 /* DICOMExport.h */,
 				597715670FA97FAF003CBDE8 /* DCMPix.h */,
 				597715680FA97FAF003CBDE8 /* DCMView.h */,
 				597715690FA97FAF003CBDE8 /* dicomFile.h */,
@@ -302,6 +311,8 @@
 				596DB8130FAF0BD400FEE841 /* PopUpMenuButton.h in Headers */,
 				596DB8150FAF0BD400FEE841 /* SpecialSplitView.h in Headers */,
 				59E53C1B0FAF17E1004AE16E /* AreaDataSet.h in Headers */,
+				59D655E00FB195730021E211 /* UserDefaults.h in Headers */,
+				59D656C60FB1C8020021E211 /* DICOMExport.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +393,7 @@
 				596DB8140FAF0BD400FEE841 /* PopUpMenuButton.mm in Sources */,
 				596DB8160FAF0BD400FEE841 /* SpecialSplitView.mm in Sources */,
 				59E53C1A0FAF17E1004AE16E /* AreaDataSet.mm in Sources */,
+				59D655E10FB195730021E211 /* UserDefaults.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

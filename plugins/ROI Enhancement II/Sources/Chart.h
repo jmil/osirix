@@ -35,8 +35,10 @@ extern NSString* ChartChanged;
 -(void)constrainYRangeFrom:(float)min to:(float)max;
 
 -(void)addAreaDataSet:(AreaDataSet*)dataSet;
--(void)removeAreaDataSet:(AreaDataSet*)dataSet;	
+-(void)removeAreaDataSet:(AreaDataSet*)dataSet;
 
 -(double)chart:(GRChartView*)chart yValueForDataSet:(GRDataSet*)dataSet element:(NSInteger)element;
+
+-(NSString*)csv:(BOOL)includeHeaders;
 
 @end

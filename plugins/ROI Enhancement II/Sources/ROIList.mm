@@ -122,6 +122,18 @@
 	return count;
 }
 
+-(ROIRec*)displayedROIRec:(unsigned)index {
+	unsigned count = 0;
+	for (unsigned i = 0; i < [_records count]; ++i) {
+		ROIRec* roiRec = [_records objectAtIndex:i];
+		if ([roiRec displayed])
+			if (++count == index)
+				return roiRec;
+	}
+	
+	return NULL;
+}
+
 -(ROIRec*)findRecordByROI:(ROI*)roi {
 	for (unsigned i = 0; i < [_records count]; ++i) {
 		ROIRec* roiRec = [_records objectAtIndex:i];

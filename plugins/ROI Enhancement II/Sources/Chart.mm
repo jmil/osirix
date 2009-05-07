@@ -32,6 +32,8 @@ NSString* ChartChanged = @"ChartChanged";
 
 	[self setProperty:[NSNumber numberWithBool:NO] forKey:GRChartDrawBackground];
 	[[self axes] setProperty:[NSFont labelFontOfSize:[NSFont smallSystemFontSize]] forKey:GRAxesLabelFont];
+	[[self axes] setProperty:[NSArray array] forKey:GRAxesMinorLineDashPattern];
+//	[[self axes] setProperty:[NSNumber numberWithFloat:0.5] forKey:GRAxesMinorLineWidth];
 	[[self axes] setProperty:[NSNumber numberWithInt:1] forKey:GRAxesXMinorUnit];
 	[[self axes] setProperty:[NSNumber numberWithInt:1] forKey:GRAxesFixedXMinorUnit];
 	[[self axes] setProperty:[NSNumber numberWithInt:5] forKey:GRAxesXMajorUnit];
@@ -40,8 +42,7 @@ NSString* ChartChanged = @"ChartChanged";
 	[[self axes] setProperty:[NSNumber numberWithInt:10] forKey:GRAxesFixedYMinorUnit];
 	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesYMajorUnit];
 	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesFixedYMajorUnit];
-	
-	[self constrainXRangeFrom:0 to:[[[_interface viewer] pixList] count]-1];
+	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesFixedYMajorUnit];
 }
 
 -(void)dealloc {
@@ -174,7 +175,10 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
+	// update the view's structure
 	[super drawRect:NSMakeRect(0, 0, 0, 0)];
+	
+	// draw first the background and the areas
 	
 	if (_drawBackground) {
 		NSGraphicsContext* context = [NSGraphicsContext currentContext];
@@ -188,10 +192,50 @@ NSString* ChartChanged = @"ChartChanged";
 	
 	for (unsigned i = 0; i < [_areaDataSets count]; ++i)
 		[[_areaDataSets objectAtIndex:i] drawRect: dirtyRect];
-
+	
 	[super drawRect:dirtyRect];
 	
 	[[_interface options] updateYRange];
+	[[_interface options] updateXRange];
+}
+
+-(NSString*)csv:(BOOL)includeHeaders {
+	NSMutableString* csv = [[NSMutableString alloc] initWithCapacity:512];
+	
+	if (includeHeaders) {
+		[csv appendString:@"index\t"];
+		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+			NSMutableString* name = [[[[[_interface roiList] displayedROIRec:i] roi] name] mutableCopy];
+			[name replaceOccurrencesOfString:@" " withString:@"_" options:0 range:NSMakeRange(0, [name length])];
+			if ([[_interface options] mean])
+				[csv appendFormat: @"%@_mean\t", name];
+			if ([[_interface options] min] || [[_interface options] fill])
+				[csv appendFormat: @"%@_min\t", name];
+			if ([[_interface options] max] || [[_interface options] fill])
+				[csv appendFormat: @"%@_max\t", name];
+		}
+	}
+	
+	[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
+	[csv appendString:@"\n"];
+	
+	for (int x = _xMin; x <= _xMax; ++x) {
+		[csv appendFormat:@"%d\t", x];
+		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+			ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+			if ([[_interface options] mean])
+				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec meanDataSet] element:x]];
+			if ([[_interface options] min] || [[_interface options] fill])
+				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec minDataSet] element:x]];
+			if ([[_interface options] max] || [[_interface options] fill])
+				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec maxDataSet] element:x]];
+		}
+		
+		[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
+		[csv appendString:@"\n"];
+	}
+	
+	return csv;
 }
 
 @end

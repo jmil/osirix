@@ -56,6 +56,7 @@ enum ROISel {
 -(void)loadViewerROIs;
 
 -(unsigned)countOfDisplayedROIs;
+-(ROIRec*)displayedROIRec:(unsigned)index;
 -(ROIRec*)findRecordByROI:(ROI*)roi;
 -(ROIRec*)findRecordByMenuItem:(NSMenuItem*)menuItem;
 -(ROIRec*)findRecordByDataSet:(GRDataSet*)dataSet sel:(ROISel*)sel;

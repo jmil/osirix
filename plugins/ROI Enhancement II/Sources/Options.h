@@ -8,16 +8,22 @@
 //  Copyright 2009 HUG. All rights reserved.
 //
 
+enum XRangeMode {
+	XRangeEntireStack, XRangeFromCurrentToEnd, XRange4thDimension, XRangeEachROIWithIdenticalName, XRangeDefinedByUser
+};
+
 #import <Cocoa/Cocoa.h>
 @class Interface;
+@class UserDefaults;
 
 @interface Options : NSObject {
 	IBOutlet Interface* _interface;
-	NSMutableDictionary* _userDefaults;
+	UserDefaults* _userDefaults;
 	// curves
 	IBOutlet NSButton *_meanCurve, *_minCurve, *_maxCurve, *_minmaxFill;
 	// ranges
-	IBOutlet NSPopUpButton* _xRangeSelection;
+	IBOutlet NSPopUpButton* _xRangeMode;
+	IBOutlet NSMenuItem *_xRangeEntireStack, *_xRangeFromCurrentToEnd, *_xRange4thDimension, *_xRangeEachROIWithIdenticalName, *_xRangeDefinedByUser;
 	IBOutlet NSTextField *_xRangeMin, *_xRangeMax;
 	IBOutlet NSButton* _logscaleYRange;
 	IBOutlet NSButton* _constrainYRange;
@@ -27,12 +33,14 @@
 	IBOutlet NSColorWell *_majorLineColor, *_minorLineColor, *_backgroundColor;
 }
 
-@property(retain, readonly) NSMutableDictionary* userDefaults;
+@property(retain) UserDefaults* userDefaults;
 
 -(IBAction)curvesChanged:(id)sender;
 -(void)chartChanged:(NSNotification*)notification;
 -(IBAction)xRangeChanged:(id)sender;
+-(void)updateXRange;
 -(IBAction)yRangeChanged:(id)sender;
+-(XRangeMode)xRangeMode;
 -(void)updateYRange;
 -(IBAction)decorationsChanged:(id)sender;
 -(BOOL)min;
