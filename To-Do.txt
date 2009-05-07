@@ -5,6 +5,7 @@
 - Hanging Protocols
 - Compression settings (JP2K, modality, ...)
 
+- Avoid to run multiple instance of same plugin
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
 - JP2000 compression activate

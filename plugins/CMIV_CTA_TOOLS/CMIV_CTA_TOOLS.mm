@@ -168,6 +168,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -(void) startAutoProg:(id) sender
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	isAutoSeeding=YES;
 	while([seriesNeedToAutomaticProcess count])
 	{
@@ -178,7 +180,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			NSArray	*fileList = [[series valueForKey:@"images"] allObjects] ;
 			if(fileList&&[fileList count]>minimumImagesForEachSeriesToAutoSeeding)
 			{
-				NSAutoreleasePool   *pool = [[NSAutoreleasePool alloc] init];
 				NSMutableArray* pixList =[[NSMutableArray alloc] initWithCapacity:0];
 				CMIV_AutoSeeding* autoSeedingController=[[CMIV_AutoSeeding alloc] init] ;
 				@try
@@ -191,7 +192,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			//			memcpy(testbuff, imgbuff, [volumeData length]);
 						
 						[autoSeedingController runAutoSeeding:nil:self:pixList:imgbuff:1:1:1];
-						
 						[volumeData release];
 					}
 				}
@@ -204,7 +204,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				
 				[seriesNeedToAutomaticProcess removeObject:series];
 				[autoSeedingController release];
-				[pool release];
+				
 			}
 		}
 		else
@@ -214,6 +214,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 	isAutoSeeding=NO;
+	[pool release];
 }
 
 
