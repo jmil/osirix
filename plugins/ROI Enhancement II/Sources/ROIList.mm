@@ -89,11 +89,18 @@
 @implementation ROIList
 @synthesize interface = _interface;
 
+-(void)stopListeningToNotifications;
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 -(void)awakeFromNib {
 	_records = [[NSMutableArray alloc] init];
 	
 	[self displaySelectedROIs];
-
+	
+	[_menu retain];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiChange:) name:@"roiChange" object:NULL];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeROI:) name:@"removeROI" object:NULL];
 }
@@ -113,10 +120,10 @@
 
 -(void)dealloc
 {
-	[_records release];
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
+	
+	[_records release];
+	[_menu release];
 	[super dealloc];
 }
 

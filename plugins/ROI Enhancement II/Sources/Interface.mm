@@ -77,6 +77,7 @@ const NSString* FileTypeCSV = @"csv";
 
 -(void)windowWillClose:(NSNotification*)notification
 {
+	[_roiList stopListeningToNotifications];
 	[self release];
 }
 

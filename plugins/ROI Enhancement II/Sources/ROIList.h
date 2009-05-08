@@ -34,7 +34,6 @@ enum ROISel {
 
 -(id)init:(ROI*)roi forList:(ROIList*)_roiList;
 -(void)updateDisplayed;
-
 @end;
 
 
@@ -55,6 +54,7 @@ enum ROISel {
 -(void)awakeFromNib;
 -(void)loadViewerROIs;
 
+-(void)stopListeningToNotifications;
 -(unsigned)countOfDisplayedROIs;
 -(ROIRec*)displayedROIRec:(unsigned)index;
 -(ROIRec*)findRecordByROI:(ROI*)roi;
