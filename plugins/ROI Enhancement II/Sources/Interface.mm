@@ -56,6 +56,13 @@ const NSString* FileTypeCSV = @"csv";
 @synthesize options = _options;
 @synthesize decimalFormatter = _decimalFormatter;
 
+- (void) dealloc
+{
+	[_viewer release];
+	[super dealloc];
+}
+
+
 -(id)initForViewer:(ViewerController*)viewer {
 	_viewer = [viewer retain];
 	self = [super initWithWindowNibName:@"Interface"];
@@ -68,12 +75,17 @@ const NSString* FileTypeCSV = @"csv";
 	return self;
 }
 
--(void)windowWillClose:(NSNotification*)notification {
+-(void)windowWillClose:(NSNotification*)notification
+{
 	[self release];
 }
 
--(void)viewerWillClose:(NSNotification*)notification {
-	[[self window] close];
+-(void)viewerWillClose:(NSNotification*)notification
+{
+	if( [notification object] == _viewer)
+	{
+		[[self window] close];
+	}
 }
 
 -(void)saveAs:(NSString*)format accessoryView:(NSView*)accessoryView {

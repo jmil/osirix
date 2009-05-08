@@ -24,7 +24,7 @@
 -(id)init:(ROI*)roi forList:(ROIList*)roiList {
 	self = [super init];
 	
-	_roiList = roiList;
+	_roiList = [roiList retain];
 	_roi = [roi retain];
 	
 	_menuItem = [[NSMenuItem alloc] initWithTitle:[roi name] action:@selector(roiMenuItemSelected:) keyEquivalent:@""];
@@ -66,14 +66,20 @@
 
 -(void)dealloc {
 	[[[_roiList interface] chart] removeDataSet:_minDataSet];
-//	[_minDataSet release];
+	
 	[[[_roiList interface] chart] removeDataSet:_meanDataSet];
-//	[_meanDataSet release];
+	
 	[[[_roiList interface] chart] removeDataSet:_maxDataSet];
-//	[_maxDataSet release];
+	
 	[[[_roiList interface] chart] removeAreaDataSet:_minmaxDataSet];
 	[_menuItem release];
-	//[_roi release];
+	
+	[_minDataSet release];
+	[_meanDataSet release];
+	[_maxDataSet release];
+	[_roiList release];
+	[_roi release];
+	
 	[super dealloc];
 }
 
@@ -94,10 +100,10 @@
 
 -(void)loadViewerROIs {
 	NSArray* roiSeriesList = [[_interface viewer] roiList];
-	for (unsigned i = 0; i < [roiSeriesList count]; ++i) {
+	for (unsigned i = 0; i < [roiSeriesList count]; i++) {
 		NSArray* roiImageList = [roiSeriesList objectAtIndex:i];
-		for (unsigned i = 0; i < [roiImageList count]; ++i)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:[roiImageList objectAtIndex:i]];
+		for (unsigned x = 0; x < [roiImageList count]; x++)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:[roiImageList objectAtIndex:x]];
 	}
 	
 	unsigned displayedCount = [self countOfDisplayedROIs];

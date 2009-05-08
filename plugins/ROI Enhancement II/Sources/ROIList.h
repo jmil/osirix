@@ -26,10 +26,10 @@ enum ROISel {
 	BOOL _displayed;
 }
 
-@property(readonly, retain) ROI* roi;
-@property(readonly, retain) NSMenuItem* menuItem;
-@property(readonly, retain) GRLineDataSet *minDataSet, *meanDataSet, *maxDataSet;
-@property(readonly, retain) AreaDataSet *minmaxDataSet;
+@property(readonly) ROI* roi;
+@property(readonly) NSMenuItem* menuItem;
+@property(readonly) GRLineDataSet *minDataSet, *meanDataSet, *maxDataSet;
+@property(readonly) AreaDataSet *minmaxDataSet;
 @property BOOL displayed;
 
 -(id)init:(ROI*)roi forList:(ROIList*)_roiList;

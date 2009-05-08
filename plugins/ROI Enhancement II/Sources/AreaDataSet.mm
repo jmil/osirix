@@ -17,9 +17,17 @@
 -(id)initWithOwnerChart:(Chart*)chart min:(GRLineDataSet*)min max:(GRLineDataSet*)max {
 	self = [super init];
 	_chart = chart;
-	_min = min;
-	_max = max;
+	_min = [min retain];
+	_max = [max retain];
 	return self;
+}
+
+- (void) dealloc {
+	
+	[_min release];
+	[_max release];
+	
+	[super dealloc];
 }
 
 -(void)setDisplayed:(BOOL)displayed {

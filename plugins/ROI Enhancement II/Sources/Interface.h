@@ -51,7 +51,7 @@
 	IBOutlet NSNumberFormatter* _decimalFormatter;
 }
 
-@property(readonly, retain) ViewerController* viewer;
+@property(readonly) ViewerController* viewer;
 @property(readonly) ROIList* roiList;
 @property(readonly) Chart* chart;
 @property(readonly) Options* options;

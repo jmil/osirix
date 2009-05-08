@@ -46,7 +46,7 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(void)dealloc {
-//	[_areaDataSets release];
+	[_areaDataSets release];
 	[super dealloc];
 }
 
