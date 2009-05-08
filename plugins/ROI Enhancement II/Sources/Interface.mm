@@ -130,6 +130,7 @@ const NSString* FileTypeCSV = @"csv";
 	[dicomExport setSeriesNumber:1];
 	[dicomExport setPixelData:(unsigned char*)[bitmapRGBData bytes] samplePerPixel:3 bitsPerPixel:8 width:[bitmapImageRep size].width height:[bitmapImageRep size].height];
 	[dicomExport writeDCMFile:filename];
+	[dicomExport release];
 }
 
 -(void)saveDicomSheetDidEnd:(NSWindow*)sheet returnCode:(int)code contextInfo:(void*)contextInfo {
@@ -153,6 +154,7 @@ const NSString* FileTypeCSV = @"csv";
 			NSImage* image = [[NSImage alloc] initWithSize:[bitmapImageRep size]];
 			[image addRepresentation:bitmapImageRep];
 			[[image TIFFRepresentation] writeToFile:[panel filename] options:NSAtomicWrite error:&error];
+			[image release];
 			
 		} else { // dicom
 			unsigned lastSlash = [[panel filename] rangeOfString:@"/" options:NSBackwardsSearch].location+1;

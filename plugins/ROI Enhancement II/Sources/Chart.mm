@@ -66,11 +66,11 @@ NSString* ChartChanged = @"ChartChanged";
 -(GRLineDataSet*)createOwnedLineDataSet {
 	GRLineDataSet* dataSet = [[GRLineDataSet alloc] initWithOwnerChart:self];
 	[dataSet setProperty:[NSNumber numberWithBool:NO] forKey:GRDataSetDrawMarkers];
-	return dataSet;
+	return [dataSet autorelease];
 }
 
 -(AreaDataSet*)createOwnedAreaDataSetFrom:(GRLineDataSet*)min to:(GRLineDataSet*)max {
-	return [[AreaDataSet alloc] initWithOwnerChart:self min:min max:max];
+	return [[[AreaDataSet alloc] initWithOwnerChart:self min:min max:max] autorelease];
 }
 
 -(void)refresh:(ROIRec*)roiRec {
@@ -200,12 +200,12 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(NSString*)csv:(BOOL)includeHeaders {
-	NSMutableString* csv = [[NSMutableString alloc] initWithCapacity:512];
+	NSMutableString* csv = [[[NSMutableString alloc] initWithCapacity:512] autorelease];
 	
 	if (includeHeaders) {
 		[csv appendString:@"index\t"];
 		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
-			NSMutableString* name = [[[[[_interface roiList] displayedROIRec:i] roi] name] mutableCopy];
+			NSMutableString* name = [[[[[[_interface roiList] displayedROIRec:i] roi] name] mutableCopy] autorelease];
 			[name replaceOccurrencesOfString:@" " withString:@"_" options:0 range:NSMakeRange(0, [name length])];
 			if ([[_interface options] mean])
 				[csv appendFormat: @"%@_mean\t", name];

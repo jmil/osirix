@@ -72,7 +72,7 @@
 	[[[_roiList interface] chart] removeDataSet:_maxDataSet];
 //	[_maxDataSet release];
 	[[[_roiList interface] chart] removeAreaDataSet:_minmaxDataSet];
-	//[_menuItem release];
+	[_menuItem release];
 	//[_roi release];
 	[super dealloc];
 }
@@ -107,7 +107,7 @@
 
 -(void)dealloc
 {
-//	[_records release];
+	[_records release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -201,7 +201,7 @@
 	ROIRec* roiRec = [self findRecordByROI:roi];
 	if (!roiRec) { // not in list
 		// create record, store it in the list, add its menu item to the menu
-		roiRec = [[ROIRec alloc] init:roi forList:self];
+		roiRec = [[[ROIRec alloc] init:roi forList:self] autorelease];
 		[_menu addItem:[roiRec menuItem]];
 		[_records addObject:roiRec];
 		// display if in mode "display all" - mode "display selected" is handled later

@@ -21,7 +21,7 @@
 -(void)awakeFromNib {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chartChanged:) name:ChartChanged object:[_interface chart]];
 	
-	_userDefaults = [[[UserDefaults alloc] init] retain];
+	_userDefaults = [[UserDefaults alloc] init];
 	
 	// curves
 	[_meanCurve setState:[_userDefaults bool:@"curves.mean" otherwise:[_meanCurve state]]];
@@ -69,6 +69,7 @@
 
 -(void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_userDefaults release];
 	[super dealloc];
 }
 

@@ -15,7 +15,7 @@
 	// [self setState:NSOnState]; [self setNeedsDisplay:YES]; // TODO:make the button draw itself pressed
 	
 	if ([self menu]) {
-		NSPopUpButtonCell* cell = [[NSPopUpButtonCell alloc] initTextCell:@"Test" pullsDown:NO];
+		NSPopUpButtonCell* cell = [[[NSPopUpButtonCell alloc] initTextCell:@"Test" pullsDown:NO] autorelease];
 		[cell setMenu:[self menu]];
 		[cell setFont:[NSFont menuFontOfSize:[NSFont smallSystemFontSize]]];
 		[cell performClickWithFrame:[self frame] inView:self];		

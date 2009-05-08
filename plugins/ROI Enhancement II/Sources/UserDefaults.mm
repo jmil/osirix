@@ -14,9 +14,9 @@
 -(id)init {
 	self = [super init];
 	
-	_dictionary = [[[[NSUserDefaults standardUserDefaults] persistentDomainForName:[[NSBundle bundleForClass:[self class]] bundleIdentifier]] mutableCopy] retain];
+	_dictionary = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:[[NSBundle bundleForClass:[self class]] bundleIdentifier]] mutableCopy];
 	if (!_dictionary)
-		_dictionary = [[[NSMutableDictionary alloc] init] retain];
+		_dictionary = [[NSMutableDictionary alloc] init];
 	
 	return self;
 }
