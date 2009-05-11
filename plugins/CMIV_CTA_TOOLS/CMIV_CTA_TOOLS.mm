@@ -94,11 +94,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 -(void) dealloc
 {
+	NSLog(@"CMIV dealloc plugin");
+	
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	
 	[seriesNeedToAutomaticProcess release];
 	[self cleanUpCachFolder];
-	NSLog(@"cmiv plugin delete old files");
+	
 	[super dealloc];
 	
 }
