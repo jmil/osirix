@@ -44,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 @synthesize ifVesselEnhanced;
 - (void) initPlugin
 {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToDB:) name:@"OsirixAddToDBNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToDB:) name:@"OsirixAddToDBNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(autoSeedingIndicatorStep:) name:@"CMIVLeveIndicatorStep" object:nil];
 	//autoseeding parameters
 	minimumImagesForEachSeriesToAutoSeeding=[[NSUserDefaults standardUserDefaults] integerForKey:@"CMIVAutoSeedingMinimumImagesForEachSeries"];
@@ -94,6 +94,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 -(void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	
 	[seriesNeedToAutomaticProcess release];
 	[self cleanUpCachFolder];
 	NSLog(@"cmiv plugin delete old files");
@@ -104,6 +106,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {
 	if(!ifAutoSeedingOnReceive)
 		return;
+	
 	NSArray* fileList = [[note userInfo] objectForKey:@"OsiriXAddToDBArray"] ;
 	//[fileList retain];
 	//	
