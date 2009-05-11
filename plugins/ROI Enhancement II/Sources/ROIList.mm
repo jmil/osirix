@@ -24,7 +24,7 @@
 -(id)init:(ROI*)roi forList:(ROIList*)roiList {
 	self = [super init];
 	
-	_roiList = [roiList retain];
+	_roiList = roiList;
 	_roi = [roi retain];
 	
 	_menuItem = [[NSMenuItem alloc] initWithTitle:[roi name] action:@selector(roiMenuItemSelected:) keyEquivalent:@""];
@@ -66,19 +66,17 @@
 
 -(void)dealloc {
 	[[[_roiList interface] chart] removeDataSet:_minDataSet];
-	
 	[[[_roiList interface] chart] removeDataSet:_meanDataSet];
-	
 	[[[_roiList interface] chart] removeDataSet:_maxDataSet];
-	
 	[[[_roiList interface] chart] removeAreaDataSet:_minmaxDataSet];
-	[_menuItem release];
-	
-	[_minDataSet release];
-	[_meanDataSet release];
-	[_maxDataSet release];
-	[_roiList release];
-	[_roi release];
+
+	[_menuItem release]; _menuItem = NULL;
+	[_minDataSet release]; _minDataSet = NULL;
+	[_meanDataSet release]; _meanDataSet = NULL;
+	[_maxDataSet release]; _maxDataSet = NULL;
+	[_minmaxDataSet release]; _minmaxDataSet = NULL;
+//	[_roiList release]; _roiList = NULL;
+	[_roi release]; _roi = NULL;
 	
 	[super dealloc];
 }
@@ -88,11 +86,6 @@
 
 @implementation ROIList
 @synthesize interface = _interface;
-
--(void)stopListeningToNotifications;
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 -(void)awakeFromNib {
 	_records = [[NSMutableArray alloc] init];
@@ -118,12 +111,11 @@
 		[self displayAllROIs];
 }
 
--(void)dealloc
-{
+-(void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[_records release];
-	[_menu release];
+	[_records release]; _records = NULL;
+	[_menu release]; _menu = NULL;
 	[super dealloc];
 }
 
@@ -140,7 +132,7 @@
 	for (unsigned i = 0; i < [_records count]; ++i) {
 		ROIRec* roiRec = [_records objectAtIndex:i];
 		if ([roiRec displayed])
-			if (++count == index)
+			if (count++ == index)
 				return roiRec;
 	}
 	
@@ -189,7 +181,6 @@
 
 // check whether the parameter ROI is in this graph's associated viewer
 -(BOOL)isInViewer:(ROI*)roi {
-	// TODO: check avec Antoine Rosset, est-ce la meilleure methode?
 	NSArray* roiSeriesList = [[_interface viewer] roiList];
 	for (unsigned i = 0; i < [roiSeriesList count]; ++i) {
 		NSArray* roiImageList = [roiSeriesList objectAtIndex:i];
@@ -207,7 +198,7 @@
 	if (![self isInViewer:roi])
 		return;
 	
-	// if it doesn't have a surface, then we're not interested in it // TODO: a better way to distinguish between interesting ROIs?
+	// if it doesn't have a surface, then we're not interested in it
 	if (![roi roiArea])
 		return;
 	

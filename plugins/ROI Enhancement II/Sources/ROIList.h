@@ -49,12 +49,11 @@ enum ROISel {
 	BOOL _display_all, _display_selected, _display_checked;
 }
 
-@property(readonly, retain) Interface* interface;
+@property(readonly) Interface* interface;
 
 -(void)awakeFromNib;
 -(void)loadViewerROIs;
 
--(void)stopListeningToNotifications;
 -(unsigned)countOfDisplayedROIs;
 -(ROIRec*)displayedROIRec:(unsigned)index;
 -(ROIRec*)findRecordByROI:(ROI*)roi;

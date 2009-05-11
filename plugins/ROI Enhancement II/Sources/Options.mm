@@ -16,78 +16,70 @@
 #import <DCMView.h>
 
 @implementation Options
-@synthesize userDefaults = _userDefaults;
 
 -(void)awakeFromNib {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chartChanged:) name:ChartChanged object:[_interface chart]];
-	
-	_userDefaults = [[UserDefaults alloc] init];
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentImage:) name:@"DCMUpdateCurrentImage" object:NULL];
+}
+
+-(void)loadUserDefaults {
 	// curves
-	[_meanCurve setState:[_userDefaults bool:@"curves.mean" otherwise:[_meanCurve state]]];
-	[_minCurve setState:[_userDefaults bool:@"curves.min" otherwise:[_minCurve state]]];
-	[_maxCurve setState:[_userDefaults bool:@"curves.max" otherwise:[_maxCurve state]]];
-	[_minmaxFill setState:[_userDefaults bool:@"curves.minmax.fill" otherwise:[_minmaxFill state]]];
+	[_meanCurve setState:[[_interface userDefaults] bool:@"curves.mean" otherwise:[_meanCurve state]]];
+	[_minCurve setState:[[_interface userDefaults] bool:@"curves.min" otherwise:[_minCurve state]]];
+	[_maxCurve setState:[[_interface userDefaults] bool:@"curves.max" otherwise:[_maxCurve state]]];
+	[_minmaxFill setState:[[_interface userDefaults] bool:@"curves.minmax.fill" otherwise:[_minmaxFill state]]];
 	
 	// ranges
-	[_xRangeMode selectItemAtIndex: [_userDefaults int:@"ranges.x.mode" otherwise:[_xRangeMode indexOfSelectedItem]]];
+	[_xRangeMode selectItemAtIndex: [[_interface userDefaults] int:@"ranges.x.mode" otherwise:[_xRangeMode indexOfSelectedItem]]];
 	if ([self xRangeMode] == XRangeDefinedByUser) {
-		[_xRangeMin setFloatValue:[_userDefaults float:@"ranges.x.min" otherwise:0]];
-		[_xRangeMax setFloatValue:[_userDefaults float:@"ranges.x.max" otherwise:0]];
+		[_xRangeMin setFloatValue:[[_interface userDefaults] float:@"ranges.x.min" otherwise:0]];
+		[_xRangeMax setFloatValue:[[_interface userDefaults] float:@"ranges.x.max" otherwise:0]];
 	}
 	
-	[_logscaleYRange setState:[_userDefaults bool:@"ranges.y.logscale" otherwise:[_logscaleYRange state]]];
-	[_constrainYRange setState:[_userDefaults bool:@"ranges.y.constrain" otherwise:[_constrainYRange state]]];
+	[_logscaleYRange setState:[[_interface userDefaults] bool:@"ranges.y.logscale" otherwise:[_logscaleYRange state]]];
+	[_constrainYRange setState:[[_interface userDefaults] bool:@"ranges.y.constrain" otherwise:[_constrainYRange state]]];
 	if ([_constrainYRange state]) {
-		[_yRangeMin setFloatValue:[_userDefaults float:@"ranges.y.min" otherwise:0]];
-		[_yRangeMax setFloatValue:[_userDefaults float:@"ranges.y.max" otherwise:0]];
+		[_yRangeMin setFloatValue:[[_interface userDefaults] float:@"ranges.y.min" otherwise:0]];
+		[_yRangeMax setFloatValue:[[_interface userDefaults] float:@"ranges.y.max" otherwise:0]];
 	}
 	
 	// decorations
-	[_xAxis setState:[_userDefaults bool:@"decorations.x.axis" otherwise:[_xAxis state]]];
-	[_xTicks setState:[_userDefaults bool:@"decorations.x.ticks" otherwise:[_xTicks state]]];
-	[_xGrid setState:[_userDefaults bool:@"decorations.x.grid" otherwise:[_xGrid state]]];
-	[_xLabels setState:[_userDefaults bool:@"decorations.x.labels" otherwise:[_xLabels state]]];
-	[_yAxis setState:[_userDefaults bool:@"decorations.y.axis" otherwise:[_yAxis state]]];
-	[_yTicks setState:[_userDefaults bool:@"decorations.y.ticks" otherwise:[_yTicks state]]];
-	[_yGrid setState:[_userDefaults bool:@"decorations.y.grid" otherwise:[_yGrid state]]];
-	[_yLabels setState:[_userDefaults bool:@"decorations.y.labels" otherwise:[_yLabels state]]];
-	[_background setState:[_userDefaults bool:@"decorations.background" otherwise:[_background state]]];
+	[_xAxis setState:[[_interface userDefaults] bool:@"decorations.x.axis" otherwise:[_xAxis state]]];
+	[_xTicks setState:[[_interface userDefaults] bool:@"decorations.x.ticks" otherwise:[_xTicks state]]];
+	[_xGrid setState:[[_interface userDefaults] bool:@"decorations.x.grid" otherwise:[_xGrid state]]];
+	[_xLabels setState:[[_interface userDefaults] bool:@"decorations.x.labels" otherwise:[_xLabels state]]];
+	[_yAxis setState:[[_interface userDefaults] bool:@"decorations.y.axis" otherwise:[_yAxis state]]];
+	[_yTicks setState:[[_interface userDefaults] bool:@"decorations.y.ticks" otherwise:[_yTicks state]]];
+	[_yGrid setState:[[_interface userDefaults] bool:@"decorations.y.grid" otherwise:[_yGrid state]]];
+	[_yLabels setState:[[_interface userDefaults] bool:@"decorations.y.labels" otherwise:[_yLabels state]]];
+	[_background setState:[[_interface userDefaults] bool:@"decorations.background" otherwise:[_background state]]];
 	
-	[_majorLineColor setColor:[_userDefaults color:@"decorations.majorlinecolor" otherwise:[_majorLineColor color]]];
-	[_minorLineColor setColor:[_userDefaults color:@"decorations.minorlinecolor" otherwise:[_minorLineColor color]]];
-	[_backgroundColor setColor:[_userDefaults color:@"decorations.background.color" otherwise:[_backgroundColor color]]];
+	[_majorLineColor setColor:[[_interface userDefaults] color:@"decorations.majorlinecolor" otherwise:[_majorLineColor color]]];
+	[_minorLineColor setColor:[[_interface userDefaults] color:@"decorations.minorlinecolor" otherwise:[_minorLineColor color]]];
+	[_backgroundColor setColor:[[_interface userDefaults] color:@"decorations.background.color" otherwise:[_backgroundColor color]]];
 	
 	[self curvesChanged:NULL];
 	
 	[self xRangeChanged:NULL];
 	[self yRangeChanged:NULL];
 	[self decorationsChanged:NULL];
-
-	[self chartChanged:NULL];
 }
 
 -(void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_userDefaults release];
 	[super dealloc];
-}
-
--(void)chartChanged:(NSNotification*)notification {
-	[self yRangeChanged:NULL]; // update the displayed numeric range
 }
 
 -(IBAction)curvesChanged:(id)sender {
 	[[_interface roiList] changedMin:[_minCurve state] mean:[_meanCurve state] max:[_maxCurve state] fill:[_minmaxFill state]];
 	
 	if (sender == _meanCurve)
-		[_userDefaults setBool:[_meanCurve state] forKey:@"curves.mean"];
+		[[_interface userDefaults] setBool:[_meanCurve state] forKey:@"curves.mean"];
 	if (sender == _minCurve)
-		[_userDefaults setBool:[_minCurve state] forKey:@"curves.min"];
+		[[_interface userDefaults] setBool:[_minCurve state] forKey:@"curves.min"];
 	if (sender == _maxCurve)
-		[_userDefaults setBool:[_maxCurve state] forKey:@"curves.max"];
+		[[_interface userDefaults] setBool:[_maxCurve state] forKey:@"curves.max"];
 	if (sender == _minmaxFill)
-		[_userDefaults setBool:[_minmaxFill state] forKey:@"curves.minmax.fill"];
+		[[_interface userDefaults] setBool:[_minmaxFill state] forKey:@"curves.minmax.fill"];
 }
 
 -(XRangeMode)xRangeMode {
@@ -99,12 +91,15 @@
 		return XRangeFromCurrentToEnd;
 	if (selectedItem == _xRange4thDimension)
 		return XRange4thDimension;
-	if (selectedItem == _xRangeEachROIWithIdenticalName)
-		return XRangeEachROIWithIdenticalName;
 	if (selectedItem == _xRangeDefinedByUser)
 		return XRangeDefinedByUser;
 
 	return (XRangeMode)-1;
+}
+
+-(void)updateCurrentImage:(NSNotification*)notification {
+	if ([self xRangeMode] == XRangeFromCurrentToEnd || [self xRangeMode] == XRange4thDimension)
+		[self xRangeChanged:NULL];
 }
 
 -(IBAction)xRangeChanged:(id)sender {
@@ -125,21 +120,20 @@
 	if (xRangeMode == XRangeEntireStack)
 		[[_interface chart] constrainXRangeFrom:0 to:[[[_interface viewer] pixList] count]-1];
 	else if (xRangeMode == XRangeFromCurrentToEnd)
-		[[_interface chart] constrainXRangeFrom:[[[_interface viewer] imageView] curImage] to:[[[_interface viewer] pixList] count]-1];
-	else if (xRangeMode == XRange4thDimension)
-		; // TODO: XRange4thDimension (also enable in XIB)
-	else if (xRangeMode == XRangeEachROIWithIdenticalName)
-		; // TODO: XRangeEachROIWithIdenticalName (also enable in XIB)
-	else if (xRangeMode == XRangeDefinedByUser)
+		[[_interface chart] constrainXRangeFrom:[[[_interface viewer] imageView] flippedData]? [[[_interface viewer] pixList] count]-[[[_interface viewer] imageView] curImage]-1 : [[[_interface viewer] imageView] curImage] to:[[[_interface viewer] pixList] count]-1];
+	else if (xRangeMode == XRange4thDimension) {
+		[[_interface chart] constrainXRangeFrom:0 to:[[[_interface viewer] pixList:[[[_interface viewer] imageView] curImage]] count]-1];
+		[[_interface chart] reloadData];
+	} else if (xRangeMode == XRangeDefinedByUser)
 		[[_interface chart] constrainXRangeFrom:[_xRangeMin intValue] to:[_xRangeMax intValue]];
 	
 	[self updateXRange];
 	
 	// defaults
-	[_userDefaults setInt:xRangeMode forKey:@"ranges.x.mode"];
+	[[_interface userDefaults] setInt:xRangeMode forKey:@"ranges.x.mode"];
 	if (constrain) {
-		[_userDefaults setFloat:[_xRangeMin floatValue] forKey:@"ranges.x.min"];
-		[_userDefaults setFloat:[_xRangeMax floatValue] forKey:@"ranges.x.max"];
+		[[_interface userDefaults] setFloat:[_xRangeMin floatValue] forKey:@"ranges.x.min"];
+		[[_interface userDefaults] setFloat:[_xRangeMax floatValue] forKey:@"ranges.x.max"];
 	}
 }
 
@@ -173,11 +167,11 @@
 	[self updateYRange];
 	
 	// defaults
-	[_userDefaults setBool:constrain forKey:@"ranges.y.constrain"];
-	[_userDefaults setBool:[_logscaleYRange state] forKey:@"ranges.y.logscale"];
+	[[_interface userDefaults] setBool:constrain forKey:@"ranges.y.constrain"];
+	[[_interface userDefaults] setBool:[_logscaleYRange state] forKey:@"ranges.y.logscale"];
 	if (constrain) {
-		[_userDefaults setFloat:[_yRangeMin floatValue] forKey:@"ranges.y.min"];
-		[_userDefaults setFloat:[_yRangeMax floatValue] forKey:@"ranges.y.max"];
+		[[_interface userDefaults] setFloat:[_yRangeMin floatValue] forKey:@"ranges.y.min"];
+		[[_interface userDefaults] setFloat:[_yRangeMax floatValue] forKey:@"ranges.y.max"];
 	}
 }
 
@@ -250,18 +244,18 @@
 	if (!sender || sender == _backgroundColor)
 		[axes setProperty:[_backgroundColor color] forKey:GRAxesBackgroundColor];
 
-	if (sender == _xAxis) [_userDefaults setBool:[_xAxis state] forKey:@"decorations.x.axis"];
-	if (sender == _xTicks) [_userDefaults setBool:[_xTicks state] forKey:@"decorations.x.ticks"];
-	if (sender == _xGrid) [_userDefaults setBool:[_xGrid state] forKey:@"decorations.x.grid"];
-	if (sender == _xLabels) [_userDefaults setBool:[_xLabels state] forKey:@"decorations.x.labels"];
-	if (sender == _yAxis) [_userDefaults setBool:[_yAxis state] forKey:@"decorations.y.axis"];
-	if (sender == _yTicks) [_userDefaults setBool:[_yTicks state] forKey:@"decorations.y.ticks"];
-	if (sender == _yGrid) [_userDefaults setBool:[_yGrid state] forKey:@"decorations.y.grid"];
-	if (sender == _yLabels) [_userDefaults setBool:[_yLabels state] forKey:@"decorations.y.labels"];
-	if (sender == _background) [_userDefaults setBool:[_background state] forKey:@"decorations.background"];
-	if (sender == _majorLineColor) [_userDefaults setColor:[_majorLineColor color] forKey:@"decorations.majorlinecolor"];
-	if (sender == _minorLineColor) [_userDefaults setColor:[_minorLineColor color] forKey:@"decorations.minorlinecolor"];
-	if (sender == _backgroundColor) [_userDefaults setColor:[_backgroundColor color] forKey:@"decorations.background.color"];
+	if (sender == _xAxis) [[_interface userDefaults] setBool:[_xAxis state] forKey:@"decorations.x.axis"];
+	if (sender == _xTicks) [[_interface userDefaults] setBool:[_xTicks state] forKey:@"decorations.x.ticks"];
+	if (sender == _xGrid) [[_interface userDefaults] setBool:[_xGrid state] forKey:@"decorations.x.grid"];
+	if (sender == _xLabels) [[_interface userDefaults] setBool:[_xLabels state] forKey:@"decorations.x.labels"];
+	if (sender == _yAxis) [[_interface userDefaults] setBool:[_yAxis state] forKey:@"decorations.y.axis"];
+	if (sender == _yTicks) [[_interface userDefaults] setBool:[_yTicks state] forKey:@"decorations.y.ticks"];
+	if (sender == _yGrid) [[_interface userDefaults] setBool:[_yGrid state] forKey:@"decorations.y.grid"];
+	if (sender == _yLabels) [[_interface userDefaults] setBool:[_yLabels state] forKey:@"decorations.y.labels"];
+	if (sender == _background) [[_interface userDefaults] setBool:[_background state] forKey:@"decorations.background"];
+	if (sender == _majorLineColor) [[_interface userDefaults] setColor:[_majorLineColor color] forKey:@"decorations.majorlinecolor"];
+	if (sender == _minorLineColor) [[_interface userDefaults] setColor:[_minorLineColor color] forKey:@"decorations.minorlinecolor"];
+	if (sender == _backgroundColor) [[_interface userDefaults] setColor:[_backgroundColor color] forKey:@"decorations.background.color"];
 }
 
 -(BOOL)min {

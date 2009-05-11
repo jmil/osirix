@@ -13,42 +13,24 @@
 @class ROIList;
 @class Chart;
 @class Options;
-
-@interface CSVSaveOptions : NSView {
-	IBOutlet NSButton* _includeHeaders;
-}
-
--(BOOL)includeHeaders;
-
-@end;
-
-@interface DICOMSaveOptions	: NSView {
-	IBOutlet NSColorWell* _bgColor;
-}
-
--(NSColor*)bgColor;
-
-@end
-
-@interface DICOMSavePanel : NSPanel {
-	IBOutlet NSTextField* _seriesName;
-	IBOutlet NSColorWell* _bgColor;
-}
-
--(NSString*)seriesName;
--(NSColor*)bgColor;
-
-@end;
+@class UserDefaults;
 
 @interface Interface : NSWindowController {
 	ViewerController* _viewer;
+	UserDefaults* _userDefaults;
 	IBOutlet ROIList* _roiList;
 	IBOutlet Chart* _chart;
 	IBOutlet Options* _options;
-	IBOutlet CSVSaveOptions* _csvSaveOptions; // TODO: save in prefs
-	IBOutlet DICOMSaveOptions* _dicomSaveOptions; // TODO: save in prefs
-	IBOutlet DICOMSavePanel* _dicomSavePanel; // TODO: save in prefs
+	IBOutlet NSButton* _csvSaveOptionsIncludeHeaders;
+	IBOutlet NSView* _dicomSaveOptions;
+		IBOutlet NSColorWell* _dicomSaveOptionsBackgroundColor;
+	IBOutlet NSWindow* _dicomSavePanel;
+		IBOutlet NSTextField* _dicomSavePanelSeriesName;
+		IBOutlet NSColorWell* _dicomSavePanelBackgroundColor;
+		IBOutlet NSButton* _dicomSavePanelSaveButton;
+		IBOutlet NSButton* _dicomSavePanelCancelButton;
 	IBOutlet NSNumberFormatter* _decimalFormatter;
+	IBOutlet NSNumberFormatter* _floatFormatter;
 }
 
 @property(readonly) ViewerController* viewer;
@@ -56,6 +38,8 @@
 @property(readonly) Chart* chart;
 @property(readonly) Options* options;
 @property(readonly) NSNumberFormatter* decimalFormatter;
+@property(readonly) NSNumberFormatter* floatFormatter;
+@property(readonly) UserDefaults* userDefaults;
 
 -(id)initForViewer:(ViewerController*)viewer;
 -(IBAction)saveDICOM:(id)sender;

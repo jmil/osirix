@@ -15,9 +15,8 @@
 #import <ViewerController.h>
 #import "ROIList.h"
 #import <ROI.h>
+#import <DCMView.h>
 #import "Options.h"
-
-NSString* ChartChanged = @"ChartChanged";
 
 @implementation Chart
 @synthesize xMin = _xMin, xMax = _xMax;
@@ -46,12 +45,12 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(void)dealloc {
-	[_areaDataSets release];
+	[_areaDataSets release]; _areaDataSets = NULL;
 	[super dealloc];
 }
 
--(void)postChangedNotification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:ChartChanged object:self];
+-(void)resetCursorRects {
+	[self addCursorRect:[self bounds] cursor:[NSCursor crosshairCursor]];
 }
 
 -(void)constrainXRangeFrom:(unsigned)min to:(unsigned)max {
@@ -60,7 +59,6 @@ NSString* ChartChanged = @"ChartChanged";
 	[[self axes] setProperty:[NSNumber numberWithFloat:_xMin] forKey:GRAxesFixedXPlotMin];
 	[[self axes] setProperty:[NSNumber numberWithFloat:_xMax] forKey:GRAxesXPlotMax];
 	[[self axes] setProperty:[NSNumber numberWithFloat:_xMax] forKey:GRAxesFixedXPlotMax];
-	[self postChangedNotification];
 }
 
 -(GRLineDataSet*)createOwnedLineDataSet {
@@ -87,9 +85,22 @@ NSString* ChartChanged = @"ChartChanged";
 		[self setNeedsToReloadData:YES];
 }
 
-- (void)reloadDataInRange:(NSRange)fp8 {
-	[super reloadDataInRange:fp8];
-	[self postChangedNotification];
+-(void)mouseDown:(NSEvent*)theEvent {
+	_tracking = YES;
+	[NSCursor hide];
+	[self mouseDragged:theEvent];
+}
+
+-(void)mouseDragged:(NSEvent*)theEvent {
+	_mousePoint = [self convertPointFromBase:[theEvent locationInWindow]]; _plotValueX = -1;
+	[self setNeedsDisplay:YES];
+}
+
+-(void)mouseUp:(NSEvent*)theEvent {
+	_tracking = [theEvent clickCount] != 2;
+	[NSCursor unhide];
+	if (!_tracking)
+		[self setNeedsDisplay:YES];
 }
 
 // GRChartView delegate/dataSource
@@ -98,9 +109,21 @@ NSString* ChartChanged = @"ChartChanged";
 	return [[[_interface viewer] pixList] count];
 }
 
+-(void)yValueForROIRec:(ROIRec*)roiRec element:(NSInteger)element min:(float*)min mean:(float*)mean max:(float*)max {
+	if ([[_interface options] xRangeMode] == XRange4thDimension) {
+		[[[[_interface viewer] pixList:[[[_interface viewer] imageView] curImage]] objectAtIndex:element] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+	} else {
+		if ([[[_interface viewer] imageView] flippedData])
+			element = [[[_interface viewer] pixList] count]-element-1;
+		[[[[_interface viewer] pixList] objectAtIndex:element] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+	}
+}
+
 -(double)chart:(GRChartView*)chart yValueForDataSet:(GRDataSet*)dataSet element:(NSInteger)element {
 	ROISel roiSel; ROIRec* roiRec = [[_interface roiList] findRecordByDataSet:dataSet sel:&roiSel];
-	float min = 0, mean = 0, max = 0; [[[[_interface viewer] pixList] objectAtIndex:element] computeROI:[roiRec roi] :&mean :NULL :NULL :&min :&max];
+	
+	float min = 0, mean = 0, max = 0;
+	[self yValueForROIRec:roiRec element:element min:&min mean:&mean max:&max];
 	
 	if (roiSel == ROIMin)
 		return min;
@@ -109,7 +132,7 @@ NSString* ChartChanged = @"ChartChanged";
 	if (roiSel == ROIMax)
 		return max;
 	
-	return sin(element); // TODO: change
+	return 0;
 }
 
 -(NSString*)chart:(GRChartView*)chart yLabelForAxes:(GRAxes*)axes value:(double)value defaultLabel:(NSString*)defaultLabel {
@@ -145,7 +168,6 @@ NSString* ChartChanged = @"ChartChanged";
 }
 
 -(void)constrainYRangeFrom:(float)min to:(float)max {
-	// TODO: zero is interpreted as "default", find how to set to real zero
 	min -= 0.00000001; max += 0.00000001;
 	[[self axes] setProperty:[NSNumber numberWithFloat:min] forKey:GRAxesYPlotMin];
 	[[self axes] setProperty:[NSNumber numberWithFloat:max] forKey:GRAxesYPlotMax];
@@ -174,19 +196,37 @@ NSString* ChartChanged = @"ChartChanged";
 	return _drawBackground;
 }
 
+-(void)drawTrackingGizmoAtPoint:(NSPoint)point withValue:(float)value {
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	static NSDictionary* attributes = [[NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]-2], NSFontAttributeName, NULL] retain];
+	
+	NSString* string = [[_interface floatFormatter] stringFromNumber:[NSNumber numberWithFloat:value]];
+	NSSize size = [string sizeWithAttributes:attributes];
+	
+	[NSBezierPath strokeLineFromPoint:point toPoint:NSMakePoint(point.x+5, point.y)];
+	[NSBezierPath setDefaultLineWidth: 0];
+	[[[NSColor whiteColor] colorWithAlphaComponent:.5] setFill];
+	NSRect rect = NSMakeRect(point.x+4, point.y+2, size.width, size.height);
+	[[NSBezierPath bezierPathWithRect:NSMakeRect(rect.origin.x-2, rect.origin.y, rect.size.width+3, rect.size.height-1)] fill];
+	[string drawInRect:rect withAttributes:attributes];
+	
+	[context restoreGraphicsState];
+}
+
 -(void)drawRect:(NSRect)dirtyRect {
 	// update the view's structure
 	[super drawRect:NSMakeRect(0, 0, 0, 0)];
 	
 	// draw first the background and the areas
 	
-	if (_drawBackground) {
-		NSGraphicsContext* context = [NSGraphicsContext currentContext];
-		[context saveGraphicsState];
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
 
+	if (_drawBackground) {
+		[context saveGraphicsState];
 		[(NSColor*)[[self axes] propertyForKey:GRAxesBackgroundColor] setFill];
 		[NSBezierPath fillRect:[[self axes] plotRect]];
-
 		[context restoreGraphicsState];
 	}
 	
@@ -195,47 +235,75 @@ NSString* ChartChanged = @"ChartChanged";
 	
 	[super drawRect:dirtyRect];
 	
+	if (_tracking) {
+		if (_plotValueX == -1)
+			_plotValueX = round([[self axes] xValueAtPoint:_mousePoint]);
+		float plotPointX = [[self axes] locationForXValue:_plotValueX yValue:0].x;
+		// draw
+		[context saveGraphicsState];
+		[[NSBezierPath bezierPathWithRect:[[self axes] plotRect]] setClip];
+		// line
+		[[NSColor blackColor] setStroke];
+		[NSBezierPath setDefaultLineWidth: 1];
+		[NSBezierPath strokeLineFromPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y) toPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y+[[self axes] plotRect].size.height)];
+		// values
+		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+			ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+			
+			float min = 0, mean = 0, max = 0;
+			[self yValueForROIRec:roiRec element:_plotValueX min:&min mean:&mean max:&max];
+			
+			if ([[_interface options] min])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:min] withValue:min];
+			if ([[_interface options] mean])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:mean] withValue:mean];
+			if ([[_interface options] max])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:max] withValue:max];
+		}
+		[context restoreGraphicsState];
+	}
+	
 	[[_interface options] updateYRange];
 	[[_interface options] updateXRange];
 }
 
 -(NSString*)csv:(BOOL)includeHeaders {
-	NSMutableString* csv = [[[NSMutableString alloc] initWithCapacity:512] autorelease];
+	NSMutableString* csv = [[NSMutableString alloc] initWithCapacity:512];
 	
 	if (includeHeaders) {
-		[csv appendString:@"index\t"];
+		[csv appendString:@"\"index\","];
 		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
 			NSMutableString* name = [[[[[[_interface roiList] displayedROIRec:i] roi] name] mutableCopy] autorelease];
-			[name replaceOccurrencesOfString:@" " withString:@"_" options:0 range:NSMakeRange(0, [name length])];
+			[name replaceOccurrencesOfString:@"\"" withString:@"\"\"" options:0 range:NSMakeRange(0, [name length])];
 			if ([[_interface options] mean])
-				[csv appendFormat: @"%@_mean\t", name];
+				[csv appendFormat: @"\"%@ mean\",", name];
 			if ([[_interface options] min] || [[_interface options] fill])
-				[csv appendFormat: @"%@_min\t", name];
+				[csv appendFormat: @"\"%@ min\",", name];
 			if ([[_interface options] max] || [[_interface options] fill])
-				[csv appendFormat: @"%@_max\t", name];
+				[csv appendFormat: @"\"%@ max\",", name];
 		}
+
+		[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
+		[csv appendString:@"\n"];
 	}
 	
-	[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
-	[csv appendString:@"\n"];
-	
 	for (int x = _xMin; x <= _xMax; ++x) {
-		[csv appendFormat:@"%d\t", x];
+		[csv appendFormat:@"\"%d\",", x];
 		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
 			ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
 			if ([[_interface options] mean])
-				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec meanDataSet] element:x]];
+				[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec meanDataSet] element:x]];
 			if ([[_interface options] min] || [[_interface options] fill])
-				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec minDataSet] element:x]];
+				[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec minDataSet] element:x]];
 			if ([[_interface options] max] || [[_interface options] fill])
-				[csv appendFormat: @"%f\t", [self chart:self yValueForDataSet:[roiRec maxDataSet] element:x]];
+				[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec maxDataSet] element:x]];
 		}
 		
 		[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
 		[csv appendString:@"\n"];
 	}
 	
-	return csv;
+	return [csv autorelease];
 }
 
 @end

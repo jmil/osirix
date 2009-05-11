@@ -22,7 +22,7 @@
 }
 
 -(void)dealloc {
-	[_dictionary release];
+	[_dictionary release]; _dictionary = NULL;
 	[super dealloc];
 }
 

@@ -9,7 +9,7 @@
 //
 
 enum XRangeMode {
-	XRangeEntireStack, XRangeFromCurrentToEnd, XRange4thDimension, XRangeEachROIWithIdenticalName, XRangeDefinedByUser
+	XRangeEntireStack, XRangeFromCurrentToEnd, XRange4thDimension, XRangeDefinedByUser
 };
 
 #import <Cocoa/Cocoa.h>
@@ -18,12 +18,11 @@ enum XRangeMode {
 
 @interface Options : NSObject {
 	IBOutlet Interface* _interface;
-	UserDefaults* _userDefaults;
 	// curves
 	IBOutlet NSButton *_meanCurve, *_minCurve, *_maxCurve, *_minmaxFill;
 	// ranges
 	IBOutlet NSPopUpButton* _xRangeMode;
-	IBOutlet NSMenuItem *_xRangeEntireStack, *_xRangeFromCurrentToEnd, *_xRange4thDimension, *_xRangeEachROIWithIdenticalName, *_xRangeDefinedByUser;
+	IBOutlet NSMenuItem *_xRangeEntireStack, *_xRangeFromCurrentToEnd, *_xRange4thDimension, *_xRangeDefinedByUser;
 	IBOutlet NSTextField *_xRangeMin, *_xRangeMax;
 	IBOutlet NSButton* _logscaleYRange;
 	IBOutlet NSButton* _constrainYRange;
@@ -33,10 +32,9 @@ enum XRangeMode {
 	IBOutlet NSColorWell *_majorLineColor, *_minorLineColor, *_backgroundColor;
 }
 
-@property(retain) UserDefaults* userDefaults;
+-(void)loadUserDefaults;
 
 -(IBAction)curvesChanged:(id)sender;
--(void)chartChanged:(NSNotification*)notification;
 -(IBAction)xRangeChanged:(id)sender;
 -(void)updateXRange;
 -(IBAction)yRangeChanged:(id)sender;

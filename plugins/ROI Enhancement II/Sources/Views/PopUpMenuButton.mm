@@ -12,8 +12,6 @@
 @implementation PopUpMenuButton
 
 -(void)mouseDown:(NSEvent*)theEvent {
-	// [self setState:NSOnState]; [self setNeedsDisplay:YES]; // TODO:make the button draw itself pressed
-	
 	if ([self menu]) {
 		NSPopUpButtonCell* cell = [[[NSPopUpButtonCell alloc] initTextCell:@"Test" pullsDown:NO] autorelease];
 		[cell setMenu:[self menu]];

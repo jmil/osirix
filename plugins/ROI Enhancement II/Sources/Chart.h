@@ -14,13 +14,14 @@
 @class GRLineDataSet;
 @class AreaDataSet;
 
-extern NSString* ChartChanged;
-
 @interface Chart : GRChartView {
 	IBOutlet Interface* _interface;
 	int _xMin, _xMax;
 	NSMutableArray* _areaDataSets;
 	BOOL _drawBackground;
+	BOOL _tracking;
+	NSPoint _mousePoint;
+	float _plotValueX;
 }
 
 @property(readonly) int xMin, xMax;

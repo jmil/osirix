@@ -13,40 +13,12 @@
 #import "Options.h"
 #import <DICOMExport.h>
 #import <DCMPix.h>
+#import "UserDefaults.h"
 
 const NSString* FileTypePDF = @"pdf";
 const NSString* FileTypeTIFF = @"tiff";
 const NSString* FileTypeDICOM = @"dcm";
 const NSString* FileTypeCSV = @"csv";
-
-
-@implementation CSVSaveOptions
-
--(BOOL)includeHeaders {
-	return [_includeHeaders state] == NSOnState;
-}
-
-@end
-
-@implementation DICOMSaveOptions
-
--(NSColor*)bgColor {
-	return [_bgColor color];
-}
-
-@end
-
-@implementation DICOMSavePanel
-
--(NSString*)seriesName {
-	return [_seriesName stringValue];
-}
-
--(NSColor*)bgColor {
-	return [_bgColor color];
-}
-
-@end
 
 
 @implementation Interface
@@ -55,38 +27,50 @@ const NSString* FileTypeCSV = @"csv";
 @synthesize chart = _chart;
 @synthesize options = _options;
 @synthesize decimalFormatter = _decimalFormatter;
-
-- (void) dealloc
-{
-	[_viewer release];
-	[super dealloc];
-}
-
+@synthesize floatFormatter = _floatFormatter;
+@synthesize userDefaults = _userDefaults;
 
 -(id)initForViewer:(ViewerController*)viewer {
 	_viewer = [viewer retain];
 	self = [super initWithWindowNibName:@"Interface"];
 	[self window]; // triggers nib loading
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewer];
 	
+	_userDefaults = [[UserDefaults alloc] init];
+	[_options loadUserDefaults];
+
 	[_roiList loadViewerROIs];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewer];
+	if ([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] intValue] < 5466)
+		if (![_userDefaults bool:@"alert.version.dontshowagain" otherwise:NO]) {
+			NSAlert* alert = [NSAlert alertWithMessageText:@"The OsiriX application you are running is out of date." defaultButton:@"Close" alternateButton:@"Continue" otherButton:NULL informativeTextWithFormat:@"This plugin is usable in the current environment but its behaviour when following ROI selection is undefined."];
+			[alert setShowsSuppressionButton:YES];
+			[[alert suppressionButton] setTitle:@"Do not show this message again."];
+			[alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(versionAlertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+		}
 	
 	return self;
 }
 
--(void)windowWillClose:(NSNotification*)notification
-{
-	[_roiList stopListeningToNotifications];
-	[self release];
+-(void)dealloc {
+	[_viewer release]; _viewer = NULL;
+	[super dealloc];
 }
 
--(void)viewerWillClose:(NSNotification*)notification
-{
-	if( [notification object] == _viewer)
-	{
+-(void)windowWillClose:(NSNotification*)notification {
+	if ([notification object] == [self window]) 
+		[self release];
+}
+
+-(void)viewerWillClose:(NSNotification*)notification {
+	[[self window] close];
+}
+
+-(void)versionAlertDidEnd:(NSAlert*)alert returnCode:(int)returnCode contextInfo:(void*)contextInfo {
+	if (returnCode == 1)
 		[[self window] close];
-	}
+	else if ([[alert suppressionButton] state])
+		[_userDefaults setBool:YES forKey:@"alert.version.dontshowagain"];
 }
 
 -(void)saveAs:(NSString*)format accessoryView:(NSView*)accessoryView {
@@ -98,6 +82,8 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(IBAction)saveDICOM:(id)sender {
+	[_dicomSavePanelBackgroundColor setColor:[_userDefaults color:@"dicom.color.background" otherwise:[_dicomSavePanelBackgroundColor color]]];
+	[_dicomSavePanel setDefaultButtonCell:[_dicomSavePanelSaveButton cell]];
 	[NSApp beginSheet:_dicomSavePanel modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveDicomSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
 
@@ -110,11 +96,13 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(IBAction)saveAsDICOM:(id)sender {
+	[_dicomSaveOptionsBackgroundColor setColor:[_userDefaults color:@"dicom.color.background" otherwise:[_dicomSaveOptionsBackgroundColor color]]];
 	[self saveAs:FileTypeDICOM accessoryView:_dicomSaveOptions];
 }
 
 -(IBAction)saveAsCSV:(id)sender {
-	[self saveAs: FileTypeCSV accessoryView:_csvSaveOptions];
+	[_csvSaveOptionsIncludeHeaders setState:[_userDefaults bool:@"csv.headers.include" otherwise:[_csvSaveOptionsIncludeHeaders state]]];
+	[self saveAs: FileTypeCSV accessoryView:_csvSaveOptionsIncludeHeaders];
 }
 
 -(void)dicomSave:(NSString*)seriesDescription backgroundColor:(NSColor*)backgroundColor toFile:(NSString*)filename {
@@ -123,7 +111,7 @@ const NSString* FileTypeCSV = @"csv";
 	NSInteger bytesPerPixel = [bitmapImageRep bitsPerPixel]/8;
 	CGFloat backgroundRGBA[4]; [[backgroundColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getComponents:backgroundRGBA];
 	
-	// convert RGBA to RGB
+	// convert RGBA to RGB - alpha values are considered when mixing the background color with the actual pixel color
 	NSMutableData* bitmapRGBData = [NSMutableData dataWithCapacity: [bitmapImageRep size].width*[bitmapImageRep size].height*3];
 	for (int y = 0; y < [bitmapImageRep size].height; ++y) {
 		unsigned char* rowStart = [bitmapImageRep bitmapData]+[bitmapImageRep bytesPerRow]*y;
@@ -147,8 +135,10 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(void)saveDicomSheetDidEnd:(NSWindow*)sheet returnCode:(int)code contextInfo:(void*)contextInfo {
-	if (code == NSOKButton)
-		[self dicomSave:[_dicomSavePanel seriesName] backgroundColor:[_dicomSavePanel bgColor] toFile:NULL];
+	if (code == NSOKButton) {
+		[_userDefaults setColor:[_dicomSavePanelBackgroundColor color] forKey:@"dicom.color.background"];
+		[self dicomSave:[_dicomSavePanelSeriesName stringValue] backgroundColor:[_dicomSavePanelBackgroundColor color] toFile:NULL];
+	}
 }
 
 -(void)saveAsPanelDidEnd:(NSSavePanel*)panel returnCode:(int)code contextInfo:(void*)format {
@@ -159,7 +149,8 @@ const NSString* FileTypeCSV = @"csv";
 			[[_chart dataWithPDFInsideRect:[_chart bounds]] writeToFile:[panel filename] options:NSAtomicWrite error:&error];
 			
 		} else if (format == FileTypeCSV) {
-			[[_chart csv: [_csvSaveOptions includeHeaders]] writeToFile:[panel filename] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+			[_userDefaults setBool:[_csvSaveOptionsIncludeHeaders state] forKey:@"csv.headers.include"];
+			[[_chart csv: [_csvSaveOptionsIncludeHeaders state]] writeToFile:[panel filename] atomically:YES encoding:NSUTF8StringEncoding error:&error];
 			
 		} else if (format == FileTypeTIFF) {
 			NSBitmapImageRep* bitmapImageRep = [_chart bitmapImageRepForCachingDisplayInRect:[_chart bounds]];
@@ -170,8 +161,9 @@ const NSString* FileTypeCSV = @"csv";
 			[image release];
 			
 		} else { // dicom
+			[_userDefaults setColor:[_dicomSaveOptionsBackgroundColor color] forKey:@"dicom.color.background"];
 			unsigned lastSlash = [[panel filename] rangeOfString:@"/" options:NSBackwardsSearch].location+1;
-			[self dicomSave:[[panel filename] substringWithRange: NSMakeRange(lastSlash, [[panel filename] rangeOfString:@"." options:NSBackwardsSearch].location-lastSlash)] backgroundColor:[_dicomSaveOptions bgColor] toFile:[panel filename]];
+			[self dicomSave:[[panel filename] substringWithRange: NSMakeRange(lastSlash, [[panel filename] rangeOfString:@"." options:NSBackwardsSearch].location-lastSlash)] backgroundColor:[_dicomSaveOptionsBackgroundColor color] toFile:[panel filename]];
 		}
 	
 	if (error)
