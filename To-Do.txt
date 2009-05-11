@@ -7,6 +7,7 @@
 
 - Dont compute 3D ROI, if not needed... in VR
 - MiniMIP 3D MPR
+
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
 - JP2000 compression activate
@@ -47,7 +48,10 @@ VTK MODIFICATIONS :
 
 Optimizations:
 
--march=nocona -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer
+-march=nocona -mtune=nocona -msse -msse2 -msse3 -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer
+
+
+
 
 ITK: remove Wmo long double in CMakeLists.txt, after generating
 __isnand dans vnl_math.cxx, remplacer avec __inline_isnand (voir math.h)
