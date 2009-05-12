@@ -123,6 +123,9 @@
 		[[_interface chart] constrainXRangeFrom:[[[_interface viewer] imageView] flippedData]? [[[_interface viewer] pixList] count]-[[[_interface viewer] imageView] curImage]-1 : [[[_interface viewer] imageView] curImage] to:[[[_interface viewer] pixList] count]-1];
 	else if (xRangeMode == XRange4thDimension) {
 		[[_interface chart] constrainXRangeFrom:0 to:[[[_interface viewer] pixList:[[[_interface viewer] imageView] curImage]] count]-1];
+		
+		NSLog(@"--- %d %d", [[[_interface viewer] pixList] count], [[[_interface viewer] pixList:[[[_interface viewer] imageView] curImage]] count]);
+		
 		[[_interface chart] reloadData];
 	} else if (xRangeMode == XRangeDefinedByUser)
 		[[_interface chart] constrainXRangeFrom:[_xRangeMin intValue] to:[_xRangeMax intValue]];
@@ -237,7 +240,7 @@
 	
 	if (!sender || sender == _background) {
 		BOOL state = [_background state];
-		[chart setDrawBackground:state];
+		[chart setDrawsBackground:state];
 		[_backgroundColor setEnabled:state];
 	}
 	

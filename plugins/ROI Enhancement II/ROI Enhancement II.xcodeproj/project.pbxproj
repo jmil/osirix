@@ -34,6 +34,8 @@
 		5977157C0FA97FAF003CBDE8 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 597715710FA97FAF003CBDE8 /* ViewerController.h */; };
 		597715800FA97FE3003CBDE8 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5977157F0FA97FE3003CBDE8 /* Interface.xib */; };
 		597715A50FA9805A003CBDE8 /* PopUpMenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 597715A40FA9805A003CBDE8 /* PopUpMenuIcon.png */; };
+		597816040FB9520800774713 /* DicomSaveDialog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597816020FB9520800774713 /* DicomSaveDialog.mm */; };
+		597816050FB9520800774713 /* DicomSaveDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 597816030FB9520800774713 /* DicomSaveDialog.h */; };
 		598960770F9EFBE200BEFEE4 /* GRAreaDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5989606F0F9EFBE200BEFEE4 /* GRAreaDataSet.h */; };
 		598960780F9EFBE200BEFEE4 /* GRAxes.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960700F9EFBE200BEFEE4 /* GRAxes.h */; };
 		598960790F9EFBE200BEFEE4 /* GRChartView.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960710F9EFBE200BEFEE4 /* GRChartView.h */; };
@@ -99,6 +101,8 @@
 		5977157D0FA97FD3003CBDE8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		5977157F0FA97FE3003CBDE8 /* Interface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Interface.xib; path = Resources/Interface.xib; sourceTree = "<group>"; };
 		597715A40FA9805A003CBDE8 /* PopUpMenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PopUpMenuIcon.png; path = Resources/PopUpMenuIcon.png; sourceTree = "<group>"; };
+		597816020FB9520800774713 /* DicomSaveDialog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DicomSaveDialog.mm; path = Sources/DicomSaveDialog.mm; sourceTree = "<group>"; };
+		597816030FB9520800774713 /* DicomSaveDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DicomSaveDialog.h; path = Sources/DicomSaveDialog.h; sourceTree = "<group>"; };
 		5989606F0F9EFBE200BEFEE4 /* GRAreaDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRAreaDataSet.h; sourceTree = "<group>"; };
 		598960700F9EFBE200BEFEE4 /* GRAxes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRAxes.h; sourceTree = "<group>"; };
 		598960710F9EFBE200BEFEE4 /* GRChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRChartView.h; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				5971319E0FA6F7E100FA0701 /* Options.mm */,
 				59D655DE0FB195730021E211 /* UserDefaults.h */,
 				59D655DF0FB195730021E211 /* UserDefaults.mm */,
+				597816030FB9520800774713 /* DicomSaveDialog.h */,
+				597816020FB9520800774713 /* DicomSaveDialog.mm */,
 				596DB80E0FAF0BD400FEE841 /* Views */,
 			);
 			name = Classes;
@@ -313,6 +319,7 @@
 				59E53C1B0FAF17E1004AE16E /* AreaDataSet.h in Headers */,
 				59D655E00FB195730021E211 /* UserDefaults.h in Headers */,
 				59D656C60FB1C8020021E211 /* DICOMExport.h in Headers */,
+				597816050FB9520800774713 /* DicomSaveDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +401,7 @@
 				596DB8160FAF0BD400FEE841 /* SpecialSplitView.mm in Sources */,
 				59E53C1A0FAF17E1004AE16E /* AreaDataSet.mm in Sources */,
 				59D655E10FB195730021E211 /* UserDefaults.mm in Sources */,
+				597816040FB9520800774713 /* DicomSaveDialog.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

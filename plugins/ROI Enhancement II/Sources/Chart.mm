@@ -33,15 +33,6 @@
 	[[self axes] setProperty:[NSFont labelFontOfSize:[NSFont smallSystemFontSize]] forKey:GRAxesLabelFont];
 	[[self axes] setProperty:[NSArray array] forKey:GRAxesMinorLineDashPattern];
 //	[[self axes] setProperty:[NSNumber numberWithFloat:0.5] forKey:GRAxesMinorLineWidth];
-	[[self axes] setProperty:[NSNumber numberWithInt:1] forKey:GRAxesXMinorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:1] forKey:GRAxesFixedXMinorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:5] forKey:GRAxesXMajorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:5] forKey:GRAxesFixedXMajorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:10] forKey:GRAxesYMinorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:10] forKey:GRAxesFixedYMinorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesYMajorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesFixedYMajorUnit];
-	[[self axes] setProperty:[NSNumber numberWithInt:50] forKey:GRAxesFixedYMajorUnit];
 }
 
 -(void)dealloc {
@@ -88,6 +79,7 @@
 -(void)mouseDown:(NSEvent*)theEvent {
 	_tracking = YES;
 	[NSCursor hide];
+	
 	[self mouseDragged:theEvent];
 }
 
@@ -187,13 +179,13 @@
 	[dataSet release];
 }
 
--(void)setDrawBackground:(BOOL)drawBackground {
-	_drawBackground = drawBackground;
+-(void)setDrawsBackground:(BOOL)drawsBackground {
+	_drawsBackground = drawsBackground;
 	[self setNeedsDisplay:YES];
 }
 
--(BOOL)drawBackground {
-	return _drawBackground;
+-(BOOL)drawsBackground {
+	return _drawsBackground;
 }
 
 -(void)drawTrackingGizmoAtPoint:(NSPoint)point withValue:(float)value {
@@ -215,15 +207,58 @@
 	[context restoreGraphicsState];
 }
 
+-(BOOL)computeLayout {
+	BOOL retVal = [super computeLayout];
+	
+	NSRect r = [[self axes] plotRect];
+	float p0x = [[self axes] xValueAtPoint: NSMakePoint(r.origin.x, r.origin.y)];
+	float p0y = [[self axes] yValueAtPoint: NSMakePoint(r.origin.x, r.origin.y)];
+	float p1x = [[self axes] xValueAtPoint: NSMakePoint(r.origin.x+r.size.width, r.origin.y+r.size.height)];
+	float p1y = [[self axes] yValueAtPoint: NSMakePoint(r.origin.x+r.size.width, r.origin.y+r.size.height)];
+	
+	const int tickWidth = 4;
+//	float maxTicksPerPixel = 1./tickWidth;
+	
+	const int multiplySequence[] = {5,2};
+	const int multiplySequenceLength = sizeof(multiplySequence)/sizeof(int);
+	
+	const float valueWidth = p1x-p0x;
+	
+	int sequenceIndex = 0;
+	int ticksEveryValue = 1;
+	while (valueWidth/ticksEveryValue > r.size.width/tickWidth)
+		ticksEveryValue *= multiplySequence[sequenceIndex++%multiplySequenceLength];
+	
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue] forKey:GRAxesXMinorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue] forKey:GRAxesFixedXMinorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue*5] forKey:GRAxesXMajorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue*5] forKey:GRAxesFixedXMajorUnit];	
+	
+	const float valueHeight = p1y-p0y;
+	
+	sequenceIndex = 0;
+	ticksEveryValue = 1;
+	while (valueHeight/ticksEveryValue > r.size.height/tickWidth)
+		ticksEveryValue *= multiplySequence[sequenceIndex++%multiplySequenceLength];
+	
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue] forKey:GRAxesYMinorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue] forKey:GRAxesFixedYMinorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue*5] forKey:GRAxesYMajorUnit];
+	[[self axes] setProperty:[NSNumber numberWithInt:ticksEveryValue*5] forKey:GRAxesFixedYMajorUnit];	
+	
+	return retVal | [super computeLayout]; // yes, again
+}
+
 -(void)drawRect:(NSRect)dirtyRect {
-	// update the view's structure
-	[super drawRect:NSMakeRect(0, 0, 0, 0)];
+	// update the view's layout
+	if ([self needsLayout])
+		[self computeLayout];
 	
 	// draw first the background and the areas
 	
 	NSGraphicsContext* context = [NSGraphicsContext currentContext];
 
-	if (_drawBackground) {
+	if (_drawsBackground) {
 		[context saveGraphicsState];
 		[(NSColor*)[[self axes] propertyForKey:GRAxesBackgroundColor] setFill];
 		[NSBezierPath fillRect:[[self axes] plotRect]];
@@ -239,28 +274,33 @@
 		if (_plotValueX == -1)
 			_plotValueX = round([[self axes] xValueAtPoint:_mousePoint]);
 		float plotPointX = [[self axes] locationForXValue:_plotValueX yValue:0].x;
-		// draw
-		[context saveGraphicsState];
-		[[NSBezierPath bezierPathWithRect:[[self axes] plotRect]] setClip];
-		// line
-		[[NSColor blackColor] setStroke];
-		[NSBezierPath setDefaultLineWidth: 1];
-		[NSBezierPath strokeLineFromPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y) toPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y+[[self axes] plotRect].size.height)];
-		// values
-		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
-			ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
-			
-			float min = 0, mean = 0, max = 0;
-			[self yValueForROIRec:roiRec element:_plotValueX min:&min mean:&mean max:&max];
-			
-			if ([[_interface options] min])
-				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:min] withValue:min];
-			if ([[_interface options] mean])
-				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:mean] withValue:mean];
-			if ([[_interface options] max])
-				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:max] withValue:max];
+		if (_plotValueX >= _xMin && _plotValueX <= _xMax) {
+			// line
+			[context saveGraphicsState];
+			[[NSBezierPath bezierPathWithRect:[[self axes] plotRect]] setClip];
+			[[NSColor blackColor] setStroke];
+			[NSBezierPath setDefaultLineWidth: 1];
+			[NSBezierPath strokeLineFromPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y) toPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y+[[self axes] plotRect].size.height)];
+			[context restoreGraphicsState];
+			// values
+			[context saveGraphicsState];
+			[[NSColor blackColor] setStroke];
+			[NSBezierPath setDefaultLineWidth: 1];
+			for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+				ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+				
+				float min = 0, mean = 0, max = 0;
+				[self yValueForROIRec:roiRec element:_plotValueX min:&min mean:&mean max:&max];
+				
+				if ([[_interface options] min])
+					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:min] withValue:min];
+				if ([[_interface options] mean])
+					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:mean] withValue:mean];
+				if ([[_interface options] max])
+					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:max] withValue:max];
+			}
+			[context restoreGraphicsState];
 		}
-		[context restoreGraphicsState];
 	}
 	
 	[[_interface options] updateYRange];

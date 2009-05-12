@@ -1,0 +1,3 @@
+- Fix 4th dimension graph
+-----
+- Cache graph values to increase performance

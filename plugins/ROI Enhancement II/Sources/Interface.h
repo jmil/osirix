@@ -14,6 +14,7 @@
 @class Chart;
 @class Options;
 @class UserDefaults;
+@class DicomSaveDialog;
 
 @interface Interface : NSWindowController {
 	ViewerController* _viewer;
@@ -24,11 +25,7 @@
 	IBOutlet NSButton* _csvSaveOptionsIncludeHeaders;
 	IBOutlet NSView* _dicomSaveOptions;
 		IBOutlet NSColorWell* _dicomSaveOptionsBackgroundColor;
-	IBOutlet NSWindow* _dicomSavePanel;
-		IBOutlet NSTextField* _dicomSavePanelSeriesName;
-		IBOutlet NSColorWell* _dicomSavePanelBackgroundColor;
-		IBOutlet NSButton* _dicomSavePanelSaveButton;
-		IBOutlet NSButton* _dicomSavePanelCancelButton;
+	IBOutlet DicomSaveDialog* _dicomSaveDialog;
 	IBOutlet NSNumberFormatter* _decimalFormatter;
 	IBOutlet NSNumberFormatter* _floatFormatter;
 }

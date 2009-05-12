@@ -14,6 +14,7 @@
 #import <DICOMExport.h>
 #import <DCMPix.h>
 #import "UserDefaults.h"
+#import "DicomSaveDialog.h"
 
 const NSString* FileTypePDF = @"pdf";
 const NSString* FileTypeTIFF = @"tiff";
@@ -82,9 +83,8 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(IBAction)saveDICOM:(id)sender {
-	[_dicomSavePanelBackgroundColor setColor:[_userDefaults color:@"dicom.color.background" otherwise:[_dicomSavePanelBackgroundColor color]]];
-	[_dicomSavePanel setDefaultButtonCell:[_dicomSavePanelSaveButton cell]];
-	[NSApp beginSheet:_dicomSavePanel modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveDicomSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+	[_dicomSaveDialog setImageBackgroundColor:[_userDefaults color:@"dicom.color.background" otherwise:[_dicomSaveDialog imageBackgroundColor]]];
+	[NSApp beginSheet:_dicomSaveDialog modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveDicomSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
 
 -(IBAction)saveAsPDF:(id)sender {
@@ -136,8 +136,8 @@ const NSString* FileTypeCSV = @"csv";
 
 -(void)saveDicomSheetDidEnd:(NSWindow*)sheet returnCode:(int)code contextInfo:(void*)contextInfo {
 	if (code == NSOKButton) {
-		[_userDefaults setColor:[_dicomSavePanelBackgroundColor color] forKey:@"dicom.color.background"];
-		[self dicomSave:[_dicomSavePanelSeriesName stringValue] backgroundColor:[_dicomSavePanelBackgroundColor color] toFile:NULL];
+		[_userDefaults setColor:[_dicomSaveDialog imageBackgroundColor] forKey:@"dicom.color.background"];
+		[self dicomSave:[_dicomSaveDialog seriesName] backgroundColor:[_dicomSaveDialog imageBackgroundColor] toFile:NULL];
 	}
 }
 
