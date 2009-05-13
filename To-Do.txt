@@ -6,6 +6,9 @@
 - ROI Manager (series level)
 - Hanging Protocols
 
+- Message after burning
+- Blue color for same patientID
+
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
 - JP2000 compression activate
