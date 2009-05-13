@@ -1,8 +1,3 @@
-//
-//  OSIWindowController.h
-//  OsiriX
-//
-//  Created by Lance Pysher on 12/11/06.
 /*=========================================================================
   Program:   OsiriX
 
@@ -28,13 +23,24 @@
 
 enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtraction, BlendingMultiplication, BlendingRed, BlendingGreen, BlendingBlue, Blending2DRegistration, Blending3DRegistration, BlendingLL};
 
+#ifdef id
+#define redefineID
+#undef id
+#endif
 
-@interface OSIWindowController : NSWindowController {
+@interface OSIWindowController : NSWindowController
+{
 	int _blendingType;
+	
+	BOOL magneticWindowActivated;
+	BOOL windowIsMovedByTheUserO;
+	NSRect savedWindowsFrameO;
 }
 
++ (void) setDontEnterMagneticFunctions:(BOOL) a;
+- (void) setMagnetic:(BOOL) a;
+
 - (NSMutableArray*) pixList;
-- (void)windowWillClose:(NSNotification *)notification;
 - (void) addToUndoQueue:(NSString*) what;
 - (int)blendingType;
 
@@ -42,6 +48,7 @@ enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtr
 - (IBAction) undo:(id) sender;
 
 - (void) applyShading:(id) sender;
+- (void) updateAutoAdjustPrinting: (id) sender;
 
 #pragma mark-
 #pragma mark current Core Data Objects
@@ -52,3 +59,8 @@ enum OsiriXBlendingTypes {BlendingPlugin = -1, BlendingFusion = 1, BlendingSubtr
 - (float)curWW;
 - (float)curWL;
 @end
+
+#ifdef redefineID
+#define id Id
+#undef redefineID
+#endif

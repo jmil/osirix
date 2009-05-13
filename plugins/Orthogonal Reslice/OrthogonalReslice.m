@@ -75,7 +75,12 @@
 		if( [firstPix sliceInterval] > 0) sign = 1.0;
 		else sign = -1.0;
 		
-		imageSize = sizeof(float) * newX * newY;
+		int ySize = newY;
+		
+		if( ySize < [pixList count])
+			ySize = [pixList count];
+		
+		imageSize = sizeof(float) * newX * ySize;
 		size = newTotal * imageSize;
 		
 		// CREATE A NEW SERIES WITH ALL IMAGES !
@@ -93,33 +98,32 @@
 				
 				[newPixList addObject: [[[pixList objectAtIndex: 0] copy] autorelease]];
 				
-				[[newPixList lastObject] setPwidth: newX];
-				[[newPixList lastObject] setPheight: newY];
+				DCMPix	*curPix = [newPixList lastObject];
+				
+				[curPix setPwidth: newX];
+				[curPix setPheight: newY];
 
 				// SUV
-				[[newPixList lastObject] setDisplaySUVValue: [firstPix displaySUVValue]];
-				[[newPixList lastObject] setSUVConverted: [firstPix SUVConverted]];
-				[[newPixList lastObject] setRadiopharmaceuticalStartTime: [firstPix radiopharmaceuticalStartTime]];
-				[[newPixList lastObject] setPatientsWeight: [firstPix patientsWeight]];
-				[[newPixList lastObject] setRadionuclideTotalDose: [firstPix radionuclideTotalDose]];
-				[[newPixList lastObject] setRadionuclideTotalDoseCorrected: [firstPix radionuclideTotalDoseCorrected]];
-				[[newPixList lastObject] setAcquisitionTime: [firstPix acquisitionTime]];
-				[[newPixList lastObject] setDecayCorrection: [firstPix decayCorrection]];
-				[[newPixList lastObject] setDecayFactor: [firstPix decayFactor]];
-				[[newPixList lastObject] setUnits: [firstPix units]];
+				[curPix setDisplaySUVValue: [firstPix displaySUVValue]];
+				[curPix setSUVConverted: [firstPix SUVConverted]];
+				[curPix setRadiopharmaceuticalStartTime: [firstPix radiopharmaceuticalStartTime]];
+				[curPix setPatientsWeight: [firstPix patientsWeight]];
+				[curPix setRadionuclideTotalDose: [firstPix radionuclideTotalDose]];
+				[curPix setRadionuclideTotalDoseCorrected: [firstPix radionuclideTotalDoseCorrected]];
+				[curPix setAcquisitionTime: [firstPix acquisitionTime]];
+				[curPix setDecayCorrection: [firstPix decayCorrection]];
+				[curPix setDecayFactor: [firstPix decayFactor]];
+				[curPix setUnits: [firstPix units]];
 				
-				
-				[[newPixList lastObject] setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
-				[[newPixList lastObject] setTot: newTotal];
-				[[newPixList lastObject] setFrameNo: [newPixList count]-1];
-				[[newPixList lastObject] setID: [newPixList count]-1];
+				[curPix setfImage: (float*) (emptyData + imageSize * ([newPixList count] - 1))];
+				[curPix setTot: newTotal];
+				[curPix setFrameNo: [newPixList count]-1];
+				[curPix setID: [newPixList count]-1];
 				
 				[newDcmList addObject: [[viewerController fileList] objectAtIndex: 0] ];
 				
 				if( directionm == 0)		// X - RESLICE
 				{
-					DCMPix	*curPix = [newPixList lastObject];
-					
 					if( sign > 0)
 					{
 						for( y = 0; y < [pixList count]; y++)

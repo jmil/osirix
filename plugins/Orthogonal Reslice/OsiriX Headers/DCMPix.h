@@ -12,14 +12,9 @@
      PURPOSE.
 =========================================================================*/
 
-//7/7/05 Fixed bug with DCM Framework and WW and WC. Use float value rather than int value. LP
-
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 #import <Accelerate/Accelerate.h>
-
-
-#define USEVIMAGE
 
 typedef struct {
    double x,y,z;
@@ -27,7 +22,6 @@ typedef struct {
 
 extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 
-@class xNSImage;
 @class ROI;
 @class ThickSlabController;
 @class DCMObject;
@@ -45,25 +39,25 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 //BUFFERS	
 	NSArray				*pixArray;
     NSManagedObject		*imageObj;	/**< Core data object for image */
-    xNSImage			*image;    /**< buffer for creating an NSImage */
-    short               *oImage;   /**< short buffer of image Data */
-	float				*fImage /**< float buffer of image Data */, *fVolImage;  /**< float buffer of volume Data */
+	float				*fImage /**< float buffer of image Data */, *fExternalOwnedImage;  /**< float buffer of image Data - provided by another source, not owned by this object, not release by this object */
     char                *wImage; /**< ? */
 	
 //DICOM TAGS
 
 //	orientation
-	Point3D				*origin;
+//	Point3D				*origin;
+	BOOL				isOriginDefined;
 	double				originX /**< x position of image origin */ , originY /**< y Position of image origin */ , originZ /**< Z position of image origin*/;
 	double				orientation[ 9];  /**< pointer to orientation vectors  */
+	NSString			*frameOfReferenceUID;
 
 //	pixel representation
 	BOOL				fIsSigned;
-	short				bitsAllocated, bitsStored, spp;
+	short				bitsAllocated, bitsStored;
     float               slope, offset;
 
 //	image size
-    long                height, width, rowBytes;
+    long                height, width;
 
 //	window level & width
 	float				savedWL, savedWW;
@@ -164,12 +158,9 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	BOOL				fixed8bitsWLWW;	
     float               maxValueOfSeries, minValueOfSeries;
 	
-	
-	NSString			*convertedDICOM;	
-	BOOL				generated;	
+	BOOL				generated;
+	NSString			*generatedName;
 	NSLock				*checking;
-	NSLock				*processorsLock;
-	volatile int		numberOfThreadsForCompute;
 	
 	BOOL				useVOILUT;
 	int					VOILUT_first;
@@ -182,7 +173,21 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	
 /** custom annotations */
 	NSMutableDictionary *annotationsDictionary;
-	NSMutableDictionary *cachedPapyGroups;
+	
+/** 12 bit monitors */
+	BOOL				isLUT12Bit;
+	unsigned char		*LUT12baseAddr;
+	
+	BOOL				full32bitPipeline, needToCompute8bitRepresentation;
+
+/** Papyrus Loading variables */	
+	
+	NSString			*modalityString;
+	unsigned short		clutEntryR, clutEntryG, clutEntryB;
+	unsigned short		clutDepthR, clutDepthG, clutDepthB;
+	unsigned char		*clutRed, *clutGreen, *clutBlue;
+	int					realwidth;
+	BOOL				fSetClut, fSetClut16;
 }
 
 @property long frameNo;
@@ -202,7 +207,7 @@ Note setter is different to not break existing usage. :-( */
 
 /** WW & WL */
 @property(readonly) float ww, wl, fullww, fullwl;
-@property float savedWW, savedWL;
+@property float savedWW, savedWL, *subtractedfImage;
 
 @property(readonly) float slope, offset;
 
@@ -213,17 +218,24 @@ Note setter is different to not break existing usage. :-( */
 @property double pixelSpacingX, pixelSpacingY;
 
 /** Slice orientation */
-- (void)orientation:(float*) c;
-- (void)setOrientation:(float*) c;
+- (void) orientation:(float*) c;
+- (void) setOrientation:(float*) c;
+- (BOOL) identicalOrientationTo:(DCMPix*) c;
 
 - (void)orientationDouble:(double*) c;
 - (void)setOrientationDouble:(double*) c;
 
 /** Slice location */
 @property(readonly) double originX, originY, originZ;
+@property(readonly) BOOL isOriginDefined;
+
+/** Frame Of Reference UID */
+@property(copy) NSString *frameOfReferenceUID;
 
 - (void)setOrigin :(float*) o;
 - (void)setOriginDouble :(double*) o;
+- (void)origin: (float*)o;
+- (void)originDouble: (double*)o;
 
 /**  Axial Location */
 @property double sliceLocation;
@@ -250,20 +262,27 @@ Note setter is different to not break existing usage. :-( */
 @property(readonly) NSString *patientPosition;
 
 @property char* baseAddr;
+@property unsigned char* LUT12baseAddr;
 
-@property long rowBytes;
 @property(readonly) long serieNo;
+@property(readonly) NSArray *pixArray;
+@property(readonly) float *transferFunctionPtr;
+@property short pixPos;
+@property short stackDirection;
+@property float countstackMean;
 
 @property(getter=Tot, setter=setTot:) long Tot;
 
 @property(readonly) short stack, stackMode;
 @property(readonly) BOOL generated;
+@property(retain) NSString *generatedName;
 @property(retain) NSString *sourceFile;
 
 /** Database links */
-@property(readonly) NSManagedObject *imageObj, *seriesObj;
-@property(readonly) NSString *srcFile;
-@property(readonly) NSMutableDictionary *annotationsDictionary;
+@property(readonly) NSManagedObject *seriesObj;
+@property(retain) NSManagedObject *imageObj;
+@property(retain) NSString *srcFile;
+@property(retain) NSMutableDictionary *annotationsDictionary;
 
 // Properties (aka accessors) needed for SUV calculations
 @property(readonly) float philipsFactor;
@@ -273,11 +292,13 @@ Note setter is different to not break existing usage. :-( */
 @property float radionuclideTotalDoseCorrected;
 @property(retain) NSCalendarDate *acquisitionTime;
 @property(retain) NSCalendarDate *radiopharmaceuticalStartTime;
-@property BOOL SUVConverted;
+@property BOOL SUVConverted, full32bitPipeline, needToCompute8bitRepresentation;
 @property(readonly) BOOL hasSUV;
 @property float decayFactor;
 @property(retain) NSString *units, *decayCorrection;
 @property BOOL displaySUVValue;
+
+@property BOOL isLUT12Bit;
 
 - (void) copySUVfrom: (DCMPix*) from;  /**< Copy the SUV from another DCMPic */
 - (float) getPixelValueX: (long) x Y:(long) y;  /**< Get the pixel for a point with x,y coordinates */
@@ -294,7 +315,7 @@ Note setter is different to not break existing usage. :-( */
 */
 + (BOOL) IsPoint:(NSPoint) x inPolygon:(NSPoint*) poly size:(int) count; 
 
-
+- (void) compute8bitRepresentation;
 - (void) changeWLWW:(float)newWL :(float)newWW;  /**< Change window level to window width to the new values */
 - (void) computePixMinPixMax;  /**< Compute the min and max values in the image */
 
@@ -325,6 +346,7 @@ Note setter is different to not break existing usage. :-( */
 * @param addition  
 */
 - (void) fillROI:(ROI*) roi newVal:(float) newVal minValue:(float) minValue maxValue:(float) maxValue outside:(BOOL) outside orientationStack:(long) orientationStack stackNo:(long) stackNo restore:(BOOL) restore addition:(BOOL) addition;
+- (void) fillROI:(ROI*) roi newVal:(float) newVal minValue:(float) minValue maxValue:(float) maxValue outside:(BOOL) outside orientationStack:(long) orientationStack stackNo:(long) stackNo restore:(BOOL) restore addition:(BOOL) addition spline:(BOOL) spline;
 
 /** Fill a ROI with a value
 * @param roi  Selected ROI
@@ -383,19 +405,22 @@ Note setter is different to not break existing usage. :-( */
 /** Utility methods to convert user supplied pixel coords to DICOM patient coords float d[3] (in mm)
 * using current slice location and orientation
 */
--(void) convertPixX: (float) x pixY: (float) y toDICOMCoords: (float*) d;
+- (void) convertPixX: (float) x pixY: (float) y toDICOMCoords: (float*) d;
+- (void) convertPixX: (float) x pixY: (float) y toDICOMCoords: (float*) d pixelCenter: (BOOL) pixelCenter;
 
 /** Utility methods to convert user supplied pixel coords to DICOM patient coords double d[3] (in mm)
 * using current slice location and orientation
 */
--(void) convertPixDoubleX: (double) x pixY: (double) y toDICOMCoords: (double*) d;
+- (void) convertPixDoubleX: (double) x pixY: (double) y toDICOMCoords: (double*) d;
+- (void) convertPixDoubleX: (double) x pixY: (double) y toDICOMCoords: (double*) d pixelCenter: (BOOL) pixelCenter;
 
 /** convert DICOM coordinated to slice coordinates */
--(void) convertDICOMCoords: (float*) dc toSliceCoords: (float*) sc;
+- (void) convertDICOMCoords: (float*) dc toSliceCoords: (float*) sc;
+- (void) convertDICOMCoords: (float*) dc toSliceCoords: (float*) sc pixelCenter:(BOOL) pixelCenter;
 
 /** convert DICOM coordinated to slice coordinates */
--(void) convertDICOMCoordsDouble: (double*) dc toSliceCoords: (double*) sc;
-
+- (void) convertDICOMCoordsDouble: (double*) dc toSliceCoords: (double*) sc;
+- (void) convertDICOMCoordsDouble: (double*) dc toSliceCoords: (double*) sc pixelCenter:(BOOL) pixelCenter;
 
 /** Return index & sliceCoords */
 +(int) nearestSliceInPixelList: (NSArray*)pixlist withDICOMCoords: (float*)dc sliceCoords: (float*) sc;  
@@ -422,31 +447,34 @@ Note setter is different to not break existing usage. :-( */
 - (void) imageArithmeticMultiplication:(DCMPix*) sub;
 - (float*) multiplyImages :(float*) input :(float*) subfImage;
 - (void) imageArithmeticSubtraction:(DCMPix*) sub;
+- (void) imageArithmeticSubtraction:(DCMPix*) sub absolute:(BOOL) abs;
 - (float*) arithmeticSubtractImages :(float*) input :(float*) subfImage;
-
+-(float*) arithmeticSubtractImages :(float*) input :(float*) subfImage absolute:(BOOL) abs;
 //DSA
 - (void) setSubSlidersPercent: (float) p gamma: (float) g zero: (float) z;
 - (void) setSubSlidersPercent: (float) p;
 - (NSPoint) subMinMax:(float*)input :(float*)subfImage;
 - (void) setSubtractedfImage:(float*)mask :(NSPoint)smm;
 - (float*) subtractImages:(float*)input :(float*)subfImage;
-
--(void) fImageTime:(float)newTime;
--(float) fImageTime;
--(void) maskID:(long)newID;
--(long) maskID;
--(void) maskTime:(float)newMaskTime;
--(float) maskTime;
--(void) positionerPrimaryAngle:(NSNumber *)newPositionerPrimaryAngle;
--(NSNumber*) positionerPrimaryAngle;
--(void) positionerSecondaryAngle:(NSNumber*)newPositionerSecondaryAngle;
--(NSNumber*) positionerSecondaryAngle;
+- (BOOL) isLoaded;
+- (void) fImageTime:(float)newTime;
+- (float) fImageTime;
+- (void) freefImageWhenDone:(BOOL) b;
+- (void) maskID:(long)newID;
+- (long) maskID;
+- (void) maskTime:(float)newMaskTime;
+- (float) maskTime;
+- (void) positionerPrimaryAngle:(NSNumber *)newPositionerPrimaryAngle;
+- (NSNumber*) positionerPrimaryAngle;
+- (void) positionerSecondaryAngle:(NSNumber*)newPositionerSecondaryAngle;
+- (NSNumber*) positionerSecondaryAngle;
 + (NSPoint) originDeltaBetween:(DCMPix*) pix1 And:(DCMPix*) pix2;
++ (NSPoint) originCorrectedAccordingToOrientation: (DCMPix*) pix1;
 - (void) setBlackIndex:(int) i;
 + (NSImage*) resizeIfNecessary:(NSImage*) currentImage dcmPix: (DCMPix*) dcmPix;
--(void) DCMPixShutterRect:(long)x:(long)y:(long)w:(long)h;
--(BOOL) DCMPixShutterOnOff;
--(void) DCMPixShutterOnOff:(BOOL)newDCMPixShutterOnOff;
+- (void) DCMPixShutterRect:(long)x:(long)y:(long)w:(long)h;
+- (BOOL) DCMPixShutterOnOff;
+- (void) DCMPixShutterOnOff:(BOOL)newDCMPixShutterOnOff;
 - (void) computeTotalDoseCorrected;
 //- (void) copyFromOther:(DCMPix *) fromDcm;
 - (void) imageArithmeticMultiplication:(DCMPix*) sub;
@@ -457,12 +485,19 @@ Note setter is different to not break existing usage. :-( */
 - (BOOL) updateToApply;
 - (id) myinitEmpty;  /**< Returns an Empty object */
 - (short*) kernel;
++ (NSPoint) rotatePoint:(NSPoint)pt aroundPoint:(NSPoint)c angle:(float)a;
 - (short) normalization;
 - (short) kernelsize;
-
+- (DCMPix*) renderWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
+- (DCMPix*) renderWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF backgroundOffset: (float) bgO;
+- (NSRect) usefulRectWithRotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
+- (DCMPix*) mergeWithDCMPix:(DCMPix*) o offset:(NSPoint) oo;
+- (DCMPix*) renderInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
+- (DCMPix*) renderInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF smartCrop: (BOOL) smartCrop;
+- (NSImage*) renderNSImageInRectSize:(NSSize) rectSize atPosition:(NSPoint) oo rotation:(float) r scale:(float) scale xFlipped:(BOOL) xF yFlipped: (BOOL) yF;
 /**  calls 
 * myinit:(NSString*) s :(long) pos :(long) tot :(float*) ptr :(long) f :(long) ss isBonjour:(BOOL) hello imageObj: (NSManagedObject*) iO
-* with hello = NO and iO = 0L
+* with hello = NO and iO = nil
 */
 - (id) myinit:(NSString*) s :(long) pos :(long) tot :(float*) ptr :(long) f :(long) ss;
 
@@ -512,13 +547,14 @@ Note setter is different to not break existing usage. :-( */
 * @param newWW  window width to use
 * @param newWL window level to use;
 */
-- (NSImage*) computeWImage: (BOOL) smallIcon :(float)newWW :(float)newWL;
+- (NSImage*) generateThumbnailImageWithWW: (float)newWW WL: (float)newWL;
+- (void) allocate8bitRepresentation;
 
 /** create an NSImage from the current pix using the current ww/wl. Full size*/
 - (NSImage*) image;
 
 /** reeturns the current image. returns nil if no image has be previously created */
-- (NSImage*) getImage;
+// - (NSImage*) getImage;
 
 /** A pointer to the orientation.  9 values in length. 3 for each axis. */
 - (void) orientation:(float*) c;
@@ -526,16 +562,9 @@ Note setter is different to not break existing usage. :-( */
 /** Sets the orientation.  9 values in length. 3 for each axis. */
 - (void) setOrientation:(float*) c;
 
-/** A short pointer to the image data */
-- (short*) oImage;
-
 /** Releases the current NSImage */
 - (void) kill8bitsImage;
 
-
-/** if no image. Creates one using
-* computeWImage: (BOOL) smallIcon :(float)newWW :(float)newWL
-*/ 
 - (void) checkImageAvailble:(float)newWW :(float)newWL;
 
 /** Load the DICOM image using the DCMFramework.  
@@ -568,11 +597,11 @@ Note setter is different to not break existing usage. :-( */
 * @param s stack
 * @param direction stack direction
 */
--(void) setFusion:(short) m :(short) s :(short) direction;
+- (void) setFusion:(short) m :(short) s :(short) direction;
 
 /** Sets updateToBeApplied to YES. It is called whenver a setting has been changed.  
 * Should be called by the class automatically when needed */
--(void) setUpdateToApply;
+- (void) setUpdateToApply;
 
 
 /** Releases the fImage and sets all values to nil. */
@@ -605,12 +634,14 @@ Note setter is different to not break existing usage. :-( */
 
 /** Clears the papyrus group cache */
 - (void) clearCachedPapyGroups;
+- (void) clearCachedDCMFrameworkFiles;
++ (void) purgeCachedDictionaries;
 
 /** Returns a pointer the the papyrus group
 * @param group group
 * @param fileNb papyrus file
 */
-- (void *) getPapyGroup: (int)group fileNb: (int)fileNb;
+- (void *) getPapyGroup: (int)group;
 
 /** create ROIs from RTSTRUCT */
 - (void)createROIsFromRTSTRUCT: (DCMObject*)dcmObject;
@@ -619,7 +650,8 @@ Note setter is different to not break existing usage. :-( */
 
 /** Custom Annotations */
 - (void)loadCustomImageAnnotationsPapyLink:(int)fileNb DCMLink:(DCMObject*)dcmObject;
-
+- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element papyLink:(short)fileNb;
+- (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element DCMLink:(DCMObject*)dcmObject;
 
 /** Set flag to anonymize the annotations */
 + (BOOL) setAnonymizedAnnotations: (BOOL) v;
