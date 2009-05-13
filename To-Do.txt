@@ -7,7 +7,7 @@
 - Hanging Protocols
 
 - Message after burning
-- Blue color for same patientID
+- displaySamePatientWithColorBackground preferences
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
