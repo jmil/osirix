@@ -29,6 +29,9 @@
 			
 			newX = [firstPix pwidth];
 			
+//			if( fabs( [firstPix sliceInterval]) < [firstPix pixelSpacingX])
+//				square = NO;
+			
 			if( square)
 			{
 				newXSpace = [firstPix pixelSpacingX];
@@ -50,6 +53,9 @@
 			newTotal = [firstPix pwidth];				// Y - RESLICE
 			
 			newX = [firstPix pheight];
+			
+//			if( fabs( [firstPix sliceInterval]) < [firstPix pixelSpacingY])
+//				square = NO;
 			
 			if( square)
 			{
@@ -75,13 +81,8 @@
 		if( [firstPix sliceInterval] > 0) sign = 1.0;
 		else sign = -1.0;
 		
-		int ySize = newY;
-		
-		if( ySize < [pixList count])
-			ySize = [pixList count];
-		
-		imageSize = sizeof(float) * newX * ySize;
-		size = newTotal * imageSize;
+		imageSize = sizeof(float) * newX * newY;
+		size = newTotal * imageSize        + sizeof(float) * newX * [pixList count]; // to avoid the problem if sliceinterval is smaller than pixel spacing
 		
 		// CREATE A NEW SERIES WITH ALL IMAGES !
 		emptyData = malloc( size);
