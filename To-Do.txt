@@ -2,9 +2,11 @@
 
 - C-GET
 - DICOM TLS
-- Merge SR with VR
+- Merge SR with VR : add SR option
 - ROI Manager (series level)
 - Hanging Protocols
+- 4D Support for DICOM Export in 2D Viewer
+- Display current image in 3D plane
 
 - Message after burning
 - displaySamePatientWithColorBackground preferences
@@ -19,32 +21,21 @@ Cours
 - dmg, export dicom cd, html export
 - web server
 
-- 4D Support for DICOM Export in 2D Viewer
-- Spine plugin
-- Graph 4D comme histo
-- ROI Volume display options in 3D Rendering (power crust, disable texture, ...)
-- Reslice oblique : 2D MPR, Points?
 - Report modality - study description
 - WADO Client/Server
 - Hanging Protocol
-- Ad SR in VR
 
 - Password DB in keychain
 - Preferences for Status menu in DB
 - Merge Exports to Quicktime, Files, DICOM Files, DICOM Node
 - Is it possible to place keyed images into a report automatically when generating a report?
-- Batch export in 2D-MPR
-- Perfusion
-- ROI enhancement
 - Worklist DICOM
-
 
 for i in `ls -a | grep plugin`; do tempfile="`basename "$i" .plugin`.osirixplugin"; mv $i $tempfile; done;
 
 for i in `ls *.*`; do mv "$i" "$i"ppc; done
 
 for i in `ls *.a`; do lipo -create "$i" "$i"ppc -output "$i"final; done
-
 
 VTK MODIFICATIONS : 
 
