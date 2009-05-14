@@ -38,6 +38,7 @@
 -(void)addAreaDataSet:(AreaDataSet*)dataSet;
 -(void)removeAreaDataSet:(AreaDataSet*)dataSet;
 
+-(NSInteger)chart:(GRChartView*)chart numberOfElementsForDataSet:(GRDataSet*)dataSet;
 -(double)chart:(GRChartView*)chart yValueForDataSet:(GRDataSet*)dataSet element:(NSInteger)element;
 
 -(NSString*)csv:(BOOL)includeHeaders;

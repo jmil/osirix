@@ -98,12 +98,15 @@
 // GRChartView delegate/dataSource
 
 -(NSInteger)chart:(GRChartView*)chart numberOfElementsForDataSet:(GRDataSet*)dataSet {
-	return [[[_interface viewer] pixList] count];
+	if ([[_interface options] xRangeMode] == XRange4thDimension)
+		return [[_interface viewer] maxMovieIndex];
+	else
+		return [[[_interface viewer] pixList] count];
 }
 
 -(void)yValueForROIRec:(ROIRec*)roiRec element:(NSInteger)element min:(float*)min mean:(float*)mean max:(float*)max {
 	if ([[_interface options] xRangeMode] == XRange4thDimension) {
-		[[[[_interface viewer] pixList:[[[_interface viewer] imageView] curImage]] objectAtIndex:element] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+		[[[[_interface viewer] pixList: element] objectAtIndex:[[[_interface viewer] imageView] curImage]] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
 	} else {
 		if ([[[_interface viewer] imageView] flippedData])
 			element = [[[_interface viewer] pixList] count]-element-1;
