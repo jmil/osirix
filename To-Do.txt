@@ -7,9 +7,11 @@
 - Hanging Protocols
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
+- ILCrashReporter : x86_64?
+- displaySamePatientWithColorBackground preferences
 
 - Message after burning
-- displaySamePatientWithColorBackground preferences
+- Recenter 3D point when changing slice thickness in 3D-MPR
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
