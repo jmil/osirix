@@ -10,8 +10,8 @@
 - ILCrashReporter : x86_64?
 - displaySamePatientWithColorBackground preferences
 
-- Message after burning
 - Recenter 3D point when changing slice thickness in 3D-MPR
+- Test burning message
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
