@@ -1,10 +1,16 @@
-//
-//  Chart.mm
-//  ROI Enhancement II
-//
-//  Created by Alessandro Volz on 4/27/09.
-//  Copyright 2009 HUG. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://www.osirix-viewer.com/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 #import "Chart.h"
 #import <DCMPix.h>
@@ -252,7 +258,11 @@
 	return retVal | [super computeLayout]; // yes, again
 }
 
--(void)drawRect:(NSRect)dirtyRect {
+-(void)drawRect:(NSRect)dirtyRect
+{
+	if( [_interface viewer] == nil)
+		return;
+		
 	// update the view's layout
 	if ([self needsLayout])
 		[self computeLayout];

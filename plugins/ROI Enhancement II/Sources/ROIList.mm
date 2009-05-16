@@ -1,11 +1,17 @@
-//
-//  ROIList.mm
-//  ROI Enhancement II
-//
-//  Created by Alessandro Volz on 4/20/09.
-//  Copyright 2009 HUG. All rights reserved.
-//
- 
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://www.osirix-viewer.com/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
+
 #import "ROIList.h"
 #import <ROI.h>
 #import "Interface.h"

@@ -1,10 +1,16 @@
-//
-//  Window.mm
-//  ROI-Enhancement
-//
-//  Created by Alessandro Volz on 4/20/09.
-//  Copyright 2009 HUG. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - GPL
+  
+  See http://www.osirix-viewer.com/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
 
 #import "Interface.h"
 #import <ViewerController.h>
@@ -53,12 +59,15 @@ const NSString* FileTypeCSV = @"csv";
 	return self;
 }
 
--(void)dealloc {
+-(void)dealloc
+{
 	[_viewer release]; _viewer = NULL;
+	
 	[super dealloc];
 }
 
--(void)windowWillClose:(NSNotification*)notification {
+-(void)windowWillClose:(NSNotification*)notification
+{
 	if ([notification object] == [self window]) 
 		[self release];
 }
@@ -137,7 +146,7 @@ const NSString* FileTypeCSV = @"csv";
 -(void)saveDicomSheetDidEnd:(NSWindow*)sheet returnCode:(int)code contextInfo:(void*)contextInfo {
 	if (code == NSOKButton) {
 		[_userDefaults setColor:[_dicomSaveDialog imageBackgroundColor] forKey:@"dicom.color.background"];
-		[self dicomSave:[_dicomSaveDialog seriesName] backgroundColor:[_dicomSaveDialog imageBackgroundColor] toFile:NULL];
+		[self dicomSave:[[NSUserDefaults standardUserDefaults] stringForKey:@"defaultNameForChart"] backgroundColor:[_dicomSaveDialog imageBackgroundColor] toFile:NULL];
 	}
 }
 

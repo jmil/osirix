@@ -1,31 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
+<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
 		<string key="IBDocument.SystemVersion">9G55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">677</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.43</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="564"/>
-			<integer value="133"/>
-			<integer value="511"/>
 			<integer value="109"/>
+			<integer value="511"/>
+			<integer value="61"/>
+			<integer value="133"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilderKit</string>
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -42,7 +33,7 @@
 				<int key="NSWindowStyleMask">31</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 87}, {600, 413}}</string>
-				<int key="NSWTFlags">-469762048</int>
+				<int key="NSWTFlags">-1543503872</int>
 				<string key="NSWindowTitle">ROI Enhancement II</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSToolbar" key="NSViewClass" id="1019727387">
@@ -201,6 +192,7 @@
 					</object>
 				</object>
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
+				<string key="NSWindowContentMinSize">{600, 400}</string>
 				<object class="NSView" key="NSWindowView" id="54521236">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -1179,6 +1171,7 @@
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSMinSize">{600, 441}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSCustomObject" id="307361785">
@@ -1296,12 +1289,12 @@
 					</object>
 					<object class="NSMutableArray" key="dict.values">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<boolean value="YES" id="5"/>
-						<integer value="1040"/>
+						<integer value="1" id="9"/>
+						<integer value="1040" id="531358365"/>
 						<integer value="5"/>
 						<integer value="11" id="19"/>
-						<integer value="1" id="9"/>
-						<boolean value="NO" id="6"/>
+						<reference ref="9"/>
+						<integer value="0" id="6"/>
 					</object>
 				</object>
 				<string key="NS.positiveformat">#0.#####</string>
@@ -1342,7 +1335,7 @@
 					<bool key="NS.raise.dividebyzero">YES</bool>
 				</object>
 				<string key="NS.decimal">.</string>
-				<string key="NS.thousand">,</string>
+				<string type="base64-UTF8" key="NS.thousand">Jw</string>
 				<bool key="NS.hasthousands">NO</bool>
 				<bool key="NS.localized">YES</bool>
 				<bool key="NS.allowsfloats">YES</bool>
@@ -1362,8 +1355,8 @@
 					<object class="NSMutableArray" key="dict.values">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference ref="6"/>
-						<integer value="1040"/>
-						<integer value="0"/>
+						<reference ref="531358365"/>
+						<reference ref="6"/>
 						<reference ref="19"/>
 						<reference ref="9"/>
 						<reference ref="6"/>
@@ -1392,7 +1385,7 @@
 					<bool key="NS.raise.dividebyzero">YES</bool>
 				</object>
 				<string key="NS.decimal">.</string>
-				<string key="NS.thousand">,</string>
+				<string type="base64-UTF8" key="NS.thousand">Jw</string>
 				<bool key="NS.hasthousands">NO</bool>
 				<bool key="NS.localized">YES</bool>
 				<bool key="NS.allowsfloats">NO</bool>
@@ -1449,7 +1442,8 @@
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">DicomSaveDialog</string>
 				<nil key="NSViewClass"/>
-				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
+				<string key="NSWindowContentMaxSize">{425, 132}</string>
+				<string key="NSWindowContentMinSize">{425, 132}</string>
 				<object class="NSView" key="NSWindowView" id="882748064">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -1569,7 +1563,8 @@
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
-				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
+				<string key="NSMinSize">{425, 154}</string>
+				<string key="NSMaxSize">{425, 154}</string>
 			</object>
 			<object class="NSButton" id="669928471">
 				<nil key="NSNextResponder"/>
@@ -1591,6 +1586,9 @@
 					<int key="NSPeriodicDelay">200</int>
 					<int key="NSPeriodicInterval">25</int>
 				</object>
+			</object>
+			<object class="NSUserDefaultsController" id="361905193">
+				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -2334,14 +2332,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">_seriesName</string>
-						<reference key="source" ref="61950243"/>
-						<reference key="destination" ref="322957813"/>
-					</object>
-					<int key="connectionID">551</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">_dicomSaveDialog</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="61950243"/>
@@ -2371,6 +2361,22 @@
 						<reference key="destination" ref="963061511"/>
 					</object>
 					<int key="connectionID">556</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.defaultNameForChart</string>
+						<reference key="source" ref="322957813"/>
+						<reference key="destination" ref="361905193"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="322957813"/>
+							<reference key="NSDestination" ref="361905193"/>
+							<string key="NSLabel">value: values.defaultNameForChart</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.defaultNameForChart</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">566</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3362,6 +3368,11 @@
 						<reference key="object" ref="732747782"/>
 						<reference key="parent" ref="527693783"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">565</int>
+						<reference key="object" ref="361905193"/>
+						<reference key="parent" ref="1002"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3480,12 +3491,18 @@
 					<string>5.IBPluginDependency</string>
 					<string>5.IBWindowTemplateEditedContentRect</string>
 					<string>5.NSWindowTemplate.visibleAtLaunch</string>
+					<string>5.windowTemplate.hasMinSize</string>
+					<string>5.windowTemplate.minSize</string>
 					<string>500.IBPluginDependency</string>
 					<string>501.IBPluginDependency</string>
 					<string>510.IBEditorWindowLastContentRect</string>
 					<string>510.IBPluginDependency</string>
 					<string>510.IBWindowTemplateEditedContentRect</string>
 					<string>510.NSWindowTemplate.visibleAtLaunch</string>
+					<string>510.windowTemplate.hasMaxSize</string>
+					<string>510.windowTemplate.hasMinSize</string>
+					<string>510.windowTemplate.maxSize</string>
+					<string>510.windowTemplate.minSize</string>
 					<string>511.IBPluginDependency</string>
 					<string>512.IBPluginDependency</string>
 					<string>513.IBPluginDependency</string>
@@ -3628,13 +3645,19 @@
 					<string>{{64, 102}, {600, 413}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{64, 102}, {600, 413}}</string>
-					<reference ref="5"/>
+					<reference ref="9"/>
+					<reference ref="9"/>
+					<string>{600, 400}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{504, 147}, {425, 132}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{504, 147}, {425, 132}}</string>
 					<reference ref="6"/>
+					<reference ref="9"/>
+					<reference ref="9"/>
+					<string>{425, 132}</string>
+					<string>{425, 132}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3685,7 +3708,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">564</int>
+			<int key="maxID">566</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3717,7 +3740,6 @@
 							<string>_imageBackgroundColor</string>
 							<string>_interface</string>
 							<string>_saveButton</string>
-							<string>_seriesName</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3725,7 +3747,6 @@
 							<string>NSColorWell</string>
 							<string>Interface</string>
 							<string>NSButton</string>
-							<string>NSTextField</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

@@ -17,6 +17,13 @@
 - JP2000 compression activate
 - Compression settings (JP2K, modality, ...)
 
+QA
+- BugZilla (sourceforge?)
+- EggPlant
+- UnitTesting (assert functions)
+- ILCrashReporter
+- Doxygen
+
 Cours
 - Basics:
 - dmg, export dicom cd, html export
