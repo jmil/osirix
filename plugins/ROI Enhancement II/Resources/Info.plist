@@ -5,9 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>ROI Enhancement II</string>
+	<string>ROI Enhancement</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.osirix.roienhancement</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -16,14 +18,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>2.0</string>
-	<key>CFBundleIdentifier</key>
-	<string>ch.alessandrovolz.osirix.roienhancement</string>
-	<key>NSPrincipalClass</key>
-	<string>ROI_Enhancement_II</string>
 	<key>MenuTitles</key>
 	<array>
-		<string>ROI Enhancement II</string>
+		<string>ROI Enhancement</string>
 	</array>
+	<key>NSPrincipalClass</key>
+	<string>ROI_Enhancement_II</string>
 	<key>pluginType</key>
 	<string>roiTool</string>
 </dict>

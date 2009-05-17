@@ -28,6 +28,7 @@
 	BOOL _tracking;
 	NSPoint _mousePoint;
 	float _plotValueX;
+	NSMutableDictionary *cache;
 }
 
 @property(readonly) int xMin, xMax;
@@ -40,7 +41,7 @@
 -(void)freeYRange;
 -(void)constrainYRangeFrom:(float)min;
 -(void)constrainYRangeFrom:(float)min to:(float)max;
-
+-(void)resetCache;
 -(void)addAreaDataSet:(AreaDataSet*)dataSet;
 -(void)removeAreaDataSet:(AreaDataSet*)dataSet;
 

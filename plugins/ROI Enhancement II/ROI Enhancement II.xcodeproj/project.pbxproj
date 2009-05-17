@@ -118,7 +118,7 @@
 		59D656C50FB1C8020021E211 /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMExport.h; sourceTree = "<group>"; };
 		59E53C180FAF17E1004AE16E /* AreaDataSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AreaDataSet.mm; path = Sources/AreaDataSet.mm; sourceTree = "<group>"; };
 		59E53C190FAF17E1004AE16E /* AreaDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AreaDataSet.h; path = Sources/AreaDataSet.h; sourceTree = "<group>"; };
-		AB5D36050680E57E00F4007A /* ROI Enhancement II.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ROI Enhancement II.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB5D36050680E57E00F4007A /* ROI Enhancement.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ROI Enhancement.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +211,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB5D36050680E57E00F4007A /* ROI Enhancement II.osirixplugin */,
+				AB5D36050680E57E00F4007A /* ROI Enhancement.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -326,9 +326,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8D5B49AC048680CD000E48DA /* ROI Enhancement II */ = {
+		8D5B49AC048680CD000E48DA /* ROI Enhancement */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "ROI Enhancement II" */;
+			buildConfigurationList = CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "ROI Enhancement" */;
 			buildPhases = (
 				8D5B49AD048680CD000E48DA /* Headers */,
 				8D5B49AF048680CD000E48DA /* Resources */,
@@ -341,10 +341,10 @@
 			);
 			dependencies = (
 			);
-			name = "ROI Enhancement II";
+			name = "ROI Enhancement";
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB5D36050680E57E00F4007A /* ROI Enhancement II.osirixplugin */;
+			productReference = AB5D36050680E57E00F4007A /* ROI Enhancement.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -359,7 +359,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D5B49AC048680CD000E48DA /* ROI Enhancement II */,
+				8D5B49AC048680CD000E48DA /* ROI Enhancement */,
 			);
 		};
 /* End PBXProject section */
@@ -437,7 +437,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -445,10 +444,10 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ROI_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -466,8 +465,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "ROI Enhancement II";
+				PRODUCT_NAME = "ROI Enhancement";
 				USER_HEADER_SEARCH_PATHS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -475,7 +473,6 @@
 					"-Wno-unknown-pragmas",
 				);
 				WRAPPER_EXTENSION = osirixplugin;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
 		};
@@ -483,7 +480,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -491,7 +487,7 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -512,8 +508,6 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "ROI Enhancement II";
 				USER_HEADER_SEARCH_PATHS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -521,7 +515,6 @@
 					"-Wno-unknown-pragmas",
 				);
 				WRAPPER_EXTENSION = osirixplugin;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
@@ -535,6 +528,7 @@
 					x86_64,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				PRODUCT_NAME = "ROI Enhancement";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Development;
@@ -542,7 +536,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "ROI Enhancement II" */ = {
+		CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "ROI Enhancement" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9A9108AC841300D0C1EE /* Development */,

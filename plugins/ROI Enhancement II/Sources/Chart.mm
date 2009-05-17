@@ -43,6 +43,7 @@
 
 -(void)dealloc {
 	[_areaDataSets release]; _areaDataSets = NULL;
+	[cache release]; cache = NULL;
 	[super dealloc];
 }
 
@@ -110,13 +111,54 @@
 		return [[[_interface viewer] pixList] count];
 }
 
+-(void) resetCache
+{
+	[cache release]; cache = NULL;
+}
+
 -(void)yValueForROIRec:(ROIRec*)roiRec element:(NSInteger)element min:(float*)min mean:(float*)mean max:(float*)max {
-	if ([[_interface options] xRangeMode] == XRange4thDimension) {
-		[[[[_interface viewer] pixList: element] objectAtIndex:[[[_interface viewer] imageView] curImage]] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
-	} else {
-		if ([[[_interface viewer] imageView] flippedData])
-			element = [[[_interface viewer] pixList] count]-element-1;
-		[[[[_interface viewer] pixList] objectAtIndex:element] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+
+	if( cache == NULL)
+		cache = [[NSMutableDictionary dictionary] retain];
+	
+	NSString *keyRoi = [NSString stringWithFormat: @"%X", [roiRec roi]];
+	NSString *keyPix;
+	if ([[_interface options] xRangeMode] == XRange4thDimension)
+		keyPix = [NSString stringWithFormat: @"%X", [[_interface viewer] pixList: element]];
+	else
+		keyPix = [NSString stringWithFormat: @"%X", [[[_interface viewer] pixList] objectAtIndex:element]];
+	
+	NSMutableDictionary *roiCache = [cache objectForKey: keyRoi];
+	
+	if( [roiCache objectForKey: keyPix] == NULL)
+	{
+		if ([[_interface options] xRangeMode] == XRange4thDimension) {
+			[[[[_interface viewer] pixList: element] objectAtIndex:[[[_interface viewer] imageView] curImage]] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+		} else {
+			if ([[[_interface viewer] imageView] flippedData])
+				element = [[[_interface viewer] pixList] count]-element-1;
+			[[[[_interface viewer] pixList] objectAtIndex:element] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
+		}
+		
+		NSMutableDictionary *imageCache = [NSMutableDictionary dictionary];	
+		[imageCache setValue: [NSNumber numberWithFloat: *mean] forKey: @"mean"];
+		[imageCache setValue: [NSNumber numberWithFloat: *min] forKey: @"min"];
+		[imageCache setValue: [NSNumber numberWithFloat: *max] forKey: @"max"];
+		
+		if( roiCache == NULL) {
+			roiCache = [NSMutableDictionary dictionary];
+			[cache setObject: roiCache forKey: keyRoi];
+		}
+		
+		[roiCache setObject: imageCache forKey: keyPix];
+	}
+	else
+	{
+		NSDictionary *imageCache = [roiCache objectForKey: keyPix];
+		
+		*mean = [[imageCache valueForKey: @"mean"] floatValue];
+		*min = [[imageCache valueForKey: @"min"] floatValue];
+		*max = [[imageCache valueForKey: @"max"] floatValue];
 	}
 }
 
@@ -262,7 +304,9 @@
 {
 	if( [_interface viewer] == nil)
 		return;
-		
+	
+	[self resetCache];
+	
 	// update the view's layout
 	if ([self needsLayout])
 		[self computeLayout];

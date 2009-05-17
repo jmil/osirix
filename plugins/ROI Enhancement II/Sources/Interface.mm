@@ -68,8 +68,11 @@ const NSString* FileTypeCSV = @"csv";
 
 -(void)windowWillClose:(NSNotification*)notification
 {
-	if ([notification object] == [self window]) 
+	if ([notification object] == [self window])
+	{
+		[[self window] orderOut: self];
 		[self release];
+	}
 }
 
 -(void)viewerWillClose:(NSNotification*)notification {
