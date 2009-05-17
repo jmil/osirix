@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="109"/>
 			<integer value="511"/>
 			<integer value="5" id="13"/>
+			<integer value="109"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -33,7 +33,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{115, 1054}, {600, 413}}</string>
 				<int key="NSWTFlags">-1543503872</int>
-				<string key="NSWindowTitle">ROI Enhancement II</string>
+				<string key="NSWindowTitle">ROI Enhancement</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSToolbar" key="NSViewClass" id="1019727387">
 					<object class="NSMutableString" key="NSToolbarIdentifier">
