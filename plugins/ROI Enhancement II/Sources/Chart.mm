@@ -98,7 +98,6 @@
 }
 
 -(void)mouseUp:(NSEvent*)theEvent {
-	NSLog(@"UP");
 	
 	_tracking = false;
 	if (_newPlotValue != -1)

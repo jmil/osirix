@@ -140,7 +140,7 @@ const NSString* FileTypeCSV = @"csv";
 	DICOMExport* dicomExport = [[DICOMExport alloc] init];
 	[dicomExport setSourceFile:[[[_viewer pixList] objectAtIndex:0] srcFile]];
 	[dicomExport setSeriesDescription: seriesDescription];
-	[dicomExport setSeriesNumber:1];
+	[dicomExport setSeriesNumber: 35466];
 	[dicomExport setPixelData:(unsigned char*)[bitmapRGBData bytes] samplePerPixel:3 bitsPerPixel:8 width:[bitmapImageRep size].width height:[bitmapImageRep size].height];
 	[dicomExport writeDCMFile:filename];
 	[dicomExport release];
