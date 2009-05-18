@@ -8,7 +8,7 @@
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
 - ILCrashReporter : x86_64?
-- displaySamePatientWithColorBackground preferences
+- study/series comments in the http server
 
 - Test burning message
 
@@ -16,6 +16,7 @@
 - soundex activate
 - JP2000 compression activate
 - Compression settings (JP2K, modality, ...)
+- displaySamePatientWithColorBackground preferences
 
 QA
 - BugZilla (sourceforge?)
