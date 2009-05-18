@@ -48,6 +48,11 @@
 		[_yRangeMax setFloatValue:[[_interface userDefaults] float:@"ranges.y.max" otherwise:0]];
 	}
 	
+	// legend
+	[_legend setState:[[_interface userDefaults] bool:@"legend.display" otherwise:[_legend state]]];
+	[_leftRight selectCellAtRow:0 column:[[_interface userDefaults] int:@"legend.x" otherwise:[_leftRight selectedColumn]]];
+	[_topBottom selectCellAtRow:0 column:[[_interface userDefaults] int:@"legend.y" otherwise:[_topBottom selectedColumn]]];
+	
 	// decorations
 	[_xAxis setState:[[_interface userDefaults] bool:@"decorations.x.axis" otherwise:[_xAxis state]]];
 	[_xTicks setState:[[_interface userDefaults] bool:@"decorations.x.ticks" otherwise:[_xTicks state]]];
@@ -63,10 +68,13 @@
 	[_minorLineColor setColor:[[_interface userDefaults] color:@"decorations.minorlinecolor" otherwise:[_minorLineColor color]]];
 	[_backgroundColor setColor:[[_interface userDefaults] color:@"decorations.background.color" otherwise:[_backgroundColor color]]];
 	
-	[self curvesChanged:NULL];
+	// as we know [interface viewer] is set, enable/disable 4th dimension graphing
+	[_xRange4thDimension setHidden:[[_interface viewer] maxMovieIndex]==1];
 	
+	[self curvesChanged:NULL];
 	[self xRangeChanged:NULL];
 	[self yRangeChanged:NULL];
+	[self legendChanged:NULL];
 	[self decorationsChanged:NULL];
 }
 
@@ -189,6 +197,23 @@
 	}
 }
 
+-(IBAction)legendChanged:(id)sender {
+	BOOL legend = [_legend state];
+	
+	// affect the GUI
+	[_leftRight setEnabled:legend];
+	[_topBottom setEnabled:legend];
+	
+	if (!sender || sender == _legend)
+		[[_interface chart] setDrawsLegend:legend];
+	
+	[[_interface chart] setNeedsDisplay:YES];
+	
+	[[_interface userDefaults] setBool:legend forKey:@"legend.display"];
+	[[_interface userDefaults] setInt:[_leftRight selectedColumn] forKey:@"legend.x"];
+	[[_interface userDefaults] setInt:[_topBottom selectedColumn] forKey:@"legend.y"];
+}
+
 -(IBAction)decorationsChanged:(id)sender {
 	Chart* chart = [_interface chart];
 	GRAxes* axes = [chart axes];
@@ -278,6 +303,22 @@
 
 -(BOOL)fill {
 	return [_minmaxFill state];
+}
+
+-(NSColor*)backgroundColor {
+	return [_backgroundColor color];
+}
+
+-(NSColor*)majorColor {
+	return [_majorLineColor color];
+}
+
+-(LegendPositionX)legendPositionX {
+	return [_leftRight selectedColumn]==0? LegendPositionLeft : LegendPositionRight;
+}
+
+-(LegendPositionY)legendPositionY {
+	return [_topBottom selectedColumn]==0? LegendPositionTop : LegendPositionBottom;
 }
 
 @end

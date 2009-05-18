@@ -18,8 +18,6 @@ extern NSString*	GRAxesLineBorder;
 extern NSString*	GRAxesGrooveBorder;
 extern NSString* GRAxesBottomMargin;
 extern NSString* GRAxesDrawBackground;
-extern NSString* GRAxesDrawLegend;
-extern NSString* GRAxesDrawLegendBackground;
 extern NSString* GRAxesDrawPlotFrame;
 extern NSString* GRAxesDrawXAxis;
 extern NSString* GRAxesDrawXLabels;
@@ -120,6 +118,8 @@ extern NSString* GRAxesYTitleFont;
 extern NSString* GRAxesYTitleRotation;
 extern NSString* GRAxesYTitleSpacing;
 
+extern NSString* GRAxesDrawLegend;
+extern NSString* GRAxesDrawLegendBackground;
 extern NSString* GRAxesLegendBackgroundColor;
 extern NSString* GRAxesLegendBorderType;
 extern NSString*	GRAxesLegendNoBorder;

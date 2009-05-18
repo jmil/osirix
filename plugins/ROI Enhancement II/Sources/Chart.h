@@ -24,15 +24,17 @@
 	IBOutlet Interface* _interface;
 	int _xMin, _xMax;
 	NSMutableArray* _areaDataSets;
-	BOOL _drawsBackground;
+	BOOL _drawsBackground, _drawsLegend;
 	BOOL _tracking;
 	NSPoint _mousePoint;
-	float _plotValueX;
+	NSMutableArray* _plotValues;
+	float _newPlotValue;
 	NSMutableDictionary *cache;
 }
 
 @property(readonly) int xMin, xMax;
 @property BOOL drawsBackground;
+@property BOOL drawsLegend;
 
 -(GRLineDataSet*)createOwnedLineDataSet;
 -(AreaDataSet*)createOwnedAreaDataSetFrom:(GRLineDataSet*)min to:(GRLineDataSet*)max;

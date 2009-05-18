@@ -214,6 +214,7 @@
 		roiRec = [[[ROIRec alloc] init:roi forList:self] autorelease];
 		[_menu addItem:[roiRec menuItem]];
 		[_records addObject:roiRec];
+		[[roiRec meanDataSet] setProperty:[roi name] forKey:GRDataSetLegendLabel];
 		// display if in mode "display all" - mode "display selected" is handled later
 		[roiRec setDisplayed:_display_all];
 //		[roiRec release];
@@ -224,7 +225,7 @@
 	// update name if necessary
 	if (![[[roiRec menuItem] title] isEqualToString:[roi name]]) // if name has changed, update menu
 		[[roiRec menuItem] setTitle:[roi name]];
-	
+		
 	// handle selection changes
 	if (_display_selected) {
 		BOOL should_display = roi.ROImode == ROI_selected;

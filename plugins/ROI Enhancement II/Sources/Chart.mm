@@ -25,23 +25,25 @@
 #import "Options.h"
 
 @implementation Chart
-@synthesize xMin = _xMin, xMax = _xMax;
+@synthesize xMin = _xMin, xMax = _xMax, drawsLegend = _drawsLegend, drawsBackground = _drawsBackground;
 
 -(void)awakeFromNib {
 	[super awakeFromNib];
 	
 	_areaDataSets = [[NSMutableArray arrayWithCapacity:0] retain];
+	_plotValues = [[NSMutableArray arrayWithCapacity:0] retain];
 	
 	[self setDelegate:self];
 	[self setDataSource:self];
 
 	[self setProperty:[NSNumber numberWithBool:NO] forKey:GRChartDrawBackground];
 	[[self axes] setProperty:[NSFont labelFontOfSize:[NSFont smallSystemFontSize]] forKey:GRAxesLabelFont];
+	[[self axes] setProperty:[NSFont labelFontOfSize:[NSFont smallSystemFontSize]] forKey:GRAxesLabelFont];
 	[[self axes] setProperty:[NSArray array] forKey:GRAxesMinorLineDashPattern];
-//	[[self axes] setProperty:[NSNumber numberWithFloat:0.5] forKey:GRAxesMinorLineWidth];
 }
 
 -(void)dealloc {
+	[_plotValues release]; _plotValues = NULL;
 	[_areaDataSets release]; _areaDataSets = NULL;
 	[cache release]; cache = NULL;
 	[super dealloc];
@@ -91,15 +93,23 @@
 }
 
 -(void)mouseDragged:(NSEvent*)theEvent {
-	_mousePoint = [self convertPointFromBase:[theEvent locationInWindow]]; _plotValueX = -1;
+	_mousePoint = [self convertPointFromBase:[theEvent locationInWindow]]; _newPlotValue = -1;
 	[self setNeedsDisplay:YES];
 }
 
 -(void)mouseUp:(NSEvent*)theEvent {
-	_tracking = [theEvent clickCount] != 2;
+	NSLog(@"UP");
+	
+	_tracking = false;
+	if (_newPlotValue != -1)
+		[_plotValues addObject:[NSNumber numberWithFloat:_newPlotValue]];
+	_newPlotValue = -1;
+	
+	if ([theEvent clickCount] == 2)
+		[_plotValues removeAllObjects];
+	
 	[NSCursor unhide];
-	if (!_tracking)
-		[self setNeedsDisplay:YES];
+	[self setNeedsDisplay:YES];
 }
 
 // GRChartView delegate/dataSource
@@ -235,8 +245,9 @@
 	[self setNeedsDisplay:YES];
 }
 
--(BOOL)drawsBackground {
-	return _drawsBackground;
+-(void)setDrawsLegend:(BOOL)drawsLegend {
+	_drawsLegend = drawsLegend;
+	[self setNeedsDisplay:YES];
 }
 
 -(void)drawTrackingGizmoAtPoint:(NSPoint)point withValue:(float)value {
@@ -268,7 +279,6 @@
 	float p1y = [[self axes] yValueAtPoint: NSMakePoint(r.origin.x+r.size.width, r.origin.y+r.size.height)];
 	
 	const int tickWidth = 4;
-//	float maxTicksPerPixel = 1./tickWidth;
 	
 	const int multiplySequence[] = {5,2};
 	const int multiplySequenceLength = sizeof(multiplySequence)/sizeof(int);
@@ -300,8 +310,101 @@
 	return retVal | [super computeLayout]; // yes, again
 }
 
--(void)drawRect:(NSRect)dirtyRect
-{
+-(void)drawValue:(float)value {
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	
+	if (value >= _xMin && value <= _xMax) {
+		float pointX = [[self axes] locationForXValue:value yValue:0].x;
+		// line
+		[context saveGraphicsState];
+		[[NSBezierPath bezierPathWithRect:[[self axes] plotRect]] setClip];
+		[[NSColor blackColor] setStroke];
+		[NSBezierPath setDefaultLineWidth: 1];
+		[NSBezierPath strokeLineFromPoint:NSMakePoint(pointX, [[self axes] plotRect].origin.y) toPoint:NSMakePoint(pointX, [[self axes] plotRect].origin.y+[[self axes] plotRect].size.height)];
+		[context restoreGraphicsState];
+		// values
+		[context saveGraphicsState];
+		[[NSColor blackColor] setStroke];
+		[NSBezierPath setDefaultLineWidth: 1];
+		for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+			ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+			
+			float min = 0, mean = 0, max = 0;
+			[self yValueForROIRec:roiRec element:value min:&min mean:&mean max:&max];
+			
+			if ([[_interface options] min])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:value yValue:min] withValue:min];
+			if ([[_interface options] mean])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:value yValue:mean] withValue:mean];
+			if ([[_interface options] max])
+				[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:value yValue:max] withValue:max];
+		}
+		[context restoreGraphicsState];
+	}
+}
+
+-(void)drawValues {
+	for (unsigned i = 0; i < [_plotValues count]; ++i) {
+		float value = [[_plotValues objectAtIndex:i] floatValue];
+		[self drawValue:value];
+		if (_newPlotValue == value)
+			_newPlotValue = -1;
+	}
+	
+	if (_newPlotValue != -1)
+		[self drawValue:_newPlotValue];
+}
+
+-(void)drawLegend {
+	if (![self drawsLegend])
+		return;
+	
+	float textWidth = 0, height = 0;
+	NSFont* font = [[[_interface chart] axes] propertyForKey:GRAxesLabelFont];
+	NSMutableDictionary* attributes = [NSMutableDictionary dictionaryWithCapacity:4];
+	[attributes setObject:font forKey:NSFontAttributeName];
+	
+	for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+		ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+		NSSize size = [[[roiRec roi] name] sizeWithAttributes:attributes];
+		height += size.height;
+		if (size.width > textWidth)
+			textWidth = size.width;
+	}
+	
+	NSRect plotRect = [[self axes] plotRect];
+	
+	const float sampleWidth = 20, padding = 5, margin = 5;
+	NSRect legendRect = NSMakeRect(0, 0, padding*3+textWidth+sampleWidth, padding+height);
+
+	if ([[_interface options] legendPositionX] == LegendPositionLeft)
+		legendRect.origin.x = plotRect.origin.x+margin;
+	else legendRect.origin.x = plotRect.origin.x+plotRect.size.width-margin-legendRect.size.width;
+	if ([[_interface options] legendPositionY] == LegendPositionTop)
+		legendRect.origin.y = plotRect.origin.y+plotRect.size.height-margin-legendRect.size.height;
+	else legendRect.origin.y = plotRect.origin.y+margin;
+	
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	[[[_interface options] backgroundColor] setFill];
+	[[[_interface options] majorColor] setStroke];
+	[NSBezierPath fillRect:legendRect];
+	[NSBezierPath strokeRect:legendRect];
+	
+	float h = 0;
+	for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
+		ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+		NSSize size = [[[roiRec roi] name] sizeWithAttributes:attributes];
+		[[[roiRec roi] name] drawWithRect:NSMakeRect(legendRect.origin.x+padding+(textWidth-size.width), legendRect.origin.y+h+padding, textWidth, size.height) options:0 attributes:attributes];
+		[[roiRec meanDataSet] drawLegendSampleInRect:NSMakeRect(legendRect.origin.x+padding*2+textWidth, legendRect.origin.y+h+padding/2, sampleWidth, size.height)];
+		h += size.height;
+	}	
+	
+	[context restoreGraphicsState];
+}
+
+-(void)drawRect:(NSRect)dirtyRect {
 	if( [_interface viewer] == nil)
 		return;
 	
@@ -327,38 +430,12 @@
 	
 	[super drawRect:dirtyRect];
 	
-	if (_tracking) {
-		if (_plotValueX == -1)
-			_plotValueX = round([[self axes] xValueAtPoint:_mousePoint]);
-		float plotPointX = [[self axes] locationForXValue:_plotValueX yValue:0].x;
-		if (_plotValueX >= _xMin && _plotValueX <= _xMax) {
-			// line
-			[context saveGraphicsState];
-			[[NSBezierPath bezierPathWithRect:[[self axes] plotRect]] setClip];
-			[[NSColor blackColor] setStroke];
-			[NSBezierPath setDefaultLineWidth: 1];
-			[NSBezierPath strokeLineFromPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y) toPoint:NSMakePoint(plotPointX, [[self axes] plotRect].origin.y+[[self axes] plotRect].size.height)];
-			[context restoreGraphicsState];
-			// values
-			[context saveGraphicsState];
-			[[NSColor blackColor] setStroke];
-			[NSBezierPath setDefaultLineWidth: 1];
-			for (unsigned i = 0; i < [[_interface roiList] countOfDisplayedROIs]; ++i) {
-				ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
-				
-				float min = 0, mean = 0, max = 0;
-				[self yValueForROIRec:roiRec element:_plotValueX min:&min mean:&mean max:&max];
-				
-				if ([[_interface options] min])
-					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:min] withValue:min];
-				if ([[_interface options] mean])
-					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:mean] withValue:mean];
-				if ([[_interface options] max])
-					[self drawTrackingGizmoAtPoint:[[self axes] locationForXValue:_plotValueX yValue:max] withValue:max];
-			}
-			[context restoreGraphicsState];
-		}
-	}
+	if (_tracking)
+		if (_newPlotValue == -1)
+			_newPlotValue = round([[self axes] xValueAtPoint:_mousePoint]);
+	
+	[self drawValues];
+	[self drawLegend];
 	
 	[[_interface options] updateYRange];
 	[[_interface options] updateXRange];
