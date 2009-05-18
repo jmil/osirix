@@ -7,7 +7,6 @@
 - Hanging Protocols
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
-- ILCrashReporter : x86_64?
 - study/series comments in the http server
 
 - Test burning message
