@@ -70,6 +70,7 @@ const NSString* FileTypeCSV = @"csv";
 {
 	if ([notification object] == [self window])
 	{
+		_chart.stopDraw = YES;
 		[[self window] orderOut: self];
 		[self release];
 	}

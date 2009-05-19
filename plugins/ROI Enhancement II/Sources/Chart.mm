@@ -25,7 +25,7 @@
 #import "Options.h"
 
 @implementation Chart
-@synthesize xMin = _xMin, xMax = _xMax, drawsLegend = _drawsLegend, drawsBackground = _drawsBackground;
+@synthesize xMin = _xMin, xMax = _xMax, drawsLegend = _drawsLegend, drawsBackground = _drawsBackground, stopDraw;
 
 -(void)awakeFromNib {
 	[super awakeFromNib];
@@ -404,6 +404,8 @@
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
+	if( stopDraw) return;
+
 	if( [_interface viewer] == nil)
 		return;
 	

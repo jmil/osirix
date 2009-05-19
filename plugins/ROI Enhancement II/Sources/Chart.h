@@ -30,11 +30,12 @@
 	NSMutableArray* _plotValues;
 	float _newPlotValue;
 	NSMutableDictionary *cache;
+	BOOL stopDraw;
 }
 
 @property(readonly) int xMin, xMax;
 @property BOOL drawsBackground;
-@property BOOL drawsLegend;
+@property BOOL drawsLegend, stopDraw;
 
 -(GRLineDataSet*)createOwnedLineDataSet;
 -(AreaDataSet*)createOwnedAreaDataSetFrom:(GRLineDataSet*)min to:(GRLineDataSet*)max;
