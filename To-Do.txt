@@ -1,3 +1,25 @@
+/etc/sysctl.conf
+net.inet.tcp.delayed_ack=0
+sysctl -w net.inet.tcp.delayed_ack=0 
+
+disabled IPv6 on Mac OS X
+
+/etc/smb.conf file
+socket options = TCP_NODELAY IPTOS_LOWDELAY
+socket options = TCP_NODELAY IPTOS_LOWDELAY SO_SNDBUF=16384 SO_RCVBUF=65536
+socket options = SO_KEEPALIVE SO_SNDBUF=16384 SO_RCVBUF=16384
+
+
+Comment out lines:
+strict sync = yes
+sync always = yes
+Change the socket options line to:
+socket options = TCP_NODELAY IPTOS_LOWDELAY SO_KEEPALIVE SO_RCVBUF=131072 SO_SNDBUF=131072
+
+
+
+
+
 - minIP for 3D MPR
 
 - C-GET
@@ -8,6 +30,7 @@
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
 - study/series comments in the http server
+- Registration see Volview
 
 - ROiEnhacement in default pkg?
 - Update intaller for XX 
