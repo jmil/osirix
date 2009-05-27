@@ -11,6 +11,7 @@
 - Registration see Volview
 - Sync Ortho-MPR
 - Remove duplicate addresses (locations, bonjour)
+- ROI stay in MPR-Controller Axial view
 
 - ROiEnhacement in default pkg?
 
