@@ -25,13 +25,14 @@
 #import "Options.h"
 
 @implementation Chart
-@synthesize xMin = _xMin, xMax = _xMax, drawsLegend = _drawsLegend, drawsBackground = _drawsBackground, stopDraw;
+@synthesize xMin = _xMin, xMax = _xMax, drawsLegend = _drawsLegend, drawsBackground = _drawsBackground, stopDraw = _stopDraw;
 
 -(void)awakeFromNib {
 	[super awakeFromNib];
 	
 	_areaDataSets = [[NSMutableArray arrayWithCapacity:0] retain];
 	_plotValues = [[NSMutableArray arrayWithCapacity:0] retain];
+	_cache = [[NSMutableDictionary dictionaryWithCapacity:128] retain];
 	
 	[self setDelegate:self];
 	[self setDataSource:self];
@@ -45,7 +46,7 @@
 -(void)dealloc {
 	[_plotValues release]; _plotValues = NULL;
 	[_areaDataSets release]; _areaDataSets = NULL;
-	[cache release]; cache = NULL;
+	[_cache release]; _cache = NULL;
 	[super dealloc];
 }
 
@@ -79,10 +80,15 @@
 		[[roiRec minDataSet] setProperty:color forKey:GRDataSetPlotColor];
 		[[roiRec meanDataSet] setProperty:color forKey:GRDataSetPlotColor];
 		[[roiRec maxDataSet] setProperty:color forKey:GRDataSetPlotColor];
+		// cache
+		[_cache removeObjectForKey:[roiRec roi]];
+		// TODO: the NAME in legend
 	}
 	
-	if (!roiRec || [roiRec displayed])
-		[self setNeedsToReloadData:YES];
+	if (!roiRec)
+		[_cache removeAllObjects];
+	
+	[self setNeedsToReloadData:YES];
 }
 
 -(void)mouseDown:(NSEvent*)theEvent {
@@ -120,27 +126,15 @@
 		return [[[_interface viewer] pixList] count];
 }
 
--(void) resetCache
-{
-	[cache release]; cache = NULL;
-}
-
 -(void)yValueForROIRec:(ROIRec*)roiRec element:(NSInteger)element min:(float*)min mean:(float*)mean max:(float*)max {
-
-	if( cache == NULL)
-		cache = [[NSMutableDictionary dictionary] retain];
-	
-	NSString *keyRoi = [NSString stringWithFormat: @"%X", [roiRec roi]];
 	NSString *keyPix;
 	if ([[_interface options] xRangeMode] == XRange4thDimension)
 		keyPix = [NSString stringWithFormat: @"%X", [[_interface viewer] pixList: element]];
-	else
-		keyPix = [NSString stringWithFormat: @"%X", [[[_interface viewer] pixList] objectAtIndex:element]];
+	else keyPix = [NSString stringWithFormat: @"%X", [[[_interface viewer] pixList] objectAtIndex:element]];
 	
-	NSMutableDictionary *roiCache = [cache objectForKey: keyRoi];
+	NSMutableDictionary* cache = [_cache objectForKey:[roiRec roi]];
 	
-	if( [roiCache objectForKey: keyPix] == NULL)
-	{
+	if ([cache objectForKey:keyPix] == NULL) {
 		if ([[_interface options] xRangeMode] == XRange4thDimension) {
 			[[[[_interface viewer] pixList: element] objectAtIndex:[[[_interface viewer] imageView] curImage]] computeROI:[roiRec roi] :mean :NULL :NULL :min :max];
 		} else {
@@ -150,24 +144,23 @@
 		}
 		
 		NSMutableDictionary *imageCache = [NSMutableDictionary dictionary];	
-		[imageCache setValue: [NSNumber numberWithFloat: *mean] forKey: @"mean"];
-		[imageCache setValue: [NSNumber numberWithFloat: *min] forKey: @"min"];
-		[imageCache setValue: [NSNumber numberWithFloat: *max] forKey: @"max"];
+		[imageCache setValue: [NSNumber numberWithFloat:*mean] forKey: @"mean"];
+		[imageCache setValue: [NSNumber numberWithFloat:*min] forKey: @"min"];
+		[imageCache setValue: [NSNumber numberWithFloat:*max] forKey: @"max"];
 		
-		if( roiCache == NULL) {
-			roiCache = [NSMutableDictionary dictionary];
-			[cache setObject: roiCache forKey: keyRoi];
+		if (!cache) {
+			cache = [NSMutableDictionary dictionary];
+			[_cache setObject:cache forKey:[roiRec roi]];
 		}
 		
-		[roiCache setObject: imageCache forKey: keyPix];
+		[cache setObject:imageCache forKey:keyPix];
 	}
 	else
 	{
-		NSDictionary *imageCache = [roiCache objectForKey: keyPix];
-		
-		*mean = [[imageCache valueForKey: @"mean"] floatValue];
-		*min = [[imageCache valueForKey: @"min"] floatValue];
-		*max = [[imageCache valueForKey: @"max"] floatValue];
+		NSDictionary *imageCache = [cache objectForKey:keyPix];
+		*mean = [[imageCache valueForKey:@"mean"] floatValue];
+		*min = [[imageCache valueForKey:@"min"] floatValue];
+		*max = [[imageCache valueForKey:@"max"] floatValue];
 	}
 }
 
@@ -404,12 +397,10 @@
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
-	if( stopDraw) return;
+	if (_stopDraw) return;
 
 	if( [_interface viewer] == nil)
 		return;
-	
-	[self resetCache];
 	
 	// update the view's layout
 	if ([self needsLayout])

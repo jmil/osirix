@@ -14,9 +14,7 @@
 		597131A20FA6F7E100FA0701 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = 597131960FA6F7E100FA0701 /* Interface.h */; };
 		597131A30FA6F7E100FA0701 /* ROI_Enhancement_II.h in Headers */ = {isa = PBXBuildFile; fileRef = 597131970FA6F7E100FA0701 /* ROI_Enhancement_II.h */; };
 		597131A40FA6F7E100FA0701 /* ROI_Enhancement_II.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597131980FA6F7E100FA0701 /* ROI_Enhancement_II.mm */; };
-		597131A50FA6F7E100FA0701 /* ROIList.h in Headers */ = {isa = PBXBuildFile; fileRef = 597131990FA6F7E100FA0701 /* ROIList.h */; };
 		597131A60FA6F7E100FA0701 /* Interface.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5971319A0FA6F7E100FA0701 /* Interface.mm */; };
-		597131A70FA6F7E100FA0701 /* ROIList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5971319B0FA6F7E100FA0701 /* ROIList.mm */; };
 		597131A80FA6F7E100FA0701 /* Options.h in Headers */ = {isa = PBXBuildFile; fileRef = 5971319C0FA6F7E100FA0701 /* Options.h */; };
 		597131A90FA6F7E100FA0701 /* Chart.h in Headers */ = {isa = PBXBuildFile; fileRef = 5971319D0FA6F7E100FA0701 /* Chart.h */; };
 		597131AA0FA6F7E100FA0701 /* Options.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5971319E0FA6F7E100FA0701 /* Options.mm */; };
@@ -45,6 +43,8 @@
 		5989607D0F9EFBE200BEFEE4 /* GRPieDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960750F9EFBE200BEFEE4 /* GRPieDataSet.h */; };
 		5989607E0F9EFBE200BEFEE4 /* GRXYDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */; };
 		598960830F9EFC5E00BEFEE4 /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598960820F9EFC5E00BEFEE4 /* GraphKit.framework */; };
+		59C72B360FCD88CC00430BD9 /* ROIList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59C72B340FCD88CC00430BD9 /* ROIList.mm */; };
+		59C72B370FCD88CC00430BD9 /* ROIList.h in Headers */ = {isa = PBXBuildFile; fileRef = 59C72B350FCD88CC00430BD9 /* ROIList.h */; };
 		59D64E7C0FAF36D60021E211 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59D64E7A0FAF36D60021E211 /* InfoPlist.strings */; };
 		59D655E00FB195730021E211 /* UserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D655DE0FB195730021E211 /* UserDefaults.h */; };
 		59D655E10FB195730021E211 /* UserDefaults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D655DF0FB195730021E211 /* UserDefaults.mm */; };
@@ -67,9 +67,7 @@
 		597131960FA6F7E100FA0701 /* Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interface.h; path = Sources/Interface.h; sourceTree = "<group>"; };
 		597131970FA6F7E100FA0701 /* ROI_Enhancement_II.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROI_Enhancement_II.h; path = Sources/ROI_Enhancement_II.h; sourceTree = "<group>"; };
 		597131980FA6F7E100FA0701 /* ROI_Enhancement_II.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ROI_Enhancement_II.mm; path = Sources/ROI_Enhancement_II.mm; sourceTree = "<group>"; };
-		597131990FA6F7E100FA0701 /* ROIList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROIList.h; path = Sources/ROIList.h; sourceTree = "<group>"; };
 		5971319A0FA6F7E100FA0701 /* Interface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Interface.mm; path = Sources/Interface.mm; sourceTree = "<group>"; };
-		5971319B0FA6F7E100FA0701 /* ROIList.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ROIList.mm; path = Sources/ROIList.mm; sourceTree = "<group>"; };
 		5971319C0FA6F7E100FA0701 /* Options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Options.h; path = Sources/Options.h; sourceTree = "<group>"; };
 		5971319D0FA6F7E100FA0701 /* Chart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Chart.h; path = Sources/Chart.h; sourceTree = "<group>"; };
 		5971319E0FA6F7E100FA0701 /* Options.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Options.mm; path = Sources/Options.mm; sourceTree = "<group>"; };
@@ -99,6 +97,8 @@
 		598960750F9EFBE200BEFEE4 /* GRPieDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRPieDataSet.h; sourceTree = "<group>"; };
 		598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRXYDataSet.h; sourceTree = "<group>"; };
 		598960820F9EFC5E00BEFEE4 /* GraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphKit.framework; path = /System/Library/PrivateFrameworks/GraphKit.framework; sourceTree = "<absolute>"; };
+		59C72B340FCD88CC00430BD9 /* ROIList.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ROIList.mm; path = Sources/ROIList.mm; sourceTree = "<group>"; };
+		59C72B350FCD88CC00430BD9 /* ROIList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROIList.h; path = Sources/ROIList.h; sourceTree = "<group>"; };
 		59D64E7B0FAF36D60021E211 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		59D655DE0FB195730021E211 /* UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDefaults.h; path = Sources/UserDefaults.h; sourceTree = "<group>"; };
 		59D655DF0FB195730021E211 /* UserDefaults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UserDefaults.mm; path = Sources/UserDefaults.mm; sourceTree = "<group>"; };
@@ -160,12 +160,12 @@
 				597131980FA6F7E100FA0701 /* ROI_Enhancement_II.mm */,
 				597131960FA6F7E100FA0701 /* Interface.h */,
 				5971319A0FA6F7E100FA0701 /* Interface.mm */,
-				597131990FA6F7E100FA0701 /* ROIList.h */,
-				5971319B0FA6F7E100FA0701 /* ROIList.mm */,
 				5971319D0FA6F7E100FA0701 /* Chart.h */,
 				597131A00FA6F7E100FA0701 /* Chart.mm */,
 				59E53C190FAF17E1004AE16E /* AreaDataSet.h */,
 				59E53C180FAF17E1004AE16E /* AreaDataSet.mm */,
+				59C72B340FCD88CC00430BD9 /* ROIList.mm */,
+				59C72B350FCD88CC00430BD9 /* ROIList.h */,
 				5971319C0FA6F7E100FA0701 /* Options.h */,
 				5971319E0FA6F7E100FA0701 /* Options.mm */,
 				59D655DE0FB195730021E211 /* UserDefaults.h */,
@@ -287,7 +287,6 @@
 				5989607E0F9EFBE200BEFEE4 /* GRXYDataSet.h in Headers */,
 				597131A20FA6F7E100FA0701 /* Interface.h in Headers */,
 				597131A30FA6F7E100FA0701 /* ROI_Enhancement_II.h in Headers */,
-				597131A50FA6F7E100FA0701 /* ROIList.h in Headers */,
 				597131A80FA6F7E100FA0701 /* Options.h in Headers */,
 				597131A90FA6F7E100FA0701 /* Chart.h in Headers */,
 				597715720FA97FAF003CBDE8 /* DCMPix.h in Headers */,
@@ -307,6 +306,7 @@
 				59D655E00FB195730021E211 /* UserDefaults.h in Headers */,
 				59D656C60FB1C8020021E211 /* DICOMExport.h in Headers */,
 				597816050FB9520800774713 /* DicomSaveDialog.h in Headers */,
+				59C72B370FCD88CC00430BD9 /* ROIList.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,7 +380,6 @@
 			files = (
 				597131A40FA6F7E100FA0701 /* ROI_Enhancement_II.mm in Sources */,
 				597131A60FA6F7E100FA0701 /* Interface.mm in Sources */,
-				597131A70FA6F7E100FA0701 /* ROIList.mm in Sources */,
 				597131AA0FA6F7E100FA0701 /* Options.mm in Sources */,
 				597131AC0FA6F7E100FA0701 /* Chart.mm in Sources */,
 				596DB8140FAF0BD400FEE841 /* PopUpMenuButton.mm in Sources */,
@@ -388,6 +387,7 @@
 				59E53C1A0FAF17E1004AE16E /* AreaDataSet.mm in Sources */,
 				59D655E10FB195730021E211 /* UserDefaults.mm in Sources */,
 				597816040FB9520800774713 /* DicomSaveDialog.mm in Sources */,
+				59C72B360FCD88CC00430BD9 /* ROIList.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

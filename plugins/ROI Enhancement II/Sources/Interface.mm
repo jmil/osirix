@@ -67,8 +67,7 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(void)windowWillClose:(NSNotification*)notification {
-	if ([notification object] == [self window])
-	{
+	if ([notification object] == [self window]) {
 		_chart.stopDraw = YES;
 		[[self window] orderOut: self];
 		[self release];
@@ -76,7 +75,6 @@ const NSString* FileTypeCSV = @"csv";
 }
 
 -(void)viewerWillClose:(NSNotification*)notification {
-	_chart.stopDraw = YES;
 	[[self window] orderOut: self];
 	[[self window] close];
 }

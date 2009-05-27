@@ -29,13 +29,12 @@
 	NSPoint _mousePoint;
 	NSMutableArray* _plotValues;
 	float _newPlotValue;
-	NSMutableDictionary *cache;
-	BOOL stopDraw;
+	NSMutableDictionary* _cache;
+	BOOL _stopDraw;
 }
 
 @property(readonly) int xMin, xMax;
-@property BOOL drawsBackground;
-@property BOOL drawsLegend, stopDraw;
+@property BOOL drawsBackground, drawsLegend, stopDraw;
 
 -(GRLineDataSet*)createOwnedLineDataSet;
 -(AreaDataSet*)createOwnedAreaDataSetFrom:(GRLineDataSet*)min to:(GRLineDataSet*)max;
@@ -44,7 +43,6 @@
 -(void)freeYRange;
 -(void)constrainYRangeFrom:(float)min;
 -(void)constrainYRangeFrom:(float)min to:(float)max;
--(void)resetCache;
 -(void)addAreaDataSet:(AreaDataSet*)dataSet;
 -(void)removeAreaDataSet:(AreaDataSet*)dataSet;
 
