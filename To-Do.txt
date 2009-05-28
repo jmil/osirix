@@ -11,7 +11,6 @@
 - Registration see Volview
 - Sync Ortho-MPR
 - Remove duplicate addresses (locations, bonjour)
-- ROI stay in MPR-Controller Axial view
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
