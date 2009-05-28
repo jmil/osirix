@@ -60,6 +60,9 @@ Cleaning Notes
 - Cobb's Angle
 	The name of this tool in the toolbar is "Cobb's". Should be "Cobb" or "Cobb Angle"
 
+- 3D MPR
+	the mouse tools appear twice in the toolbar customization panel
+
 ----------------------------------------
 
 Cours
