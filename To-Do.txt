@@ -8,9 +8,8 @@
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
 - study/series comments in the http server
-- Registration see Volview
+- Registration see Volview - Plugin
 - Sync Ortho-MPR
-- Remove duplicate addresses (locations, bonjour)
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
