@@ -18,6 +18,7 @@
 		<li><a href="#Creating_a_Plugin">Creating a Plugin</a></li>
         <li><a href="#XML_RPC_support">XML-RPC support</a></li>
 		<li><a href="#The_Plugins_Architecture_of_OsiriX">The Plugins Architecture</a></li>
+        <li><a href="#ITKPlugin">Build your own ITK library for your plugin</a></li>
 		<li><a href="#Distributing_and_Installing_your_Plugin">Distribution & Installion</a></li>
 		<li><a href="#More_Help">More Help?</a></li>
 		<li id="table_of_content_embellishment_end"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
@@ -159,6 +160,14 @@
 		
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 		
+        <a name="ITKPlugin"><h2>Build your own ITK library for your plugin</h2></a>
+			<img class="icon" src="images/osirixplugin_icon.png" />
+			<p>If you want to include your own version of ITK (or VTK) in your plugin, you need to be sure there are no conflicts with the compiled libraries included in the OsiriX main source code.</p>
+			<p>This <a href="ITK-OsiriX-Plugin.pdf">PDF document</a> will help you to prepare and include your own ITK libraries in a plugin.</p>
+			<p>Special thanks to Brian Jensen.</p>
+            <p>See PetSpectFusion plugin in the plugins folder for an example.</p>
+			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+        
 		<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing & Installing your Plugin</h2></a>
 			<img class="icon" src="images/osirixplugin_icon.png" />
 			<p>The distribution of your plugin is left to you. The OsiriX team does not host nor distribute 3rd party plugins. <i>However</i>, if your plugin match our quality standards, we can reference your plugin page from the Plugin Manager in OsiriX app. A place of choice to be wildly visible by our users. You will find the application form directly in the Plugin Manager window of OsiriX.</p>
@@ -174,7 +183,7 @@
 			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 			
 		<a name="More_Help"><h2>More Help?</h2></a>
-			<p>If this guide does not answer all your questions, please try our developers mailing-list:</p>
+	  <p>If this guide does not answer all your questions, please try our developers mailing-list:</p>
 			<p align="center"><a href="http://tech.groups.yahoo.com/group/osirix-dev/">http://tech.groups.yahoo.com/group/osirix-dev/</a></p>
 			<p>Your can directly subscribe through here:</p>
 			<form method="get" action="http://tech.groups.yahoo.com/subscribe/osirix-dev">
