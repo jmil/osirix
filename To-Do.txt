@@ -11,6 +11,7 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 - Option to include 3D viewers in Tile Window
+- Remove transfer starting in Bonjour transfer
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
