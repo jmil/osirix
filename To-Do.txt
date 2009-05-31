@@ -1,5 +1,5 @@
 - minIP for 3D MPR
-- C-GET SCU
+- C-GET SCU/SCP
 
 - DICOM TLS
 - Merge SR with VR : add SR option
