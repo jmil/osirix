@@ -1,8 +1,7 @@
 - minIP for 3D MPR
 - C-GET SCU/SCP
 
-- TEST Remove transfer starting in Bonjour transfer
-- TEST Bonjour CGET
+- TEST getIPAddress
 
 - DICOM TLS
 - Merge SR with VR : add SR option
