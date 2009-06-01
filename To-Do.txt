@@ -1,5 +1,5 @@
 - minIP for 3D MPR
-- C-GET SCU/SCP
+- C-GET SCU/SCP (Dynamic IP address DICOM transfers)
 
 - TEST getIPAddress
 
