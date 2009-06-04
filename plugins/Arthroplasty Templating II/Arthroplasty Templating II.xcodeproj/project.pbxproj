@@ -1,0 +1,1022 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		59956E500FD8105F007C151F /* ZimmerTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 59956E4E0FD8105F007C151F /* ZimmerTemplate.h */; };
+		59956E510FD8105F007C151F /* ZimmerTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 59956E4F0FD8105F007C151F /* ZimmerTemplate.m */; };
+		59956E780FD812CF007C151F /* ArthroplastyTemplateFamily.h in Headers */ = {isa = PBXBuildFile; fileRef = 59956E760FD812CF007C151F /* ArthroplastyTemplateFamily.h */; };
+		59956E790FD812CF007C151F /* ArthroplastyTemplateFamily.m in Sources */ = {isa = PBXBuildFile; fileRef = 59956E770FD812CF007C151F /* ArthroplastyTemplateFamily.m */; };
+		59D94E760FCE807D00509EEC /* NSImage+Extras.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E590FCE807D00509EEC /* NSImage+Extras.h */; };
+		59D94E770FCE807D00509EEC /* NSImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E5A0FCE807D00509EEC /* NSImage+Extras.m */; };
+		59D94E780FCE807D00509EEC /* NSString+Trim.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E5B0FCE807D00509EEC /* NSString+Trim.h */; };
+		59D94E790FCE807D00509EEC /* NSString+Trim.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E5C0FCE807D00509EEC /* NSString+Trim.mm */; };
+		59D94E7A0FCE807D00509EEC /* DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E5E0FCE807D00509EEC /* DisclosureBox.h */; };
+		59D94E7B0FCE807D00509EEC /* DisclosureBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E5F0FCE807D00509EEC /* DisclosureBox.m */; };
+		59D94E7C0FCE807D00509EEC /* Step.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E600FCE807D00509EEC /* Step.h */; };
+		59D94E7D0FCE807D00509EEC /* Step.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E610FCE807D00509EEC /* Step.m */; };
+		59D94E7E0FCE807D00509EEC /* StepByStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E620FCE807D00509EEC /* StepByStep.h */; };
+		59D94E7F0FCE807D00509EEC /* StepByStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E630FCE807D00509EEC /* StepByStep.m */; };
+		59D94E800FCE807D00509EEC /* StepByStepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E640FCE807D00509EEC /* StepByStepView.h */; };
+		59D94E810FCE807D00509EEC /* StepByStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E650FCE807D00509EEC /* StepByStepView.m */; };
+		59D94E820FCE807D00509EEC /* StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E660FCE807D00509EEC /* StepView.h */; };
+		59D94E830FCE807D00509EEC /* StepView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E670FCE807D00509EEC /* StepView.m */; };
+		59D94E840FCE807D00509EEC /* ArthroplastyTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */; };
+		59D94E850FCE807D00509EEC /* ArthroplastyTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E690FCE807D00509EEC /* ArthroplastyTemplate.m */; };
+		59D94E860FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6A0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h */; };
+		59D94E870FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E6B0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m */; };
+		59D94E880FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */; };
+		59D94E890FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */; };
+		59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */; };
+		59D94E8B0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */; };
+		59D94E8C0FCE807D00509EEC /* ArthroplastyTemplatingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E700FCE807D00509EEC /* ArthroplastyTemplatingTableView.m */; };
+		59D94E8D0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */; };
+		59D94E8E0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E720FCE807D00509EEC /* ArthroplastyTemplatingWindowController.m */; };
+		59D951D80FCE823400509EEC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59D951D40FCE823400509EEC /* InfoPlist.strings */; };
+		59D951F00FCE82DB00509EEC /* ArthroplastyTemplating.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */; };
+		59D9537F0FCE831A00509EEC /* ZimmerTemplates in Resources */ = {isa = PBXBuildFile; fileRef = 59D951F10FCE831900509EEC /* ZimmerTemplates */; };
+		59D954A30FCE836400509EEC /* CTGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954340FCE836400509EEC /* CTGradient.h */; };
+		59D954A40FCE836400509EEC /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954350FCE836400509EEC /* CTGradient.m */; };
+		59D954A60FCE836400509EEC /* EtchedText.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954380FCE836400509EEC /* EtchedText.h */; };
+		59D954A70FCE836400509EEC /* EtchedText.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954390FCE836400509EEC /* EtchedText.m */; };
+		59D954A80FCE836400509EEC /* EtchedTextCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9543A0FCE836400509EEC /* EtchedTextCell.h */; };
+		59D954A90FCE836400509EEC /* EtchedTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9543B0FCE836400509EEC /* EtchedTextCell.m */; };
+		59D954C20FCE836400509EEC /* iLifeControls_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59D954540FCE836400509EEC /* iLifeControls_Prefix.pch */; };
+		59D954C90FCE836400509EEC /* NFHUDButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9545B0FCE836400509EEC /* NFHUDButton.h */; };
+		59D954CA0FCE836400509EEC /* NFHUDButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9545C0FCE836400509EEC /* NFHUDButton.m */; };
+		59D954CB0FCE836400509EEC /* NFHUDButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9545D0FCE836400509EEC /* NFHUDButtonCell.h */; };
+		59D954CC0FCE836400509EEC /* NFHUDButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9545E0FCE836400509EEC /* NFHUDButtonCell.m */; };
+		59D954CD0FCE836400509EEC /* NFHUDFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9545F0FCE836400509EEC /* NFHUDFrame.h */; };
+		59D954CE0FCE836400509EEC /* NFHUDFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954600FCE836400509EEC /* NFHUDFrame.m */; };
+		59D954CF0FCE836400509EEC /* NFHUDPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954610FCE836400509EEC /* NFHUDPopUpButton.h */; };
+		59D954D00FCE836400509EEC /* NFHUDPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954620FCE836400509EEC /* NFHUDPopUpButton.m */; };
+		59D954D10FCE836400509EEC /* NFHUDPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954630FCE836400509EEC /* NFHUDPopUpButtonCell.h */; };
+		59D954D20FCE836400509EEC /* NFHUDPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954640FCE836400509EEC /* NFHUDPopUpButtonCell.m */; };
+		59D954D30FCE836400509EEC /* NFHUDSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954650FCE836400509EEC /* NFHUDSlider.h */; };
+		59D954D40FCE836400509EEC /* NFHUDSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954660FCE836400509EEC /* NFHUDSlider.m */; };
+		59D954D50FCE836400509EEC /* NFHUDSliderCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954670FCE836400509EEC /* NFHUDSliderCell.h */; };
+		59D954D60FCE836400509EEC /* NFHUDSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954680FCE836400509EEC /* NFHUDSliderCell.m */; };
+		59D954D70FCE836400509EEC /* NFHUDWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954690FCE836400509EEC /* NFHUDWindow.h */; };
+		59D954D80FCE836400509EEC /* NFHUDWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9546A0FCE836400509EEC /* NFHUDWindow.m */; };
+		59D954D90FCE836400509EEC /* NFIButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9546B0FCE836400509EEC /* NFIButton.h */; };
+		59D954DA0FCE836400509EEC /* NFIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9546C0FCE836400509EEC /* NFIButton.m */; };
+		59D954DB0FCE836400509EEC /* NFIButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9546D0FCE836400509EEC /* NFIButtonCell.h */; };
+		59D954DC0FCE836400509EEC /* NFIButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9546E0FCE836400509EEC /* NFIButtonCell.m */; };
+		59D954DD0FCE836400509EEC /* NFIFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9546F0FCE836400509EEC /* NFIFrame.h */; };
+		59D954DE0FCE836400509EEC /* NFIFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954700FCE836400509EEC /* NFIFrame.m */; };
+		59D954DF0FCE836400509EEC /* NFIPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954710FCE836400509EEC /* NFIPopUpButton.h */; };
+		59D954E00FCE836400509EEC /* NFIPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954720FCE836400509EEC /* NFIPopUpButton.m */; };
+		59D954E10FCE836400509EEC /* NFIPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954730FCE836400509EEC /* NFIPopUpButtonCell.h */; };
+		59D954E20FCE836400509EEC /* NFIPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954740FCE836400509EEC /* NFIPopUpButtonCell.m */; };
+		59D954E30FCE836400509EEC /* NFIWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954750FCE836400509EEC /* NFIWindow.h */; };
+		59D954E40FCE836400509EEC /* NFIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D954760FCE836400509EEC /* NFIWindow.m */; };
+		59D954E50FCE836400509EEC /* NSFrameView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954770FCE836400509EEC /* NSFrameView.h */; };
+		59D954E60FCE836400509EEC /* NSGrayFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954780FCE836400509EEC /* NSGrayFrame.h */; };
+		59D954E70FCE836400509EEC /* NSImage+FrameworkImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954790FCE836400509EEC /* NSImage+FrameworkImage.h */; };
+		59D954E80FCE836400509EEC /* NSImage+FrameworkImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D9547A0FCE836400509EEC /* NSImage+FrameworkImage.m */; };
+		59D954E90FCE836400509EEC /* NSThemeFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9547B0FCE836400509EEC /* NSThemeFrame.h */; };
+		59D954EA0FCE836400509EEC /* NSTitledFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9547C0FCE836400509EEC /* NSTitledFrame.h */; };
+		59D954F40FCE836400509EEC /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954870FCE836400509EEC /* DCMPix.h */; };
+		59D954F50FCE836400509EEC /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954880FCE836400509EEC /* DCMView.h */; };
+		59D954F60FCE836400509EEC /* DICOMExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954890FCE836400509EEC /* DICOMExport.h */; };
+		59D954F70FCE836400509EEC /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548A0FCE836400509EEC /* dicomFile.h */; };
+		59D954F80FCE836400509EEC /* MyPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548B0FCE836400509EEC /* MyPoint.h */; };
+		59D954F90FCE836400509EEC /* OSIWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548C0FCE836400509EEC /* OSIWindowController.h */; };
+		59D954FA0FCE836400509EEC /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548D0FCE836400509EEC /* PluginFilter.h */; };
+		59D954FB0FCE836400509EEC /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548E0FCE836400509EEC /* ROI.h */; };
+		59D954FC0FCE836400509EEC /* Schedulable.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548F0FCE836400509EEC /* Schedulable.h */; };
+		59D954FD0FCE836400509EEC /* Scheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954900FCE836400509EEC /* Scheduler.h */; };
+		59D954FE0FCE836400509EEC /* StaticScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954910FCE836400509EEC /* StaticScheduler.h */; };
+		59D954FF0FCE836400509EEC /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954920FCE836400509EEC /* ViewerController.h */; };
+		59D955120FCE854D00509EEC /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D955110FCE854D00509EEC /* browserController.h */; };
+		59D955150FCE857700509EEC /* SendController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D955140FCE857700509EEC /* SendController.h */; };
+		59D955470FCE8BE400509EEC /* TemplatePanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59D955460FCE8BE400509EEC /* TemplatePanel.xib */; };
+		59D955640FCE8D5B00509EEC /* StepByStepPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59D955630FCE8D5B00509EEC /* StepByStepPanel.xib */; };
+		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		59956E4E0FD8105F007C151F /* ZimmerTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimmerTemplate.h; sourceTree = "<group>"; };
+		59956E4F0FD8105F007C151F /* ZimmerTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZimmerTemplate.m; sourceTree = "<group>"; };
+		59956E760FD812CF007C151F /* ArthroplastyTemplateFamily.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplateFamily.h; sourceTree = "<group>"; };
+		59956E770FD812CF007C151F /* ArthroplastyTemplateFamily.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplateFamily.m; sourceTree = "<group>"; };
+		59D94E590FCE807D00509EEC /* NSImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+Extras.h"; sourceTree = "<group>"; };
+		59D94E5A0FCE807D00509EEC /* NSImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+Extras.m"; sourceTree = "<group>"; };
+		59D94E5B0FCE807D00509EEC /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
+		59D94E5C0FCE807D00509EEC /* NSString+Trim.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+Trim.mm"; sourceTree = "<group>"; };
+		59D94E5E0FCE807D00509EEC /* DisclosureBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureBox.h; sourceTree = "<group>"; };
+		59D94E5F0FCE807D00509EEC /* DisclosureBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureBox.m; sourceTree = "<group>"; };
+		59D94E600FCE807D00509EEC /* Step.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Step.h; sourceTree = "<group>"; };
+		59D94E610FCE807D00509EEC /* Step.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Step.m; sourceTree = "<group>"; };
+		59D94E620FCE807D00509EEC /* StepByStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepByStep.h; sourceTree = "<group>"; };
+		59D94E630FCE807D00509EEC /* StepByStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepByStep.m; sourceTree = "<group>"; };
+		59D94E640FCE807D00509EEC /* StepByStepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepByStepView.h; sourceTree = "<group>"; };
+		59D94E650FCE807D00509EEC /* StepByStepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepByStepView.m; sourceTree = "<group>"; };
+		59D94E660FCE807D00509EEC /* StepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StepView.h; sourceTree = "<group>"; };
+		59D94E670FCE807D00509EEC /* StepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StepView.m; sourceTree = "<group>"; };
+		59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplate.h; sourceTree = "<group>"; };
+		59D94E690FCE807D00509EEC /* ArthroplastyTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplate.m; sourceTree = "<group>"; };
+		59D94E6A0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingPlugin.h; sourceTree = "<group>"; };
+		59D94E6B0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingPlugin.m; sourceTree = "<group>"; };
+		59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arthroplasty_Templating_Prefix.pch; path = Sources/Arthroplasty_Templating_Prefix.pch; sourceTree = "<group>"; };
+		59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingStepByStepController.h; sourceTree = "<group>"; };
+		59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingStepByStepController.m; sourceTree = "<group>"; };
+		59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingTableView.h; sourceTree = "<group>"; };
+		59D94E700FCE807D00509EEC /* ArthroplastyTemplatingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingTableView.m; sourceTree = "<group>"; };
+		59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingWindowController.h; sourceTree = "<group>"; };
+		59D94E720FCE807D00509EEC /* ArthroplastyTemplatingWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingWindowController.m; sourceTree = "<group>"; };
+		59D94E990FCE81BD00509EEC /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
+		59D951D50FCE823400509EEC /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
+		59D951D70FCE823400509EEC /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.xml; name = English; path = locversion.plist; sourceTree = "<group>"; };
+		59D951DA0FCE826400509EEC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ArthroplastyTemplating.tiff; sourceTree = "<group>"; };
+		59D951F10FCE831900509EEC /* ZimmerTemplates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ZimmerTemplates; sourceTree = "<group>"; };
+		59D954240FCE836400509EEC /* ButtonFillD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonFillD.tiff; sourceTree = "<group>"; };
+		59D954250FCE836400509EEC /* ButtonFillN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonFillN.tiff; sourceTree = "<group>"; };
+		59D954260FCE836400509EEC /* ButtonFillP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonFillP.tiff; sourceTree = "<group>"; };
+		59D954270FCE836400509EEC /* ButtonLeftD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonLeftD.tiff; sourceTree = "<group>"; };
+		59D954280FCE836400509EEC /* ButtonLeftN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonLeftN.tiff; sourceTree = "<group>"; };
+		59D954290FCE836400509EEC /* ButtonLeftP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonLeftP.tiff; sourceTree = "<group>"; };
+		59D9542A0FCE836400509EEC /* ButtonRightD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonRightD.tiff; sourceTree = "<group>"; };
+		59D9542B0FCE836400509EEC /* ButtonRightN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonRightN.tiff; sourceTree = "<group>"; };
+		59D9542C0FCE836400509EEC /* ButtonRightP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ButtonRightP.tiff; sourceTree = "<group>"; };
+		59D9542D0FCE836400509EEC /* CheckboxOffD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOffD.tiff; sourceTree = "<group>"; };
+		59D9542E0FCE836400509EEC /* CheckboxOffN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOffN.tiff; sourceTree = "<group>"; };
+		59D9542F0FCE836400509EEC /* CheckboxOffP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOffP.tiff; sourceTree = "<group>"; };
+		59D954300FCE836400509EEC /* CheckboxOnD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOnD.tiff; sourceTree = "<group>"; };
+		59D954310FCE836400509EEC /* CheckboxOnN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOnN.tiff; sourceTree = "<group>"; };
+		59D954320FCE836400509EEC /* CheckboxOnP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CheckboxOnP.tiff; sourceTree = "<group>"; };
+		59D954330FCE836400509EEC /* Credits.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Credits.txt; sourceTree = "<group>"; };
+		59D954340FCE836400509EEC /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTGradient.h; sourceTree = "<group>"; };
+		59D954350FCE836400509EEC /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTGradient.m; sourceTree = "<group>"; };
+		59D954370FCE836400509EEC /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		59D954380FCE836400509EEC /* EtchedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtchedText.h; sourceTree = "<group>"; };
+		59D954390FCE836400509EEC /* EtchedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtchedText.m; sourceTree = "<group>"; };
+		59D9543A0FCE836400509EEC /* EtchedTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtchedTextCell.h; sourceTree = "<group>"; };
+		59D9543B0FCE836400509EEC /* EtchedTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtchedTextCell.m; sourceTree = "<group>"; };
+		59D9543C0FCE836400509EEC /* HUDButtonFillN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonFillN.tiff; sourceTree = "<group>"; };
+		59D9543D0FCE836400509EEC /* HUDButtonFillP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonFillP.tiff; sourceTree = "<group>"; };
+		59D9543E0FCE836400509EEC /* HUDButtonLeftN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonLeftN.tiff; sourceTree = "<group>"; };
+		59D9543F0FCE836400509EEC /* HUDButtonLeftP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonLeftP.tiff; sourceTree = "<group>"; };
+		59D954400FCE836400509EEC /* HUDButtonRightN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonRightN.tiff; sourceTree = "<group>"; };
+		59D954410FCE836400509EEC /* HUDButtonRightP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDButtonRightP.tiff; sourceTree = "<group>"; };
+		59D954420FCE836400509EEC /* HUDCheckboxOffN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDCheckboxOffN.tiff; sourceTree = "<group>"; };
+		59D954430FCE836400509EEC /* HUDCheckboxOffP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDCheckboxOffP.tiff; sourceTree = "<group>"; };
+		59D954440FCE836400509EEC /* HUDCheckboxOnN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDCheckboxOnN.tiff; sourceTree = "<group>"; };
+		59D954450FCE836400509EEC /* HUDCheckboxOnP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDCheckboxOnP.tiff; sourceTree = "<group>"; };
+		59D954460FCE836400509EEC /* HUDCloseButton.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDCloseButton.tiff; sourceTree = "<group>"; };
+		59D954470FCE836400509EEC /* HUDPopUpFillN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpFillN.tiff; sourceTree = "<group>"; };
+		59D954480FCE836400509EEC /* HUDPopUpFillP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpFillP.tiff; sourceTree = "<group>"; };
+		59D954490FCE836400509EEC /* HUDPopUpLeftN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpLeftN.tiff; sourceTree = "<group>"; };
+		59D9544A0FCE836400509EEC /* HUDPopUpLeftP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpLeftP.tiff; sourceTree = "<group>"; };
+		59D9544B0FCE836400509EEC /* HUDPopUpRightN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpRightN.tiff; sourceTree = "<group>"; };
+		59D9544C0FCE836400509EEC /* HUDPopUpRightP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDPopUpRightP.tiff; sourceTree = "<group>"; };
+		59D9544D0FCE836400509EEC /* HUDSliderKnob.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderKnob.tiff; sourceTree = "<group>"; };
+		59D9544E0FCE836400509EEC /* HUDSliderKnobRound.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderKnobRound.tiff; sourceTree = "<group>"; };
+		59D9544F0FCE836400509EEC /* HUDSliderTrack.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderTrack.tiff; sourceTree = "<group>"; };
+		59D954500FCE836400509EEC /* HUDSliderTrack5Tick.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderTrack5Tick.tiff; sourceTree = "<group>"; };
+		59D954510FCE836400509EEC /* HUDSliderTrackFill.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderTrackFill.tiff; sourceTree = "<group>"; };
+		59D954520FCE836400509EEC /* HUDSliderTrackLeft.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderTrackLeft.tiff; sourceTree = "<group>"; };
+		59D954530FCE836400509EEC /* HUDSliderTrackRight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HUDSliderTrackRight.tiff; sourceTree = "<group>"; };
+		59D954540FCE836400509EEC /* iLifeControls_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iLifeControls_Prefix.pch; sourceTree = "<group>"; };
+		59D954550FCE836400509EEC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		59D954560FCE836400509EEC /* IWWindowCornerBL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = IWWindowCornerBL.tiff; sourceTree = "<group>"; };
+		59D954570FCE836400509EEC /* IWWindowCornerBR.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = IWWindowCornerBR.tiff; sourceTree = "<group>"; };
+		59D954580FCE836400509EEC /* IWWindowCornerTL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = IWWindowCornerTL.tiff; sourceTree = "<group>"; };
+		59D954590FCE836400509EEC /* IWWindowCornerTR.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = IWWindowCornerTR.tiff; sourceTree = "<group>"; };
+		59D9545A0FCE836400509EEC /* IWWindowResizeControl.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = IWWindowResizeControl.tiff; sourceTree = "<group>"; };
+		59D9545B0FCE836400509EEC /* NFHUDButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDButton.h; sourceTree = "<group>"; };
+		59D9545C0FCE836400509EEC /* NFHUDButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDButton.m; sourceTree = "<group>"; };
+		59D9545D0FCE836400509EEC /* NFHUDButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDButtonCell.h; sourceTree = "<group>"; };
+		59D9545E0FCE836400509EEC /* NFHUDButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDButtonCell.m; sourceTree = "<group>"; };
+		59D9545F0FCE836400509EEC /* NFHUDFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDFrame.h; sourceTree = "<group>"; };
+		59D954600FCE836400509EEC /* NFHUDFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDFrame.m; sourceTree = "<group>"; };
+		59D954610FCE836400509EEC /* NFHUDPopUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDPopUpButton.h; sourceTree = "<group>"; };
+		59D954620FCE836400509EEC /* NFHUDPopUpButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDPopUpButton.m; sourceTree = "<group>"; };
+		59D954630FCE836400509EEC /* NFHUDPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDPopUpButtonCell.h; sourceTree = "<group>"; };
+		59D954640FCE836400509EEC /* NFHUDPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDPopUpButtonCell.m; sourceTree = "<group>"; };
+		59D954650FCE836400509EEC /* NFHUDSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDSlider.h; sourceTree = "<group>"; };
+		59D954660FCE836400509EEC /* NFHUDSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDSlider.m; sourceTree = "<group>"; };
+		59D954670FCE836400509EEC /* NFHUDSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDSliderCell.h; sourceTree = "<group>"; };
+		59D954680FCE836400509EEC /* NFHUDSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDSliderCell.m; sourceTree = "<group>"; };
+		59D954690FCE836400509EEC /* NFHUDWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFHUDWindow.h; sourceTree = "<group>"; };
+		59D9546A0FCE836400509EEC /* NFHUDWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFHUDWindow.m; sourceTree = "<group>"; };
+		59D9546B0FCE836400509EEC /* NFIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIButton.h; sourceTree = "<group>"; };
+		59D9546C0FCE836400509EEC /* NFIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIButton.m; sourceTree = "<group>"; };
+		59D9546D0FCE836400509EEC /* NFIButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIButtonCell.h; sourceTree = "<group>"; };
+		59D9546E0FCE836400509EEC /* NFIButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIButtonCell.m; sourceTree = "<group>"; };
+		59D9546F0FCE836400509EEC /* NFIFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIFrame.h; sourceTree = "<group>"; };
+		59D954700FCE836400509EEC /* NFIFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIFrame.m; sourceTree = "<group>"; };
+		59D954710FCE836400509EEC /* NFIPopUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIPopUpButton.h; sourceTree = "<group>"; };
+		59D954720FCE836400509EEC /* NFIPopUpButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIPopUpButton.m; sourceTree = "<group>"; };
+		59D954730FCE836400509EEC /* NFIPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIPopUpButtonCell.h; sourceTree = "<group>"; };
+		59D954740FCE836400509EEC /* NFIPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIPopUpButtonCell.m; sourceTree = "<group>"; };
+		59D954750FCE836400509EEC /* NFIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIWindow.h; sourceTree = "<group>"; };
+		59D954760FCE836400509EEC /* NFIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIWindow.m; sourceTree = "<group>"; };
+		59D954770FCE836400509EEC /* NSFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFrameView.h; sourceTree = "<group>"; };
+		59D954780FCE836400509EEC /* NSGrayFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGrayFrame.h; sourceTree = "<group>"; };
+		59D954790FCE836400509EEC /* NSImage+FrameworkImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+FrameworkImage.h"; sourceTree = "<group>"; };
+		59D9547A0FCE836400509EEC /* NSImage+FrameworkImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+FrameworkImage.m"; sourceTree = "<group>"; };
+		59D9547B0FCE836400509EEC /* NSThemeFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSThemeFrame.h; sourceTree = "<group>"; };
+		59D9547C0FCE836400509EEC /* NSTitledFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTitledFrame.h; sourceTree = "<group>"; };
+		59D9547D0FCE836400509EEC /* PopUpFillD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpFillD.tiff; sourceTree = "<group>"; };
+		59D9547E0FCE836400509EEC /* PopUpFillN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpFillN.tiff; sourceTree = "<group>"; };
+		59D9547F0FCE836400509EEC /* PopUpFillP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpFillP.tiff; sourceTree = "<group>"; };
+		59D954800FCE836400509EEC /* PopUpLeftD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpLeftD.tiff; sourceTree = "<group>"; };
+		59D954810FCE836400509EEC /* PopUpLeftN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpLeftN.tiff; sourceTree = "<group>"; };
+		59D954820FCE836400509EEC /* PopUpLeftP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpLeftP.tiff; sourceTree = "<group>"; };
+		59D954830FCE836400509EEC /* PopUpRightD.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightD.tiff; sourceTree = "<group>"; };
+		59D954840FCE836400509EEC /* PopUpRightN.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightN.tiff; sourceTree = "<group>"; };
+		59D954850FCE836400509EEC /* PopUpRightP.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PopUpRightP.tiff; sourceTree = "<group>"; };
+		59D954870FCE836400509EEC /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
+		59D954880FCE836400509EEC /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
+		59D954890FCE836400509EEC /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMExport.h; sourceTree = "<group>"; };
+		59D9548A0FCE836400509EEC /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dicomFile.h; sourceTree = "<group>"; };
+		59D9548B0FCE836400509EEC /* MyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPoint.h; sourceTree = "<group>"; };
+		59D9548C0FCE836400509EEC /* OSIWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIWindowController.h; sourceTree = "<group>"; };
+		59D9548D0FCE836400509EEC /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
+		59D9548E0FCE836400509EEC /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
+		59D9548F0FCE836400509EEC /* Schedulable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Schedulable.h; sourceTree = "<group>"; };
+		59D954900FCE836400509EEC /* Scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scheduler.h; sourceTree = "<group>"; };
+		59D954910FCE836400509EEC /* StaticScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticScheduler.h; sourceTree = "<group>"; };
+		59D954920FCE836400509EEC /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
+		59D955110FCE854D00509EEC /* browserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = browserController.h; sourceTree = "<group>"; };
+		59D955140FCE857700509EEC /* SendController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendController.h; sourceTree = "<group>"; };
+		59D955460FCE8BE400509EEC /* TemplatePanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TemplatePanel.xib; sourceTree = "<group>"; };
+		59D955630FCE8D5B00509EEC /* StepByStepPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StepByStepPanel.xib; sourceTree = "<group>"; };
+		A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
+		AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XRayTemplates.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* XRayTemplatesPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */,
+				59D94E580FCE807D00509EEC /* Sources */,
+				59D94E910FCE81BD00509EEC /* Resources */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = XRayTemplatesPlugin;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				59D954180FCE836400509EEC /* Frameworks */,
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */,
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		59956E4D0FD8105F007C151F /* TemplateTypes */ = {
+			isa = PBXGroup;
+			children = (
+				59956E4E0FD8105F007C151F /* ZimmerTemplate.h */,
+				59956E4F0FD8105F007C151F /* ZimmerTemplate.m */,
+			);
+			path = TemplateTypes;
+			sourceTree = "<group>";
+		};
+		59D94E580FCE807D00509EEC /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				59D94E6A0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h */,
+				59D94E6B0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m */,
+				59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */,
+				59D94E720FCE807D00509EEC /* ArthroplastyTemplatingWindowController.m */,
+				59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */,
+				59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */,
+				59D94E5D0FCE807D00509EEC /* StepByStep */,
+				59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */,
+				59D94E690FCE807D00509EEC /* ArthroplastyTemplate.m */,
+				59956E4D0FD8105F007C151F /* TemplateTypes */,
+				59956E760FD812CF007C151F /* ArthroplastyTemplateFamily.h */,
+				59956E770FD812CF007C151F /* ArthroplastyTemplateFamily.m */,
+				59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */,
+				59D94E700FCE807D00509EEC /* ArthroplastyTemplatingTableView.m */,
+				59D94E590FCE807D00509EEC /* NSImage+Extras.h */,
+				59D94E5A0FCE807D00509EEC /* NSImage+Extras.m */,
+				59D94E5B0FCE807D00509EEC /* NSString+Trim.h */,
+				59D94E5C0FCE807D00509EEC /* NSString+Trim.mm */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		59D94E5D0FCE807D00509EEC /* StepByStep */ = {
+			isa = PBXGroup;
+			children = (
+				59D94E5E0FCE807D00509EEC /* DisclosureBox.h */,
+				59D94E5F0FCE807D00509EEC /* DisclosureBox.m */,
+				59D94E600FCE807D00509EEC /* Step.h */,
+				59D94E610FCE807D00509EEC /* Step.m */,
+				59D94E620FCE807D00509EEC /* StepByStep.h */,
+				59D94E630FCE807D00509EEC /* StepByStep.m */,
+				59D94E640FCE807D00509EEC /* StepByStepView.h */,
+				59D94E650FCE807D00509EEC /* StepByStepView.m */,
+				59D94E660FCE807D00509EEC /* StepView.h */,
+				59D94E670FCE807D00509EEC /* StepView.m */,
+			);
+			path = StepByStep;
+			sourceTree = "<group>";
+		};
+		59D94E910FCE81BD00509EEC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				59D955460FCE8BE400509EEC /* TemplatePanel.xib */,
+				59D955630FCE8D5B00509EEC /* StepByStepPanel.xib */,
+				59D951DA0FCE826400509EEC /* Info.plist */,
+				59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */,
+				59D951D30FCE823400509EEC /* English.lproj */,
+				59D94E990FCE81BD00509EEC /* version.plist */,
+				59D951F10FCE831900509EEC /* ZimmerTemplates */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		59D951D30FCE823400509EEC /* English.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				59D951D40FCE823400509EEC /* InfoPlist.strings */,
+				59D951D60FCE823400509EEC /* locversion.plist */,
+			);
+			path = English.lproj;
+			sourceTree = "<group>";
+		};
+		59D954180FCE836400509EEC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				59D954190FCE836400509EEC /* iLifeControls */,
+				59D954860FCE836400509EEC /* OsiriX Headers */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		59D954190FCE836400509EEC /* iLifeControls */ = {
+			isa = PBXGroup;
+			children = (
+				59D9541A0FCE836400509EEC /* build */,
+				59D954240FCE836400509EEC /* ButtonFillD.tiff */,
+				59D954250FCE836400509EEC /* ButtonFillN.tiff */,
+				59D954260FCE836400509EEC /* ButtonFillP.tiff */,
+				59D954270FCE836400509EEC /* ButtonLeftD.tiff */,
+				59D954280FCE836400509EEC /* ButtonLeftN.tiff */,
+				59D954290FCE836400509EEC /* ButtonLeftP.tiff */,
+				59D9542A0FCE836400509EEC /* ButtonRightD.tiff */,
+				59D9542B0FCE836400509EEC /* ButtonRightN.tiff */,
+				59D9542C0FCE836400509EEC /* ButtonRightP.tiff */,
+				59D9542D0FCE836400509EEC /* CheckboxOffD.tiff */,
+				59D9542E0FCE836400509EEC /* CheckboxOffN.tiff */,
+				59D9542F0FCE836400509EEC /* CheckboxOffP.tiff */,
+				59D954300FCE836400509EEC /* CheckboxOnD.tiff */,
+				59D954310FCE836400509EEC /* CheckboxOnN.tiff */,
+				59D954320FCE836400509EEC /* CheckboxOnP.tiff */,
+				59D954330FCE836400509EEC /* Credits.txt */,
+				59D954340FCE836400509EEC /* CTGradient.h */,
+				59D954350FCE836400509EEC /* CTGradient.m */,
+				59D954360FCE836400509EEC /* InfoPlist.strings */,
+				59D954380FCE836400509EEC /* EtchedText.h */,
+				59D954390FCE836400509EEC /* EtchedText.m */,
+				59D9543A0FCE836400509EEC /* EtchedTextCell.h */,
+				59D9543B0FCE836400509EEC /* EtchedTextCell.m */,
+				59D9543C0FCE836400509EEC /* HUDButtonFillN.tiff */,
+				59D9543D0FCE836400509EEC /* HUDButtonFillP.tiff */,
+				59D9543E0FCE836400509EEC /* HUDButtonLeftN.tiff */,
+				59D9543F0FCE836400509EEC /* HUDButtonLeftP.tiff */,
+				59D954400FCE836400509EEC /* HUDButtonRightN.tiff */,
+				59D954410FCE836400509EEC /* HUDButtonRightP.tiff */,
+				59D954420FCE836400509EEC /* HUDCheckboxOffN.tiff */,
+				59D954430FCE836400509EEC /* HUDCheckboxOffP.tiff */,
+				59D954440FCE836400509EEC /* HUDCheckboxOnN.tiff */,
+				59D954450FCE836400509EEC /* HUDCheckboxOnP.tiff */,
+				59D954460FCE836400509EEC /* HUDCloseButton.tiff */,
+				59D954470FCE836400509EEC /* HUDPopUpFillN.tiff */,
+				59D954480FCE836400509EEC /* HUDPopUpFillP.tiff */,
+				59D954490FCE836400509EEC /* HUDPopUpLeftN.tiff */,
+				59D9544A0FCE836400509EEC /* HUDPopUpLeftP.tiff */,
+				59D9544B0FCE836400509EEC /* HUDPopUpRightN.tiff */,
+				59D9544C0FCE836400509EEC /* HUDPopUpRightP.tiff */,
+				59D9544D0FCE836400509EEC /* HUDSliderKnob.tiff */,
+				59D9544E0FCE836400509EEC /* HUDSliderKnobRound.tiff */,
+				59D9544F0FCE836400509EEC /* HUDSliderTrack.tiff */,
+				59D954500FCE836400509EEC /* HUDSliderTrack5Tick.tiff */,
+				59D954510FCE836400509EEC /* HUDSliderTrackFill.tiff */,
+				59D954520FCE836400509EEC /* HUDSliderTrackLeft.tiff */,
+				59D954530FCE836400509EEC /* HUDSliderTrackRight.tiff */,
+				59D954540FCE836400509EEC /* iLifeControls_Prefix.pch */,
+				59D954550FCE836400509EEC /* Info.plist */,
+				59D954560FCE836400509EEC /* IWWindowCornerBL.tiff */,
+				59D954570FCE836400509EEC /* IWWindowCornerBR.tiff */,
+				59D954580FCE836400509EEC /* IWWindowCornerTL.tiff */,
+				59D954590FCE836400509EEC /* IWWindowCornerTR.tiff */,
+				59D9545A0FCE836400509EEC /* IWWindowResizeControl.tiff */,
+				59D9545B0FCE836400509EEC /* NFHUDButton.h */,
+				59D9545C0FCE836400509EEC /* NFHUDButton.m */,
+				59D9545D0FCE836400509EEC /* NFHUDButtonCell.h */,
+				59D9545E0FCE836400509EEC /* NFHUDButtonCell.m */,
+				59D9545F0FCE836400509EEC /* NFHUDFrame.h */,
+				59D954600FCE836400509EEC /* NFHUDFrame.m */,
+				59D954610FCE836400509EEC /* NFHUDPopUpButton.h */,
+				59D954620FCE836400509EEC /* NFHUDPopUpButton.m */,
+				59D954630FCE836400509EEC /* NFHUDPopUpButtonCell.h */,
+				59D954640FCE836400509EEC /* NFHUDPopUpButtonCell.m */,
+				59D954650FCE836400509EEC /* NFHUDSlider.h */,
+				59D954660FCE836400509EEC /* NFHUDSlider.m */,
+				59D954670FCE836400509EEC /* NFHUDSliderCell.h */,
+				59D954680FCE836400509EEC /* NFHUDSliderCell.m */,
+				59D954690FCE836400509EEC /* NFHUDWindow.h */,
+				59D9546A0FCE836400509EEC /* NFHUDWindow.m */,
+				59D9546B0FCE836400509EEC /* NFIButton.h */,
+				59D9546C0FCE836400509EEC /* NFIButton.m */,
+				59D9546D0FCE836400509EEC /* NFIButtonCell.h */,
+				59D9546E0FCE836400509EEC /* NFIButtonCell.m */,
+				59D9546F0FCE836400509EEC /* NFIFrame.h */,
+				59D954700FCE836400509EEC /* NFIFrame.m */,
+				59D954710FCE836400509EEC /* NFIPopUpButton.h */,
+				59D954720FCE836400509EEC /* NFIPopUpButton.m */,
+				59D954730FCE836400509EEC /* NFIPopUpButtonCell.h */,
+				59D954740FCE836400509EEC /* NFIPopUpButtonCell.m */,
+				59D954750FCE836400509EEC /* NFIWindow.h */,
+				59D954760FCE836400509EEC /* NFIWindow.m */,
+				59D954770FCE836400509EEC /* NSFrameView.h */,
+				59D954780FCE836400509EEC /* NSGrayFrame.h */,
+				59D954790FCE836400509EEC /* NSImage+FrameworkImage.h */,
+				59D9547A0FCE836400509EEC /* NSImage+FrameworkImage.m */,
+				59D9547B0FCE836400509EEC /* NSThemeFrame.h */,
+				59D9547C0FCE836400509EEC /* NSTitledFrame.h */,
+				59D9547D0FCE836400509EEC /* PopUpFillD.tiff */,
+				59D9547E0FCE836400509EEC /* PopUpFillN.tiff */,
+				59D9547F0FCE836400509EEC /* PopUpFillP.tiff */,
+				59D954800FCE836400509EEC /* PopUpLeftD.tiff */,
+				59D954810FCE836400509EEC /* PopUpLeftN.tiff */,
+				59D954820FCE836400509EEC /* PopUpLeftP.tiff */,
+				59D954830FCE836400509EEC /* PopUpRightD.tiff */,
+				59D954840FCE836400509EEC /* PopUpRightN.tiff */,
+				59D954850FCE836400509EEC /* PopUpRightP.tiff */,
+			);
+			path = iLifeControls;
+			sourceTree = "<group>";
+		};
+		59D9541A0FCE836400509EEC /* build */ = {
+			isa = PBXGroup;
+			children = (
+				59D9541B0FCE836400509EEC /* iLifeControls.build */,
+				59D954230FCE836400509EEC /* Release */,
+			);
+			path = build;
+			sourceTree = "<group>";
+		};
+		59D9541B0FCE836400509EEC /* iLifeControls.build */ = {
+			isa = PBXGroup;
+			children = (
+				59D9541C0FCE836400509EEC /* iLifeControls.pbxindex */,
+				59D9541E0FCE836400509EEC /* Release */,
+			);
+			path = iLifeControls.build;
+			sourceTree = "<group>";
+		};
+		59D9541C0FCE836400509EEC /* iLifeControls.pbxindex */ = {
+			isa = PBXGroup;
+			children = (
+				59D9541D0FCE836400509EEC /* strings.pbxstrings */,
+			);
+			path = iLifeControls.pbxindex;
+			sourceTree = "<group>";
+		};
+		59D9541D0FCE836400509EEC /* strings.pbxstrings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = strings.pbxstrings;
+			sourceTree = "<group>";
+		};
+		59D9541E0FCE836400509EEC /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				59D9541F0FCE836400509EEC /* iLifeControls.build */,
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
+		59D9541F0FCE836400509EEC /* iLifeControls.build */ = {
+			isa = PBXGroup;
+			children = (
+				59D954200FCE836400509EEC /* Objects-normal */,
+			);
+			path = iLifeControls.build;
+			sourceTree = "<group>";
+		};
+		59D954200FCE836400509EEC /* Objects-normal */ = {
+			isa = PBXGroup;
+			children = (
+				59D954210FCE836400509EEC /* i386 */,
+				59D954220FCE836400509EEC /* ppc */,
+			);
+			path = "Objects-normal";
+			sourceTree = "<group>";
+		};
+		59D954210FCE836400509EEC /* i386 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = i386;
+			sourceTree = "<group>";
+		};
+		59D954220FCE836400509EEC /* ppc */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ppc;
+			sourceTree = "<group>";
+		};
+		59D954230FCE836400509EEC /* Release */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
+		59D954860FCE836400509EEC /* OsiriX Headers */ = {
+			isa = PBXGroup;
+			children = (
+				59D955110FCE854D00509EEC /* browserController.h */,
+				59D954870FCE836400509EEC /* DCMPix.h */,
+				59D954880FCE836400509EEC /* DCMView.h */,
+				59D954890FCE836400509EEC /* DICOMExport.h */,
+				59D9548A0FCE836400509EEC /* dicomFile.h */,
+				59D9548B0FCE836400509EEC /* MyPoint.h */,
+				59D9548C0FCE836400509EEC /* OSIWindowController.h */,
+				59D9548D0FCE836400509EEC /* PluginFilter.h */,
+				59D9548E0FCE836400509EEC /* ROI.h */,
+				59D9548F0FCE836400509EEC /* Schedulable.h */,
+				59D954900FCE836400509EEC /* Scheduler.h */,
+				59D955140FCE857700509EEC /* SendController.h */,
+				59D954910FCE836400509EEC /* StaticScheduler.h */,
+				59D954920FCE836400509EEC /* ViewerController.h */,
+			);
+			path = "OsiriX Headers";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D5B49AD048680CD000E48DA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59D94E760FCE807D00509EEC /* NSImage+Extras.h in Headers */,
+				59D94E780FCE807D00509EEC /* NSString+Trim.h in Headers */,
+				59D94E7A0FCE807D00509EEC /* DisclosureBox.h in Headers */,
+				59D94E7C0FCE807D00509EEC /* Step.h in Headers */,
+				59D94E7E0FCE807D00509EEC /* StepByStep.h in Headers */,
+				59D94E800FCE807D00509EEC /* StepByStepView.h in Headers */,
+				59D94E820FCE807D00509EEC /* StepView.h in Headers */,
+				59D94E840FCE807D00509EEC /* ArthroplastyTemplate.h in Headers */,
+				59D94E860FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h in Headers */,
+				59D94E880FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch in Headers */,
+				59D94E890FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h in Headers */,
+				59D94E8B0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h in Headers */,
+				59D94E8D0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h in Headers */,
+				59D954A30FCE836400509EEC /* CTGradient.h in Headers */,
+				59D954A60FCE836400509EEC /* EtchedText.h in Headers */,
+				59D954A80FCE836400509EEC /* EtchedTextCell.h in Headers */,
+				59D954C20FCE836400509EEC /* iLifeControls_Prefix.pch in Headers */,
+				59D954C90FCE836400509EEC /* NFHUDButton.h in Headers */,
+				59D954CB0FCE836400509EEC /* NFHUDButtonCell.h in Headers */,
+				59D954CD0FCE836400509EEC /* NFHUDFrame.h in Headers */,
+				59D954CF0FCE836400509EEC /* NFHUDPopUpButton.h in Headers */,
+				59D954D10FCE836400509EEC /* NFHUDPopUpButtonCell.h in Headers */,
+				59D954D30FCE836400509EEC /* NFHUDSlider.h in Headers */,
+				59D954D50FCE836400509EEC /* NFHUDSliderCell.h in Headers */,
+				59D954D70FCE836400509EEC /* NFHUDWindow.h in Headers */,
+				59D954D90FCE836400509EEC /* NFIButton.h in Headers */,
+				59D954DB0FCE836400509EEC /* NFIButtonCell.h in Headers */,
+				59D954DD0FCE836400509EEC /* NFIFrame.h in Headers */,
+				59D954DF0FCE836400509EEC /* NFIPopUpButton.h in Headers */,
+				59D954E10FCE836400509EEC /* NFIPopUpButtonCell.h in Headers */,
+				59D954E30FCE836400509EEC /* NFIWindow.h in Headers */,
+				59D954E50FCE836400509EEC /* NSFrameView.h in Headers */,
+				59D954E60FCE836400509EEC /* NSGrayFrame.h in Headers */,
+				59D954E70FCE836400509EEC /* NSImage+FrameworkImage.h in Headers */,
+				59D954E90FCE836400509EEC /* NSThemeFrame.h in Headers */,
+				59D954EA0FCE836400509EEC /* NSTitledFrame.h in Headers */,
+				59D954F40FCE836400509EEC /* DCMPix.h in Headers */,
+				59D954F50FCE836400509EEC /* DCMView.h in Headers */,
+				59D954F60FCE836400509EEC /* DICOMExport.h in Headers */,
+				59D954F70FCE836400509EEC /* dicomFile.h in Headers */,
+				59D954F80FCE836400509EEC /* MyPoint.h in Headers */,
+				59D954F90FCE836400509EEC /* OSIWindowController.h in Headers */,
+				59D954FA0FCE836400509EEC /* PluginFilter.h in Headers */,
+				59D954FB0FCE836400509EEC /* ROI.h in Headers */,
+				59D954FC0FCE836400509EEC /* Schedulable.h in Headers */,
+				59D954FD0FCE836400509EEC /* Scheduler.h in Headers */,
+				59D954FE0FCE836400509EEC /* StaticScheduler.h in Headers */,
+				59D954FF0FCE836400509EEC /* ViewerController.h in Headers */,
+				59D955120FCE854D00509EEC /* browserController.h in Headers */,
+				59D955150FCE857700509EEC /* SendController.h in Headers */,
+				59956E500FD8105F007C151F /* ZimmerTemplate.h in Headers */,
+				59956E780FD812CF007C151F /* ArthroplastyTemplateFamily.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* XRayTemplates */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "XRayTemplates" */;
+			buildPhases = (
+				8D5B49AD048680CD000E48DA /* Headers */,
+				8D5B49AF048680CD000E48DA /* Resources */,
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+				8D5B49B5048680CD000E48DA /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = XRayTemplates;
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = Invert;
+			productReference = AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Arthroplasty Templating II" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 089C166AFE841209C02AAC07 /* XRayTemplatesPlugin */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D5B49AC048680CD000E48DA /* XRayTemplates */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59D951D80FCE823400509EEC /* InfoPlist.strings in Resources */,
+				59D951F00FCE82DB00509EEC /* ArthroplastyTemplating.tiff in Resources */,
+				59D9537F0FCE831A00509EEC /* ZimmerTemplates in Resources */,
+				59D955470FCE8BE400509EEC /* TemplatePanel.xib in Resources */,
+				59D955640FCE8D5B00509EEC /* StepByStepPanel.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		8D5B49B5048680CD000E48DA /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59D94E770FCE807D00509EEC /* NSImage+Extras.m in Sources */,
+				59D94E790FCE807D00509EEC /* NSString+Trim.mm in Sources */,
+				59D94E7B0FCE807D00509EEC /* DisclosureBox.m in Sources */,
+				59D94E7D0FCE807D00509EEC /* Step.m in Sources */,
+				59D94E7F0FCE807D00509EEC /* StepByStep.m in Sources */,
+				59D94E810FCE807D00509EEC /* StepByStepView.m in Sources */,
+				59D94E830FCE807D00509EEC /* StepView.m in Sources */,
+				59D94E850FCE807D00509EEC /* ArthroplastyTemplate.m in Sources */,
+				59D94E870FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m in Sources */,
+				59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m in Sources */,
+				59D94E8C0FCE807D00509EEC /* ArthroplastyTemplatingTableView.m in Sources */,
+				59D94E8E0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.m in Sources */,
+				59D954A40FCE836400509EEC /* CTGradient.m in Sources */,
+				59D954A70FCE836400509EEC /* EtchedText.m in Sources */,
+				59D954A90FCE836400509EEC /* EtchedTextCell.m in Sources */,
+				59D954CA0FCE836400509EEC /* NFHUDButton.m in Sources */,
+				59D954CC0FCE836400509EEC /* NFHUDButtonCell.m in Sources */,
+				59D954CE0FCE836400509EEC /* NFHUDFrame.m in Sources */,
+				59D954D00FCE836400509EEC /* NFHUDPopUpButton.m in Sources */,
+				59D954D20FCE836400509EEC /* NFHUDPopUpButtonCell.m in Sources */,
+				59D954D40FCE836400509EEC /* NFHUDSlider.m in Sources */,
+				59D954D60FCE836400509EEC /* NFHUDSliderCell.m in Sources */,
+				59D954D80FCE836400509EEC /* NFHUDWindow.m in Sources */,
+				59D954DA0FCE836400509EEC /* NFIButton.m in Sources */,
+				59D954DC0FCE836400509EEC /* NFIButtonCell.m in Sources */,
+				59D954DE0FCE836400509EEC /* NFIFrame.m in Sources */,
+				59D954E00FCE836400509EEC /* NFIPopUpButton.m in Sources */,
+				59D954E20FCE836400509EEC /* NFIPopUpButtonCell.m in Sources */,
+				59D954E40FCE836400509EEC /* NFIWindow.m in Sources */,
+				59D954E80FCE836400509EEC /* NSImage+FrameworkImage.m in Sources */,
+				59956E510FD8105F007C151F /* ZimmerTemplate.m in Sources */,
+				59956E790FD812CF007C151F /* ArthroplastyTemplateFamily.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		59D951D40FCE823400509EEC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59D951D50FCE823400509EEC /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		59D951D60FCE823400509EEC /* locversion.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59D951D70FCE823400509EEC /* English */,
+			);
+			name = locversion.plist;
+			sourceTree = "<group>";
+		};
+		59D954360FCE836400509EEC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59D954370FCE836400509EEC /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE6A9A9108AC841300D0C1EE /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Arthroplasty_Templating_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "@executable_path/../Plug-ins";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = XRayTemplates;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = osirixplugin;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		CE6A9A9208AC841300D0C1EE /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Arthroplasty_Templating_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = XRayTemplatesPlugin;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		CE6A9A9308AC841300D0C1EE /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/XRayTemplatesPlugin_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = XRayTemplatesPlugin;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Default;
+		};
+		CE6A9A9508AC841300D0C1EE /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Development;
+		};
+		CE6A9A9608AC841300D0C1EE /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		CE6A9A9708AC841300D0C1EE /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "XRayTemplates" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6A9A9108AC841300D0C1EE /* Development */,
+				CE6A9A9208AC841300D0C1EE /* Deployment */,
+				CE6A9A9308AC841300D0C1EE /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Arthroplasty Templating II" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6A9A9508AC841300D0C1EE /* Development */,
+				CE6A9A9608AC841300D0C1EE /* Deployment */,
+				CE6A9A9708AC841300D0C1EE /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}
