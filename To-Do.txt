@@ -1,8 +1,7 @@
 - minIP for 3D MPR
 - displaySamePatientWithColorBackground preferences
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
-
-- TEST getIPAddress
+- JP2000 compression, with quality option
 
 - DICOM TLS
 - Merge SR with VR : add SR option
@@ -17,7 +16,7 @@
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 - soundex activate
-- JP2000 compression activate
+
 - Compression settings (JP2K, modality, ...)
 
 QA
