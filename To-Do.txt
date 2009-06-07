@@ -209,3 +209,10 @@ make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc64" LDFLAGS="-sys
 OpenJPEG 64bit support:
 m = (int*)opj_malloc(sizeof(int) * (dwt_decode_max_resolution(tr, i)+5));
 h.mem = v.mem = (int*)( (unsigned long)m + 16 - ( (unsigned long)m % 16 ) ) ;
+
+
+voxpix
+voxrad
+spectral
+volumic
+gnu
