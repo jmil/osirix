@@ -2,7 +2,7 @@
 - displaySamePatientWithColorBackground preferences
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
 - Settings for compression per modality
-- JP2000 compression, with quality option
+- JP2000 compression support, with quality option
 
 
 - DICOM TLS
