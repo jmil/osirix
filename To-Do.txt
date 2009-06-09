@@ -4,7 +4,6 @@
 - Settings for compression per modality
 - JP2000 compression support, with quality option
 
-
 - DICOM TLS
 - Merge SR with VR : add SR option
 - ROI Manager (series level)
