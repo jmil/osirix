@@ -36,6 +36,10 @@
 	[[NSUserDefaults standardUserDefaults] setPersistentDomain:_dictionary forName:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 }
 
+-(BOOL)keyExists:(NSString*)key {
+	return [_dictionary valueForKey:key] != NULL;
+}
+
 -(BOOL)bool:(NSString*)key otherwise:(BOOL)otherwise {
 	NSNumber* value = [_dictionary valueForKey:key];
 	if (value)
@@ -83,5 +87,23 @@
 	[_dictionary setValue:[NSArchiver archivedDataWithRootObject:value] forKey:key];
 	[self save];
 }
+
+-(NSRect)rect:(NSString*)key otherwise:(NSRect)otherwise {
+	NSData* value = [_dictionary valueForKey:key];
+	if (value) {
+		NSRect temp;
+		[value getBytes:&temp length:sizeof(NSRect)];
+		return temp;
+	}
+	return otherwise;
+}
+
+-(void)setRect:(NSRect)value forKey:(NSString*)key {
+	NSMutableData* data = [NSMutableData dataWithCapacity:32];
+	[data appendBytes:&value length:sizeof(NSRect)];
+	[_dictionary setValue:data forKey:key];
+	[self save];
+}
+
 
 @end
