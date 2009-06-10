@@ -3,6 +3,7 @@
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
 - Settings for compression per modality
 - JP2000 compression support, with quality option
+- Better compression/decompression performances when receiving DICOM images
 
 - DICOM TLS
 - Merge SR with VR : add SR option
