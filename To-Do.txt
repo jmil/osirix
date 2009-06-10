@@ -211,6 +211,11 @@ m = (int*)opj_malloc(sizeof(int) * (dwt_decode_max_resolution(tr, i)+5));
 h.mem = v.mem = (int*)( (unsigned long)m + 16 - ( (unsigned long)m % 16 ) ) ;
 
 
+voxray
+ray
+xray
+omnirad
+bitpix
 voxpix
 voxrad
 spectral
