@@ -4,6 +4,11 @@
 - Settings for compression per modality
 - JP2000 compression support, with quality option
 - Better compression/decompression performances when receiving DICOM images
+- Soundex (search on pronunciation, instead of orthography) option when searching for patient names
+- Series comments/state displayed in Web Server
+
+- Option to include 3D viewers in Tile Window
+- study/series comments in the http server
 
 - DICOM TLS
 - Merge SR with VR : add SR option
@@ -11,15 +16,11 @@
 - Hanging Protocols
 - 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
-- study/series comments in the http server
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
-- Option to include 3D viewers in Tile Window
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
-- soundex activate
 
-- Compression settings (JP2K, modality, ...)
 
 QA
 - BugZilla (sourceforge?)
@@ -27,6 +28,7 @@ QA
 - UnitTesting (assert functions)
 - ILCrashReporter
 - Doxygen
+- SVN - Version
 
 ----------------------------------------
 Cleaning Notes
