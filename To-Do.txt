@@ -25,6 +25,7 @@ QA
 - BugZilla (sourceforge?)
 - EggPlant
 - UnitTesting (assert functions)
+- Regression tests
 - ILCrashReporter
 - Doxygen
 - SVN - Version
