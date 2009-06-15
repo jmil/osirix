@@ -8,7 +8,7 @@
 #import "ArthroplastyTemplatingWindowController.h"
 
 @interface ArthroplastyTemplatingTableView : NSTableView {
-	IBOutlet ArthroplastyTemplatingWindowController *windowController;
+	IBOutlet ArthroplastyTemplatingWindowController *_controller;
 	IBOutlet NSArrayController *templatesArrayController;
 }
 

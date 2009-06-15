@@ -92,9 +92,8 @@
 //	[stepByStep showFirstStep];
 }
 
-- (void)viewerWillClose:(NSNotification*)notification;
-{
-	[self close];
+- (void)viewerWillClose:(NSNotification*)notification {
+//	[self close];
 }
 
 
@@ -533,10 +532,10 @@
 		[viewerController setROIToolTag:currentTool];
 	}
 
-	if(needsTemplatePanel)
+//	if(needsTemplatePanel)
 		[self showTemplatePanel];
-	else
-		[self closeTemplatePanel];
+//	else
+//		[self closeTemplatePanel];
 		
 	if(bringViewerControllerToFront)
 		[[viewerController window] makeKeyAndOrderFront:self];

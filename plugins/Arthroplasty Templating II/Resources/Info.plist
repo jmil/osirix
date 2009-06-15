@@ -17,7 +17,7 @@
 	<key>CFBundleVersion</key>
 	<string>2.0</string>
 	<key>NSPrincipalClass</key>
-	<string>Plugin</string>
+	<string>ArthroplastyTemplatingPlugin</string>
 	<key>MenuTitles</key>
 	<array>
 		<string>Arthroplasty Templating</string>
@@ -28,5 +28,7 @@
 	<string>YES</string>
 	<key>ToolbarIcon</key>
 	<string>ArthroplastyTemplatingIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.osirix.arthroplastytemplating</string>
 </dict>
 </plist>

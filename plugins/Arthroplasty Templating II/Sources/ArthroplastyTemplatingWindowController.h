@@ -6,44 +6,53 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
+#import "SelectablePDFView.h"
 #import "ArthroplastyTemplate.h"
 
 @class ArthroplastyTemplatingTableView;
+@class ArthroplastyTemplateFamily;
+#import "ArthroplastyTemplatingUserDefaults.h"
 
 @interface ArthroplastyTemplatingWindowController : NSWindowController {
 	NSMutableArray* _templates; // every file is a template
 	NSMutableArray* _families;
 	
 	IBOutlet NSArrayController* _templatesArrayController;
+	IBOutlet NSArrayController* _familiesArrayController;
 	IBOutlet ArthroplastyTemplatingTableView* _templatesTableView;
-	IBOutlet PDFView* _pdfView;
+	IBOutlet SelectablePDFView* _pdfView;
+	IBOutlet NSPopUpButton* _sizes;
+	IBOutlet NSButton* _shouldTransformColor;
+	IBOutlet NSColorWell* _transformColor;
 	
 	ArthroplastyTemplateViewDirection _viewDirection;
+	ArthroplastyTemplatingUserDefaults* _userDefaults;
+	NSDictionary* _presets;
 	
 	BOOL _flipTemplatesHorizontally;
 }
 
 @property(readonly) BOOL flipTemplatesHorizontally;
+@property(readonly) ArthroplastyTemplatingUserDefaults* userDefaults;
 
 -(void)loadTemplates;
 -(ArthroplastyTemplate*)templateAtPath:(NSString*)path;
--(ArthroplastyTemplate*)templateAtIndex:(int)index;
--(ArthroplastyTemplate*)selectedTemplate;
--(NSString*)pdfPathForTemplateAtIndex:(int)index;
+-(ArthroplastyTemplate*)currentTemplate;
+-(ArthroplastyTemplateFamily*)familyAtIndex:(int)index;
+-(ArthroplastyTemplateFamily*)selectedFamily;
+-(NSString*)pdfPathForFamilyAtIndex:(int)index;
+-(NSImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat;
 
--(void)setPDFDocument:(id)sender;
+-(void)setFamily:(id)sender;
 
 -(IBAction)setViewDirection:(id)sender;
 -(IBAction)flipLeftRight:(id)sender;
 
--(void)templateDragged:(NSNotification *)notification;
--(void)draggedOperation:(id<NSDraggingInfo>)operation onDestination:(id)destination;
+-(void)dragTemplate:(ArthroplastyTemplate*)templat startedByEvent:(NSEvent*)event onView:(NSView*)view;
 
--(NSRect)boundingBoxOfImage:(NSImage*)image withBackgroundColor:(NSColor*)backgroundColor;
 -(NSRect)addMargin:(int)pixels toRect:(NSRect)rect;
 
--(NSString*)nameForTemplateAtIndex:(int)index;
--(NSArray*)textualDataForTemplateAtIndex:(int)index;
+-(BOOL)selectionForCurrentTemplate:(NSRect*)rect;
+-(void)setSelectionForCurrentTemplate:(NSRect)rect;
 
 @end

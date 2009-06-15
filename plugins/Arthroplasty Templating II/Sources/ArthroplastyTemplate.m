@@ -9,7 +9,7 @@
 
 
 @implementation ArthroplastyTemplate
-@synthesize directoryName = _directoryName, name = _name;
+@synthesize directoryName = _directoryName, name = _name, family = _family;
 @synthesize referenceFilePath = _referenceFilePath, size = _size, properties = _properties, image = _image, textualData = _textualData;
 
 -(id)initFromFileAtPath:(NSString*)path {

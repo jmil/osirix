@@ -8,9 +8,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface NSImage (Additions)
+@interface NSImage (ArthroplastyTemplating)
 
-- (NSImage*)croppedImageInRectangle:(NSRect)rect;
-- (void)flipImageHorizontally;
+-(NSImage*)croppedImageInRectangle:(NSRect)rect;
+-(void)flipImageHorizontally;
+-(NSRect)boundingBoxSkippingColor:(NSColor*)color;
 
 @end

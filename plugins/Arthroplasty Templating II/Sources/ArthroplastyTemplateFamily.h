@@ -6,10 +6,18 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ArthroplastyTemplate.h";
 
 
 @interface ArthroplastyTemplateFamily : NSObject {
-
+	NSMutableArray* _templates;
 }
+
+@property(readonly) NSArray* templates;
+
+-(id)initWithTemplate:(ArthroplastyTemplate*)templat;
+-(BOOL)matches:(ArthroplastyTemplate*)templat;
+-(void)add:(ArthroplastyTemplate*)templat;
+-(ArthroplastyTemplate*)template:(NSInteger)index;
 
 @end

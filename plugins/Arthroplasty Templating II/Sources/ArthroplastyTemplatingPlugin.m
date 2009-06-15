@@ -40,6 +40,7 @@
 	[viewerController roiDeleteAll:self];
 	[stepByStepController resetStepByStepUpdatingView:YES];
 	[stepByStepController showWindow:self];
+	
 
 	return 0;
 }

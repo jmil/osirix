@@ -44,7 +44,7 @@
 	NSScanner* infoFileScanner = [NSScanner scannerWithString:fileContent];
 	[infoFileScanner setCharactersToBeSkipped:[NSCharacterSet whitespaceCharacterSet]];
 	
-	NSMutableDictionary* properties = [NSMutableDictionary dictionaryWithCapacity:0];
+	NSMutableDictionary* properties = [[NSMutableDictionary alloc] initWithCapacity:128];
 	while (![infoFileScanner isAtEnd]) {
 		NSString *key, *value;
 		[infoFileScanner scanUpToString:@":=:" intoString:&key];
@@ -53,7 +53,7 @@
 		[properties setObject:[value stringByTrimmingStartAndEnd] forKey:[key stringByTrimmingStartAndEnd]];
 	}
 	
-	return properties;
+	return [properties autorelease];
 }
 
 -(id)initFromFileAtPath:(NSString*)path {
@@ -90,14 +90,14 @@
 }
 
 -(NSString*)name {
-	if (!_name) {
+	//if (!_name) {
 		//	NSString *componentType = [properties objectForKey:@"COMPONENT_TYPE"];
 		//	NSString *referenceNumber = [properties objectForKey:@"REF_NO"];
 		//	name = [[NSMutableString stringWithFormat:@"%@: %@", componentType, referenceNumber] retain];
-		_name = [[_properties objectForKey:@"PRODUCT_FAMILY_NAME"] retain];
-	}
+		//_name = [ retain];
+	//}
 	
-	return _name;
+	return [_properties objectForKey:@"PRODUCT_FAMILY_NAME"];
 }
 
 -(NSArray*)textualData {

@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class ArthroplastyTemplateFamily;
 
 
 typedef enum {
@@ -21,6 +22,7 @@ typedef enum {
 	NSString* _name;
 	NSArray* _textualData;
 	NSString* _referenceFilePath;
+	ArthroplastyTemplateFamily* _family;
 }
 
 @property(readonly) NSString* directoryName;
@@ -31,6 +33,7 @@ typedef enum {
 @property(readonly) NSMutableDictionary* properties;
 @property(readonly) NSImage* image;
 @property(readonly) NSArray* textualData;
+@property(assign) ArthroplastyTemplateFamily* family;
 
 -(id)initFromFileAtPath:(NSString*)path;
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction;
