@@ -41,10 +41,10 @@
 //	[[self window] setAlphaValue:0.75];
 //	[[self window] setBackgroundColor:[NSColor blackColor]];
 	
-	[[stepByStep view] setControlColor:[NSColor whiteColor]];
-	[[stepByStep view] setDisabledControlColor:[NSColor grayColor]];
+//	[[stepByStep view] setControlColor:[NSColor whiteColor]];
+//	[[stepByStep view] setDisabledControlColor:[NSColor grayColor]];
 	
-	templateWindowController = [[ArthroplastyTemplatingWindowController alloc] initWithWindowNibName:@"TemplatePanel"];
+	templateWindowController = [[ArthroplastyTemplatingWindowController alloc] initWithWindowNibName:@"ArthroplastyTemplatingWindow"];
 	[templateWindowController window]; // forces nib loading
 	
 	[stepByStep enableSteps];

@@ -11,11 +11,11 @@
 #import "Step.h"
 
 @interface StepView : DisclosureBox {
-	Step* step;
+	Step* _step;
 }
 
-- (id)initWithStep:(Step*)aStep;
-- (void)setStep:(Step*)aStep;
-- (Step*)step;
+@property(readonly) Step* step;
+
+-(id)initWithStep:(Step*)aStep;
 
 @end

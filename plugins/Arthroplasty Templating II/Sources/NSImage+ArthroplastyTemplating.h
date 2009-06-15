@@ -8,10 +8,28 @@
 #import <Cocoa/Cocoa.h>
 
 
+@interface NSBitmapImageRep (ArthroplastyTemplating)
+
+-(void)ATMask:(float)level;
+
+@end
+
+
 @interface NSImage (ArthroplastyTemplating)
 
--(NSImage*)croppedImageInRectangle:(NSRect)rect;
 -(void)flipImageHorizontally;
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color;
+
+@end
+
+@interface ATImage : NSImage {
+	NSSize _inchSize;
+}
+
+@property NSSize inchSize;
+
+-(id)initWithSize:(NSSize)size inches:(NSSize)inches;
+-(ATImage*)crop:(NSRect)rect;
+-(float)resolution;
 
 @end

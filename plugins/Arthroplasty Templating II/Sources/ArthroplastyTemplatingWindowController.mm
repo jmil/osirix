@@ -230,16 +230,15 @@
 	[self setFamily:_templatesTableView];
 }
 
--(NSImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size color:(NSColor*)color {
-	NSImage* image = [[NSImage alloc] initWithContentsOfFile:[templat pdfPathForDirection:_viewDirection]];
+-(ATImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size color:(NSColor*)color {
+	ATImage* image = [[ATImage alloc] initWithContentsOfFile:[templat pdfPathForDirection:_viewDirection]];
 	NSSize imageSize = [image size];
-	inchSize = NSMakeSize(imageSize.width/72, imageSize.height/72);
 	
 	// size.width OR size.height can be qual to zero, in which case the zero value is set corresponding to the available value
 	if (!size.width)
-		size.width = std::floor(size.height/imageSize.width*imageSize.width);
+		size.width = std::floor(size.height/imageSize.height*imageSize.width);
 	if (!size.height)
-		size.height = std::floor(size.width/imageSize.height*imageSize.height);
+		size.height = std::floor(size.width/imageSize.width*imageSize.height);
 	
 	[image setScalesWhenResized:YES];
 	[image setSize:size];
@@ -247,13 +246,13 @@
 	// extract selected part
 	NSRect sel; if ([self selectionForTemplate:templat into:&sel]) {
 		sel = NSMakeRect(std::floor(sel.origin.x*size.width), std::floor(sel.origin.y*size.height), std::ceil(sel.size.width*size.width), std::ceil(sel.size.height*size.height));
-		NSImage* temp = [image croppedImageInRectangle:sel];
+		ATImage* temp = [image crop:sel];
 		[image release];
 		image = [temp retain];
 	}
 	
 	// remove whitespace
-	NSImage* temp = [image croppedImageInRectangle:[image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0]]];
+	ATImage* temp = [image crop:[image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0]]];
 	[image release];
 	image = temp;
 	
@@ -262,26 +261,30 @@
 
 	if (color) {
 		size = [image size]; unsigned s = size.width*size.height;
+		
 		NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
+		[bitmap ATMask:.01];
 		for (unsigned i = 0; i < s; ++i) {
 			unsigned x = i%(int)size.width, y = i/(int)size.width;
 			NSColor* c = [bitmap colorAtX:x y:y];
 			[bitmap setColor:[color colorWithAlphaComponent:[c alphaComponent]] atX:x y:y];
 		}
-		temp = [[NSImage alloc] autorelease];
+		
+		temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize]] autorelease];
 		[temp addRepresentation:bitmap];
-		image = temp;
 		[bitmap release];
+		
+		image = temp;
 	}
 	
 	return image;
 }
 
--(NSImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size {
+-(ATImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size {
 	return [self templateImage:templat entirePageSizePixels:size color:[_shouldTransformColor state]? [_transformColor color] : NULL];
 }
 
--(NSImage*)templateImage:(ArthroplastyTemplate*)templat {
+-(ATImage*)templateImage:(ArthroplastyTemplate*)templat {
 	PDFPage* page = [_pdfView currentPage];
 	NSRect pageBox = [_pdfView convertRect:[page boundsForBox:kPDFDisplayBoxMediaBox] fromPage:page];
 	return [self templateImage:templat entirePageSizePixels:pageBox.size];
@@ -366,36 +369,15 @@
 		return; // no ArthroplastyTemplate pointer available
 	
 	ArthroplastyTemplate* templat; [[[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"] getBytes:&templat length:sizeof(ArthroplastyTemplate*)];
-	
-	NSSize inchSize;
-	NSImage* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)];// TODO: why 1800?
+	ATImage* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)];// TODO: N -> adapted size
 
-
-//	NSRect croppingRect = [image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0]];
-	//croppingRect = [self addMargin:10 toRect:croppingRect];
-
-//	NSImage *croppedImage = [image croppedImageInRectangle:croppingRect];
+	[image setBackgroundColor:[_shouldTransformColor state]? [_transformColor color] : [NSColor clearColor]];
 	[image setBackgroundColor:[NSColor clearColor]];
 		
-//	NSColor *backgroundColorWhenSelected = [[NSColor cyanColor] colorWithAlphaComponent:0.3];
-//	NSImage *imageSelected = [[NSImage alloc] initWithContentsOfFile:pdfPath];
-//	[imageSelected setBackgroundColor:backgroundColorWhenSelected];
-//	
-//	[imageSelected setScalesWhenResized:YES];
-//	[imageSelected setSize:newSize];
-//	
-//	NSImage *croppedImageWhenSelected = [imageSelected croppedImageInRectangle:croppingRect];
+	float pixSpacing = 1.0 / [image resolution] * 25.4; // image is in 72 dpi, we work in milimeters
 	
-	
-//	float ratio = imageSize.height / newHeight;
-	float resolution = 72;
-	float pixSpacing = 1.0 / resolution * 25.4; // image is in 72 dpi, we work in milimeters
-	
-	// create the template layer
-//	ROI *newLayer = [(ViewerController*)destination addLayerRoiToCurrentSliceWithImage:croppedImage imageWhenSelected:croppedImageWhenSelected referenceFilePath:@"test" layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
 	ROI *newLayer = [(ViewerController*)destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat referenceFilePath] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
-//	[image release];
-//	[imageSelected release];
+
 	[(ViewerController*)destination bringToFrontROI:newLayer];
 	[newLayer generateEncodedLayerImage];
 	

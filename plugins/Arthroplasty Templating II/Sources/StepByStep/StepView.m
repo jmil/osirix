@@ -10,54 +10,31 @@
 
 
 @implementation StepView
+@synthesize step = _step;
 
-- (id)init
-{
-	NSRect minFrame = NSMakeRect(0.0, 0.0, 100.0, 35.0);
-	self = [super initWithFrame:minFrame];
+-(id)initWithStep:(Step*)step {
+	self = [super initWithTitle:[step title] content:[step enclosedView]];
+	_step = [step retain];
 	return self;
 }
 
-- (id)initWithStep:(Step*)aStep;
-{
-	[self init];
-	[self setStep:aStep];
-	return self;
-}
-
-- (void)setStep:(Step*)aStep;
-{
-	step = [aStep retain];
-	[self setEnclosedView:[step enclosedView]];
-	[self setTitle:[step title]];
-}
-
-- (Step*)step;
-{
-	return step;
-}
-
-- (void)dealloc
-{
-	if(step)[step release];
+-(void)dealloc {
+	[_step release];
 	[super dealloc];
 }
 
-- (void)toggle:(id)sender;
-{
+-(void)toggle:(id)sender {
 	[super toggle:sender];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"StepViewDidToggle" object:self];
 }
 
-- (void)expand:(id)sender;
-{
+-(void)expand:(id)sender {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"StepViewWillExpand" object:self];
 	[super expand:sender];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"StepViewDidExpand" object:self];
 }
 
-- (void)collapse:(id)sender;
-{
+-(void)collapse:(id)sender {
 	[super collapse:sender];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"StepViewDidCollapse" object:self];
 }

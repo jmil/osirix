@@ -7,11 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "StepByStepView.h"
+#import "SBSView.h"
 
 @interface StepByStep : NSObject {
 	NSMutableArray *steps;
-	IBOutlet StepByStepView *view;
+	IBOutlet SBSView *view;
 	unsigned currentStepIndex;
 	IBOutlet id delegate;
 }
@@ -39,7 +39,7 @@
 
 - (void)reset;
 
-- (StepByStepView*)view;
+- (SBSView*)view;
 
 @end
 

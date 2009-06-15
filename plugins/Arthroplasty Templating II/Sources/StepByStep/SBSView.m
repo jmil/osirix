@@ -1,15 +1,15 @@
 //
-//  StepByStepView.m
+//  SBSView.m
 //  StepByStepFramework
 //
 //  Created by Joris Heuberger on 30/03/07.
 //  Copyright 2007. All rights reserved.
 //
 
-#import "StepByStepView.h"
+#import "SBSView.h"
 #import "StepByStep.h"
 
-@implementation StepByStepView
+@implementation SBSView
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -32,58 +32,36 @@
 	[super dealloc];
 }
 
-#define SPACE_BETWEEN_STEPVIEWS 5
+#define SPACE_BETWEEN_STEPVIEWS 3
 
-- (void)addStep:(Step*)step;
-{
+- (void)addStep:(Step*)step; {
 	StepView *stepView = [[StepView alloc] initWithStep:step];
 	NSRect newFrame = [stepView frame];
 	newFrame.size.width = [self frame].size.width;
 	[stepView setFrame:newFrame];
 	
 	// now we need to move each StepView
-	int i;
-	NSRect frameI;
-	float newStepHeight = [stepView frame].size.height + SPACE_BETWEEN_STEPVIEWS;
-	for(i=[stepViews count]-1; i>=0; i--)
-	{
-		frameI = [[stepViews objectAtIndex:i] frame];
-		frameI.origin.y += newStepHeight;
-		[[stepViews objectAtIndex:i] setFrameOrigin:frameI.origin];
-	}
+//	int i;
+//	NSRect frameI;
+//	float newStepHeight = [stepView frame].size.height + SPACE_BETWEEN_STEPVIEWS;
+//	for(i=[stepViews count]-1; i>=0; i--)
+//	{
+//		frameI = [[stepViews objectAtIndex:i] frame];
+//		frameI.origin.y += newStepHeight;
+//		[[stepViews objectAtIndex:i] setFrameOrigin:frameI.origin];
+//	}
 
-	[self addStepView:stepView];
+	[stepViews addObject:stepView];
+	[self addSubview:stepView];
+	[self computeStepViewFrames];
 	
 	[stepView release];
 }
 
-- (void)addStepView:(StepView*)stepView;
-{
-	[stepViews addObject:stepView];
-	[self addSubview:stepView];
-	[self computeStepViewFrames];
-}
 
-- (void)setControlColor:(NSColor*)color;
-{
-	int i;
-	for(i=0; i<[stepViews count]; i++)
-		[[stepViews objectAtIndex:i] setColor:color];
-}
-
-- (void)setDisabledControlColor:(NSColor*)color;
-{
-	int i;
-	for(i=0; i<[stepViews count]; i++)
-		[[stepViews objectAtIndex:i] setDisabledColor:color];
-}
-
-- (void)collapseAllExcept:(StepView*)stepView;
-{
-	int i;
-	for(i=[stepViews count]-1; i>=0; i--)
-	{
-		StepView *currentStepView = [stepViews objectAtIndex:i];
+- (void)collapseAllExcept:(StepView*)stepView {
+	for (int i = [stepViews count]-1; i >= 0; --i) {
+		StepView* currentStepView = [stepViews objectAtIndex:i];
 		if(![currentStepView isEqualTo:stepView] && [currentStepView isExpanded])
 			[currentStepView collapse:self];
 	}
@@ -157,13 +135,11 @@
 	}
 }
 
-- (void)expandStepAtIndex:(unsigned)index;
-{
+- (void)expandStepAtIndex:(unsigned)index {
 	[[stepViews objectAtIndex:index] expand:self];
 }
 
-- (void)collapseStepAtIndex:(unsigned)index;
-{
+- (void)collapseStepAtIndex:(unsigned)index {
 	[[stepViews objectAtIndex:index] collapse:self];
 }
 

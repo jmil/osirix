@@ -1,5 +1,5 @@
 //
-//  StepByStepView.h
+//  SBSView.h
 //  StepByStepFramework
 //
 //  Created by Joris Heuberger on 30/03/07.
@@ -10,16 +10,15 @@
 #import "StepView.h"
 @class StepByStep;
 
-@interface StepByStepView : NSView {
+@interface SBSView : NSView {
 	NSMutableArray *stepViews;
 	IBOutlet StepByStep *controller;
 }
 
 - (void)addStep:(Step*)step;
-- (void)addStepView:(StepView*)stepView;
 
-- (void)setControlColor:(NSColor*)color;
-- (void)setDisabledControlColor:(NSColor*)color;
+//- (void)setControlColor:(NSColor*)color;
+//- (void)setDisabledControlColor:(NSColor*)color;
 
 - (void)computeStepViewFrames;
 - (void)adjustWindow;

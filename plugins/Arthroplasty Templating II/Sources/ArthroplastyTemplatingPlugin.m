@@ -33,7 +33,7 @@
 		}
 	
 	if(!stepByStepController) {
-		stepByStepController = [[ArthroplastyTemplatingStepByStepController alloc] initWithWindowNibName:@"StepByStepPanel"];
+		stepByStepController = [[ArthroplastyTemplatingStepByStepController alloc] initWithWindowNibName:@"ArthroplastyTemplatingStepByStep"];
 		[stepByStepController setViewerController:viewerController];
 	}
 	

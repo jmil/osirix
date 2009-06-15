@@ -9,7 +9,7 @@
 
 #import "Step.h"
 #import "StepByStep.h"
-#import "StepByStepView.h"
+#import "SBSView.h"
 
 #import "ViewerController.h"
 #import "DCMView.h"

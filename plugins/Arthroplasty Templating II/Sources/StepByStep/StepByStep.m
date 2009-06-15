@@ -173,7 +173,7 @@
 	[self enableSteps];
 }
 
-- (StepByStepView*)view;
+- (SBSView*)view;
 {
 	return view;
 }
