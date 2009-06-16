@@ -7,9 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "Step.h"
-#import "StepByStep.h"
-#import "SBSView.h"
+@class SBSStep, SBS, SBSView;
 
 #import "ViewerController.h"
 #import "DCMView.h"
@@ -20,8 +18,8 @@
 @class ArthroplastyTemplatingWindowController;
 
 @interface ArthroplastyTemplatingStepByStepController : NSWindowController {
-	IBOutlet StepByStep *stepByStep;
-	Step *stepPlannerName, *stepHorizontalAxis, *stepFemurAxis, *stepCalibrationPoints, *stepCutting, *stepCup, *stepStem, *stepPlacement, *stepSave;
+	IBOutlet SBS* stepByStep;
+	SBSStep *stepPlannerName, *stepHorizontalAxis, *stepFemurAxis, *stepCalibrationPoints, *stepCutting, *stepCup, *stepStem, *stepPlacement, *stepSave;
 	IBOutlet NSView *viewPlannerName, *viewHorizontalAxis, *viewFemurAxis, *viewCalibrationPoints, *viewCutting, *viewCup, *viewStem, *viewPlacement, *viewSave;
 	
 	ViewerController *viewerController;
@@ -78,9 +76,9 @@
 
 #pragma mark StepByStep Delegate Methods
 
-- (void)willBeginStep:(Step*)step;
-- (BOOL)shouldValidateStep:(Step*)step;
-- (void)validateStep:(Step*)step;
+-(void)stepByStep:(SBS*)sbs willBeginStep:(SBSStep*)step;
+-(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step;
+-(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step;
 
 
 #pragma mark Steps specific Methods

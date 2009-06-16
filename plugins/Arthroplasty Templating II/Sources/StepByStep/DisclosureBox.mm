@@ -6,40 +6,44 @@
 //  Copyright 2007. All rights reserved.
 //
 
-#import "DisclosureBox.h"
+#import "StepByStep/DisclosureBox.h"
 #include <algorithm>
 
 @interface ATButtonCell : NSButtonCell
 @end
 @implementation ATButtonCell
 
--(NSSize)cellSizeForBounds:(NSRect)bounds {
-	NSSize size = [super cellSizeForBounds:bounds];
-//	NSSize textSize = [[self title] sizeWithAttributes:NULL];
-//	
-//	size.width += textSize.width;
-//	size.height = std::max(size.height, textSize.height);
-//	
-	return size;
+-(id)init {
+	self = [super init];
+	[self setBezelStyle:NSDisclosureBezelStyle];
+	[self setControlSize:NSSmallControlSize];
+	[self sendActionOn:NSLeftMouseDownMask];
+	return self;
+}
+
+-(NSDictionary*)attributes {
+	static const NSDictionary* attributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+												[NSColor whiteColor], NSForegroundColorAttributeName,
+												[NSFont labelFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName,
+											  NULL] retain];
+	return attributes;
 }
 
 -(NSRect)imageRectForBounds:(NSRect)bounds {
 	NSSize size = [super cellSizeForBounds:bounds];
-	return NSMakeRect(bounds.origin.x, bounds.origin.y, size.width, size.height);//NSRect rect = [self titleRectForBounds:<#(NSRect)theRect#>];
+	return NSMakeRect(bounds.origin.x, bounds.origin.y, size.width, size.height);
 }
 
 -(NSRect)titleRectForBounds:(NSRect)bounds {
 	NSSize size = [super cellSizeForBounds:bounds];
-	NSSize textSize = [[self title] sizeWithAttributes:NULL];
-	return NSMakeRect(bounds.origin.x+bounds.size.width, bounds.origin.y, textSize.width, textSize.height);//NSRect rect = [self titleRectForBounds:<#(NSRect)theRect#>];
+	NSSize textSize = [[self title] sizeWithAttributes:[self attributes]];
+	return NSMakeRect(bounds.origin.x+bounds.size.width, bounds.origin.y, textSize.width, textSize.height);
 }
 
-//-(NSRect)drawTitle:(NSAttributedString*)title withFrame:(NSRect)frame inView:(NSView*)controlView {
-//	NSDictionary* attributes = NULL;
-//	[[self title] drawInRect:frame withAttributes:attributes];
-//	NSSize size = [[self title] sizeWithAttributes:attributes];
-//	return NSMakeRect(frame.origin.x, frame.origin.y, size.width, size.height);
-//}
+-(NSRect)drawTitle:(NSAttributedString*)title withFrame:(NSRect)frame inView:(NSView*)controlView {
+	[[self title] drawInRect:frame withAttributes:[self attributes]];
+	return frame;
+}
 
 @end
 
@@ -54,10 +58,7 @@
 	[super setBoxType:NSBoxPrimary];
 
 	_titleCell = [[ATButtonCell alloc] init];
-	[_titleCell setBezelStyle:NSDisclosureBezelStyle];
-	[_titleCell setControlSize:NSSmallControlSize];
-	[_titleCell setTitle:@"WTF?1"];
-	[self setTitle:@"WTF?2"];
+	[_titleCell setTitle:title];
 	[_titleCell setTarget:self];
 	[_titleCell setAction:@selector(toggle:)];
 	
@@ -76,6 +77,14 @@
 
 -(id)titleCell {
 	return _titleCell;
+}
+
+-(void)mouseDown:(NSEvent*)event {
+	if (NSPointInRect([event locationInWindow], [self convertRect:[self titleRect] toView:NULL])) {
+		[_titleCell setIntValue:![_titleCell intValue]];
+		[self setNeedsDisplay:YES];
+		[[_titleCell target] performSelector:[_titleCell action] withObject:_titleCell];
+	} else [super mouseDown:event];
 }
 
 -(void)setEnabled:(BOOL)flag {

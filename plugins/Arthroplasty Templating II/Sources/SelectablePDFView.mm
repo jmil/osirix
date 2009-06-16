@@ -7,6 +7,7 @@
 //
 
 #import "SelectablePDFView.h"
+#import "NSImage+ArthroplastyTemplating.h"
 #import "ArthroplastyTemplatingWindowController.h"
 #include <algorithm>
 #include <cmath>
@@ -70,11 +71,31 @@ CGFloat NSDistance(NSPoint p1, NSPoint p2) {
 			[_controller dragTemplate:[_controller currentTemplate] startedByEvent:event onView:self];
 }
 
+-(void)enhanceSelection {
+/*	ATImage* image = [[ATImage alloc] initWithContentsOfFile:[[[self document] documentURL] path]];
+	
+	NSSize size = [image size];
+	NSRect sel = _selectedRect;
+	sel = NSMakeRect(std::floor(sel.origin.x*size.width), std::floor(sel.origin.y*size.height), std::ceil(sel.size.width*size.width), std::ceil(sel.size.height*size.height));
+	
+	sel = [image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0] inRect:sel];
+	
+	sel = NSMakeRect(sel.origin.x/size.width, sel.origin.y/size.height, sel.size.width/size.width, sel.size.height/size.height);
+
+ 	const static float margin = 0.01; // %
+	sel.origin.x -= margin; sel.origin.y -= margin;
+	sel.size.width += margin*2; sel.size.height += margin*2;
+	
+	_selectedRect = sel;*/
+}
+
 -(void)mouseUp:(NSEvent*)event {
 	if (_selectionInitiated)
-		if (_selected)
+		if (_selected) {
+			[self enhanceSelection];
 			[_controller setSelectionForCurrentTemplate:_selectedRect];
-		else [_controller setSelectionForCurrentTemplate:NSMakeRect(0,0,1,1)];
+			[self setNeedsDisplay:YES];
+		} else [_controller setSelectionForCurrentTemplate:NSMakeRect(0,0,1,1)];
 }
 
 -(void)setDocument:(PDFDocument*)document {

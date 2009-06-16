@@ -6,13 +6,14 @@
 //  Copyright 2007. All rights reserved.
 //
 
-#import "StepView.h"
+#import "StepByStep/SBSStepView.h"
+#import "StepByStep/SBSStep.h"
 
 
-@implementation StepView
+@implementation SBSStepView
 @synthesize step = _step;
 
--(id)initWithStep:(Step*)step {
+-(id)initWithStep:(SBSStep*)step {
 	self = [super initWithTitle:[step title] content:[step enclosedView]];
 	_step = [step retain];
 	return self;

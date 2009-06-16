@@ -77,10 +77,12 @@
 	[bitmap release];
 }
 
--(NSRect)boundingBoxSkippingColor:(NSColor*)color {
+-(NSRect)boundingBoxSkippingColor:(NSColor*)color inRect:(NSRect)box {
+	if (box.size.width < 0) { box.origin.x += box.size.width; box.size.width = -box.size.width; } 
+	if (box.size.height < 0) { box.origin.y += box.size.height; box.size.height = -box.size.height; } 
+	
 	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[self TIFFRepresentation]];
 	NSSize imageSize = [self size];
-	NSRect box = NSMakeRect(0, 0, imageSize.width, imageSize.height);
 	
 	int x, y;
 	// change origin.x
@@ -88,7 +90,7 @@
 		for (y = box.origin.y; y < box.origin.y+box.size.width; ++y)
 			if (![[bitmap colorAtX:x y:y] isEqualTo:color])
 				goto end_origin_x;
-	end_origin_x:
+end_origin_x:
 	if (x < box.origin.x+box.size.width) {
 		box.size.width -= x-box.origin.x;
 		box.origin.x = x;
@@ -99,7 +101,7 @@
 		for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
 			if (![[bitmap colorAtX:x y:imageSize.height-y-1] isEqualTo:color])
 				goto end_origin_y;
-	end_origin_y:
+end_origin_y:
 	if (y < box.origin.y+box.size.height) {
 		box.size.height -= y-box.origin.y;
 		box.origin.y = y;
@@ -110,7 +112,7 @@
 		for (y = box.origin.y; y < box.origin.y+box.size.width; ++y)
 			if (![[bitmap colorAtX:x y:y] isEqualTo:color])
 				goto end_size_x;
-	end_size_x:
+end_size_x:
 	if (x >= box.origin.x)
 		box.size.width = x-box.origin.x+1;
 	
@@ -119,12 +121,17 @@
 		for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
 			if (![[bitmap colorAtX:x y:imageSize.height-y-1] isEqualTo:color])
 				goto end_size_y;
-	end_size_y:
+end_size_y:
 	if (y >= box.origin.y)
 		box.size.height = y-box.origin.y+1;
 	
 	[bitmap release];
 	return box;
+}
+
+-(NSRect)boundingBoxSkippingColor:(NSColor*)color {
+	NSSize imageSize = [self size];
+	return [self boundingBoxSkippingColor:color inRect:NSMakeRect(0, 0, imageSize.width, imageSize.height)];
 }
 
 @end

@@ -1,172 +1,109 @@
 //
 //  SBSView.m
 //  StepByStepFramework
-//
 //  Created by Joris Heuberger on 30/03/07.
-//  Copyright 2007. All rights reserved.
+//  Modified by Alessandro Volz on 15/07/09.
+//  Copyright 2007-2009. All rights reserved.
 //
 
-#import "SBSView.h"
-#import "StepByStep.h"
+#import "StepByStep/SBSView.h"
+#import "StepByStep/SBS.h"
+#import "StepByStep/SBSStepView.h"
 
 @implementation SBSView
 
-- (id)initWithFrame:(NSRect)frame
-{
+-(id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
-    if(self)
-	{
-        stepViews = [[NSMutableArray arrayWithCapacity:0] retain];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandNotification:) name:@"StepViewDidExpand" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpandNotification:) name:@"StepViewWillExpand" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidCollapseNotification:) name:@"StepViewDidCollapse" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggleNotification:) name:@"StepViewDidToggle" object:nil];
-    }
+
+	_stepViews = [[NSMutableArray arrayWithCapacity:0] retain];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandNotification:) name:@"StepViewDidExpand" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpandNotification:) name:@"StepViewWillExpand" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidCollapseNotification:) name:@"StepViewDidCollapse" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggleNotification:) name:@"StepViewDidToggle" object:NULL];
+    
     return self;
 }
 
-- (void)dealloc
-{
+-(void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[stepViews release];
+	[_stepViews release];
 	[super dealloc];
 }
 
-#define SPACE_BETWEEN_STEPVIEWS 3
-
-- (void)addStep:(Step*)step; {
-	StepView *stepView = [[StepView alloc] initWithStep:step];
-	NSRect newFrame = [stepView frame];
-	newFrame.size.width = [self frame].size.width;
-	[stepView setFrame:newFrame];
+-(void)recomputeSubviewFramesAndAdjustSizes {
+	NSRect frame = [self frame];
+	static const CGFloat interStepViewYDelta = 1;
+	CGFloat y = 0; 
 	
-	// now we need to move each StepView
-//	int i;
-//	NSRect frameI;
-//	float newStepHeight = [stepView frame].size.height + SPACE_BETWEEN_STEPVIEWS;
-//	for(i=[stepViews count]-1; i>=0; i--)
-//	{
-//		frameI = [[stepViews objectAtIndex:i] frame];
-//		frameI.origin.y += newStepHeight;
-//		[[stepViews objectAtIndex:i] setFrameOrigin:frameI.origin];
-//	}
+	// move StepViews
+	for (int i = [_stepViews count]-1; i >= 0; --i) {
+		SBSStepView* stepView = [_stepViews objectAtIndex:i];
+		NSSize stepSize = [stepView frame].size;
+		[stepView setFrame:NSMakeRect(0,y,frame.size.width,stepSize.height)];
+		y += stepSize.height+interStepViewYDelta;
+	}
+	
+	// resize SBSView
+	y -= interStepViewYDelta;
+	frame.size.height = y;
+	[self setFrame:frame];
+	
+	// resize window
+	NSSize size = [[[self window] contentView] frame].size;
+	size.height = y+frame.origin.y*2;
+	[[self window] setContentSize:size];
+}
 
-	[stepViews addObject:stepView];
+-(void)addStep:(SBSStep*)step; {
+	SBSStepView* stepView = [[SBSStepView alloc] initWithStep:step];
+	[_stepViews addObject:stepView];
 	[self addSubview:stepView];
-	[self computeStepViewFrames];
-	
 	[stepView release];
+	
+	[self recomputeSubviewFramesAndAdjustSizes];
 }
 
-
-- (void)collapseAllExcept:(StepView*)stepView {
-	for (int i = [stepViews count]-1; i >= 0; --i) {
-		StepView* currentStepView = [stepViews objectAtIndex:i];
-		if(![currentStepView isEqualTo:stepView] && [currentStepView isExpanded])
-			[currentStepView collapse:self];
+-(SBSStepView*)stepViewForStep:(SBSStep*)step {
+	for (unsigned i = 0; i < [_stepViews count]; ++i) {
+		SBSStepView* stepView = [_stepViews objectAtIndex:i];
+		if ([stepView step] == step)
+			return stepView;
 	}
-}
-
-- (void)computeStepViewFrames;
-{
-	int i;
 	
-	NSRect frameI, frame0;
-	frame0 = [[stepViews lastObject] frame];
-	frame0.origin.y = 0.0;
-	frame0.size.width = [self frame].size.width;
-	[[stepViews lastObject] setFrame:frame0];
-
-	for(i=[stepViews count]-2; i>=0; i--)
-	{
-		frameI = [[stepViews objectAtIndex:i] frame];
-		frameI.origin.y = frame0.origin.y + frame0.size.height + SPACE_BETWEEN_STEPVIEWS;
-		frameI.size.width = [self frame].size.width;
-		[[stepViews objectAtIndex:i] setFrame:frameI];
-		frame0 = frameI;
-	}
-
-	float height = [[stepViews objectAtIndex:0] frame].origin.y + [[stepViews objectAtIndex:0] frame].size.height;
-//	float viewHeight = [self frame].size.height;
-	
-//	float shift = viewHeight - height;	
-//	for(i=[stepViews count]-1; i>=0; i--)
-//	{
-//		frameI = [[stepViews objectAtIndex:i] frame];
-//		frameI.origin.y += shift;
-//		[[stepViews objectAtIndex:i] setFrame:frameI];
-//	}
-
-	NSRect newFrame = [self frame];
-	newFrame.size.height = height;
-	float originShift = [self frame].size.height - newFrame.size.height;
-	newFrame.origin.y += originShift;
-	[self setFrame:newFrame];
+	return NULL;
 }
 
-- (void)adjustWindow;
-{
-	NSRect newWindowFrame = [[self window] frame];
-	newWindowFrame.size.height = [self frame].size.height+60;
-
-	float originShift = [[self window] frame].size.height - newWindowFrame.size.height;
-	newWindowFrame.origin.y += originShift;
-	[[self window] setFrame:newWindowFrame display:YES animate:NO];
-	[[self window] display];
+-(void)expandStep:(SBSStep*)step {
+	[[self stepViewForStep:step] expand:self];
 }
 
-- (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize
-{
-	[super resizeSubviewsWithOldSize:oldBoundsSize];
-	
-	int i;
-	NSRect frameI;
-
-	float height = [[stepViews objectAtIndex:0] frame].origin.y + [[stepViews objectAtIndex:0] frame].size.height;
-	float viewHeight = [self frame].size.height;
-	float shift = viewHeight - height;
-	
-	for(i=[stepViews count]-1; i>=0; i--)
-	{
-		frameI = [[stepViews objectAtIndex:i] frame];
-		frameI.origin.y += shift;
-		frameI.size.width = [self frame].size.width;
-		[[stepViews objectAtIndex:i] setFrame:frameI];
-	}
+-(void)collapseStep:(SBSStep*)step {
+	[[self stepViewForStep:step] collapse:self];
 }
 
-- (void)expandStepAtIndex:(unsigned)index {
-	[[stepViews objectAtIndex:index] expand:self];
+-(void)collapseAllExcept:(SBSStepView*)stepView {
+	for (int i = [_stepViews count]-1; i >= 0; --i)
+		if ([_stepViews objectAtIndex:i] != stepView)
+			[self collapseStep:[[_stepViews objectAtIndex:i] step]];
 }
 
-- (void)collapseStepAtIndex:(unsigned)index {
-	[[stepViews objectAtIndex:index] collapse:self];
-}
-
-- (void)stepViewWillExpandNotification:(NSNotification*)notification;
-{
+-(void)stepViewWillExpandNotification:(NSNotification*)notification {
 	[self collapseAllExcept:[notification object]];
 }
 
-- (void)stepViewDidExpandNotification:(NSNotification*)notification;
-{
-	[controller setCurrentStep:[[notification object] step]];
-	[self computeStepViewFrames];
+-(void)stepViewDidExpandNotification:(NSNotification*)notification {
+	[_controller setCurrentStep:[[notification object] step]];
 }
 
-- (void)stepViewDidCollapseNotification:(NSNotification*)notification;
-{
-	[self computeStepViewFrames];
+-(void)stepViewDidCollapseNotification:(NSNotification*)notification {
 }
 
-- (void)stepViewDidToggleNotification:(NSNotification*)notification;
-{
-	[self adjustWindow];
+-(void)stepViewDidToggleNotification:(NSNotification*)notification {
+	[self recomputeSubviewFramesAndAdjustSizes];
 }
 
-- (void)setStepAtIndex:(unsigned)index enabled:(BOOL)enabled;
-{
-	[[stepViews objectAtIndex:index] setEnabled:enabled];
+-(void)setStep:(SBSStep*)step enabled:(BOOL)enabled; {
+	[[self stepViewForStep:step] setEnabled:enabled];
 }
 
 @end

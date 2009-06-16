@@ -18,6 +18,7 @@
 @interface NSImage (ArthroplastyTemplating)
 
 -(void)flipImageHorizontally;
+-(NSRect)boundingBoxSkippingColor:(NSColor*)color inRect:(NSRect)box;
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color;
 
 @end

@@ -9,6 +9,9 @@
 #import "ArthroplastyTemplatingWindowController.h"
 #import "SendController.h"
 #import "BrowserController.h"
+#import "StepByStep/SBS.h"
+#import "StepByStep/SBSStep.h"
+
 
 @implementation ArthroplastyTemplatingStepByStepController
 
@@ -22,15 +25,15 @@
 //	NSLog(@"ArthroplastyTemplatingStepByStepController awakeFromNib");
 	//self = [super initWithWindowNibName:windowNibName];
 	
-	stepHorizontalAxis = [stepByStep addStepWithTitle:@"Horizontal Axis" enclosedView:viewHorizontalAxis];
-	stepFemurAxis = [stepByStep addStepWithTitle:@"Femur Axis" enclosedView:viewFemurAxis];
-	stepCalibrationPoints = [stepByStep addStepWithTitle:@"Femoral landmarks" enclosedView:viewCalibrationPoints];
-	stepCutting = [stepByStep addStepWithTitle:@"Femur identification" enclosedView:viewCutting];
-	stepCup = [stepByStep addStepWithTitle:@"Cup" enclosedView:viewCup];
-	stepStem = [stepByStep addStepWithTitle:@"Stem" enclosedView:viewStem];
-	stepPlacement = [stepByStep addStepWithTitle:@"Reduction" enclosedView:viewPlacement];
-	stepPlannerName = [stepByStep addStepWithTitle:@"Planner's name" enclosedView:viewPlannerName];
-	stepSave = [stepByStep addStepWithTitle:@"Save" enclosedView:viewSave];
+	[stepByStep addStep: stepHorizontalAxis = [[SBSStep alloc] initWithTitle:@"Horizontal Axis" enclosedView:viewHorizontalAxis]];
+	[stepByStep addStep: stepFemurAxis = [[SBSStep alloc] initWithTitle:@"Femur Axis" enclosedView:viewFemurAxis]];
+	[stepByStep addStep: stepCalibrationPoints = [[SBSStep alloc] initWithTitle:@"Femoral landmarks" enclosedView:viewCalibrationPoints]];
+	[stepByStep addStep: stepCutting = [[SBSStep alloc] initWithTitle:@"Femur identification" enclosedView:viewCutting]];
+	[stepByStep addStep: stepCup = [[SBSStep alloc] initWithTitle:@"Cup" enclosedView:viewCup]];
+	[stepByStep addStep: stepStem = [[SBSStep alloc] initWithTitle:@"Stem" enclosedView:viewStem]];
+	[stepByStep addStep: stepPlacement = [[SBSStep alloc] initWithTitle:@"Reduction" enclosedView:viewPlacement]];
+	[stepByStep addStep: stepPlannerName = [[SBSStep alloc] initWithTitle:@"Planner's name" enclosedView:viewPlannerName]];
+	[stepByStep addStep: stepSave = [[SBSStep alloc] initWithTitle:@"Save" enclosedView:viewSave]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiChanged:) name:@"roiChange" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiRemoved:) name:@"removeROI" object:nil];
@@ -46,9 +49,6 @@
 	
 	templateWindowController = [[ArthroplastyTemplatingWindowController alloc] initWithWindowNibName:@"ArthroplastyTemplatingWindow"];
 	[templateWindowController window]; // forces nib loading
-	
-	[stepByStep enableSteps];
-	[stepByStep showFirstStep];
 	
 	//return self;
 }
@@ -108,7 +108,6 @@
 		[viewerController retain];
 	}
 	userTool = [[viewerController imageView] currentTool];
-	[stepByStep showFirstStep];
 }
 
 - (void)roiChanged:(NSNotification*)notification;
@@ -426,8 +425,7 @@
 
 #pragma mark StepByStep Delegate Methods
 
-- (void)willBeginStep:(Step*)step;
-{
+-(void)stepByStep:(SBS*)sbs willBeginStep:(SBSStep*)step {
 	BOOL changeTool = NO;
 	BOOL bringViewerControllerToFront = YES;
 	BOOL needsTemplatePanel = NO;
@@ -541,8 +539,7 @@
 		[[viewerController window] makeKeyAndOrderFront:self];
 }
 
-- (BOOL)shouldValidateStep:(Step*)step;
-{
+-(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step {
 	BOOL error = NO;
 	NSString *errorMessage;
 	if([step isEqualTo:stepPlannerName])
@@ -592,8 +589,7 @@
 		return YES;
 }
 
-- (void)validateStep:(Step*)step;
-{
+-(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step {
 	pointerROI = nil;
 	nameROI = nil;
 	
