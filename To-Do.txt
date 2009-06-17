@@ -1,5 +1,8 @@
 check sopclassuid at hug
 
+- select JPEGlossless & lossy
+- look at console messages (on both side)
+
 - minIP for 3D MPR
 - displaySamePatientWithColorBackground preferences
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
