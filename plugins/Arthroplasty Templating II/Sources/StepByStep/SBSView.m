@@ -6,9 +6,9 @@
 //  Copyright 2007-2009. All rights reserved.
 //
 
-#import "StepByStep/SBSView.h"
-#import "StepByStep/SBS.h"
-#import "StepByStep/SBSStepView.h"
+#import "SBSView.h"
+#import "SBS.h"
+#import "SBSStepView.h"
 
 @implementation SBSView
 
@@ -16,10 +16,10 @@
     self = [super initWithFrame:frame];
 
 	_stepViews = [[NSMutableArray arrayWithCapacity:0] retain];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandNotification:) name:@"StepViewDidExpand" object:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpandNotification:) name:@"StepViewWillExpand" object:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidCollapseNotification:) name:@"StepViewDidCollapse" object:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggleNotification:) name:@"StepViewDidToggle" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpand:) name:@"DisclosureBoxDidExpand" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpand:) name:@"DisclosureBoxWillExpand" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidCollapse:) name:@"DisclosureBoxDidCollapse" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggle:) name:@"DisclosureBoxDidToggle" object:NULL];
     
     return self;
 }
@@ -31,11 +31,23 @@
 }
 
 -(void)recomputeSubviewFramesAndAdjustSizes {
-	NSRect frame = [self frame];
 	static const CGFloat interStepViewYDelta = 1;
-	CGFloat y = 0; 
-	
+	NSRect frame = [self frame];
+
+	CGFloat h = 0;
+	for (int i = [_stepViews count]-1; i >= 0; --i)
+		h += [[_stepViews objectAtIndex:i] frame].size.height+interStepViewYDelta;
+		
+	NSWindow* window = [self window];
+	NSRect wf = [window frame], nwf = wf;
+	NSRect wc = [window contentRectForFrameRect:wf], nwc = wc;
+	nwc.size.height = h+frame.origin.y*2;
+	nwf.size = [window frameRectForContentRect:nwc].size;
+	nwf.origin.y -= nwf.size.height-wf.size.height;
+	[window setFrame:nwf display:YES];
+
 	// move StepViews
+	CGFloat y = 0;
 	for (int i = [_stepViews count]-1; i >= 0; --i) {
 		SBSStepView* stepView = [_stepViews objectAtIndex:i];
 		NSSize stepSize = [stepView frame].size;
@@ -43,15 +55,11 @@
 		y += stepSize.height+interStepViewYDelta;
 	}
 	
-	// resize SBSView
 	y -= interStepViewYDelta;
+	
+	// resize SBSView
 	frame.size.height = y;
 	[self setFrame:frame];
-	
-	// resize window
-	NSSize size = [[[self window] contentView] frame].size;
-	size.height = y+frame.origin.y*2;
-	[[self window] setContentSize:size];
 }
 
 -(void)addStep:(SBSStep*)step; {
@@ -81,24 +89,32 @@
 	[[self stepViewForStep:step] collapse:self];
 }
 
+-(BOOL)isExpanded:(SBSStep*)step {
+	return [[self stepViewForStep:step] isExpanded];
+}
+
+-(BOOL)isCollapsed:(SBSStep*)step {
+	return ![[self stepViewForStep:step] isExpanded];
+}
+
 -(void)collapseAllExcept:(SBSStepView*)stepView {
 	for (int i = [_stepViews count]-1; i >= 0; --i)
 		if ([_stepViews objectAtIndex:i] != stepView)
 			[self collapseStep:[[_stepViews objectAtIndex:i] step]];
 }
 
--(void)stepViewWillExpandNotification:(NSNotification*)notification {
+-(void)stepViewWillExpand:(NSNotification*)notification {
 	[self collapseAllExcept:[notification object]];
 }
 
--(void)stepViewDidExpandNotification:(NSNotification*)notification {
+-(void)stepViewDidExpand:(NSNotification*)notification {
 	[_controller setCurrentStep:[[notification object] step]];
 }
 
--(void)stepViewDidCollapseNotification:(NSNotification*)notification {
+-(void)stepViewDidCollapse:(NSNotification*)notification {
 }
 
--(void)stepViewDidToggleNotification:(NSNotification*)notification {
+-(void)stepViewDidToggle:(NSNotification*)notification {
 	[self recomputeSubviewFramesAndAdjustSizes];
 }
 

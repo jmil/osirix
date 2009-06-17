@@ -7,12 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class ATButtonCell;
 
 @interface DisclosureBox : NSBox {
-	NSButton* _button;
+	BOOL _showingExpanded;
+	NSView* _content;
+	CGFloat _contentHeight;
 }
 
--(id)initWithTitle:(NSString*)title content:(NSView*)content;
+-(id)initWithTitle:(NSString*)title content:(NSView*)view;
 -(void)setEnabled:(BOOL)flag;
 -(BOOL)isExpanded;
 -(void)toggle:(id)sender;

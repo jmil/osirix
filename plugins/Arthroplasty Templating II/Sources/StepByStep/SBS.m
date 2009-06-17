@@ -6,9 +6,9 @@
 //  Copyright 2007. All rights reserved.
 //
 
-#import "StepByStep/SBS.h"
-#import "StepByStep/SBSStep.h"
-#import "StepByStep/SBSView.h"
+#import "SBS.h"
+#import "SBSStep.h"
+#import "SBSView.h"
 
 @implementation SBS
 @synthesize delegate = _delegate, currentStep = _currentStep;
@@ -26,7 +26,7 @@
 	[super dealloc];
 }
 
--(void)addStep:(Step*)step {
+-(void)addStep:(SBSStep*)step {
 	[_steps addObject:step];
 	[_view addStep:step];
 	if ([_steps count] == 1)
@@ -38,28 +38,34 @@
 	BOOL enable = YES;
 	
 	for (unsigned i = [_steps indexOfObject:_currentStep]; i < [_steps count]; ++i) {
-		Step* step = [_steps objectAtIndex:i];
+		SBSStep* step = [_steps objectAtIndex:i];
 		[_view setStep:step enabled:enable];
-		if (!enable)
+		if (!enable && [_view isExpanded:step])
 			[_view collapseStep:step];
 		if ([step isNecessary] && ![step isDone])
 			enable = NO;
 	}
 }
 
--(void)setCurrentStep:(Step*)step {
+-(void)setCurrentStep:(SBSStep*)step {
+	if (step == _currentStep)
+		return;
+	
 	if (![_steps containsObject:step])
 		return;
 	
-	if (_currentStep)
+	if (_currentStep && [_view isExpanded:_currentStep])
 		[_view collapseStep:_currentStep];
 	
 	_currentStep = step;
-	[_currentStep expandStep:_currentStep];
+	if ([_view isCollapsed:_currentStep])
+		[_view expandStep:_currentStep];
+	
 	[self enableDisableSteps];
+	[_view recomputeSubviewFramesAndAdjustSizes];
 	
 	if (_delegate)
-		[_delegate willBeginStep:[self currentStep]];
+		[_delegate stepByStep:self willBeginStep:[self currentStep]];
 }
 
 -(BOOL)hasNextStep {
@@ -71,10 +77,10 @@
 }
 
 -(IBAction)nextStep:(id)sender {
-	if (![_delegate shouldValidateStep:[self currentStep]])
+	if (![_delegate stepByStep:self shouldValidateStep:[self currentStep]])
 		return;
 	
-	[_delegate validateStep:[self currentStep]];
+	[_delegate stepByStep:self validateStep:[self currentStep]];
 	[[self currentStep] setIsDone:YES];
 
 	if (![self hasNextStep])
@@ -87,38 +93,24 @@
 	if (![self hasPreviousStep])
 		return;
 	
-	_currentStepIndex--;
-	[_view expandStepAtIndex:_currentStepIndex];
-	[_delegate willBeginStep:[self currentStep]];
+	[self setCurrentStep:[_steps objectAtIndex:[_steps indexOfObject:_currentStep]-1]];
 }
 
 -(IBAction)skipStep:(id)sender {
 	if ([[self currentStep] isNecessary])
 		return;
 	
-	if (![self hasNextStep]) {
-		// we are at the end of the step by step... do something
-	} else {
-		++_currentStepIndex;
-		[_view expandStepAtIndex:_currentStepIndex];
-		[_delegate willBeginStep:[self currentStep]];
-	}
+	if (![self hasNextStep])
+		return;
+	
+	[self setCurrentStep:[_steps objectAtIndex:[_steps indexOfObject:_currentStep]+1]];
 }
 
-- (void)reset;
-{
-	int i;	
-	for(i=0; i<[steps count]; i++)
-	{
-		[[steps objectAtIndex:i] setIsDone:NO];
-	}
-	currentStepIndex = 0;
-	[self enableSteps];
-}
-
-- (SBSView*)view;
-{
-	return view;
+-(IBAction)reset:(id)sender; {
+	for (unsigned i = 0; i < [_steps count]; ++i)
+		[[_steps objectAtIndex:i] setIsDone:NO];
+	
+	[self setCurrentStep:[_steps objectAtIndex:0]];
 }
 
 @end

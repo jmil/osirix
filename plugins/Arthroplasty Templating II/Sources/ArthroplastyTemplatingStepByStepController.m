@@ -34,6 +34,7 @@
 	[stepByStep addStep: stepPlacement = [[SBSStep alloc] initWithTitle:@"Reduction" enclosedView:viewPlacement]];
 	[stepByStep addStep: stepPlannerName = [[SBSStep alloc] initWithTitle:@"Planner's name" enclosedView:viewPlannerName]];
 	[stepByStep addStep: stepSave = [[SBSStep alloc] initWithTitle:@"Save" enclosedView:viewSave]];
+	[stepByStep enableDisableSteps];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiChanged:) name:@"roiChange" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiRemoved:) name:@"removeROI" object:nil];
@@ -88,7 +89,7 @@
 
 - (IBAction)showWindow:(id)sender; {
 	[super showWindow:sender];
-	[stepByStep enableSteps];
+//	[stepByStep enableSteps];
 //	[stepByStep showFirstStep];
 }
 
@@ -307,8 +308,8 @@
 		infoBoxROI = nil;
 	}
 	
-	[stepByStep enableSteps];
-	[stepByStep showCurrentStep];
+//	[stepByStep enableDisableSteps];
+//	[stepByStep showCurrentStep];
 }
 
 
@@ -416,8 +417,8 @@
 	
 	if(updateView)
 	{
-		[stepByStep reset];
-		[stepByStep showCurrentStep];
+		[stepByStep reset:self];
+//		[stepByStep showCurrentStep];
 		[[viewerController imageView] display];
 	}
 }

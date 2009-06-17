@@ -6,7 +6,7 @@
 //  Copyright 2007. All rights reserved.
 //
 
-#import "StepByStep/SBSStep.h"
+#import "SBSStep.h"
 
 
 @implementation SBSStep

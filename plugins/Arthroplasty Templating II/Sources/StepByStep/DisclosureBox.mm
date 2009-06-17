@@ -6,16 +6,18 @@
 //  Copyright 2007. All rights reserved.
 //
 
-#import "StepByStep/DisclosureBox.h"
+#import "DisclosureBox.h"
 #include <algorithm>
 
-@interface ATButtonCell : NSButtonCell
+@interface ATDisclosureButtonCell : NSButtonCell
 @end
-@implementation ATButtonCell
+@implementation ATDisclosureButtonCell
 
 -(id)init {
 	self = [super init];
 	[self setBezelStyle:NSDisclosureBezelStyle];
+	[self setButtonType:NSOnOffButton];
+	[self setState:NSOnState];
 	[self setControlSize:NSSmallControlSize];
 	[self sendActionOn:NSLeftMouseDownMask];
 	return self;
@@ -27,11 +29,6 @@
 												[NSFont labelFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName,
 											  NULL] retain];
 	return attributes;
-}
-
--(NSRect)imageRectForBounds:(NSRect)bounds {
-	NSSize size = [super cellSizeForBounds:bounds];
-	return NSMakeRect(bounds.origin.x, bounds.origin.y, size.width, size.height);
 }
 
 -(NSRect)titleRectForBounds:(NSRect)bounds {
@@ -56,69 +53,77 @@
 	[super setTitlePosition:NSAtTop];
 	[super setBorderType:NSBezelBorder];
 	[super setBoxType:NSBoxPrimary];
-
-	_titleCell = [[ATButtonCell alloc] init];
+	
+	if (_titleCell) [_titleCell release]; // [NSBox dealloc] will release ours
+	_titleCell = [[ATDisclosureButtonCell alloc] init];
 	[_titleCell setTitle:title];
+	[_titleCell setState:NSOffState];
 	[_titleCell setTarget:self];
 	[_titleCell setAction:@selector(toggle:)];
 	
-	[self setContentView:content];
-	[self setFrameFromContentFrame:[[self contentView] frame]];
-	
-	[self setTitle:title];
+	_contentHeight = [content bounds].size.height;
+	_content = [content retain];
+	[self setFrameFromContentFrame:NSMakeRect(0,0,0,0)];
 	
     return self;
 }
 
 -(void)dealloc {
-	[_titleCell release];
+	[_content release];
 	[super dealloc];
 }
 
--(id)titleCell {
-	return _titleCell;
-}
-
 -(void)mouseDown:(NSEvent*)event {
-	if (NSPointInRect([event locationInWindow], [self convertRect:[self titleRect] toView:NULL])) {
-		[_titleCell setIntValue:![_titleCell intValue]];
-		[self setNeedsDisplay:YES];
-		[[_titleCell target] performSelector:[_titleCell action] withObject:_titleCell];
-	} else [super mouseDown:event];
+	if (NSPointInRect([event locationInWindow], [self convertRect:[self titleRect] toView:NULL]))
+		[_titleCell trackMouse:event inRect:[self titleRect] ofView:self untilMouseUp:YES];
+	else [super mouseDown:event];
 }
 
 -(void)setEnabled:(BOOL)flag {
-	[_button setEnabled:flag];
+	[_titleCell setEnabled:flag];
 }
 
 -(BOOL)isExpanded {
-	return [_titleCell intValue] != 0;
+	return [_titleCell state] == NSOnState;
 }
 
 -(void)toggle:(id)sender {
 	if ([self isExpanded])
 		[self expand:sender];
 	else [self collapse:sender];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DisclosureBoxDidToggle" object:self];
 }
 
 -(void)expand:(id)sender {
-	NSSize viewSize = [[self contentView] frame].size;
-	[[self contentView] setHidden:NO];
+	if (_showingExpanded) return;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DisclosureBoxWillExpand" object:self];
+	_showingExpanded = YES;
 	
-	NSRect frame = [self frame];
-	frame.size.height += viewSize.height;
-	frame.origin.y -= viewSize.height;
-	[self setFrame:frame];
+	[self addSubview:_content];
+	NSSize frameSize = [self frame].size;
+	frameSize.height += _contentHeight;
+	[self setFrameSize:frameSize];
+//	[self setBounds:NSMakeRect(0,0,frameSize.width, frameSize.height)];
+	[_titleCell calcDrawInfo:[self frame]];
+	
+	[_titleCell setState:NSOnState];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DisclosureBoxDidExpand" object:self];
 }
 
 -(void)collapse:(id)sender {
-	NSSize viewSize = [[self contentView] frame].size;
-	[[self contentView] setHidden:YES];
-
-	NSRect frame = [self frame];
-	frame.size.height -= viewSize.height;
-	frame.origin.y += viewSize.height;
-	[self setFrame:frame];
+	if (!_showingExpanded) return;
+	_showingExpanded = NO;
+	
+	NSSize size = [self bounds].size;
+	[_content removeFromSuperview];
+	size.height -= _contentHeight;
+	[self setFrameSize:size];
+//	[self setBounds:NSMakeRect(0,0,size.width, size.height)];
+	[_titleCell calcDrawInfo:[self frame]];
+	
+	[_titleCell setState:NSOffState];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DisclosureBoxDidCollapse" object:self];
 }
+
 
 @end

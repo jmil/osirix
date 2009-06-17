@@ -18,5 +18,8 @@
 -(void)setStep:(SBSStep*)step enabled:(BOOL)enabled;
 -(void)expandStep:(SBSStep*)step;
 -(void)collapseStep:(SBSStep*)step;
+-(BOOL)isExpanded:(SBSStep*)step;
+-(BOOL)isCollapsed:(SBSStep*)step;
+-(void)recomputeSubviewFramesAndAdjustSizes;
 
 @end

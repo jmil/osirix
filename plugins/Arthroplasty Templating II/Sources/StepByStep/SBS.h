@@ -19,6 +19,7 @@
 @property(assign) SBSStep* currentStep;
 
 -(void)addStep:(SBSStep*)step;
+-(void)enableDisableSteps;
 -(void)setCurrentStep:(SBSStep*)step;
 
 -(BOOL)hasNextStep;

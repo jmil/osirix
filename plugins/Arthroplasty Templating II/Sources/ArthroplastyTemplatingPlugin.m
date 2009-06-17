@@ -18,9 +18,15 @@
 }
 
 - (long)filterImage:(NSString*) menuName {
+	if ([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] intValue] < 5607) {
+		NSAlert* alert = [NSAlert alertWithMessageText:@"The OsiriX application you are running is out of date." defaultButton:@"Close" alternateButton:NULL otherButton:NULL informativeTextWithFormat:@"OsiriX 3.6 is necessary for this plugin to execute."];
+		[alert beginSheetModalForWindow:[viewerController window] modalDelegate:NULL didEndSelector:NULL contextInfo:NULL];
+		return 0;
+	}
+	
 	int returnValue = NSOKButton;
 	if ([[[viewerController roiList:0] objectAtIndex:0] count])
-		returnValue = NSRunAlertPanel(@"Arthroplasty Templating Plugin", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", nil);
+		returnValue = NSRunAlertPanel(@"Arthroplasty Templating Plugin", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL);
 	if (!returnValue)
 		return 0;
 	

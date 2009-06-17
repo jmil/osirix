@@ -37,7 +37,6 @@
 	//	[self setPDFDocument:_templatesTableView];
 	
 //	[_pdfView setAutoScales:YES];
-	[_pdfView setBackgroundColor:[NSColor redColor]];
 	
 //	[[self window] setFrameAutosaveName:@"ArthroplastyTemplatingsPluginWindow"];
 	

@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "StepByStep/DisclosureBox.h"
+#import "DisclosureBox.h"
 @class SBSStep;
 
 @interface SBSStepView : DisclosureBox {
