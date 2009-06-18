@@ -1,5 +1,3 @@
-decompress Openjpeg !!!! check sopclassuid at hug
-
 - minIP for 3D MPR
 - displaySamePatientWithColorBackground preferences
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
