@@ -1,7 +1,4 @@
-check sopclassuid at hug
-
-- select JPEGlossless & lossy
-- look at console messages (on both side)
+decompress Openjpeg !!!! check sopclassuid at hug
 
 - minIP for 3D MPR
 - displaySamePatientWithColorBackground preferences
