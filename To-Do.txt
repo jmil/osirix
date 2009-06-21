@@ -228,3 +228,7 @@ voxrad
 spectral
 volumic
 gnu
+
+pixceo
+pixneo
+pixmeo
