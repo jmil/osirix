@@ -16,10 +16,7 @@
 {
 	DCMPix *curPix;
 	
-	if( [[viewerController imageView] flippedData])
-		curPix = [[viewerController pixList] lastObject];
-	else
-		curPix = [[viewerController pixList] objectAtIndex: 0];
+	curPix = [[viewerController pixList] objectAtIndex: 0];
 	
 	long imageSize, size;
 	NSArray *pixList = [viewerController pixList];
@@ -77,27 +74,26 @@
 		matrix[ 9] = xyz[ 0] - origin[ 0];
 		matrix[ 10] = xyz[ 1] - origin[ 1];
 		matrix[ 11] = xyz[ 2] - origin[ 2];
-		
 		// --
 		
 		matrix[ 0] = vectorSensor[ 0] * vectorModel[ 0] + vectorSensor[ 1] * vectorModel[ 1] + vectorSensor[ 2] * vectorModel[ 2];
 		matrix[ 1] = vectorSensor[ 0] * vectorModel[ 3] + vectorSensor[ 1] * vectorModel[ 4] + vectorSensor[ 2] * vectorModel[ 5];
 		matrix[ 2] = vectorSensor[ 0] * vectorModel[ 6] + vectorSensor[ 1] * vectorModel[ 7] + vectorSensor[ 2] * vectorModel[ 8];
-
+		
 		length = sqrt(matrix[0]*matrix[0] + matrix[1]*matrix[1] + matrix[2]*matrix[2]);
-
+		
 		matrix[0] = matrix[ 0] / length;
 		matrix[1] = matrix[ 1] / length;
 		matrix[2] = matrix[ 2] / length;
-
+		
 		// --
-
+		
 		matrix[ 3] = vectorSensor[ 3] * vectorModel[ 0] + vectorSensor[ 4] * vectorModel[ 1] + vectorSensor[ 5] * vectorModel[ 2];
 		matrix[ 4] = vectorSensor[ 3] * vectorModel[ 3] + vectorSensor[ 4] * vectorModel[ 4] + vectorSensor[ 5] * vectorModel[ 5];
 		matrix[ 5] = vectorSensor[ 3] * vectorModel[ 6] + vectorSensor[ 4] * vectorModel[ 7] + vectorSensor[ 5] * vectorModel[ 8];
-
+		
 		length = sqrt(matrix[3]*matrix[3] + matrix[4]*matrix[4] + matrix[5]*matrix[5]);
-
+		
 		matrix[3] = matrix[ 3] / length;
 		matrix[4] = matrix[ 4] / length;
 		matrix[5] = matrix[ 5] / length;
@@ -109,7 +105,7 @@
 		matrix[8] = matrix[0]*matrix[4] - matrix[1]*matrix[3];
 		
 		length = sqrt(matrix[6]*matrix[6] + matrix[7]*matrix[7] + matrix[8]*matrix[8]);
-
+		
 		matrix[6] = matrix[ 6] / length;
 		matrix[7] = matrix[ 7] / length;
 		matrix[8] = matrix[ 8] / length;
