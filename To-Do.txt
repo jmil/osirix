@@ -218,6 +218,15 @@ make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc64" LDFLAGS="-sys
 OpenJPEG optimization:
 make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64 -O3 -fPIC -msse -msse2 -msse3 -ffast-math -funroll-loops -ftree-vectorize -fomit-frame-pointer" LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc -arch i386 -arch x86_64" osx
 
+care
+core
+med
+lab
+view
+net
+bio
+
+
 voxray
 ray
 xray
@@ -230,7 +239,6 @@ volumic
 gnu
 
 pixceo
-pixneo
 pixmeo
 
 imagemeta.com
