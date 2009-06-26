@@ -240,7 +240,11 @@ volumic
 gnu
 
 pixceo
-pixmeo
+
+pixMeo
+metaRad
+diagImage
+nsImage
 
 imagemeta.com
 
