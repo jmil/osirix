@@ -16,27 +16,23 @@ typedef enum {
 
 
 @interface ArthroplastyTemplate : NSObject {
-	NSString* _directoryName;
-	NSMutableDictionary* _properties;
-	NSImage* _image;
-	NSString* _name;
-	NSArray* _textualData;
-	NSString* _referenceFilePath;
+	NSString* _path;
 	ArthroplastyTemplateFamily* _family;
 }
 
-@property(readonly) NSString* directoryName;
-@property(readonly) NSString* manufacturerName;
-@property(readonly) NSString* name;
-@property(readonly) NSString* referenceFilePath;
-@property(readonly) NSString* size;
-@property(readonly) NSMutableDictionary* properties;
-@property(readonly) NSImage* image;
-@property(readonly) NSArray* textualData;
+@property(readonly) NSString* path;
 @property(assign) ArthroplastyTemplateFamily* family;
+@property(readonly) NSString *fixation, *group, *manufacturer, *modularity, *name, *placement, *surgery, *type, *size, *referenceNumber;
 
--(id)initFromFileAtPath:(NSString*)path;
+-(id)initWithPath:(NSString*)path;
+-(CGFloat)scale;
+
+@end
+
+
+@interface ArthroplastyTemplate (Abstract)
+
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction;
--(id)valueForKey:(NSString*)key;
+-(NSArray*)textualData;
 
 @end

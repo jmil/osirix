@@ -9,43 +9,73 @@
 
 
 @implementation ArthroplastyTemplate
-@synthesize directoryName = _directoryName, name = _name, family = _family;
-@synthesize referenceFilePath = _referenceFilePath, size = _size, properties = _properties, image = _image, textualData = _textualData;
+@synthesize family = _family;
+@synthesize path = _path;
 
--(id)initFromFileAtPath:(NSString*)path {
-	[self init];
-	_referenceFilePath = [path retain];
+-(id)initWithPath:(NSString*)path {
+	self = [super init];
+	_path = [path retain];
 	return self;
 }
 
 -(void)dealloc {
-	if (_directoryName) [_directoryName release]; _directoryName = NULL;
-	if (_properties) [_properties release]; _properties = NULL;
-	if (_image) [_image release]; _image = NULL;
-	if (_name) [_name release]; _name = NULL;
-	if (_textualData) [_textualData release]; _textualData = NULL;
-	if (_referenceFilePath) [_referenceFilePath release]; _referenceFilePath = NULL;
+	[_path release];
 	[super dealloc];
 }
 
--(NSString*)manufacturerName {
-	NSLog(@"Warning: [ArthroplastyTemplate manufacturerName] must be overridden");
-	return @"Unknown";
+-(NSString*)fixation {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate fixation] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)group {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate group] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)manufacturer {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate manufacturer] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)modularity {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate modularity] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)name {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate name] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)placement {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate placement] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)surgery {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate surgery] must be implemented"];
+	return NULL;
+}
+
+-(NSString*)type {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate type] must be implemented"];
+	return NULL;
 }
 
 -(NSString*)size {
-	NSLog(@"Warning: [ArthroplastyTemplate size] must be overridden");
-	return @"";
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate size] must be implemented"];
+	return NULL;
 }
 
--(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction {
-	NSLog(@"Warning: [ArthroplastyTemplate pdfPathForDirection:] must be overridden");
-	return @"";
+-(NSString*)referenceNumber {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate referenceNumber] must be implemented"];
+	return NULL;
 }
 
--(id)valueForKey:(NSString*)key {
-	return [_properties valueForKey:key];
+-(CGFloat)scale {
+	[NSException raise:NSInternalInconsistencyException format:@"[ArthroplastyTemplate scale] must be implemented"];
+	return 0;
 }
-
 
 @end

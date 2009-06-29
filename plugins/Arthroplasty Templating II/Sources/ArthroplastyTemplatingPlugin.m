@@ -7,10 +7,20 @@
 
 #import "ArthroplastyTemplatingPlugin.h"
 #import "ArthroplastyTemplatingStepByStepController.h"
+#import "ArthroplastyTemplatingWindowController.h"
 #import "BrowserController.h"
 
 
 @implementation ArthroplastyTemplatingPlugin
+@synthesize templatesWindowController = _templatesWindowController;
+
+-(void)initialize {
+	if (_initialized) return;
+	_initialized = YES;
+	
+	_templatesWindowController = [[ArthroplastyTemplatingWindowController alloc] init];
+	[_templatesWindowController window]; // force nib loading
+}
 
 - (void)initPlugin {
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewerController];
@@ -18,37 +28,28 @@
 }
 
 - (long)filterImage:(NSString*) menuName {
+	[self initialize];
+
 	if ([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] intValue] < 5607) {
 		NSAlert* alert = [NSAlert alertWithMessageText:@"The OsiriX application you are running is out of date." defaultButton:@"Close" alternateButton:NULL otherButton:NULL informativeTextWithFormat:@"OsiriX 3.6 is necessary for this plugin to execute."];
 		[alert beginSheetModalForWindow:[viewerController window] modalDelegate:NULL didEndSelector:NULL contextInfo:NULL];
 		return 0;
 	}
 	
-	int returnValue = NSOKButton;
+	[self initialize];
+	
 	if ([[[viewerController roiList:0] objectAtIndex:0] count])
-		returnValue = NSRunAlertPanel(@"Arthroplasty Templating Plugin", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL);
-	if (!returnValue)
-		return 0;
+		if (!NSRunAlertPanel(@"Arthroplasty Templating II", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL))
+			return 0;
 	
-	NSArray *winList = [NSApp windows];
-	long i;
-	for(i = 0; i < [winList count]; i++)
-		if ([[[[winList objectAtIndex:i] windowController] className] isEqualToString:@"ArthroplastyTemplatingStepByStepController"]) {
-			stepByStepController = [[winList objectAtIndex:i] windowController];
-			break;
-		}
+	[[[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController] showWindow:self];
 	
-	if(!stepByStepController) {
-		stepByStepController = [[ArthroplastyTemplatingStepByStepController alloc] initWithWindowNibName:@"ArthroplastyTemplatingStepByStep"];
-		[stepByStepController setViewerController:viewerController];
-	}
-	
-	[viewerController roiDeleteAll:self];
-	[stepByStepController resetStepByStepUpdatingView:YES];
-	[stepByStepController showWindow:self];
-	
-
 	return 0;
+}
+
+-(BOOL)handleEvent:(NSEvent*)event forViewer:(ViewerController*)controller {
+	NSLog(@"handleEvent %@", event);
+	return NO;
 }
 
 //- (void)viewerWillClose:(NSNotification*)notification;

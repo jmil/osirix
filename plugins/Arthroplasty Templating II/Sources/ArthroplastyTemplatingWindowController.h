@@ -14,27 +14,27 @@
 #import "ArthroplastyTemplatingUserDefaults.h"
 
 @interface ArthroplastyTemplatingWindowController : NSWindowController {
-	NSMutableArray* _templates; // every file is a template
-	NSMutableArray* _families;
+	NSMutableArray* _templates;
+
+	NSArrayController* _familiesArrayController;
+	IBOutlet ArthroplastyTemplatingTableView* _familiesTableView;
 	
-	IBOutlet NSArrayController* _templatesArrayController;
-	IBOutlet NSArrayController* _familiesArrayController;
-	IBOutlet ArthroplastyTemplatingTableView* _templatesTableView;
 	IBOutlet SelectablePDFView* _pdfView;
 	IBOutlet NSPopUpButton* _sizes;
 	IBOutlet NSButton* _shouldTransformColor;
 	IBOutlet NSColorWell* _transformColor;
-	
+	IBOutlet NSSearchField* _searchField;
 	ArthroplastyTemplateViewDirection _viewDirection;
+	BOOL _flipTemplatesHorizontally;
+	
 	ArthroplastyTemplatingUserDefaults* _userDefaults;
 	NSDictionary* _presets;
-	
-	BOOL _flipTemplatesHorizontally;
 }
 
 @property(readonly) BOOL flipTemplatesHorizontally;
 @property(readonly) ArthroplastyTemplatingUserDefaults* userDefaults;
 
+-(id)init;
 -(void)loadTemplates;
 -(ArthroplastyTemplate*)templateAtPath:(NSString*)path;
 -(ArthroplastyTemplate*)currentTemplate;
@@ -42,6 +42,8 @@
 -(ArthroplastyTemplateFamily*)selectedFamily;
 -(NSString*)pdfPathForFamilyAtIndex:(int)index;
 -(NSImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat;
+-(IBAction)searchFilterChanged:(id)sender;
+-(BOOL)setFilter:(NSString*)string;
 
 -(void)setFamily:(id)sender;
 

@@ -8,13 +8,14 @@
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
 @class ArthroplastyTemplatingWindowController;
-@class ArthroplastyTemplatingStepByStepController;
 
 @interface ArthroplastyTemplatingPlugin : PluginFilter {
-	ArthroplastyTemplatingWindowController *windowController;
-	ArthroplastyTemplatingStepByStepController *stepByStepController;
+	ArthroplastyTemplatingWindowController *_templatesWindowController;
+	BOOL _initialized;
 }
 
-- (long) filterImage:(NSString*) menuName;
+@property(readonly) ArthroplastyTemplatingWindowController* templatesWindowController;
+
+-(long)filterImage:(NSString*)menuName;
 
 @end

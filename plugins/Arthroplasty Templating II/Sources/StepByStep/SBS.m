@@ -106,6 +106,11 @@
 	[self setCurrentStep:[_steps objectAtIndex:[_steps indexOfObject:_currentStep]+1]];
 }
 
+-(IBAction)stepValueChanged:(id)sender {
+	if (_delegate)
+		[_delegate stepByStep:self valueChanged:sender];
+}
+
 -(IBAction)reset:(id)sender; {
 	for (unsigned i = 0; i < [_steps count]; ++i)
 		[[_steps objectAtIndex:i] setIsDone:NO];

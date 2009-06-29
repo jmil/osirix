@@ -15,87 +15,82 @@
 #import "ROI.h"
 
 #import "ArthroplastyTemplate.h"
-@class ArthroplastyTemplatingWindowController;
+@class ArthroplastyTemplatingPlugin;
 
 @interface ArthroplastyTemplatingStepByStepController : NSWindowController {
-	IBOutlet SBS* stepByStep;
-	SBSStep *stepPlannerName, *stepHorizontalAxis, *stepFemurAxis, *stepCalibrationPoints, *stepCutting, *stepCup, *stepStem, *stepPlacement, *stepSave;
-	IBOutlet NSView *viewPlannerName, *viewHorizontalAxis, *viewFemurAxis, *viewCalibrationPoints, *viewCutting, *viewCup, *viewStem, *viewPlacement, *viewSave;
+	ArthroplastyTemplatingPlugin* _plugin;
+	ViewerController* _viewerController;
 	
-	ViewerController *viewerController;
-	int userTool; // stores the tool that the user was using before starting this step by step
-	int currentTool; // tool used for the step by step
-	ROI *horizontalAxis, *femurAxis, *pointA1, *pointA2, *pointB1, *pointB2, *femurROI, *femurLayer, *cupLayer, *stemLayer, *infoBoxROI;
-	ROI **pointerROI;
-	int expectedROIType;
+	IBOutlet SBS* _sbs;
+	SBSStep *_stepCalibration, *_stepAxes, *_stepLandmarks, *_stepCutting, *_stepCup, *_stepStem, *_stepPlacement, *_stepSave;
+	IBOutlet NSView *_viewCalibration, *_viewAxes, *_viewLandmarks, *_viewCutting, *_viewCup, *_viewStem, *_viewPlacement, *_viewSave;
 	
-	NSString *nameROI;
+	NSMutableSet* _knownRois;
+	ROI *_magnificationLine, *_horizontalAxis, *_femurAxis, *_landmark1, *_landmark2, *_femurRoi, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
+	ROI *_femurLandmark, *_landmark1Axis, *_landmark2Axis, *_legInequality;
+	ArthroplastyTemplate *_cupTemplate, *_stemTemplate;
 	
-	ArthroplastyTemplate *cupTemplate, *stemTemplate;
+	// calibration
+	IBOutlet NSButton *_magnificationRadioCustom, *_magnificationRadioCalibrate;
+	IBOutlet NSTextField *_magnificationCustomFactor, *_magnificationCalibrateLength;
+	CGFloat _magnification;
+	// axes
+	float _horizontalAngle, _femurAngle;
+	// cup
+	IBOutlet NSTextField* _cupAngleTextField;
+	float _cupAngle;
+	// stem
+	IBOutlet NSTextField* _stemAngleTextField;
+	float _stemAngle;
+	// placement
+	IBOutlet NSTextField* _femurOpacityTextField;
+	IBOutlet NSSlider* _femurOpacitySlider;
+	IBOutlet NSPopUpButton* _neckSizePopUpButton;
+
+	IBOutlet NSTextField* _verticalOffsetTextField;
+	IBOutlet NSTextField* _horizontalOffsetTextField;
+	IBOutlet NSColorWell* _femurColorWell;
+	IBOutlet NSTextField* _plannersNameTextField;
 	
-	IBOutlet NSTextField *plannerNameTextField;
+	NSPoint _planningOffset;
+	NSDate* _planningDate;
+	BOOL _userOpenedTemplates;
 	
-	float horizontalAngle, cupAngle;
-	IBOutlet NSTextField *cupAngleTextField;
+	IBOutlet NSButton* _sendToPACSButton;
+	NSString* _imageToSendName;
 	
-	IBOutlet NSTextField *femurOpacityTextField;
-	IBOutlet NSTextField *verticalOffsetTextField;
-	IBOutlet NSTextField *horizontalOffsetTextField;
-	IBOutlet NSColorWell *femurColorWell;
-	
-	IBOutlet NSTextField *chosenSizeTextField;
-	
-	NSPoint planningOffset;
-	NSDate *planningDate;
-	
-	ArthroplastyTemplatingWindowController *templateWindowController;
-	
-	IBOutlet NSButton *sendToPACSButton;
-	NSString *imageToSendName;
 }
 
-
-#pragma mark Link to OsiriX
-
-- (void)setViewerController:(ViewerController*)aViewerController;
-- (void)viewerWillClose:(NSNotification*)notification;
-
+-(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin viewerController:(ViewerController*)viewerController;
 
 #pragma mark Templates
 
-- (IBAction)showTemplatePanel:(id)sender;
-- (void)showTemplatePanel;
-- (void)closeTemplatePanel;
-
+- (IBAction)showTemplatesPanel:(id)sender;
+-(void)hideTemplatesPanel;
 
 #pragma mark General Methods
 
-- (IBAction)resetStepByStep:(id)sender;
-- (void)resetStepByStepUpdatingView:(BOOL)updateView;
-
+- (IBAction)resetSBS:(id)sender;
+- (void)resetSBSUpdatingView:(BOOL)updateView;
 
 #pragma mark StepByStep Delegate Methods
 
 -(void)stepByStep:(SBS*)sbs willBeginStep:(SBSStep*)step;
+-(void)advanceAfterInput:(id)change;
 -(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step;
 -(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step;
 
-
 #pragma mark Steps specific Methods
 
-- (void)computeOffset;
-- (IBAction)changeFemurLayerOpacity:(id)sender;
-- (void)setFemurLayerOpacity:(float)opacity;
-- (IBAction)changeFemurLayerColor:(id)sender;
-- (void)setFemurLayerColor:(NSColor*)color;
-- (void)computeHorizontalAngle;
-- (void)computeCupAngle;
+-(void)setFemurLayerColor:(NSColor*)color;
 
+-(void)computeMagnification;
+-(void)computeVarious;
+-(void)computeLegInequality;
+-(void)computeOffset;
+-(void)updateInfo;
 
 #pragma mark Result
 
-- (void)createInfoBoxROI;
-- (IBAction)updateInfoBoxROI:(id)sender;
-- (void)updateInfoBoxROI;
 
 @end

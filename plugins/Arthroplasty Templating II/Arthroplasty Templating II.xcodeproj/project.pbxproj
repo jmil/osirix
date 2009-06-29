@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		592647A50FF23F3D006D4B11 /* Notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647A40FF23F3D006D4B11 /* Notifications.h */; };
+		592647DC0FF27AA4006D4B11 /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647DB0FF27AA4006D4B11 /* ROI.h */; };
+		592647DF0FF27B19006D4B11 /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647DE0FF27B19006D4B11 /* browserController.h */; };
+		592647E10FF27B23006D4B11 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647E00FF27B23006D4B11 /* DCMPix.h */; };
+		592647E30FF27B2E006D4B11 /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647E20FF27B2E006D4B11 /* DCMView.h */; };
+		592647E50FF27B35006D4B11 /* DICOMExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647E40FF27B35006D4B11 /* DICOMExport.h */; };
+		592647E70FF27B44006D4B11 /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647E60FF27B44006D4B11 /* dicomFile.h */; };
+		592647E90FF27B53006D4B11 /* MyPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647E80FF27B53006D4B11 /* MyPoint.h */; };
+		592647EB0FF27B64006D4B11 /* OSIWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647EA0FF27B64006D4B11 /* OSIWindowController.h */; };
+		592647ED0FF27B71006D4B11 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647EC0FF27B71006D4B11 /* PluginFilter.h */; };
+		592647EF0FF27B78006D4B11 /* Schedulable.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647EE0FF27B78006D4B11 /* Schedulable.h */; };
+		592647F10FF27B7C006D4B11 /* Scheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647F00FF27B7C006D4B11 /* Scheduler.h */; };
+		592647F30FF27B88006D4B11 /* SendController.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647F20FF27B88006D4B11 /* SendController.h */; };
+		592647F50FF27B8E006D4B11 /* StaticScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647F40FF27B8E006D4B11 /* StaticScheduler.h */; };
+		592647F70FF27B94006D4B11 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 592647F60FF27B94006D4B11 /* ViewerController.h */; };
+		59264ABA0FF39A7D006D4B11 /* NSUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 59264AB80FF39A7D006D4B11 /* NSUtils.h */; };
+		59264ABB0FF39A7D006D4B11 /* NSUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59264AB90FF39A7D006D4B11 /* NSUtils.mm */; };
 		592C9F3B0FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = 592C9F390FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.h */; };
 		592C9F3C0FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 592C9F3A0FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.m */; };
 		592C9FD00FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist in Resources */ = {isa = PBXBuildFile; fileRef = 592C9FCF0FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist */; };
@@ -41,27 +58,13 @@
 		59D94E870FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E6B0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m */; };
 		59D94E880FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */; };
 		59D94E890FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */; };
-		59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */; };
+		59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm */; };
 		59D94E8B0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */; };
 		59D94E8C0FCE807D00509EEC /* ArthroplastyTemplatingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E700FCE807D00509EEC /* ArthroplastyTemplatingTableView.m */; };
 		59D94E8D0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */; };
 		59D951D80FCE823400509EEC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59D951D40FCE823400509EEC /* InfoPlist.strings */; };
 		59D951F00FCE82DB00509EEC /* ArthroplastyTemplating.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */; };
 		59D9537F0FCE831A00509EEC /* ZimmerTemplates in Resources */ = {isa = PBXBuildFile; fileRef = 59D951F10FCE831900509EEC /* ZimmerTemplates */; };
-		59D954F40FCE836400509EEC /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954870FCE836400509EEC /* DCMPix.h */; };
-		59D954F50FCE836400509EEC /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954880FCE836400509EEC /* DCMView.h */; };
-		59D954F60FCE836400509EEC /* DICOMExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954890FCE836400509EEC /* DICOMExport.h */; };
-		59D954F70FCE836400509EEC /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548A0FCE836400509EEC /* dicomFile.h */; };
-		59D954F80FCE836400509EEC /* MyPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548B0FCE836400509EEC /* MyPoint.h */; };
-		59D954F90FCE836400509EEC /* OSIWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548C0FCE836400509EEC /* OSIWindowController.h */; };
-		59D954FA0FCE836400509EEC /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548D0FCE836400509EEC /* PluginFilter.h */; };
-		59D954FB0FCE836400509EEC /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548E0FCE836400509EEC /* ROI.h */; };
-		59D954FC0FCE836400509EEC /* Schedulable.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D9548F0FCE836400509EEC /* Schedulable.h */; };
-		59D954FD0FCE836400509EEC /* Scheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954900FCE836400509EEC /* Scheduler.h */; };
-		59D954FE0FCE836400509EEC /* StaticScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954910FCE836400509EEC /* StaticScheduler.h */; };
-		59D954FF0FCE836400509EEC /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D954920FCE836400509EEC /* ViewerController.h */; };
-		59D955120FCE854D00509EEC /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D955110FCE854D00509EEC /* browserController.h */; };
-		59D955150FCE857700509EEC /* SendController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D955140FCE857700509EEC /* SendController.h */; };
 		59D955470FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59D955460FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib */; };
 		59D955640FCE8D5B00509EEC /* ArthroplastyTemplatingStepByStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59D955630FCE8D5B00509EEC /* ArthroplastyTemplatingStepByStep.xib */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
@@ -72,6 +75,23 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		592647A40FF23F3D006D4B11 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notifications.h; path = ../../osirix/Notifications.h; sourceTree = SOURCE_ROOT; };
+		592647DB0FF27AA4006D4B11 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROI.h; path = ../../osirix/ROI.h; sourceTree = SOURCE_ROOT; };
+		592647DE0FF27B19006D4B11 /* browserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = browserController.h; path = ../../osirix/browserController.h; sourceTree = SOURCE_ROOT; };
+		592647E00FF27B23006D4B11 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCMPix.h; path = ../../osirix/DCMPix.h; sourceTree = SOURCE_ROOT; };
+		592647E20FF27B2E006D4B11 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCMView.h; path = ../../osirix/DCMView.h; sourceTree = SOURCE_ROOT; };
+		592647E40FF27B35006D4B11 /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DICOMExport.h; path = ../../osirix/DICOMExport.h; sourceTree = SOURCE_ROOT; };
+		592647E60FF27B44006D4B11 /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dicomFile.h; path = ../../osirix/dicomFile.h; sourceTree = SOURCE_ROOT; };
+		592647E80FF27B53006D4B11 /* MyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyPoint.h; path = ../../osirix/MyPoint.h; sourceTree = SOURCE_ROOT; };
+		592647EA0FF27B64006D4B11 /* OSIWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSIWindowController.h; path = ../../osirix/OSIWindowController.h; sourceTree = SOURCE_ROOT; };
+		592647EC0FF27B71006D4B11 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PluginFilter.h; path = ../../osirix/PluginFilter.h; sourceTree = SOURCE_ROOT; };
+		592647EE0FF27B78006D4B11 /* Schedulable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Schedulable.h; path = ../../osirix/Schedulable.h; sourceTree = SOURCE_ROOT; };
+		592647F00FF27B7C006D4B11 /* Scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scheduler.h; path = ../../osirix/Scheduler.h; sourceTree = SOURCE_ROOT; };
+		592647F20FF27B88006D4B11 /* SendController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendController.h; path = ../../osirix/SendController.h; sourceTree = SOURCE_ROOT; };
+		592647F40FF27B8E006D4B11 /* StaticScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StaticScheduler.h; path = ../../osirix/StaticScheduler.h; sourceTree = SOURCE_ROOT; };
+		592647F60FF27B94006D4B11 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewerController.h; path = ../../osirix/ViewerController.h; sourceTree = SOURCE_ROOT; };
+		59264AB80FF39A7D006D4B11 /* NSUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUtils.h; sourceTree = "<group>"; };
+		59264AB90FF39A7D006D4B11 /* NSUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSUtils.mm; sourceTree = "<group>"; };
 		592C9F390FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingSplitView.h; sourceTree = "<group>"; };
 		592C9F3A0FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingSplitView.m; sourceTree = "<group>"; };
 		592C9FCF0FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = com.osirix.arthroplastytemplating.plist; sourceTree = "<group>"; };
@@ -106,7 +126,7 @@
 		59D94E6B0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingPlugin.m; sourceTree = "<group>"; };
 		59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arthroplasty_Templating_Prefix.pch; path = Sources/Arthroplasty_Templating_Prefix.pch; sourceTree = "<group>"; };
 		59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingStepByStepController.h; sourceTree = "<group>"; };
-		59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingStepByStepController.m; sourceTree = "<group>"; };
+		59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingStepByStepController.mm; sourceTree = "<group>"; };
 		59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingTableView.h; sourceTree = "<group>"; };
 		59D94E700FCE807D00509EEC /* ArthroplastyTemplatingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArthroplastyTemplatingTableView.m; sourceTree = "<group>"; };
 		59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingWindowController.h; sourceTree = "<group>"; };
@@ -116,24 +136,10 @@
 		59D951DA0FCE826400509EEC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ArthroplastyTemplating.tiff; sourceTree = "<group>"; };
 		59D951F10FCE831900509EEC /* ZimmerTemplates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ZimmerTemplates; sourceTree = "<group>"; };
-		59D954870FCE836400509EEC /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
-		59D954880FCE836400509EEC /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
-		59D954890FCE836400509EEC /* DICOMExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMExport.h; sourceTree = "<group>"; };
-		59D9548A0FCE836400509EEC /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dicomFile.h; sourceTree = "<group>"; };
-		59D9548B0FCE836400509EEC /* MyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPoint.h; sourceTree = "<group>"; };
-		59D9548C0FCE836400509EEC /* OSIWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIWindowController.h; sourceTree = "<group>"; };
-		59D9548D0FCE836400509EEC /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
-		59D9548E0FCE836400509EEC /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
-		59D9548F0FCE836400509EEC /* Schedulable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Schedulable.h; sourceTree = "<group>"; };
-		59D954900FCE836400509EEC /* Scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scheduler.h; sourceTree = "<group>"; };
-		59D954910FCE836400509EEC /* StaticScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticScheduler.h; sourceTree = "<group>"; };
-		59D954920FCE836400509EEC /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
-		59D955110FCE854D00509EEC /* browserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = browserController.h; sourceTree = "<group>"; };
-		59D955140FCE857700509EEC /* SendController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendController.h; sourceTree = "<group>"; };
 		59D955460FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArthroplastyTemplatingWindow.xib; sourceTree = "<group>"; };
 		59D955630FCE8D5B00509EEC /* ArthroplastyTemplatingStepByStep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArthroplastyTemplatingStepByStep.xib; sourceTree = "<group>"; };
 		A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
-		AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XRayTemplates.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB5D36050680E57E00F4007A /* XRayTemplatesPlugin.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XRayTemplatesPlugin.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,7 +198,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */,
+				AB5D36050680E57E00F4007A /* XRayTemplatesPlugin.osirixplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -214,7 +220,7 @@
 				59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */,
 				599572CB0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm */,
 				59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */,
-				59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m */,
+				59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm */,
 				59D94E5D0FCE807D00509EEC /* StepByStep */,
 				59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */,
 				59D94E690FCE807D00509EEC /* ArthroplastyTemplate.m */,
@@ -235,6 +241,8 @@
 				5952527F0FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.mm */,
 				59503AF90FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h */,
 				59503AFA0FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.m */,
+				59264AB80FF39A7D006D4B11 /* NSUtils.h */,
+				59264AB90FF39A7D006D4B11 /* NSUtils.mm */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -291,20 +299,21 @@
 		59D954860FCE836400509EEC /* OsiriX Headers */ = {
 			isa = PBXGroup;
 			children = (
-				59D955110FCE854D00509EEC /* browserController.h */,
-				59D954870FCE836400509EEC /* DCMPix.h */,
-				59D954880FCE836400509EEC /* DCMView.h */,
-				59D954890FCE836400509EEC /* DICOMExport.h */,
-				59D9548A0FCE836400509EEC /* dicomFile.h */,
-				59D9548B0FCE836400509EEC /* MyPoint.h */,
-				59D9548C0FCE836400509EEC /* OSIWindowController.h */,
-				59D9548D0FCE836400509EEC /* PluginFilter.h */,
-				59D9548E0FCE836400509EEC /* ROI.h */,
-				59D9548F0FCE836400509EEC /* Schedulable.h */,
-				59D954900FCE836400509EEC /* Scheduler.h */,
-				59D955140FCE857700509EEC /* SendController.h */,
-				59D954910FCE836400509EEC /* StaticScheduler.h */,
-				59D954920FCE836400509EEC /* ViewerController.h */,
+				592647DE0FF27B19006D4B11 /* browserController.h */,
+				592647E00FF27B23006D4B11 /* DCMPix.h */,
+				592647E20FF27B2E006D4B11 /* DCMView.h */,
+				592647E40FF27B35006D4B11 /* DICOMExport.h */,
+				592647E60FF27B44006D4B11 /* dicomFile.h */,
+				592647E80FF27B53006D4B11 /* MyPoint.h */,
+				592647EA0FF27B64006D4B11 /* OSIWindowController.h */,
+				592647A40FF23F3D006D4B11 /* Notifications.h */,
+				592647EC0FF27B71006D4B11 /* PluginFilter.h */,
+				592647DB0FF27AA4006D4B11 /* ROI.h */,
+				592647EE0FF27B78006D4B11 /* Schedulable.h */,
+				592647F00FF27B7C006D4B11 /* Scheduler.h */,
+				592647F20FF27B88006D4B11 /* SendController.h */,
+				592647F40FF27B8E006D4B11 /* StaticScheduler.h */,
+				592647F60FF27B94006D4B11 /* ViewerController.h */,
 			);
 			path = "OsiriX Headers";
 			sourceTree = "<group>";
@@ -324,20 +333,6 @@
 				59D94E890FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h in Headers */,
 				59D94E8B0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h in Headers */,
 				59D94E8D0FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h in Headers */,
-				59D954F40FCE836400509EEC /* DCMPix.h in Headers */,
-				59D954F50FCE836400509EEC /* DCMView.h in Headers */,
-				59D954F60FCE836400509EEC /* DICOMExport.h in Headers */,
-				59D954F70FCE836400509EEC /* dicomFile.h in Headers */,
-				59D954F80FCE836400509EEC /* MyPoint.h in Headers */,
-				59D954F90FCE836400509EEC /* OSIWindowController.h in Headers */,
-				59D954FA0FCE836400509EEC /* PluginFilter.h in Headers */,
-				59D954FB0FCE836400509EEC /* ROI.h in Headers */,
-				59D954FC0FCE836400509EEC /* Schedulable.h in Headers */,
-				59D954FD0FCE836400509EEC /* Scheduler.h in Headers */,
-				59D954FE0FCE836400509EEC /* StaticScheduler.h in Headers */,
-				59D954FF0FCE836400509EEC /* ViewerController.h in Headers */,
-				59D955120FCE854D00509EEC /* browserController.h in Headers */,
-				59D955150FCE857700509EEC /* SendController.h in Headers */,
 				59956E500FD8105F007C151F /* ZimmerTemplate.h in Headers */,
 				59956E780FD812CF007C151F /* ArthroplastyTemplateFamily.h in Headers */,
 				599572900FDD3E2B007C151F /* SelectablePDFView.h in Headers */,
@@ -349,6 +344,22 @@
 				597AA8840FE7BF980035E3AA /* SBSView.h in Headers */,
 				597AA8850FE7BF980035E3AA /* SBS.h in Headers */,
 				59503AFB0FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h in Headers */,
+				592647A50FF23F3D006D4B11 /* Notifications.h in Headers */,
+				592647DC0FF27AA4006D4B11 /* ROI.h in Headers */,
+				592647DF0FF27B19006D4B11 /* browserController.h in Headers */,
+				592647E10FF27B23006D4B11 /* DCMPix.h in Headers */,
+				592647E30FF27B2E006D4B11 /* DCMView.h in Headers */,
+				592647E50FF27B35006D4B11 /* DICOMExport.h in Headers */,
+				592647E70FF27B44006D4B11 /* dicomFile.h in Headers */,
+				592647E90FF27B53006D4B11 /* MyPoint.h in Headers */,
+				592647EB0FF27B64006D4B11 /* OSIWindowController.h in Headers */,
+				592647ED0FF27B71006D4B11 /* PluginFilter.h in Headers */,
+				592647EF0FF27B78006D4B11 /* Schedulable.h in Headers */,
+				592647F10FF27B7C006D4B11 /* Scheduler.h in Headers */,
+				592647F30FF27B88006D4B11 /* SendController.h in Headers */,
+				592647F50FF27B8E006D4B11 /* StaticScheduler.h in Headers */,
+				592647F70FF27B94006D4B11 /* ViewerController.h in Headers */,
+				59264ABA0FF39A7D006D4B11 /* NSUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,7 +383,7 @@
 			name = XRayTemplatesPlugin;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = Invert;
-			productReference = AB5D36050680E57E00F4007A /* XRayTemplates.osirixplugin */;
+			productReference = AB5D36050680E57E00F4007A /* XRayTemplatesPlugin.osirixplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -427,7 +438,7 @@
 				59D94E790FCE807D00509EEC /* NSString+Trim.mm in Sources */,
 				59D94E850FCE807D00509EEC /* ArthroplastyTemplate.m in Sources */,
 				59D94E870FCE807D00509EEC /* ArthroplastyTemplatingPlugin.m in Sources */,
-				59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.m in Sources */,
+				59D94E8A0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm in Sources */,
 				59D94E8C0FCE807D00509EEC /* ArthroplastyTemplatingTableView.m in Sources */,
 				59956E510FD8105F007C151F /* ZimmerTemplate.m in Sources */,
 				59956E790FD812CF007C151F /* ArthroplastyTemplateFamily.m in Sources */,
@@ -441,6 +452,7 @@
 				597AA8820FE7BF980035E3AA /* DisclosureBox.mm in Sources */,
 				597AA8830FE7BF980035E3AA /* SBSView.m in Sources */,
 				59503AFC0FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.m in Sources */,
+				59264ABB0FF39A7D006D4B11 /* NSUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +523,7 @@
 					dynamic_lookup,
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = XRayTemplates;
+				PRODUCT_NAME = XRayTemplatesPlugin;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
@@ -527,6 +539,8 @@
 		CE6A9A9208AC841300D0C1EE /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -563,7 +577,7 @@
 					dynamic_lookup,
 				);
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = XRayTemplates;
+				PRODUCT_NAME = XRayTemplatesPlugin;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (

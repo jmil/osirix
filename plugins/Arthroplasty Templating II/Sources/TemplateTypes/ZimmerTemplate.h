@@ -9,8 +9,7 @@
 #import "ArthroplastyTemplate.h"
 
 @interface ZimmerTemplate : ArthroplastyTemplate {
-	NSString* _anteriorPosteriorPDFFileName;
-	NSString* _lateralPDFFileName;
+	NSMutableDictionary* _properties;
 }
 
 +(NSArray*)bundledTemplates;

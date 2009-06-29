@@ -30,7 +30,7 @@
 	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/ZimmerTemplates"]];
 }
 
-+(NSMutableDictionary*)propertiesFromInfoFileAtPath:(NSString*)path {
++(NSDictionary*)propertiesFromInfoFileAtPath:(NSString*)path {
 	NSError* error;
 	NSString* fileContent = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
 	if (!fileContent) {
@@ -57,57 +57,77 @@
 }
 
 -(id)initFromFileAtPath:(NSString*)path {
-	[super initFromFileAtPath:path];
+	self = [super initWithPath:path];
 	
 	// properties
 	_properties = [[ZimmerTemplate propertiesFromInfoFileAtPath:path] retain];
 	if(!_properties)
 		return NULL; // TODO: is self released?
 
-	_directoryName = [[path stringByDeletingLastPathComponent] retain];
-	_anteriorPosteriorPDFFileName = [[_properties objectForKey:@"PDF_FILE_AP"] retain];
-	_lateralPDFFileName = [[_properties objectForKey:@"PDF_FILE_ML"] retain];
-	
 	return self;
 }
 
 -(void)dealloc {
-	if (_anteriorPosteriorPDFFileName) [_anteriorPosteriorPDFFileName release]; _anteriorPosteriorPDFFileName = NULL;
-	if (_lateralPDFFileName) [_lateralPDFFileName release]; _lateralPDFFileName = NULL;
+	[_properties release]; _properties = NULL;
 	[super dealloc];
 }
 
--(NSString*)manufacturerName {
-	return [_properties objectForKey:@"IMPLANT_MANUFACTURER"];
-}
-
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction {
-	return [[[NSString stringWithString:_directoryName] stringByAppendingPathComponent:direction==ArthroplastyTemplateAnteriorPosteriorDirection? _anteriorPosteriorPDFFileName : _lateralPDFFileName] retain];
+	return [[[_path stringByDeletingLastPathComponent] stringByAppendingPathComponent:direction==ArthroplastyTemplateAnteriorPosteriorDirection? [_properties objectForKey:@"PDF_FILE_AP"] : [_properties objectForKey:@"PDF_FILE_ML"]] retain];
 }
 
 -(NSImage*)imageForDirection:(ArthroplastyTemplateViewDirection)direction {
 	return [[[NSImage alloc] initWithContentsOfFile:[self pdfPathForDirection:direction]] autorelease];
 }
 
+-(NSArray*)textualData {
+	return [NSArray arrayWithObjects:[self name], [NSString stringWithFormat:@"Size: %@", [self size]], [self manufacturer], @"", @"", NULL];
+}
+
+// props
+
+-(NSString*)fixation {
+	return [_properties objectForKey:@"FIXATION_TYPE"];
+}
+
+-(NSString*)group {
+	return [_properties objectForKey:@"PRODUCT_GROUP"];
+}
+
+-(NSString*)manufacturer {
+	return [_properties objectForKey:@"IMPLANT_MANUFACTURER"];
+}
+
+-(NSString*)modularity {
+	return [_properties objectForKey:@"MODULARITY_INFO"];
+}
+
 -(NSString*)name {
-	//if (!_name) {
-		//	NSString *componentType = [properties objectForKey:@"COMPONENT_TYPE"];
-		//	NSString *referenceNumber = [properties objectForKey:@"REF_NO"];
-		//	name = [[NSMutableString stringWithFormat:@"%@: %@", componentType, referenceNumber] retain];
-		//_name = [ retain];
-	//}
-	
 	return [_properties objectForKey:@"PRODUCT_FAMILY_NAME"];
 }
 
--(NSArray*)textualData {
-	if (!_textualData)
-		_textualData = [[NSArray arrayWithObjects:[self name], [NSString stringWithFormat:@"Size: %@", [self size]], [self manufacturerName], @"", @"", NULL] retain];
-	return _textualData;
+-(NSString*)placement {
+	return [_properties objectForKey:@"LEFT_RIGHT"];
+}
+
+-(NSString*)surgery {
+	return [_properties objectForKey:@"TYPE_OF_SURGERY"];
+}
+
+-(NSString*)type {
+	return [_properties objectForKey:@"COMPONENT_TYPE"];
 }
 
 -(NSString*)size {
 	return [_properties objectForKey:@"SIZE"];
+}
+
+-(NSString*)referenceNumber {
+	return [_properties objectForKey:@"REF_NO"];
+}
+
+-(CGFloat)scale {
+	return 1;
 }
 
 @end

@@ -14,6 +14,7 @@
 }
 
 @property(readonly) NSArray* templates;
+@property(readonly) NSString *fixation, *group, *manufacturer, *modularity, *name, *placement, *surgery, *type;
 
 -(id)initWithTemplate:(ArthroplastyTemplate*)templat;
 -(BOOL)matches:(ArthroplastyTemplate*)templat;

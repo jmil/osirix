@@ -20,8 +20,8 @@
 @implementation ArthroplastyTemplatingWindowController
 @synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults;
 
--(id)initWithWindowNibName:(NSString *)windowNibName {
-	self = [super initWithWindowNibName:windowNibName];
+-(id)init {
+	self = [self initWithWindowNibName:@"ArthroplastyTemplatingWindow"];
 	
 	_viewDirection = ArthroplastyTemplateAnteriorPosteriorDirection;
 	_flipTemplatesHorizontally = NO;
@@ -31,35 +31,27 @@
 	_presets = [[NSDictionary alloc] initWithContentsOfFile:[bundle pathForResource:[bundle bundleIdentifier] ofType:@"plist"]];
 	
 	_templates = [[NSMutableArray arrayWithCapacity:0] retain];
-	_families = [[NSMutableArray arrayWithCapacity:0] retain];
-	[self loadTemplates];
-	
-	//	[self setPDFDocument:_templatesTableView];
-	
-//	[_pdfView setAutoScales:YES];
-	
-//	[[self window] setFrameAutosaveName:@"ArthroplastyTemplatingsPluginWindow"];
+	_familiesArrayController = [[NSArrayController alloc] init];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performDragOperation:) name:@"PluginDragOperationNotification" object:nil];
-	//[templatesTableView registerForDraggedTypes:[NSArray arrayWithObject:ArthroplastyTemplatingDataType]];
 	
-	[[self window] makeKeyAndOrderFront:self]; // TODO: remove
+	[self loadTemplates];
 	
 	return self;
 }
 
+-(void)awakeFromNib {
+	[_familiesArrayController setSortDescriptors:[_familiesTableView sortDescriptors]];
+}
+
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_families release];
+	[_familiesArrayController release];
+//	[_families release];
 	[_templates release];
 	[_presets release];
 	[_userDefaults release];
 	[super dealloc];
-}
-
-- (void)windowDidLoad {
-	[_templatesTableView selectRow:0 byExtendingSelection:NO];
-//	[self setFamily:_templatesTableView];
 }
 
 -(void)windowWillClose:(NSNotification *)aNotification {
@@ -70,7 +62,7 @@
 
 -(void)loadTemplates {
 //	[self willChangeValueForKey:@"templates"];
-	[_templatesArrayController removeObjects:_templates];
+	[_templates removeAllObjects];
 	NSThread* thread = [[NSThread alloc] initWithTarget:self selector:@selector(LoadTemplates:) object:NULL];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTemplatesDone:) name:NSThreadWillExitNotification object:thread];
 	[thread start];
@@ -90,15 +82,15 @@
 -(void)loadTemplatesDone:(NSNotification*)notification {
 	NSThread* thread = [notification object];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSThreadWillExitNotification object:thread];
-	[_templatesArrayController addObjects:[[thread threadDictionary] objectForKey:@"templates"]];
+	[_templates addObjectsFromArray:[[thread threadDictionary] objectForKey:@"templates"]];
 	
 	// fill _families from _templates
 	for (unsigned i = 0; i < [_templates count]; ++i) {
 		ArthroplastyTemplate* templat = [_templates objectAtIndex:i];
 		BOOL included = NO;
 		
-		for (unsigned i = 0; i < [_families count]; ++i) {
-			ArthroplastyTemplateFamily* family = [_families objectAtIndex:i];
+		for (unsigned i = 0; i < [[_familiesArrayController content] count]; ++i) {
+			ArthroplastyTemplateFamily* family = [[_familiesArrayController content] objectAtIndex:i];
 			if ([family matches:templat]) {
 				[family add:templat];
 				included = YES;
@@ -112,15 +104,15 @@
 		[_familiesArrayController addObject:[[[ArthroplastyTemplateFamily alloc] initWithTemplate:templat] autorelease]];
 	}
 	
-//	[_templatesTableView reloadData];
-	[_templatesTableView selectRow:0 byExtendingSelection:NO];
-	[self setFamily:_templatesTableView];
-	//	[self didChangeValueForKey:@"templates"];}
+	[_familiesArrayController rearrangeObjects];
+	[_familiesTableView reloadData];
+	[self setFamily:_familiesTableView];
+	// [self didChangeValueForKey:@"templates"];}
 }
 
 -(ArthroplastyTemplate*)templateAtPath:(NSString*)path {
 	for (unsigned i = 0; i < [_templates count]; ++i)
-		if ([[[_templates objectAtIndex:i] referenceFilePath] isEqualToString:path])
+		if ([[[_templates objectAtIndex:i] path] isEqualToString:path])
 			return [_templates objectAtIndex:i];
 	return NULL;
 }
@@ -130,7 +122,7 @@
 //}
 
 -(ArthroplastyTemplateFamily*)familyAtIndex:(int)index {
-	return [[_familiesArrayController arrangedObjects] objectAtIndex:index];	
+	return index != -1? [[_familiesArrayController arrangedObjects] objectAtIndex:index] : NULL;	
 }
 
 //-(ArthroplastyTemplate*)selectedTemplate {
@@ -138,25 +130,49 @@
 //}
 
 -(ArthroplastyTemplateFamily*)selectedFamily {
-	return [self familyAtIndex:[_templatesTableView selectedRow]];
+	return [self familyAtIndex:[_familiesTableView selectedRow]];
 }
 
 -(ArthroplastyTemplate*)currentTemplate {
 	return [[self selectedFamily] template:[_sizes indexOfSelectedItem]];
 }
 
+-(void)filterTemplates {
+	NSString* filter = [_searchField stringValue];
+	
+	if ([filter length] == 0) {
+		[_familiesArrayController setFilterPredicate:[NSPredicate predicateWithValue:YES]];
+	} else {
+		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(fixation contains[c] %@) OR (group contains[c] %@) OR (manufacturer contains[c] %@) OR (modularity contains[c] %@) OR (name contains[c] %@) OR (placement contains[c] %@) OR (surgery contains[c] %@) OR (type contains[c] %@)", filter, filter, filter, filter, filter, filter, filter, filter];
+		[_familiesArrayController setFilterPredicate:predicate];
+	}
+	
+//	[_familiesArrayController rearrangeObjects];
+	[_familiesTableView noteNumberOfRowsChanged];
+//	[_familiesTableView reloadData];
+	[self setFamily:_familiesTableView];
+}
+
+-(BOOL)setFilter:(NSString*)string {
+	[_searchField setStringValue:string];
+	[self searchFilterChanged:self];
+	return [[_familiesArrayController arrangedObjects] count] > 0;
+}
+
+-(IBAction)searchFilterChanged:(id)sender {
+	[self filterTemplates];
+}
+
 #pragma mark PDF preview
 
-//-(NSString*)pdfPathForTemplateAtIndex:(int)index {
-//	return [[self familyAtIndex:index] pdfPathForDirection:_viewDirection size:0]; // TODO: size
-//}
-
 -(NSString*)pdfPathForFamilyAtIndex:(int)index {
-	return [[[self familyAtIndex:index] template:[_sizes indexOfSelectedItem]] pdfPathForDirection:_viewDirection];
+	return index != -1? [[[self familyAtIndex:index] template:[_sizes indexOfSelectedItem]] pdfPathForDirection:_viewDirection] : [[NSBundle bundleForClass:[self class]] pathForResource:@"empty" ofType:@"pdf"];
 }
 
 -(void)setFamily:(id)sender {
-	if (sender == _templatesTableView) { // update sizes menu
+	if (sender == _familiesTableView) { // update sizes menu
+		[_familiesArrayController setSelectionIndex:[_familiesTableView selectedRow]];
+		
 		float selectedSize; std::istringstream([[_sizes titleOfSelectedItem] UTF8String]) >> selectedSize;
 		[_sizes removeAllItems];
 		ArthroplastyTemplateFamily* family = [self selectedFamily];
@@ -164,7 +180,7 @@
 		for (unsigned i = 0; i < [[family templates] count]; ++i) {
 			NSString* size = [(ArthroplastyTemplate*)[[family templates] objectAtIndex: i] size];
 			[_sizes addItemWithTitle:size];
-			float currentSize; std::istringstream([size UTF8String]) >> selectedSize;
+			float currentSize = 0; std::istringstream([size UTF8String]) >> selectedSize;
 			diffs[i] = fabsf(selectedSize-currentSize);
 		}
 		
@@ -175,10 +191,12 @@
 		[_sizes selectItemAtIndex:index];
 	}
 	
-	if ([_templatesTableView selectedRow] < 0)
-		return;
+	if ([_familiesTableView selectedRow] < 0)
+		if ([[_familiesArrayController arrangedObjects] count])
+			[_familiesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+		else return;
 	
-	NSString *pdfPath = [self pdfPathForFamilyAtIndex:[_templatesTableView selectedRow]];
+	NSString* pdfPath = [self pdfPathForFamilyAtIndex:[_familiesTableView selectedRow]];
 	
 	if(!pdfPath) return;
 	
@@ -198,8 +216,8 @@
 
 -(NSString*)idForTemplate:(ArthroplastyTemplate*)templat {
 	if (_viewDirection == ArthroplastyTemplateAnteriorPosteriorDirection)
-		return [NSString stringWithFormat:@"%@/%@/%@", [templat manufacturerName], [templat name], [templat size]];
-	else return [NSString stringWithFormat:@"%@/%@/%@/Lateral", [templat manufacturerName], [templat name], [templat size]];
+		return [NSString stringWithFormat:@"%@/%@/%@", [templat manufacturer], [templat name], [templat size]];
+	else return [NSString stringWithFormat:@"%@/%@/%@/Lateral", [templat manufacturer], [templat name], [templat size]];
 }
 
 -(BOOL)selectionForTemplate:(ArthroplastyTemplate*)templat into:(NSRect*)rect {
@@ -226,7 +244,7 @@
 }
 
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification {
-	[self setFamily:_templatesTableView];
+	[self setFamily:_familiesTableView];
 }
 
 -(ATImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size color:(NSColor*)color {
@@ -284,35 +302,14 @@
 }
 
 -(ATImage*)templateImage:(ArthroplastyTemplate*)templat {
+	if ([_familiesTableView selectedRow] == -1) return NULL;
 	PDFPage* page = [_pdfView currentPage];
 	NSRect pageBox = [_pdfView convertRect:[page boundsForBox:kPDFDisplayBoxMediaBox] fromPage:page];
 	return [self templateImage:templat entirePageSizePixels:pageBox.size];
 }
 
 -(NSImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat {
-	NSImage* image = [self templateImage:templat];
-	
-//	NSSize size = [image size];
-	
-	// draw background & drop shadow
-//	static const float shadowBlurRadius = 5;
-//	NSSize shadowedSize = NSMakeSize(size.width+shadowBlurRadius*3, size.height+shadowBlurRadius*3);
-//	NSImage* shadowedImage = [[[NSImage alloc] initWithSize:shadowedSize] autorelease];
-//	[shadowedImage setBackgroundColor:[NSColor clearColor]];
-//	[shadowedImage lockFocus];
-//	NSShadow *shadow = [[NSShadow alloc] init];
-//	[shadow setShadowBlurRadius:shadowBlurRadius];
-//	[shadow setShadowOffset:NSMakeSize(shadowBlurRadius/2,-shadowBlurRadius/2)];
-//	[shadow setShadowColor:[NSColor whiteColor]];
-//	[shadow set];
-//	[[[NSColor whiteColor] colorWithAlphaComponent:.1] set];
-//	[[NSBezierPath bezierPathWithRect:NSMakeRect(0, shadowBlurRadius, size.width+shadowBlurRadius*2, size.height+shadowBlurRadius*2)] fill];
-//	[image compositeToPoint:NSMakePoint(shadowBlurRadius, shadowBlurRadius*2) operation:NSCompositeSourceOver];
-//	[shadow release];
-//	[shadowedImage unlockFocus];
-//	image = shadowedImage;
-	
-	return image;
+	return [self templateImage:templat];
 }
 
 #pragma mark Template View direction
@@ -323,7 +320,7 @@
 	else _viewDirection = ArthroplastyTemplateLateralDirection;
 	
 //	[self loadTemplates]; // TODO: gray out unavailable templates
-	[self setFamily:_templatesTableView];
+	[self setFamily:_familiesTableView];
 }
 
 
@@ -375,7 +372,7 @@
 		
 	float pixSpacing = 1.0 / [image resolution] * 25.4; // image is in 72 dpi, we work in milimeters
 	
-	ROI *newLayer = [(ViewerController*)destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat referenceFilePath] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
+	ROI *newLayer = [(ViewerController*)destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
 
 	[(ViewerController*)destination bringToFrontROI:newLayer];
 	[newLayer generateEncodedLayerImage];
@@ -456,6 +453,22 @@
 			[self setFamily:_sizes];
 		} else
 			[super keyDown:event];
+}
+
+#pragma mark NSTableDataSource
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView*)table {
+	return [[_familiesArrayController arrangedObjects] count];
+}
+
+- (id)tableView:(NSTableView*)table objectValueForTableColumn:(NSTableColumn*)col row:(NSInteger)i {
+	return [[[_familiesArrayController arrangedObjects] objectAtIndex:i] performSelector:sel_registerName([[col identifier] UTF8String])];
+}
+
+- (void)tableView:(NSTableView*)table sortDescriptorsDidChange:(NSArray*)oldDescriptors {
+	[_familiesArrayController setSortDescriptors:[_familiesTableView sortDescriptors]];
+	[_familiesArrayController rearrangeObjects];
+	[_familiesTableView selectRowIndexes:[_familiesArrayController selectionIndexes] byExtendingSelection:NO];
 }
 
 @end

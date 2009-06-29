@@ -17,3 +17,6 @@
 
 @end
 
+@implementation ATPanel
+@synthesize canBecomeKeyWindow = _canBecomeKeyWindow;
+@end

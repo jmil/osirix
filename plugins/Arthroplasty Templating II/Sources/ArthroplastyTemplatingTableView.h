@@ -9,7 +9,6 @@
 
 @interface ArthroplastyTemplatingTableView : NSTableView {
 	IBOutlet ArthroplastyTemplatingWindowController *_controller;
-	IBOutlet NSArrayController *templatesArrayController;
 }
 
 @end

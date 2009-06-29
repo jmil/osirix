@@ -10,3 +10,11 @@
 
 @interface ATButtonCell	: NSButtonCell
 @end;
+
+@interface ATPanel : NSPanel {
+	BOOL _canBecomeKeyWindow;
+}
+
+@property BOOL canBecomeKeyWindow;
+
+@end;
