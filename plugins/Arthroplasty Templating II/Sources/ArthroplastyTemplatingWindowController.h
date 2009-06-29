@@ -10,11 +10,12 @@
 #import "ArthroplastyTemplate.h"
 
 @class ArthroplastyTemplatingTableView;
-@class ArthroplastyTemplateFamily;
+@class ArthroplastyTemplateFamily, ArthroplastyTemplatingPlugin;
 #import "ArthroplastyTemplatingUserDefaults.h"
 
 @interface ArthroplastyTemplatingWindowController : NSWindowController {
 	NSMutableArray* _templates;
+	ArthroplastyTemplatingPlugin* _plugin;
 
 	NSArrayController* _familiesArrayController;
 	IBOutlet ArthroplastyTemplatingTableView* _familiesTableView;
@@ -33,8 +34,9 @@
 
 @property(readonly) BOOL flipTemplatesHorizontally;
 @property(readonly) ArthroplastyTemplatingUserDefaults* userDefaults;
+@property(readonly) ArthroplastyTemplatingPlugin* plugin;
 
--(id)init;
+-(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin;
 -(void)loadTemplates;
 -(ArthroplastyTemplate*)templateAtPath:(NSString*)path;
 -(ArthroplastyTemplate*)currentTemplate;

@@ -212,6 +212,28 @@
 			path = TemplateTypes;
 			sourceTree = "<group>";
 		};
+		5999089C0FF8EA5300EDD0EF /* OsiriX Headers */ = {
+			isa = PBXGroup;
+			children = (
+				592647DE0FF27B19006D4B11 /* browserController.h */,
+				592647E00FF27B23006D4B11 /* DCMPix.h */,
+				592647E20FF27B2E006D4B11 /* DCMView.h */,
+				592647E40FF27B35006D4B11 /* DICOMExport.h */,
+				592647E60FF27B44006D4B11 /* dicomFile.h */,
+				592647E80FF27B53006D4B11 /* MyPoint.h */,
+				592647EA0FF27B64006D4B11 /* OSIWindowController.h */,
+				592647A40FF23F3D006D4B11 /* Notifications.h */,
+				592647EC0FF27B71006D4B11 /* PluginFilter.h */,
+				592647DB0FF27AA4006D4B11 /* ROI.h */,
+				592647EE0FF27B78006D4B11 /* Schedulable.h */,
+				592647F00FF27B7C006D4B11 /* Scheduler.h */,
+				592647F20FF27B88006D4B11 /* SendController.h */,
+				592647F40FF27B8E006D4B11 /* StaticScheduler.h */,
+				592647F60FF27B94006D4B11 /* ViewerController.h */,
+			);
+			name = "OsiriX Headers";
+			sourceTree = "<group>";
+		};
 		59D94E580FCE807D00509EEC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,31 +313,9 @@
 		59D954180FCE836400509EEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				59D954860FCE836400509EEC /* OsiriX Headers */,
+				5999089C0FF8EA5300EDD0EF /* OsiriX Headers */,
 			);
 			path = Frameworks;
-			sourceTree = "<group>";
-		};
-		59D954860FCE836400509EEC /* OsiriX Headers */ = {
-			isa = PBXGroup;
-			children = (
-				592647DE0FF27B19006D4B11 /* browserController.h */,
-				592647E00FF27B23006D4B11 /* DCMPix.h */,
-				592647E20FF27B2E006D4B11 /* DCMView.h */,
-				592647E40FF27B35006D4B11 /* DICOMExport.h */,
-				592647E60FF27B44006D4B11 /* dicomFile.h */,
-				592647E80FF27B53006D4B11 /* MyPoint.h */,
-				592647EA0FF27B64006D4B11 /* OSIWindowController.h */,
-				592647A40FF23F3D006D4B11 /* Notifications.h */,
-				592647EC0FF27B71006D4B11 /* PluginFilter.h */,
-				592647DB0FF27AA4006D4B11 /* ROI.h */,
-				592647EE0FF27B78006D4B11 /* Schedulable.h */,
-				592647F00FF27B7C006D4B11 /* Scheduler.h */,
-				592647F20FF27B88006D4B11 /* SendController.h */,
-				592647F40FF27B8E006D4B11 /* StaticScheduler.h */,
-				592647F60FF27B94006D4B11 /* ViewerController.h */,
-			);
-			path = "OsiriX Headers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -18,13 +18,13 @@
 	if (_initialized) return;
 	_initialized = YES;
 	
-	_templatesWindowController = [[ArthroplastyTemplatingWindowController alloc] init];
+	_templatesWindowController = [[ArthroplastyTemplatingWindowController alloc] initWithPlugin:self];
 	[_templatesWindowController window]; // force nib loading
 }
 
 - (void)initPlugin {
+	_windows = [[NSMutableArray alloc] initWithCapacity:4];
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewerController];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:@"NSWindowWillCloseNotification" object:nil];
 }
 
 - (long)filterImage:(NSString*) menuName {
@@ -42,13 +42,30 @@
 		if (!NSRunAlertPanel(@"Arthroplasty Templating II", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL))
 			return 0;
 	
-	[[[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController] showWindow:self];
+	ArthroplastyTemplatingStepByStepController* window = [[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:window];
+	[_windows addObject:window];
+	[window showWindow:self];
 	
 	return 0;
 }
 
+-(void)windowWillClose:(NSNotification*)notification {
+	[_windows removeObject:[notification object]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:[notification object]];
+}
+
+-(ArthroplastyTemplatingStepByStepController*)windowForViewer:(ViewerController*)viewer {
+	for (ArthroplastyTemplatingStepByStepController* window in _windows)
+		if ([window viewerController] == viewer)
+			return window;
+	return NULL;
+}
+
 -(BOOL)handleEvent:(NSEvent*)event forViewer:(ViewerController*)controller {
-	NSLog(@"handleEvent %@", event);
+	ArthroplastyTemplatingStepByStepController* window = [self windowForViewer:controller];
+	if (window)
+		return [window handleViewerEvent:event];
 	return NO;
 }
 

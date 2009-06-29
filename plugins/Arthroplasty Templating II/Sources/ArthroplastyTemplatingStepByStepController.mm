@@ -20,6 +20,7 @@
 #define kInvalidMagnification 0
 
 @implementation ArthroplastyTemplatingStepByStepController
+@synthesize viewerController = _viewerController, magnification = _magnification;
 
 
 #pragma mark Initialization
@@ -169,9 +170,9 @@
 		
 		NSPoint p0 = (axisP0+axisP1)/2;
 		NSPoint p1 = otherPM + (axisP0-axisP1)/2;
-		[[_legInequality points] removeAllObjects];
+		if ([[_legInequality points] count]) [[_legInequality points] removeAllObjects];
 		[_legInequality setPoints:[NSArray arrayWithObjects:[MyPoint point:p0], [MyPoint point:p1], NULL]];
-		[_legInequality setName:[NSString stringWithFormat:@"Leg Inequality: %.3f cm", [_legInequality MesureLength:NULL]/_magnification]];
+		[_legInequality setName:[NSString stringWithFormat:@"Original Leg Inequality: %.3f cm", [_legInequality MesureLength:NULL]/_magnification]];
 		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_legInequality userInfo:NULL];
 	} else if (_legInequality) {
 		[self removeRoiFromViewer:_legInequality];
@@ -187,10 +188,8 @@
 	if (newAxis) {
 		[*axis setPoints:[NSArray arrayWithObjects:[MyPoint point:axisP0], [MyPoint point:axisP1], NULL]];
 		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:*axis userInfo:NULL];
-		[_viewerController bringToFrontROI:landmark]; // TODO: this makes the landmark disappear!
+//		[_viewerController bringToFrontROI:landmark]; // TODO: this makes the landmark disappear!
 	}
-	
-	
 	
 	return newAxis; // returns YES if the axis was changed
 }
@@ -229,16 +228,18 @@
 		if ([_sbs currentStep] == _stepLandmarks)
 			if (!_landmark1 && [roi type] == t2DPoint) {
 				_landmark1 = roi;
-				[roi setName:@"Landmark 1"];
+				[roi setDisplayTextualData:NO];
 			} else if (!_landmark2 && [roi type] == t2DPoint) {
 				_landmark2 = roi;
-				[roi setName:@"Landmark 2"];
+				[roi setDisplayTextualData:NO];
 			}
 		
 		if ([_sbs currentStep] == _stepCutting)
 			if (!_femurRoi && [roi type] == tPencil) {
 				_femurRoi = roi;
-				[roi setName:@"Femur"];
+				[roi setThickness:1]; [roi setOpacity:.5];
+				[roi setIsSpline:NO];
+				[roi setDisplayTextualData:NO];
 			}
 		
 		if ([_sbs currentStep] == _stepCup)
@@ -313,7 +314,8 @@
 		_femurRoi = NULL;
 	
 	if (roi == _femurLayer) {
-		_femurLayer = NULL;
+		_femurLayer = NULL; _femurLandmark = NULL;
+		[self removeRoiFromViewer:_originalFemurOpacityLayer]; _originalFemurOpacityLayer = NULL;
 		[_stepCutting setIsDone:NO];
 		[_sbs setCurrentStep:_stepCutting];
 	}
@@ -414,7 +416,9 @@
 	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
 	
 	[(ATPanel*)[self window] setCanBecomeKeyWindow:selfKey];
-	[[_viewerController window] makeKeyAndOrderFront:self];
+	if (selfKey)
+		[[self window] makeKeyAndOrderFront:self];
+	else [[_viewerController window] makeKeyAndOrderFront:self];
 }
 
 -(void)stepByStep:(SBS*)sbs valueChanged:(id)sender {
@@ -428,15 +432,9 @@
 		[_magnificationCustomFactor setEnabled:!calibrate];
 		[_magnificationCalibrateLength setEnabled:calibrate];
 	}
-	// cutting
-	if (sender == _femurColorWell)
-		[_femurLayer setNSColor:[sender color]];
 	// placement
 	if (sender == _neckSizePopUpButton)
 		;
-	if (sender == _femurOpacitySlider || sender == _femurColorWell) {
-		[self setFemurLayerColor:[[_femurColorWell color] colorWithAlphaComponent:[sender floatValue]/100]];
-	}
 	
 	[self advanceAfterInput:sender];
 }
@@ -534,29 +532,61 @@
 	else if(step == _stepLandmarks) {
 	}
 	else if(step == _stepCutting) {
-		if (!_femurLayer) {
-			_femurLayer = [_viewerController createLayerROIFromROI:_femurRoi splineScale:.01];
-			[_femurLayer roiMove:NSMakePoint(-10,10)]; // when the layer is created it is shifted, but we don't want this so we move it back // TODO: pas possible de faire [x setOrigin:[x origin]] ?
-			[_femurLayer setNSColor:[_femurColorWell color]];
+		if (_femurLayer)
+			[self removeRoiFromViewer:_femurLayer];
 			
-			ROI* nearestLandmark = [self closestROIFromSet:[NSSet setWithObjects:_landmark1, _landmark2, NULL] toPoints:[_femurRoi points]];
-			_femurLandmark = [[ROI alloc] initWithType:t2DPoint :[[nearestLandmark valueForKey:@"pixelSpacingX"] floatValue] :[[nearestLandmark valueForKey:@"pixelSpacingY"] floatValue] :[[nearestLandmark valueForKey:@"imageOrigin"] pointValue]];
-			[_femurLandmark setROIRect:[nearestLandmark rect]];
-			[_femurLandmark setName:[NSString stringWithFormat:@"%@'",[nearestLandmark name]]]; // same name + prime
-			[_femurLandmark setDisplayTextualData:NO];
-			
-			[[_viewerController imageView] roiSet:_femurLandmark];
-			[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_femurLandmark];
-			[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_femurLandmark userInfo:NULL];
-			
-			// bring the point to front (we don't want it behind the layer)
-			[_viewerController bringToFrontROI:_femurLandmark];
-			
-			// group the layer and the points
-			NSTimeInterval group = [NSDate timeIntervalSinceReferenceDate];
-			[_femurLayer setGroupID:group];
-			[_femurLandmark setGroupID:group];
-		}
+		_femurLayer = [_viewerController createLayerROIFromROI:_femurRoi];
+		[_femurLayer roiMove:NSMakePoint(-10,10)]; // when the layer is created it is shifted, but we don't want this so we move it back // TODO: pas possible de faire [x setOrigin:[x origin]] ?
+		[_femurLayer setOpacity:1];
+		[_femurLayer setDisplayTextualData:NO];
+		
+		ROI* nearestLandmark = [self closestROIFromSet:[NSSet setWithObjects:_landmark1, _landmark2, NULL] toPoints:[_femurRoi points]];
+		_femurLandmark = [[ROI alloc] initWithType:t2DPoint :[[nearestLandmark valueForKey:@"pixelSpacingX"] floatValue] :[[nearestLandmark valueForKey:@"pixelSpacingY"] floatValue] :[[nearestLandmark valueForKey:@"imageOrigin"] pointValue]];
+		[_femurLandmark setROIRect:[nearestLandmark rect]];
+		[_femurLandmark setName:[NSString stringWithFormat:@"%@'",[nearestLandmark name]]]; // same name + prime
+		[_femurLandmark setDisplayTextualData:NO];
+		
+		[[_viewerController imageView] roiSet:_femurLandmark];
+		[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_femurLandmark];
+		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_femurLandmark userInfo:NULL];
+		
+		// bring the point to front (we don't want it behind the layer)
+		[_viewerController bringToFrontROI:_femurLandmark];
+
+		// group the layer and the points
+		NSTimeInterval group = [NSDate timeIntervalSinceReferenceDate];
+		[_femurLayer setGroupID:group];
+		[_femurLandmark setGroupID:group];
+		
+		// opacity
+		
+		NSBitmapImageRep* femur = [NSBitmapImageRep imageRepWithData:[[_femurLayer layerImage] TIFFRepresentation]];
+		NSSize size = [[_femurLayer layerImage] size];
+		NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSCalibratedRGBColorSpace bytesPerRow:size.width*4 bitsPerPixel:32];
+		unsigned char* bitmapData = [bitmap bitmapData];
+		int bytesPerRow = [bitmap bytesPerRow], bitsPerPixel = [bitmap bitsPerPixel];
+		for (int y = 0; y < size.height; ++y)
+			for (int x = 0; x < size.width; ++x) {
+				int base = bytesPerRow*y+bitsPerPixel/8*x;
+				bitmapData[base+0] = 0;
+				bitmapData[base+1] = 0;
+				bitmapData[base+2] = 0;
+				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 160 : 0;
+			}
+		NSImage* image = [[NSImage alloc] init];
+		[image addRepresentation:bitmap];
+		
+		_originalFemurOpacityLayer = [_viewerController addLayerRoiToCurrentSliceWithImage:[image autorelease] referenceFilePath:@"none" layerPixelSpacingX:[[[_viewerController imageView] curDCM] pixelSpacingX] layerPixelSpacingY:[[[_viewerController imageView] curDCM] pixelSpacingY]];
+		[_originalFemurOpacityLayer setSelectable:NO];
+		[_originalFemurOpacityLayer setDisplayTextualData:NO];
+		[_originalFemurOpacityLayer roiMove:[[[_femurLayer points] objectAtIndex:0] point]-[[[_originalFemurOpacityLayer points] objectAtIndex:0] point]];
+		[_originalFemurOpacityLayer setNSColor:[[NSColor redColor] colorWithAlphaComponent:.5]];
+		[[_viewerController imageView] roiSet:_originalFemurOpacityLayer];
+		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_originalFemurOpacityLayer userInfo:NULL];
+		
+		[self removeRoiFromViewer:_femurRoi];
+		
+		[_viewerController bringToFrontROI:_femurLayer];
 	}
 	else if (step == _stepCup) {
 	}
@@ -594,15 +624,21 @@
 	}
 }
 
+-(BOOL)handleViewerEvent:(NSEvent*)event {
+	if ([event type] == NSKeyDown)
+		switch ([event keyCode]) {
+			case 76: // enter
+			case 36: // return
+				[_sbs nextStep:self];
+				return YES;
+		}
+	
+	return NO;
+}
+
 
 #pragma mark Steps specific methods
 
--(void)setFemurLayerColor:(NSColor*)color {
-	if (!_femurLayer) return;
-	[_femurLayer setNSColor:color];
-	[_femurOpacityTextField setFloatValue:[color alphaComponent]];
-	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_femurLayer userInfo:NULL];
-}
 
 // dicom was added to database, send it to PACS
 -(void)sendToPACS:(NSNotification*)notification {

@@ -26,8 +26,8 @@
 	IBOutlet NSView *_viewCalibration, *_viewAxes, *_viewLandmarks, *_viewCutting, *_viewCup, *_viewStem, *_viewPlacement, *_viewSave;
 	
 	NSMutableSet* _knownRois;
-	ROI *_magnificationLine, *_horizontalAxis, *_femurAxis, *_landmark1, *_landmark2, *_femurRoi, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
-	ROI *_femurLandmark, *_landmark1Axis, *_landmark2Axis, *_legInequality;
+	ROI *_magnificationLine, *_horizontalAxis, *_femurAxis, *_landmark1, *_landmark2, *_femurRoi;
+	ROI *_femurLandmark, *_landmark1Axis, *_landmark2Axis, *_legInequality, *_originalFemurOpacityLayer, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
 	ArthroplastyTemplate *_cupTemplate, *_stemTemplate;
 	
 	// calibration
@@ -43,13 +43,10 @@
 	IBOutlet NSTextField* _stemAngleTextField;
 	float _stemAngle;
 	// placement
-	IBOutlet NSTextField* _femurOpacityTextField;
-	IBOutlet NSSlider* _femurOpacitySlider;
 	IBOutlet NSPopUpButton* _neckSizePopUpButton;
 
 	IBOutlet NSTextField* _verticalOffsetTextField;
 	IBOutlet NSTextField* _horizontalOffsetTextField;
-	IBOutlet NSColorWell* _femurColorWell;
 	IBOutlet NSTextField* _plannersNameTextField;
 	
 	NSPoint _planningOffset;
@@ -60,6 +57,10 @@
 	NSString* _imageToSendName;
 	
 }
+
+
+@property(readonly) ViewerController* viewerController;
+@property(readonly) CGFloat magnification;
 
 -(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin viewerController:(ViewerController*)viewerController;
 
@@ -79,10 +80,9 @@
 -(void)advanceAfterInput:(id)change;
 -(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step;
 -(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step;
+-(BOOL)handleViewerEvent:(NSEvent*)event;
 
 #pragma mark Steps specific Methods
-
--(void)setFemurLayerColor:(NSColor*)color;
 
 -(void)computeMagnification;
 -(void)computeVarious;

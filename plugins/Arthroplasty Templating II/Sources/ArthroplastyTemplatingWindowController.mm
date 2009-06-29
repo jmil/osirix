@@ -6,6 +6,7 @@
 //
 
 #import "ArthroplastyTemplatingWindowController.h"
+#import "ArthroplastyTemplatingStepByStepController.h"
 #import "BrowserController.h"
 #import "ViewerController.h"
 #import "ROI.h"
@@ -13,15 +14,17 @@
 #import "ZimmerTemplate.h"
 #import "NSImage+ArthroplastyTemplating.h"
 #import "ArthroplastyTemplateFamily.h"
+#import "ArthroplastyTemplatingPlugin.h"
 #include <sstream>
 #include <cmath>
 #include "NSImage+ArthroplastyTemplating.h"
 
 @implementation ArthroplastyTemplatingWindowController
-@synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults;
+@synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults, plugin = _plugin;
 
--(id)init {
+-(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin {
 	self = [self initWithWindowNibName:@"ArthroplastyTemplatingWindow"];
+	_plugin = plugin;
 	
 	_viewDirection = ArthroplastyTemplateAnteriorPosteriorDirection;
 	_flipTemplatesHorizontally = NO;
@@ -353,13 +356,14 @@
 	NSSize size = [image size];
 	
 	NSPoint click = [event locationInWindow];
-	[view dragImage:image at:NSMakePoint(click.x-size.width/2, click.y-size.height/2) offset:NSMakeSize(0,0) event:event pasteboard:pboard source:view slideBack:YES];
+	NSPoint at = NSMakePoint(click.x-size.width/2, click.y-size.height/2); // TODO: drag at rotation point
+	[view dragImage:image at:at offset:NSMakeSize(0,0) event:event pasteboard:pboard source:view slideBack:YES];
 }
 
 -(void)performDragOperation:(NSNotification *)notification {
 	NSDictionary* userInfo = [notification userInfo];
 	id <NSDraggingInfo> operation = [userInfo valueForKey:@"dragOperation"];
-	id destination = [userInfo valueForKey:@"destination"];
+	ViewerController* destination = [userInfo valueForKey:@"destination"];
 	
 	if (![[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"])
 		return; // no ArthroplastyTemplate pointer available
@@ -370,9 +374,9 @@
 	[image setBackgroundColor:[_shouldTransformColor state]? [_transformColor color] : [NSColor clearColor]];
 	[image setBackgroundColor:[NSColor clearColor]];
 		
-	float pixSpacing = 1.0 / [image resolution] * 25.4; // image is in 72 dpi, we work in milimeters
+	float pixSpacing = (1.0 / [image resolution] * 25.4) * [[_plugin windowForViewer:destination] magnification]; // image is in 72 dpi, we work in milimeters
 	
-	ROI *newLayer = [(ViewerController*)destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
+	ROI *newLayer = [destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
 
 	[(ViewerController*)destination bringToFrontROI:newLayer];
 	[newLayer generateEncodedLayerImage];

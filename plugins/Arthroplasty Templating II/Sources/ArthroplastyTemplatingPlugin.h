@@ -7,15 +7,16 @@
 
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
-@class ArthroplastyTemplatingWindowController;
+@class ArthroplastyTemplatingWindowController, ArthroplastyTemplatingStepByStepController;
 
 @interface ArthroplastyTemplatingPlugin : PluginFilter {
 	ArthroplastyTemplatingWindowController *_templatesWindowController;
+	NSMutableArray* _windows;
 	BOOL _initialized;
 }
 
 @property(readonly) ArthroplastyTemplatingWindowController* templatesWindowController;
 
--(long)filterImage:(NSString*)menuName;
+-(ArthroplastyTemplatingStepByStepController*)windowForViewer:(ViewerController*)viewer;
 
 @end
