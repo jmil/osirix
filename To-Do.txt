@@ -11,6 +11,7 @@
 - REBUILD GANTRY 1.1
 
 - Option to include 3D viewers in Tile Window
+- AutoCrop algorithm with scissor
 
 - DICOM TLS
 - Merge SR with VR : add SR option
