@@ -9,9 +9,10 @@
 - Support for OpenJPEG JPEG2000 encoding
 - OpenJPEG is 2.2x times faster : OpenJPEG is now faster than JasperLib
 - REBUILD GANTRY 1.1
+- AutoCropping when using scissor in 3D VR or 3D MIP -> Faster Rendering Speed
 
+- Test autocropping with fusion / diff orientation
 - Option to include 3D viewers in Tile Window
-- AutoCrop algorithm with scissor
 
 - DICOM TLS
 - Merge SR with VR : add SR option
