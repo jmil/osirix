@@ -11,8 +11,6 @@
 - REBUILD GANTRY 1.1
 - AutoCropping when using scissor in 3D VR or 3D MIP -> Faster Rendering Speed
 
-- Delete Matrix
-- Test autocropping with fusion / diff orientation
 - Option to include 3D viewers in Tile Window
 - Test image fusion xray
 
