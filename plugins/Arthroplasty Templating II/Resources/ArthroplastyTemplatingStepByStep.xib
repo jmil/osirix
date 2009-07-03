@@ -8,14 +8,14 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="169"/>
-			<integer value="315"/>
-			<integer value="173"/>
-			<integer value="185"/>
-			<integer value="352"/>
-			<integer value="196"/>
 			<integer value="191"/>
+			<integer value="196"/>
+			<integer value="315"/>
 			<integer value="181"/>
+			<integer value="352"/>
+			<integer value="185"/>
+			<integer value="169"/>
+			<integer value="173"/>
 			<integer value="152"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -523,7 +523,7 @@
 			</object>
 			<object class="NSCustomView" id="92588525">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">268</int>
+				<int key="NSvFlags">256</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSTextField" id="853715158">
@@ -1030,14 +1030,6 @@
 						<reference key="destination" ref="916986557"/>
 					</object>
 					<int key="connectionID">322</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">initialFirstResponder</string>
-						<reference key="source" ref="304907334"/>
-						<reference key="destination" ref="1056400025"/>
-					</object>
-					<int key="connectionID">323</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2385,9 +2377,6 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_cupAngleTextField</string>
-							<string>_femurColorWell</string>
-							<string>_femurOpacitySlider</string>
-							<string>_femurOpacityTextField</string>
 							<string>_horizontalOffsetTextField</string>
 							<string>_magnificationCalibrateLength</string>
 							<string>_magnificationCustomFactor</string>
@@ -2410,9 +2399,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSTextField</string>
-							<string>NSColorWell</string>
-							<string>NSSlider</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>

@@ -21,4 +21,7 @@
 -(void)add:(ArthroplastyTemplate*)templat;
 -(ArthroplastyTemplate*)template:(NSInteger)index;
 
+-(ArthroplastyTemplate*)templateAfter:(ArthroplastyTemplate*)t;
+-(ArthroplastyTemplate*)templateBefore:(ArthroplastyTemplate*)t;
+
 @end

@@ -15,6 +15,9 @@
 #import "Notifications.h"
 #import "NSButton+ArthroplastyTemplating.h"
 #import "NSUtils.h"
+#import "NSImage+ArthroplastyTemplating.h"
+#import "ArthroplastyTemplateFamily.h"
+// #include "vImage/Convolution.h"
 
 #define kInvalidAngle 666
 #define kInvalidMagnification 0
@@ -86,6 +89,7 @@
 	[_stepPlacement release];
 	[_stepSave release];
 	[_knownRois release];
+	if (_isMyMouse) [_isMyMouse release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -391,7 +395,7 @@
 	if ([_sbs currentStep] != step)
 		[sbs setCurrentStep:step];
 
-	BOOL showTemplates = NO, selfKey = NO;
+	BOOL showTemplates = YES, selfKey = NO;
 	int tool = tROISelector;
 
 	if (step == _stepCalibration) {
@@ -559,7 +563,7 @@
 		[_femurLandmark setGroupID:group];
 		
 		// opacity
-		
+
 		NSBitmapImageRep* femur = [NSBitmapImageRep imageRepWithData:[[_femurLayer layerImage] TIFFRepresentation]];
 		NSSize size = [[_femurLayer layerImage] size];
 		NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSCalibratedRGBColorSpace bytesPerRow:size.width*4 bitsPerPixel:32];
@@ -573,13 +577,17 @@
 				bitmapData[base+2] = 0;
 				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 160 : 0;
 			}
+		
 		NSImage* image = [[NSImage alloc] init];
-		[image addRepresentation:bitmap];
+		unsigned kernelSize = 5; 
+		NSBitmapImageRep* temp = [bitmap smoothen:kernelSize];
+		[image addRepresentation:temp];
+		
 		
 		_originalFemurOpacityLayer = [_viewerController addLayerRoiToCurrentSliceWithImage:[image autorelease] referenceFilePath:@"none" layerPixelSpacingX:[[[_viewerController imageView] curDCM] pixelSpacingX] layerPixelSpacingY:[[[_viewerController imageView] curDCM] pixelSpacingY]];
 		[_originalFemurOpacityLayer setSelectable:NO];
 		[_originalFemurOpacityLayer setDisplayTextualData:NO];
-		[_originalFemurOpacityLayer roiMove:[[[_femurLayer points] objectAtIndex:0] point]-[[[_originalFemurOpacityLayer points] objectAtIndex:0] point]];
+		[_originalFemurOpacityLayer roiMove:[[[_femurLayer points] objectAtIndex:0] point]-[[[_originalFemurOpacityLayer points] objectAtIndex:0] point]-([temp size]-[bitmap size])/2];
 		[_originalFemurOpacityLayer setNSColor:[[NSColor redColor] colorWithAlphaComponent:.5]];
 		[[_viewerController imageView] roiSet:_originalFemurOpacityLayer];
 		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_originalFemurOpacityLayer userInfo:NULL];
@@ -624,6 +632,29 @@
 	}
 }
 
+-(CGFloat)estimateRotationOfROI:(ROI*)roi {
+	return NSAngle(NSMakeVector([[[roi points] objectAtIndex:4] point], [[[roi points] objectAtIndex:5] point]));
+}
+
+-(void)replaceLayer:(ROI*)roi with:(ArthroplastyTemplate*)t {
+	NSPoint center = [[[roi points] objectAtIndex:4] point];
+	CGFloat angle = [self estimateRotationOfROI:roi]/pi*180;
+	[self removeRoiFromViewer:roi];
+	[[[_plugin templatesWindowController] createROIFromTemplate:t inViewer:_viewerController centeredAt:center] rotate:angle :center];
+}
+
+-(void)rotateLayer:(ROI*)roi by:(float)degs {
+	[roi rotate:degs :[[[roi points] objectAtIndex:4] point]];
+}
+
+-(void)rotateLayer:(ROI*)roi byTrackingMouseFrom:(NSPoint)wp1 to:(NSPoint)wp2 {
+	wp1 = [[_viewerController imageView] ConvertFromNSView2GL:[[_viewerController imageView] convertPoint:wp1 fromView:NULL]];
+	wp2 = [[_viewerController imageView] ConvertFromNSView2GL:[[_viewerController imageView] convertPoint:wp2 fromView:NULL]];
+	CGFloat angle = NSAngle([[[roi points] objectAtIndex:4] point], wp2)-NSAngle([[[roi points] objectAtIndex:4] point], wp1);
+	[self rotateLayer:roi by:angle/pi*180];
+}
+
+
 -(BOOL)handleViewerEvent:(NSEvent*)event {
 	if ([event type] == NSKeyDown)
 		switch ([event keyCode]) {
@@ -631,7 +662,59 @@
 			case 36: // return
 				[_sbs nextStep:self];
 				return YES;
+			default:
+				unichar uc = [[event charactersIgnoringModifiers] characterAtIndex:0];
+				BOOL handled = NO;
+				switch (uc) {
+					case '+':
+					case '-':
+						BOOL next = uc == '+';
+						
+						if (_cupLayer && [_cupLayer ROImode] == ROI_selected && _cupTemplate) {
+							ArthroplastyTemplate* t = next? [[_cupTemplate family] templateAfter:_cupTemplate] : [[_cupTemplate family] templateBefore:_cupTemplate];
+							[self replaceLayer:_cupLayer with:t];
+							handled = YES;
+						}
+						if (_stemLayer && [_stemLayer ROImode] == ROI_selected && _stemTemplate) {
+							ArthroplastyTemplate* t = next? [[_stemTemplate family] templateAfter:_stemTemplate] : [[_stemTemplate family] templateBefore:_stemTemplate];
+							[self replaceLayer:_stemLayer with:t];
+							handled = YES;
+						}
+						
+						return handled;
+						
+					case '*':
+					case '/':
+						BOOL cw = uc == '*';
+						
+						if (_cupLayer && [_cupLayer ROImode] == ROI_selected) {
+							[self rotateLayer:_cupLayer by:cw? 1 : -1];
+							handled = YES;
+						}
+						if (_stemLayer && [_stemLayer ROImode] == ROI_selected) {
+							[self rotateLayer:_stemLayer by:cw? 1 : -1];
+							handled = YES;
+						}
+						
+						return handled;
+				}
 		}
+	
+	if (_isMyMouse) [_isMyMouse release];
+	if ([event type] == NSLeftMouseDown || [event type] == NSRightMouseDown || [event type] == NSOtherMouseDown) {
+		if ((_cupLayer && [_cupLayer ROImode] == ROI_selected) || (_stemLayer && [_stemLayer ROImode] == ROI_selected)) {
+			_isMyMouse = ([event modifierFlags]&0xffff0000 == NSCommandKeyMask+NSAlternateKeyMask)? [event retain] : NULL;
+			return _isMyMouse != NULL;
+		}
+	} else if (_isMyMouse && [event type] == NSLeftMouseDragged || [event type] == NSRightMouseDragged || [event type] == NSOtherMouseDragged) {
+		if (_cupLayer && [_cupLayer ROImode] == ROI_selected)
+			[self rotateLayer:_cupLayer byTrackingMouseFrom:[_isMyMouse locationInWindow] to:[event locationInWindow]];
+		if (_stemLayer && [_stemLayer ROImode] == ROI_selected)
+			[self rotateLayer:_stemLayer byTrackingMouseFrom:[_isMyMouse locationInWindow] to:[event locationInWindow]];
+		[_isMyMouse release];
+		_isMyMouse = [event retain];
+		return YES;
+	}
 	
 	return NO;
 }
@@ -716,7 +799,13 @@
 	else if (_horizontalAngle != kInvalidAngle)
 		_femurAngle = _horizontalAngle+pi/2;
 	
+	// leg inequalty
 	
+	// cup inclination
+	if (_cupLayer && [[_femurAxis points] count] >= 2) {
+		CGFloat cupRotation = [self estimateRotationOfROI:_cupLayer]/pi*180;
+		[_cupAngleTextField setStringValue:[NSString stringWithFormat:@"%f", cupRotation]];
+	}
 }
 
 -(void)computeLegInequality {

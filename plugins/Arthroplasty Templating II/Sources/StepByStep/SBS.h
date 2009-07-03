@@ -17,6 +17,7 @@
 
 @property(assign) id delegate;
 @property(assign) SBSStep* currentStep;
+@property(readonly) SBSView* view;
 
 -(void)addStep:(SBSStep*)step;
 -(void)enableDisableSteps;

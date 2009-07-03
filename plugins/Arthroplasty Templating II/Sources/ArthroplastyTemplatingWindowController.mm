@@ -17,7 +17,8 @@
 #import "ArthroplastyTemplatingPlugin.h"
 #include <sstream>
 #include <cmath>
-#include "NSImage+ArthroplastyTemplating.h"
+#include "NSUtils.h"
+#include "Notifications.h"
 
 @implementation ArthroplastyTemplatingWindowController
 @synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults, plugin = _plugin;
@@ -36,7 +37,7 @@
 	_templates = [[NSMutableArray arrayWithCapacity:0] retain];
 	_familiesArrayController = [[NSArrayController alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performDragOperation:) name:@"PluginDragOperationNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performDragOperation:) name:OsirixPerformDragOperationNotification object:NULL];
 	
 	[self loadTemplates];
 	
@@ -279,7 +280,7 @@
 	if (_flipTemplatesHorizontally)
 		[image flipImageHorizontally];
 
-	if (color) {
+/*	if (color) {
 		size = [image size]; unsigned s = size.width*size.height;
 		
 		NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
@@ -290,12 +291,12 @@
 			[bitmap setColor:[color colorWithAlphaComponent:[c alphaComponent]] atX:x y:y];
 		}
 		
-		temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize]] autorelease];
+		temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize] portion:[image portion]] autorelease];
 		[temp addRepresentation:bitmap];
 		[bitmap release];
 		
 		image = temp;
-	}
+	}*/
 	
 	return image;
 }
@@ -311,7 +312,7 @@
 	return [self templateImage:templat entirePageSizePixels:pageBox.size];
 }
 
--(NSImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat {
+-(ATImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat {
 	return [self templateImage:templat];
 }
 
@@ -352,57 +353,54 @@
 	NSPasteboard* pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
 	[self addTemplate:templat toPasteboard:pboard];
 	
-	NSImage* image = [self dragImageForTemplate:templat];
+	ATImage* image = [self dragImageForTemplate:templat];
 	NSSize size = [image size];
 	
-	NSPoint click = [event locationInWindow];
-	NSPoint at = NSMakePoint(click.x-size.width/2, click.y-size.height/2); // TODO: drag at rotation point
+	NSPoint click = [view convertPoint:[event locationInWindow] fromView:NULL];
+	NSPoint at = click-size/2;
+	
+	NSPoint origin;
+	if ([templat origin:&origin forDirection:_viewDirection]) { // origin in inches
+		if (_flipTemplatesHorizontally)
+			origin.y = [image originalInchSize].width-origin.y;
+		at = click-[image convertPointFromPageInches:origin]-NSMakePoint(1,-3);
+	}
+	
 	[view dragImage:image at:at offset:NSMakeSize(0,0) event:event pasteboard:pboard source:view slideBack:YES];
 }
 
--(void)performDragOperation:(NSNotification *)notification {
-	NSDictionary* userInfo = [notification userInfo];
-	id <NSDraggingInfo> operation = [userInfo valueForKey:@"dragOperation"];
-	ViewerController* destination = [userInfo valueForKey:@"destination"];
+-(ROI*)createROIFromTemplate:(ArthroplastyTemplate*)templat inViewer:(ViewerController*)destination centeredAt:(NSPoint)p {
+	ATImage* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)]; // TODO: N -> adapted size
 	
-	if (![[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"])
-		return; // no ArthroplastyTemplate pointer available
+	CGFloat magnification = [[_plugin windowControllerForViewer:destination] magnification];
+	if (!magnification) magnification = 1;
+	float pixSpacing = (1.0 / [image resolution] * 25.4) * magnification; // image is in 72 dpi, we work in milimeters
 	
-	ArthroplastyTemplate* templat; [[[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"] getBytes:&templat length:sizeof(ArthroplastyTemplate*)];
-	ATImage* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)];// TODO: N -> adapted size
-
-	[image setBackgroundColor:[_shouldTransformColor state]? [_transformColor color] : [NSColor clearColor]];
-	[image setBackgroundColor:[NSColor clearColor]];
-		
-	float pixSpacing = (1.0 / [image resolution] * 25.4) * [[_plugin windowForViewer:destination] magnification]; // image is in 72 dpi, we work in milimeters
+	ROI* newLayer = [destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
 	
-	ROI *newLayer = [destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
-
-	[(ViewerController*)destination bringToFrontROI:newLayer];
+	[destination bringToFrontROI:newLayer];
 	[newLayer generateEncodedLayerImage];
 	
-	// place the center of the template to the mouse location:
-
-	// find the location of the mouse in the OpenGL view
-	NSPoint locationInWindow = [operation draggingLocation];
-	NSPoint locationInView = [[[operation draggingDestinationWindow] contentView] convertPoint:locationInWindow toView:(DCMView*)[(ViewerController*)destination imageView]];
-	NSPoint flippedLocationInView = locationInView;
-	flippedLocationInView.y = [[(ViewerController*)destination imageView] frame].size.height - flippedLocationInView.y ;
-	NSPoint openGLLocation = [(DCMView*)[(ViewerController*)destination imageView] ConvertFromView2GL:flippedLocationInView];
-	
 	// find the center of the template
-	NSArray *layerPoints = [newLayer points];
-	float layerWidth = [[layerPoints objectAtIndex:1] x] - [[layerPoints objectAtIndex:0] x];
-	float layerHeight = [[layerPoints objectAtIndex:3] y] - [[layerPoints objectAtIndex:0] y];
+	NSSize imageSize = [image size];
+	NSPoint imageCenter = NSMakePoint(imageSize/2);
+	NSPoint origin;
+	if ([templat origin:&origin forDirection:_viewDirection]) { // origin in inches
+		if (_flipTemplatesHorizontally)
+			origin.x = [image originalInchSize].width-origin.x;
+		imageCenter = [image convertPointFromPageInches:origin];
+		imageCenter.y = imageSize.height-imageCenter.y;
+	}
 	
-	// as the template is initialy placed on the origin, the shift is equal to the mouse location
-	NSPoint shift = openGLLocation;
-	shift.x -= layerWidth/2.0;
-	shift.y -= layerHeight/2.0;
+	NSArray *layerPoints = [newLayer points];
+	NSPoint layerSize = [[layerPoints objectAtIndex:2] point] - [[layerPoints objectAtIndex:0] point];
+	
+	NSPoint layerCenter = imageCenter/imageSize*layerSize;
+	[[newLayer points] addObject:[MyPoint point:layerCenter]];
+	[[newLayer points] addObject:[MyPoint point:layerCenter+NSMakePoint(1,0)]];
 	
 	[newLayer setROIMode:ROI_selected]; // in order to make the roiMove method possible
-	[newLayer roiMove:shift :YES];
-//	[newLayer setROIMode:ROI_sleep]; // ? not sure... 
+	[newLayer roiMove:p-layerCenter :YES];
 	
 	// set the textual data
 	[newLayer setName:[templat name]];
@@ -412,6 +410,29 @@
 	if([lines objectAtIndex:2]) [newLayer setTextualBoxLine3:[lines objectAtIndex:2]];
 	if([lines objectAtIndex:3]) [newLayer setTextualBoxLine4:[lines objectAtIndex:3]];
 	if([lines objectAtIndex:4]) [newLayer setTextualBoxLine5:[lines objectAtIndex:4]];
+	
+	return newLayer;
+}
+
+-(void)performDragOperation:(NSNotification *)notification {
+	NSDictionary* userInfo = [notification userInfo];
+	id <NSDraggingInfo> operation = [userInfo valueForKey:@"id<NSDraggingInfo>"];
+
+	if (![[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"])
+		return; // no ArthroplastyTemplate pointer available
+	if ([operation draggingSource] != _pdfView && [operation draggingSource] != _familiesTableView)
+		return;
+	
+	ViewerController* destination = [notification object];
+	
+	ArthroplastyTemplate* templat; [[[operation draggingPasteboard] dataForType:@"ArthroplastyTemplate*"] getBytes:&templat length:sizeof(ArthroplastyTemplate*)];
+
+	// find the location of the mouse in the OpenGL view
+	NSPoint openGLLocation = [[destination imageView] ConvertFromNSView2GL:[[destination imageView] convertPoint:[operation draggingLocation] fromView:NULL]];
+	
+	[self createROIFromTemplate:templat inViewer:destination centeredAt:openGLLocation];
+	
+	[[destination window] makeKeyWindow];
 }
 
 - (NSRect)addMargin:(int)pixels toRect:(NSRect)rect;

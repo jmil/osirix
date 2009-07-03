@@ -27,9 +27,7 @@
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewerController];
 }
 
-- (long)filterImage:(NSString*) menuName {
-	[self initialize];
-
+- (long)filterImage:(NSString*)menuName {
 	if ([[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] intValue] < 5607) {
 		NSAlert* alert = [NSAlert alertWithMessageText:@"The OsiriX application you are running is out of date." defaultButton:@"Close" alternateButton:NULL otherButton:NULL informativeTextWithFormat:@"OsiriX 3.6 is necessary for this plugin to execute."];
 		[alert beginSheetModalForWindow:[viewerController window] modalDelegate:NULL didEndSelector:NULL contextInfo:NULL];
@@ -37,14 +35,19 @@
 	}
 	
 	[self initialize];
+	ArthroplastyTemplatingStepByStepController* window = [self windowControllerForViewer:viewerController];
+	if (window) {
+		[window showWindow:self];
+		return 0;
+	}
 	
 	if ([[[viewerController roiList:0] objectAtIndex:0] count])
 		if (!NSRunAlertPanel(@"Arthroplasty Templating II", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL))
 			return 0;
 	
-	ArthroplastyTemplatingStepByStepController* window = [[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:window];
-	[_windows addObject:window];
+	window = [[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:[window window]];
+	[_windows addObject:[window window]];
 	[window showWindow:self];
 	
 	return 0;
@@ -55,15 +58,15 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:[notification object]];
 }
 
--(ArthroplastyTemplatingStepByStepController*)windowForViewer:(ViewerController*)viewer {
-	for (ArthroplastyTemplatingStepByStepController* window in _windows)
-		if ([window viewerController] == viewer)
-			return window;
+-(ArthroplastyTemplatingStepByStepController*)windowControllerForViewer:(ViewerController*)viewer {
+	for (NSWindow* window in _windows)
+		if ([[window delegate] viewerController] == viewer)
+			return [window delegate];
 	return NULL;
 }
 
 -(BOOL)handleEvent:(NSEvent*)event forViewer:(ViewerController*)controller {
-	ArthroplastyTemplatingStepByStepController* window = [self windowForViewer:controller];
+	ArthroplastyTemplatingStepByStepController* window = [self windowControllerForViewer:controller];
 	if (window)
 		return [window handleViewerEvent:event];
 	return NO;

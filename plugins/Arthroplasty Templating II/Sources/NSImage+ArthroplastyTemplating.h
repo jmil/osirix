@@ -6,11 +6,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#include <boost/numeric/ublas/matrix.hpp>
 
 
 @interface NSBitmapImageRep (ArthroplastyTemplating)
 
 -(void)ATMask:(float)level;
+-(NSBitmapImageRep*)smoothen:(NSUInteger)margin;
+//-(NSBitmapImageRep*)convolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;
+//-(NSBitmapImageRep*)fftConvolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;
 
 @end
 
@@ -24,13 +28,18 @@
 @end
 
 @interface ATImage : NSImage {
+	NSRect _portion;
 	NSSize _inchSize;
 }
 
 @property NSSize inchSize;
+@property NSRect portion;
 
 -(id)initWithSize:(NSSize)size inches:(NSSize)inches;
+-(id)initWithSize:(NSSize)size inches:(NSSize)inches portion:(NSRect)portion;
 -(ATImage*)crop:(NSRect)rect;
+-(NSPoint)convertPointFromPageInches:(NSPoint)p;
+-(NSSize)originalInchSize;
 -(float)resolution;
 
 @end

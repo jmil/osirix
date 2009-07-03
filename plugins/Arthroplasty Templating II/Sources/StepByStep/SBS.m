@@ -11,7 +11,7 @@
 #import "SBSView.h"
 
 @implementation SBS
-@synthesize delegate = _delegate, currentStep = _currentStep;
+@synthesize delegate = _delegate, currentStep = _currentStep, view = _view;
 
 -(id)init {
 	self = [super init];

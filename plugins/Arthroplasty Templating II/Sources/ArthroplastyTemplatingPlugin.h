@@ -17,6 +17,6 @@
 
 @property(readonly) ArthroplastyTemplatingWindowController* templatesWindowController;
 
--(ArthroplastyTemplatingStepByStepController*)windowForViewer:(ViewerController*)viewer;
+-(ArthroplastyTemplatingStepByStepController*)windowControllerForViewer:(ViewerController*)viewer;
 
 @end

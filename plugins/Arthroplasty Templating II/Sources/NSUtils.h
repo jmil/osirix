@@ -3,7 +3,7 @@
 //  Arthroplasty Templating II
 //
 //  Created by Alessandro Volz on 6/25/09.
-//  Copyright 2009 HUG. All rights reserved.
+//  Copyright 2009 OsiriX Foundation. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -13,17 +13,46 @@ extern NSString* NoInterceptionException;
 
 CGFloat NSSign(CGFloat f);
 
+NSSize operator-(const NSSize& s);						// -[x,y] = [-x,-y]
+NSSize operator+(const NSSize& s1, const NSSize& s2);	// [x,y]+[X,Y] = [x+X,y+Y]
+NSSize operator-(const NSSize& s1, const NSSize& s2);	// [x,y]-[X,Y] = -[X,Y]+[x,y] = [x-X,y-Y]
+NSSize operator*(const NSSize& s1, const NSSize& s2);
+NSSize operator/(const NSSize& s1, const NSSize& s2);
+BOOL operator==(const NSSize& s1, const NSSize& s2);
+BOOL operator!=(const NSSize& s1, const NSSize& s2);
+
+NSSize operator+(const NSSize& s, const CGFloat f);
+NSSize operator*(const CGFloat f, const NSSize& s);		// [x,y]*d = [x*d,y*d]
+NSSize operator/(const CGFloat f, const NSSize& s);
+NSSize operator*(const NSSize& s, const CGFloat f);
+NSSize operator/(const NSSize& s, const CGFloat f);
 
 NSPoint operator-(const NSPoint& p);						// -[x,y] = [-x,-y]
 NSPoint operator+(const NSPoint& p1, const NSPoint& p2);	// [x,y]+[X,Y] = [x+X,y+Y]
 NSPoint operator-(const NSPoint& p1, const NSPoint& p2);	// [x,y]-[X,Y] = -[X,Y]+[x,y] = [x-X,y-Y]
-NSPoint operator/(const NSPoint& p, const CGFloat f);		// [x,y]/d = [x/d,y/d]
+NSPoint operator*(const NSPoint& p1, const NSPoint& p2);
+NSPoint operator/(const NSPoint& p1, const NSPoint& p2);
 BOOL operator==(const NSPoint& p1, const NSPoint& p2);
 BOOL operator!=(const NSPoint& p1, const NSPoint& p2);
 
+NSPoint operator*(const CGFloat f, const NSPoint& p);
+NSPoint operator/(const CGFloat f, const NSPoint& p);
+NSPoint operator*(const NSPoint& p, const CGFloat f);		// [x,y]*d = [x*d,y*d]
+NSPoint operator/(const NSPoint& p, const CGFloat f);		// [x,y]/d = [x/d,y/d]
+
+NSPoint NSMakePoint(const NSSize& s);
+NSSize operator+(const NSSize& s, const NSPoint& p);
+NSPoint operator+(const NSPoint& p, const NSSize& s);
+NSSize operator-(const NSSize& s, const NSPoint& p);
+NSPoint operator-(const NSPoint& p, const NSSize& s);
+NSSize operator*(const NSSize& s, const NSPoint& p);
+NSPoint operator*(const NSPoint& p, const NSSize& s);
+NSSize operator/(const NSSize& s, const NSPoint& p);
+NSPoint operator/(const NSPoint& p, const NSSize& s);
+
 CGFloat NSDistance(const NSPoint& p1, const NSPoint& p2);
 CGFloat NSAngle(const NSPoint& p1, const NSPoint& p2);
-#define NSMiddle(p1,p2) ((p1+p2)/2)
+NSPoint NSMiddle(const NSPoint& p1, const NSPoint& p2);
 
 
 typedef struct _NSVector : _NSPoint {

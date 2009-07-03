@@ -9,14 +9,19 @@
 #include <Accelerate/Accelerate.h>
 #include <vector>
 #include <algorithm>
+#include <boost/numeric/ublas/matrix.hpp>
+//#include <fftw3.h>
+//#include <complex>
+#import "NSUtils.h"
 
 @implementation ATImage
-@synthesize inchSize = _inchSize;
+@synthesize inchSize = _inchSize, portion = _portion;
 
 -(id)initWithContentsOfFile:(NSString*)path {
 	self = [super initWithContentsOfFile:path];
 	NSSize size = [self size];
 	_inchSize = NSMakeSize(size.width/72, size.height/72);
+	_portion.size = NSMakeSize(1,1);
 	return self;
 }
 
@@ -24,6 +29,20 @@
 	self = [super initWithSize:size];
 	_inchSize = inches;
 	return self;
+}
+
+-(id)initWithSize:(NSSize)size inches:(NSSize)inches portion:(NSRect)portion {
+	self = [self initWithSize:size inches:inches];
+	_portion = portion;
+	return self;
+}
+
+-(NSSize)originalInchSize {
+	return _inchSize/_portion.size;
+}
+
+-(NSPoint)convertPointFromPageInches:(NSPoint)p {
+	return (p-_portion.origin*[self originalInchSize])*[self resolution];
 }
 
 -(void)setSize:(NSSize)size {
@@ -36,7 +55,11 @@
 -(ATImage*)crop:(NSRect)cropRect {
 	NSSize size = [self size];
 	
-	ATImage* croppedImage = [[ATImage alloc] initWithSize:cropRect.size inches:NSMakeSize(_inchSize.width/size.width*cropRect.size.width, _inchSize.height/size.height*cropRect.size.height)];
+	NSRect portion;
+	portion.size = _portion.size*(cropRect.size/size);// NSMakeSize(_portion.size.width*(cropRect.size.width/size.width), _portion.size.height*(cropRect.size.height/size.height));
+	portion.origin = _portion.origin+_portion.size*(cropRect.origin/size);//, _portion.origin.y+_portion.size.height*(cropRect.origin.y/size.height));
+	
+	ATImage* croppedImage = [[ATImage alloc] initWithSize:cropRect.size inches:NSMakeSize(_inchSize.width/size.width*cropRect.size.width, _inchSize.height/size.height*cropRect.size.height) portion:portion];
 	
 	[croppedImage lockFocus];
 	[self compositeToPoint:NSZeroPoint fromRect:cropRect operation:NSCompositeSourceOver fraction:0];
@@ -54,8 +77,6 @@
 
 
 @implementation NSImage (ArthroplastyTemplating)
-
-
 
 - (void)flipImageHorizontally {
 	// dimensions
@@ -144,8 +165,6 @@ struct P {
 	P(unsigned x, unsigned y) : x(x), y(y) {}
 };
 
-#include <iostream>
-
 -(void)ATMask:(float)level {
 	NSSize size = [self size];
 	unsigned width = size.width, height = size.height;
@@ -193,14 +212,119 @@ struct P {
 
 
 
+-(NSBitmapImageRep*)smoothen:(NSUInteger)kernelSize {
+	return self;;
+	
+	assert(kernelSize%2 == 1 && [self bitsPerSample] == 8 && [self samplesPerPixel] == 4);
+	
+	NSSize selfSize = [self size];
+	vImage_Buffer selfBuff = {[self bitmapData], selfSize.width, selfSize.height, [self bytesPerRow]};
+	
+	NSSize outputSize = selfSize;
+	NSBitmapImageRep* outputBitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:outputSize.width pixelsHigh:outputSize.height bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSCalibratedRGBColorSpace bytesPerRow:outputSize.width*4 bitsPerPixel:32];
+	vImage_Buffer outputBuff = {[outputBitmap bitmapData], outputSize.width, outputSize.height, [outputBitmap bytesPerRow]};
+	
+	Pixel_8888 backgroundColor = {0,0,0,0};
+	vImageBoxConvolve_ARGB8888(&selfBuff, &outputBuff, NULL, 0, 0, kernelSize, kernelSize, backgroundColor, kvImageBackgroundColorFill);
+	
+	return outputBitmap;
+}
 
+/*-(NSBitmapImageRep*)convolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel {
+	const NSSize filterSize = NSMakeSize(filter.size1(), filter.size2());
+	assert(int(filterSize.width)%2 == 1 && int(filterSize.height)%2 == 1); // only for odd sizes
+	const int offsetX = (filterSize.width-1)/2, offsetY = (filterSize.height-1)/2;
+	const NSSize originalSize = [self size], size = NSMakeSize(originalSize.width+filterSize.width-1, originalSize.height+filterSize.height-1);
+	
+	const NSUInteger spp = [self samplesPerPixel];
+	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:[self bitsPerSample] samplesPerPixel:spp hasAlpha:[self hasAlpha] isPlanar:[self isPlanar] colorSpaceName:[self colorSpaceName] bitmapFormat:[self bitmapFormat] bytesPerRow:0 bitsPerPixel:[self bitsPerPixel]];
+	
+	for (unsigned x = 0; x < size.width; ++x)
+		for (unsigned y = 0; y < size.height; ++y) {
+			double pixeld[spp]; memset(pixeld, 0, sizeof(double)*spp);
+			for (unsigned xi = 0; xi < filterSize.width; ++xi)
+				for (unsigned yi = 0; yi < filterSize.height; ++yi) {
+					const float filterValue = filter(xi,yi);
+					const int xo = int(x)-offsetX+xi, yo = int(y)-offsetY+yi;
+					NSUInteger pixel[spp], *pixelp = pixel;
+					if (xo >= 0 && yo >= 0 && xo < originalSize.width && yo < originalSize.height)
+						[self getPixel:pixel atX:xo y:yo];
+					else pixelp = fillPixel;
+					for (unsigned s = 0; s < spp; ++s)
+						pixeld[s] += filterValue*pixelp[s];
+				}
 
+			NSUInteger pixel[spp];
+			for (unsigned s = 0; s < spp; ++s)
+				pixel[s] = pixeld[s];
+			[bitmap setPixel:pixel atX:x y:y];
+		}
+	
+	return [bitmap autorelease];
+}
 
-
-
-
-
-
+-(NSBitmapImageRep*)fftConvolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel {
+	const NSSize filterSize = NSMakeSize(filter.size1(), filter.size2());
+	assert(int(filterSize.width)%2 == 1 && int(filterSize.height)%2 == 1); // only for odd sizes
+	const int offsetX = (filterSize.width-1)/2, offsetY = (filterSize.height-1)/2;
+	const NSSize originalSize = [self size], size = NSMakeSize(originalSize.width+filterSize.width-1, originalSize.height+filterSize.height-1);
+	
+	const NSUInteger spp = [self samplesPerPixel];
+	boost::numeric::ublas::matrix<float> layers[spp];
+	for (unsigned s = 0; s < spp; ++s)
+		layers[s].resize(size.width, size.height);
+	boost::numeric::ublas::matrix<float> filterPadded(filter);
+	filterPadded.resize(size.width, size.height, YES);
+	for (unsigned x = 0; x < size.width; ++x)
+		for (unsigned y = 0; y < size.height; ++y) {
+			const int xo = int(x)-offsetX, yo = int(y)-offsetY;
+			NSUInteger pixel[spp], *pixelp = pixel;
+			if (xo >= 0 && yo >= 0 && xo < originalSize.width && yo < originalSize.height) {
+				[self getPixel:pixel atX:x y:y];
+			} else pixelp = fillPixel;
+			for (unsigned s = 0; s < spp; ++s)
+				layers[s](x,y) = pixelp[s];
+			if (x >= filterSize.width || y >= filterSize.height)
+				filterPadded(x,y) = 0;
+		}
+	
+	boost::numeric::ublas::matrix< std::complex<float> > filterPaddedFreq(size.width, size.height), layersFreq[spp];
+	fftwf_plan plan = fftwf_plan_dft_r2c_2d(size.width, size.height, &filterPadded(0,0), (float(*)[2])&filterPaddedFreq(0,0), FFTW_ESTIMATE);
+	fftwf_execute(plan);
+	fftwf_destroy_plan(plan);
+	for (unsigned s = 0; s < spp; ++s) {
+		layersFreq[s].resize(size.width, size.height);
+		plan = fftwf_plan_dft_r2c_2d(size.width, size.height, &layers[s](0,0), (float(*)[2])&layersFreq[s](0,0), FFTW_ESTIMATE);
+		fftwf_execute(plan);
+		fftwf_destroy_plan(plan);
+	}
+	
+	for (unsigned x = 0; x < size.width; ++x)
+		for (unsigned y = 0; y < size.height; ++y) {
+			std::complex<float> f = filterPaddedFreq(x,y);
+			for (unsigned s = 0; s < spp; ++s)
+				layersFreq[s](x,y) *= f;
+		}
+	
+	for (unsigned s = 0; s < spp; ++s) {
+		plan = fftwf_plan_dft_c2r_2d(size.width, size.height, (float(*)[2])&layersFreq[s](0,0), &layers[s](0,0), FFTW_ESTIMATE);
+		fftwf_execute(plan);
+		fftwf_destroy_plan(plan);
+		// normalize
+		layers[s] /= size.width*size.height;
+	}
+	
+	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:size.width pixelsHigh:size.height bitsPerSample:[self bitsPerSample] samplesPerPixel:spp hasAlpha:[self hasAlpha] isPlanar:[self isPlanar] colorSpaceName:[self colorSpaceName] bitmapFormat:[self bitmapFormat] bytesPerRow:0 bitsPerPixel:[self bitsPerPixel]];
+	for (unsigned x = 0; x < size.width; ++x)
+		for (unsigned y = 0; y < size.height; ++y) {
+			NSUInteger pixel[spp];
+			for (unsigned s = 0; s < spp; ++s)
+				pixel[s] = layers[s](x,y);
+			[bitmap setPixel:pixel atX:x y:y];
+		}
+	
+	return bitmap;
+}*/
 
 
 

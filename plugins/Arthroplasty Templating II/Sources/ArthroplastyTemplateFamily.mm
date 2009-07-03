@@ -12,11 +12,11 @@
 @implementation ArthroplastyTemplateFamily
 @synthesize templates = _templates;
 
--(id)initWithTemplate:(ArthroplastyTemplate*)template {
+-(id)initWithTemplate:(ArthroplastyTemplate*)templat {
 	self = [super init];
 	
 	_templates = [[NSMutableArray arrayWithCapacity:8] retain];
-	[self add:template];
+	[self add:templat];
 	
 	return self;
 }
@@ -26,19 +26,29 @@
 	[super dealloc];
 }
 
--(BOOL)matches:(ArthroplastyTemplate*)template {
-	if (![[template manufacturer] isEqualToString:[self manufacturer]]) return NO;
-	if (![[template name] isEqualToString:[self name]]) return NO;
+-(BOOL)matches:(ArthroplastyTemplate*)templat {
+	if (![[templat manufacturer] isEqualToString:[self manufacturer]]) return NO;
+	if (![[templat name] isEqualToString:[self name]]) return NO;
 	return YES;
 }
 
--(void)add:(ArthroplastyTemplate*)template {
-	[_templates addObject:template];
-	[template setFamily:self];
+-(void)add:(ArthroplastyTemplate*)templat {
+	[_templates addObject:templat];
+	[templat setFamily:self];
 }
 
 -(ArthroplastyTemplate*)template:(NSInteger)index {
 	return [_templates objectAtIndex:index];
+}
+
+-(ArthroplastyTemplate*)templateAfter:(ArthroplastyTemplate*)t {
+	return [self template:([_templates indexOfObject:t]+1)%[_templates count]];
+}
+
+-(ArthroplastyTemplate*)templateBefore:(ArthroplastyTemplate*)t {
+	int index = [_templates indexOfObject:t]-1;
+	if (index < 0) index = [_templates count]-1;
+	return [self template:index];
 }
 
 -(NSString*)fixation {

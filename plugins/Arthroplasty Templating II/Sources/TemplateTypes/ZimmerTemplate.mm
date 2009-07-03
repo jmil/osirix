@@ -7,6 +7,8 @@
 
 #import "ZimmerTemplate.h"
 #import "NSString+Trim.h"
+#import "NSUtils.h"
+#include <sstream>
 
 @implementation ZimmerTemplate
 
@@ -74,6 +76,26 @@
 
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction {
 	return [[[_path stringByDeletingLastPathComponent] stringByAppendingPathComponent:direction==ArthroplastyTemplateAnteriorPosteriorDirection? [_properties objectForKey:@"PDF_FILE_AP"] : [_properties objectForKey:@"PDF_FILE_ML"]] retain];
+}
+
+-(BOOL)origin:(NSPoint*)point forDirection:(ArthroplastyTemplateViewDirection)direction {
+	NSString *xs, *ys;
+	if (direction == ArthroplastyTemplateAnteriorPosteriorDirection) {
+		xs = [_properties objectForKey:@"AP_ORIGIN_X"];
+		ys = [_properties objectForKey:@"AP_ORIGIN_Y"];
+	} else {
+		xs = [_properties objectForKey:@"ML_ORIGIN_X"];
+		ys = [_properties objectForKey:@"ML_ORIGIN_Y"];
+	}
+	
+	if (!xs || !ys || ![xs length] || ![ys length])
+		return NO;
+
+	std::istringstream([xs UTF8String]) >> point->x;
+	std::istringstream([ys UTF8String]) >> point->y;
+	*point = *point / 25.4; // 1in = 25.4mm, ORIGIN data in mm
+
+	return YES;
 }
 
 -(NSImage*)imageForDirection:(ArthroplastyTemplateViewDirection)direction {

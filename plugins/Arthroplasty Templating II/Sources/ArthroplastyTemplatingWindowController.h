@@ -9,7 +9,7 @@
 #import "SelectablePDFView.h"
 #import "ArthroplastyTemplate.h"
 
-@class ArthroplastyTemplatingTableView;
+@class ArthroplastyTemplatingTableView, ATImage, ROI, ViewerController;
 @class ArthroplastyTemplateFamily, ArthroplastyTemplatingPlugin;
 #import "ArthroplastyTemplatingUserDefaults.h"
 
@@ -43,7 +43,7 @@
 -(ArthroplastyTemplateFamily*)familyAtIndex:(int)index;
 -(ArthroplastyTemplateFamily*)selectedFamily;
 -(NSString*)pdfPathForFamilyAtIndex:(int)index;
--(NSImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat;
+-(ATImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat;
 -(IBAction)searchFilterChanged:(id)sender;
 -(BOOL)setFilter:(NSString*)string;
 
@@ -52,6 +52,7 @@
 -(IBAction)setViewDirection:(id)sender;
 -(IBAction)flipLeftRight:(id)sender;
 
+-(ROI*)createROIFromTemplate:(ArthroplastyTemplate*)templat inViewer:(ViewerController*)destination centeredAt:(NSPoint)p;
 -(void)dragTemplate:(ArthroplastyTemplate*)templat startedByEvent:(NSEvent*)event onView:(NSView*)view;
 
 -(NSRect)addMargin:(int)pixels toRect:(NSRect)rect;

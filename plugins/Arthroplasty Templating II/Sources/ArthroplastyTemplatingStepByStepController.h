@@ -13,9 +13,9 @@
 #import "DCMView.h"
 #import "DCMPix.h"
 #import "ROI.h"
-
 #import "ArthroplastyTemplate.h"
 @class ArthroplastyTemplatingPlugin;
+
 
 @interface ArthroplastyTemplatingStepByStepController : NSWindowController {
 	ArthroplastyTemplatingPlugin* _plugin;
@@ -55,7 +55,7 @@
 	
 	IBOutlet NSButton* _sendToPACSButton;
 	NSString* _imageToSendName;
-	
+	NSEvent* _isMyMouse;
 }
 
 
