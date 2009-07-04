@@ -1,3 +1,4 @@
+- AutoCropping when using scissor in 3D VR or 3D MIP -> Between 20% to 100% faster rendering speed
 - minIP for 3D MPR
 - displaySamePatientWithColorBackground preferences
 - C-GET SCU/SCP (Dynamic IP address DICOM transfers)
@@ -9,9 +10,9 @@
 - Support for OpenJPEG JPEG2000 encoding
 - OpenJPEG is 2.2x times faster : OpenJPEG is now faster than JasperLib
 - REBUILD GANTRY 1.1
-- AutoCropping when using scissor in 3D VR or 3D MIP -> Faster Rendering Speed
 
 - Option to include 3D viewers in Tile Window
+- Test PET-CT VR
 
 - DICOM TLS
 - Merge SR with VR : add SR option
