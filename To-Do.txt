@@ -12,7 +12,7 @@
 - REBUILD GANTRY 1.1
 
 - Option to include 3D viewers in Tile Window
-- Test PET-CT VR
+- Test PET-CT VR, 4D VR
 
 - DICOM TLS
 - Merge SR with VR : add SR option
