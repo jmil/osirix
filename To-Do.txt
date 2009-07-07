@@ -8,6 +8,7 @@
 - Better compression/decompression performances when receiving DICOM images
 - Soundex (search on pronunciation, instead of orthography) option when searching for patient names
 - Series comments/state displayed in Web Server
+- Better printing resolution for large images
 
 - REBUILD GANTRY 1.1
 
