@@ -39,40 +39,12 @@ QA
 ----------------------------------------
 Cleaning Notes
 ----------------------------------------
-- spelling of "raw" - should be lower case
-	in "File Menu > Import > Import Raw Data..." - correct spelling
-	in "File Menu > Export > Export to RAW" - wrong spelling
-- PagePad (toolbar item of the 2D viewer)
-	- place this in a plugin
-	- remove from main code
 - ROI Manager
 	renaming a ROI from the ROI Manager will rename all ROIs with the same name
 		OK in general
 		NOT OK if the ROI name is "Unnamed" (Default) because all other "Unnamed" ROIs will be renamed
-- WL / WW drop-down menu (in the 2D viewer toolbar)
-	- the presets are labeled 1, 2, 3, ..., 9, 10, ... but only 1-9 work for key board shortcuts
-		-> remove the label for 10 and up
-- Convolutions filters
-	- there are 2 "highpass" filters with (almost) the same name :
-		- highpass
-		- Highpass
-	rename them to :
-		- Highpass 5x5
-		- Highpass 3x3
 - Mouse button function : ROIs
 	What should we do of the "Axis" and "Dynamic Angle" ROIs ??
-- Broadcast
-	We should name it "iChat"
-- Key image (in the 2D viewer toolbar)
-	Remove the Key Object Note : does not work properly
-- Cobb's Angle
-	The name of this tool in the toolbar is "Cobb's". Should be "Cobb" or "Cobb Angle"
-
-- 3D MPR
-	- (BUG ID 2798284) the mouse tools appear twice in the toolbar customization panel
-	- (BUG ID 2798286) not possible to choose the repulsor or the text-ROI (ok), but if using the keyboard shortcuts for these tools (R) and (T), it selects them...
-	- (BUG ID 2798291) Shadings: not possible to add presets although the GUI is there
-
 ----------------------------------------
 
 Cours
