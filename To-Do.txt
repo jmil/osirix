@@ -13,6 +13,7 @@
 - REBUILD GANTRY 1.1
 
 - Option to include 3D viewers in Tile Window
+- test DCMView.m change = 1
 
 - DICOM TLS
 - Merge SR with VR : add SR option
