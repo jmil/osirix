@@ -15,6 +15,8 @@
 - Option to include 3D viewers in Tile Window
 - test DCMView.m change = 1
 
+- Shared database: effect on C-FIND, store image in background to 'default' db?
+
 - DICOM TLS
 - Merge SR with VR : add SR option
 - ROI Manager (series level)
