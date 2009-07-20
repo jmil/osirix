@@ -7,7 +7,7 @@
 
 #import "NSImage+ArthroplastyTemplating.h"
 #include <Accelerate/Accelerate.h>
-#include <vector>
+#include <stack>
 #include <algorithm>
 #include <boost/numeric/ublas/matrix.hpp>
 //#include <fftw3.h>
@@ -179,28 +179,28 @@ struct P {
 	BOOL visited[width][height];
 	memset(visited, NO, sizeof(visited));
 
-	std::vector<P> ps;
+	std::stack<P> ps;
 	for (unsigned x = 0; x < width; ++x) {
-		ps.push_back(P(x, 0));
-		ps.push_back(P(x, height-1));
+		ps.push(P(x, 0));
+		ps.push(P(x, height-1));
 	} for (unsigned y = 1; y < height-1; ++y) {
-		ps.push_back(P(0, y));
-		ps.push_back(P(width-1, y));
+		ps.push(P(0, y));
+		ps.push(P(width-1, y));
 	}
 	
 	while (!ps.empty()) {
-		P p = ps.back();
-		ps.pop_back();
+		P p = ps.top();
+		ps.pop();
 		
 		if (visited[p.x][p.y]) continue;
 		visited[p.x][p.y] = YES;
 		
 		if (!v[p.x][p.y]) {
 			mask[p.x][p.y] = NO;
-			if (p.x > 0 && !visited[p.x-1][p.y]) ps.push_back(P(p.x-1, p.y));
-			if (p.y > 0 && !visited[p.x][p.y-1]) ps.push_back(P(p.x, p.y-1));
-			if (p.x < width-1 && !visited[p.x+1][p.y]) ps.push_back(P(p.x+1, p.y));
-			if (p.y < height-1 && !visited[p.x][p.y+1]) ps.push_back(P(p.x, p.y+1));
+			if (p.x > 0 && !visited[p.x-1][p.y]) ps.push(P(p.x-1, p.y));
+			if (p.y > 0 && !visited[p.x][p.y-1]) ps.push(P(p.x, p.y-1));
+			if (p.x < width-1 && !visited[p.x+1][p.y]) ps.push(P(p.x+1, p.y));
+			if (p.y < height-1 && !visited[p.x][p.y+1]) ps.push(P(p.x, p.y+1));
 		}
 	}
 	

@@ -35,5 +35,6 @@ typedef enum {
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction;
 -(BOOL)origin:(NSPoint*)point forDirection:(ArthroplastyTemplateViewDirection)direction;
 -(NSArray*)textualData;
+-(NSArray*)rotationPointsForDirection:(ArthroplastyTemplateViewDirection)direction;
 
 @end

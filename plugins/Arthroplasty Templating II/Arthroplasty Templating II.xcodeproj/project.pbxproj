@@ -109,6 +109,8 @@
 		597AA8790FE7BF980035E3AA /* SBSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBSView.m; sourceTree = "<group>"; };
 		597AA87A0FE7BF980035E3AA /* SBSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSView.h; sourceTree = "<group>"; };
 		597AA87B0FE7BF980035E3AA /* SBS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBS.h; sourceTree = "<group>"; };
+		598DD85610037B7C00B6AD96 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		598DD85710037B7C00B6AD96 /* Resources.mm.model */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Resources.mm.model; sourceTree = "<group>"; };
 		598E1E2A0FFB3E0200BC313C /* ArthroplastyTemplate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplate.mm; sourceTree = "<group>"; };
 		598E1E2C0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingPlugin.mm; sourceTree = "<group>"; };
 		598E1E2E0FFB3E4D00BC313C /* ArthroplastyTemplatingTableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingTableView.mm; sourceTree = "<group>"; };
@@ -273,6 +275,8 @@
 				598E1E340FFB3EA400BC313C /* NSButton+ArthroplastyTemplating.mm */,
 				59264AB80FF39A7D006D4B11 /* NSUtils.h */,
 				59264AB90FF39A7D006D4B11 /* NSUtils.mm */,
+				598DD85610037B7C00B6AD96 /* Resources.h */,
+				598DD85710037B7C00B6AD96 /* Resources.mm.model */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

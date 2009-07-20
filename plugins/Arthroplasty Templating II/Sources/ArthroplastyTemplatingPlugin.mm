@@ -9,6 +9,7 @@
 #import "ArthroplastyTemplatingStepByStepController.h"
 #import "ArthroplastyTemplatingWindowController.h"
 #import "BrowserController.h"
+#import "Notifications.h"
 
 
 @implementation ArthroplastyTemplatingPlugin
@@ -46,6 +47,7 @@
 			return 0;
 	
 	window = [[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:OsirixCloseViewerNotification object:viewerController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:[window window]];
 	[_windows addObject:[window window]];
 	[window showWindow:self];
@@ -63,6 +65,10 @@
 		if ([[window delegate] viewerController] == viewer)
 			return [window delegate];
 	return NULL;
+}
+
+-(void)viewerWillClose:(NSNotification*)notification {
+	[[[self windowControllerForViewer:[notification object]] window] close];
 }
 
 -(BOOL)handleEvent:(NSEvent*)event forViewer:(ViewerController*)controller {

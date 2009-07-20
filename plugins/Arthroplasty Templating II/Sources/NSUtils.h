@@ -22,6 +22,7 @@ BOOL operator==(const NSSize& s1, const NSSize& s2);
 BOOL operator!=(const NSSize& s1, const NSSize& s2);
 
 NSSize operator+(const NSSize& s, const CGFloat f);
+NSSize operator-(const NSSize& s, const CGFloat f);
 NSSize operator*(const CGFloat f, const NSSize& s);		// [x,y]*d = [x*d,y*d]
 NSSize operator/(const CGFloat f, const NSSize& s);
 NSSize operator*(const NSSize& s, const CGFloat f);
@@ -35,6 +36,8 @@ NSPoint operator/(const NSPoint& p1, const NSPoint& p2);
 BOOL operator==(const NSPoint& p1, const NSPoint& p2);
 BOOL operator!=(const NSPoint& p1, const NSPoint& p2);
 
+NSPoint operator+(const NSPoint& p, const CGFloat f);
+NSPoint operator-(const NSPoint& p, const CGFloat f);
 NSPoint operator*(const CGFloat f, const NSPoint& p);
 NSPoint operator/(const CGFloat f, const NSPoint& p);
 NSPoint operator*(const NSPoint& p, const CGFloat f);		// [x,y]*d = [x*d,y*d]
@@ -79,3 +82,6 @@ NSLine NSMakeLine(const NSPoint& p1, const NSPoint& p2);
 CGFloat NSAngle(const NSLine& l);
 BOOL NSParallel(const NSLine& l1, const NSLine& l2);
 NSPoint operator*(const NSLine& l1, const NSLine& l2);		// intersection of lines
+CGFloat NSLineYAtX(const NSLine& l1, CGFloat x);
+
+NSRect NSMakeRect(const NSPoint& origin, const NSSize& size);

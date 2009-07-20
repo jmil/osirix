@@ -56,6 +56,10 @@ NSSize operator+(const NSSize& s, const CGFloat f) {
 	return NSMakeSize(s.width+f, s.height+f);
 }
 
+NSSize operator-(const NSSize& s, const CGFloat f) {
+	return s+(-f);
+}
+
 NSSize operator*(const CGFloat f, const NSSize& s) {
 	return NSMakeSize(f*s.width, f*s.height);
 }
@@ -104,6 +108,14 @@ BOOL operator!=(const NSPoint& p1, const NSPoint& p2) {
 }
 
 // NSPoint & CGFloat
+
+NSPoint operator+(const NSPoint& p, const CGFloat f) {
+	return NSMakePoint(p.x+f, p.y+f);
+}
+
+NSPoint operator-(const NSPoint& p, const CGFloat f) {
+	return p+(-f);
+}
 
 NSPoint operator*(const CGFloat f, const NSPoint& p) {
 	return NSMakePoint(f*p.x, f*p.y);
@@ -236,4 +248,16 @@ NSPoint operator*(const NSLine& l1, const NSLine& l2) {
 		[NSException raise:NoInterceptionException format:@"The two lines are parallel and therefore have no interception."];
 	CGFloat u = (l2.direction.x*(l1.origin.y-l2.origin.y)-l2.direction.y*(l1.origin.x-l2.origin.x))/(l2.direction.y*l1.direction.x-l2.direction.x*l1.direction.y);
 	return NSMakePoint(l1.origin.x+u*l1.direction.x, l1.origin.y+u*l1.direction.y);
+}
+
+CGFloat NSLineYAtX(const NSLine& l, CGFloat x) {
+	if (l.direction.x)
+		return l.origin.y+l.direction.y/l.direction.x*x;
+	else return l.origin.y; // TODO: return NAN or exception
+}
+
+// NSRect
+
+NSRect NSMakeRect(const NSPoint& origin, const NSSize& size) {
+	return NSMakeRect(origin.x, origin.y, size.width, size.height);
 }

@@ -27,8 +27,10 @@
 	
 	NSMutableSet* _knownRois;
 	ROI *_magnificationLine, *_horizontalAxis, *_femurAxis, *_landmark1, *_landmark2, *_femurRoi;
-	ROI *_femurLandmark, *_landmark1Axis, *_landmark2Axis, *_legInequality, *_originalFemurOpacityLayer, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
-	ArthroplastyTemplate *_cupTemplate, *_stemTemplate;
+	ROI *_landmark1Axis, *_landmark2Axis, *_legInequality, *_originalLegInequality, *_originalFemurOpacityLayer, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
+	ROI *_femurLandmark, *_femurLandmarkAxis, *_femurLandmarkOther, *_femurLandmarkOriginal;
+	
+	CGFloat _legInequalityValue, _originalLegInequalityValue;
 	
 	// calibration
 	IBOutlet NSButton *_magnificationRadioCustom, *_magnificationRadioCalibrate;
@@ -39,11 +41,16 @@
 	// cup
 	IBOutlet NSTextField* _cupAngleTextField;
 	float _cupAngle;
+	BOOL _cupRotated;
+	ArthroplastyTemplate *_cupTemplate;
 	// stem
 	IBOutlet NSTextField* _stemAngleTextField;
 	float _stemAngle;
+	BOOL _stemRotated;
+	ArthroplastyTemplate *_stemTemplate;
 	// placement
 	IBOutlet NSPopUpButton* _neckSizePopUpButton;
+	unsigned _stemNeckSizeIndex;
 
 	IBOutlet NSTextField* _verticalOffsetTextField;
 	IBOutlet NSTextField* _horizontalOffsetTextField;
@@ -84,13 +91,11 @@
 
 #pragma mark Steps specific Methods
 
--(void)computeMagnification;
--(void)computeVarious;
--(void)computeLegInequality;
--(void)computeOffset;
--(void)updateInfo;
+-(void)adjustStemToCup;
 
 #pragma mark Result
 
+-(void)computeValues;
+-(void)updateInfo;
 
 @end

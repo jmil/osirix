@@ -18,10 +18,14 @@
 #import "NSImage+ArthroplastyTemplating.h"
 #import "ArthroplastyTemplateFamily.h"
 // #include "vImage/Convolution.h"
+#include <vector>
 
 #define kInvalidAngle 666
 #define kInvalidMagnification 0
 
+@interface ArthroplastyTemplatingStepByStepController (Private)
+-(void)adjustStemToCup:(unsigned)index;
+@end
 @implementation ArthroplastyTemplatingStepByStepController
 @synthesize viewerController = _viewerController, magnification = _magnification;
 
@@ -73,6 +77,7 @@
 	[_magnificationCustomFactor setFloatValue:_magnification];
 	[_magnificationCalibrateLength setBackgroundColor:[[self window] backgroundColor]];
 	[_plannersNameTextField setBackgroundColor:[[self window] backgroundColor]];
+	[_magnificationCustomFactor setFloatValue:1.15];
 }
 
 - (void)dealloc {
@@ -129,7 +134,7 @@
 }
 
 // landmark OR horizontal axis has changed
--(BOOL)landmarkChanged:(ROI*)landmark axis:(ROI**)axis {
+-(BOOL)landmarkChanged:(ROI*)landmark axis:(ROI**)axis other:(ROI*)otherLandmark {
 	if (!landmark || [[landmark points] count] != 1 || !_horizontalAxis) {
 		if (*axis) {
 			[self removeRoiFromViewer:*axis];
@@ -156,31 +161,10 @@
 	NSPoint axisP0 = axisPM+horizontalAxisD/2;
 	NSPoint axisP1 = axisPM-horizontalAxisD/2;
 	
-	ROI* otherLandmark = landmark==_landmark1? _landmark2 : _landmark1;
 	if (otherLandmark) {
 		NSPoint otherPM = [[[otherLandmark points] objectAtIndex:0] point];
 		axisP1 = NSMakeLine(axisP0, axisP1) * NSMakeLine(otherPM, !NSMakeVector(axisP0, axisP1));
 		axisP0 = axisPM;
-		
-		// move the distance marker
-		if (!_legInequality) {
-			_legInequality = [[ROI alloc] initWithType:tMesure :[[_horizontalAxis valueForKey:@"pixelSpacingX"] floatValue] :[[_horizontalAxis valueForKey:@"pixelSpacingY"] floatValue] :[[_horizontalAxis valueForKey:@"imageOrigin"] pointValue]];
-			[_legInequality setThickness:1]; [_legInequality setOpacity:.5];
-			[_legInequality setSelectable:NO];
-			[[_viewerController imageView] roiSet:_legInequality];
-			[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_legInequality];
-			[_legInequality release];
-		}
-		
-		NSPoint p0 = (axisP0+axisP1)/2;
-		NSPoint p1 = otherPM + (axisP0-axisP1)/2;
-		if ([[_legInequality points] count]) [[_legInequality points] removeAllObjects];
-		[_legInequality setPoints:[NSArray arrayWithObjects:[MyPoint point:p0], [MyPoint point:p1], NULL]];
-		[_legInequality setName:[NSString stringWithFormat:@"Original Leg Inequality: %.3f cm", [_legInequality MesureLength:NULL]/_magnification]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_legInequality userInfo:NULL];
-	} else if (_legInequality) {
-		[self removeRoiFromViewer:_legInequality];
-		_legInequality = NULL;
 	}
 	
 	if (!newAxis)
@@ -196,6 +180,48 @@
 	}
 	
 	return newAxis; // returns YES if the axis was changed
+}
+
+-(void)updateInequality:(ROI**)axis from:(ROI*)roiFrom to:(ROI*)roiTo name:(NSString*)name positioning:(CGFloat)positioning value:(CGFloat*)value {
+	if (!_horizontalAxis || [[_horizontalAxis points] count] < 2) {
+		if (*axis)
+			[self removeRoiFromViewer:*axis];
+		return;
+	}
+	
+	NSVector horizontalVector = NSMakeVector([[[_horizontalAxis points] objectAtIndex:0] point], [[[_horizontalAxis points] objectAtIndex:1] point]);
+	NSLine lineFrom; if (roiFrom) lineFrom = NSMakeLine([[[roiFrom points] objectAtIndex:0] point], horizontalVector);
+	NSLine lineTo; if (roiTo) lineTo = NSMakeLine([[[roiTo points] objectAtIndex:0] point], horizontalVector);
+	
+	if (roiFrom && roiTo) {
+		if (!*axis) {
+			*axis = [[ROI alloc] initWithType:tMesure :[[_horizontalAxis valueForKey:@"pixelSpacingX"] floatValue] :[[_horizontalAxis valueForKey:@"pixelSpacingY"] floatValue] :[[_horizontalAxis valueForKey:@"imageOrigin"] pointValue]];
+			[*axis setThickness:1]; [*axis setOpacity:.5];
+			[*axis setSelectable:NO];
+			[[_viewerController imageView] roiSet:*axis];
+			[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:*axis];
+			[*axis release];
+		}
+	} else {
+		if (*axis)
+			[self removeRoiFromViewer:*axis];
+		return;
+	}
+	
+	NSLine inequalityLine = NSMakeLine([[[roiFrom points] objectAtIndex:0] point]*(1.0-positioning)+[[[roiTo points] objectAtIndex:0] point]*positioning, !horizontalVector);
+	NSPoint pointFrom = lineFrom*inequalityLine, pointTo = lineTo*inequalityLine;
+	
+	if ([[*axis points] count]) [[*axis points] removeAllObjects];
+	[*axis setPoints:[NSArray arrayWithObjects:[MyPoint point:pointFrom], [MyPoint point:pointTo], NULL]];
+	*value = [*axis MesureLength:NULL]/_magnification;
+	
+	[*axis setName:[NSString stringWithFormat:@"%@: %.3f cm", name, *value]];
+//	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_legInequality userInfo:NULL];
+}
+
+-(void)updateLegInequality {
+	[self updateInequality:&_originalLegInequality from:_landmark1 to:_landmark2 name:@"Original leg inequality" positioning:.5 value:&_originalLegInequalityValue];
+	[self updateInequality:&_legInequality from:_femurLandmark to:_femurLandmarkOther name:@"Leg inequality" positioning:1 value:&_legInequalityValue];
 }
 
 -(void)roiChanged:(NSNotification*)notification {
@@ -256,18 +282,39 @@
 			if (!_stemLayer && [roi type] == tLayerROI) {
 				_stemLayer = roi;
 				_stemTemplate = [[_plugin templatesWindowController] templateAtPath:[roi layerReferenceFilePath]];
+				NSArray* points = [_stemTemplate rotationPointsForDirection:ArthroplastyTemplateAnteriorPosteriorDirection];
+				for (int i = 0; i < [_neckSizePopUpButton numberOfItems]; ++i)
+					[[_neckSizePopUpButton itemAtIndex:i] setEnabled:(i+1 <= (int)[points count])];
 			}
 	}
 	
-	if (roi == _landmark1 || roi == _landmark2 || roi == _horizontalAxis) {
-		[self landmarkChanged:_landmark1 axis:&_landmark1Axis];
-		[self landmarkChanged:_landmark2 axis:&_landmark2Axis];
+	if (roi == _landmark1 || roi == _landmark2 || roi == _horizontalAxis || roi == _femurLandmark) {
+		[self landmarkChanged:_landmark1 axis:&_landmark1Axis other:_landmark2];
+		[self landmarkChanged:_landmark2 axis:&_landmark2Axis other:_landmark1];
+		[self landmarkChanged:_femurLandmark axis:&_femurLandmarkAxis other:_femurLandmarkOther];
+		[self updateLegInequality];
 	}
+
+	if (roi == _cupLayer && [[[_cupLayer points] objectAtIndex:0] point] != NSZeroPoint)
+		if (!_cupRotated && [[_cupLayer points] count] >= 6) {
+			NSRect drawingFrameRect = [[_viewerController imageView] drawingFrameRect];
+			_cupRotated = YES;
+			if ([[[_cupLayer points] objectAtIndex:4] point].x < drawingFrameRect.origin.x+drawingFrameRect.size.width/2) // TODO: find the real threshold
+				[_cupLayer rotate:45 :[[[_cupLayer points] objectAtIndex:4] point]];
+			else [_cupLayer rotate:-45 :[[[_cupLayer points] objectAtIndex:4] point]];
+			[_cupLayer rotate:_horizontalAngle/pi*180 :[[[_cupLayer points] objectAtIndex:4] point]];
+		}
 	
-	[self advanceAfterInput:roi];
+	if (roi == _stemLayer)
+		if (!_stemRotated && [[_stemLayer points] count] >= 6) {
+			_stemRotated = YES;
+			[_stemLayer rotate:(_femurAngle-pi/2)/pi*180 :[[[_stemLayer points] objectAtIndex:4] point]];
+		}
+	
+	[self computeValues];
 }
 
-- (void)roiRemoved:(NSNotification*)notification {
+-(void)roiRemoved:(NSNotification*)notification {
 	ROI *roi = [notification object];
 	
 	[_knownRois removeObject:roi];
@@ -276,50 +323,54 @@
 		_magnificationLine = NULL;
 		[_stepCalibration setIsDone:NO];
 		[_sbs setCurrentStep:_stepCalibration];
-		[self computeMagnification];
 	}
 	
 	if (roi == _horizontalAxis) {
 		_horizontalAxis = NULL;
 		[_stepAxes setIsDone:NO];
 		[_sbs setCurrentStep:_stepAxes];
-		[self computeVarious];
+		[self updateLegInequality];
 	}
 	
 	if (roi == _femurAxis) {
 		_femurAxis = NULL;
 		[_sbs setCurrentStep:_stepAxes];
-		[self computeVarious];
 	}
 	
 	if (roi == _landmark1) {
 		_landmark1 = NULL;
-		[self landmarkChanged:_landmark1 axis:&_landmark1Axis]; // removes _landmark1Axis
+		[self landmarkChanged:_landmark1 axis:&_landmark1Axis other:_landmark2]; // removes _landmark1Axis
 		if (_landmark2) {
 			_landmark1 = _landmark2; _landmark2 = NULL;
 			_landmark1Axis = _landmark2Axis; _landmark2Axis = NULL;
 			[_landmark1 setName:@"Landmark 1"];
-			if (![self landmarkChanged:_landmark1 axis:&_landmark1Axis])
+			if (![self landmarkChanged:_landmark1 axis:&_landmark1Axis other:_landmark2])
 				[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_landmark1 userInfo:NULL];
 		} else
 			[_stepLandmarks setIsDone:NO];
 		[_sbs setCurrentStep:_stepLandmarks];
-		[self computeLegInequality];
+		[self updateLegInequality];
 	}
+	
+	if (roi == _landmark1Axis)
+		_landmark1Axis = NULL;
 	
 	if (roi == _landmark2) {
 		_landmark2 = NULL;
-		[self landmarkChanged:_landmark1 axis:&_landmark1Axis];
-		[self landmarkChanged:_landmark2 axis:&_landmark2Axis];
-		[self computeLegInequality];
+		[self landmarkChanged:_landmark1 axis:&_landmark1Axis other:_landmark2];
+		[self landmarkChanged:_landmark2 axis:&_landmark2Axis other:_landmark1];
+		[self updateLegInequality];
 	}
 	
+	if (roi == _landmark2Axis)
+		_landmark2Axis = NULL;
+
 	if (roi == _femurRoi)
 		_femurRoi = NULL;
 	
 	if (roi == _femurLayer) {
 		_femurLayer = NULL; _femurLandmark = NULL;
-		[self removeRoiFromViewer:_originalFemurOpacityLayer]; _originalFemurOpacityLayer = NULL;
+		[self removeRoiFromViewer:_originalFemurOpacityLayer];
 		[_stepCutting setIsDone:NO];
 		[_sbs setCurrentStep:_stepCutting];
 	}
@@ -329,7 +380,7 @@
 		_cupTemplate = NULL;
 		[_stepCup setIsDone:NO];
 		[_sbs setCurrentStep:_stepCup];
-		[self computeVarious];
+		_cupRotated = NO;
 	}
 	
 	if (roi == _stemLayer) {
@@ -337,13 +388,39 @@
 		_stemTemplate = NULL;
 		[_stepStem setIsDone:NO];
 		[_sbs setCurrentStep:_stepStem];
-		[self computeVarious];
+		_stemRotated = NO;
+		[_neckSizePopUpButton setEnabled:NO];
 	}
 	
 	if (roi == _infoBox)
 		_infoBox = NULL;
-
+	
+	if (roi == _femurLandmark) {
+		_femurLandmark = NULL;
+		[self removeRoiFromViewer:_femurLandmarkAxis];
+		[self updateLegInequality];
+	}
+	
+	if (roi == _femurLandmarkAxis)
+		_femurLandmarkAxis = NULL;
+	
+	if (roi == _femurLandmarkOther)
+		_femurLandmarkOther = NULL;
+	
+	if (roi == _legInequality)
+		_legInequality = NULL;
+	
+	if (roi == _originalLegInequality)
+		_originalLegInequality = NULL;
+	
+	if (roi == _originalFemurOpacityLayer)
+		 _originalFemurOpacityLayer = NULL;
+		
+	if (roi == _femurLandmarkOriginal)
+		_femurLandmarkOriginal = NULL;
+		
 	[self advanceAfterInput:NULL];
+	[self computeValues];
 }
 
 
@@ -395,7 +472,7 @@
 	if ([_sbs currentStep] != step)
 		[sbs setCurrentStep:step];
 
-	BOOL showTemplates = YES, selfKey = NO;
+	BOOL showTemplates = NO, selfKey = NO;
 	int tool = tROISelector;
 
 	if (step == _stepCalibration) {
@@ -405,12 +482,22 @@
 		tool = tMesure;
 	else if (step == _stepLandmarks)
 		tool = t2DPoint;
-	else if (step == _stepCutting)
+	else if (step == _stepCutting) {
 		tool = tPencil;
-	else if (step == _stepCup)
+		if (_femurRoi) {
+			[_femurRoi setOpacity:1];
+			[_femurRoi setSelectable:YES];
+			[_femurRoi setROIMode:ROI_selected];
+			[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_femurRoi userInfo:NULL];
+		}
+	} else if (step == _stepCup)
 		showTemplates = [[_plugin templatesWindowController] setFilter:@"Cup"];
-	else if (step == _stepStem)
+	else if (step == _stepStem) {
+		if (_stemLayer)
+			[_stemLayer setGroupID:0];
 		showTemplates = [[_plugin templatesWindowController] setFilter:@"Stem"];
+	} else if (step == _stepPlacement)
+		[self adjustStemToCup];
 	else if (step == _stepSave)
 		selfKey = YES;
 	
@@ -422,7 +509,7 @@
 	[(ATPanel*)[self window] setCanBecomeKeyWindow:selfKey];
 	if (selfKey)
 		[[self window] makeKeyAndOrderFront:self];
-	else [[_viewerController window] makeKeyAndOrderFront:self];
+	else if (!showTemplates) [[_viewerController window] makeKeyAndOrderFront:self];
 }
 
 -(void)stepByStep:(SBS*)sbs valueChanged:(id)sender {
@@ -438,7 +525,7 @@
 	}
 	// placement
 	if (sender == _neckSizePopUpButton)
-		;
+		[self adjustStemToCup:[_neckSizePopUpButton indexOfSelectedItem]];
 	
 	[self advanceAfterInput:sender];
 }
@@ -453,14 +540,7 @@
 		else [_magnificationCustomFactor performClick:self];
 	}
 	
-	if (sender == _magnificationLine || sender == _magnificationRadioCustom || sender == _magnificationRadioCalibrate || sender == _magnificationCustomFactor || sender == _magnificationCalibrateLength)
-		[self computeMagnification];
-	if (sender == _horizontalAxis || sender == _femurAxis)
-		[self computeVarious];
-	if (sender == _landmark1 || sender == _landmark1)
-		[self computeLegInequality];
-	if (sender == _cupLayer || sender == _stemLayer)
-		[self computeVarious];
+	[_neckSizePopUpButton setEnabled: _stemLayer != NULL];
 
 	
 }
@@ -544,11 +624,13 @@
 		[_femurLayer setOpacity:1];
 		[_femurLayer setDisplayTextualData:NO];
 		
-		ROI* nearestLandmark = [self closestROIFromSet:[NSSet setWithObjects:_landmark1, _landmark2, NULL] toPoints:[_femurRoi points]];
-		_femurLandmark = [[ROI alloc] initWithType:t2DPoint :[[nearestLandmark valueForKey:@"pixelSpacingX"] floatValue] :[[nearestLandmark valueForKey:@"pixelSpacingY"] floatValue] :[[nearestLandmark valueForKey:@"imageOrigin"] pointValue]];
-		[_femurLandmark setROIRect:[nearestLandmark rect]];
-		[_femurLandmark setName:[NSString stringWithFormat:@"%@'",[nearestLandmark name]]]; // same name + prime
+		_femurLandmarkOriginal = [self closestROIFromSet:[NSSet setWithObjects:_landmark1, _landmark2, NULL] toPoints:[_femurRoi points]];
+		_femurLandmark = [[ROI alloc] initWithType:t2DPoint :[[_femurLandmarkOriginal valueForKey:@"pixelSpacingX"] floatValue] :[[_femurLandmarkOriginal valueForKey:@"pixelSpacingY"] floatValue] :[[_femurLandmarkOriginal valueForKey:@"imageOrigin"] pointValue]];
+		[_femurLandmark setROIRect:[_femurLandmarkOriginal rect]];
+		[_femurLandmark setName:[NSString stringWithFormat:@"%@'",[_femurLandmarkOriginal name]]]; // same name + prime
 		[_femurLandmark setDisplayTextualData:NO];
+		
+		_femurLandmarkOther = _femurLandmarkOriginal == _landmark1? _landmark2 : _landmark1;
 		
 		[[_viewerController imageView] roiSet:_femurLandmark];
 		[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_femurLandmark];
@@ -583,7 +665,6 @@
 		NSBitmapImageRep* temp = [bitmap smoothen:kernelSize];
 		[image addRepresentation:temp];
 		
-		
 		_originalFemurOpacityLayer = [_viewerController addLayerRoiToCurrentSliceWithImage:[image autorelease] referenceFilePath:@"none" layerPixelSpacingX:[[[_viewerController imageView] curDCM] pixelSpacingX] layerPixelSpacingY:[[[_viewerController imageView] curDCM] pixelSpacingY]];
 		[_originalFemurOpacityLayer setSelectable:NO];
 		[_originalFemurOpacityLayer setDisplayTextualData:NO];
@@ -591,15 +672,20 @@
 		[_originalFemurOpacityLayer setNSColor:[[NSColor redColor] colorWithAlphaComponent:.5]];
 		[[_viewerController imageView] roiSet:_originalFemurOpacityLayer];
 		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_originalFemurOpacityLayer userInfo:NULL];
+
+		[_femurRoi setROIMode:ROI_sleep];
+		[_femurRoi setSelectable:NO];
+		[_femurRoi setOpacity:0.2];
+		[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_femurRoi userInfo:NULL];
 		
-		[self removeRoiFromViewer:_femurRoi];
-		
+		[_viewerController selectROI:_femurLayer deselectingOther:YES];
 		[_viewerController bringToFrontROI:_femurLayer];
 	}
 	else if (step == _stepCup) {
 	}
 	else if (step == _stepStem) {
 		[_stemLayer setGroupID:[_femurLayer groupID]];
+		[_viewerController setMode:ROI_selected toROIGroupWithID:[_femurLayer groupID]];
 		[_viewerController bringToFrontROI:_stemLayer];
 	}
 	else if (step == _stepSave) {
@@ -638,22 +724,30 @@
 
 -(void)replaceLayer:(ROI*)roi with:(ArthroplastyTemplate*)t {
 	NSPoint center = [[[roi points] objectAtIndex:4] point];
-	CGFloat angle = [self estimateRotationOfROI:roi]/pi*180;
+	CGFloat angle = [self estimateRotationOfROI:roi];
+	NSTimeInterval group = [roi groupID];
 	[self removeRoiFromViewer:roi];
-	[[[_plugin templatesWindowController] createROIFromTemplate:t inViewer:_viewerController centeredAt:center] rotate:angle :center];
+	roi = [[_plugin templatesWindowController] createROIFromTemplate:t inViewer:_viewerController centeredAt:center];
+	[roi rotate:(angle-[self estimateRotationOfROI:roi])/pi*180 :center];
+	[roi setGroupID:group];
 }
 
 -(void)rotateLayer:(ROI*)roi by:(float)degs {
-	[roi rotate:degs :[[[roi points] objectAtIndex:4] point]];
+	NSPoint center = [[[roi points] objectAtIndex:4] point];
+	if (roi == _stemLayer && [_stemLayer groupID] == [_femurLayer groupID])
+		center = [[[roi points] objectAtIndex:4+_stemNeckSizeIndex] point];
+	[roi rotate:degs :center];
 }
 
 -(void)rotateLayer:(ROI*)roi byTrackingMouseFrom:(NSPoint)wp1 to:(NSPoint)wp2 {
 	wp1 = [[_viewerController imageView] ConvertFromNSView2GL:[[_viewerController imageView] convertPoint:wp1 fromView:NULL]];
 	wp2 = [[_viewerController imageView] ConvertFromNSView2GL:[[_viewerController imageView] convertPoint:wp2 fromView:NULL]];
-	CGFloat angle = NSAngle([[[roi points] objectAtIndex:4] point], wp2)-NSAngle([[[roi points] objectAtIndex:4] point], wp1);
+	NSPoint center = [[[roi points] objectAtIndex:4] point];
+	if (roi == _stemLayer && [_stemLayer groupID] == [_femurLayer groupID])
+		center = [[[roi points] objectAtIndex:4+_stemNeckSizeIndex] point];
+	CGFloat angle = NSAngle(center, wp2)-NSAngle(center, wp1);
 	[self rotateLayer:roi by:angle/pi*180];
 }
-
 
 -(BOOL)handleViewerEvent:(NSEvent*)event {
 	if ([event type] == NSKeyDown)
@@ -668,7 +762,9 @@
 				switch (uc) {
 					case '+':
 					case '-':
-						BOOL next = uc == '+';
+					case NSUpArrowFunctionKey:
+					case NSDownArrowFunctionKey:
+						BOOL next = uc == '+' || uc == NSUpArrowFunctionKey;
 						
 						if (_cupLayer && [_cupLayer ROImode] == ROI_selected && _cupTemplate) {
 							ArthroplastyTemplate* t = next? [[_cupTemplate family] templateAfter:_cupTemplate] : [[_cupTemplate family] templateBefore:_cupTemplate];
@@ -685,7 +781,9 @@
 						
 					case '*':
 					case '/':
-						BOOL cw = uc == '*';
+					case NSLeftArrowFunctionKey:
+					case NSRightArrowFunctionKey:
+						BOOL cw = uc == '*' || uc == NSRightArrowFunctionKey;
 						
 						if (_cupLayer && [_cupLayer ROImode] == ROI_selected) {
 							[self rotateLayer:_cupLayer by:cw? 1 : -1];
@@ -700,10 +798,10 @@
 				}
 		}
 	
-	if (_isMyMouse) [_isMyMouse release];
 	if ([event type] == NSLeftMouseDown || [event type] == NSRightMouseDown || [event type] == NSOtherMouseDown) {
 		if ((_cupLayer && [_cupLayer ROImode] == ROI_selected) || (_stemLayer && [_stemLayer ROImode] == ROI_selected)) {
-			_isMyMouse = ([event modifierFlags]&0xffff0000 == NSCommandKeyMask+NSAlternateKeyMask)? [event retain] : NULL;
+			NSUInteger modifiers = [event modifierFlags]&0xffff0000;
+			_isMyMouse = (modifiers == NSCommandKeyMask+NSAlternateKeyMask)? [event retain] : NULL;
 			return _isMyMouse != NULL;
 		}
 	} else if (_isMyMouse && [event type] == NSLeftMouseDragged || [event type] == NSRightMouseDragged || [event type] == NSOtherMouseDragged) {
@@ -714,6 +812,10 @@
 		[_isMyMouse release];
 		_isMyMouse = [event retain];
 		return YES;
+	} else if ([event type] == NSLeftMouseUp || [event type] == NSRightMouseUp || [event type] == NSOtherMouseUp) {
+		if ([_femurLayer groupID] == [_stemLayer groupID])
+			[self adjustStemToCup];
+		if (_isMyMouse) [_isMyMouse release]; _isMyMouse = NULL;
 	}
 	
 	return NO;
@@ -722,6 +824,48 @@
 
 #pragma mark Steps specific methods
 
+-(void)adjustStemToCup {
+	if (!_cupLayer || !_stemLayer)
+		return;
+	
+	NSPoint cupCenter = [[[_cupLayer points] objectAtIndex:4] point];
+	
+	unsigned magnetsCount = [[_stemLayer points] count]-6;
+	NSPoint magnets[magnetsCount];
+	CGFloat distances[magnetsCount];
+	for (unsigned i = 0; i < magnetsCount; ++i) {
+		magnets[i] = [[[_stemLayer points] objectAtIndex:i+6] point];
+		distances[i] = NSDistance(cupCenter, magnets[i]);
+	}
+	
+	unsigned indexOfClosestMagnet = 0;
+	for (unsigned i = 1; i < magnetsCount; ++i)
+		if (distances[i] < distances[indexOfClosestMagnet])
+			indexOfClosestMagnet = i;
+	
+	[self adjustStemToCup:indexOfClosestMagnet];
+}
+
+-(void)adjustStemToCup:(unsigned)index {
+	if (!_cupLayer || !_stemLayer)
+		return;
+	
+	_stemNeckSizeIndex = index;
+	
+	NSPoint cupCenter = [[[_cupLayer points] objectAtIndex:4] point];
+	
+	unsigned magnetsCount = [[_stemLayer points] count]-6;
+	NSPoint magnets[magnetsCount];
+	for (unsigned i = 0; i < magnetsCount; ++i)
+		magnets[i] = [[[_stemLayer points] objectAtIndex:i+6] point];
+	
+	for (id loopItem in [[_viewerController roiList:[_viewerController curMovieIndex]] objectAtIndex:[[_viewerController imageView] curImage]])
+		if ([loopItem groupID] == [_stemLayer groupID])
+			[loopItem roiMove:cupCenter-magnets[index]];
+	
+	[_neckSizePopUpButton setEnabled:YES];
+	[_neckSizePopUpButton selectItemAtIndex:index];
+}
 
 // dicom was added to database, send it to PACS
 -(void)sendToPACS:(NSNotification*)notification {
@@ -762,31 +906,24 @@
 #pragma mark Result
 
 - (void)createInfoBox {
-	if(_infoBox) return;
+	if (_infoBox) return;
 	_infoBox = [[ROI alloc] initWithType:tText :[[_viewerController imageView] pixelSpacingX] :[[_viewerController imageView] pixelSpacingY] :[[_viewerController imageView] origin]];
-	[_infoBox setROIRect:NSMakeRect([[[_viewerController imageView] curDCM] pwidth]/2.0, [[[_viewerController imageView] curDCM] pheight]/2.0, 0.0, 0.0)];
+	[_infoBox setROIRect:NSMakeRect([[[_viewerController imageView] curDCM] pwidth]/2, [[[_viewerController imageView] curDCM] pheight]/2, 0.0, 0.0)];
 	[[_viewerController imageView] roiSet:_infoBox];
 	[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_infoBox];
 	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_infoBox userInfo:NULL];
 }
 
-
--(void)computeMagnification {
+-(void)computeValues {
+	// magnification
 	_magnification = kInvalidMagnification;
-	
 	if ([_magnificationRadioCalibrate state]) {
 		if (!_magnificationLine || [[_magnificationLine points] count] != 2) return;
 		NSLog(@"_magnificationCalibrateLength %f", [_magnificationCalibrateLength floatValue]);
 		[_magnificationCustomFactor setFloatValue:[_magnificationLine MesureLength:NULL]/[_magnificationCalibrateLength floatValue]];
 	}
-	
 	_magnification = [_magnificationCustomFactor floatValue];
-	
-	[self computeVarious];
-}
 
-
--(void)computeVarious {
 	// horizontal angle
 	_horizontalAngle = kInvalidAngle;
 	if (_horizontalAxis && [[_horizontalAxis points] count] == 2)
@@ -802,22 +939,57 @@
 	// leg inequalty
 	
 	// cup inclination
-	if (_cupLayer && [[_femurAxis points] count] >= 2) {
-		CGFloat cupRotation = [self estimateRotationOfROI:_cupLayer]/pi*180;
-		[_cupAngleTextField setStringValue:[NSString stringWithFormat:@"%f", cupRotation]];
+	if (_cupLayer && [[_cupLayer points] count] >= 6) {
+		_cupAngle = -([self estimateRotationOfROI:_cupLayer]-_horizontalAngle)/pi*180;
+		[_cupAngleTextField setStringValue:[NSString stringWithFormat:@"Rotation angle: %.2f°", _cupAngle]];
 	}
-}
-
--(void)computeLegInequality {
 	
-}
-
--(void)computeOffset {
+	// stem inclination
+	if (_stemLayer && [[_stemLayer points] count] >= 6) {
+		_stemAngle = -([self estimateRotationOfROI:_stemLayer]+pi/2-_femurAngle)/pi*180;
+		[_stemAngleTextField setStringValue:[NSString stringWithFormat:@"Rotation angle: %.2f°", _stemAngle]];
+ 	}
 	
+	[self updateInfo];
 }
 
 -(void)updateInfo {
-	// TODO: update contents of infoBoxROI
+	[self createInfoBox];
+	NSMutableString* str = [[NSMutableString alloc] initWithCapacity:512];
+	
+	if ([[_plannersNameTextField stringValue] length])
+		[str appendFormat:@"Planner: %@\n", [_plannersNameTextField stringValue]];
+	if (_planningDate)
+		[str appendFormat:@"Date: %@\n", _planningDate];
+	
+	if (_originalLegInequality || _legInequality) {
+		[str appendFormat:@"%@Leg inequality:\n", [str length]?@"\n":@"", _originalLegInequalityValue];
+		if (_originalLegInequality)
+			[str appendFormat:@"\tOriginal: %f\n", _originalLegInequalityValue];
+		if (_legInequality)
+			[str appendFormat:@"\tFinal: %f\n", _legInequalityValue];
+		if (_originalLegInequality && _legInequality)
+			[str appendFormat:@"\tImprovement: %f\n", _originalLegInequalityValue - _legInequalityValue];
+	}
+	
+	if (_cupLayer) {
+		[str appendFormat:@"%@Cup: %@\n", [str length]?@"\n":@"", [_cupTemplate name]];
+		[str appendFormat:@"\tManufacturer: %@\n", [_cupTemplate manufacturer]];
+		[str appendFormat:@"\tSize: %@\n", [_cupTemplate size]];
+		[str appendFormat:@"\tRotation: %.2f°\n", _cupAngle];
+		[str appendFormat:@"\tReference: %@\n", [_cupTemplate referenceNumber]];
+	}
+	
+	if (_stemTemplate) {
+		[str appendFormat:@"%@Stem: %@\n", [str length]?@"\n":@"", [_stemTemplate name]];
+		[str appendFormat:@"\tManufacturer: %@\n", [_stemTemplate manufacturer]];
+		[str appendFormat:@"\tSize: %@\n", [_stemTemplate size]];
+		[str appendFormat:@"\tRotation: %.2f°\n", _stemAngle];
+		if ([_neckSizePopUpButton isEnabled]) [str appendFormat:@"\tNeck size: %@\n", [[_neckSizePopUpButton selectedItem] title]];
+		[str appendFormat:@"\tReference: %@\n", [_stemTemplate referenceNumber]];
+	}
+	
+	[_infoBox setName:str];
 }
 
 @end

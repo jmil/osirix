@@ -78,15 +78,17 @@
 	return [[[_path stringByDeletingLastPathComponent] stringByAppendingPathComponent:direction==ArthroplastyTemplateAnteriorPosteriorDirection? [_properties objectForKey:@"PDF_FILE_AP"] : [_properties objectForKey:@"PDF_FILE_ML"]] retain];
 }
 
+-(NSString*)prefixForDirection:(ArthroplastyTemplateViewDirection)direction {
+	return direction == ArthroplastyTemplateAnteriorPosteriorDirection? @"AP" : @"ML";
+}
+
 -(BOOL)origin:(NSPoint*)point forDirection:(ArthroplastyTemplateViewDirection)direction {
-	NSString *xs, *ys;
-	if (direction == ArthroplastyTemplateAnteriorPosteriorDirection) {
-		xs = [_properties objectForKey:@"AP_ORIGIN_X"];
-		ys = [_properties objectForKey:@"AP_ORIGIN_Y"];
-	} else {
-		xs = [_properties objectForKey:@"ML_ORIGIN_X"];
-		ys = [_properties objectForKey:@"ML_ORIGIN_Y"];
-	}
+	NSString* prefix = [NSString stringWithFormat:@"%@_ORIGIN_", [self prefixForDirection:direction]];
+	
+	NSString* key = [NSString stringWithFormat:@"%@X", prefix];
+	NSString *xs = [_properties objectForKey:key];
+	key = [NSString stringWithFormat:@"%@Y", prefix];
+	NSString *ys = [_properties objectForKey:key];
 	
 	if (!xs || !ys || ![xs length] || ![ys length])
 		return NO;
@@ -96,6 +98,27 @@
 	*point = *point / 25.4; // 1in = 25.4mm, ORIGIN data in mm
 
 	return YES;
+}
+
+-(NSArray*)rotationPointsForDirection:(ArthroplastyTemplateViewDirection)direction {
+	NSMutableArray* points = [NSMutableArray arrayWithCapacity:5];
+	NSString* prefix = [NSString stringWithFormat:@"%@_HEAD_ROTATION_POINT_", [self prefixForDirection:direction]];
+	
+	NSPoint origin; [self origin:&origin forDirection:direction];
+	
+	for (unsigned i = 1; i <= 5; ++i) {
+		NSString* sx = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_X", prefix, i]];
+		NSString* sy = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_Y", prefix, i]];
+		if ([sx length] && [sy length]) {
+			NSPoint point;
+			std::istringstream([sx UTF8String]) >> point.x;
+			std::istringstream([sy UTF8String]) >> point.y;
+			point = point/25.4;
+			[points addObject:[NSValue valueWithPoint:point+origin]];
+		}
+	}
+	
+	return points;
 }
 
 -(NSImage*)imageForDirection:(ArthroplastyTemplateViewDirection)direction {

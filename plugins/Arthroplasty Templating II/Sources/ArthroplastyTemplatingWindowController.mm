@@ -280,24 +280,22 @@
 	if (_flipTemplatesHorizontally)
 		[image flipImageHorizontally];
 
-/*	if (color) {
-		size = [image size]; unsigned s = size.width*size.height;
-		
-		NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
-		[bitmap ATMask:.01];
+	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
+	size = [image size]; unsigned s = size.width*size.height;
+	[bitmap ATMask:.01];
+	if (color)
 		for (unsigned i = 0; i < s; ++i) {
 			unsigned x = i%(int)size.width, y = i/(int)size.width;
 			NSColor* c = [bitmap colorAtX:x y:y];
 			[bitmap setColor:[color colorWithAlphaComponent:[c alphaComponent]] atX:x y:y];
 		}
-		
-		temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize] portion:[image portion]] autorelease];
-		[temp addRepresentation:bitmap];
-		[bitmap release];
-		
-		image = temp;
-	}*/
+
+	temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize] portion:[image portion]] autorelease];
+	[temp addRepresentation:bitmap];
+	[bitmap release];
 	
+	image = temp;
+
 	return image;
 }
 
@@ -378,6 +376,8 @@
 	
 	ROI* newLayer = [destination addLayerRoiToCurrentSliceWithImage:image referenceFilePath:[templat path] layerPixelSpacingX:pixSpacing layerPixelSpacingY:pixSpacing];
 	
+//	[[newLayer pix] setPixel ];
+	
 	[destination bringToFrontROI:newLayer];
 	[newLayer generateEncodedLayerImage];
 	
@@ -396,8 +396,20 @@
 	NSPoint layerSize = [[layerPoints objectAtIndex:2] point] - [[layerPoints objectAtIndex:0] point];
 	
 	NSPoint layerCenter = imageCenter/imageSize*layerSize;
-	[[newLayer points] addObject:[MyPoint point:layerCenter]];
-	[[newLayer points] addObject:[MyPoint point:layerCenter+NSMakePoint(1,0)]];
+	[[newLayer points] addObject:[MyPoint point:layerCenter]]; // center
+	[[newLayer points] addObject:[MyPoint point:layerCenter+NSMakePoint(1,0)]]; // rotation reference
+	
+	// stem magnets
+	NSArray* points = [templat rotationPointsForDirection:_viewDirection];
+	for (NSValue* value in points) {
+		NSPoint point = [value pointValue];
+		if (_flipTemplatesHorizontally)
+			point.x = [image originalInchSize].width-point.x;
+		point = [image convertPointFromPageInches:point];
+		point.y = imageSize.height-point.y;
+		point = point/imageSize*layerSize;
+		[[newLayer points] addObject:[MyPoint point:point]];
+	}
 	
 	[newLayer setROIMode:ROI_selected]; // in order to make the roiMove method possible
 	[newLayer roiMove:p-layerCenter :YES];
@@ -410,6 +422,8 @@
 	if([lines objectAtIndex:2]) [newLayer setTextualBoxLine3:[lines objectAtIndex:2]];
 	if([lines objectAtIndex:3]) [newLayer setTextualBoxLine4:[lines objectAtIndex:3]];
 	if([lines objectAtIndex:4]) [newLayer setTextualBoxLine5:[lines objectAtIndex:4]];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName: OsirixROIChangeNotification object:newLayer userInfo: nil];
 	
 	return newLayer;
 }
