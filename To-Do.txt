@@ -6,14 +6,13 @@
 - Support for OpenJPEG JPEG2000 encoding
 - OpenJPEG is 2.2x times faster : OpenJPEG is now faster than JasperLib
 - Better compression/decompression performances when receiving DICOM images
-- Soundex (search on pronunciation, instead of orthography) option when searching for patient names
+- Soundex (search on pronunciation, instead of orthography) when searching for patient names
 - Series comments/state displayed in Web Server
 - Better printing resolution for large images
 
 - REBUILD GANTRY 1.1
 
 - Option to include 3D viewers in Tile Window
-- test DCMView.m change = 1
 
 - Shared database: effect on C-FIND, store image in background to 'default' db?
 
