@@ -26,6 +26,7 @@
 - Display current image in 3D plane
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
+- OsiriX light
 
 - test customize toolbar MPR Controller (-[NSConcreteAttributedString initWithString:] called with nil string argument. This has undefined behavior and will raise an exception in post-Leopard linked apps. This warning is displayed only once.)
 
