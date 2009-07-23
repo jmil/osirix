@@ -17,8 +17,6 @@
 - Option to include 3D viewers in Tile Window
 
 - Shared database: effect on C-FIND, store image in background to 'default' db?
-- DVD HUG?
-- Check SUV
 
 - DICOM TLS
 - ROI Manager (series level)
