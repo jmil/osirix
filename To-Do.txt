@@ -8,10 +8,12 @@
 - Better compression/decompression performances when receiving DICOM images
 - Soundex (search on pronunciation, instead of orthography) when searching for patient names
 - Series comments/state displayed in Web Server
+- Display Same Patient with gray color in Database window
+- Multiple bugs corrections
 - Better printing resolution for large images
 
+- plist for dcm printers
 - REBUILD GANTRY 1.1
-
 - Option to include 3D viewers in Tile Window
 
 - Shared database: effect on C-FIND, store image in background to 'default' db?
@@ -19,7 +21,6 @@
 - Compress DECRIND Frederic -> Reading Papy?
 
 - DICOM TLS
-- Merge SR with VR : add SR option
 - ROI Manager (series level)
 - Hanging Protocols
 - 4D Support for DICOM Export in 2D Viewer
