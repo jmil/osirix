@@ -18,7 +18,7 @@
 
 - Shared database: effect on C-FIND, store image in background to 'default' db?
 - DVD HUG?
-- Compress DECRIND Frederic -> Reading Papy?
+- Check SUV
 
 - DICOM TLS
 - ROI Manager (series level)
