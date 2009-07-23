@@ -14,7 +14,6 @@
 #import "WaitRendering.h"
 #import "AppController.h"
 #import "ViewerController.h"
-#import "DCMPix.h"
 
 typedef VersorTransformType::VersorType VersorType;
 typedef VersorType::VectorType VectorType;
@@ -42,7 +41,7 @@ typedef VersorType::VectorType VectorType;
 		
 		//initialize the transform, set the qauternion axis of rotation
 		transform = VersorTransformType::New();
-		DebugEnable(transform->DebugOn());
+		//DebugEnable(transform->DebugOn());
 		VersorType rotation;
 		VectorType axis;
 		
@@ -91,7 +90,7 @@ typedef VersorType::VectorType VectorType;
 		
 		//initialize the transform, set the qauternion axis of rotation
 		transform = VersorTransformType::New();
-		DebugEnable(transform->DebugOn());
+		//DebugEnable(transform->DebugOn());
 		VersorType rotation;
 		VectorType axis;
 		

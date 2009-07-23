@@ -1,5 +1,5 @@
 //
-//  MyWindowController.m
+//  PSFSettingsWindowController.mm
 //  PetSpectFusion
 //
 //  Created by Brian on 4/1/09.
@@ -8,9 +8,9 @@
 
 #import <Foundation/NSDebug.h>
 
-#import "SettingsWindowController.h"
+#import "PSFSettingsWindowController.h"
 
-@implementation SettingsWindowController
+@implementation PSFSettingsWindowController
 
 @synthesize rotX;
 @synthesize rotY;
@@ -18,15 +18,18 @@
 @synthesize transX;
 @synthesize transY;
 @synthesize transZ;
+@synthesize fixedImageViewer;
+@synthesize movingImageViewer;
 
 - (id) initWithFixedImageViewer:(ViewerController*) fViewer movingImageViewer:(ViewerController *) mViewer;
 {
+	//Set the defaults before loading the window (otherwise parameters will not be initialized)
+	[[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:[self getDefaults]];
+	
 	self = [super initWithWindowNibName:@"PSFSettingsWindow"];
 	if(self != nil)
 	{
-		//[[self window] setDelegate:self];
 		[self showWindow:self];
-		//[[self window] makeKeyAndOrderFront:self];
 		
 		fixedImageViewer = fViewer;
 		movingImageViewer = mViewer;
@@ -38,9 +41,13 @@
 		fixedImage = [fixedImageWrapper image];
 		movingImage = [transform sourceImage];
 		itkTransform = TransformType::New();
-		DebugEnable(itkTransform->DebugOn());
 		initializeTransform(itkTransform, fixedImage, movingImage);
-		[self setDefaults];
+		
+		[iterationsLabel setIntValue:0];
+		[metricLabel setFloatValue:0.0];
+		[levelLabel setIntValue:0];
+		regIsRunning = NO;
+		[self enableMultiresolution:self];
 		
 		float scaleValue = [fixedImageViewer scaleValue];
 		ParametersType params(6);
@@ -55,6 +62,8 @@
 		
 		[self updateDisplay:params];
 		[fixedImageViewer setScaleValue:scaleValue];
+		
+		[settingsTabView setDelegate:self]; //make sure to catch tab switch events so we can redraw correctly
 
 		
 	}
@@ -64,29 +73,24 @@
 	return self;
 }
 
-- (void) setDefaults
+- (NSMutableDictionary*) getDefaults
 {
-	[binsBox setIntValue: DEFAULT_BINS];
-	[sampleRateBox setFloatValue:DEFAULT_SAMPLERATE];
-	[minStepBox setFloatValue: DEFAULT_MINSTEP];
-	[maxStepBox setFloatValue: DEFAULT_MAXSTEP];
-	[multiResLevelsBox setIntValue:DEFAULT_MULTIRES_LEVELS];
-	[multiResEnableButton setState:NSOffState];
-	[multiResLevelsBox setEnabled:NO];
-
-	[wTransBoxX setFloatValue: DEFAULT_XTRANS_SCALE];
-	[wTransBoxY setFloatValue: DEFAULT_YTRANS_SCALE];
-	[wTransBoxZ setFloatValue: DEFAULT_ZTRANS_SCALE];
-	[wRotBoxX setFloatValue: DEFAULT_XROT_SCALE];
-	[wRotBoxY setFloatValue: DEFAULT_YROT_SCALE];
-	[wRotBoxZ setFloatValue: DEFAULT_ZROT_SCALE];
-
-	[iterationsLabel setIntValue:0];
-	[metricLabel setFloatValue:0.0];
-	[levelLabel setIntValue:0];
-	regIsRunning = NO;
+	NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+	[defaults setValue:[NSNumber numberWithInt:DEFAULT_BINS] forKey:@"PSFBins"];
+	[defaults setValue:[NSNumber numberWithFloat: DEFAULT_SAMPLERATE] forKey:@"PSFSampleRate"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_MINSTEP] forKey:@"PSFMinStep"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_MAXSTEP] forKey:@"PSFMaxStep"];
+	[defaults setValue:[NSNumber numberWithInt:DEFAULT_MULTIRES_LEVELS] forKey:@"PSFMultiResLevels"];
+	[defaults setValue:@"0" forKey:@"PSFMultiResEnable"];
+	
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_XTRANS_SCALE] forKey:@"PSFXTransScale"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_YTRANS_SCALE] forKey:@"PSFYTransScale"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_ZTRANS_SCALE] forKey:@"PSFZTransScale"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_XROT_SCALE] forKey:@"PSFXRotScale"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_YROT_SCALE] forKey:@"PSFYRotScale"];
+	[defaults setValue:[NSNumber numberWithFloat:DEFAULT_ZROT_SCALE] forKey:@"PSFZRotScale"];
+	return defaults;
 }
-
 
 - (void) dealloc
 {
@@ -276,7 +280,9 @@
 	[wTransBoxZ setEnabled:enable];
 	[wRotBoxX setEnabled:enable];
 	[wRotBoxY setEnabled:enable];
-	[wRotBoxZ setEnabled:enable];	
+	[wRotBoxZ setEnabled:enable];
+	
+	[defaultsButton setEnabled:enable];
 }
 
 - (void) registrationFinished
@@ -329,6 +335,42 @@
 	[fixedImageViewer needsDisplayUpdate];
 }
 
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
+{
+	DebugLog(@"Tab view changed");
+	if([[tabViewItem label] isEqualToString:@"Parameters"] )
+	{
+		NSRect r = [[self window] frame];
+		r.size.height = 452; //Size in IB plus 16px title
+		[[self window] setFrame:r display:YES animate:YES];
+		r = [tabView frame];
+		r.size.height = 386;
+		[tabView setFrame:r];
+	}
+	else
+	{
+		NSRect r = [[self window] frame];
+		r.size.height = 497; //Size in IB plus 16px title
+		[[self window] setFrame:r display:YES animate:YES];
+		
+		r = [tabView frame];
+		r.size.height = 430;
+		[tabView setFrame:r];
+	}
+}
 
+- (IBAction) applyDefaults:(id) sender
+{
+	DebugLog(@"Revert to default parameters requested");
+	int selection = NSRunAlertPanel(@"Revert to Defaults", @"Do you really want to revert to the default paramters?", @"Yes", @"No", NULL);
+	
+	if(selection == 1)	//first reset the defaults dictionary, then reset the interface
+	{
+		[[NSUserDefaultsController sharedUserDefaultsController] revertToInitialValues:[self getDefaults]];
+		NSLog(@"PSFSettingsWindowController: Reverting to factory defaults");
+		[self enableMultiresolution:self];
+		
+	}
+}
 
 @end

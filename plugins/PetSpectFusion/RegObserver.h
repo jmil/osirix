@@ -44,7 +44,7 @@
 
 #import "RegUpdate.h"
 
-@class SettingsWindowController;
+@class PSFSettingsWindowController;
 
 /**
  *	This class is an event observer that is called after each iteration of the registration process
@@ -65,7 +65,7 @@ public:
 private:
 	//used for controlling the registration and updating the display
 	bool stopReg;
-	SettingsWindowController* controller;
+	PSFSettingsWindowController* controller;
 	
 protected:
 	CommandIterationUpdate()
@@ -83,7 +83,7 @@ public:
 	/**
 	 *	Sets the observer that should receive the registration updates
 	 */
-	void setDisplayObserver(SettingsWindowController* observer);
+	void setDisplayObserver(PSFSettingsWindowController* observer);
 	
 	/**
 	 *	Terminates the optimizer
@@ -108,7 +108,7 @@ class RegistrationInterfaceCommand : public ITKNS::Command
 		RegistrationInterfaceCommand() {};
 
 	private:
-		SettingsWindowController* controller;
+		PSFSettingsWindowController* controller;
 	
 	public:
 		typedef   TRegistration RegistrationType;
@@ -138,7 +138,7 @@ class RegistrationInterfaceCommand : public ITKNS::Command
 	/**
 	 *	Sets the observer that should be notified after each level change
 	 */
-	void setDisplayObserver(SettingsWindowController* observer)
+	void setDisplayObserver(PSFSettingsWindowController* observer)
 	{
 		controller = observer;
 	}

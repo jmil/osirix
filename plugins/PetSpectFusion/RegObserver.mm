@@ -1,6 +1,6 @@
 #include "RegObserver.h"
 
-#import "SettingsWindowController.h"
+#import "PSFSettingsWindowController.h"
 
 void CommandIterationUpdate::Execute(ITKNS::Object *caller, const ITKNS::EventObject & event)
 {
@@ -34,7 +34,7 @@ void CommandIterationUpdate::Execute(const ITKNS::Object * object, const ITKNS::
 
 }
 
-void CommandIterationUpdate::setDisplayObserver(SettingsWindowController* observer)
+void CommandIterationUpdate::setDisplayObserver(PSFSettingsWindowController* observer)
 {
 	controller = observer;
 }

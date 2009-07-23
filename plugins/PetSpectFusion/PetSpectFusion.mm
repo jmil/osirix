@@ -8,7 +8,7 @@
 #import <Foundation/NSDebug.h>
 
 #import "PetSpectFusion.h"
-#import "SettingsWindowController.h"
+#import "PSFSettingsWindowController.h"
 
 @implementation PetSpectFusion
 
@@ -31,37 +31,64 @@
 		return 0;
 	}
 	
-	NSLog(@"PetSpectFusion started");
+	NSLog(@"PetSpectFusion filter triggered");
 	
-	//change titles
-	[[[viewerController blendedWindow] window] setTitle: [[[[viewerController blendedWindow] window] title] stringByAppendingString:@" :: Moving Image"]];
-	[[viewerController window] setTitle: [[[viewerController window] title] stringByAppendingString:@" :: Fixed Image"]];
-	NSString* movingCLUTMenu = [[[viewerController blendedWindow] curCLUTMenu] retain];
-	ITKNS::MultiThreader::SetGlobalDefaultNumberOfThreads(MPProcessors());
+	PSFSettingsWindowController* controller = [PetSpectFusion getControllerForFixedViewer:viewerController movingViewer:[viewerController blendedWindow]];
 	
-	//activate the controller window
-	//if(controller==nil)
-	//	controller = [[SettingsWindowController alloc] initWithFixedImageViewer:viewerController movingImageViewer:[viewerController blendedWindow]];
-
-	SettingsWindowController* controller = [[SettingsWindowController alloc] initWithFixedImageViewer:viewerController movingImageViewer:[viewerController blendedWindow]];
+	if(controller == nil)
+	{
+		//change titles
+		[[[viewerController blendedWindow] window] setTitle: [[[[viewerController blendedWindow] window] title] stringByAppendingString:@" :: Moving Image"]];
+		[[viewerController window] setTitle: [[[viewerController window] title] stringByAppendingString:@" :: Fixed Image"]];
+		NSString* movingCLUTMenu = [[[viewerController blendedWindow] curCLUTMenu] retain];
+		ITKNS::MultiThreader::SetGlobalDefaultNumberOfThreads(MPProcessors());
 	
-	//activate blending
-	[viewerController blendWithViewer:[viewerController blendedWindow] blendingType:1];
-	[[viewerController blendingController] ApplyCLUTString:movingCLUTMenu];
-	[[viewerController window] performZoom: self];
+		controller = [[PSFSettingsWindowController alloc] initWithFixedImageViewer:viewerController movingImageViewer:[viewerController blendedWindow]];
 	
-	//Make sure to catch the viewer closing events for both of the viewers
-	[[NSNotificationCenter defaultCenter]  addObserver:controller 
-										   selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" 
-										   object:viewerController];
+		//activate blending
+		[viewerController blendWithViewer:[viewerController blendedWindow] blendingType:1];
+		[[viewerController blendingController] ApplyCLUTString:movingCLUTMenu];
+		[[viewerController window] performZoom: self];
 	
-	[[NSNotificationCenter defaultCenter]  addObserver:controller
-										   selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" 
-										   object:[viewerController blendedWindow]];
+		//Make sure to catch the viewer closing events for both of the viewers
+		[[NSNotificationCenter defaultCenter]  addObserver:controller 
+										       selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" 
+										       object:viewerController];
 	
+		[[NSNotificationCenter defaultCenter]  addObserver:controller
+											   selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" 
+										       object:[viewerController blendedWindow]];
+	
+	}
+	else
+	{
+		[controller showWindow:self];
+	}
+		
 	return 0;
 
 }
+
++(id) getControllerForFixedViewer:(ViewerController*) fViewer movingViewer:(ViewerController*) mViewer
+{
+	NSArray *winList = [NSApp windows];
+	
+	for( id loopItem in winList)
+	{
+		if( [[[loopItem windowController] windowNibName] isEqualToString:@"PSFSettingsWindow"])
+		{
+			if( [[loopItem windowController] fixedImageViewer] == fViewer &&
+				[[loopItem windowController] movingImageViewer] == mViewer)
+			{
+				return [loopItem windowController];
+			}
+		}
+	}
+	
+	return nil;
+}
+
+
 
 
 @end

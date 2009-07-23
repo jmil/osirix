@@ -120,7 +120,7 @@
 	importFilter->SetImportPointer(volumeData, bufferSize, false);
 
 	image = importFilter->GetOutput();
-	DebugEnable(image->DebugOn());
+	//DebugEnable(image->DebugOn());
 	image->Update();
 	
 }

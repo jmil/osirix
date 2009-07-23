@@ -22,7 +22,7 @@
 
 @class PetSpectFusion;
 
-@interface SettingsWindowController : NSWindowController {
+@interface PSFSettingsWindowController : NSWindowController {
 	
 	//our viewers
 	ViewerController *fixedImageViewer, *movingImageViewer;
@@ -78,7 +78,11 @@
 	IBOutlet NSTextField* iterationsLabel;
 	IBOutlet NSTextField* levelLabel;
 	
+	//Tab box
+	IBOutlet NSTabView* settingsTabView;
+	
 	//buttons
+	IBOutlet NSButton* defaultsButton;
 	IBOutlet NSButton* registrationButton;
 	IBOutlet NSButton* metricButton;
 
@@ -91,16 +95,13 @@
 @property (nonatomic, readwrite) float transX;
 @property (nonatomic, readwrite) float transY;
 @property (nonatomic, readwrite) float transZ;
+@property (readonly) ViewerController* fixedImageViewer;
+@property (readonly) ViewerController* movingImageViewer;
 
 /**
  *	Creates a new registration panel using the data from the two viewers
  */
 - (id) initWithFixedImageViewer:(ViewerController*) fViewer movingImageViewer:(ViewerController *) mViewer;
-
-/**
- *	Sets each textfield to a default state
- */
-- (void) setDefaults;
 
 - (void) enableInputs:(BOOL) enable;
 
@@ -147,5 +148,17 @@
  *	Reapply the transform witht the current parameters to the moving image viewer, and refresh both viewers
  */
 - (void) updateDisplay:(ParametersType &) params;
+
+/**
+ *	Triggered when the user switches between tabs, redraws the window to the appropriate size
+ */
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem;
+
+/**
+ *	Resets the registration settings to their factory defaults
+ */
+- (IBAction) applyDefaults:(id) sender;
+
+- (NSMutableDictionary*) getDefaults;
 
 @end

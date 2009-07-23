@@ -33,7 +33,7 @@ RegistrationType::Pointer doMattesRegistration(ImageType::Pointer fixedImage, Im
 	
 	ParametersType params(6);
 	params = transform->GetParameters();
-	
+			
 	DebugLog(@"number of bins: %d", bins);
 	DebugLog(@"sample rate: %f", sampleRate);
 	DebugLog(@"min step size: %f", minStepSize);

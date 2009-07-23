@@ -43,7 +43,7 @@
 #include "Typedefs.h"
 #undef id
 
-@class SettingsWindowController;
+#import "ViewerController.h"
 
 /**
  *	This is the main class that is responsible for launching the window controlling the registration
@@ -53,6 +53,14 @@
 
 }
 
+/**
+ * Entry point called by OsiriX when the plugin is triggered
+ */
 - (long) filterImage:(NSString*) menuName;
+
+/**
+ *	Search through all open windows and make sure we don't create two settingsControllers for the same viewer pair
+ */
++(id) getControllerForFixedViewer:(ViewerController*) fViewer movingViewer:(ViewerController*) mViewer;
 
 @end
