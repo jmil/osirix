@@ -16,7 +16,7 @@
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
 
-- Shared database: effect on C-FIND, store image in background to 'default' db?
+- Shared database: effect on C-FIND
 
 - DICOM TLS
 - ROI Manager (series level)
