@@ -16,7 +16,7 @@
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
 
-- test built-in crash reporter
+- test DICOMDIRCDMODE : autorun cd
 
 - DICOM TLS
 - ROI Manager (series level)
