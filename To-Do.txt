@@ -18,6 +18,7 @@
 - Option to include 3D viewers in Tile Window
 
 - pub osirix course
+- Rebuild Quicklook
 
 - DICOM TLS
 - ROI Manager (series level)
