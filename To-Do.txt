@@ -18,7 +18,6 @@
 - Option to include 3D viewers in Tile Window
 
 - exception during delete
-- check folder during delete
 - jpeg2000 large multi-frame : reading?
 
 - pub osirix course
