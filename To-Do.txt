@@ -17,6 +17,9 @@
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
 
+- exception during delete
+- jpeg2000 large multi-frame : reading?
+
 - pub osirix course
 - Rebuild Quicklook
 
