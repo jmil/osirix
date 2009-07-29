@@ -16,6 +16,7 @@
 - plist for dcm printers
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
+- Apply a route rule on db selection
 
 - exception during delete
 - jpeg2000 large multi-frame : reading?
