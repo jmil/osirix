@@ -13,11 +13,12 @@
 - Better printing resolution for large images
 - Default DB can receive images in background if another DB is selected
 - Better DICOM CD/DVD reading
+- Apply a route rule on db selection (contextual menu)
 
 - plist for dcm printers
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
-- Apply a route rule on db selection
+
 
 - pub osirix course
 
