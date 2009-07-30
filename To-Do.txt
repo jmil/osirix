@@ -20,7 +20,6 @@
 - Apply a route rule on db selection
 
 - pub osirix course
-- Rebuild Quicklook
 
 - MedImage: if synergy, http study -> pacs
 
