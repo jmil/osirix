@@ -19,7 +19,6 @@
 - REBUILD GANTRY 1.1
 - Option to include 3D viewers in Tile Window
 
-
 - pub osirix course
 
 - MedImage: if synergy, http study -> pacs
