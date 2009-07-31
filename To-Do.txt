@@ -20,6 +20,7 @@
 
 - REBUILD GANTRY 1.1
 - pub osirix course
+- Test Routing Rules
 
 - MedImage: if synergy, http study -> pacs
 
