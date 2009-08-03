@@ -15,14 +15,11 @@
 - Apply a route rule on db selection (contextual menu)
 - Multiple bugs corrections
 
-- plist for dcm printers
-- Option to include 3D viewers in Tile Window
-
-- REBUILD GANTRY 1.1
-- pub osirix course
+- REBUILD GANTRY 1.1 <- zip file and index file for web site
 
 - MedImage: if synergy, http study -> pacs
 
+- Option to include 3D viewers in Tile Window
 - DICOM TLS
 - ROI Manager (series level)
 - Hanging Protocols
