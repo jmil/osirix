@@ -19,8 +19,6 @@
 - Add JPEG plugin <- zip file and index file for web site
 - pub
 
-- check available space in the dicom listener?
-
 - MedImage: if synergy, http study -> pacs
 
 - Option to include 3D viewers in Tile Window
