@@ -18,7 +18,6 @@
 - REBUILD GANTRY 1.1 <- zip file and index file for web site
 - Add JPEG plugin <- zip file and index file for web site
 - pub
-- check log window
 
 - MedImage: if synergy, http study -> pacs
 
