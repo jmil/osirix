@@ -19,6 +19,9 @@
 - Add JPEG plugin <- zip file and index file for web site
 - pub
 
+- delete key
+- logArrayController
+
 - MedImage: if synergy, http study -> pacs
 
 - Option to include 3D viewers in Tile Window
