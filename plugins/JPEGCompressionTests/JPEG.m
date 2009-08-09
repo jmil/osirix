@@ -55,6 +55,12 @@
 		return 0;
 	}
 	
+	if( [curPix SUVConverted])
+	{
+		NSRunAlertPanel(NSLocalizedString(@"SUV", nil), NSLocalizedString(@"This plugin is not compatible with SUV converted images. Turn off SUV conversion to use it.", nil), nil, nil, nil);
+		return 0;
+	}
+	
 	// Export it in JPEG
 	NSString *srcFile = [curPix sourceFile];
 	NSString *destFile = @"/tmp/jpegtest";
