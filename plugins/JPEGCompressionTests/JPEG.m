@@ -157,7 +157,6 @@
 			// All rois contained in the current image
 			roiImageList = [roiSeriesList objectAtIndex: i];
 			
-			// See DCMView.h for available ROIs, we create here a closed polygon
 			newROI = [new2DViewer newROI: tText];
 			
 			float fileSize, originalSize = [[NSData dataWithContentsOfFile: [destFile stringByAppendingString: @".nocompression"]] length];
@@ -178,6 +177,21 @@
 			
 			r.origin.x = [curPix pwidth]/2.;
 			r.origin.y = [curPix pheight]/2.;
+			
+			newROI.rect = r;
+			
+			[roiImageList addObject: newROI];
+			
+			////
+			
+			newROI = [new2DViewer newROI: tROI];
+			
+			r = [newROI rect];
+			
+			r.origin.x = 0;
+			r.origin.y = 0;
+			r.size.width = [curPix pwidth];
+			r.size.height = [curPix pheight];
 			
 			newROI.rect = r;
 			
