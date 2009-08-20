@@ -42,7 +42,7 @@
 QA
 - BugZilla (sourceforge?)
 - EggPlant
-- UnitTesting (assert functions)
+- UnitTesting (assert functions) (http://developer.apple.com/tools/unittest.html - SenTestingKit.framewor, OCMock.framework)
 - Regression tests
 - ILCrashReporter
 - Doxygen
