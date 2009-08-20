@@ -16,6 +16,7 @@
 - Save and load DICOM printers list
 - Multiple bugs corrections
 
+- CHECK SN site
 - CHECK DB sharing : wait dealloc, exception
 - CHECK FUSION pet-ct on xraid
 - Test PDF import
