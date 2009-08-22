@@ -16,7 +16,6 @@
 - Save and load DICOM printers list
 - Multiple bugs corrections
 
-- CHECK SN site
 - CHECK FUSION pet-ct on xraid
 - Test PDF import
 - REBUILD GANTRY 1.1 <- zip file and index file for web site
