@@ -52,6 +52,7 @@
 		
 		if (!_studyInstanceUID)
 			_studyInstanceUID = [dcmObject attributeValueWithName:@"StudyInstanceUID"];	
+			
 		if (!_seriesInstanceUID)
 		_seriesInstanceUID = [dcmObject attributeValueWithName:@"SeriesInstanceUID"];
 			
@@ -137,7 +138,7 @@
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientID] forName:@"PatientID"];
 			else
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@"0"] forName:@"PatientID"];
-				
+			
 			if (_patientSex)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_patientSex] forName:@"PatientsSex"];
 			else
@@ -184,7 +185,7 @@
 			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/PDF%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], _studyID, _imageNumber];
 			//destination = [NSString stringWithFormat: @"%@/Desktop/%@.dcm", NSHomeDirectory(), _docTitle]; 
 		
-			if ([dcmObject writeToFile:destination withTransferSyntax:[DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax] quality:DCMLosslessQuality atomically:YES])
+			if ([dcmObject writeToFile:destination withTransferSyntax:[DCMTransferSyntax ImplicitVRLittleEndianTransferSyntax] quality:DCMLosslessQuality atomically:YES])
 				NSLog(@"Wrote PDF to %@", destination);
 
 	}

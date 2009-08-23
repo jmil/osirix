@@ -11,7 +11,6 @@
 		8D5B49AE048680CD000E48DA /* Duplicate_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF630370AF2F00C91783 /* Duplicate_Prefix.pch */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
-		AB89B4840B26A89600AF2218 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB89B4830B26A89600AF2218 /* OsiriX.framework */; };
 		ABA48A650680BB600089EB4F /* DCMPDFImportFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = ABA48A640680BB600089EB4F /* DCMPDFImportFilter.h */; };
 		ABA48A670680BB690089EB4F /* DCMPDFImportFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA48A660680BB690089EB4F /* DCMPDFImportFilter.m */; };
 		ABB76340067FB2A8000912C1 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB76339067FB2A8000912C1 /* DCMPix.h */; };
@@ -22,6 +21,7 @@
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
 		BF20432C0B0C17CF00518586 /* browserController.h in Headers */ = {isa = PBXBuildFile; fileRef = BF20432A0B0C17CF00518586 /* browserController.h */; };
 		BF20432D0B0C17CF00518586 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = BF20432B0B0C17CF00518586 /* PluginFilter.h */; };
+		CE9D16CC10412A1500A05A07 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9D16CB10412A1500A05A07 /* OsiriX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,6 @@
 		7E6CE364088FE908009FBFBD /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ConversionInfo.nib; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB5D36050680E57E00F4007A /* PDFtoDICOM.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFtoDICOM.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		AB89B4830B26A89600AF2218 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = ../../osirix/build/Development/OsiriX.framework; sourceTree = SOURCE_ROOT; };
 		ABA48A640680BB600089EB4F /* DCMPDFImportFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPDFImportFilter.h; sourceTree = "<group>"; };
 		ABA48A660680BB690089EB4F /* DCMPDFImportFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DCMPDFImportFilter.m; sourceTree = "<group>"; };
 		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = DCMPix.h; path = ../../osirix/DCMPix.h; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ViewerController.h; path = ../../osirix/ViewerController.h; sourceTree = "<group>"; };
 		BF20432A0B0C17CF00518586 /* browserController.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = browserController.h; path = ../../osirix/browserController.h; sourceTree = "<group>"; };
 		BF20432B0B0C17CF00518586 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PluginFilter.h; path = ../../osirix/PluginFilter.h; sourceTree = "<group>"; };
+		CE9D16CB10412A1500A05A07 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = "../../osirix/build/Deployment Universal 64-bit/OsiriX.framework"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +52,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				AB89B4840B26A89600AF2218 /* OsiriX.framework in Frameworks */,
+				CE9D16CC10412A1500A05A07 /* OsiriX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +74,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				AB89B4830B26A89600AF2218 /* OsiriX.framework */,
+				CE9D16CB10412A1500A05A07 /* OsiriX.framework */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
 				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
 			);
@@ -276,10 +276,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					/Users/lpysher/osirix/osirix/build/Development,
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../osirix/build/Deployment Universal 64-bit\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -289,10 +289,8 @@
 				GCC_PREFIX_HEADER = Duplicate_Prefix.pch;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = /Users/lpysher/osirix/osirix;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Plug-ins";
-				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Bundle;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
