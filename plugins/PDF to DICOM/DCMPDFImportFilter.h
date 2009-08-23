@@ -8,7 +8,8 @@
 
 @class DCMCalendarDate;
 
-@interface DCMPDFImportFilter : PluginFilter {
+@interface DCMPDFImportFilter : PluginFilter
+{
 	IBOutlet NSView *accessoryView;
 	IBOutlet id patientNameField;
 	IBOutlet id patientIDField;
@@ -32,7 +33,6 @@
 	int _imageNumber;
 	
 	BOOL _addtoCurrentStudy;
-
 }
 
 - (long) filterImage:(NSString*) menuName;
@@ -47,7 +47,5 @@
 - (void)studyInfo;
 - (NSString *)docTitle;
 - (void)setDocTitle:(NSString *)docTitle;
-
-
 
 @end
