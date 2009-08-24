@@ -2,7 +2,7 @@
 //  ArthroplastyTemplatingStepByStepController.m
 //  Arthroplasty Templating II
 //  Created by Joris Heuberger on 04/04/07.
-//  Copyright (c) 2007-2009 OsiriX Foundation. All rights reserved.
+//  Copyright (c) 2007-2009 OsiriX Team. All rights reserved.
 //
 
 #import "ArthroplastyTemplatingStepByStepController.h"

@@ -2,7 +2,7 @@
 //  ArthroplastyTemplateFamily.h
 //  Arthroplasty Templating II
 //  Created by Alessandro Volz on 6/4/09.
-//  Copyright (c) 2007-2009 OsiriX Foundation. All rights reserved.
+//  Copyright (c) 2007-2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

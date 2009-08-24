@@ -2,7 +2,7 @@
 //  ZimmerTemplate.h
 //  Arthroplasty Templating II
 //  Created by Joris Heuberger on 19/03/07.
-//  Copyright (c) 2007-2009 OsiriX Foundation. All rights reserved.
+//  Copyright (c) 2007-2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
