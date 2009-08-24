@@ -49,6 +49,11 @@
 		59A6335E10428715003F4069 /* N2DisclosureButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6333410428715003F4069 /* N2DisclosureButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6335F10428715003F4069 /* N2DisclosureBox.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6333510428715003F4069 /* N2DisclosureBox.mm */; };
 		59A636A8104298C0003F4069 /* Nitrogen.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59A636A7104298C0003F4069 /* Nitrogen.pch */; };
+		59A63F401042DB51003F4069 /* NSImage+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A63F3E1042DB51003F4069 /* NSImage+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A63F411042DB51003F4069 /* NSImage+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A63F3F1042DB51003F4069 /* NSImage+N2.mm */; };
+		59A63F491042DC22003F4069 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A63F481042DC22003F4069 /* Accelerate.framework */; };
+		59A641BC1042E108003F4069 /* N2Panel.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A641BA1042E108003F4069 /* N2Panel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A641BD1042E108003F4069 /* N2Panel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A641BB1042E108003F4069 /* N2Panel.mm */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -100,6 +105,11 @@
 		59A6333410428715003F4069 /* N2DisclosureButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2DisclosureButtonCell.h; sourceTree = "<group>"; };
 		59A6333510428715003F4069 /* N2DisclosureBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2DisclosureBox.mm; sourceTree = "<group>"; };
 		59A636A7104298C0003F4069 /* Nitrogen.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nitrogen.pch; path = Sources/Nitrogen.pch; sourceTree = "<group>"; };
+		59A63F3E1042DB51003F4069 /* NSImage+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+N2.h"; sourceTree = "<group>"; };
+		59A63F3F1042DB51003F4069 /* NSImage+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSImage+N2.mm"; sourceTree = "<group>"; };
+		59A63F481042DC22003F4069 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		59A641BA1042E108003F4069 /* N2Panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Panel.h; sourceTree = "<group>"; };
+		59A641BB1042E108003F4069 /* N2Panel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Panel.mm; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Nitrogen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nitrogen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -111,6 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+				59A63F491042DC22003F4069 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +178,7 @@
 		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59A63F481042DC22003F4069 /* Accelerate.framework */,
 				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
 				D2F7E79907B2D74100F64583 /* CoreData.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
@@ -191,6 +203,8 @@
 				59A6331D10428715003F4069 /* N2Operators.mm */,
 				59A6331510428715003F4069 /* N2View.h */,
 				59A6331A10428715003F4069 /* N2View.mm */,
+				59A641BA1042E108003F4069 /* N2Panel.h */,
+				59A641BB1042E108003F4069 /* N2Panel.mm */,
 				59A6331910428715003F4069 /* N2Window.h */,
 				59A6330E10428715003F4069 /* N2Window.mm */,
 				59A6332710428715003F4069 /* N2DisclosureBox.h */,
@@ -249,6 +263,8 @@
 				59A6332810428715003F4069 /* NSTextView+N2.mm */,
 				59A6332B10428715003F4069 /* NSString+N2.h */,
 				59A6332A10428715003F4069 /* NSString+N2.mm */,
+				59A63F3E1042DB51003F4069 /* NSImage+N2.h */,
+				59A63F3F1042DB51003F4069 /* NSImage+N2.mm */,
 				59A6332D10428715003F4069 /* NSData+N2.h */,
 				59A6332C10428715003F4069 /* NSData+N2.mm */,
 				59A6332F10428715003F4069 /* NSButton+N2.h */,
@@ -290,6 +306,8 @@
 				59A6335D10428715003F4069 /* NS(Attributed)String+Geometrics.h in Headers */,
 				59A6335E10428715003F4069 /* N2DisclosureButtonCell.h in Headers */,
 				59A636A8104298C0003F4069 /* Nitrogen.pch in Headers */,
+				59A63F401042DB51003F4069 /* NSImage+N2.h in Headers */,
+				59A641BC1042E108003F4069 /* N2Panel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +387,8 @@
 				59A6335A10428715003F4069 /* NSBitmapImageRep+N2.mm in Sources */,
 				59A6335C10428715003F4069 /* NS(Attributed)String+Geometrics.m in Sources */,
 				59A6335F10428715003F4069 /* N2DisclosureBox.mm in Sources */,
+				59A63F411042DB51003F4069 /* NSImage+N2.mm in Sources */,
+				59A641BD1042E108003F4069 /* N2Panel.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

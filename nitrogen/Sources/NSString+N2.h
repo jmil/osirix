@@ -14,5 +14,6 @@
 +(NSString*)sizeString:(unsigned long long)size;
 +(NSString*)timeString:(NSTimeInterval)time;
 +(NSString*)dateString:(NSTimeInterval)date;
+-(NSString*)stringByTrimmingStartAndEnd;
 
 @end

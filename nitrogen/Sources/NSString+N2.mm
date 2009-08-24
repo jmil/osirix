@@ -41,4 +41,15 @@
 	return [[NSDate dateWithTimeIntervalSinceReferenceDate:date] descriptionWithCalendarFormat:@"'le' dd.MM.yyyy 'à' HH'h'mm" timeZone:NULL locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 }
 
+-(NSString*)stringByTrimmingStartAndEnd {
+	NSCharacterSet* whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+	unsigned i;
+	for (i = 0; i < [self length] && [whitespaceAndNewline characterIsMember:[self characterAtIndex:i]]; ++i);
+	if (i == [self length]) return @"";
+	unsigned start = i;
+	for (i = [self length]-1; i > start && [whitespaceAndNewline characterIsMember:[self characterAtIndex:i]]; --i);
+	if (i == start) return @"";
+	return [self substringWithRange:NSMakeRange(start, i-start+1)];
+}
+
 @end

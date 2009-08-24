@@ -6,6 +6,7 @@
 #import <Nitrogen/N2Debug.h>
 #import <Nitrogen/N2Operators.h>
 #import <Nitrogen/N2View.h>
+#import <Nitrogen/N2Panel.h>
 #import <Nitrogen/N2Window.h>
 #import <Nitrogen/N2DisclosureBox.h>
 #import <Nitrogen/N2DisclosureButtonCell.h>
@@ -19,6 +20,7 @@
 #import <Nitrogen/N2SingletonObject.h>
 #import <Nitrogen/NSTextView+N2.h>
 #import <Nitrogen/NSString+N2.h>
+#import <Nitrogen/NSImage+N2.h>
 #import <Nitrogen/NSData+N2.h>
 #import <Nitrogen/NSButton+N2.h>
 #import <Nitrogen/NSBitmapImageRep+N2.h>
