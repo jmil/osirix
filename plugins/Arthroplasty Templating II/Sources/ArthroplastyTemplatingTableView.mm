@@ -5,7 +5,7 @@
 //
 
 #import "ArthroplastyTemplatingTableView.h"
-#import "NSImage+ArthroplastyTemplating.h"
+#import <Nitrogen/Nitrogen.h>
 
 @implementation ArthroplastyTemplatingTableView
 

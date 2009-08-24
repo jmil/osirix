@@ -6,7 +6,7 @@
 //
 
 #import "ArthroplastyTemplatingPlugin.h"
-#import "ArthroplastyTemplatingStepByStepController.h"
+#import "ArthroplastyTemplatingStepsController.h"
 #import "ArthroplastyTemplatingWindowController.h"
 #import "BrowserController.h"
 #import "Notifications.h"
@@ -36,7 +36,7 @@
 	}
 	
 	[self initialize];
-	ArthroplastyTemplatingStepByStepController* window = [self windowControllerForViewer:viewerController];
+	ArthroplastyTemplatingStepsController* window = [self windowControllerForViewer:viewerController];
 	if (window) {
 		[window showWindow:self];
 		return 0;
@@ -46,7 +46,7 @@
 		if (!NSRunAlertPanel(@"Arthroplasty Templating II", @"All the ROIs on this image will be removed.", @"OK", @"Cancel", NULL))
 			return 0;
 	
-	window = [[ArthroplastyTemplatingStepByStepController alloc] initWithPlugin:self viewerController:viewerController];
+	window = [[ArthroplastyTemplatingStepsController alloc] initWithPlugin:self viewerController:viewerController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:OsirixCloseViewerNotification object:viewerController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:[window window]];
 	[_windows addObject:[window window]];
@@ -60,7 +60,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:[notification object]];
 }
 
--(ArthroplastyTemplatingStepByStepController*)windowControllerForViewer:(ViewerController*)viewer {
+-(ArthroplastyTemplatingStepsController*)windowControllerForViewer:(ViewerController*)viewer {
 	for (NSWindow* window in _windows)
 		if ([[window delegate] viewerController] == viewer)
 			return [window delegate];
@@ -72,7 +72,7 @@
 }
 
 -(BOOL)handleEvent:(NSEvent*)event forViewer:(ViewerController*)controller {
-	ArthroplastyTemplatingStepByStepController* window = [self windowControllerForViewer:controller];
+	ArthroplastyTemplatingStepsController* window = [self windowControllerForViewer:controller];
 	if (window)
 		return [window handleViewerEvent:event];
 	return NO;

@@ -6,8 +6,7 @@
 //
 
 #import "ZimmerTemplate.h"
-#import "NSString+Trim.h"
-#import "NSUtils.h"
+#import <Nitrogen/Nitrogen.h>
 #include <sstream>
 
 @implementation ZimmerTemplate

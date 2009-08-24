@@ -1,5 +1,5 @@
 //
-//  ArthroplastyTemplatingStepByStepController.h
+//  ArthroplastyTemplatingStepsController.h
 //  Arthroplasty Templating II
 //  Created by Joris Heuberger on 04/04/07.
 //  Copyright (c) 2007-2009 OsiriX Team. All rights reserved.
@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class SBSStep, SBS, SBSView;
+@class N2Step, N2Steps, N2StepsView;
 
 #import "ViewerController.h"
 #import "DCMView.h"
@@ -17,12 +17,12 @@
 @class ArthroplastyTemplatingPlugin;
 
 
-@interface ArthroplastyTemplatingStepByStepController : NSWindowController {
+@interface ArthroplastyTemplatingStepsController : NSWindowController {
 	ArthroplastyTemplatingPlugin* _plugin;
 	ViewerController* _viewerController;
 	
-	IBOutlet SBS* _sbs;
-	SBSStep *_stepCalibration, *_stepAxes, *_stepLandmarks, *_stepCutting, *_stepCup, *_stepStem, *_stepPlacement, *_stepSave;
+	IBOutlet N2Steps* _steps;
+	N2Step *_stepCalibration, *_stepAxes, *_stepLandmarks, *_stepCutting, *_stepCup, *_stepStem, *_stepPlacement, *_stepSave;
 	IBOutlet NSView *_viewCalibration, *_viewAxes, *_viewLandmarks, *_viewCutting, *_viewCup, *_viewStem, *_viewPlacement, *_viewSave;
 	
 	NSMutableSet* _knownRois;
@@ -83,10 +83,11 @@
 
 #pragma mark StepByStep Delegate Methods
 
--(void)stepByStep:(SBS*)sbs willBeginStep:(SBSStep*)step;
+-(void)steps:(N2Steps*)steps willBeginStep:(N2Step*)step;
 -(void)advanceAfterInput:(id)change;
--(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step;
--(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step;
+-(void)steps:(N2Steps*)steps valueChanged:(id)sender;
+-(BOOL)steps:(N2Steps*)steps shouldValidateStep:(N2Step*)step;
+-(void)steps:(N2Steps*)steps validateStep:(N2Step*)step;
 -(BOOL)handleViewerEvent:(NSEvent*)event;
 
 #pragma mark Steps specific Methods

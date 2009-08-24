@@ -1,21 +1,17 @@
 //
-//  ArthroplastyTemplatingStepByStepController.m
+//  ArthroplastyTemplatingStepsController.m
 //  Arthroplasty Templating II
 //  Created by Joris Heuberger on 04/04/07.
 //  Copyright (c) 2007-2009 OsiriX Team. All rights reserved.
 //
 
-#import "ArthroplastyTemplatingStepByStepController.h"
+#import "ArthroplastyTemplatingStepsController.h"
 #import "ArthroplastyTemplatingWindowController.h"
 #import "ArthroplastyTemplatingPlugin.h"
 #import "SendController.h"
 #import "BrowserController.h"
-#import "StepByStep/SBS.h"
-#import "StepByStep/SBSStep.h"
+#import <Nitrogen/Nitrogen.h>
 #import "Notifications.h"
-#import "NSButton+ArthroplastyTemplating.h"
-#import "NSUtils.h"
-#import "NSImage+ArthroplastyTemplating.h"
 #import "ArthroplastyTemplateFamily.h"
 // #include "vImage/Convolution.h"
 #include <vector>
@@ -23,10 +19,10 @@
 #define kInvalidAngle 666
 #define kInvalidMagnification 0
 
-@interface ArthroplastyTemplatingStepByStepController (Private)
+@interface ArthroplastyTemplatingStepsController (Private)
 -(void)adjustStemToCup:(unsigned)index;
 @end
-@implementation ArthroplastyTemplatingStepByStepController
+@implementation ArthroplastyTemplatingStepsController
 @synthesize viewerController = _viewerController, magnification = _magnification;
 
 
@@ -62,15 +58,15 @@
 }
 
 -(void)awakeFromNib {
-	[_sbs addStep: _stepCalibration = [[SBSStep alloc] initWithTitle:@"Calibration" enclosedView:_viewCalibration]];
-	[_sbs addStep: _stepAxes = [[SBSStep alloc] initWithTitle:@"Axes" enclosedView:_viewAxes]];
-	[_sbs addStep: _stepLandmarks = [[SBSStep alloc] initWithTitle:@"Femoral landmarks" enclosedView:_viewLandmarks]];
-	[_sbs addStep: _stepCutting = [[SBSStep alloc] initWithTitle:@"Femur identification" enclosedView:_viewCutting]];
-	[_sbs addStep: _stepCup = [[SBSStep alloc] initWithTitle:@"Cup" enclosedView:_viewCup]];
-	[_sbs addStep: _stepStem = [[SBSStep alloc] initWithTitle:@"Stem" enclosedView:_viewStem]];
-	[_sbs addStep: _stepPlacement = [[SBSStep alloc] initWithTitle:@"Reduction" enclosedView:_viewPlacement]];
-	[_sbs addStep: _stepSave = [[SBSStep alloc] initWithTitle:@"Save" enclosedView:_viewSave]];
-	[_sbs enableDisableSteps];
+	[_steps addObject: _stepCalibration = [[N2Step alloc] initWithTitle:@"Calibration" enclosedView:_viewCalibration]];
+	[_steps addObject: _stepAxes = [[N2Step alloc] initWithTitle:@"Axes" enclosedView:_viewAxes]];
+	[_steps addObject: _stepLandmarks = [[N2Step alloc] initWithTitle:@"Femoral landmarks" enclosedView:_viewLandmarks]];
+	[_steps addObject: _stepCutting = [[N2Step alloc] initWithTitle:@"Femur identification" enclosedView:_viewCutting]];
+	[_steps addObject: _stepCup = [[N2Step alloc] initWithTitle:@"Cup" enclosedView:_viewCup]];
+	[_steps addObject: _stepStem = [[N2Step alloc] initWithTitle:@"Stem" enclosedView:_viewStem]];
+	[_steps addObject: _stepPlacement = [[N2Step alloc] initWithTitle:@"Reduction" enclosedView:_viewPlacement]];
+	[_steps addObject: _stepSave = [[N2Step alloc] initWithTitle:@"Save" enclosedView:_viewSave]];
+	[_steps enableDisableSteps];
 	[_magnificationRadioCustom setAttributedTitle:[[[NSAttributedString alloc] initWithString:[_magnificationRadioCustom title] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSColor whiteColor], NSForegroundColorAttributeName, [_magnificationRadioCustom font], NSFontAttributeName, NULL]] autorelease]];
 	[_magnificationRadioCalibrate setAttributedTitle:[[[NSAttributedString alloc] initWithString:[_magnificationRadioCalibrate title] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSColor whiteColor], NSForegroundColorAttributeName, [_magnificationRadioCalibrate font], NSFontAttributeName, NULL]] autorelease]];
 	[_magnificationCustomFactor setBackgroundColor:[[self window] backgroundColor]];
@@ -246,13 +242,13 @@
 	
 	// step dependant
 	if (!wasKnown) {
-		if ([_sbs currentStep] == _stepCalibration)
+		if ([_steps currentStep] == _stepCalibration)
 			if (!_magnificationLine && [roi type] == tMesure) {
 				_magnificationLine = roi;
 				[roi setName:@"Calibration Line"];
 			}
 		
-		if ([_sbs currentStep] == _stepAxes)
+		if ([_steps currentStep] == _stepAxes)
 			if (!_horizontalAxis && [roi type] == tMesure) {
 				_horizontalAxis = roi;
 				[roi setName:@"Horizontal Axis"];
@@ -261,7 +257,7 @@
 				[roi setName:@"Femur Axis"];
 			}
 		
-		if ([_sbs currentStep] == _stepLandmarks)
+		if ([_steps currentStep] == _stepLandmarks)
 			if (!_landmark1 && [roi type] == t2DPoint) {
 				_landmark1 = roi;
 				[roi setDisplayTextualData:NO];
@@ -270,7 +266,7 @@
 				[roi setDisplayTextualData:NO];
 			}
 		
-		if ([_sbs currentStep] == _stepCutting)
+		if ([_steps currentStep] == _stepCutting)
 			if (!_femurRoi && [roi type] == tPencil) {
 				_femurRoi = roi;
 				[roi setThickness:1]; [roi setOpacity:.5];
@@ -278,13 +274,13 @@
 				[roi setDisplayTextualData:NO];
 			}
 		
-		if ([_sbs currentStep] == _stepCup)
+		if ([_steps currentStep] == _stepCup)
 			if (!_cupLayer && [roi type] == tLayerROI) {
 				_cupLayer = roi;
 				_cupTemplate = [[_plugin templatesWindowController] templateAtPath:[roi layerReferenceFilePath]];
 			}
 		
-		if ([_sbs currentStep] == _stepStem)
+		if ([_steps currentStep] == _stepStem)
 			if (!_stemLayer && [roi type] == tLayerROI) {
 				_stemLayer = roi;
 				_stemTemplate = [[_plugin templatesWindowController] templateAtPath:[roi layerReferenceFilePath]];
@@ -328,19 +324,19 @@
 	if (roi == _magnificationLine) {
 		_magnificationLine = NULL;
 		[_stepCalibration setIsDone:NO];
-		[_sbs setCurrentStep:_stepCalibration];
+		[_steps setCurrentStep:_stepCalibration];
 	}
 	
 	if (roi == _horizontalAxis) {
 		_horizontalAxis = NULL;
 		[_stepAxes setIsDone:NO];
-		[_sbs setCurrentStep:_stepAxes];
+		[_steps setCurrentStep:_stepAxes];
 		[self updateLegInequality];
 	}
 	
 	if (roi == _femurAxis) {
 		_femurAxis = NULL;
-		[_sbs setCurrentStep:_stepAxes];
+		[_steps setCurrentStep:_stepAxes];
 	}
 	
 	if (roi == _landmark1) {
@@ -354,7 +350,7 @@
 				[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_landmark1 userInfo:NULL];
 		} else
 			[_stepLandmarks setIsDone:NO];
-		[_sbs setCurrentStep:_stepLandmarks];
+		[_steps setCurrentStep:_stepLandmarks];
 		[self updateLegInequality];
 	}
 	
@@ -378,14 +374,14 @@
 		_femurLayer = NULL; _femurLandmark = NULL;
 		[self removeRoiFromViewer:_originalFemurOpacityLayer];
 		[_stepCutting setIsDone:NO];
-		[_sbs setCurrentStep:_stepCutting];
+		[_steps setCurrentStep:_stepCutting];
 	}
 	
 	if (roi == _cupLayer) {
 		_cupLayer = NULL;
 		_cupTemplate = NULL;
 		[_stepCup setIsDone:NO];
-		[_sbs setCurrentStep:_stepCup];
+		[_steps setCurrentStep:_stepCup];
 		_cupRotated = NO;
 	}
 	
@@ -393,7 +389,7 @@
 		_stemLayer = nil;
 		_stemTemplate = NULL;
 		[_stepStem setIsDone:NO];
-		[_sbs setCurrentStep:_stepStem];
+		[_steps setCurrentStep:_stepStem];
 		_stemRotated = NO;
 		[_neckSizePopUpButton setEnabled:NO];
 	}
@@ -452,7 +448,7 @@
 	if (_planningDate) [_planningDate release]; _planningDate = NULL;
 	
 	if(updateView) {
-		[_sbs reset:self];
+		[_steps reset:self];
 		[[_viewerController imageView] display];
 	}
 }
@@ -471,12 +467,12 @@
 
 #pragma mark Step by Step
 
--(void)stepByStep:(SBS*)sbs willBeginStep:(SBSStep*)step {
-	if (sbs != _sbs)
+-(void)steps:(N2Steps*)steps willBeginStep:(N2Step*)step {
+	if (steps != _steps)
 		return; // this should never happen
 	
-	if ([_sbs currentStep] != step)
-		[sbs setCurrentStep:step];
+	if ([_steps currentStep] != step)
+		[steps setCurrentStep:step];
 
 	BOOL showTemplates = NO, selfKey = NO;
 	int tool = tROISelector;
@@ -512,13 +508,13 @@
 		[self showTemplatesPanel:self];
 	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
 	
-	[(ATPanel*)[self window] setCanBecomeKeyWindow:selfKey];
+	[(N2Panel*)[self window] setCanBecomeKeyWindow:selfKey];
 	if (selfKey)
 		[[self window] makeKeyAndOrderFront:self];
 	else if (!showTemplates) [[_viewerController window] makeKeyAndOrderFront:self];
 }
 
--(void)stepByStep:(SBS*)sbs valueChanged:(id)sender {
+-(void)steps:(N2Steps*)steps valueChanged:(id)sender {
 	// calibration
 	if (sender == _magnificationRadioCustom)
 		[_magnificationRadioCalibrate setState:![_magnificationRadioCustom state]];
@@ -551,7 +547,7 @@
 	
 }
 
--(BOOL)stepByStep:(SBS*)sbs shouldValidateStep:(SBSStep*)step {
+-(BOOL)steps:(N2Steps*)steps shouldValidateStep:(N2Step*)step {
 	NSString* errorMessage = NULL;
 	
 	if (step == _stepCalibration) {
@@ -614,7 +610,7 @@
 	return [roisArray objectAtIndex:minIndex];
 }
 
--(void)stepByStep:(SBS*)sbs validateStep:(SBSStep*)step {
+-(void)steps:(N2Steps*)steps validateStep:(N2Step*)step {
 	if (step == _stepCalibration) {
 	}
 	else if(step == _stepAxes) {
@@ -761,7 +757,7 @@
 		switch ([event keyCode]) {
 			case 76: // enter
 			case 36: // return
-				[_sbs nextStep:self];
+				[_steps nextStep:self];
 				return YES;
 			default:
 				unichar uc = [[event charactersIgnoringModifiers] characterAtIndex:0];

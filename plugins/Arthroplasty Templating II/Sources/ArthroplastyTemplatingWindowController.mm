@@ -6,19 +6,18 @@
 //
 
 #import "ArthroplastyTemplatingWindowController.h"
-#import "ArthroplastyTemplatingStepByStepController.h"
+#import "ArthroplastyTemplatingStepsController.h"
 #import "BrowserController.h"
 #import "ViewerController.h"
 #import "ROI.h"
 #import "DCMView.h"
 #import "ZimmerTemplate.h"
-#import "NSImage+ArthroplastyTemplating.h"
+#import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplateFamily.h"
 #import "ArthroplastyTemplatingPlugin.h"
 #include <sstream>
 #include <cmath>
 #include <algorithm>
-#include "NSUtils.h"
 #include "Notifications.h"
 
 @implementation ArthroplastyTemplatingWindowController

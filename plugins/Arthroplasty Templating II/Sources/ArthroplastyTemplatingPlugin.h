@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PluginFilter.h"
-@class ArthroplastyTemplatingWindowController, ArthroplastyTemplatingStepByStepController;
+@class ArthroplastyTemplatingWindowController, ArthroplastyTemplatingStepsController;
 
 @interface ArthroplastyTemplatingPlugin : PluginFilter {
 	ArthroplastyTemplatingWindowController *_templatesWindowController;
@@ -17,6 +17,6 @@
 
 @property(readonly) ArthroplastyTemplatingWindowController* templatesWindowController;
 
--(ArthroplastyTemplatingStepByStepController*)windowControllerForViewer:(ViewerController*)viewer;
+-(ArthroplastyTemplatingStepsController*)windowControllerForViewer:(ViewerController*)viewer;
 
 @end

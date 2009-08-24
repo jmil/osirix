@@ -7,11 +7,10 @@
 //
 
 #import "SelectablePDFView.h"
-#import "NSImage+ArthroplastyTemplating.h"
+#import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplatingWindowController.h"
 #include <algorithm>
 #include <cmath>
-#include "NSUtils.h"
 
 @implementation SelectablePDFView
 
