@@ -1,0 +1,478 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		59A63306104285DD003F4069 /* Nitrogen.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A63305104285DD003F4069 /* Nitrogen.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6333610428715003F4069 /* N2StepView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330C10428715003F4069 /* N2StepView.mm */; };
+		59A6333710428715003F4069 /* N2StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6330D10428715003F4069 /* N2StepView.h */; };
+		59A6333810428715003F4069 /* N2Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330E10428715003F4069 /* N2Window.mm */; };
+		59A6333A10428715003F4069 /* N2Steps.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331010428715003F4069 /* N2Steps.mm */; };
+		59A6333B10428715003F4069 /* N2Step.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331110428715003F4069 /* N2Step.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6333C10428715003F4069 /* N2LayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331210428715003F4069 /* N2LayoutManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6333D10428715003F4069 /* N2Steps.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331310428715003F4069 /* N2Steps.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6333E10428715003F4069 /* N2StepsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331410428715003F4069 /* N2StepsView.mm */; };
+		59A6333F10428715003F4069 /* N2View.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331510428715003F4069 /* N2View.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334010428715003F4069 /* N2LayoutManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331610428715003F4069 /* N2LayoutManager.mm */; };
+		59A6334110428715003F4069 /* N2Step.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331710428715003F4069 /* N2Step.mm */; };
+		59A6334210428715003F4069 /* N2StepsView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331810428715003F4069 /* N2StepsView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334310428715003F4069 /* N2Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331910428715003F4069 /* N2Window.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334410428715003F4069 /* N2View.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331A10428715003F4069 /* N2View.mm */; };
+		59A6334510428715003F4069 /* N2Pair.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331B10428715003F4069 /* N2Pair.mm */; };
+		59A6334610428715003F4069 /* N2Pair.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331C10428715003F4069 /* N2Pair.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334710428715003F4069 /* N2Operators.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331D10428715003F4069 /* N2Operators.mm */; };
+		59A6334810428715003F4069 /* N2Operators.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331E10428715003F4069 /* N2Operators.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334910428715003F4069 /* N2LayoutDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */; };
+		59A6334A10428715003F4069 /* N2LayoutDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332010428715003F4069 /* N2LayoutDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334B10428715003F4069 /* N2DisclosureButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */; };
+		59A6334C10428715003F4069 /* N2SingletonObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332210428715003F4069 /* N2SingletonObject.mm */; };
+		59A6334D10428715003F4069 /* N2SingletonObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332310428715003F4069 /* N2SingletonObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6334E10428715003F4069 /* N2Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332410428715003F4069 /* N2Debug.h */; };
+		59A6335010428715003F4069 /* N2Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332610428715003F4069 /* N2Debug.mm */; };
+		59A6335110428715003F4069 /* N2DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332710428715003F4069 /* N2DisclosureBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335210428715003F4069 /* NSTextView+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332810428715003F4069 /* NSTextView+N2.mm */; };
+		59A6335310428715003F4069 /* NSTextView+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332910428715003F4069 /* NSTextView+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335410428715003F4069 /* NSString+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332A10428715003F4069 /* NSString+N2.mm */; };
+		59A6335510428715003F4069 /* NSString+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332B10428715003F4069 /* NSString+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335610428715003F4069 /* NSData+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332C10428715003F4069 /* NSData+N2.mm */; };
+		59A6335710428715003F4069 /* NSData+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332D10428715003F4069 /* NSData+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335810428715003F4069 /* NSButton+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332E10428715003F4069 /* NSButton+N2.mm */; };
+		59A6335910428715003F4069 /* NSButton+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332F10428715003F4069 /* NSButton+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335A10428715003F4069 /* NSBitmapImageRep+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6333010428715003F4069 /* NSBitmapImageRep+N2.mm */; };
+		59A6335B10428715003F4069 /* NSBitmapImageRep+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6333110428715003F4069 /* NSBitmapImageRep+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335C10428715003F4069 /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A6333210428715003F4069 /* NS(Attributed)String+Geometrics.m */; };
+		59A6335D10428715003F4069 /* NS(Attributed)String+Geometrics.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6333310428715003F4069 /* NS(Attributed)String+Geometrics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335E10428715003F4069 /* N2DisclosureButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6333410428715003F4069 /* N2DisclosureButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59A6335F10428715003F4069 /* N2DisclosureBox.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6333510428715003F4069 /* N2DisclosureBox.mm */; };
+		59A636A8104298C0003F4069 /* Nitrogen.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59A636A7104298C0003F4069 /* Nitrogen.pch */; };
+		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		59A63305104285DD003F4069 /* Nitrogen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nitrogen.h; path = Sources/Nitrogen.h; sourceTree = "<group>"; };
+		59A6330C10428715003F4069 /* N2StepView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepView.mm; sourceTree = "<group>"; };
+		59A6330D10428715003F4069 /* N2StepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2StepView.h; sourceTree = "<group>"; };
+		59A6330E10428715003F4069 /* N2Window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Window.mm; sourceTree = "<group>"; };
+		59A6331010428715003F4069 /* N2Steps.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Steps.mm; sourceTree = "<group>"; };
+		59A6331110428715003F4069 /* N2Step.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Step.h; sourceTree = "<group>"; };
+		59A6331210428715003F4069 /* N2LayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2LayoutManager.h; sourceTree = "<group>"; };
+		59A6331310428715003F4069 /* N2Steps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Steps.h; sourceTree = "<group>"; };
+		59A6331410428715003F4069 /* N2StepsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepsView.mm; sourceTree = "<group>"; };
+		59A6331510428715003F4069 /* N2View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2View.h; sourceTree = "<group>"; };
+		59A6331610428715003F4069 /* N2LayoutManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2LayoutManager.mm; sourceTree = "<group>"; };
+		59A6331710428715003F4069 /* N2Step.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Step.mm; sourceTree = "<group>"; };
+		59A6331810428715003F4069 /* N2StepsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2StepsView.h; sourceTree = "<group>"; };
+		59A6331910428715003F4069 /* N2Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Window.h; sourceTree = "<group>"; };
+		59A6331A10428715003F4069 /* N2View.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2View.mm; sourceTree = "<group>"; };
+		59A6331B10428715003F4069 /* N2Pair.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Pair.mm; sourceTree = "<group>"; };
+		59A6331C10428715003F4069 /* N2Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Pair.h; sourceTree = "<group>"; };
+		59A6331D10428715003F4069 /* N2Operators.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Operators.mm; sourceTree = "<group>"; };
+		59A6331E10428715003F4069 /* N2Operators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Operators.h; sourceTree = "<group>"; };
+		59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2LayoutDescriptor.mm; sourceTree = "<group>"; };
+		59A6332010428715003F4069 /* N2LayoutDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2LayoutDescriptor.h; sourceTree = "<group>"; };
+		59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2DisclosureButtonCell.mm; sourceTree = "<group>"; };
+		59A6332210428715003F4069 /* N2SingletonObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2SingletonObject.mm; sourceTree = "<group>"; };
+		59A6332310428715003F4069 /* N2SingletonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2SingletonObject.h; sourceTree = "<group>"; };
+		59A6332410428715003F4069 /* N2Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Debug.h; sourceTree = "<group>"; };
+		59A6332610428715003F4069 /* N2Debug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Debug.mm; sourceTree = "<group>"; };
+		59A6332710428715003F4069 /* N2DisclosureBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2DisclosureBox.h; sourceTree = "<group>"; };
+		59A6332810428715003F4069 /* NSTextView+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSTextView+N2.mm"; sourceTree = "<group>"; };
+		59A6332910428715003F4069 /* NSTextView+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextView+N2.h"; sourceTree = "<group>"; };
+		59A6332A10428715003F4069 /* NSString+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+N2.mm"; sourceTree = "<group>"; };
+		59A6332B10428715003F4069 /* NSString+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+N2.h"; sourceTree = "<group>"; };
+		59A6332C10428715003F4069 /* NSData+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+N2.mm"; sourceTree = "<group>"; };
+		59A6332D10428715003F4069 /* NSData+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+N2.h"; sourceTree = "<group>"; };
+		59A6332E10428715003F4069 /* NSButton+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSButton+N2.mm"; sourceTree = "<group>"; };
+		59A6332F10428715003F4069 /* NSButton+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+N2.h"; sourceTree = "<group>"; };
+		59A6333010428715003F4069 /* NSBitmapImageRep+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBitmapImageRep+N2.mm"; sourceTree = "<group>"; };
+		59A6333110428715003F4069 /* NSBitmapImageRep+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBitmapImageRep+N2.h"; sourceTree = "<group>"; };
+		59A6333210428715003F4069 /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
+		59A6333310428715003F4069 /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
+		59A6333410428715003F4069 /* N2DisclosureButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2DisclosureButtonCell.h; sourceTree = "<group>"; };
+		59A6333510428715003F4069 /* N2DisclosureBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2DisclosureBox.mm; sourceTree = "<group>"; };
+		59A636A7104298C0003F4069 /* Nitrogen.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nitrogen.pch; path = Sources/Nitrogen.pch; sourceTree = "<group>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* Nitrogen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nitrogen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* Nitrogen.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* Nitrogen */ = {
+			isa = PBXGroup;
+			children = (
+				59A63305104285DD003F4069 /* Nitrogen.h */,
+				59A632821042791E003F4069 /* Sources */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = Nitrogen;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
+				D2F7E79907B2D74100F64583 /* CoreData.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				59A636A7104298C0003F4069 /* Nitrogen.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		59A632821042791E003F4069 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				59A6332410428715003F4069 /* N2Debug.h */,
+				59A6332610428715003F4069 /* N2Debug.mm */,
+				59A6331E10428715003F4069 /* N2Operators.h */,
+				59A6331D10428715003F4069 /* N2Operators.mm */,
+				59A6331510428715003F4069 /* N2View.h */,
+				59A6331A10428715003F4069 /* N2View.mm */,
+				59A6331910428715003F4069 /* N2Window.h */,
+				59A6330E10428715003F4069 /* N2Window.mm */,
+				59A6332710428715003F4069 /* N2DisclosureBox.h */,
+				59A6333510428715003F4069 /* N2DisclosureBox.mm */,
+				59A6333410428715003F4069 /* N2DisclosureButtonCell.h */,
+				59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */,
+				59A633621042877D003F4069 /* Layout */,
+				59A6336110428751003F4069 /* Steps */,
+				59A63363104287B4003F4069 /* Stuff */,
+				59A63364104287DE003F4069 /* Extras */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		59A6336110428751003F4069 /* Steps */ = {
+			isa = PBXGroup;
+			children = (
+				59A6331110428715003F4069 /* N2Step.h */,
+				59A6331710428715003F4069 /* N2Step.mm */,
+				59A6331310428715003F4069 /* N2Steps.h */,
+				59A6331010428715003F4069 /* N2Steps.mm */,
+				59A6330D10428715003F4069 /* N2StepView.h */,
+				59A6330C10428715003F4069 /* N2StepView.mm */,
+				59A6331810428715003F4069 /* N2StepsView.h */,
+				59A6331410428715003F4069 /* N2StepsView.mm */,
+			);
+			name = Steps;
+			sourceTree = "<group>";
+		};
+		59A633621042877D003F4069 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				59A6331210428715003F4069 /* N2LayoutManager.h */,
+				59A6331610428715003F4069 /* N2LayoutManager.mm */,
+				59A6332010428715003F4069 /* N2LayoutDescriptor.h */,
+				59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */,
+			);
+			name = Layout;
+			sourceTree = "<group>";
+		};
+		59A63363104287B4003F4069 /* Stuff */ = {
+			isa = PBXGroup;
+			children = (
+				59A6331C10428715003F4069 /* N2Pair.h */,
+				59A6331B10428715003F4069 /* N2Pair.mm */,
+				59A6332310428715003F4069 /* N2SingletonObject.h */,
+				59A6332210428715003F4069 /* N2SingletonObject.mm */,
+			);
+			name = Stuff;
+			sourceTree = "<group>";
+		};
+		59A63364104287DE003F4069 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				59A6332910428715003F4069 /* NSTextView+N2.h */,
+				59A6332810428715003F4069 /* NSTextView+N2.mm */,
+				59A6332B10428715003F4069 /* NSString+N2.h */,
+				59A6332A10428715003F4069 /* NSString+N2.mm */,
+				59A6332D10428715003F4069 /* NSData+N2.h */,
+				59A6332C10428715003F4069 /* NSData+N2.mm */,
+				59A6332F10428715003F4069 /* NSButton+N2.h */,
+				59A6332E10428715003F4069 /* NSButton+N2.mm */,
+				59A6333110428715003F4069 /* NSBitmapImageRep+N2.h */,
+				59A6333010428715003F4069 /* NSBitmapImageRep+N2.mm */,
+				59A6333310428715003F4069 /* NS(Attributed)String+Geometrics.h */,
+				59A6333210428715003F4069 /* NS(Attributed)String+Geometrics.m */,
+			);
+			name = Extras;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59A63306104285DD003F4069 /* Nitrogen.h in Headers */,
+				59A6333710428715003F4069 /* N2StepView.h in Headers */,
+				59A6333B10428715003F4069 /* N2Step.h in Headers */,
+				59A6333C10428715003F4069 /* N2LayoutManager.h in Headers */,
+				59A6333D10428715003F4069 /* N2Steps.h in Headers */,
+				59A6333F10428715003F4069 /* N2View.h in Headers */,
+				59A6334210428715003F4069 /* N2StepsView.h in Headers */,
+				59A6334310428715003F4069 /* N2Window.h in Headers */,
+				59A6334610428715003F4069 /* N2Pair.h in Headers */,
+				59A6334810428715003F4069 /* N2Operators.h in Headers */,
+				59A6334A10428715003F4069 /* N2LayoutDescriptor.h in Headers */,
+				59A6334D10428715003F4069 /* N2SingletonObject.h in Headers */,
+				59A6334E10428715003F4069 /* N2Debug.h in Headers */,
+				59A6335110428715003F4069 /* N2DisclosureBox.h in Headers */,
+				59A6335310428715003F4069 /* NSTextView+N2.h in Headers */,
+				59A6335510428715003F4069 /* NSString+N2.h in Headers */,
+				59A6335710428715003F4069 /* NSData+N2.h in Headers */,
+				59A6335910428715003F4069 /* NSButton+N2.h in Headers */,
+				59A6335B10428715003F4069 /* NSBitmapImageRep+N2.h in Headers */,
+				59A6335D10428715003F4069 /* NS(Attributed)String+Geometrics.h in Headers */,
+				59A6335E10428715003F4069 /* N2DisclosureButtonCell.h in Headers */,
+				59A636A8104298C0003F4069 /* Nitrogen.pch in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* Nitrogen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Nitrogen" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Nitrogen;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = Nitrogen;
+			productReference = 8DC2EF5B0486A6940098B216 /* Nitrogen.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Nitrogen" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* Nitrogen */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* Nitrogen */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59A6333610428715003F4069 /* N2StepView.mm in Sources */,
+				59A6333810428715003F4069 /* N2Window.mm in Sources */,
+				59A6333A10428715003F4069 /* N2Steps.mm in Sources */,
+				59A6333E10428715003F4069 /* N2StepsView.mm in Sources */,
+				59A6334010428715003F4069 /* N2LayoutManager.mm in Sources */,
+				59A6334110428715003F4069 /* N2Step.mm in Sources */,
+				59A6334410428715003F4069 /* N2View.mm in Sources */,
+				59A6334510428715003F4069 /* N2Pair.mm in Sources */,
+				59A6334710428715003F4069 /* N2Operators.mm in Sources */,
+				59A6334910428715003F4069 /* N2LayoutDescriptor.mm in Sources */,
+				59A6334B10428715003F4069 /* N2DisclosureButtonCell.mm in Sources */,
+				59A6334C10428715003F4069 /* N2SingletonObject.mm in Sources */,
+				59A6335010428715003F4069 /* N2Debug.mm in Sources */,
+				59A6335210428715003F4069 /* NSTextView+N2.mm in Sources */,
+				59A6335410428715003F4069 /* NSString+N2.mm in Sources */,
+				59A6335610428715003F4069 /* NSData+N2.mm in Sources */,
+				59A6335810428715003F4069 /* NSButton+N2.mm in Sources */,
+				59A6335A10428715003F4069 /* NSBitmapImageRep+N2.mm in Sources */,
+				59A6335C10428715003F4069 /* NS(Attributed)String+Geometrics.m in Sources */,
+				59A6335F10428715003F4069 /* N2DisclosureBox.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AE08733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/N2.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				PRODUCT_NAME = Nitrogen;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Nitrogen.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				PRODUCT_NAME = Nitrogen;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		1DEB91B208733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Nitrogen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AE08733DA50010E9CD /* Debug */,
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Nitrogen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B208733DA50010E9CD /* Debug */,
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
