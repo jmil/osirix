@@ -8,15 +8,15 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="315"/>
-			<integer value="191"/>
-			<integer value="152"/>
-			<integer value="173"/>
-			<integer value="185"/>
-			<integer value="181"/>
-			<integer value="196"/>
-			<integer value="370"/>
 			<integer value="169"/>
+			<integer value="185"/>
+			<integer value="196"/>
+			<integer value="181"/>
+			<integer value="152"/>
+			<integer value="191"/>
+			<integer value="316"/>
+			<integer value="173"/>
+			<integer value="370"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,7 +61,7 @@
 							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{4, 8}, {211, 54}}</string>
 							<reference key="NSSuperview" ref="156439240"/>
-							<string key="NSClassName">SBSView</string>
+							<string key="NSClassName">N2StepsView</string>
 						</object>
 					</object>
 					<string key="NSFrameSize">{218, 70}</string>
@@ -72,7 +72,7 @@
 				<string key="NSFrameAutosaveName">Arthroplasty Templating</string>
 			</object>
 			<object class="NSCustomObject" id="993501891">
-				<string key="NSClassName">SBS</string>
+				<string key="NSClassName">N2Steps</string>
 			</object>
 			<object class="NSCustomView" id="399905757">
 				<reference key="NSNextResponder"/>
@@ -1061,30 +1061,6 @@
 						<reference key="destination" ref="304907334"/>
 					</object>
 					<int key="connectionID">324</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_controller</string>
-						<reference key="source" ref="1056400025"/>
-						<reference key="destination" ref="993501891"/>
-					</object>
-					<int key="connectionID">330</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_view</string>
-						<reference key="source" ref="993501891"/>
-						<reference key="destination" ref="1056400025"/>
-					</object>
-					<int key="connectionID">331</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_delegate</string>
-						<reference key="source" ref="993501891"/>
-						<reference key="destination" ref="916986557"/>
-					</object>
-					<int key="connectionID">332</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2310,8 +2286,8 @@
 					<string>ATButtonCell</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{922, 458}, {218, 70}}</string>
-					<string>{{922, 458}, {218, 70}}</string>
+					<string>{{544, 818}, {218, 70}}</string>
+					<string>{{544, 818}, {218, 70}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2484,21 +2460,17 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="915774407">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Sources/StepByStep/SBS.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
 					</object>
 				</object>
+			</object>
+			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.1+">
+				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">SBS</string>
-					<string key="superclassName">NSObject</string>
+					<string key="className">N2Steps</string>
+					<string key="superclassName">NSArrayController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
@@ -2519,31 +2491,17 @@
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSMutableArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>_delegate</string>
-							<string>_view</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>SBSView</string>
-						</object>
+						<string key="NS.key.0">_delegate</string>
+						<string key="NS.object.0">id</string>
 					</object>
-					<reference key="sourceIdentifier" ref="915774407"/>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="663286599">
+						<string key="majorKey">IBDocumentRelativeSource</string>
+						<string key="minorKey">../../../nitrogen/build/Release/Nitrogen.framework/Headers/N2Steps.h</string>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SBSView</string>
-					<string key="superclassName">NSView</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">_controller</string>
-						<string key="NS.object.0">SBS</string>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Sources/StepByStep/SBSView.h</string>
-					</object>
+					<string key="className">NSObject</string>
+					<reference key="sourceIdentifier" ref="663286599"/>
 				</object>
 			</object>
 		</object>
