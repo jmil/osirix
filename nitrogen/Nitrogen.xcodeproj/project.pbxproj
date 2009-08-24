@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		59A63306104285DD003F4069 /* Nitrogen.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A63305104285DD003F4069 /* Nitrogen.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333610428715003F4069 /* N2StepView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330C10428715003F4069 /* N2StepView.mm */; };
-		59A6333710428715003F4069 /* N2StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6330D10428715003F4069 /* N2StepView.h */; };
+		59A6333710428715003F4069 /* N2StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6330D10428715003F4069 /* N2StepView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333810428715003F4069 /* N2Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330E10428715003F4069 /* N2Window.mm */; };
 		59A6333A10428715003F4069 /* N2Steps.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331010428715003F4069 /* N2Steps.mm */; };
 		59A6333B10428715003F4069 /* N2Step.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331110428715003F4069 /* N2Step.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,7 +31,7 @@
 		59A6334B10428715003F4069 /* N2DisclosureButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */; };
 		59A6334C10428715003F4069 /* N2SingletonObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332210428715003F4069 /* N2SingletonObject.mm */; };
 		59A6334D10428715003F4069 /* N2SingletonObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332310428715003F4069 /* N2SingletonObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		59A6334E10428715003F4069 /* N2Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332410428715003F4069 /* N2Debug.h */; };
+		59A6334E10428715003F4069 /* N2Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332410428715003F4069 /* N2Debug.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6335010428715003F4069 /* N2Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332610428715003F4069 /* N2Debug.mm */; };
 		59A6335110428715003F4069 /* N2DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332710428715003F4069 /* N2DisclosureBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6335210428715003F4069 /* NSTextView+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332810428715003F4069 /* NSTextView+N2.mm */; };
