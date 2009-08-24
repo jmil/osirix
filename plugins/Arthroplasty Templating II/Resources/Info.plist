@@ -27,7 +27,7 @@
 	<key>allowToolbarIcon</key>
 	<string>YES</string>
 	<key>ToolbarIcon</key>
-	<string>ArthroplastyTemplatingIcon</string>
+	<string>ArthroplastyTemplating</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.osirix.arthroplastytemplating</string>
 </dict>

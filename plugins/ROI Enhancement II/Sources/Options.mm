@@ -20,11 +20,12 @@
 #import "UserDefaults.h"
 #import <ViewerController.h>
 #import <DCMView.h>
+#import "Notifications.h"
 
 @implementation Options
 
 -(void)awakeFromNib {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentImage:) name:@"DCMUpdateCurrentImage" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentImage:) name:OsirixDCMUpdateCurrentImageNotification object:NULL];
 }
 
 -(void)loadUserDefaults {

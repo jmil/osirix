@@ -43,6 +43,7 @@
 		5989607D0F9EFBE200BEFEE4 /* GRPieDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960750F9EFBE200BEFEE4 /* GRPieDataSet.h */; };
 		5989607E0F9EFBE200BEFEE4 /* GRXYDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */; };
 		598960830F9EFC5E00BEFEE4 /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598960820F9EFC5E00BEFEE4 /* GraphKit.framework */; };
+		59C2B96B0FF0F0D100B50385 /* Notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 59C2B96A0FF0F0D100B50385 /* Notifications.h */; };
 		59C72B360FCD88CC00430BD9 /* ROIList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59C72B340FCD88CC00430BD9 /* ROIList.mm */; };
 		59C72B370FCD88CC00430BD9 /* ROIList.h in Headers */ = {isa = PBXBuildFile; fileRef = 59C72B350FCD88CC00430BD9 /* ROIList.h */; };
 		59C72CEF0FCD905300430BD9 /* ROI_Enhancement_II.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59C72CEE0FCD905300430BD9 /* ROI_Enhancement_II.pch */; };
@@ -96,6 +97,7 @@
 		598960750F9EFBE200BEFEE4 /* GRPieDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRPieDataSet.h; sourceTree = "<group>"; };
 		598960760F9EFBE200BEFEE4 /* GRXYDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRXYDataSet.h; sourceTree = "<group>"; };
 		598960820F9EFC5E00BEFEE4 /* GraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphKit.framework; path = /System/Library/PrivateFrameworks/GraphKit.framework; sourceTree = "<absolute>"; };
+		59C2B96A0FF0F0D100B50385 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notifications.h; path = ../../osirix/Notifications.h; sourceTree = SOURCE_ROOT; };
 		59C72B340FCD88CC00430BD9 /* ROIList.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ROIList.mm; path = Sources/ROIList.mm; sourceTree = "<group>"; };
 		59C72B350FCD88CC00430BD9 /* ROIList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROIList.h; path = Sources/ROIList.h; sourceTree = "<group>"; };
 		59C72CEE0FCD905300430BD9 /* ROI_Enhancement_II.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ROI_Enhancement_II.pch; path = Sources/ROI_Enhancement_II.pch; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				59D656C50FB1C8020021E211 /* DICOMExport.h */,
 				597715670FA97FAF003CBDE8 /* DCMPix.h */,
 				597715680FA97FAF003CBDE8 /* DCMView.h */,
+				59C2B96A0FF0F0D100B50385 /* Notifications.h */,
 				597715690FA97FAF003CBDE8 /* dicomFile.h */,
 				5977156A0FA97FAF003CBDE8 /* MyPoint.h */,
 				5977156B0FA97FAF003CBDE8 /* OSIWindowController.h */,
@@ -307,6 +310,7 @@
 				597816050FB9520800774713 /* DicomSaveDialog.h in Headers */,
 				59C72B370FCD88CC00430BD9 /* ROIList.h in Headers */,
 				59C72CEF0FCD905300430BD9 /* ROI_Enhancement_II.pch in Headers */,
+				59C2B96B0FF0F0D100B50385 /* Notifications.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

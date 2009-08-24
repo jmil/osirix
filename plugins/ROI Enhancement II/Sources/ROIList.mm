@@ -20,7 +20,7 @@
 #import <GRLineDataSet.h>
 #import <GRAreaDataSet.h>
 #import "Options.h"
-
+#import "Notifications.h"
 
 @implementation ROIRec
 @synthesize roi = _roi;
@@ -100,8 +100,8 @@
 	
 	[_menu retain];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiChange:) name:@"roiChange" object:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeROI:) name:@"removeROI" object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roiChange:) name:OsirixROIChangeNotification object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeROI:) name:OsirixRemoveROINotification object:NULL];
 }
 
 -(void)loadViewerROIs {
@@ -109,7 +109,7 @@
 	for (unsigned i = 0; i < [roiSeriesList count]; i++) {
 		NSArray* roiImageList = [roiSeriesList objectAtIndex:i];
 		for (unsigned x = 0; x < [roiImageList count]; x++)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:[roiImageList objectAtIndex:x]];
+			[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:[roiImageList objectAtIndex:x]];
 	}
 	
 	unsigned displayedCount = [self countOfDisplayedROIs];

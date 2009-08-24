@@ -78,6 +78,7 @@
 	[_magnificationCalibrateLength setBackgroundColor:[[self window] backgroundColor]];
 	[_plannersNameTextField setBackgroundColor:[[self window] backgroundColor]];
 	[_magnificationCustomFactor setFloatValue:1.15];
+//	[self updateInfo];
 }
 
 - (void)dealloc {
@@ -213,15 +214,20 @@
 	
 	if ([[*axis points] count]) [[*axis points] removeAllObjects];
 	[*axis setPoints:[NSArray arrayWithObjects:[MyPoint point:pointFrom], [MyPoint point:pointTo], NULL]];
-	*value = [*axis MesureLength:NULL]/_magnification;
+	*value = [*axis MesureLength:NULL]/_magnification*NSSign((pointTo-pointFrom).y);
 	
 	[*axis setName:[NSString stringWithFormat:@"%@: %.3f cm", name, *value]];
 //	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_legInequality userInfo:NULL];
 }
 
 -(void)updateLegInequality {
-	[self updateInequality:&_originalLegInequality from:_landmark1 to:_landmark2 name:@"Original leg inequality" positioning:.5 value:&_originalLegInequalityValue];
+	ROI *lm1 = _femurLandmarkOther? (_femurLandmarkOther==_landmark1?_landmark2:_landmark1) : _landmark1, *lm2 = _femurLandmarkOther? _femurLandmarkOther : _landmark2;
+	[self updateInequality:&_originalLegInequality from:lm1 to:lm2 name:@"Original leg inequality" positioning:.5 value:&_originalLegInequalityValue];
 	[self updateInequality:&_legInequality from:_femurLandmark to:_femurLandmarkOther name:@"Leg inequality" positioning:1 value:&_legInequalityValue];
+	
+//	NSVector horizontalVector = NSMakeVector([[[_horizontalAxis points] objectAtIndex:0] point], [[[_horizontalAxis points] objectAtIndex:1] point]);
+	
+//	[_verticalOffsetTextField setStringValue:[NSString stringWithFormat:@"Vertical offset: ", ]];
 }
 
 -(void)roiChanged:(NSNotification*)notification {
@@ -621,8 +627,9 @@
 			
 		_femurLayer = [_viewerController createLayerROIFromROI:_femurRoi];
 		[_femurLayer roiMove:NSMakePoint(-10,10)]; // when the layer is created it is shifted, but we don't want this so we move it back // TODO: pas possible de faire [x setOrigin:[x origin]] ?
-		[_femurLayer setOpacity:1];
+		[_femurLayer setOpacity:2];
 		[_femurLayer setDisplayTextualData:NO];
+		
 		
 		_femurLandmarkOriginal = [self closestROIFromSet:[NSSet setWithObjects:_landmark1, _landmark2, NULL] toPoints:[_femurRoi points]];
 		_femurLandmark = [[ROI alloc] initWithType:t2DPoint :[[_femurLandmarkOriginal valueForKey:@"pixelSpacingX"] floatValue] :[[_femurLandmarkOriginal valueForKey:@"pixelSpacingY"] floatValue] :[[_femurLandmarkOriginal valueForKey:@"imageOrigin"] pointValue]];
@@ -657,7 +664,7 @@
 				bitmapData[base+0] = 0;
 				bitmapData[base+1] = 0;
 				bitmapData[base+2] = 0;
-				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 160 : 0;
+				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 164 : 0;
 			}
 		
 		NSImage* image = [[NSImage alloc] init];
@@ -763,7 +770,7 @@
 					case '+':
 					case '-':
 					case NSUpArrowFunctionKey:
-					case NSDownArrowFunctionKey:
+					case NSDownArrowFunctionKey: {
 						BOOL next = uc == '+' || uc == NSUpArrowFunctionKey;
 						
 						if (_cupLayer && [_cupLayer ROImode] == ROI_selected && _cupTemplate) {
@@ -778,7 +785,7 @@
 						}
 						
 						return handled;
-						
+					}
 					case '*':
 					case '/':
 					case NSLeftArrowFunctionKey:
@@ -905,15 +912,6 @@
 
 #pragma mark Result
 
-- (void)createInfoBox {
-	if (_infoBox) return;
-	_infoBox = [[ROI alloc] initWithType:tText :[[_viewerController imageView] pixelSpacingX] :[[_viewerController imageView] pixelSpacingY] :[[_viewerController imageView] origin]];
-	[_infoBox setROIRect:NSMakeRect([[[_viewerController imageView] curDCM] pwidth]/2, [[[_viewerController imageView] curDCM] pheight]/2, 0.0, 0.0)];
-	[[_viewerController imageView] roiSet:_infoBox];
-	[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_infoBox];
-	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_infoBox userInfo:NULL];
-}
-
 -(void)computeValues {
 	// magnification
 	_magnification = kInvalidMagnification;
@@ -953,27 +951,33 @@
 	[self updateInfo];
 }
 
+- (void)createInfoBox {
+	if (_infoBox) return;
+	_infoBox = [[ROI alloc] initWithType:tText :[[_viewerController imageView] pixelSpacingX] :[[_viewerController imageView] pixelSpacingY] :[[_viewerController imageView] origin]];
+	[_infoBox setROIRect:NSMakeRect([[[_viewerController imageView] curDCM] pwidth]/2, [[[_viewerController imageView] curDCM] pheight]/2, 0.0, 0.0)];
+	[[_viewerController imageView] roiSet:_infoBox];
+	[[[_viewerController roiList] objectAtIndex:[[_viewerController imageView] curImage]] addObject:_infoBox];
+	[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_infoBox userInfo:NULL];
+}
+
 -(void)updateInfo {
 	[self createInfoBox];
 	NSMutableString* str = [[NSMutableString alloc] initWithCapacity:512];
 	
-	if ([[_plannersNameTextField stringValue] length])
-		[str appendFormat:@"Planner: %@\n", [_plannersNameTextField stringValue]];
-	if (_planningDate)
-		[str appendFormat:@"Date: %@\n", _planningDate];
+	[str appendString:@"OsiriX Arthroplasty Templating"];
 	
 	if (_originalLegInequality || _legInequality) {
-		[str appendFormat:@"%@Leg inequality:\n", [str length]?@"\n":@"", _originalLegInequalityValue];
+		[str appendFormat:@"\nLeg length discrepancy:\n"];
 		if (_originalLegInequality)
-			[str appendFormat:@"\tOriginal: %f\n", _originalLegInequalityValue];
+			[str appendFormat:@"\tOriginal: %.2f cm\n", _originalLegInequalityValue];
 		if (_legInequality)
-			[str appendFormat:@"\tFinal: %f\n", _legInequalityValue];
+			[str appendFormat:@"\tFinal: %.2f cm\n", _legInequalityValue];
 		if (_originalLegInequality && _legInequality)
-			[str appendFormat:@"\tImprovement: %f\n", _originalLegInequalityValue - _legInequalityValue];
+			[str appendFormat:@"\tChange: %.2f cm\n", -(_originalLegInequalityValue - _legInequalityValue)];
 	}
 	
 	if (_cupLayer) {
-		[str appendFormat:@"%@Cup: %@\n", [str length]?@"\n":@"", [_cupTemplate name]];
+		[str appendFormat:@"\nCup: %@\n", [_cupTemplate name]];
 		[str appendFormat:@"\tManufacturer: %@\n", [_cupTemplate manufacturer]];
 		[str appendFormat:@"\tSize: %@\n", [_cupTemplate size]];
 		[str appendFormat:@"\tRotation: %.2f°\n", _cupAngle];
@@ -981,14 +985,21 @@
 	}
 	
 	if (_stemTemplate) {
-		[str appendFormat:@"%@Stem: %@\n", [str length]?@"\n":@"", [_stemTemplate name]];
+		[str appendFormat:@"\nStem: %@\n", [_stemTemplate name]];
 		[str appendFormat:@"\tManufacturer: %@\n", [_stemTemplate manufacturer]];
 		[str appendFormat:@"\tSize: %@\n", [_stemTemplate size]];
 		[str appendFormat:@"\tRotation: %.2f°\n", _stemAngle];
-		if ([_neckSizePopUpButton isEnabled]) [str appendFormat:@"\tNeck size: %@\n", [[_neckSizePopUpButton selectedItem] title]];
 		[str appendFormat:@"\tReference: %@\n", [_stemTemplate referenceNumber]];
 	}
-	
+
+	if ([_neckSizePopUpButton isEnabled])
+		[str appendFormat:@"\nNeck size: %@\n", [[_neckSizePopUpButton selectedItem] title]];
+
+	if ([[_plannersNameTextField stringValue] length])
+		[str appendFormat:@"\nPlanified by: %@\n", [_plannersNameTextField stringValue]];
+	if (_planningDate)
+		[str appendFormat:@"Date: %@\n", _planningDate];
+
 	[_infoBox setName:str];
 }
 

@@ -7,9 +7,10 @@
 //
 
 #import "ArthroplastyTemplatingSplitView.h"
-
+#include <algorithm>
 
 @implementation ArthroplastyTemplatingSplitView
+
 
 -(void)awakeFromNib {
 	[self setDelegate:self];
@@ -28,11 +29,12 @@
 	NSRect rightFrame = [right frame];
 	
 	leftFrame.size.height = splitFrame.size.height;
-	leftFrame.size.width = availableWidth - rightFrame.size.width;
+	leftFrame.size.width = std::max(availableWidth - rightFrame.size.width, 100.f);
 	[left setFrame:leftFrame];	
 	
 	rightFrame.size.height = splitFrame.size.height;
 	rightFrame.origin.x = leftFrame.size.width + dividerThickness;
+	rightFrame.size.width = availableWidth - leftFrame.size.width;
 	[right setFrame:rightFrame];
 }
 

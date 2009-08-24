@@ -29,16 +29,7 @@
 		59503AFB0FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h in Headers */ = {isa = PBXBuildFile; fileRef = 59503AF90FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h */; };
 		595252810FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5952527F0FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.mm */; };
 		595252820FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 595252800FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.h */; };
-		597AA87C0FE7BF980035E3AA /* SBSStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = 597AA8720FE7BF980035E3AA /* SBSStepView.m */; };
-		597AA87D0FE7BF980035E3AA /* DisclosureBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 597AA8730FE7BF980035E3AA /* DisclosureBox.h */; };
-		597AA87E0FE7BF980035E3AA /* SBSStepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 597AA8740FE7BF980035E3AA /* SBSStepView.h */; };
-		597AA87F0FE7BF980035E3AA /* SBSStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 597AA8750FE7BF980035E3AA /* SBSStep.m */; };
-		597AA8800FE7BF980035E3AA /* SBSStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 597AA8760FE7BF980035E3AA /* SBSStep.h */; };
-		597AA8810FE7BF980035E3AA /* SBS.m in Sources */ = {isa = PBXBuildFile; fileRef = 597AA8770FE7BF980035E3AA /* SBS.m */; };
-		597AA8820FE7BF980035E3AA /* DisclosureBox.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597AA8780FE7BF980035E3AA /* DisclosureBox.mm */; };
-		597AA8830FE7BF980035E3AA /* SBSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 597AA8790FE7BF980035E3AA /* SBSView.m */; };
-		597AA8840FE7BF980035E3AA /* SBSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 597AA87A0FE7BF980035E3AA /* SBSView.h */; };
-		597AA8850FE7BF980035E3AA /* SBS.h in Headers */ = {isa = PBXBuildFile; fileRef = 597AA87B0FE7BF980035E3AA /* SBS.h */; };
+		596EF90210148ADD0047C33E /* empty.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 596EF90110148ADD0047C33E /* empty.pdf */; };
 		598E1E2B0FFB3E0200BC313C /* ArthroplastyTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E1E2A0FFB3E0200BC313C /* ArthroplastyTemplate.mm */; };
 		598E1E2D0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E1E2C0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm */; };
 		598E1E2F0FFB3E4D00BC313C /* ArthroplastyTemplatingTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E1E2E0FFB3E4D00BC313C /* ArthroplastyTemplatingTableView.mm */; };
@@ -52,6 +43,8 @@
 		599572910FDD3E2B007C151F /* SelectablePDFView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5995728F0FDD3E2B007C151F /* SelectablePDFView.mm */; };
 		599572CC0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 599572CB0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm */; };
 		599C7B190FFCFED000AD1EB9 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 599C7B180FFCFED000AD1EB9 /* Accelerate.framework */; };
+		59A6366E10428D23003F4069 /* Nitrogen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A6366D10428D23003F4069 /* Nitrogen.framework */; };
+		59A6368810428DB6003F4069 /* Nitrogen.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 59A6366D10428D23003F4069 /* Nitrogen.framework */; };
 		59B8B7470FFDEF2900891365 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B8B7460FFDEF2900891365 /* CoreFoundation.framework */; };
 		59D94E760FCE807D00509EEC /* NSImage+ArthroplastyTemplating.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E590FCE807D00509EEC /* NSImage+ArthroplastyTemplating.h */; };
 		59D94E770FCE807D00509EEC /* NSImage+ArthroplastyTemplating.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D94E5A0FCE807D00509EEC /* NSImage+ArthroplastyTemplating.mm */; };
@@ -72,6 +65,20 @@
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		59A6368710428D88003F4069 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				59A6368810428DB6003F4069 /* Nitrogen.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -99,16 +106,7 @@
 		59503AF90FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+ArthroplastyTemplating.h"; sourceTree = "<group>"; };
 		5952527F0FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingUserDefaults.mm; sourceTree = "<group>"; };
 		595252800FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingUserDefaults.h; sourceTree = "<group>"; };
-		597AA8720FE7BF980035E3AA /* SBSStepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBSStepView.m; sourceTree = "<group>"; };
-		597AA8730FE7BF980035E3AA /* DisclosureBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureBox.h; sourceTree = "<group>"; };
-		597AA8740FE7BF980035E3AA /* SBSStepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSStepView.h; sourceTree = "<group>"; };
-		597AA8750FE7BF980035E3AA /* SBSStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBSStep.m; sourceTree = "<group>"; };
-		597AA8760FE7BF980035E3AA /* SBSStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSStep.h; sourceTree = "<group>"; };
-		597AA8770FE7BF980035E3AA /* SBS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBS.m; sourceTree = "<group>"; };
-		597AA8780FE7BF980035E3AA /* DisclosureBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DisclosureBox.mm; sourceTree = "<group>"; };
-		597AA8790FE7BF980035E3AA /* SBSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBSView.m; sourceTree = "<group>"; };
-		597AA87A0FE7BF980035E3AA /* SBSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSView.h; sourceTree = "<group>"; };
-		597AA87B0FE7BF980035E3AA /* SBS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBS.h; sourceTree = "<group>"; };
+		596EF90110148ADD0047C33E /* empty.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = empty.pdf; sourceTree = "<group>"; };
 		598E1E2A0FFB3E0200BC313C /* ArthroplastyTemplate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplate.mm; sourceTree = "<group>"; };
 		598E1E2C0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingPlugin.mm; sourceTree = "<group>"; };
 		598E1E2E0FFB3E4D00BC313C /* ArthroplastyTemplatingTableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingTableView.mm; sourceTree = "<group>"; };
@@ -122,6 +120,7 @@
 		5995728F0FDD3E2B007C151F /* SelectablePDFView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SelectablePDFView.mm; sourceTree = "<group>"; };
 		599572CB0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArthroplastyTemplatingWindowController.mm; sourceTree = "<group>"; };
 		599C7B180FFCFED000AD1EB9 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		59A6366D10428D23003F4069 /* Nitrogen.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nitrogen.framework; path = ../../../Nitrogen/build/Release/Nitrogen.framework; sourceTree = SOURCE_ROOT; };
 		59B8B7460FFDEF2900891365 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		59D94E590FCE807D00509EEC /* NSImage+ArthroplastyTemplating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+ArthroplastyTemplating.h"; sourceTree = "<group>"; };
 		59D94E5A0FCE807D00509EEC /* NSImage+ArthroplastyTemplating.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSImage+ArthroplastyTemplating.mm"; sourceTree = "<group>"; };
@@ -155,6 +154,7 @@
 				A9F8BEED0B9DD21E00FDB71F /* Quartz.framework in Frameworks */,
 				599C7B190FFCFED000AD1EB9 /* Accelerate.framework in Frameworks */,
 				59B8B7470FFDEF2900891365 /* CoreFoundation.framework in Frameworks */,
+				59A6366E10428D23003F4069 /* Nitrogen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +194,7 @@
 		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59A6366D10428D23003F4069 /* Nitrogen.framework */,
 				59B8B7460FFDEF2900891365 /* CoreFoundation.framework */,
 				599C7B180FFCFED000AD1EB9 /* Accelerate.framework */,
 				A9F8BEEC0B9DD21E00FDB71F /* Quartz.framework */,
@@ -251,7 +252,6 @@
 				599572CB0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm */,
 				59D94E6D0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.h */,
 				59D94E6E0FCE807D00509EEC /* ArthroplastyTemplatingStepByStepController.mm */,
-				59D94E5D0FCE807D00509EEC /* StepByStep */,
 				59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */,
 				598E1E2A0FFB3E0200BC313C /* ArthroplastyTemplate.mm */,
 				59956E4D0FD8105F007C151F /* TemplateTypes */,
@@ -277,23 +277,6 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		59D94E5D0FCE807D00509EEC /* StepByStep */ = {
-			isa = PBXGroup;
-			children = (
-				597AA87B0FE7BF980035E3AA /* SBS.h */,
-				597AA8770FE7BF980035E3AA /* SBS.m */,
-				597AA8760FE7BF980035E3AA /* SBSStep.h */,
-				597AA8750FE7BF980035E3AA /* SBSStep.m */,
-				597AA87A0FE7BF980035E3AA /* SBSView.h */,
-				597AA8790FE7BF980035E3AA /* SBSView.m */,
-				597AA8740FE7BF980035E3AA /* SBSStepView.h */,
-				597AA8720FE7BF980035E3AA /* SBSStepView.m */,
-				597AA8730FE7BF980035E3AA /* DisclosureBox.h */,
-				597AA8780FE7BF980035E3AA /* DisclosureBox.mm */,
-			);
-			path = StepByStep;
-			sourceTree = "<group>";
-		};
 		59D94E910FCE81BD00509EEC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +284,7 @@
 				59D955460FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib */,
 				59D955630FCE8D5B00509EEC /* ArthroplastyTemplatingStepByStep.xib */,
 				59D951DA0FCE826400509EEC /* Info.plist */,
+				596EF90110148ADD0047C33E /* empty.pdf */,
 				59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */,
 				59D951D30FCE823400509EEC /* English.lproj */,
 				59D94E990FCE81BD00509EEC /* version.plist */,
@@ -346,11 +330,6 @@
 				599572900FDD3E2B007C151F /* SelectablePDFView.h in Headers */,
 				595252820FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.h in Headers */,
 				592C9F3B0FDFAD0C00EB256B /* ArthroplastyTemplatingSplitView.h in Headers */,
-				597AA87D0FE7BF980035E3AA /* DisclosureBox.h in Headers */,
-				597AA87E0FE7BF980035E3AA /* SBSStepView.h in Headers */,
-				597AA8800FE7BF980035E3AA /* SBSStep.h in Headers */,
-				597AA8840FE7BF980035E3AA /* SBSView.h in Headers */,
-				597AA8850FE7BF980035E3AA /* SBS.h in Headers */,
 				59503AFB0FE8D5FC00FE9170 /* NSButton+ArthroplastyTemplating.h in Headers */,
 				592647A50FF23F3D006D4B11 /* Notifications.h in Headers */,
 				592647DC0FF27AA4006D4B11 /* ROI.h in Headers */,
@@ -380,6 +359,7 @@
 			buildPhases = (
 				8D5B49AD048680CD000E48DA /* Headers */,
 				8D5B49AF048680CD000E48DA /* Resources */,
+				59A6368710428D88003F4069 /* Copy Frameworks */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				8D5B49B5048680CD000E48DA /* Rez */,
@@ -422,6 +402,7 @@
 				59D955470FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib in Resources */,
 				59D955640FCE8D5B00509EEC /* ArthroplastyTemplatingStepByStep.xib in Resources */,
 				592C9FD00FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist in Resources */,
+				596EF90210148ADD0047C33E /* empty.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,11 +429,6 @@
 				599572910FDD3E2B007C151F /* SelectablePDFView.mm in Sources */,
 				599572CC0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm in Sources */,
 				595252810FDF9B06009A14DD /* ArthroplastyTemplatingUserDefaults.mm in Sources */,
-				597AA87C0FE7BF980035E3AA /* SBSStepView.m in Sources */,
-				597AA87F0FE7BF980035E3AA /* SBSStep.m in Sources */,
-				597AA8810FE7BF980035E3AA /* SBS.m in Sources */,
-				597AA8820FE7BF980035E3AA /* DisclosureBox.mm in Sources */,
-				597AA8830FE7BF980035E3AA /* SBSView.m in Sources */,
 				59264ABB0FF39A7D006D4B11 /* NSUtils.mm in Sources */,
 				598E1E2B0FFB3E0200BC313C /* ArthroplastyTemplate.mm in Sources */,
 				598E1E2D0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm in Sources */,
@@ -492,6 +468,7 @@
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
+				ENABLE_OPENMP_SUPPORT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -499,12 +476,16 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -513,6 +494,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Arthroplasty_Templating_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
@@ -552,6 +534,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_OPENMP_SUPPORT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -559,17 +542,22 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_6)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_7)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_6 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Arthroplasty_Templating_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -612,12 +600,16 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_6)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_7)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_6 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/XRayTemplatesPlugin_Prefix.pch;

@@ -17,6 +17,7 @@
 #import "ArthroplastyTemplatingPlugin.h"
 #include <sstream>
 #include <cmath>
+#include <algorithm>
 #include "NSUtils.h"
 #include "Notifications.h"
 
@@ -37,7 +38,7 @@
 	_templates = [[NSMutableArray arrayWithCapacity:0] retain];
 	_familiesArrayController = [[NSArrayController alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performDragOperation:) name:OsirixPerformDragOperationNotification object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performOsirixDragOperation:) name:OsirixPerformDragOperationNotification object:NULL];
 	
 	[self loadTemplates];
 	
@@ -60,6 +61,10 @@
 
 -(void)windowWillClose:(NSNotification *)aNotification {
 	// [self release];
+}
+
+-(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size {
+	return NSMakeSize(std::max(size.width, 208.f), std::max(size.height, 200.f));
 }
 
 #pragma mark Templates
@@ -175,24 +180,27 @@
 
 -(void)setFamily:(id)sender {
 	if (sender == _familiesTableView) { // update sizes menu
-		[_familiesArrayController setSelectionIndex:[_familiesTableView selectedRow]];
-		
-		float selectedSize; std::istringstream([[_sizes titleOfSelectedItem] UTF8String]) >> selectedSize;
-		[_sizes removeAllItems];
-		ArthroplastyTemplateFamily* family = [self selectedFamily];
-		float diffs[[[family templates] count]];
-		for (unsigned i = 0; i < [[family templates] count]; ++i) {
-			NSString* size = [(ArthroplastyTemplate*)[[family templates] objectAtIndex: i] size];
-			[_sizes addItemWithTitle:size];
-			float currentSize = 0; std::istringstream([size UTF8String]) >> selectedSize;
-			diffs[i] = fabsf(selectedSize-currentSize);
-		}
-		
-		unsigned index = 0;
-		for (unsigned i = 1; i < [[family templates] count]; ++i)
-			if (diffs[i] < diffs[index])
-				index = i;
-		[_sizes selectItemAtIndex:index];
+		if ([_familiesTableView numberOfRows]) {
+			[_familiesArrayController setSelectionIndex:[_familiesTableView selectedRow]];
+			
+			float selectedSize; std::istringstream([[_sizes titleOfSelectedItem] UTF8String]) >> selectedSize;
+			[_sizes removeAllItems];
+			ArthroplastyTemplateFamily* family = [self selectedFamily];
+			float diffs[[[family templates] count]];
+			for (unsigned i = 0; i < [[family templates] count]; ++i) {
+				NSString* size = [(ArthroplastyTemplate*)[[family templates] objectAtIndex: i] size];
+				[_sizes addItemWithTitle:size];
+				float currentSize = 0; std::istringstream([size UTF8String]) >> selectedSize;
+				diffs[i] = fabsf(selectedSize-currentSize);
+			}
+			
+			unsigned index = 0;
+			for (unsigned i = 1; i < [[family templates] count]; ++i)
+				if (diffs[i] < diffs[index])
+					index = i;
+			[_sizes selectItemAtIndex:index];
+		} else
+			[_pdfView setDocument:[[[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"empty" ofType:@"pdf"]]] autorelease]];
 	}
 	
 	if ([_familiesTableView selectedRow] < 0)
@@ -204,14 +212,7 @@
 	
 	if(!pdfPath) return;
 	
-//	NSData *pdfData = [NSData dataWithContentsOfFile:pdfPath];
-//	PDFDocument *doc = [[PDFDocument alloc] initWithData:pdfData];
 	PDFDocument *doc = [[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:pdfPath]];
-
-//	NSImage *image = [[NSImage alloc] initByReferencingFile:pdfPath];
-//	NSMutableDictionary *deviceDictionary = [NSMutableDictionary dictionaryWithObject:[NSValue valueWithSize:NSMakeSize(300,300)] forKey:@"NSDeviceResolution"];
-//	[deviceDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"NSDeviceIsScreen"];
-//	[image release];
 	
 	[_pdfView setAutoScales:NO];
 	[_pdfView setDocument:doc];
@@ -281,10 +282,11 @@
 		[image flipImageHorizontally];
 
 	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[image TIFFRepresentation]];
-	size = [image size]; unsigned s = size.width*size.height;
+	size = [image size]; int s = size.width*size.height;
 	[bitmap ATMask:.01];
 	if (color)
-		for (unsigned i = 0; i < s; ++i) {
+//#pragma omp parallel for default(shared)
+		for (int i = 0; i < s; ++i) {
 			unsigned x = i%(int)size.width, y = i/(int)size.width;
 			NSColor* c = [bitmap colorAtX:x y:y];
 			[bitmap setColor:[color colorWithAlphaComponent:[c alphaComponent]] atX:x y:y];
@@ -428,7 +430,7 @@
 	return newLayer;
 }
 
--(void)performDragOperation:(NSNotification *)notification {
+-(void)performOsirixDragOperation:(NSNotification*)notification {
 	NSDictionary* userInfo = [notification userInfo];
 	id <NSDraggingInfo> operation = [userInfo valueForKey:@"id<NSDraggingInfo>"];
 
@@ -447,6 +449,8 @@
 	[self createROIFromTemplate:templat inViewer:destination centeredAt:openGLLocation];
 	
 	[[destination window] makeKeyWindow];
+	
+	return;
 }
 
 - (NSRect)addMargin:(int)pixels toRect:(NSRect)rect;

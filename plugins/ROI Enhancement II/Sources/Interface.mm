@@ -21,6 +21,7 @@
 #import <DCMPix.h>
 #import "UserDefaults.h"
 #import "DicomSaveDialog.h"
+#import "Notifications.h"
 
 const NSString* FileTypePDF = @"pdf";
 const NSString* FileTypeTIFF = @"tiff";
@@ -41,7 +42,7 @@ const NSString* FileTypeCSV = @"csv";
 	_viewer = [viewer retain];
 	self = [super initWithWindowNibName:@"Interface"];
 	[self window]; // triggers nib loading
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewer];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:OsirixCloseViewerNotification object:viewer];
 	
 	_userDefaults = [[UserDefaults alloc] init];
 	[_options loadUserDefaults];

@@ -8,15 +8,15 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="196"/>
+			<integer value="315"/>
+			<integer value="191"/>
 			<integer value="152"/>
 			<integer value="173"/>
-			<integer value="169"/>
-			<integer value="315"/>
-			<integer value="181"/>
-			<integer value="370"/>
 			<integer value="185"/>
-			<integer value="191"/>
+			<integer value="181"/>
+			<integer value="196"/>
+			<integer value="370"/>
+			<integer value="169"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -632,7 +632,7 @@
 					<object class="NSTextField" id="520186207">
 						<reference key="NSNextResponder" ref="438926599"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 96}, {200, 11}}</string>
+						<string key="NSFrame">{{0, 70}, {200, 11}}</string>
 						<reference key="NSSuperview" ref="438926599"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="138537843">
@@ -675,7 +675,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="240347664">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">272891904</int>
-							<string key="NSContents">Vertical offset (Lengthening):</string>
+							<string key="NSContents">Vertical offset:</string>
 							<reference key="NSSupport" ref="22"/>
 							<reference key="NSControlView" ref="363513017"/>
 							<reference key="NSBackgroundColor" ref="1003745507"/>
@@ -701,7 +701,7 @@
 					<object class="NSTextField" id="735601665">
 						<reference key="NSNextResponder" ref="438926599"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 79}, {49, 11}}</string>
+						<string key="NSFrame">{{17, 53}, {49, 11}}</string>
 						<reference key="NSSuperview" ref="438926599"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="831768138">
@@ -717,7 +717,7 @@
 					<object class="NSPopUpButton" id="479375728">
 						<reference key="NSNextResponder" ref="438926599"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{70, 77}, {111, 15}}</string>
+						<string key="NSFrame">{{70, 51}, {111, 15}}</string>
 						<reference key="NSSuperview" ref="438926599"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSPopUpButtonCell" key="NSCell" id="739810238">
@@ -809,7 +809,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{200, 110}</string>
+				<string key="NSFrameSize">{200, 84}</string>
 				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 				<string key="NSExtension">NSResponder</string>
@@ -1120,14 +1120,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">_horizontalOffsetTextField</string>
-						<reference key="source" ref="916986557"/>
-						<reference key="destination" ref="363513017"/>
-					</object>
-					<int key="connectionID">395</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">_sbs</string>
 						<reference key="source" ref="916986557"/>
 						<reference key="destination" ref="993501891"/>
@@ -1141,14 +1133,6 @@
 						<reference key="destination" ref="390422865"/>
 					</object>
 					<int key="connectionID">398</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">_verticalOffsetTextField</string>
-						<reference key="source" ref="916986557"/>
-						<reference key="destination" ref="363513017"/>
-					</object>
-					<int key="connectionID">399</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1341,6 +1325,22 @@
 						<reference key="destination" ref="563272158"/>
 					</object>
 					<int key="connectionID">457</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_horizontalOffsetTextField</string>
+						<reference key="source" ref="916986557"/>
+						<reference key="destination" ref="76551682"/>
+					</object>
+					<int key="connectionID">461</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_verticalOffsetTextField</string>
+						<reference key="source" ref="916986557"/>
+						<reference key="destination" ref="363513017"/>
+					</object>
+					<int key="connectionID">462</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2246,7 +2246,7 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{59, 168}, {200, 110}}</string>
+					<string>{{59, 194}, {200, 84}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2379,7 +2379,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">459</int>
+			<int key="maxID">462</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

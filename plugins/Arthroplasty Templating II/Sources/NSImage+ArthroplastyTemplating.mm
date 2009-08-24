@@ -161,33 +161,42 @@ end_size_y:
 @implementation NSBitmapImageRep (ArthroplastyTemplating)
 
 struct P {
-	unsigned x, y;
-	P(unsigned x, unsigned y) : x(x), y(y) {}
+	int x, y;
+	P(int x, int y) : x(x), y(y) {}
 };
 
 -(void)ATMask:(float)level {
 	NSSize size = [self size];
-	unsigned width = size.width, height = size.height;
+	int width = size.width, height = size.height;
 	float v[width][height];
 	
-	for (unsigned x = 0; x < width; ++x)
-		for (unsigned y = 0; y < height; ++y)
-			v[x][y] = [[self colorAtX:x y:y] alphaComponent];
+	unsigned char* bitmapData = [self bitmapData];
+	size_t bpp = [self bytesPerPlane], bpr = [self bytesPerRow];
+	assert(bpp = 4);
+	NSLog(@"time1!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
+#pragma omp parallel for default(shared)
+	for (int x = 0; x < width; ++x)
+		for (int y = 0; y < height; ++y)
+			v[x][y] = bitmapData[y*bpr+x*bpp+3];
+			//v[x][y] = [[self colorAtX:x y:y] alphaComponent];
 	
+	NSLog(@"time2!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
 	BOOL mask[width][height];
 	memset(mask, YES, sizeof(mask));
 	BOOL visited[width][height];
 	memset(visited, NO, sizeof(visited));
 
+	NSLog(@"time3!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
 	std::stack<P> ps;
-	for (unsigned x = 0; x < width; ++x) {
+	for (int x = 0; x < width; ++x) {
 		ps.push(P(x, 0));
 		ps.push(P(x, height-1));
-	} for (unsigned y = 1; y < height-1; ++y) {
+	} for (int y = 1; y < height-1; ++y) {
 		ps.push(P(0, y));
 		ps.push(P(width-1, y));
 	}
 	
+	NSLog(@"time4!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
 	while (!ps.empty()) {
 		P p = ps.top();
 		ps.pop();
@@ -204,10 +213,13 @@ struct P {
 		}
 	}
 	
-	for (unsigned x = 0; x < width; ++x)
-		for (unsigned y = 0; y < height; ++y)
+	NSLog(@"time5!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
+#pragma omp parallel for default(shared)
+	for (int y = 0; y < height/2; ++y)
+		for (int x = 0; x < width; ++x)
 			if (mask[x][y])
-				[self setColor:[[self colorAtX:x y:y] colorWithAlphaComponent:std::max(v[x][y], level)] atX:x y:y];
+				bitmapData[y*bpr+x*bpp+3] = std::max(v[x][y], level);
+	NSLog(@"time6!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
 }
 
 

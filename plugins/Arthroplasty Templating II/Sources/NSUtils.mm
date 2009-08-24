@@ -30,16 +30,32 @@ NSSize operator+(const NSSize& s1, const NSSize& s2) {
 	return NSMakeSize(s2.width+s1.width, s2.height+s1.height);
 }
 
+NSSize operator+=(const NSSize& s1, const NSSize& s2) {
+	return s1+s2;
+}
+
 NSSize operator-(const NSSize& s1, const NSSize& s2) {
 	return s1+(-s2);
+}
+
+NSSize operator-=(const NSSize& s1, const NSSize& s2) {
+	return s1-s2;
 }
 
 NSSize operator*(const NSSize& s1, const NSSize& s2) {
 	return NSMakeSize(s1.width*s2.width, s1.height*s2.height);
 }
 
+NSSize operator*=(const NSSize& s1, const NSSize& s2) {
+	return s1*s2;
+}
+
 NSSize operator/(const NSSize& s1, const NSSize& s2) {
 	return s1*(1/s2);
+}
+
+NSSize operator/=(const NSSize& s1, const NSSize& s2) {
+	return s1/s2;
 }
 
 BOOL operator==(const NSSize& s1, const NSSize& s2) {
@@ -56,24 +72,48 @@ NSSize operator+(const NSSize& s, const CGFloat f) {
 	return NSMakeSize(s.width+f, s.height+f);
 }
 
+NSSize operator+=(const NSSize& s, const CGFloat f) {
+	return s+f;
+}
+
 NSSize operator-(const NSSize& s, const CGFloat f) {
 	return s+(-f);
+}
+
+NSSize operator-=(const NSSize& s, const CGFloat f) {
+	return s-f;
 }
 
 NSSize operator*(const CGFloat f, const NSSize& s) {
 	return NSMakeSize(f*s.width, f*s.height);
 }
 
+NSSize operator*=(const CGFloat f, const NSSize& s) {
+	return f*s;
+}
+
 NSSize operator/(const CGFloat f, const NSSize& s) {
 	return NSMakeSize(f/s.width, f/s.height);
+}
+
+NSSize operator/=(const CGFloat f, const NSSize& s) {
+	return f/s;
 }
 
 NSSize operator*(const NSSize& s, const CGFloat f) {
 	return f*s;
 }
 
+NSSize operator*=(const NSSize& s, const CGFloat f) {
+	return s*f;
+}
+
 NSSize operator/(const NSSize& s, const CGFloat f) {
 	return s*(1/f);
+}
+
+NSSize operator/=(const NSSize& s, const CGFloat f) {
+	return s/f;
 }
 
 
@@ -87,16 +127,32 @@ NSPoint operator+(const NSPoint& p1, const NSPoint& p2) {
 	return NSMakePoint(p2.x+p1.x, p2.y+p1.y);
 }
 
+NSPoint operator+=(const NSPoint& p1, const NSPoint& p2) {
+	return p1+p2;
+}
+
 NSPoint operator-(const NSPoint& p1, const NSPoint& p2) {
 	return p1+(-p2);
+}
+
+NSPoint operator-=(const NSPoint& p1, const NSPoint& p2) {
+	return p1-p2;
 }
 
 NSPoint operator*(const NSPoint& p1, const NSPoint& p2) {
 	return NSMakePoint(p1.x*p2.x, p1.y*p2.y);
 }
 
+NSPoint operator*=(const NSPoint& p1, const NSPoint& p2) {
+	return p1*p2;
+}
+
 NSPoint operator/(const NSPoint& p1, const NSPoint& p2) {
 	return p1*(1/p2);
+}
+
+NSPoint operator/=(const NSPoint& p1, const NSPoint& p2) {
+	return p1/p2;
 }
 
 BOOL operator==(const NSPoint& p1, const NSPoint& p2) {
@@ -113,24 +169,48 @@ NSPoint operator+(const NSPoint& p, const CGFloat f) {
 	return NSMakePoint(p.x+f, p.y+f);
 }
 
+NSPoint operator+=(const NSPoint& p, const CGFloat f) {
+	return p+f;
+}
+
 NSPoint operator-(const NSPoint& p, const CGFloat f) {
 	return p+(-f);
+}
+
+NSPoint operator-=(const NSPoint& p, const CGFloat f) {
+	return p-f;
 }
 
 NSPoint operator*(const CGFloat f, const NSPoint& p) {
 	return NSMakePoint(f*p.x, f*p.y);
 }
 
+NSPoint operator*=(const CGFloat f, const NSPoint& p) {
+	return f*p;
+}
+
 NSPoint operator/(const CGFloat f, const NSPoint& p) {
 	return NSMakePoint(f/p.x, f/p.y);
+}
+
+NSPoint operator/=(const CGFloat f, const NSPoint& p) {
+	return f/p;
 }
 
 NSPoint operator*(const NSPoint& p, const CGFloat f) {
 	return f*p;
 }
 
+NSPoint operator*=(const NSPoint& p, const CGFloat f) {
+	return p*f;
+}
+
 NSPoint operator/(const NSPoint& p, const CGFloat f) {
 	return p*(1/f);
+}
+
+NSPoint operator/=(const NSPoint& p, const CGFloat f) {
+	return p/f;
 }
 
 // NSPoint & NSSize
@@ -261,3 +341,4 @@ CGFloat NSLineYAtX(const NSLine& l, CGFloat x) {
 NSRect NSMakeRect(const NSPoint& origin, const NSSize& size) {
 	return NSMakeRect(origin.x, origin.y, size.width, size.height);
 }
+
