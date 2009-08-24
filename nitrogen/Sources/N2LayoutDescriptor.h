@@ -3,7 +3,7 @@
 //  Nitrogen Framework
 //
 //  Created by Alessandro Volz on 8/13/09.
-//  Copyright 2009 OsiriX Foundation. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

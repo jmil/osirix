@@ -3,7 +3,7 @@
 //  Nitrogen Framework
 //
 //  Created by Alessandro Volz on 07/08/09.
-//  Copyright 2009 OsiriX Foundation. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Nitrogen/NSData+N2.h>

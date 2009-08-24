@@ -4,7 +4,7 @@
 //
 //  Created by Joris Heuberger on 30/03/07.
 //  Edited by Alessandro Volz since 21/05/09.
-//  Copyright 2009 OsiriX Foundation. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Nitrogen/N2DisclosureBox.h>

@@ -4,7 +4,7 @@
 //
 //  Created by Joris Heuberger on 02/04/07.
 //  Edited by Alessandro Volz since 21/05/09.
-//  Copyright 2007-2009 OsiriX Foundation. All rights reserved.
+//  Copyright 2007-2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

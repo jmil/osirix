@@ -4,7 +4,7 @@
 // 
 //  Created by Joris Heuberger on 30/03/07.
 //  Modified by Alessandro Volz on 15/07/09.
-//  Copyright 2007-2009 OsiriX Foundation. All rights reserved.
+//  Copyright 2007-2009 OsiriX Team. All rights reserved.
 //
 
 #import <Nitrogen/N2StepsView.h>
