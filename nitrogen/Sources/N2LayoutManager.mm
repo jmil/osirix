@@ -142,8 +142,8 @@
 			frame.size = [window frameRectForContentRect:NSMakeRect(NSZeroPoint, size)].size;
 			frame.origin = frame.origin - (frame.size - oldFrameSize);
 			[window setFrame:frame display:YES];
-			[window setMinSize:[window frameRectForContentRect:NSMakeRect(0,0,0, size.height)].size]; // TODO: x minmax must be kept
-			[window setMaxSize:[window frameRectForContentRect:NSMakeRect(0,0,MAXFLOAT, size.height)].size]; // TODO: x minmax must be kept
+			[window setMinSize:[window frameRectForContentRect:NSMakeRect(0,0,[window minSize].width, size.height)].size]; // TODO: x minmax must be kept
+			[window setMaxSize:[window frameRectForContentRect:NSMakeRect(0,0,[window maxSize].width, size.height)].size]; // TODO: x minmax must be kept
 		} else [view setFrameSize:size];
 }
 

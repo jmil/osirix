@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 598E50301043CB90005BCDC7 /* N2ButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E50311043CB90005BCDC7 /* N2ButtonCell.mm */; };
 		59A63306104285DD003F4069 /* Nitrogen.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A63305104285DD003F4069 /* Nitrogen.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333610428715003F4069 /* N2StepView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330C10428715003F4069 /* N2StepView.mm */; };
 		59A6333710428715003F4069 /* N2StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6330D10428715003F4069 /* N2StepView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,6 +65,8 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		598E50301043CB90005BCDC7 /* N2ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ButtonCell.h; sourceTree = "<group>"; };
+		598E50311043CB90005BCDC7 /* N2ButtonCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ButtonCell.mm; sourceTree = "<group>"; };
 		59A63305104285DD003F4069 /* Nitrogen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nitrogen.h; path = Sources/Nitrogen.h; sourceTree = "<group>"; };
 		59A6330C10428715003F4069 /* N2StepView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepView.mm; sourceTree = "<group>"; };
 		59A6330D10428715003F4069 /* N2StepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2StepView.h; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 				59A641BB1042E108003F4069 /* N2Panel.mm */,
 				59A6331910428715003F4069 /* N2Window.h */,
 				59A6330E10428715003F4069 /* N2Window.mm */,
+				598E50301043CB90005BCDC7 /* N2ButtonCell.h */,
+				598E50311043CB90005BCDC7 /* N2ButtonCell.mm */,
 				59A6332710428715003F4069 /* N2DisclosureBox.h */,
 				59A6333510428715003F4069 /* N2DisclosureBox.mm */,
 				59A6333410428715003F4069 /* N2DisclosureButtonCell.h */,
@@ -308,6 +314,7 @@
 				59A636A8104298C0003F4069 /* Nitrogen.pch in Headers */,
 				59A63F401042DB51003F4069 /* NSImage+N2.h in Headers */,
 				59A641BC1042E108003F4069 /* N2Panel.h in Headers */,
+				598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +396,7 @@
 				59A6335F10428715003F4069 /* N2DisclosureBox.mm in Sources */,
 				59A63F411042DB51003F4069 /* NSImage+N2.mm in Sources */,
 				59A641BD1042E108003F4069 /* N2Panel.mm in Sources */,
+				598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

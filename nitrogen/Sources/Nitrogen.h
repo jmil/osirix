@@ -25,5 +25,6 @@
 #import <Nitrogen/NSButton+N2.h>
 #import <Nitrogen/NSBitmapImageRep+N2.h>
 #import <Nitrogen/NS(Attributed)String+Geometrics.h>
+#import <Nitrogen/N2ButtonCell.h>
 
 #endif
