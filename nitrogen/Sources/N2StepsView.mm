@@ -10,33 +10,40 @@
 #import <Nitrogen/N2StepsView.h>
 #import <Nitrogen/N2Steps.h>
 #import <Nitrogen/N2StepView.h>
+#import <Nitrogen/N2LayoutManager.h>
 
 @implementation N2StepsView
 
 -(id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
-
-	_views = [[NSMutableDictionary dictionaryWithCapacity:8] retain];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpand:) name:N2DisclosureBoxWillExpand object:NULL];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpand:) name:N2DisclosureBoxDidExpand object:NULL];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggle:) name:N2DisclosureBoxWillCollapse object:NULL];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidCollapse:) name:N2DisclosureBoxDidCollapse object:NULL];
-    
+	[self awakeFromNib];
     return self;
 }
 
 -(void)awakeFromNib {
+	[super awakeFromNib];
+	
+	//	_views = [[NSMutableDictionary dictionaryWithCapacity:8] retain];
+	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpand:) name:N2DisclosureBoxWillExpandNotification object:NULL];
+	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandCollapse:) name:N2DisclosureBoxDidExpandNotification object:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggle:) name:N2DisclosureBoxDidToggleNotification object:NULL];
+	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandCollapse:) name:N2DisclosureBoxDidCollapseNotification object:NULL];
+    
+	N2LayoutManager* layout = [[N2LayoutManager alloc] initWithControlSize:NSMiniControlSize];
+	[layout setStretchesToFill:YES];
+	[layout setForcesSuperviewSize:YES];
+	[self setLayout:[layout autorelease]];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsDidAddStep:) name:N2StepsDidAddStepNotification object:_steps];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsWillRemoveStep:) name:N2StepsWillRemoveStepNotification object:_steps];
 }
 
 -(void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_views release];
 	[super dealloc];
 }
 
--(void)recomputeSubviewFramesAndAdjustSizes {
+/*-(void)recomputeSubviewFramesAndAdjustSizes {
 	static const CGFloat interStepViewYDelta = 1;
 	NSRect frame = [self frame];
 
@@ -66,22 +73,26 @@
 	// resize N2StepsView
 	frame.size.height = y;
 	[self setFrame:frame];
-}
+}*/
 
 -(void)stepsDidAddStep:(NSNotification*)notification {
 	N2Step* step = [[notification userInfo] objectForKey:N2StepsNotificationStep];
 	N2StepView* view = [[[N2StepView alloc] initWithStep:step] autorelease];
 	
-	[_views addObject:view];
+	[self addRow];
 	[self addSubview:view];
 	
-	[self recomputeSubviewFramesAndAdjustSizes];
+	[self recalculate];
 }
 
 -(N2StepView*)stepViewForStep:(N2Step*)step {
-	for (N2StepView* view in _views)
-		if ([view step] == step)
-			return view;
+	for (NSUInteger i = 0; i < [_n2rows count]; ++i) {
+		NSArray* row = [_n2rows objectAtIndex:i];
+		for (N2StepView* view in row)
+			if ([view isKindOfClass:[N2StepView class]] && [view step] == step)
+				return view;
+	}
+	
 	return NULL;
 }
 
@@ -89,10 +100,13 @@
 	N2Step* step = [[notification userInfo] objectForKey:N2StepsNotificationStep];
 	N2StepView* view = [self stepViewForStep:step];
 	
-	[_views removeObject:view];
 	[view removeFromSuperview];
 	
-	[self recomputeSubviewFramesAndAdjustSizes];
+	[self recalculate];
+}
+
+-(void)stepViewDidToggle:(NSNotification*)notification {
+	[self recalculate];
 }
 
 @end

@@ -11,10 +11,10 @@
 #import <Nitrogen/N2DisclosureButtonCell.h>
 #import <Nitrogen/N2Operators.h>
 
-NSString* N2DisclosureBoxDidToggle = @"N2DisclosureBoxDidToggle";
-NSString* N2DisclosureBoxWillExpand = @"N2DisclosureBoxWillExpand";
-NSString* N2DisclosureBoxDidExpand = @"N2DisclosureBoxDidExpand";
-NSString* N2DisclosureBoxDidCollapse = @"N2DisclosureBoxDidCollapse";
+NSString* N2DisclosureBoxDidToggleNotification = @"N2DisclosureBoxDidToggleNotification";
+NSString* N2DisclosureBoxWillExpandNotification = @"N2DisclosureBoxWillExpandNotification";
+NSString* N2DisclosureBoxDidExpandNotification = @"N2DisclosureBoxDidExpandNotification";
+NSString* N2DisclosureBoxDidCollapseNotification = @"N2DisclosureBoxDidCollapseNotification";
 
 @implementation N2DisclosureBox
 
@@ -71,19 +71,19 @@ NSString* N2DisclosureBoxDidCollapse = @"N2DisclosureBoxDidCollapse";
 	if ([self isExpanded])
 		[self expand:sender];
 	else [self collapse:sender];
-	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidToggle object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidToggleNotification object:self];
 }
 
 -(void)expand:(id)sender {
 	if (_showingExpanded) return;
-	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxWillExpand object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxWillExpandNotification object:self];
 	_showingExpanded = YES;
 	
 	[self setFrameFromContentFrame:[_content bounds]];
 	[self addSubview:_content];
 	
 	[_titleCell setState:NSOnState];
-	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidExpand object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidExpandNotification object:self];
 }
 
 -(void)collapse:(id)sender {
@@ -94,12 +94,13 @@ NSString* N2DisclosureBoxDidCollapse = @"N2DisclosureBoxDidCollapse";
 	[self setFrameFromContentFrame:NSZeroRect];
 	
 	[_titleCell setState:NSOffState];
-	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidCollapse object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:N2DisclosureBoxDidCollapseNotification object:self];
 }
 
 -(void)setFrameFromContentFrame:(NSRect)contentFrame {
-	NSRect frame = contentFrame + [self contentViewMargins]*2;
-	
+	NSSize margins = [self contentViewMargins];
+	NSRect frame = contentFrame + NSMakeSize(margins.width*2, [_titleCell textSize].height+margins.height*2);
+	[self setFrameSize:frame.size];
 }
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize {

@@ -6,12 +6,12 @@
 //  Copyright 2007-2009 OsiriX Team. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "N2View.h"
 @class N2Steps, N2Step;
 
-@interface N2StepsView : NSView {
+@interface N2StepsView : N2View {
 	IBOutlet N2Steps* _steps;
-	NSMutableArray* _views;
+//	NSMutableArray* _views;
 }
 
 //-(void)addStep:(N2Step*)step;

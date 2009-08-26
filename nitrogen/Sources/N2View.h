@@ -15,19 +15,21 @@ extern NSString* N2ViewWillDeallocNotification;
 @interface N2View : NSView {
 	NSSize _minSize, _maxSize;
 	NSMutableArray* _n2rows;
-	NSUInteger _n2rowIndex;
+	NSUInteger _n2InsertionRowIndex;
 	N2LayoutManager* _layout;
 }
 
 @property NSSize minSize, maxSize;
 @property(retain) N2LayoutManager* layout;
 @property(readonly) NSArray* content;
+@property NSUInteger insertionRowIndex;
 
+-(void)insertRow;
 -(void)insertRow:(NSUInteger)index;
 -(NSUInteger)addRow;
 -(void)addDescriptor:(NSLayoutDescriptor*)descriptor;
 -(NSInteger)viewRow:(NSView*)view;
--(void)setInsertRow:(NSUInteger)row;
+-(NSUInteger)numberOfElementsInCurrentRow;
 
 -(void)recalculate;
 

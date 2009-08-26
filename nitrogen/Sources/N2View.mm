@@ -14,15 +14,17 @@
 NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 
 @implementation N2View
-@synthesize minSize = _minSize, maxSize = _maxSize, layout = _layout, content = _n2rows;
+@synthesize minSize = _minSize, maxSize = _maxSize, layout = _layout, content = _n2rows, insertionRowIndex = _n2InsertionRowIndex;
 
 -(id)initWithFrame:(NSRect)frame {
 	self = [super initWithFrame:frame];
-	
-	_n2rows = [[NSMutableArray arrayWithCapacity:4] retain];
-	[self addRow];
-	
+	[self awakeFromNib];
 	return self;
+}
+
+-(void)awakeFromNib {
+	_n2rows = [[NSMutableArray arrayWithCapacity:4] retain];
+	[self addRow];	
 }
 
 -(void)dealloc {
@@ -34,18 +36,26 @@ NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 -(void)insertRow:(NSUInteger)index {
 	if (index > [_n2rows count])
 		[NSException raise:NSRangeException format:@"Row insertion index too high"];
+	if (index < [_n2rows count] && [[_n2rows objectAtIndex:index] count] == 0)
+		return;
 	[_n2rows insertObject:[NSMutableArray arrayWithCapacity:4] atIndex:index];
-	_n2rowIndex = index;
+	_n2InsertionRowIndex = index;
+}
+
+-(void)insertRow {
+	[self insertRow:_n2InsertionRowIndex];
 }
 
 -(NSUInteger)addRow {
 	NSUInteger index = [_n2rows count];
+	if (index > 0 && [[_n2rows objectAtIndex:index-1] count] == 0)
+		return _n2InsertionRowIndex = index-1;
 	[self insertRow:index];
-	return index;
+	return _n2InsertionRowIndex = index;
 }
 
 -(void)addDescriptor:(NSLayoutDescriptor*)descriptor {
-	[[_n2rows objectAtIndex:_n2rowIndex] addObject:descriptor];
+	[[_n2rows objectAtIndex:_n2InsertionRowIndex] addObject:descriptor];
 }
 
 -(NSInteger)viewRow:(NSView*)view {
@@ -56,14 +66,14 @@ NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 	return -1;
 }
 
--(void)setInsertRow:(NSUInteger)index {
+-(void)setInsertionRowIndex:(NSUInteger)index {
 	if (index >= [_n2rows count])
 		[NSException raise:NSRangeException format:@"Insertion row index too high"];
-	_n2rowIndex = index;
+	_n2InsertionRowIndex = index;
 }
 
 -(void)didAddSubview:(NSView*)view {
-	[[_n2rows objectAtIndex:_n2rowIndex] addObject:view];
+	[[_n2rows objectAtIndex:_n2InsertionRowIndex] addObject:view];
 	if (_layout) [_layout didAddSubview:view];
 //	if ([self autoresizesSubviews]) [self recalculate];
 //	[super didAddSubview:view];
@@ -73,9 +83,16 @@ NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 	NSInteger rowIndex = [self viewRow:view];
 	if (rowIndex != -1) {
 		[[_n2rows objectAtIndex:rowIndex] removeObject:view];
+		_n2InsertionRowIndex = rowIndex;
+		if ([[_n2rows objectAtIndex:rowIndex] count] == 0)
+			[_n2rows removeObjectAtIndex:rowIndex];
 //		if ([self autoresizesSubviews]) [self recalculate];
 	}
 //	[super didRemoveSubview:view];
+}
+
+-(NSUInteger)numberOfElementsInCurrentRow {
+	return [[_n2rows objectAtIndex:_n2InsertionRowIndex] count];
 }
 
 -(void)recalculate {

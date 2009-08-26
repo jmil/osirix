@@ -11,11 +11,11 @@
 
 @class N2DisclosureButtonCell;
 
-extern NSString* N2DisclosureBoxDidToggle;
-extern NSString* N2DisclosureBoxWillExpand;
-extern NSString* N2DisclosureBoxDidExpand;
-extern NSString* N2DisclosureBoxWillCollapse;
-extern NSString* N2DisclosureBoxDidCollapse;
+extern NSString* N2DisclosureBoxDidToggleNotification;
+extern NSString* N2DisclosureBoxWillExpandNotification;
+extern NSString* N2DisclosureBoxDidExpandNotification;
+extern NSString* N2DisclosureBoxWillCollapseNotification;
+extern NSString* N2DisclosureBoxDidCollapseNotification;
 
 @interface N2DisclosureBox : NSBox {
 	BOOL _showingExpanded;

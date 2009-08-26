@@ -15,4 +15,6 @@
 
 @property(readonly) NSMutableDictionary* attributes;
 
+-(NSSize)textSize;
+
 @end

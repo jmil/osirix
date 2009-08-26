@@ -35,8 +35,12 @@
 
 -(NSRect)titleRectForBounds:(NSRect)bounds {
 	NSSize size = [super cellSizeForBounds:bounds];
-	NSSize textSize = [[self title] sizeWithAttributes:_attributes];
+	NSSize textSize = [self textSize];
 	return NSMakeRect(bounds.origin.x+bounds.size.width, bounds.origin.y, textSize.width, textSize.height);
+}
+
+-(NSSize)textSize {
+	return [[self title] sizeWithAttributes:_attributes];
 }
 
 -(NSRect)drawTitle:(NSAttributedString*)title withFrame:(NSRect)frame inView:(NSView*)controlView {

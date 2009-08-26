@@ -110,7 +110,8 @@
 			if ([view isKindOfClass:[NSView class]]) {
 				NSRect frame = [view frame], viewMargin = [self marginFor:view];
 				frame.origin = NSMakePoint(x,y)+bounds.origin+viewMargin.origin;
-				frame.size.width *= xFactor;
+				if (xFactor != 0) frame.size.width *= xFactor;
+				else frame.size.width = maxWidth;
 				[view setFrame:frame];
 				x += ceilf(frame.size.width)+_separation.width+viewMargin.size.width;
 				maxHeight = std::max(maxHeight, ceilf([view frame].size.height)+viewMargin.size.height);
@@ -130,13 +131,17 @@
 	}
 	
 	NSSize size = NSMakeSize(maxWidth, y-_separation.height);
-	if (!_occupiesEntireSuperview)
+	if (!_occupiesEntireSuperview) {
 		size += _padding.size;
+		bounds.origin -= _padding.origin;
+		bounds.size += _padding.size;
+	}
 	
-	size.width -= 2;
+//	size.width -= 2;
 	NSWindow* window = [view window];
 	if (_forcesSuperviewSize && !NSEqualSizes(size, [view bounds].size))
 		if (view == [window contentView]) {
+			NSLog(@"HEEEH!!!");
 			NSRect frame = [window frame];
 			NSSize oldFrameSize = frame.size;
 			frame.size = [window frameRectForContentRect:NSMakeRect(NSZeroPoint, size)].size;
