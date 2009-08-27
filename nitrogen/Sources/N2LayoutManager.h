@@ -29,6 +29,6 @@
 -(id)initWithControlSize:(NSControlSize)size;
 -(void)recalculate:(N2View*)view;
 -(void)didAddSubview:(NSView*)view;
--(void)willRemoveSubview:(NSView*)view;
+//-(void)willRemoveSubview:(NSView*)view;
 
 @end
