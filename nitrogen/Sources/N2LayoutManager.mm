@@ -13,7 +13,7 @@
 #import <Nitrogen/N2Debug.h>
 
 @implementation N2LayoutManager
-@synthesize occupiesEntireSuperview = _occupiesEntireSuperview, forcesSuperviewSize = _forcesSuperviewSize, stretchesToFill = _stretchesToFill;
+@synthesize occupiesEntireSuperview = _occupiesEntireSuperview, forcesSuperviewSize = _forcesSuperviewSize, stretchesToFill = _stretchesToFill, foreColor = _foreColor;
 
 -(id)initWithControlSize:(NSControlSize)size {
 	self = [super init];
@@ -33,7 +33,7 @@
 			break;
 	}
 	
-	_fontSize = [NSFont systemFontSizeForControlSize:size];
+//	_fontSize = [NSFont systemFontSizeForControlSize:size];
 
 	return self;
 }
@@ -44,22 +44,30 @@
 	[super dealloc];
 }
 
--(void)didAddSubview:(NSView*)view {
+-(void)adaptSubview:(NSView*)view {
 	if (_foreColor && [view respondsToSelector:@selector(setTextColor:)])
 		[(NSTextView*)view setTextColor:_foreColor];
 	if (_backColor && [view respondsToSelector:@selector(setBackgroundColor:)])
 		[(NSTextView*)view setBackgroundColor:_backColor];
 	if (!_backColor && [view respondsToSelector:@selector(setDrawsBackground:)])
 		[(NSTextView*)view setDrawsBackground:NO];
-	if ([view respondsToSelector:@selector(setFont:)])
-		[(NSTextView*)view setFont:[NSFont labelFontOfSize:_fontSize]];
-	if ([view respondsToSelector:@selector(cell)])
-		[[(NSControl*)view cell] setControlSize:_controlSize];
+	//	if ([view respondsToSelector:@selector(setFont:)])
+	//		[(NSTextView*)view setFont:[NSFont labelFontOfSize:_fontSize]];
+	//	if ([view respondsToSelector:@selector(cell)])
+	//		[[(NSControl*)view cell] setControlSize:_controlSize];
 	
-//	if ([view respondsToSelector:@selector(setDrawsBackground:)])
-//		[(NSTextView*)view setDrawsBackground:YES];
-//	if ([view respondsToSelector:@selector(setBackgroundColor:)])
-//		[(NSTextView*)view setBackgroundColor:[NSColor blueColor]];
+	//	if ([view respondsToSelector:@selector(setDrawsBackground:)])
+	//		[(NSTextView*)view setDrawsBackground:YES];
+	//	if ([view respondsToSelector:@selector(setBackgroundColor:)])
+	//		[(NSTextView*)view setBackgroundColor:[NSColor blueColor]];
+}
+
+-(void)didAddSubview:(NSView*)view {
+	[self adaptSubview:view];
+	
+	for (NSView* subview in [view subviews])
+		if (![subview isKindOfClass:[N2View class]] || [(N2View*)subview layout] == NULL)
+			[self didAddSubview:subview];
 }
 
 -(NSRect)marginFor:(NSView*)view {
@@ -141,7 +149,6 @@
 	NSWindow* window = [view window];
 	if (_forcesSuperviewSize && !NSEqualSizes(size, [view bounds].size))
 		if (view == [window contentView]) {
-			NSLog(@"HEEEH!!!");
 			NSRect frame = [window frame];
 			NSSize oldFrameSize = frame.size;
 			frame.size = [window frameRectForContentRect:NSMakeRect(NSZeroPoint, size)].size;
@@ -150,6 +157,11 @@
 			[window setMinSize:[window frameRectForContentRect:NSMakeRect(0,0,[window minSize].width, size.height)].size]; // TODO: x minmax must be kept
 			[window setMaxSize:[window frameRectForContentRect:NSMakeRect(0,0,[window maxSize].width, size.height)].size]; // TODO: x minmax must be kept
 		} else [view setFrameSize:size];
+}
+
+-(void)setForeColor:(NSColor*)color {
+	if (_foreColor) [_foreColor release];
+	_foreColor = [color retain];
 }
 
 @end

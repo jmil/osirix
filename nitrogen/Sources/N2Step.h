@@ -17,15 +17,15 @@ extern NSString* N2StepDidBecomeDisabledNotification;
 @interface N2Step : NSObject {
 	NSString* _title;
 	NSView* _enclosedView;
-	BOOL _isNecessary, _isActive, _isEnabled, _isDone;
+	BOOL _necessary, _active, _enabled, _done;
 }
 
 @property(readonly) NSString* title;
 @property(readonly) NSView* enclosedView;
-@property(assign) BOOL isNecessary;
-@property BOOL isActive;
-@property BOOL isEnabled;
-@property BOOL isDone;
+@property(getter=isNecessary) BOOL necessary;
+@property(getter=isActive) BOOL active;
+@property(getter=isEnabled) BOOL enabled;
+@property(getter=isDone) BOOL done;
 
 -(id)initWithTitle:(NSString*)title enclosedView:(NSView*)view;
 

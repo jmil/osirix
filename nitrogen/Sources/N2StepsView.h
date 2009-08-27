@@ -11,10 +11,16 @@
 
 @interface N2StepsView : N2View {
 	IBOutlet N2Steps* _steps;
+	NSColor* _foreColor;
+	NSControlSize _controlSize;
 //	NSMutableArray* _views;
 }
 
+@property(retain) NSColor* foreColor;
+@property NSControlSize controlSize;
+
 //-(void)addStep:(N2Step*)step;
 //-(void)recomputeSubviewFramesAndAdjustSizes;
+-(void)stepsDidAddStep:(NSNotification*)notification;
 
 @end

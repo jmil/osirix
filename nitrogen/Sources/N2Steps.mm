@@ -27,6 +27,7 @@ NSString* N2StepsNotificationStep = @"N2StepsNotificationStep";
 	NSAssert([obj isKindOfClass:[N2Step class]], @"[N2Steps addObject:%@] only accepts objects inheriting from class N2Step");
 	[super addObject:obj];
 	[[NSNotificationCenter defaultCenter] postNotificationName:N2StepsDidAddStepNotification object:self userInfo:[NSDictionary dictionaryWithObject:obj forKey:N2StepsNotificationStep]];
+	if (!_currentStep) [self setCurrentStep:obj];
 }
 
 -(void)removeObject:(id)obj {
@@ -39,7 +40,7 @@ NSString* N2StepsNotificationStep = @"N2StepsNotificationStep";
 	BOOL enable = YES;
 	for (unsigned i = [[self content] indexOfObject:_currentStep]; i < [[self content] count]; ++i) {
 		N2Step* step = [[self content] objectAtIndex:i];
-		[step setIsEnabled:enable];
+		[step setEnabled:enable];
 		if ([step isNecessary] && ![step isDone])
 			enable = NO;
 	}
@@ -53,15 +54,15 @@ NSString* N2StepsNotificationStep = @"N2StepsNotificationStep";
 		return;
 	
 	if (_currentStep)
-		[_currentStep setIsActive:NO];
+		[_currentStep setActive:NO];
 	
 	_currentStep = step;
 	
-	[_currentStep setIsActive:YES];
+	[_currentStep setActive:YES];
 	[self enableDisableSteps];
 	
-//	if (_delegate)
-//		[_delegate stepByStep:self willBeginStep:[self currentStep]];
+	if (_delegate && [_delegate respondsToSelector:@selector(steps:willBeginStep:)])
+		[_delegate steps:self willBeginStep:[self currentStep]];
 }
 
 -(BOOL)hasNextStep {
@@ -73,11 +74,12 @@ NSString* N2StepsNotificationStep = @"N2StepsNotificationStep";
 }
 
 -(IBAction)nextStep:(id)sender {
-//	if (![_delegate stepByStep:self shouldValidateStep:_currentStep])
-//		return;
+	if ([_delegate respondsToSelector:@selector(steps:shouldValidateStep:)] && ![_delegate steps:self shouldValidateStep:_currentStep])
+		return;
 	
-//	[_delegate stepByStep:self validateStep:[self currentStep]];
-	[_currentStep setIsDone:YES];
+	if ([_delegate respondsToSelector:@selector(steps:validateStep:)])
+		[_delegate steps:self validateStep:[self currentStep]];
+	[_currentStep setDone:YES];
 
 	if (![self hasNextStep])
 		return;
@@ -103,13 +105,13 @@ NSString* N2StepsNotificationStep = @"N2StepsNotificationStep";
 }
 
 -(IBAction)stepValueChanged:(id)sender {
-//	if (_delegate)
-//		[_delegate stepByStep:self valueChanged:sender];
+	if (_delegate && [_delegate respondsToSelector:@selector(steps:valueChanged:)])
+		[_delegate steps:self valueChanged:sender];
 }
 
 -(IBAction)reset:(id)sender; {
 	for (unsigned i = 0; i < [[self content] count]; ++i)
-		[[[self content] objectAtIndex:i] setIsDone:NO];
+		[[[self content] objectAtIndex:i] setDone:NO];
 	
 	[self setCurrentStep:[[self content] objectAtIndex:0]];
 }

@@ -21,8 +21,8 @@
 	[self sendActionOn:NSLeftMouseDownMask];
 	
 	_attributes = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
-						[NSColor whiteColor], NSForegroundColorAttributeName,
-						[NSFont labelFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName,
+//						[NSColor whiteColor], NSForegroundColorAttributeName,
+//						[NSFont labelFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName,
 					NULL] retain];
 	
 	return self;

@@ -80,6 +80,7 @@ NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 }
 
 -(void)willRemoveSubview:(NSView*)view {
+	if (_layout) [_layout willRemoveSubview:view];
 	NSInteger rowIndex = [self viewRow:view];
 	if (rowIndex != -1) {
 		[[_n2rows objectAtIndex:rowIndex] removeObject:view];

@@ -15,16 +15,16 @@ NSString* N2StepDidBecomeEnabledNotification = @"N2StepDidBecomeEnabledNotificat
 NSString* N2StepDidBecomeDisabledNotification = @"N2StepDidBecomeDisabledNotification";
 
 @implementation N2Step
-@synthesize enclosedView = _enclosedView, title = _title, isActive = _isActive, isNecessary = _isNecessary, isDone = _isDone, isEnabled = _isEnabled;
+@synthesize enclosedView = _enclosedView, title = _title, active = _active, necessary = _necessary, done = _done, enabled = _enabled;
 
 -(id)initWithTitle:(NSString*)aTitle enclosedView:(NSView*)aView {
 	_enclosedView = [aView retain];
 	_title = [aTitle retain];
 	
-	_isNecessary = YES;
-	_isActive = NO;
-	_isEnabled = YES;
-	_isDone = NO;
+	_necessary = YES;
+	_active = NO;
+	_enabled = YES;
+	_done = NO;
 	
 	return self;
 }
@@ -35,19 +35,19 @@ NSString* N2StepDidBecomeDisabledNotification = @"N2StepDidBecomeDisabledNotific
 	[super dealloc];
 }
 
--(void)setIsActive:(BOOL)isActive {
-	if (_isActive != isActive) {
-		_isActive = isActive;
-		[[NSNotificationCenter defaultCenter] postNotificationName:(isActive ?N2StepDidBecomeActiveNotification :N2StepDidBecomeInactiveNotification) object:self];
+-(void)setActive:(BOOL)active {
+	if (_active != active) {
+		_active = active;
+		[[NSNotificationCenter defaultCenter] postNotificationName:(active ?N2StepDidBecomeActiveNotification :N2StepDidBecomeInactiveNotification) object:self];
 	}
 }
 
--(void)setIsEnabled:(BOOL)isEnabled {
-	if (_isEnabled != isEnabled) {
-		if (!isEnabled && _isActive)
-			[self setIsActive:NO];
-		_isEnabled = isEnabled;
-		[[NSNotificationCenter defaultCenter] postNotificationName:(isEnabled ?N2StepDidBecomeEnabledNotification :N2StepDidBecomeDisabledNotification) object:self];
+-(void)setEnabled:(BOOL)enabled {
+	if (_enabled != enabled) {
+		if (!enabled && _active)
+			[self setActive:NO];
+		_enabled = enabled;
+		[[NSNotificationCenter defaultCenter] postNotificationName:(enabled ?N2StepDidBecomeEnabledNotification :N2StepDidBecomeDisabledNotification) object:self];
 	}
 }
 
