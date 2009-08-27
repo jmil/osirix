@@ -18,11 +18,7 @@
 - Multiple bugs corrections
 - Much better support for DICOM Encapsulated PDF
 
-- CHECK FUSION pet-ct on xraid
-
-- REBUILD GANTRY 1.1 <- zip file and index file for web site
-- Add JPEG plugin <- zip file and index file for web site
-- PDF DICOM <- zip file and index file for web site
+* - Add JPEG 2000 plugin <- zip file and index file for web site
 
 - Option to include 3D viewers in Tile Window
 - DICOM TLS
