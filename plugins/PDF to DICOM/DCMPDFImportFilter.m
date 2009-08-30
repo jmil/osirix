@@ -126,7 +126,7 @@
 		if ([pdf length] % 2 != 0)
 			[pdf increaseLengthBy:1];
 		// create DICOM OBJECT
-		DCMObject *dcmObject = [DCMObject newEncapsulatedPDF:pdf];
+		DCMObject *dcmObject = [DCMObject encapsulatedPDF:pdf];
 		if (_studyInstanceUID)
 			[dcmObject setAttributeValues:[NSArray arrayWithObject:_studyInstanceUID] forName:@"StudyInstanceUID"];
 		if (_seriesInstanceUID)
