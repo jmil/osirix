@@ -116,7 +116,6 @@
 		59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arthroplasty_Templating_Prefix.pch; path = Sources/Arthroplasty_Templating_Prefix.pch; sourceTree = "<group>"; };
 		59D94E6F0FCE807D00509EEC /* ArthroplastyTemplatingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingTableView.h; sourceTree = "<group>"; };
 		59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArthroplastyTemplatingWindowController.h; sourceTree = "<group>"; };
-		59D94E990FCE81BD00509EEC /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
 		59D951D50FCE823400509EEC /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		59D951D70FCE823400509EEC /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.xml; name = English; path = locversion.plist; sourceTree = "<group>"; };
 		59D951DA0FCE826400509EEC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -232,8 +231,8 @@
 				598E1E2C0FFB3E0800BC313C /* ArthroplastyTemplatingPlugin.mm */,
 				59D94E710FCE807D00509EEC /* ArthroplastyTemplatingWindowController.h */,
 				599572CB0FDD5170007C151F /* ArthroplastyTemplatingWindowController.mm */,
-				59A640031042DFF3003F4069 /* ArthroplastyTemplatingStepsController.mm */,
 				59A640041042DFF3003F4069 /* ArthroplastyTemplatingStepsController.h */,
+				59A640031042DFF3003F4069 /* ArthroplastyTemplatingStepsController.mm */,
 				59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */,
 				598E1E2A0FFB3E0200BC313C /* ArthroplastyTemplate.mm */,
 				59956E4D0FD8105F007C151F /* TemplateTypes */,
@@ -261,7 +260,6 @@
 				596EF90110148ADD0047C33E /* empty.pdf */,
 				59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */,
 				59D951D30FCE823400509EEC /* English.lproj */,
-				59D94E990FCE81BD00509EEC /* version.plist */,
 				59D951F10FCE831900509EEC /* Zimmer Templates */,
 			);
 			path = Resources;

@@ -29,7 +29,7 @@
 #pragma mark Initialization
 
 -(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin viewerController:(ViewerController*)viewerController {
-	self = [self initWithWindowNibName:@"ArthroplastyTemplatingStepByStep"];
+	self = [self initWithWindowNibName:@"ArthroplastyTemplatingSteps"];
 	_plugin = [plugin retain];
 	_viewerController = [viewerController retain];
 	

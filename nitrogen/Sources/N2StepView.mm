@@ -33,7 +33,7 @@
 -(void)stepDidBecomeActiveInactive:(NSNotification*)notification {
 	if ([[notification name] isEqualToString:N2StepDidBecomeActiveNotification])
 		[self expand:self];
-	else [self collapse:self];
+	else if (![_step shouldStayVisibleWhenInactive]) [self collapse:self];
 }
 
 -(void)stepDidBecomeEnabledDisabled:(NSNotification*)notification {

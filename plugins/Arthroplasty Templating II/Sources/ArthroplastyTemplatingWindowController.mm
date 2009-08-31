@@ -130,7 +130,7 @@
 //}
 
 -(ArthroplastyTemplateFamily*)familyAtIndex:(int)index {
-	return index != -1? [[_familiesArrayController arrangedObjects] objectAtIndex:index] : NULL;	
+	return (index >= 0 && index < (int)[[_familiesArrayController content] count])? [[_familiesArrayController arrangedObjects] objectAtIndex:index] : NULL;	
 }
 
 //-(ArthroplastyTemplate*)selectedTemplate {

@@ -15,7 +15,7 @@ NSString* N2StepDidBecomeEnabledNotification = @"N2StepDidBecomeEnabledNotificat
 NSString* N2StepDidBecomeDisabledNotification = @"N2StepDidBecomeDisabledNotification";
 
 @implementation N2Step
-@synthesize enclosedView = _enclosedView, title = _title, active = _active, necessary = _necessary, done = _done, enabled = _enabled;
+@synthesize enclosedView = _enclosedView, title = _title, active = _active, necessary = _necessary, done = _done, enabled = _enabled, shouldStayVisibleWhenInactive = _shouldStayVisibleWhenInactive;
 
 -(id)initWithTitle:(NSString*)aTitle enclosedView:(NSView*)aView {
 	_enclosedView = [aView retain];

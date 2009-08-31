@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5987F5D3103018A5006D39F5 /* Ejection_Fraction_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 5987F5D2103018A5006D39F5 /* Ejection_Fraction_Prefix.pch */; };
+		5987F605103019B0006D39F5 /* EjectionFractionPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */; };
+		5987F606103019B0006D39F5 /* EjectionFractionPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5987F604103019B0006D39F5 /* EjectionFractionPlugin.h */; };
+		598E525810442462005BCDC7 /* EjectionFractionSteps.xib in Resources */ = {isa = PBXBuildFile; fileRef = 598E525710442462005BCDC7 /* EjectionFractionSteps.xib */; };
+		59E8B2901046A19D00B83E7D /* EjectionFractionStepsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */; };
+		59E8B2911046A19D00B83E7D /* EjectionFractionStepsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */; };
+		59E8B2981046A1D100B83E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2961046A1D100B83E7D /* InfoPlist.strings */; };
+		59E8B2A31046B21A00B83E7D /* PreviewHemi-ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B29F1046B21A00B83E7D /* PreviewHemi-ellipse.png */; };
+		59E8B2A41046B21A00B83E7D /* PreviewBiplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2A01046B21A00B83E7D /* PreviewBiplane.png */; };
+		59E8B2A51046B21A00B83E7D /* PreviewMonoplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2A11046B21A00B83E7D /* PreviewMonoplane.png */; };
+		59E8B2A61046B21A00B83E7D /* PreviewSimpson.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2A21046B21A00B83E7D /* PreviewSimpson.png */; };
+		59E8BF9C1046D90400B83E7D /* OsiriX.Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */; };
+		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		5987F5D2103018A5006D39F5 /* Ejection_Fraction_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ejection_Fraction_Prefix.pch; path = Sources/Ejection_Fraction_Prefix.pch; sourceTree = "<group>"; };
+		5987F5D8103018C4006D39F5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
+		5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionPlugin.mm; path = Sources/EjectionFractionPlugin.mm; sourceTree = "<group>"; };
+		5987F604103019B0006D39F5 /* EjectionFractionPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EjectionFractionPlugin.h; path = Sources/EjectionFractionPlugin.h; sourceTree = "<group>"; };
+		598E525710442462005BCDC7 /* EjectionFractionSteps.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EjectionFractionSteps.xib; path = Resources/EjectionFractionSteps.xib; sourceTree = "<group>"; };
+		59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionStepsController.mm; path = Sources/EjectionFractionStepsController.mm; sourceTree = "<group>"; };
+		59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EjectionFractionStepsController.h; path = Sources/EjectionFractionStepsController.h; sourceTree = "<group>"; };
+		59E8B2971046A1D100B83E7D /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
+		59E8B29F1046B21A00B83E7D /* PreviewHemi-ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PreviewHemi-ellipse.png"; path = "Resources/PreviewHemi-ellipse.png"; sourceTree = "<group>"; };
+		59E8B2A01046B21A00B83E7D /* PreviewBiplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewBiplane.png; path = Resources/PreviewBiplane.png; sourceTree = "<group>"; };
+		59E8B2A11046B21A00B83E7D /* PreviewMonoplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewMonoplane.png; path = Resources/PreviewMonoplane.png; sourceTree = "<group>"; };
+		59E8B2A21046B21A00B83E7D /* PreviewSimpson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewSimpson.png; path = Resources/PreviewSimpson.png; sourceTree = "<group>"; };
+		59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.Headers.framework; path = ../../osirix/build/Development/OsiriX.Headers.framework; sourceTree = SOURCE_ROOT; };
+		AB5D36050680E57E00F4007A /* Ejection Fraction.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ejection Fraction.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				59E8BF9C1046D90400B83E7D /* OsiriX.Headers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* EjectionFractionII */ = {
+			isa = PBXGroup;
+			children = (
+				5987F5D2103018A5006D39F5 /* Ejection_Fraction_Prefix.pch */,
+				5987F5D110301898006D39F5 /* Sources */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = EjectionFractionII;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				59E8B29F1046B21A00B83E7D /* PreviewHemi-ellipse.png */,
+				59E8B2A01046B21A00B83E7D /* PreviewBiplane.png */,
+				59E8B2A11046B21A00B83E7D /* PreviewMonoplane.png */,
+				59E8B2A21046B21A00B83E7D /* PreviewSimpson.png */,
+				598E525710442462005BCDC7 /* EjectionFractionSteps.xib */,
+				5987F5D8103018C4006D39F5 /* Info.plist */,
+				59E8B2951046A1D100B83E7D /* English.lproj */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB5D36050680E57E00F4007A /* Ejection Fraction.osirixplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5987F5D110301898006D39F5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5987F604103019B0006D39F5 /* EjectionFractionPlugin.h */,
+				5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */,
+				59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */,
+				59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		59E8B2951046A1D100B83E7D /* English.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				59E8B2961046A1D100B83E7D /* InfoPlist.strings */,
+			);
+			name = English.lproj;
+			path = Resources/English.lproj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D5B49AD048680CD000E48DA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5987F5D3103018A5006D39F5 /* Ejection_Fraction_Prefix.pch in Headers */,
+				5987F606103019B0006D39F5 /* EjectionFractionPlugin.h in Headers */,
+				59E8B2911046A19D00B83E7D /* EjectionFractionStepsController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* Ejection Fraction II */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "Ejection Fraction II" */;
+			buildPhases = (
+				8D5B49AD048680CD000E48DA /* Headers */,
+				8D5B49AF048680CD000E48DA /* Resources */,
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+				8D5B49B5048680CD000E48DA /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Ejection Fraction II";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = Invert;
+			productReference = AB5D36050680E57E00F4007A /* Ejection Fraction.osirixplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Ejection Fraction II" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 089C166AFE841209C02AAC07 /* EjectionFractionII */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D5B49AC048680CD000E48DA /* Ejection Fraction II */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				598E525810442462005BCDC7 /* EjectionFractionSteps.xib in Resources */,
+				59E8B2981046A1D100B83E7D /* InfoPlist.strings in Resources */,
+				59E8B2A31046B21A00B83E7D /* PreviewHemi-ellipse.png in Resources */,
+				59E8B2A41046B21A00B83E7D /* PreviewBiplane.png in Resources */,
+				59E8B2A51046B21A00B83E7D /* PreviewMonoplane.png in Resources */,
+				59E8B2A61046B21A00B83E7D /* PreviewSimpson.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		8D5B49B5048680CD000E48DA /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5987F605103019B0006D39F5 /* EjectionFractionPlugin.mm in Sources */,
+				59E8B2901046A19D00B83E7D /* EjectionFractionStepsController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		59E8B2961046A1D100B83E7D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59E8B2971046A1D100B83E7D /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE6A9A9108AC841300D0C1EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG = YES;
+				DEBUGGING_SYMBOLS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/build/Development\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Ejection_Fraction_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "@executable_path/../Plug-ins";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "Ejection Fraction";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = osirixplugin;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		CE6A9A9208AC841300D0C1EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/build/Development\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Ejection_Fraction_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "Ejection Fraction";
+				RELEASE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = osirixplugin;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		CE6A9A9508AC841300D0C1EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+					ppc64,
+					x86_64,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Debug;
+		};
+		CE6A9A9608AC841300D0C1EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE6A9A9008AC841300D0C1EE /* Build configuration list for PBXNativeTarget "Ejection Fraction II" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6A9A9108AC841300D0C1EE /* Debug */,
+				CE6A9A9208AC841300D0C1EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Ejection Fraction II" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6A9A9508AC841300D0C1EE /* Debug */,
+				CE6A9A9608AC841300D0C1EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

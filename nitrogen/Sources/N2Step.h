@@ -17,7 +17,7 @@ extern NSString* N2StepDidBecomeDisabledNotification;
 @interface N2Step : NSObject {
 	NSString* _title;
 	NSView* _enclosedView;
-	BOOL _necessary, _active, _enabled, _done;
+	BOOL _necessary, _active, _enabled, _done, _shouldStayVisibleWhenInactive;
 }
 
 @property(readonly) NSString* title;
@@ -26,6 +26,7 @@ extern NSString* N2StepDidBecomeDisabledNotification;
 @property(getter=isActive) BOOL active;
 @property(getter=isEnabled) BOOL enabled;
 @property(getter=isDone) BOOL done;
+@property BOOL shouldStayVisibleWhenInactive;
 
 -(id)initWithTitle:(NSString*)title enclosedView:(NSView*)view;
 
