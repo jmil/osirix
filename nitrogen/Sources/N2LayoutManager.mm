@@ -14,6 +14,7 @@
 
 @implementation N2LayoutManager
 @synthesize occupiesEntireSuperview = _occupiesEntireSuperview, forcesSuperviewSize = _forcesSuperviewSize, stretchesToFill = _stretchesToFill, foreColor = _foreColor;
+@synthesize separation = _separation;
 
 -(id)initWithControlSize:(NSControlSize)size {
 	self = [super init];

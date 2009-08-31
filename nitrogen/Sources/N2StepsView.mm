@@ -35,6 +35,7 @@
 	N2LayoutManager* layout = [[N2LayoutManager alloc] initWithControlSize:NSMiniControlSize];
 	[layout setStretchesToFill:YES];
 	[layout setForcesSuperviewSize:YES];
+	[layout setSeparation:NSZeroSize];
 	[self setLayout:[layout autorelease]];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsDidAddStep:) name:N2StepsDidAddStepNotification object:_steps];
@@ -102,11 +103,11 @@
 	N2Step* step = [[notification userInfo] objectForKey:N2StepsNotificationStep];
 	N2StepView* view = [[[N2StepView alloc] initWithStep:step] autorelease];
 	
-	[_layout didAddSubview:[step enclosedView]];
 	[[[view titleCell] attributes] addEntriesFromDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
 															 [self foreColor], NSForegroundColorAttributeName,
 															 [NSFont labelFontOfSize:[NSFont systemFontSizeForControlSize:[self controlSize]]], NSFontAttributeName,
 															 NULL]];
+	[_layout didAddSubview:[step enclosedView]];
 	
 	[view setPostsFrameChangedNotifications:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewFrameDidChange:) name:NSViewFrameDidChangeNotification object:view];

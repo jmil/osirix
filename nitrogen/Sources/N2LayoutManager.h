@@ -25,6 +25,7 @@
 @property BOOL stretchesToFill;
 @property BOOL forcesSuperviewSize;
 @property(retain) NSColor* foreColor;
+@property NSSize separation;
 
 -(id)initWithControlSize:(NSControlSize)size;
 -(void)recalculate:(N2View*)view;
