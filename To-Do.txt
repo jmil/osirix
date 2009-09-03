@@ -19,8 +19,8 @@
 - Much better support for DICOM Encapsulated PDF
 
 * - Add JPEG 2000 plugin <- zip file and index file for web site
-- Log Window 10.6
 
+- SUV > 24h
 - Option to include 3D viewers in Tile Window
 - DICOM TLS
 - ROI Manager (series level)
