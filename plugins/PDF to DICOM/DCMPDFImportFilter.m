@@ -263,19 +263,6 @@
 			_studyID = [[selection valueForKeyPath:@"id"] intValue];
 			_studyDate  = [DCMCalendarDate dicomDateWithDate:[selection valueForKeyPath:@"date"]];
 			_studyTime  = [DCMCalendarDate dicomTimeWithDate:[selection valueForKeyPath:@"date"]];
-			
-			id series = nil;
-
-			NSEnumerator *enumerator = [[study valueForKey:@"series"] objectEnumerator];
-			while (series = [enumerator nextObject]) {
-				if ([[series valueForKey:@"name"] isEqualToString:@"PDF"])
-				{
-					_seriesInstanceUID = [series valueForKey:@"seriesDICOMUID"];
-					_seriesDate  = [DCMCalendarDate dicomDateWithDate:[series valueForKeyPath:@"date"]];
-					_seriesTime  = [DCMCalendarDate dicomTimeWithDate:[series valueForKeyPath:@"date"]];
-					_imageNumber = [[series valueForKey:@"images"] count] + 1;
-				}
-			}
 		}
 		else
 			_studyInstanceUID = nil;

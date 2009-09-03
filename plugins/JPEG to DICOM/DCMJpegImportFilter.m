@@ -11,37 +11,55 @@
 
 #import "browserController.h"
 
-
-
 @implementation DCMJpegImportFilter
+
+@synthesize addtoCurrentStudy, patientName, patientID, studyDescription, datePicker;
+
+-(void) setAddtoCurrentStudy:(BOOL) v
+{
+	addtoCurrentStudy = v;
+	[self studyInfo];
+}
 
 - (long) filterImage:(NSString*) menuName
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	self.addtoCurrentStudy = [[NSUserDefaults standardUserDefaults] boolForKey: @"JPEGtoDICOMaddToCurrentStudy"];
+	
+	if( addtoCurrentStudy)
+		[self studyInfo];
+		
 	NSArray *topLevelObjects;
 	NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
 	NSNib *nib = [[[NSNib alloc] initWithNibNamed:@"ConversionInfo" bundle:thisBundle] autorelease];
 	[nib instantiateNibWithOwner:self topLevelObjects:&topLevelObjects];
-	[datePicker setDateValue:[NSDate date]];
+	self.datePicker = [NSDate date];
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
 	[openPanel setAccessoryView:accessoryView];
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setAllowsMultipleSelection:YES];
 	[openPanel setTitle:NSLocalizedString(@"Import", nil)];
 	[openPanel setMessage:NSLocalizedString(@"Select image or folder of images to convert to DICOM", nil)];
-	if([openPanel runModalForTypes:[NSImage imageFileTypes]] == NSOKButton){
-		patientName = [patientNameField stringValue];
-		patientID = [patientIDField stringValue];
-		studyDescription = [studyDesciptionID stringValue];
-		NSDate *date = [datePicker dateValue];
-		studyDate = [DCMCalendarDate dicomDateWithDate:date];
-		studyTime = [DCMCalendarDate dicomTimeWithDate:date];
+	if([openPanel runModalForTypes:[NSImage imageFileTypes]] == NSOKButton)
+	{
+		studyDate = [DCMCalendarDate dicomDateWithDate: self.datePicker];
+		studyTime = [DCMCalendarDate dicomTimeWithDate: self.datePicker];
 		DCMObject *dcmObject = [DCMObject dcmObject];
 		[dcmObject newStudyInstanceUID];
 		[dcmObject newSeriesInstanceUID];
-		studyInstanceUID = [dcmObject attributeValueWithName:@"StudyInstanceUID"];
-		seriesInstanceUID= [dcmObject attributeValueWithName:@"SeriesInstanceUID"];
+		
+		if( addtoCurrentStudy)
+			[self studyInfo];
+		
+		if (!studyInstanceUID)
+			studyInstanceUID = [[dcmObject attributeValueWithName:@"StudyInstanceUID"] copy];
+		
+		if (!seriesInstanceUID)
+			seriesInstanceUID = [[dcmObject attributeValueWithName:@"SeriesInstanceUID"] copy];
+		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		studyID = [defaults  integerForKey:@"JTDStudyID"];
+		studyID = [defaults integerForKey:@"JTDStudyID"];
 		if (studyID = 0)
 			studyID = 10001;
 		[defaults setInteger:studyID++ forKey:@"JTDStudyID"];
@@ -49,14 +67,16 @@
 		NSEnumerator *enumerator = [[openPanel filenames] objectEnumerator];
 		NSString *fpath;
 		BOOL isDir;
-		while(fpath = [enumerator nextObject]){
+		while(fpath = [enumerator nextObject])
+		{
 			[[NSFileManager defaultManager] fileExistsAtPath:fpath isDirectory:&isDir];
-			//loop through directory if true
-			if (isDir){
+			
+			if (isDir)
+			{
 				NSDirectoryEnumerator *dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:fpath];
 				NSString *path;
-				while (path = [dirEnumerator nextObject])
-					if  ([[NSImage imageFileTypes] containsObject:[path pathExtension]] 
+				while( path = [dirEnumerator nextObject])
+					if( [[NSImage imageFileTypes] containsObject:[path pathExtension]] 
 					|| [[NSImage imageFileTypes] containsObject:NSFileTypeForHFSTypeCode([[[[NSFileManager defaultManager] fileSystemAttributesAtPath:path] objectForKey:NSFileHFSTypeCode] longValue])])
 						[self convertImageToDICOM:[fpath stringByAppendingPathComponent:path]];
 			}
@@ -64,21 +84,27 @@
 				[self convertImageToDICOM:fpath];
 		}
 	}
-
+	
+	[[NSUserDefaults standardUserDefaults] setBool: addtoCurrentStudy forKey: @"JPEGtoDICOMaddToCurrentStudy"];
+	
+	[pool release];
+	
 	return -1;
 }
 
-- (void)convertImageToDICOM:(NSString *)path{
-	
+- (void)convertImageToDICOM:(NSString *)path
+{
 	//create image
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSImage *image = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
 	
 	//if we have an image  get the info we need from the imageRep.
-	if (image){
+	if (image)
+	{
 		NSImageRep *rep = [image bestRepresentationForDevice:nil];
 		//we only want bitmaps.  May use PDFs later
-		if ([rep isMemberOfClass:[NSBitmapImageRep class]]){
+		if ([rep isMemberOfClass:[NSBitmapImageRep class]])
+		{
 			int rows = [rep pixelsHigh];
 			int columns = [rep pixelsWide];
 			int spp = [(NSBitmapImageRep*)rep samplesPerPixel];
@@ -89,9 +115,11 @@
 			int bytesPerRow = [(NSBitmapImageRep*)rep bytesPerRow];
 			int bpp = [(NSBitmapImageRep*)rep bitsPerPixel];
 			BOOL isPlanar = [(NSBitmapImageRep*)rep isPlanar];
-			if (isPlanar) {
+			if (isPlanar)
+			{
 				//if planar and has alpha discard the last plane
-				if ([rep hasAlpha]) {
+				if ([rep hasAlpha])
+				{
 					spp--;
 					numberBytes = rows * columns * spp;
 				}
@@ -103,25 +131,37 @@
 			NSString *photometricInterpretation = @"MONOCHROME2";
 			if (spp > 1)
 				photometricInterpretation = @"RGB";
+				
 			// create DICOM OBJECT
 			DCMObject *dcmObject = [DCMObject secondaryCaptureObjectWithBitDepth:8  samplesPerPixel:spp numberOfFrames:1];
-			[dcmObject setAttributeValues:[NSArray arrayWithObject:studyInstanceUID] forName:@"StudyInstanceUID"];
-			[dcmObject setAttributeValues:[NSArray arrayWithObject:seriesInstanceUID] forName:@"SeriesInstanceUID"];
-
+			
+			if( studyInstanceUID)
+				[dcmObject setAttributeValues:[NSArray arrayWithObject:studyInstanceUID] forName:@"StudyInstanceUID"];
+			
+			if( seriesInstanceUID)
+				[dcmObject setAttributeValues:[NSArray arrayWithObject:seriesInstanceUID] forName:@"SeriesInstanceUID"];
+			
 			[dcmObject setAttributeValues:[NSArray arrayWithObject:[NSNumber numberWithBool:isPlanar]] forName:@"PlanarConfiguration"];
 			
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientName] forName:@"PatientsName"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientID] forName:@"PatientID"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDescription] forName:@"StudyDescription"];
+			if( patientName)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientName] forName:@"PatientsName"];
+			
+			if( patientID)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientID] forName:@"PatientID"];
+			
+			if( studyDescription)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDescription] forName:@"StudyDescription"];
+				
+			[dcmObject setAttributeValues: [NSMutableArray arrayWithObject:[path lastPathComponent]] forName:@"SeriesDescription"];
+			
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", imageNumber++]] forName:@"InstanceNumber"];
+			
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSString stringWithFormat:@"%d", studyID]] forName:@"StudyID"];
 					
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDate] forName:@"StudyDate"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyTime] forName:@"StudyTime"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDate] forName:@"SeriesDate"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyTime] forName:@"SeriesTime"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDate] forName:@"AcquisitionDate"];
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyTime] forName:@"AcquisitionTime"];
 					
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:rows]] forName:@"Rows"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:columns]] forName:@"Columns"];
@@ -134,7 +174,7 @@
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithBool:7]] forName:@"HighBit"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:8]] forName:@"BitsAllocated"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:8]] forName:@"BitsStored"];
-			//NSLog(@"create SC Object");
+			
 			NSString *vr = 	@"OB";
 			DCMTransferSyntax *ts = [DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax];
 			DCMAttributeTag *tag = [DCMAttributeTag tagWithName:@"PixelData"];
@@ -148,16 +188,20 @@
 													decodeData:NO] autorelease];
 			NSData *data = [NSData dataWithBytes:[(NSBitmapImageRep *)rep bitmapData] length:bytesPerRow * rows];
 			NSMutableData *subdata = [NSMutableData data];
-			if (bpp == spp * 8 || (!isPlanar  && [rep hasAlpha])) {
+			if (bpp == spp * 8 || (!isPlanar  && [rep hasAlpha]))
+			{
 				int i = 0;
 				int offset = 0;
-				//Alpha plane will be first I think
+				
 				if ([rep hasAlpha])
 					offset = 1;
+					
 				int rowCount = rows + offset;
+				
 				if (isPlanar)
 					rowCount = rows * spp;
-				for (i = offset ;  i < rowCount; i++){
+				for (i = offset ;  i < rowCount; i++)
+				{
 					NSRange range = NSMakeRange(bytesPerRow * i,  rowLength);
 					NSData *dataRow = [data subdataWithRange:range];
 					[subdata appendData:dataRow];
@@ -170,17 +214,19 @@
 				*/
 				int i = 0;
 				int j = 0;
-				if ([rep hasAlpha]) {
+				if ([rep hasAlpha])
+				{
 					spp--;
-					//adjust spp in Dicom
 					[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:spp]] forName:@"SamplesperPixel"];
 				}
-				for ( i = 0; i < rows; i++){
-					for (j = 0; j < columns; j++){
-					// is it RGBA or ARGB? Assume ARGB
-						NSRange range = NSMakeRange(1 + (bytesPerRow * i) + (j * (bpp / 8)), spp);
-						//NSLog(@"column: %d  row: %d Range location: %d  length: %d",j , i, range.location, range.length);
-						if (range.location + range.length <= [data length]){
+				for ( i = 0; i < rows; i++)
+				{
+					for (j = 0; j < columns; j++)
+					{
+						NSRange range = NSMakeRange((bytesPerRow * i) + (j * (bpp / 8)), spp);
+						
+						if (range.location + range.length <= [data length])
+						{
 							NSData *pixel = [data subdataWithRange:range];
 							[subdata appendData:pixel];
 						}
@@ -189,12 +235,10 @@
 
 				
 			}
-
+			
 			[attr addFrame:subdata];
 			[dcmObject setAttribute:attr];
-
-			//get Incoming Folder Path;
-			//documentsDirectory() is a function not listed in the header files for OsiriX
+			
 			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], studyID, imageNumber];
 			[dcmObject writeToFile:destination withTransferSyntax:ts quality:DCMLosslessQuality atomically:YES];
 
@@ -203,7 +247,54 @@
 	[pool release];
 }
 
-- (void)dealloc{
+- (void)studyInfo
+{
+	if( addtoCurrentStudy)
+	{
+		NSArray *currentSelection = [[BrowserController currentBrowser] databaseSelection];
+		if ([currentSelection count] > 0)
+		{
+			id selection = [currentSelection objectAtIndex:0];
+			id study;
+			if ([[[selection entity] name] isEqualToString:@"Study"]) 
+				study = selection;				
+			else
+				study = [selection valueForKey:@"study"];
+			
+			[studyInstanceUID release];
+			studyInstanceUID = [[study valueForKeyPath:@"studyInstanceUID"] copy];
+			NSString *name = [study valueForKeyPath:@"name"];
+			
+			if (!name)
+				name = @"No Name";
+				
+			self.patientName = name;
+			NSString *pid = [study valueForKeyPath:@"patientID"];
+			
+			if (!pid)
+				pid = @"0";
+			self.patientID = pid;
+			patientDOB = [DCMCalendarDate dicomDateWithDate:[study valueForKeyPath:@"dateOfBirth"]];
+			patientSex = [study valueForKeyPath:@"patientSex"];
+			
+			studyID = [[selection valueForKeyPath:@"id"] intValue];
+			studyDate  = [DCMCalendarDate dicomDateWithDate:[selection valueForKeyPath:@"date"]];
+			studyTime  = [DCMCalendarDate dicomTimeWithDate:[selection valueForKeyPath:@"date"]];
+		}
+		else
+			studyInstanceUID = nil;
+	}
+}
+
+- (void)dealloc
+{
+	[studyInstanceUID release];
+	[seriesInstanceUID release];
+	[patientName release];
+	[patientID release];
+	[studyDescription release];
+	[datePicker release];
+	
 	[super dealloc];
 }
 
