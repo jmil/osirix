@@ -21,14 +21,14 @@
 			NSString* sub; while (sub = [e nextObject])
 				[templates addObjectsFromArray:[ZimmerTemplate templatesAtPath:[path stringByAppendingPathComponent:sub]]];
 		} else
-			if ([[path pathExtension] isEqualToString:@"txt"] && [[path stringByDeletingPathExtension] hasSuffix:@"_info"])
+			if ([[path pathExtension] isEqualToString:@"txt"])
 				[templates addObject:[[[ZimmerTemplate alloc] initFromFileAtPath:path] autorelease]];
 	
 	return templates;
 }
 
 +(NSArray*)bundledTemplates {
-	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/ZimmerTemplates"]];
+	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/Zimmer Templates"]];
 }
 
 +(NSDictionary*)propertiesFromInfoFileAtPath:(NSString*)path {

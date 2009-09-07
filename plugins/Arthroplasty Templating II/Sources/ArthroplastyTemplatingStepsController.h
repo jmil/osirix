@@ -7,21 +7,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class N2Step, N2Steps, N2StepsView;
-
-#import "ViewerController.h"
-#import "DCMView.h"
-#import "DCMPix.h"
-#import "ROI.h"
-#import "ArthroplastyTemplate.h"
+@class N2Step, N2Steps, N2StepsView, ROI, ArthroplastyTemplate, ViewerController;
 @class ArthroplastyTemplatingPlugin;
-
 
 @interface ArthroplastyTemplatingStepsController : NSWindowController {
 	ArthroplastyTemplatingPlugin* _plugin;
 	ViewerController* _viewerController;
 	
 	IBOutlet N2Steps* _steps;
+	IBOutlet N2StepsView* _stepsView;
 	N2Step *_stepCalibration, *_stepAxes, *_stepLandmarks, *_stepCutting, *_stepCup, *_stepStem, *_stepPlacement, *_stepSave;
 	IBOutlet NSView *_viewCalibration, *_viewAxes, *_viewLandmarks, *_viewCutting, *_viewCup, *_viewStem, *_viewPlacement, *_viewSave;
 	

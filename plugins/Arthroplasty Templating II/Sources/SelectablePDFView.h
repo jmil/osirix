@@ -10,6 +10,8 @@
 #import <Quartz/Quartz.h>
 @class ArthroplastyTemplatingWindowController;
 
+extern NSString* SelectablePDFViewDocumentDidChangeNotification;
+
 
 @interface SelectablePDFView : PDFView {
 	BOOL _selected, _selectionInitiated;

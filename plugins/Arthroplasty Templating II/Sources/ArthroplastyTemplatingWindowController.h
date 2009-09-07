@@ -27,6 +27,7 @@
 	IBOutlet NSSearchField* _searchField;
 	ArthroplastyTemplateViewDirection _viewDirection;
 	BOOL _flipTemplatesHorizontally;
+	IBOutlet NSButton* _flipTemplatesHorizontallyButton;
 	
 	ArthroplastyTemplatingUserDefaults* _userDefaults;
 	NSDictionary* _presets;

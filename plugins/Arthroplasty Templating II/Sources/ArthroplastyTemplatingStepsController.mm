@@ -8,10 +8,10 @@
 #import "ArthroplastyTemplatingStepsController.h"
 #import "ArthroplastyTemplatingWindowController.h"
 #import "ArthroplastyTemplatingPlugin.h"
-#import "SendController.h"
-#import "BrowserController.h"
+#import <OsiriX.Headers/SendController.h>
+#import <OsiriX.Headers/BrowserController.h>
 #import <Nitrogen/Nitrogen.h>
-#import "Notifications.h"
+#import <OsiriX.Headers/Notifications.h>
 #import "ArthroplastyTemplateFamily.h"
 // #include "vImage/Convolution.h"
 #include <vector>
@@ -58,6 +58,10 @@
 }
 
 -(void)awakeFromNib {
+	[[_stepsView layout] setForeColor:[NSColor whiteColor]];
+	[_stepsView setForeColor:[NSColor whiteColor]];
+	[_stepsView setControlSize:NSSmallControlSize];
+
 	[_steps addObject: _stepCalibration = [[N2Step alloc] initWithTitle:@"Calibration" enclosedView:_viewCalibration]];
 	[_steps addObject: _stepAxes = [[N2Step alloc] initWithTitle:@"Axes" enclosedView:_viewAxes]];
 	[_steps addObject: _stepLandmarks = [[N2Step alloc] initWithTitle:@"Femoral landmarks" enclosedView:_viewLandmarks]];
@@ -67,6 +71,7 @@
 	[_steps addObject: _stepPlacement = [[N2Step alloc] initWithTitle:@"Reduction" enclosedView:_viewPlacement]];
 	[_steps addObject: _stepSave = [[N2Step alloc] initWithTitle:@"Save" enclosedView:_viewSave]];
 	[_steps enableDisableSteps];
+	
 	[_magnificationRadioCustom setAttributedTitle:[[[NSAttributedString alloc] initWithString:[_magnificationRadioCustom title] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSColor whiteColor], NSForegroundColorAttributeName, [_magnificationRadioCustom font], NSFontAttributeName, NULL]] autorelease]];
 	[_magnificationRadioCalibrate setAttributedTitle:[[[NSAttributedString alloc] initWithString:[_magnificationRadioCalibrate title] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSColor whiteColor], NSForegroundColorAttributeName, [_magnificationRadioCalibrate font], NSFontAttributeName, NULL]] autorelease]];
 	[_magnificationCustomFactor setBackgroundColor:[[self window] backgroundColor]];
@@ -110,7 +115,7 @@
 
 -(void)viewerDidChangeKeyStatus:(NSNotification*)notif {
 	if ([[_viewerController window] isKeyWindow])
-		[[self window] orderFront:self];
+		;//[[self window] orderFront:self];
 	else { 
 		if ([[self window] isKeyWindow]) return; // TODO: somehow this is not yet valid (both windows are not the key window)
 		if ([[[_plugin templatesWindowController] window] isKeyWindow]) return;
@@ -323,13 +328,13 @@
 
 	if (roi == _magnificationLine) {
 		_magnificationLine = NULL;
-		[_stepCalibration setIsDone:NO];
+		[_stepCalibration setDone:NO];
 		[_steps setCurrentStep:_stepCalibration];
 	}
 	
 	if (roi == _horizontalAxis) {
 		_horizontalAxis = NULL;
-		[_stepAxes setIsDone:NO];
+		[_stepAxes setDone:NO];
 		[_steps setCurrentStep:_stepAxes];
 		[self updateLegInequality];
 	}
@@ -349,7 +354,7 @@
 			if (![self landmarkChanged:_landmark1 axis:&_landmark1Axis other:_landmark2])
 				[[NSNotificationCenter defaultCenter] postNotificationName:OsirixROIChangeNotification object:_landmark1 userInfo:NULL];
 		} else
-			[_stepLandmarks setIsDone:NO];
+			[_stepLandmarks setDone:NO];
 		[_steps setCurrentStep:_stepLandmarks];
 		[self updateLegInequality];
 	}
@@ -373,14 +378,14 @@
 	if (roi == _femurLayer) {
 		_femurLayer = NULL; _femurLandmark = NULL;
 		[self removeRoiFromViewer:_originalFemurOpacityLayer];
-		[_stepCutting setIsDone:NO];
+		[_stepCutting setDone:NO];
 		[_steps setCurrentStep:_stepCutting];
 	}
 	
 	if (roi == _cupLayer) {
 		_cupLayer = NULL;
 		_cupTemplate = NULL;
-		[_stepCup setIsDone:NO];
+		[_stepCup setDone:NO];
 		[_steps setCurrentStep:_stepCup];
 		_cupRotated = NO;
 	}
@@ -388,7 +393,7 @@
 	if (roi == _stemLayer) {
 		_stemLayer = nil;
 		_stemTemplate = NULL;
-		[_stepStem setIsDone:NO];
+		[_stepStem setDone:NO];
 		[_steps setCurrentStep:_stepStem];
 		_stemRotated = NO;
 		[_neckSizePopUpButton setEnabled:NO];
@@ -447,7 +452,7 @@
 	
 	if (_planningDate) [_planningDate release]; _planningDate = NULL;
 	
-	if(updateView) {
+	if (updateView) {
 		[_steps reset:self];
 		[[_viewerController imageView] display];
 	}
@@ -504,14 +509,15 @@
 		selfKey = YES;
 	
 	[_viewerController setROIToolTag:tool];
-	if (showTemplates)
+//	if (showTemplates)
 		[self showTemplatesPanel:self];
-	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
+//	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
 	
 	[(N2Panel*)[self window] setCanBecomeKeyWindow:selfKey];
-	if (selfKey)
-		[[self window] makeKeyAndOrderFront:self];
-	else if (!showTemplates) [[_viewerController window] makeKeyAndOrderFront:self];
+	if (selfKey) {
+		if ([[self window] isVisible]) 
+			[[self window] makeKeyAndOrderFront:self];
+	} else if (!showTemplates) [[_viewerController window] makeKeyAndOrderFront:self];
 }
 
 -(void)steps:(N2Steps*)steps valueChanged:(id)sender {

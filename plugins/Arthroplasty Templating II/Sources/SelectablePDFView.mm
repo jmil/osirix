@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <cmath>
 
+NSString* SelectablePDFViewDocumentDidChangeNotification = @"SelectablePDFViewDocumentDidChangeNotification";
+
 @implementation SelectablePDFView
 
 -(void)awakeFromNib {
@@ -97,6 +99,7 @@
 -(void)setDocument:(PDFDocument*)document {
 	[super setDocument:document];
 	_selected = [_controller selectionForCurrentTemplate:&_selectedRect];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SelectablePDFViewDocumentDidChangeNotification object:self];
 }
 
 -(void)drawPage:(PDFPage*)page {
@@ -113,17 +116,15 @@
 	
 	[super drawPage:page];
 	
-	if (!_selected) return;
-	if (_selectedRect.origin.x == 0 && _selectedRect.origin.y == 0 && _selectedRect.size.width == 1 && _selectedRect.size.height == 1) return;
-	
-	NSRect selection = [self convertRectFrom01:_selectedRect forPage:[self currentPage]];
-	
-	NSBezierPath* path = [NSBezierPath bezierPath];
-	[path appendBezierPathWithRect:box];
-	[path setWindingRule:NSEvenOddWindingRule];
-	[path appendBezierPathWithRect:selection];
-	[[[NSColor grayColor] colorWithAlphaComponent:.75] setFill];
-	[path fill];
+	if (_selected && _selectedRect != NSMakeRect(0,0,1,1)) {
+		NSRect selection = [self convertRectFrom01:_selectedRect forPage:[self currentPage]];
+		NSBezierPath* path = [NSBezierPath bezierPath];
+		[path appendBezierPathWithRect:box];
+		[path setWindingRule:NSEvenOddWindingRule];
+		[path appendBezierPathWithRect:selection];
+		[[[NSColor grayColor] colorWithAlphaComponent:.75] setFill];
+		[path fill];
+	}
 	
 	[context restoreGraphicsState];
 }

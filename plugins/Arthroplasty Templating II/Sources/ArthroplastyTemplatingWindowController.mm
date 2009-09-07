@@ -7,10 +7,10 @@
 
 #import "ArthroplastyTemplatingWindowController.h"
 #import "ArthroplastyTemplatingStepsController.h"
-#import "BrowserController.h"
-#import "ViewerController.h"
-#import "ROI.h"
-#import "DCMView.h"
+#import <OsiriX.Headers/BrowserController.h>
+#import <OsiriX.Headers/ViewerController.h>
+#import <OsiriX.Headers/ROI.h>
+#import <OsiriX.Headers/DCMView.h>
 #import "ZimmerTemplate.h"
 #import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplateFamily.h"
@@ -18,7 +18,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
-#include "Notifications.h"
+#include <OsiriX.Headers/Notifications.h>
 
 @implementation ArthroplastyTemplatingWindowController
 @synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults, plugin = _plugin;
@@ -46,6 +46,7 @@
 
 -(void)awakeFromNib {
 	[_familiesArrayController setSortDescriptors:[_familiesTableView sortDescriptors]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pdfViewDocumentDidChange:) name:SelectablePDFViewDocumentDidChangeNotification object:_pdfView];
 }
 
 - (void)dealloc {
@@ -62,35 +63,15 @@
 	// [self release];
 }
 
--(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size {
-	return NSMakeSize(std::max(size.width, 208.f), std::max(size.height, 200.f));
-}
+//-(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size {
+//	return NSMakeSize(std::max(size.width, 208.f), std::max(size.height, 200.f));
+//}
 
 #pragma mark Templates
 
 -(void)loadTemplates {
-//	[self willChangeValueForKey:@"templates"];
 	[_templates removeAllObjects];
-	NSThread* thread = [[NSThread alloc] initWithTarget:self selector:@selector(LoadTemplates:) object:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTemplatesDone:) name:NSThreadWillExitNotification object:thread];
-	[thread start];
-}
-
--(void)LoadTemplates:(id)object {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
-	NSMutableArray* templates = [NSMutableArray arrayWithCapacity:64];
-	[[[NSThread currentThread] threadDictionary] setObject:templates forKey:@"templates"];
-	// do the actual job
-	[templates addObjectsFromArray:[ZimmerTemplate bundledTemplates]];
-	
-	[pool release];
-}
-
--(void)loadTemplatesDone:(NSNotification*)notification {
-	NSThread* thread = [notification object];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSThreadWillExitNotification object:thread];
-	[_templates addObjectsFromArray:[[thread threadDictionary] objectForKey:@"templates"]];
+	[_templates addObjectsFromArray:[ZimmerTemplate bundledTemplates]];
 	
 	// fill _families from _templates
 	for (unsigned i = 0; i < [_templates count]; ++i) {
@@ -115,7 +96,6 @@
 	[_familiesArrayController rearrangeObjects];
 	[_familiesTableView reloadData];
 	[self setFamily:_familiesTableView];
-	// [self didChangeValueForKey:@"templates"];}
 }
 
 -(ArthroplastyTemplate*)templateAtPath:(NSString*)path {
@@ -174,7 +154,7 @@
 #pragma mark PDF preview
 
 -(NSString*)pdfPathForFamilyAtIndex:(int)index {
-	return index != -1? [[[self familyAtIndex:index] template:[_sizes indexOfSelectedItem]] pdfPathForDirection:_viewDirection] : [[NSBundle bundleForClass:[self class]] pathForResource:@"empty" ofType:@"pdf"];
+	return index != -1? [[[self familyAtIndex:index] template:[_sizes indexOfSelectedItem]] pdfPathForDirection:_viewDirection] : NULL;//[[NSBundle bundleForClass:[self class]] pathForResource:@"empty" ofType:@"pdf"];
 }
 
 -(void)setFamily:(id)sender {
@@ -199,7 +179,7 @@
 					index = i;
 			[_sizes selectItemAtIndex:index];
 		} else
-			[_pdfView setDocument:[[[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"empty" ofType:@"pdf"]]] autorelease]];
+			[_pdfView setDocument:NULL];
 	}
 	
 	if ([_familiesTableView selectedRow] < 0)
@@ -208,10 +188,7 @@
 		else return;
 	
 	NSString* pdfPath = [self pdfPathForFamilyAtIndex:[_familiesTableView selectedRow]];
-	
-	if(!pdfPath) return;
-	
-	PDFDocument *doc = [[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:pdfPath]];
+	PDFDocument* doc = pdfPath? [[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:pdfPath]] : NULL;
 	
 	[_pdfView setAutoScales:NO];
 	[_pdfView setDocument:doc];
@@ -466,8 +443,6 @@
 
 #pragma mark ROI
 
-
-
 #pragma mark Keyboard
 //
 //- (void)keyDown:(NSEvent*)theEvent;
@@ -511,6 +486,14 @@
 	[_familiesArrayController setSortDescriptors:[_familiesTableView sortDescriptors]];
 	[_familiesArrayController rearrangeObjects];
 	[_familiesTableView selectRowIndexes:[_familiesArrayController selectionIndexes] byExtendingSelection:NO];
+}
+
+#pragma mark New
+
+-(void)pdfViewDocumentDidChange:(NSNotification*)notification {
+	BOOL enable = [_pdfView document] != NULL;
+	[_flipTemplatesHorizontallyButton setEnabled:enable];
+	[_sizes setEnabled:enable];
 }
 
 @end
