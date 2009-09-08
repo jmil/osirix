@@ -346,3 +346,11 @@ NSRect operator+(const NSRect& r, const NSSize& s) {
 NSRect operator-(const NSRect& r, const NSSize& s) {
 	return NSMakeRect(r.origin, r.size-s);
 }
+
+BOOL operator==(const NSRect& r1, const NSRect& r2) {
+	return (r1.origin==r2.origin) && (r1.size==r2.size);
+}
+
+BOOL operator!=(const NSRect& r1, const NSRect& r2) {
+	return !(r1==r2);
+}

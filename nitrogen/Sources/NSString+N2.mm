@@ -48,7 +48,6 @@
 	if (i == [self length]) return @"";
 	unsigned start = i;
 	for (i = [self length]-1; i > start && [whitespaceAndNewline characterIsMember:[self characterAtIndex:i]]; --i);
-	if (i == start) return @"";
 	return [self substringWithRange:NSMakeRange(start, i-start+1)];
 }
 
