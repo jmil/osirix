@@ -329,7 +329,6 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
-				59F6A2F810565898008585F5 /* Include dSYM in framework */,
 			);
 			buildRules = (
 			);
@@ -369,23 +368,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		59F6A2F810565898008585F5 /* Include dSYM in framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Include dSYM in framework";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/csh;
-			shellScript = "if ( -e \"$BUILT_PRODUCTS_DIR/$DWARF_DSYM_FILE_NAME\" ) then\n\tcp -Rf \"$BUILT_PRODUCTS_DIR/$DWARF_DSYM_FILE_NAME\" \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"\nendif\n\nexit 0\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8DC2EF540486A6940098B216 /* Sources */ = {
