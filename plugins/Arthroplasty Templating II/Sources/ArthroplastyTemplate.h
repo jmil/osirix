@@ -10,7 +10,7 @@
 
 
 typedef enum {
-	ArthroplastyTemplateAnteriorPosteriorDirection,
+	ArthroplastyTemplateAnteriorPosteriorDirection = 0,
 	ArthroplastyTemplateLateralDirection
 } ArthroplastyTemplateViewDirection;
 
@@ -23,9 +23,9 @@ typedef enum {
 @property(readonly) NSString* path;
 @property(assign) ArthroplastyTemplateFamily* family;
 @property(readonly) NSString *fixation, *group, *manufacturer, *modularity, *name, *placement, *surgery, *type, *size, *referenceNumber;
+@property(readonly) CGFloat scale, rotation;
 
 -(id)initWithPath:(NSString*)path;
--(CGFloat)scale;
 
 @end
 

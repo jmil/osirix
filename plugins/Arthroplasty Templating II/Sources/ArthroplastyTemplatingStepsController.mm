@@ -6,7 +6,7 @@
 //
 
 #import "ArthroplastyTemplatingStepsController.h"
-#import "ArthroplastyTemplatingWindowController.h"
+#import "ArthroplastyTemplatingWindowController+Templates.h"
 #import "ArthroplastyTemplatingPlugin.h"
 #import <OsiriX.Headers/SendController.h>
 #import <OsiriX.Headers/BrowserController.h>

@@ -11,7 +11,7 @@
 
 @implementation ZimmerTemplate
 
-+(NSArray*)templatesAtPath:(NSString*)path {
++(NSArray*)templatesAtPath:(NSString*)path usingClass:(Class)classs {
 	NSMutableArray* templates = [NSMutableArray array];
 	
 	BOOL isDirectory, exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
@@ -19,16 +19,16 @@
 		if (isDirectory) {
 			NSDirectoryEnumerator* e = [[NSFileManager defaultManager] enumeratorAtPath:path];
 			NSString* sub; while (sub = [e nextObject])
-				[templates addObjectsFromArray:[ZimmerTemplate templatesAtPath:[path stringByAppendingPathComponent:sub]]];
+				[templates addObjectsFromArray:[ZimmerTemplate templatesAtPath:[path stringByAppendingPathComponent:sub] usingClass:classs]];
 		} else
 			if ([[path pathExtension] isEqualToString:@"txt"])
-				[templates addObject:[[[ZimmerTemplate alloc] initFromFileAtPath:path] autorelease]];
+				[templates addObject:[[[classs alloc] initFromFileAtPath:path] autorelease]];
 	
 	return templates;
 }
 
 +(NSArray*)bundledTemplates {
-	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/Zimmer Templates"]];
+	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/Zimmer Templates"] usingClass:[ZimmerTemplate class]];
 }
 
 +(NSDictionary*)propertiesFromInfoFileAtPath:(NSString*)path {
@@ -46,12 +46,16 @@
 	[infoFileScanner setCharactersToBeSkipped:[NSCharacterSet whitespaceCharacterSet]];
 	
 	NSMutableDictionary* properties = [[NSMutableDictionary alloc] initWithCapacity:128];
+	NSCharacterSet* newlineCharacterSet = [NSCharacterSet newlineCharacterSet];
 	while (![infoFileScanner isAtEnd]) {
-		NSString *key, *value;
+		NSString *key = @"", *value = @"";
 		[infoFileScanner scanUpToString:@":=:" intoString:&key];
+		key = [key stringByTrimmingStartAndEnd];
 		[infoFileScanner scanString:@":=:" intoString:NULL];
-		[infoFileScanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&value];
-		[properties setObject:[value stringByTrimmingStartAndEnd] forKey:[key stringByTrimmingStartAndEnd]];
+		[infoFileScanner scanUpToCharactersFromSet:newlineCharacterSet intoString:&value];
+		value = [value stringByTrimmingStartAndEnd];
+		[properties setObject:value forKey:key];
+		[infoFileScanner scanCharactersFromSet:newlineCharacterSet intoString:NULL];
 	}
 	
 	return [properties autorelease];
@@ -74,7 +78,9 @@
 }
 
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction {
-	return [[[_path stringByDeletingLastPathComponent] stringByAppendingPathComponent:direction==ArthroplastyTemplateAnteriorPosteriorDirection? [_properties objectForKey:@"PDF_FILE_AP"] : [_properties objectForKey:@"PDF_FILE_ML"]] retain];
+	NSString* key = direction==ArthroplastyTemplateAnteriorPosteriorDirection? @"PDF_FILE_AP" : @"PDF_FILE_ML";
+	NSString* filename = [_properties objectForKey:key];
+	return [[_path stringByDeletingLastPathComponent] stringByAppendingPathComponent:filename];
 }
 
 -(NSString*)prefixForDirection:(ArthroplastyTemplateViewDirection)direction {
@@ -108,13 +114,13 @@
 	for (unsigned i = 1; i <= 5; ++i) {
 		NSString* sx = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_X", prefix, i]];
 		NSString* sy = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_Y", prefix, i]];
+		NSPoint point = {0,0};
 		if ([sx length] && [sy length]) {
-			NSPoint point;
 			std::istringstream([sx UTF8String]) >> point.x;
 			std::istringstream([sy UTF8String]) >> point.y;
 			point = point/25.4;
-			[points addObject:[NSValue valueWithPoint:point+origin]];
 		}
+		[points addObject:[NSValue valueWithPoint:point+origin]];
 	}
 	
 	return points;
@@ -172,6 +178,10 @@
 
 -(CGFloat)scale {
 	return 1;
+}
+
+-(CGFloat)rotation {
+	return 0;
 }
 
 @end

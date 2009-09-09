@@ -11,7 +11,6 @@
 #import <OsiriX.Headers/ViewerController.h>
 #import <OsiriX.Headers/ROI.h>
 #import <OsiriX.Headers/DCMView.h>
-#import "ZimmerTemplate.h"
 #import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplateFamily.h"
 #import "ArthroplastyTemplatingPlugin.h"
@@ -19,6 +18,9 @@
 #include <cmath>
 #include <algorithm>
 #include <OsiriX.Headers/Notifications.h>
+#import "ArthroplastyTemplatingWindowController+Color.h"
+#import "ArthroplastyTemplatingWindowController+Templates.h"
+#import "ArthroplastyTemplatingWindowController+OsiriX.h"
 
 @implementation ArthroplastyTemplatingWindowController
 @synthesize flipTemplatesHorizontally = _flipTemplatesHorizontally, userDefaults = _userDefaults, plugin = _plugin;
@@ -39,14 +41,14 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(performOsirixDragOperation:) name:OsirixPerformDragOperationNotification object:NULL];
 	
-	[self loadTemplates];
-	
 	return self;
 }
 
 -(void)awakeFromNib {
+	[self awakeColor];
 	[_familiesArrayController setSortDescriptors:[_familiesTableView sortDescriptors]];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pdfViewDocumentDidChange:) name:SelectablePDFViewDocumentDidChangeNotification object:_pdfView];
+	[self awakeTemplates];
 }
 
 - (void)dealloc {
@@ -66,90 +68,6 @@
 //-(NSSize)windowWillResize:(NSWindow*)window toSize:(NSSize)size {
 //	return NSMakeSize(std::max(size.width, 208.f), std::max(size.height, 200.f));
 //}
-
-#pragma mark Templates
-
--(void)loadTemplates {
-	[_templates removeAllObjects];
-	[_templates addObjectsFromArray:[ZimmerTemplate bundledTemplates]];
-	
-	// fill _families from _templates
-	for (unsigned i = 0; i < [_templates count]; ++i) {
-		ArthroplastyTemplate* templat = [_templates objectAtIndex:i];
-		BOOL included = NO;
-		
-		for (unsigned i = 0; i < [[_familiesArrayController content] count]; ++i) {
-			ArthroplastyTemplateFamily* family = [[_familiesArrayController content] objectAtIndex:i];
-			if ([family matches:templat]) {
-				[family add:templat];
-				included = YES;
-				break;
-			}
-		}
-		
-		if (included)
-			continue;
-		
-		[_familiesArrayController addObject:[[[ArthroplastyTemplateFamily alloc] initWithTemplate:templat] autorelease]];
-	}
-	
-	[_familiesArrayController rearrangeObjects];
-	[_familiesTableView reloadData];
-	[self setFamily:_familiesTableView];
-}
-
--(ArthroplastyTemplate*)templateAtPath:(NSString*)path {
-	for (unsigned i = 0; i < [_templates count]; ++i)
-		if ([[[_templates objectAtIndex:i] path] isEqualToString:path])
-			return [_templates objectAtIndex:i];
-	return NULL;
-}
-
-//-(ArthroplastyTemplate*)templateAtIndex:(int)index {
-//	return [[_templatesArrayController arrangedObjects] objectAtIndex:index];	
-//}
-
--(ArthroplastyTemplateFamily*)familyAtIndex:(int)index {
-	return (index >= 0 && index < (int)[[_familiesArrayController content] count])? [[_familiesArrayController arrangedObjects] objectAtIndex:index] : NULL;	
-}
-
-//-(ArthroplastyTemplate*)selectedTemplate {
-//	return [self templateAtIndex:[_templatesTableView selectedRow]];
-//}
-
--(ArthroplastyTemplateFamily*)selectedFamily {
-	return [self familyAtIndex:[_familiesTableView selectedRow]];
-}
-
--(ArthroplastyTemplate*)currentTemplate {
-	return [[self selectedFamily] template:[_sizes indexOfSelectedItem]];
-}
-
--(void)filterTemplates {
-	NSString* filter = [_searchField stringValue];
-	
-	if ([filter length] == 0) {
-		[_familiesArrayController setFilterPredicate:[NSPredicate predicateWithValue:YES]];
-	} else {
-		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"(fixation contains[c] %@) OR (group contains[c] %@) OR (manufacturer contains[c] %@) OR (modularity contains[c] %@) OR (name contains[c] %@) OR (placement contains[c] %@) OR (surgery contains[c] %@) OR (type contains[c] %@)", filter, filter, filter, filter, filter, filter, filter, filter];
-		[_familiesArrayController setFilterPredicate:predicate];
-	}
-	
-//	[_familiesArrayController rearrangeObjects];
-	[_familiesTableView noteNumberOfRowsChanged];
-//	[_familiesTableView reloadData];
-	[self setFamily:_familiesTableView];
-}
-
--(BOOL)setFilter:(NSString*)string {
-	[_searchField setStringValue:string];
-	[self searchFilterChanged:self];
-	return [[_familiesArrayController arrangedObjects] count] > 0;
-}
-
--(IBAction)searchFilterChanged:(id)sender {
-	[self filterTemplates];
-}
 
 #pragma mark PDF preview
 
@@ -190,9 +108,14 @@
 	NSString* pdfPath = [self pdfPathForFamilyAtIndex:[_familiesTableView selectedRow]];
 	PDFDocument* doc = pdfPath? [[PDFDocument alloc] initWithURL:[NSURL fileURLWithPath:pdfPath]] : NULL;
 	
-	[_pdfView setAutoScales:NO];
+//	[_pdfView setAutoScales:NO];
 	[_pdfView setDocument:doc];
-	[_pdfView setAutoScales:YES];
+//	[_pdfView setAutoScales:YES];
+	
+	if (!doc && _viewDirection == ArthroplastyTemplateLateralDirection) {
+		[_viewDirectionControl setSelectedSegment:ArthroplastyTemplateAnteriorPosteriorDirection];
+		[self setViewDirection:_viewDirectionControl];
+	}
 }
 
 -(NSString*)idForTemplate:(ArthroplastyTemplate*)templat {
@@ -295,11 +218,7 @@
 #pragma mark Template View direction
 
 - (IBAction)setViewDirection:(id)sender; {
-	if([sender selectedSegment] == 0)
-		_viewDirection = ArthroplastyTemplateAnteriorPosteriorDirection;
-	else _viewDirection = ArthroplastyTemplateLateralDirection;
-	
-//	[self loadTemplates]; // TODO: gray out unavailable templates
+	_viewDirection = ArthroplastyTemplateViewDirection([sender selectedSegment]);
 	[self setFamily:_familiesTableView];
 }
 
@@ -390,6 +309,7 @@
 	}
 	
 	[newLayer setROIMode:ROI_selected]; // in order to make the roiMove method possible
+	[newLayer rotate:[templat rotation]/pi*180 :layerCenter];
 	[newLayer roiMove:p-layerCenter :YES];
 	
 	// set the textual data
@@ -439,37 +359,6 @@
 	float height = rect.size.height + 2 * pixels;
 	
 	return NSMakeRect(x, y, width, height);
-}
-
-#pragma mark ROI
-
-#pragma mark Keyboard
-//
-//- (void)keyDown:(NSEvent*)theEvent;
-//{
-//	if([theEvent modifierFlags] & NSAlternateKeyMask)
-//		flipTemplatesHorizontally = YES;
-//}
-//
-//- (void)keyUp:(NSEvent*)theEvent;
-//{
-//	flipTemplatesHorizontally = NO;
-//}
-
--(void)keyDown:(NSEvent*)event {
-	if ([[event characters] isEqualToString:@"+"]) {
-		[_sizes selectItemAtIndex:([_sizes indexOfSelectedItem]+1)%[_sizes numberOfItems]];
-		[_sizes setNeedsDisplay:YES];
-		[self setFamily:_sizes];
-	} else
-		if ([[event characters] isEqualToString:@"-"]) {
-			int index = [_sizes indexOfSelectedItem]-1;
-			if (index < 0) index = [_sizes numberOfItems]-1;
-			[_sizes selectItemAtIndex:index];
-			[_sizes setNeedsDisplay:YES];
-			[self setFamily:_sizes];
-		} else
-			[super keyDown:event];
 }
 
 #pragma mark NSTableDataSource

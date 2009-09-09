@@ -8,7 +8,7 @@
 
 #import "SelectablePDFView.h"
 #import <Nitrogen/Nitrogen.h>
-#import "ArthroplastyTemplatingWindowController.h"
+#import "ArthroplastyTemplatingWindowController+Templates.h"
 #include <algorithm>
 #include <cmath>
 
@@ -90,7 +90,7 @@ NSString* SelectablePDFViewDocumentDidChangeNotification = @"SelectablePDFViewDo
 -(void)mouseUp:(NSEvent*)event {
 	if (_selectionInitiated)
 		if (_selected) {
-			// [self enhanceSelection];
+			[self enhanceSelection];
 			[_controller setSelectionForCurrentTemplate:_selectedRect];
 			[self setNeedsDisplay:YES];
 		} else [_controller setSelectionForCurrentTemplate:NSMakeRect(0,0,1,1)];

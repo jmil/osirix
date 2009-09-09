@@ -13,6 +13,7 @@
 }
 
 +(NSArray*)bundledTemplates;
++(NSArray*)templatesAtPath:(NSString*)path usingClass:(Class)classs;
 -(id)initFromFileAtPath:(NSString*)path;
 
 @end

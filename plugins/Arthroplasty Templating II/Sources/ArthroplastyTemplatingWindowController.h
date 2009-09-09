@@ -24,6 +24,7 @@
 	IBOutlet NSPopUpButton* _sizes;
 	IBOutlet NSButton* _shouldTransformColor;
 	IBOutlet NSColorWell* _transformColor;
+	IBOutlet NSSegmentedControl* _viewDirectionControl;
 	IBOutlet NSSearchField* _searchField;
 	ArthroplastyTemplateViewDirection _viewDirection;
 	BOOL _flipTemplatesHorizontally;
@@ -38,18 +39,11 @@
 @property(readonly) ArthroplastyTemplatingPlugin* plugin;
 
 -(id)initWithPlugin:(ArthroplastyTemplatingPlugin*)plugin;
--(void)loadTemplates;
--(ArthroplastyTemplate*)templateAtPath:(NSString*)path;
--(ArthroplastyTemplate*)currentTemplate;
--(ArthroplastyTemplateFamily*)familyAtIndex:(int)index;
--(ArthroplastyTemplateFamily*)selectedFamily;
+
 -(NSString*)pdfPathForFamilyAtIndex:(int)index;
 -(ATImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat;
--(IBAction)searchFilterChanged:(id)sender;
--(BOOL)setFilter:(NSString*)string;
 
 -(void)setFamily:(id)sender;
-
 -(IBAction)setViewDirection:(id)sender;
 -(IBAction)flipLeftRight:(id)sender;
 

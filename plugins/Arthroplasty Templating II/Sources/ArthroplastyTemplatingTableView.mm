@@ -5,6 +5,7 @@
 //
 
 #import "ArthroplastyTemplatingTableView.h"
+#import "ArthroplastyTemplatingWindowController+Templates.h"
 #import <Nitrogen/Nitrogen.h>
 
 @implementation ArthroplastyTemplatingTableView
