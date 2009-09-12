@@ -19,7 +19,6 @@
 - Much better support for DICOM Encapsulated PDF
 
 * - Add JPEG 2000 plugin <- zip file and index file for web site
-- DB sharing? ROIs sharing?
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
@@ -38,6 +37,12 @@
 
 When establishing a hanging protocol for MR and using two displays (8 column, 1 rows) and there is an odd number of series (say 7), OsiriX puts 6 series on the right display and 1 series on the left.  It does the same for 5 series (4 on right and 1 on left).  It doesn't seem to handle odd numbers of series well.
 
+in my opinion, the "Propagate" button could be enhanced with some  
+checkboxes for "WL/WW", "Zoom", "Move", so the user can control which  
+combination of settings is propagated between the viewers.
+I frequently would like to propagate zoom and image position, but  
+*not* the WL/W (especially when analyzing CT series, which are viewed  
+in different window settings).
 
 QA
 - BugZilla (sourceforge?)
