@@ -109,7 +109,7 @@
 	int x, y;
 	// change origin.x
 	for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
-		for (y = box.origin.y; y < box.origin.y+box.size.width; ++y)
+		for (y = box.origin.y; y < box.origin.y+box.size.height; ++y)
 			if (![[bitmap colorAtX:x y:y] isEqualToColor:color])
 				goto end_origin_x;
 end_origin_x:
@@ -119,7 +119,7 @@ end_origin_x:
 	}
 	
 	// change origin.y
-	for (y = box.origin.y; y < box.origin.y+box.size.width; ++y)
+	for (y = box.origin.y; y < box.origin.y+box.size.height; ++y)
 		for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
 			if (![[bitmap colorAtX:x y:imageSize.height-y-1] isEqualToColor:color])
 				goto end_origin_y;
@@ -131,7 +131,7 @@ end_origin_y:
 	
 	// change size.width
 	for (x = box.origin.x+box.size.width-1; x >= box.origin.x; --x)
-		for (y = box.origin.y; y < box.origin.y+box.size.width; ++y)
+		for (y = box.origin.y; y < box.origin.y+box.size.height; ++y)
 			if (![[bitmap colorAtX:x y:y] isEqualToColor:color])
 				goto end_size_x;
 end_size_x:

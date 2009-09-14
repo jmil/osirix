@@ -31,11 +31,9 @@
 	if (!c1components[numberOfComponents-1] || !c2components[numberOfComponents-1])
 		return YES;
 	
-	for (NSInteger i = 0; i < numberOfComponents-1; ++i) {
-		NSLog(@"component %d: %f, %f", i, c1components[i], c2components[i]);
+	for (NSInteger i = 0; i < numberOfComponents-1; ++i)
 		if (c1components[i] != c2components[i])
 			return NO;
-	}
 	
 	return YES;
 }
