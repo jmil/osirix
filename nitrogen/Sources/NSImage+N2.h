@@ -27,7 +27,7 @@
 
 @end
 
-@interface ATImage : NSImage {
+@interface N2Image : NSImage {
 	NSRect _portion;
 	NSSize _inchSize;
 }
@@ -37,7 +37,7 @@
 
 -(id)initWithSize:(NSSize)size inches:(NSSize)inches;
 -(id)initWithSize:(NSSize)size inches:(NSSize)inches portion:(NSRect)portion;
--(ATImage*)crop:(NSRect)rect;
+-(N2Image*)crop:(NSRect)rect;
 -(NSPoint)convertPointFromPageInches:(NSPoint)p;
 -(NSSize)originalInchSize;
 -(float)resolution;

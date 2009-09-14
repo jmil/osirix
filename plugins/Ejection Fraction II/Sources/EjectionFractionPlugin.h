@@ -6,7 +6,7 @@
 //  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
-#import <OsiriXHeaders/PluginFilter.h>
+#import <OsiriX.Headers/PluginFilter.h>
 
 @interface EjectionFractionPlugin : PluginFilter {
 }

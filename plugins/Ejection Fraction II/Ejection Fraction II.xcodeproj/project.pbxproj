@@ -19,6 +19,7 @@
 		59E8B2A51046B21A00B83E7D /* PreviewMonoplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2A11046B21A00B83E7D /* PreviewMonoplane.png */; };
 		59E8B2A61046B21A00B83E7D /* PreviewSimpson.png in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2A21046B21A00B83E7D /* PreviewSimpson.png */; };
 		59E8BF9C1046D90400B83E7D /* OsiriX.Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */; };
+		59F1A4F2104BA7BA009E3215 /* Nitrogen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F1A4F1104BA7BA009E3215 /* Nitrogen.framework */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,7 +39,8 @@
 		59E8B2A01046B21A00B83E7D /* PreviewBiplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewBiplane.png; path = Resources/PreviewBiplane.png; sourceTree = "<group>"; };
 		59E8B2A11046B21A00B83E7D /* PreviewMonoplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewMonoplane.png; path = Resources/PreviewMonoplane.png; sourceTree = "<group>"; };
 		59E8B2A21046B21A00B83E7D /* PreviewSimpson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PreviewSimpson.png; path = Resources/PreviewSimpson.png; sourceTree = "<group>"; };
-		59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.Headers.framework; path = ../../osirix/build/Development/OsiriX.Headers.framework; sourceTree = SOURCE_ROOT; };
+		59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.Headers.framework; path = ../../osirix/build/Development/OsiriX.Headers.framework; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
+		59F1A4F1104BA7BA009E3215 /* Nitrogen.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nitrogen.framework; path = ../../nitrogen/build/Release/Nitrogen.framework; sourceTree = SOURCE_ROOT; };
 		AB5D36050680E57E00F4007A /* Ejection Fraction.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ejection Fraction.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -49,6 +51,7 @@
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				59E8BF9C1046D90400B83E7D /* OsiriX.Headers.framework in Frameworks */,
+				59F1A4F2104BA7BA009E3215 /* Nitrogen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +106,7 @@
 		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59F1A4F1104BA7BA009E3215 /* Nitrogen.framework */,
 				59E8BF9B1046D90400B83E7D /* OsiriX.Headers.framework */,
 			);
 			name = "Other Frameworks";
@@ -249,6 +253,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/build/Development\"";
@@ -294,9 +299,11 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../osirix/build/Development\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;

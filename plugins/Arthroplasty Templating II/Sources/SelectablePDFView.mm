@@ -80,9 +80,9 @@ NSString* SelectablePDFViewDocumentDidChangeNotification = @"SelectablePDFViewDo
 	
 	sel = NSMakeRect(sel.origin/size, sel.size/size);
 
- 	const static CGFloat margin = 0.01; // %
-	sel.origin -= margin;
-	sel.size += margin*2;
+// 	const static CGFloat margin = 0.01; // %
+//	sel.origin -= margin;
+//	sel.size += margin*2;
 	
 	_selectedRect = sel;
 }

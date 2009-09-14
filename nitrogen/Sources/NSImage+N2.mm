@@ -14,7 +14,7 @@
 //#include <complex>
 #import <Nitrogen/N2Operators.h>
 
-@implementation ATImage
+@implementation N2Image
 @synthesize inchSize = _inchSize, portion = _portion;
 
 -(id)initWithContentsOfFile:(NSString*)path {
@@ -52,14 +52,14 @@
 	[super setSize:size];
 }
 
--(ATImage*)crop:(NSRect)cropRect {
+-(N2Image*)crop:(NSRect)cropRect {
 	NSSize size = [self size];
 	
 	NSRect portion;
 	portion.size = _portion.size*(cropRect.size/size);// NSMakeSize(_portion.size.width*(cropRect.size.width/size.width), _portion.size.height*(cropRect.size.height/size.height));
 	portion.origin = _portion.origin+_portion.size*(cropRect.origin/size);//, _portion.origin.y+_portion.size.height*(cropRect.origin.y/size.height));
 	
-	ATImage* croppedImage = [[ATImage alloc] initWithSize:cropRect.size inches:NSMakeSize(_inchSize.width/size.width*cropRect.size.width, _inchSize.height/size.height*cropRect.size.height) portion:portion];
+	N2Image* croppedImage = [[N2Image alloc] initWithSize:cropRect.size inches:NSMakeSize(_inchSize.width/size.width*cropRect.size.width, _inchSize.height/size.height*cropRect.size.height) portion:portion];
 	
 	[croppedImage lockFocus];
 	[self compositeToPoint:NSZeroPoint fromRect:cropRect operation:NSCompositeSourceOver fraction:0];
