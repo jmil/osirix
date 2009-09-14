@@ -1,0 +1,16 @@
+//
+//  NSColor+N2.h
+//  Nitrogen
+//
+//  Created by Alessandro Volz on 14.09.09.
+//  Copyright 2009 HUG. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+
+@interface NSColor (N2)
+
+-(BOOL)isEqualToColor:(NSColor*)color;
+
+@end

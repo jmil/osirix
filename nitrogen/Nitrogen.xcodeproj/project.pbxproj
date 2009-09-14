@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 598E50301043CB90005BCDC7 /* N2ButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E50311043CB90005BCDC7 /* N2ButtonCell.mm */; };
-		59A63306104285DD003F4069 /* Nitrogen.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A63305104285DD003F4069 /* Nitrogen.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333610428715003F4069 /* N2StepView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330C10428715003F4069 /* N2StepView.mm */; };
 		59A6333710428715003F4069 /* N2StepView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6330D10428715003F4069 /* N2StepView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333810428715003F4069 /* N2Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330E10428715003F4069 /* N2Window.mm */; };
@@ -56,6 +55,8 @@
 		59A63F491042DC22003F4069 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A63F481042DC22003F4069 /* Accelerate.framework */; };
 		59A641BC1042E108003F4069 /* N2Panel.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A641BA1042E108003F4069 /* N2Panel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A641BD1042E108003F4069 /* N2Panel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A641BB1042E108003F4069 /* N2Panel.mm */; };
+		59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -67,7 +68,6 @@
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		598E50301043CB90005BCDC7 /* N2ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ButtonCell.h; sourceTree = "<group>"; };
 		598E50311043CB90005BCDC7 /* N2ButtonCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ButtonCell.mm; sourceTree = "<group>"; };
-		59A63305104285DD003F4069 /* Nitrogen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Nitrogen.h; path = Sources/Nitrogen.h; sourceTree = "<group>"; };
 		59A6330C10428715003F4069 /* N2StepView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepView.mm; sourceTree = "<group>"; };
 		59A6330D10428715003F4069 /* N2StepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2StepView.h; sourceTree = "<group>"; };
 		59A6330E10428715003F4069 /* N2Window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Window.mm; sourceTree = "<group>"; };
@@ -114,6 +114,8 @@
 		59A63F481042DC22003F4069 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		59A641BA1042E108003F4069 /* N2Panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Panel.h; sourceTree = "<group>"; };
 		59A641BB1042E108003F4069 /* N2Panel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Panel.mm; sourceTree = "<group>"; };
+		59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+N2.h"; sourceTree = "<group>"; };
+		59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSColor+N2.mm"; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Nitrogen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nitrogen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -143,7 +145,6 @@
 		0867D691FE84028FC02AAC07 /* Nitrogen */ = {
 			isa = PBXGroup;
 			children = (
-				59A63305104285DD003F4069 /* Nitrogen.h */,
 				59A632821042791E003F4069 /* Sources */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
@@ -273,6 +274,8 @@
 				59A63F3F1042DB51003F4069 /* NSImage+N2.mm */,
 				59A6332D10428715003F4069 /* NSData+N2.h */,
 				59A6332C10428715003F4069 /* NSData+N2.mm */,
+				59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */,
+				59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */,
 				59A6332F10428715003F4069 /* NSButton+N2.h */,
 				59A6332E10428715003F4069 /* NSButton+N2.mm */,
 				59A6333110428715003F4069 /* NSBitmapImageRep+N2.h */,
@@ -290,7 +293,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59A63306104285DD003F4069 /* Nitrogen.h in Headers */,
 				59A6333710428715003F4069 /* N2StepView.h in Headers */,
 				59A6333B10428715003F4069 /* N2Step.h in Headers */,
 				59A6333C10428715003F4069 /* N2LayoutManager.h in Headers */,
@@ -315,6 +317,7 @@
 				59A63F401042DB51003F4069 /* NSImage+N2.h in Headers */,
 				59A641BC1042E108003F4069 /* N2Panel.h in Headers */,
 				598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */,
+				59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +332,7 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
+				59E6DDB6105E4259002C8245 /* Copy headers and create Nitrogen.h */,
 			);
 			buildRules = (
 			);
@@ -369,6 +373,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		59E6DDB6105E4259002C8245 /* Copy headers and create Nitrogen.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy headers and create Nitrogen.h";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/perl;
+			shellScript = "#!/usr/bin/perl\n\nuse strict;\nuse File::Copy;\nuse File::Basename;\nmy $root = \"$ENV{PROJECT_DIR}/Sources\";\nmy $destination = \"$ENV{TARGET_BUILD_DIR}/$ENV{PUBLIC_HEADERS_FOLDER_PATH}\";\n\nmkdir $destination unless -d $destination;\nopen Nitrogen_h, \">\", \"$destination/Nitrogen.h\" or die $!;\n\nprint Nitrogen_h \"#ifndef __Nitrogen\\n#define __Nitrogen\\n\\n\";\n\nopendir(DIR, $root);\nmy @files = readdir(DIR);\nforeach (@files) {\n\tmy $filename = $_;\n\tnext unless -f \"$root/$filename\" && $filename =~ /\\.h$/s;\n\tcopy(\"$root/$filename\", \"$destination/\".(basename $filename)) or die \"Copy failed: $!\";\n\tprint Nitrogen_h \"#include <Nitrogen/$filename>\\n\";\n}\n\nprint Nitrogen_h \"\\n#endif\\n\";\nclose Nitrogen_h;\n\nexit 0;";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8DC2EF540486A6940098B216 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -397,6 +418,7 @@
 				59A63F411042DB51003F4069 /* NSImage+N2.mm in Sources */,
 				59A641BD1042E108003F4069 /* N2Panel.mm in Sources */,
 				598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */,
+				59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
