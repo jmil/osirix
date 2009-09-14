@@ -151,8 +151,8 @@
 	[self setFamily:_familiesTableView];
 }
 
--(ATImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size color:(NSColor*)color {
-	ATImage* image = [[ATImage alloc] initWithContentsOfFile:[templat pdfPathForDirection:_viewDirection]];
+-(N2Image*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size color:(NSColor*)color {
+	N2Image* image = [[N2Image alloc] initWithContentsOfFile:[templat pdfPathForDirection:_viewDirection]];
 	NSSize imageSize = [image size];
 	
 	// size.width OR size.height can be qual to zero, in which case the zero value is set corresponding to the available value
@@ -167,13 +167,13 @@
 	// extract selected part
 	NSRect sel; if ([self selectionForTemplate:templat into:&sel]) {
 		sel = NSMakeRect(std::floor(sel.origin.x*size.width), std::floor(sel.origin.y*size.height), std::ceil(sel.size.width*size.width), std::ceil(sel.size.height*size.height));
-		ATImage* temp = [image crop:sel];
+		N2Image* temp = [image crop:sel];
 		[image release];
 		image = [temp retain];
 	}
 	
 	// remove whitespace
-	ATImage* temp = [image crop:[image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0]]];
+	N2Image* temp = [image crop:[image boundingBoxSkippingColor:[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0]]];
 	[image release];
 	image = temp;
 	
@@ -191,7 +191,7 @@
 			[bitmap setColor:[color colorWithAlphaComponent:[c alphaComponent]] atX:x y:y];
 		}
 
-	temp = [[[ATImage alloc] initWithSize:size inches:[image inchSize] portion:[image portion]] autorelease];
+	temp = [[[N2Image alloc] initWithSize:size inches:[image inchSize] portion:[image portion]] autorelease];
 	[temp addRepresentation:bitmap];
 	[bitmap release];
 	
@@ -200,18 +200,18 @@
 	return image;
 }
 
--(ATImage*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size {
+-(N2Image*)templateImage:(ArthroplastyTemplate*)templat entirePageSizePixels:(NSSize)size {
 	return [self templateImage:templat entirePageSizePixels:size color:[_shouldTransformColor state]? [_transformColor color] : NULL];
 }
 
--(ATImage*)templateImage:(ArthroplastyTemplate*)templat {
+-(N2Image*)templateImage:(ArthroplastyTemplate*)templat {
 	if ([_familiesTableView selectedRow] == -1) return NULL;
 	PDFPage* page = [_pdfView currentPage];
 	NSRect pageBox = [_pdfView convertRect:[page boundsForBox:kPDFDisplayBoxMediaBox] fromPage:page];
 	return [self templateImage:templat entirePageSizePixels:pageBox.size];
 }
 
--(ATImage*)dragImageForTemplate:(ArthroplastyTemplate*)templat {
+-(N2Image*)dragImageForTemplate:(ArthroplastyTemplate*)templat {
 	return [self templateImage:templat];
 }
 
@@ -248,7 +248,7 @@
 	NSPasteboard* pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
 	[self addTemplate:templat toPasteboard:pboard];
 	
-	ATImage* image = [self dragImageForTemplate:templat];
+	N2Image* image = [self dragImageForTemplate:templat];
 	NSSize size = [image size];
 	
 	NSPoint click = [view convertPoint:[event locationInWindow] fromView:NULL];
@@ -265,7 +265,7 @@
 }
 
 -(ROI*)createROIFromTemplate:(ArthroplastyTemplate*)templat inViewer:(ViewerController*)destination centeredAt:(NSPoint)p {
-	ATImage* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)]; // TODO: N -> adapted size
+	N2Image* image = [self templateImage:templat entirePageSizePixels:NSMakeSize(0,1800)]; // TODO: N -> adapted size
 	
 	CGFloat magnification = [[_plugin windowControllerForViewer:destination] magnification];
 	if (!magnification) magnification = 1;

@@ -70,19 +70,19 @@ NSString* SelectablePDFViewDocumentDidChangeNotification = @"SelectablePDFViewDo
 }
 
 -(void)enhanceSelection {
-	ATImage* image = [[ATImage alloc] initWithContentsOfFile:[[[self document] documentURL] path]];
+	N2Image* image = [[N2Image alloc] initWithContentsOfFile:[[[self document] documentURL] path]];
 	
 	NSSize size = [image size];
 	NSRect sel = _selectedRect;
 	sel = NSMakeRect(std::floor(sel.origin.x*size.width), std::floor(sel.origin.y*size.height), std::ceil(sel.size.width*size.width), std::ceil(sel.size.height*size.height));
 	
-	sel = [image boundingBoxSkippingColor:[NSColor whiteColor] inRect:sel];
+	sel = [image boundingBoxSkippingColor:[[NSColor whiteColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace] inRect:sel];
 	
 	sel = NSMakeRect(sel.origin/size, sel.size/size);
 
-// 	const static CGFloat margin = 0.01; // %
-//	sel.origin -= margin;
-//	sel.size += margin*2;
+ 	const static CGFloat margin = 0.01; // %
+	sel.origin -= margin;
+	sel.size += margin*2;
 	
 	_selectedRect = sel;
 }
