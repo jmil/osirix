@@ -10,6 +10,7 @@
 - OsiriX light
 
 - Bone removing 4D
+- Check burning CD - remove SN64
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
