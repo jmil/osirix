@@ -29,7 +29,10 @@
 	NSRect rightFrame = [right frame];
 	
 	leftFrame.size.height = splitFrame.size.height;
-	leftFrame.size.width = std::max(availableWidth - rightFrame.size.width, 100.f);
+	if( availableWidth - rightFrame.size.width > 100.f)
+		leftFrame.size.width = availableWidth - rightFrame.size.width;
+	else
+		leftFrame.size.width = 100.f;
 	[left setFrame:leftFrame];	
 	
 	rightFrame.size.height = splitFrame.size.height;

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -37,7 +37,6 @@
 		59D951F00FCE82DB00509EEC /* ArthroplastyTemplating.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 59D951EF0FCE82DB00509EEC /* ArthroplastyTemplating.tiff */; };
 		59D955470FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59D955460FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib */; };
 		59F1A87E104BAD47009E3215 /* OsiriX.Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F1A87D104BAD47009E3215 /* OsiriX.Headers.framework */; };
-		59F51DE510550BD6009B6D89 /* Zimmer Templates in Resources */ = {isa = PBXBuildFile; fileRef = 59F517FF10550BD5009B6D89 /* Zimmer Templates */; };
 		59F523FD1055235F009B6D89 /* MEDACTA Templates in Resources */ = {isa = PBXBuildFile; fileRef = 59F523CD1055235F009B6D89 /* MEDACTA Templates */; };
 		59F5247410554EAA009B6D89 /* MEDACTATemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F5247210554EAA009B6D89 /* MEDACTATemplate.h */; };
 		59F5247510554EAA009B6D89 /* MEDACTATemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59F5247310554EAA009B6D89 /* MEDACTATemplate.mm */; };
@@ -313,7 +312,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CE6A9A9408AC841300D0C1EE /* Build configuration list for PBXProject "Arthroplasty Templating II" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* XRayTemplatesPlugin */;
 			projectDirPath = "";
@@ -334,7 +333,6 @@
 				59D955470FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib in Resources */,
 				592C9FD00FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist in Resources */,
 				59A642381042E5DB003F4069 /* ArthroplastyTemplatingSteps.xib in Resources */,
-				59F51DE510550BD6009B6D89 /* Zimmer Templates in Resources */,
 				59F523FD1055235F009B6D89 /* MEDACTA Templates in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,7 +414,6 @@
 		CE6A9A9108AC841300D0C1EE /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				ENABLE_OPENMP_SUPPORT = YES;
@@ -471,7 +468,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = XRayTemplatesPlugin;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = macosx10.5;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -482,164 +479,15 @@
 				ZERO_LINK = NO;
 			};
 			name = Development;
-		};
-		CE6A9A9208AC841300D0C1EE /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
-				COPY_PHASE_STRIP = YES;
-				ENABLE_OPENMP_SUPPORT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_6)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_7)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_8)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_9)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_6 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_8 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_9 = "\"$(SRCROOT)/../../osirix/build/Development\"";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Sources/Arthroplasty_Templating_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
-				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-undefined",
-					dynamic_lookup,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = XRayTemplatesPlugin;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = osirixplugin;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		CE6A9A9308AC841300D0C1EE /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_3)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_4)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_5)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_6)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_7)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_8)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_9)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_5 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_6 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_8 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_9 = "\"$(SRCROOT)/../../osirix/build/Development\"";
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Sources/XRayTemplatesPlugin_Prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Resources/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
-				LIBRARY_STYLE = Bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-undefined",
-					dynamic_lookup,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = XRayTemplatesPlugin;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
 		};
 		CE6A9A9508AC841300D0C1EE /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = macosx10.5;
 			};
 			name = Development;
-		};
-		CE6A9A9608AC841300D0C1EE /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Deployment;
-		};
-		CE6A9A9708AC841300D0C1EE /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Default;
 		};
 /* End XCBuildConfiguration section */
 
@@ -648,8 +496,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9A9108AC841300D0C1EE /* Development */,
-				CE6A9A9208AC841300D0C1EE /* Deployment */,
-				CE6A9A9308AC841300D0C1EE /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
@@ -658,8 +504,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE6A9A9508AC841300D0C1EE /* Development */,
-				CE6A9A9608AC841300D0C1EE /* Deployment */,
-				CE6A9A9708AC841300D0C1EE /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
