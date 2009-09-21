@@ -12,6 +12,10 @@
 @implementation NSColor (N2)
 
 -(BOOL)isEqualToColor:(NSColor*)color {
+	return [self isEqualToColor:color alphaThreshold:0];
+}
+
+-(BOOL)isEqualToColor:(NSColor*)color alphaThreshold:(CGFloat)alphaThreshold {
 	if (!color) return NO;
 	if (color == self) return YES;
 	
@@ -28,12 +32,14 @@
 	CGFloat c1components[numberOfComponents], c2components[numberOfComponents];
 	[c1 getComponents:c1components]; [c2 getComponents:c2components];
 	
-	if (!c1components[numberOfComponents-1] || !c2components[numberOfComponents-1])
+	if (c1components[numberOfComponents-1] <= alphaThreshold || c2components[numberOfComponents-1] <= alphaThreshold)
 		return YES;
 	
 	for (NSInteger i = 0; i < numberOfComponents-1; ++i)
-		if (c1components[i] != c2components[i])
+		if (c1components[i] != c2components[i]) {
+			NSLog(@"component %d not equal in [%@] and [%@]", i, [c1 description], [c2 description]);
 			return NO;
+		}
 	
 	return YES;
 }

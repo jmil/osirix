@@ -16,4 +16,6 @@
 +(NSString*)dateString:(NSTimeInterval)date;
 -(NSString*)stringByTrimmingStartAndEnd;
 
+-(NSString*)urlEncodedString;
+
 @end

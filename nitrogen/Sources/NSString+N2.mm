@@ -51,4 +51,32 @@
 	return [self substringWithRange:NSMakeRange(start, i-start+1)];
 }
 
+-(NSString*)urlEncodedString {
+	static const NSDictionary* chars = [[NSDictionary dictionaryWithObjectsAndKeys:
+											@"%3B", @";",
+											@"%2F", @"/",
+											@"%3F", @"?",
+											@"%3A", @":",
+											@"%40", @"@",
+											@"%26", @"&",
+											@"%3D", @"=",
+											@"%2B", @"+",
+											@"%24", @"$",
+											@"%2C", @",",
+											@"%5B", @"[",
+											@"%5D", @"]",
+											@"%23", @"#",
+											@"%21", @"!",
+											@"%27", @"'",
+											@"%28", @"(",
+											@"%29", @")",
+											@"%2A", @"*",
+										NULL] retain];
+	
+	NSMutableString* temp = [self mutableCopy];
+	for (NSString* k in chars)
+		[temp replaceOccurrencesOfString:k withString:[chars objectForKey:k] options:NSLiteralSearch range:NSMakeRange(0, [temp length])];
+	return [NSString stringWithString: temp];
+}
+
 @end
