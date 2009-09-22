@@ -57,6 +57,16 @@
 		59A641BD1042E108003F4069 /* N2Panel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A641BB1042E108003F4069 /* N2Panel.mm */; };
 		59CF7A3A1068CDEA00A4444F /* NSDictionary+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF7A381068CDEA00A4444F /* NSDictionary+N2.h */; };
 		59CF7A3B1068CDEA00A4444F /* NSDictionary+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59CF7A391068CDEA00A4444F /* NSDictionary+N2.mm */; };
+		59CF83821069301700A4444F /* N2Connection.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF837E1069301700A4444F /* N2Connection.h */; };
+		59CF83831069301700A4444F /* N2Connection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59CF837F1069301700A4444F /* N2Connection.mm */; };
+		59CF83841069301700A4444F /* N2ConnectionListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59CF83801069301700A4444F /* N2ConnectionListener.mm */; };
+		59CF83851069301700A4444F /* N2ConnectionListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF83811069301700A4444F /* N2ConnectionListener.h */; };
+		59CF83881069302D00A4444F /* N2XMLRPCConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF83861069302D00A4444F /* N2XMLRPCConnection.h */; };
+		59CF83891069302D00A4444F /* N2XMLRPCConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59CF83871069302D00A4444F /* N2XMLRPCConnection.mm */; };
+		59CF838D1069306800A4444F /* NSInvocation+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59CF838B1069306800A4444F /* NSInvocation+N2.mm */; };
+		59CF838E1069306800A4444F /* NSInvocation+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF838C1069306800A4444F /* NSInvocation+N2.h */; };
+		59CF83AB1069309F00A4444F /* ISO8601DateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF83A91069309F00A4444F /* ISO8601DateFormatter.h */; };
+		59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */; };
 		59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -118,6 +128,16 @@
 		59A641BB1042E108003F4069 /* N2Panel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Panel.mm; sourceTree = "<group>"; };
 		59CF7A381068CDEA00A4444F /* NSDictionary+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+N2.h"; sourceTree = "<group>"; };
 		59CF7A391068CDEA00A4444F /* NSDictionary+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+N2.mm"; sourceTree = "<group>"; };
+		59CF837E1069301700A4444F /* N2Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Connection.h; sourceTree = "<group>"; };
+		59CF837F1069301700A4444F /* N2Connection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Connection.mm; sourceTree = "<group>"; };
+		59CF83801069301700A4444F /* N2ConnectionListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ConnectionListener.mm; sourceTree = "<group>"; };
+		59CF83811069301700A4444F /* N2ConnectionListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ConnectionListener.h; sourceTree = "<group>"; };
+		59CF83861069302D00A4444F /* N2XMLRPCConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2XMLRPCConnection.h; sourceTree = "<group>"; };
+		59CF83871069302D00A4444F /* N2XMLRPCConnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2XMLRPCConnection.mm; sourceTree = "<group>"; };
+		59CF838B1069306800A4444F /* NSInvocation+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSInvocation+N2.mm"; sourceTree = "<group>"; };
+		59CF838C1069306800A4444F /* NSInvocation+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+N2.h"; sourceTree = "<group>"; };
+		59CF83A91069309F00A4444F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
 		59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+N2.h"; sourceTree = "<group>"; };
 		59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSColor+N2.mm"; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -222,10 +242,12 @@
 				59A6333510428715003F4069 /* N2DisclosureBox.mm */,
 				59A6333410428715003F4069 /* N2DisclosureButtonCell.h */,
 				59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */,
+				59CF837210692FFC00A4444F /* Connections */,
 				59A633621042877D003F4069 /* Layout */,
 				59A6336110428751003F4069 /* Steps */,
 				59A63363104287B4003F4069 /* Stuff */,
 				59A63364104287DE003F4069 /* Extras */,
+				59CF83961069307700A4444F /* 3rd Party */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -288,8 +310,32 @@
 				59A6333210428715003F4069 /* NS(Attributed)String+Geometrics.m */,
 				59CF7A381068CDEA00A4444F /* NSDictionary+N2.h */,
 				59CF7A391068CDEA00A4444F /* NSDictionary+N2.mm */,
+				59CF838C1069306800A4444F /* NSInvocation+N2.h */,
+				59CF838B1069306800A4444F /* NSInvocation+N2.mm */,
 			);
 			name = Extras;
+			sourceTree = "<group>";
+		};
+		59CF837210692FFC00A4444F /* Connections */ = {
+			isa = PBXGroup;
+			children = (
+				59CF837E1069301700A4444F /* N2Connection.h */,
+				59CF837F1069301700A4444F /* N2Connection.mm */,
+				59CF83811069301700A4444F /* N2ConnectionListener.h */,
+				59CF83801069301700A4444F /* N2ConnectionListener.mm */,
+				59CF83861069302D00A4444F /* N2XMLRPCConnection.h */,
+				59CF83871069302D00A4444F /* N2XMLRPCConnection.mm */,
+			);
+			name = Connections;
+			sourceTree = "<group>";
+		};
+		59CF83961069307700A4444F /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				59CF83A91069309F00A4444F /* ISO8601DateFormatter.h */,
+				59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */,
+			);
+			name = "3rd Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +371,11 @@
 				598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */,
 				59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */,
 				59CF7A3A1068CDEA00A4444F /* NSDictionary+N2.h in Headers */,
+				59CF83821069301700A4444F /* N2Connection.h in Headers */,
+				59CF83851069301700A4444F /* N2ConnectionListener.h in Headers */,
+				59CF83881069302D00A4444F /* N2XMLRPCConnection.h in Headers */,
+				59CF838E1069306800A4444F /* NSInvocation+N2.h in Headers */,
+				59CF83AB1069309F00A4444F /* ISO8601DateFormatter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +478,11 @@
 				598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */,
 				59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */,
 				59CF7A3B1068CDEA00A4444F /* NSDictionary+N2.mm in Sources */,
+				59CF83831069301700A4444F /* N2Connection.mm in Sources */,
+				59CF83841069301700A4444F /* N2ConnectionListener.mm in Sources */,
+				59CF83891069302D00A4444F /* N2XMLRPCConnection.mm in Sources */,
+				59CF838D1069306800A4444F /* NSInvocation+N2.mm in Sources */,
+				59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
