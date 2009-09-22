@@ -17,5 +17,7 @@
 -(NSString*)stringByTrimmingStartAndEnd;
 
 -(NSString*)urlEncodedString;
+-(NSString*)xmlEscapedString;
+-(NSString*)xmlUnescapedString;
 
 @end

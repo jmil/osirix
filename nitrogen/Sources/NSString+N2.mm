@@ -79,4 +79,30 @@
 	return [NSString stringWithString: temp];
 }
 
+-(NSString*)xmlEscapedString:(BOOL)unescape {
+	static const NSDictionary* chars = [[NSDictionary dictionaryWithObjectsAndKeys:
+										 @"&lt;", @"<",
+										 @"&gt;", @">",
+										 @"&amp;", @"&",
+										 @"&apos;", @"'",
+										 @"&quot;", @"\"",
+										 NULL] retain];
+	
+	NSMutableString* temp = [self mutableCopy];
+	for (NSString* k in chars)
+		if (!unescape)
+			[temp replaceOccurrencesOfString:k withString:[chars objectForKey:k] options:NSLiteralSearch range:NSMakeRange(0, [temp length])];
+		else [temp replaceOccurrencesOfString:[chars objectForKey:k] withString:k options:NSLiteralSearch range:NSMakeRange(0, [temp length])];
+	
+	return [NSString stringWithString:temp];
+}
+
+-(NSString*)xmlEscapedString {
+	return [self xmlEscapedString:NO];
+}
+
+-(NSString*)xmlUnescapedString {
+	return [self xmlEscapedString:YES];
+}
+
 @end
