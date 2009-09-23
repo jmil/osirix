@@ -8,10 +8,10 @@
 #import "ArthroplastyTemplatingStepsController.h"
 #import "ArthroplastyTemplatingWindowController+Templates.h"
 #import "ArthroplastyTemplatingPlugin.h"
-#import <OsiriX.Headers/SendController.h>
-#import <OsiriX.Headers/BrowserController.h>
+#import <OsiriX Headers/SendController.h>
+#import <OsiriX Headers/BrowserController.h>
 #import <Nitrogen/Nitrogen.h>
-#import <OsiriX.Headers/Notifications.h>
+#import <OsiriX Headers/Notifications.h>
 #import "ArthroplastyTemplateFamily.h"
 // #include "vImage/Convolution.h"
 #include <vector>

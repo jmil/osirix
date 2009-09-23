@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OsiriX.Headers/PluginFilter.h>
+#import <OsiriX Headers/PluginFilter.h>
 @class ArthroplastyTemplatingWindowController, ArthroplastyTemplatingStepsController;
 
 @interface ArthroplastyTemplatingPlugin : PluginFilter {

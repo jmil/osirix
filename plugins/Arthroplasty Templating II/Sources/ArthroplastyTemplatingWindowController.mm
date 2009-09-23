@@ -7,17 +7,17 @@
 
 #import "ArthroplastyTemplatingWindowController.h"
 #import "ArthroplastyTemplatingStepsController.h"
-#import <OsiriX.Headers/BrowserController.h>
-#import <OsiriX.Headers/ViewerController.h>
-#import <OsiriX.Headers/ROI.h>
-#import <OsiriX.Headers/DCMView.h>
+#import <OsiriX Headers/BrowserController.h>
+#import <OsiriX Headers/ViewerController.h>
+#import <OsiriX Headers/ROI.h>
+#import <OsiriX Headers/DCMView.h>
 #import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplateFamily.h"
 #import "ArthroplastyTemplatingPlugin.h"
 #include <sstream>
 #include <cmath>
 #include <algorithm>
-#include <OsiriX.Headers/Notifications.h>
+#include <OsiriX Headers/Notifications.h>
 #import "ArthroplastyTemplatingWindowController+Color.h"
 #import "ArthroplastyTemplatingWindowController+Templates.h"
 #import "ArthroplastyTemplatingWindowController+OsiriX.h"
