@@ -11,7 +11,8 @@
 
 @interface N2XMLRPCConnection : N2Connection {
 	id _delegate;
-	BOOL _executed;
+	BOOL _executed, _waitingToClose;
+	NSTimer* _timeout;
 }
 
 @property(retain) id delegate;

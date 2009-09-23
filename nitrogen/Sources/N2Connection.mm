@@ -155,10 +155,9 @@ const NSString* N2ConnectionStatusDidChangeNotification = @"N2ConnectionStatusDi
 	}
 	
 	if (/*_hasSpaceAvailable && */[_outputBuffer length]) {
-		_hasSpaceAvailable = NO;
-		
 		NSUInteger length = [_outputBuffer length];
 		if (length) {
+			_hasSpaceAvailable = NO;
 			NSUInteger sentLength = [_outputStream write:(uint8_t*)[_outputBuffer bytes] maxLength:length];
 			if (sentLength != -1) {
 				DLog(@"%@ Sent %d Bytes", self, sentLength);
