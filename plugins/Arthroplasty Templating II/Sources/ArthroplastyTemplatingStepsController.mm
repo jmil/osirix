@@ -509,9 +509,9 @@
 		selfKey = YES;
 	
 	[_viewerController setROIToolTag:tool];
-//	if (showTemplates)
+	if (showTemplates)
 		[self showTemplatesPanel:self];
-//	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
+	else if (!_userOpenedTemplates) [self hideTemplatesPanel];
 	
 	[(N2Panel*)[self window] setCanBecomeKeyWindow:selfKey];
 	if (selfKey) {

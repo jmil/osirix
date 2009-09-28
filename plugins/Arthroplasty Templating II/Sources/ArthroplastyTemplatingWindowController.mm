@@ -14,7 +14,6 @@
 #import <Nitrogen/Nitrogen.h>
 #import "ArthroplastyTemplateFamily.h"
 #import "ArthroplastyTemplatingPlugin.h"
-#include <sstream>
 #include <cmath>
 #include <algorithm>
 #include <OsiriX Headers/Notifications.h>
@@ -80,14 +79,14 @@
 		if ([_familiesTableView numberOfRows]) {
 			[_familiesArrayController setSelectionIndex:[_familiesTableView selectedRow]];
 			
-			float selectedSize; std::istringstream([[_sizes titleOfSelectedItem] UTF8String]) >> selectedSize;
+			float selectedSize = [[_sizes titleOfSelectedItem] floatValue];
 			[_sizes removeAllItems];
 			ArthroplastyTemplateFamily* family = [self selectedFamily];
 			float diffs[[[family templates] count]];
 			for (unsigned i = 0; i < [[family templates] count]; ++i) {
 				NSString* size = [(ArthroplastyTemplate*)[[family templates] objectAtIndex: i] size];
 				[_sizes addItemWithTitle:size];
-				float currentSize = 0; std::istringstream([size UTF8String]) >> selectedSize;
+				float currentSize = [size floatValue];
 				diffs[i] = fabsf(selectedSize-currentSize);
 			}
 			
@@ -130,8 +129,7 @@
 	if ([_userDefaults keyExists:key])
 		temp = [_userDefaults rect:key otherwise:NSZeroRect];
 	else if ([_presets valueForKey:key]) {
-		NSData* data = [_presets valueForKey:key];
-		[data getBytes:&temp length:sizeof(NSRect)];
+		temp = [ArthroplastyTemplatingUserDefaults NSRectFromData:[_presets valueForKey:key] otherwise:NSZeroRect];
 	} else return NO;
 	if (temp.size.width < 0) { temp.origin.x += temp.size.width; temp.size.width = -temp.size.width; }
 	if (temp.size.height < 0) { temp.origin.y += temp.size.height; temp.size.height = -temp.size.height; }
@@ -294,6 +292,10 @@
 	
 	NSPoint layerCenter = imageCenter/imageSize*layerSize;
 	[[newLayer points] addObject:[MyPoint point:layerCenter]]; // center
+
+	[newLayer setROIMode:ROI_selected]; // in order to make the roiMove method possible
+	[newLayer rotate:[templat rotation]/pi*180 :layerCenter];
+
 	[[newLayer points] addObject:[MyPoint point:layerCenter+NSMakePoint(1,0)]]; // rotation reference
 	
 	// stem magnets
@@ -308,8 +310,6 @@
 		[[newLayer points] addObject:[MyPoint point:point]];
 	}
 	
-	[newLayer setROIMode:ROI_selected]; // in order to make the roiMove method possible
-	[newLayer rotate:[templat rotation]/pi*180 :layerCenter];
 	[newLayer roiMove:p-layerCenter :YES];
 	
 	// set the textual data

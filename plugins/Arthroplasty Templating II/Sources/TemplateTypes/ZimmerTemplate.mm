@@ -7,7 +7,6 @@
 
 #import "ZimmerTemplate.h"
 #import <Nitrogen/Nitrogen.h>
-#include <sstream>
 
 @implementation ZimmerTemplate
 
@@ -97,11 +96,8 @@
 	
 	if (!xs || !ys || ![xs length] || ![ys length])
 		return NO;
-
-	std::istringstream([xs UTF8String]) >> point->x;
-	std::istringstream([ys UTF8String]) >> point->y;
-	*point = *point / 25.4; // 1in = 25.4mm, ORIGIN data in mm
-
+	
+	*point = NSMakePoint([xs floatValue], [ys floatValue])/25.4; // 1in = 25.4mm, ORIGIN data in mm
 	return YES;
 }
 
@@ -115,11 +111,8 @@
 		NSString* sx = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_X", prefix, i]];
 		NSString* sy = [_properties objectForKey:[NSString stringWithFormat:@"%@%d_Y", prefix, i]];
 		NSPoint point = {0,0};
-		if ([sx length] && [sy length]) {
-			std::istringstream([sx UTF8String]) >> point.x;
-			std::istringstream([sy UTF8String]) >> point.y;
-			point = point/25.4;
-		}
+		if ([sx length] && [sy length])
+			point = NSMakePoint([sx floatValue], [sy floatValue])/25.4;
 		[points addObject:[NSValue valueWithPoint:point+origin]];
 	}
 	

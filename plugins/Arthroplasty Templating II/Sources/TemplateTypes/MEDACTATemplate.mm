@@ -7,7 +7,6 @@
 //
 
 #import "MEDACTATemplate.h"
-#include <sstream>
 
 @implementation MEDACTATemplate
 
@@ -17,11 +16,7 @@
 
 -(CGFloat)rotation {
 	NSString* rotationString = [_properties objectForKey:@"AP_HEAD_ROTATION_RADS"];
-	if (!rotationString)
-		return 0;
-	CGFloat rotation;
-	std::istringstream([rotationString UTF8String]) >> rotation;
-	return rotation;
+	return rotationString? [rotationString floatValue] : 0;
 }
 
 @end

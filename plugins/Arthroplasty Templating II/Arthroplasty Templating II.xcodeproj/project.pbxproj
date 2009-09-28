@@ -29,6 +29,7 @@
 		59A642381042E5DB003F4069 /* ArthroplastyTemplatingSteps.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59A642371042E5DB003F4069 /* ArthroplastyTemplatingSteps.xib */; };
 		59B8B7470FFDEF2900891365 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B8B7460FFDEF2900891365 /* CoreFoundation.framework */; };
 		59CF9371106A160300A4444F /* OsiriX Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59CF9370106A160300A4444F /* OsiriX Headers.framework */; };
+		59CF9582106A2E3600A4444F /* Zimmer Templates in Resources */ = {isa = PBXBuildFile; fileRef = 59F517FF10550BD5009B6D89 /* Zimmer Templates */; };
 		59D94E840FCE807D00509EEC /* ArthroplastyTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E680FCE807D00509EEC /* ArthroplastyTemplate.h */; };
 		59D94E860FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6A0FCE807D00509EEC /* ArthroplastyTemplatingPlugin.h */; };
 		59D94E880FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 59D94E6C0FCE807D00509EEC /* Arthroplasty_Templating_Prefix.pch */; };
@@ -333,6 +334,7 @@
 				59D955470FCE8BE400509EEC /* ArthroplastyTemplatingWindow.xib in Resources */,
 				592C9FD00FDFBA3D00EB256B /* com.osirix.arthroplastytemplating.plist in Resources */,
 				59A642381042E5DB003F4069 /* ArthroplastyTemplatingSteps.xib in Resources */,
+				59CF9582106A2E3600A4444F /* Zimmer Templates in Resources */,
 				59F523FD1055235F009B6D89 /* MEDACTA Templates in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,12 +433,7 @@
 					"\"$(SRCROOT)/../../osirix/build/Development\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/iLifeControls/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Accelerate.framework/Versions/A/Frameworks\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../Nitrogen/build/Release\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../Nitrogen/build/Debug\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../nitrogen/build/Release\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../osirix/build/Development\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -458,8 +455,6 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/i386\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/iLifeControls/build/iLifeControls.build/Release/iLifeControls.build/Objects-normal/ppc\"";
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "";

@@ -89,13 +89,7 @@
 }
 
 -(NSRect)rect:(NSString*)key otherwise:(NSRect)otherwise {
-	NSData* value = [_dictionary valueForKey:key];
-	if (value) {
-		NSRect temp;
-		[value getBytes:&temp length:sizeof(NSRect)];
-		return temp;
-	}
-	return otherwise;
+	return [ArthroplastyTemplatingUserDefaults NSRectFromData:[_dictionary valueForKey:key] otherwise:otherwise];
 }
 
 -(void)setRect:(NSRect)value forKey:(NSString*)key {
@@ -105,5 +99,26 @@
 	[self save];
 }
 
++(NSRect)NSRectFromData:(NSData*)data otherwise:(NSRect)otherwise {
+	if (!data)
+		return otherwise;
+	
+	NSRect temp;
+	if ([data length] == sizeof(NSRect))
+		[data getBytes:&temp length:sizeof(NSRect)];
+	else if ([data length] == 16 && sizeof(NSRect) == 32) {
+		float* f = (float*)[data bytes];
+		double* d = (double*)&temp;
+		for (int i = 0; i < 4; ++i)
+			d[i] = f[i];
+	} else if ([data length] == 32 && sizeof(NSRect) == 16) {
+		double* d = (double*)[data bytes];
+		float* f = (float*)&temp;
+		for (int i = 0; i < 4; ++i)
+			f[i] = d[i];
+	} else [NSException raise:NSGenericException format:@"NSRect cannot be extracted from data of size %d", [data length]];
+	
+	return temp;
+}
 
 @end

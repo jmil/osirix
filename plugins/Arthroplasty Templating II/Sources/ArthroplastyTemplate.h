@@ -29,7 +29,6 @@ typedef enum {
 
 @end
 
-
 @interface ArthroplastyTemplate (Abstract)
 
 -(NSString*)pdfPathForDirection:(ArthroplastyTemplateViewDirection)direction;

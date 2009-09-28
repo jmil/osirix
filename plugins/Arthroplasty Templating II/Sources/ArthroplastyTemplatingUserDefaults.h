@@ -32,5 +32,6 @@
 -(void)setColor:(NSColor*)value forKey:(NSString*)key;
 -(NSRect)rect:(NSString*)key otherwise:(NSRect)otherwise;
 -(void)setRect:(NSRect)value forKey:(NSString*)key;
++(NSRect)NSRectFromData:(NSData*)data otherwise:(NSRect)otherwise;
 
 @end
