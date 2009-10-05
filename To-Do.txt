@@ -10,6 +10,7 @@
 - OsiriX light
 
 - Test JP2000 MARELLI STEPHANE
+- Icon multiple screens
 - Test extra print in DCM 2x3, color, interval 2-3
 I mostly use the 1Column, 2Rows format to print 2 images. Nearly every time one of the image is distorted, the other one misses the printed information in the top left corner.
 
