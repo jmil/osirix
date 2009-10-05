@@ -1,3 +1,5 @@
+- Better views position in MPR and Ortho-MPR for Portrait Mode screens
+
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
 - DICOM TLS
