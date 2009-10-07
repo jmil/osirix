@@ -24,7 +24,7 @@
 	ROI *_landmark1Axis, *_landmark2Axis, *_legInequality, *_originalLegInequality, *_originalFemurOpacityLayer, *_femurLayer, *_cupLayer, *_stemLayer, *_infoBox;
 	ROI *_femurLandmark, *_femurLandmarkAxis, *_femurLandmarkOther, *_femurLandmarkOriginal;
 	
-	CGFloat _legInequalityValue, _originalLegInequalityValue;
+	CGFloat _legInequalityValue, _originalLegInequalityValue, _lateralOffsetValue;
 	
 	// calibration
 	IBOutlet NSButton *_magnificationRadioCustom, *_magnificationRadioCalibrate;
@@ -44,10 +44,10 @@
 	ArthroplastyTemplate *_stemTemplate;
 	// placement
 	IBOutlet NSPopUpButton* _neckSizePopUpButton;
-	unsigned _stemNeckSizeIndex;
-
 	IBOutlet NSTextField* _verticalOffsetTextField;
 	IBOutlet NSTextField* _horizontalOffsetTextField;
+	unsigned _stemNeckSizeIndex;
+
 	IBOutlet NSTextField* _plannersNameTextField;
 	
 	NSPoint _planningOffset;

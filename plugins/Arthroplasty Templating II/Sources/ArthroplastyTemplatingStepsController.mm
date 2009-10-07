@@ -225,6 +225,11 @@
 	ROI *lm1 = _femurLandmarkOther? (_femurLandmarkOther==_landmark1?_landmark2:_landmark1) : _landmark1, *lm2 = _femurLandmarkOther? _femurLandmarkOther : _landmark2;
 	[self updateInequality:&_originalLegInequality from:lm1 to:lm2 name:@"Original leg inequality" positioning:.5 value:&_originalLegInequalityValue];
 	[self updateInequality:&_legInequality from:_femurLandmark to:_femurLandmarkOther name:@"Leg inequality" positioning:1 value:&_legInequalityValue];
+	if (_horizontalAxis && _femurLandmarkOriginal && _femurLandmarkAxis) {
+		NSVector horizontalDir = NSMakeVector([[[_horizontalAxis points] objectAtIndex:0] point], [[[_horizontalAxis points] objectAtIndex:1] point]);
+		NSLine horizontalAxis = NSMakeLine([[[_horizontalAxis points] objectAtIndex:0] point], horizontalDir);
+		_lateralOffsetValue = [_horizontalAxis Length:horizontalAxis*NSMakeLine([[[_femurLandmarkOriginal points] objectAtIndex:0] point], !horizontalDir) :horizontalAxis*NSMakeLine([[[_femurLandmarkAxis points] objectAtIndex:0] point], !horizontalDir)];
+	}
 	
 //	NSVector horizontalVector = NSMakeVector([[[_horizontalAxis points] objectAtIndex:0] point], [[[_horizontalAxis points] objectAtIndex:1] point]);
 	
@@ -666,7 +671,7 @@
 				bitmapData[base+0] = 0;
 				bitmapData[base+1] = 0;
 				bitmapData[base+2] = 0;
-				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 164 : 0;
+				bitmapData[base+3] = [[femur colorAtX:x y:y] alphaComponent]>0? 128 : 0;
 			}
 		
 		NSImage* image = [[NSImage alloc] init];
@@ -974,8 +979,16 @@
 			[str appendFormat:@"\tOriginal: %.2f cm\n", _originalLegInequalityValue];
 		if (_legInequality)
 			[str appendFormat:@"\tFinal: %.2f cm\n", _legInequalityValue];
-		if (_originalLegInequality && _legInequality)
-			[str appendFormat:@"\tChange: %.2f cm\n", -(_originalLegInequalityValue - _legInequalityValue)];
+		if (_originalLegInequality && _legInequality) {
+			CGFloat change = -(_originalLegInequalityValue - _legInequalityValue);
+			[str appendFormat:@"\tChange: %.2f cm\n", change];
+			[_verticalOffsetTextField setStringValue:[NSString stringWithFormat:@"Vertical offset: %.2f cm", change]];
+		}
+		
+		if (_horizontalAxis && _femurLandmarkOriginal && _femurLandmarkAxis) {
+			[str appendFormat:@"\tLateral offset: %.2f cm\n", _lateralOffsetValue];
+			[_horizontalOffsetTextField setStringValue:[NSString stringWithFormat:@"Lateral offset: %.2f cm", _lateralOffsetValue]];
+		}
 	}
 	
 	if (_cupLayer) {

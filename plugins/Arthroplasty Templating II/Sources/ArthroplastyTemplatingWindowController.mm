@@ -247,19 +247,18 @@
 	[self addTemplate:templat toPasteboard:pboard];
 	
 	N2Image* image = [self dragImageForTemplate:templat];
-	NSSize size = [image size];
 	
 	NSPoint click = [view convertPoint:[event locationInWindow] fromView:NULL];
-	NSPoint at = click-size/2;
 	
-	NSPoint origin;
-	if ([templat origin:&origin forDirection:_viewDirection]) { // origin in inches
+	NSSize size = [image size];
+	NSPoint o = NSMakePoint(size)/2;
+	if ([templat origin:&o forDirection:_viewDirection]) { // origin in inches
+		o = [image convertPointFromPageInches:o];
 		if (_flipTemplatesHorizontally)
-			origin.y = [image originalInchSize].width-origin.y;
-		at = click-[image convertPointFromPageInches:origin]-NSMakePoint(1,-3);
+			o.x = size.width-o.x;
 	}
-	
-	[view dragImage:image at:at offset:NSMakeSize(0,0) event:event pasteboard:pboard source:view slideBack:YES];
+
+	[view dragImage:image at:click-o-NSMakePoint(1,-3) offset:NSMakeSize(0,0) event:event pasteboard:pboard source:view slideBack:YES];
 }
 
 -(ROI*)createROIFromTemplate:(ArthroplastyTemplate*)templat inViewer:(ViewerController*)destination centeredAt:(NSPoint)p {
@@ -279,11 +278,12 @@
 	// find the center of the template
 	NSSize imageSize = [image size];
 	NSPoint imageCenter = NSMakePoint(imageSize/2);
-	NSPoint origin;
-	if ([templat origin:&origin forDirection:_viewDirection]) { // origin in inches
+	NSPoint o;
+	if ([templat origin:&o forDirection:_viewDirection]) { // origin in inches
+		o = [image convertPointFromPageInches:o];
 		if (_flipTemplatesHorizontally)
-			origin.x = [image originalInchSize].width-origin.x;
-		imageCenter = [image convertPointFromPageInches:origin];
+			o.x = imageSize.width-o.x;
+		imageCenter = o;
 		imageCenter.y = imageSize.height-imageCenter.y;
 	}
 	
@@ -302,9 +302,9 @@
 	NSArray* points = [templat rotationPointsForDirection:_viewDirection];
 	for (NSValue* value in points) {
 		NSPoint point = [value pointValue];
-		if (_flipTemplatesHorizontally)
-			point.x = [image originalInchSize].width-point.x;
 		point = [image convertPointFromPageInches:point];
+		if (_flipTemplatesHorizontally)
+			point.x = imageSize.width-point.x;
 		point.y = imageSize.height-point.y;
 		point = point/imageSize*layerSize;
 		[[newLayer points] addObject:[MyPoint point:point]];

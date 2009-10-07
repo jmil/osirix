@@ -2,21 +2,21 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9J61</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.46</string>
+		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="169"/>
+			<integer value="316"/>
 			<integer value="173"/>
+			<integer value="196"/>
+			<integer value="181"/>
+			<integer value="152"/>
 			<integer value="352"/>
 			<integer value="191"/>
 			<integer value="185"/>
-			<integer value="181"/>
-			<integer value="196"/>
-			<integer value="169"/>
-			<integer value="316"/>
-			<integer value="152"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -101,7 +101,7 @@
 					<object class="NSButton" id="579041570">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{16, 77}, {87, 18}}</string>
+						<string key="NSFrame">{{16, 76}, {87, 18}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="39195528">
@@ -128,7 +128,7 @@
 					<object class="NSButton" id="833992798">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{16, 64}, {103, 18}}</string>
+						<string key="NSFrame">{{16, 63}, {103, 18}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="1032633725">
@@ -150,7 +150,7 @@
 					<object class="NSTextField" id="608059128">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{110, 77}, {50, 16}}</string>
+						<string key="NSFrame">{{110, 76}, {50, 16}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="365342067">
@@ -172,7 +172,7 @@
 					<object class="NSTextField" id="744090685">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{90, 18}, {50, 16}}</string>
+						<string key="NSFrame">{{90, 21}, {50, 16}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="702982586">
@@ -188,7 +188,7 @@
 					<object class="NSTextField" id="453598795">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 42}, {180, 22}}</string>
+						<string key="NSFrame">{{0, 41}, {180, 22}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="647253656">
@@ -215,7 +215,7 @@
 					<object class="NSTextField" id="307673223">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 21}, {68, 11}}</string>
+						<string key="NSFrame">{{17, 24}, {68, 11}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="818937864">
@@ -231,21 +231,21 @@
 					<object class="NSTextField" id="1008961174">
 						<reference key="NSNextResponder" ref="399905757"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{145, 21}, {18, 11}}</string>
+						<string key="NSFrame">{{145, 24}, {18, 11}}</string>
 						<reference key="NSSuperview" ref="399905757"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1006973066">
 							<int key="NSCellFlags">68288064</int>
-							<int key="NSCellFlags2">71566336</int>
+							<int key="NSCellFlags2">4457472</int>
 							<string key="NSContents">cm</string>
 							<reference key="NSSupport" ref="22"/>
 							<reference key="NSControlView" ref="1008961174"/>
 							<reference key="NSBackgroundColor" ref="1003745507"/>
-							<reference key="NSTextColor" ref="363171521"/>
+							<reference key="NSTextColor" ref="851430497"/>
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{180, 96}</string>
+				<string key="NSFrameSize">{180, 95}</string>
 				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 				<string key="NSExtension">NSResponder</string>
@@ -328,7 +328,7 @@
 					<object class="NSButton" id="916870695">
 						<reference key="NSNextResponder" ref="481903687"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{124, -1}, {50, 17}}</string>
+						<string key="NSFrame">{{124, -2}, {50, 17}}</string>
 						<reference key="NSSuperview" ref="481903687"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="741925770">
@@ -341,9 +341,7 @@
 							<int key="NSButtonFlags2">45</int>
 							<reference key="NSAlternateImage" ref="258061476"/>
 							<string key="NSAlternateContents"/>
-							<object class="NSMutableString" key="NSKeyEquivalent">
-								<characters key="NS.bytes"/>
-							</object>
+							<string type="base64-UTF8" key="NSKeyEquivalent">DQ</string>
 							<int key="NSPeriodicDelay">200</int>
 							<int key="NSPeriodicInterval">25</int>
 						</object>
@@ -665,7 +663,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="240347664">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">272891904</int>
-							<string key="NSContents">Vertical offset:</string>
+							<string key="NSContents">Vertical offset: 0</string>
 							<reference key="NSSupport" ref="22"/>
 							<reference key="NSControlView" ref="363513017"/>
 							<reference key="NSBackgroundColor" ref="1003745507"/>
@@ -681,7 +679,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="58295911">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">272891904</int>
-							<string key="NSContents">Lateral offset:</string>
+							<string key="NSContents">Lateral offset: 0</string>
 							<reference key="NSSupport" ref="22"/>
 							<reference key="NSControlView" ref="76551682"/>
 							<reference key="NSBackgroundColor" ref="1003745507"/>
@@ -691,7 +689,7 @@
 					<object class="NSTextField" id="735601665">
 						<reference key="NSNextResponder" ref="438926599"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 52}, {49, 11}}</string>
+						<string key="NSFrame">{{17, 51}, {49, 11}}</string>
 						<reference key="NSSuperview" ref="438926599"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="831768138">
@@ -707,7 +705,7 @@
 					<object class="NSPopUpButton" id="479375728">
 						<reference key="NSNextResponder" ref="438926599"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{70, 50}, {91, 15}}</string>
+						<string key="NSFrame">{{70, 49}, {91, 15}}</string>
 						<reference key="NSSuperview" ref="438926599"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSPopUpButtonCell" key="NSCell" id="739810238">
@@ -812,7 +810,7 @@
 					<object class="NSTextField" id="483849495">
 						<reference key="NSNextResponder" ref="456400415"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 30}, {180, 22}}</string>
+						<string key="NSFrame">{{0, 31}, {180, 22}}</string>
 						<reference key="NSSuperview" ref="456400415"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="268187178">
@@ -872,7 +870,7 @@
 					<object class="NSTextField" id="607321983">
 						<reference key="NSNextResponder" ref="456400415"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 13}, {87, 22}}</string>
+						<string key="NSFrame">{{0, 14}, {87, 22}}</string>
 						<reference key="NSSuperview" ref="456400415"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="761552925">
@@ -888,7 +886,7 @@
 					<object class="NSTextField" id="908404031">
 						<reference key="NSNextResponder" ref="456400415"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{92, 21}, {68, 16}}</string>
+						<string key="NSFrame">{{92, 22}, {68, 16}}</string>
 						<reference key="NSSuperview" ref="456400415"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="848957891">
@@ -902,7 +900,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{180, 56}</string>
+				<string key="NSFrameSize">{180, 57}</string>
 				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 				<string key="NSExtension">NSResponder</string>
@@ -967,7 +965,7 @@
 					<bool key="NS.raise.dividebyzero">YES</bool>
 				</object>
 				<string key="NS.decimal">.</string>
-				<string key="NS.thousand">,</string>
+				<string type="base64-UTF8" key="NS.thousand">Jw</string>
 				<bool key="NS.hasthousands">NO</bool>
 				<bool key="NS.localized">YES</bool>
 				<bool key="NS.allowsfloats">YES</bool>
@@ -2191,49 +2189,49 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES" id="5"/>
-					<string>{{23, 672}, {180, 58}}</string>
+					<string>{{6, 566}, {180, 58}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{23, 764}, {180, 47}}</string>
+					<string>{{22, 665}, {180, 47}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{28, 601}, {180, 47}}</string>
+					<string>{{26, 755}, {180, 47}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{28, 500}, {180, 72}}</string>
+					<string>{{9, 458}, {180, 72}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{28, 391}, {180, 72}}</string>
+					<string>{{19, 351}, {180, 72}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{59, 195}, {180, 83}}</string>
+					<string>{{19, 225}, {180, 83}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{28, 300}, {180, 56}}</string>
+					<string>{{28, 3}, {180, 57}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2305,7 +2303,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{29, 48}, {180, 96}}</string>
+					<string>{{33, 88}, {180, 95}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
