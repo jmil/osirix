@@ -111,7 +111,7 @@ static const char base64EncodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk
 	}
 	
 	realloc(bytes, length);
-	return [NSData dataWithBytesNoCopy:bytes length:length];
+	return [self initWithBytesNoCopy:bytes length:length];
 }
 
 -(NSString*)base64 {

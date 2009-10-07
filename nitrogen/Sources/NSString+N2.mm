@@ -11,6 +11,13 @@
 
 @implementation NSString (N2)
 
+-(NSString*)markedString {
+	NSString* str = [self stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+	str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
+	str = [str stringByReplacingOccurrencesOfString:@"\t" withString:@"\\t"];
+	return str;
+}
+
 +(NSString*)sizeString:(unsigned long long)size { // From http://snippets.dzone.com/posts/show/3038 with slight modifications
     if (size<1023)
         return [NSString stringWithFormat:@"%i octets", size];
@@ -38,7 +45,7 @@
 }
 
 +(NSString*)dateString:(NSTimeInterval)date {
-	return [[NSDate dateWithTimeIntervalSinceReferenceDate:date] descriptionWithCalendarFormat:@"'le' dd.MM.yyyy 'à' HH'h'mm" timeZone:NULL locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
+	return [[NSDate dateWithTimeIntervalSinceReferenceDate:date] descriptionWithCalendarFormat:@"le %d.%m.%Y à %Hh%M" timeZone:NULL locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 }
 
 -(NSString*)stringByTrimmingStartAndEnd {

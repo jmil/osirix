@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		598D1D111070D63400EE85EA /* N2XMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 598D1D0F1070D63400EE85EA /* N2XMLRPC.h */; };
+		598D1D121070D63400EE85EA /* N2XMLRPC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598D1D101070D63400EE85EA /* N2XMLRPC.mm */; };
 		598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 598E50301043CB90005BCDC7 /* N2ButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		598E50331043CB90005BCDC7 /* N2ButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598E50311043CB90005BCDC7 /* N2ButtonCell.mm */; };
 		59A6333610428715003F4069 /* N2StepView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330C10428715003F4069 /* N2StepView.mm */; };
@@ -78,6 +80,8 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		598D1D0F1070D63400EE85EA /* N2XMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2XMLRPC.h; sourceTree = "<group>"; };
+		598D1D101070D63400EE85EA /* N2XMLRPC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2XMLRPC.mm; sourceTree = "<group>"; };
 		598E50301043CB90005BCDC7 /* N2ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ButtonCell.h; sourceTree = "<group>"; };
 		598E50311043CB90005BCDC7 /* N2ButtonCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ButtonCell.mm; sourceTree = "<group>"; };
 		59A6330C10428715003F4069 /* N2StepView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepView.mm; sourceTree = "<group>"; };
@@ -323,6 +327,8 @@
 				59CF837F1069301700A4444F /* N2Connection.mm */,
 				59CF83811069301700A4444F /* N2ConnectionListener.h */,
 				59CF83801069301700A4444F /* N2ConnectionListener.mm */,
+				598D1D0F1070D63400EE85EA /* N2XMLRPC.h */,
+				598D1D101070D63400EE85EA /* N2XMLRPC.mm */,
 				59CF83861069302D00A4444F /* N2XMLRPCConnection.h */,
 				59CF83871069302D00A4444F /* N2XMLRPCConnection.mm */,
 			);
@@ -376,6 +382,7 @@
 				59CF83881069302D00A4444F /* N2XMLRPCConnection.h in Headers */,
 				59CF838E1069306800A4444F /* NSInvocation+N2.h in Headers */,
 				59CF83AB1069309F00A4444F /* ISO8601DateFormatter.h in Headers */,
+				598D1D111070D63400EE85EA /* N2XMLRPC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +490,7 @@
 				59CF83891069302D00A4444F /* N2XMLRPCConnection.mm in Sources */,
 				59CF838D1069306800A4444F /* NSInvocation+N2.mm in Sources */,
 				59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */,
+				598D1D121070D63400EE85EA /* N2XMLRPC.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
