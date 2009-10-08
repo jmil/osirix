@@ -43,7 +43,7 @@
 	//[self n2test];
 	EjectionFractionStepsController* controller = [[EjectionFractionStepsController alloc] initWithPlugin:self];
 	[controller showWindow:NULL];
-	NSLog(@"controller window [%f, %f, %f, %f]", [[controller window] frame].origin.x, [[controller window] frame].origin.y, [[controller window] frame].size.width, [[controller window] frame].size.height);
+//	NSLog(@"controller window [%f, %f, %f, %f]", [[controller window] frame].origin.x, [[controller window] frame].origin.y, [[controller window] frame].size.width, [[controller window] frame].size.height);
 }
 
 -(long)filterImage:(NSString*)menuName {
