@@ -1,4 +1,5 @@
 - Better views position in MPR and Ortho-MPR for Portrait Mode screens
+- Separate DICOM Auto Query Retrieve window
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
