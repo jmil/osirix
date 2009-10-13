@@ -1,6 +1,7 @@
 - Better views position in MPR and Ortho-MPR for Portrait Mode screens
 - Separate DICOM Auto Query Retrieve window
 - Save DICOM Auto Query Retrieve settings, and automatically restart it when relaunching OsiriX
+- Support Presentation States (PR) SOPClassUID in database
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
@@ -16,6 +17,7 @@
 - Test extra print in DCM 2x3, color, interval 2-3
 I mostly use the 1Column, 2Rows format to print 2 images. Nearly every time one of the image is distorted, the other one misses the printed information in the top left corner.
 
+- PR modalities
 - Referring Physician QR
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
