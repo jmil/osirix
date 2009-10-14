@@ -15,8 +15,13 @@
 
 -(void)awakeTemplates {
 	[_templates removeAllObjects];
-	[_templates addObjectsFromArray:[ZimmerTemplate bundledTemplates]];
-	[_templates addObjectsFromArray:[MEDACTATemplate bundledTemplates]];
+	// [_templates addObjectsFromArray:[ZimmerTemplate bundledTemplates]];
+	// [_templates addObjectsFromArray:[MEDACTATemplate bundledTemplates]];
+	NSString* path = [[NSBundle bundleForClass:[self class]] resourcePath];
+	NSDirectoryEnumerator* e = [[NSFileManager defaultManager] enumeratorAtPath:path];
+	while (NSString* sub = [e nextObject])
+		if ([sub hasSuffix:@"Templates"])
+			[_templates addObjectsFromArray:[MEDACTATemplate templatesAtPath:[path stringByAppendingPathComponent:sub]]];
 	
 	// fill _families from _templates
 	for (unsigned i = 0; i < [_templates count]; ++i) {

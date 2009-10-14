@@ -12,5 +12,6 @@
 }
 
 +(NSArray*)bundledTemplates;
++(NSArray*)templatesAtPath:(NSString*)path;
 
 @end

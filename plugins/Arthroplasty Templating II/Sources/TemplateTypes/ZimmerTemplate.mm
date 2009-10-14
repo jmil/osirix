@@ -27,7 +27,7 @@
 }
 
 +(NSArray*)bundledTemplates {
-	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/Zimmer Templates"] usingClass:[ZimmerTemplate class]];
+	return [self templatesAtPath:[[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"Zimmer Templates"] usingClass:[ZimmerTemplate class]];
 }
 
 +(NSDictionary*)propertiesFromInfoFileAtPath:(NSString*)path {

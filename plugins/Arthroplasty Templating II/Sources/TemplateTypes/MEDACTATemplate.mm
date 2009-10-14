@@ -11,7 +11,11 @@
 @implementation MEDACTATemplate
 
 +(NSArray*)bundledTemplates {
-	return [ZimmerTemplate templatesAtPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/Resources/MEDACTA Templates"] usingClass:[MEDACTATemplate class]];
+	return [self templatesAtPath:[[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"MEDACTA Templates"] usingClass:[MEDACTATemplate class]];
+}
+
++(NSArray*)templatesAtPath:(NSString*)path {
+	return [ZimmerTemplate templatesAtPath:path usingClass:[MEDACTATemplate class]];
 }
 
 -(CGFloat)rotation {

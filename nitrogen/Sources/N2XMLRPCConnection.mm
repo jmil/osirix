@@ -7,6 +7,7 @@
 //
 
 #import "N2XMLRPCConnection.h"
+#import "N2Debug.h"
 #import "N2XMLRPC.h"
 
 @implementation N2XMLRPCConnection
@@ -45,6 +46,8 @@
 
 	if (!CFHTTPMessageIsHeaderComplete(request))
 		return;
+	
+	// DLog(@"XMLRPC request received: %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
 	
 	NSString* contentLength = (NSString*)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"Content-Length");
 	if (contentLength) [contentLength autorelease];
