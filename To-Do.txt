@@ -19,7 +19,6 @@ I mostly use the 1Column, 2Rows format to print 2 images. Nearly every time one 
 
 - Crop box after bone removing
 - Endoscopy: Vector in non-axial series
-- Test GE data with French version
 
 - Stop QR process
 - QR: when searching 2 or more server, keep the study with the highest number of images
