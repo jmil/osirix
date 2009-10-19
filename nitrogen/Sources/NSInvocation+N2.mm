@@ -6,7 +6,6 @@
 //  Copyright 2009 HUG. All rights reserved.
 //
 
-#import <Nitrogen/Nitrogen.h>
 #import "NSInvocation+N2.h"
 #include <sstream>
 

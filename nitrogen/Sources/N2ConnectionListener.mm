@@ -8,11 +8,11 @@
 
 #import "N2ConnectionListener.h"
 #import "N2Connection.h"
+#import "N2Debug.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/un.h>
-#import <Nitrogen/Nitrogen.h>
 
 const NSString* N2ConnectionListenerOpenedConnectionNotification = @"N2ConnectionListenerOpenedConnectionNotification";
 const NSString* N2ConnectionListenerOpenedConnection = @"N2ConnectionListenerOpenedConnection";

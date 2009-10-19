@@ -112,8 +112,8 @@
 	// change origin.x
 	for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
 		for (y = box.origin.y; y <= box.origin.y+box.size.height; ++y)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1]) { NSLog(@"at [%d,%d]", int(x), int(y));
-			goto end_origin_x;}
+			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			goto end_origin_x;
 end_origin_x:
 	if (x < box.origin.x+box.size.width) {
 		box.size.width -= x-box.origin.x;
@@ -123,8 +123,8 @@ end_origin_x:
 	// change origin.y
 	for (y = box.origin.y; y < box.origin.y+box.size.height; ++y)
 		for (x = box.origin.x; x <= box.origin.x+box.size.width; ++x)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1]) { NSLog(@"at [%d,%d]", int(x), int(y));
-			goto end_origin_y;}
+			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			goto end_origin_y;
 end_origin_y:
 	if (y < box.origin.y+box.size.height) {
 		box.size.height -= y-box.origin.y;
@@ -134,8 +134,8 @@ end_origin_y:
 	// change size.width
 	for (x = box.origin.x+box.size.width-1; x >= box.origin.x; --x)
 		for (y = box.origin.y; y <= box.origin.y+box.size.height; ++y)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1]) { NSLog(@"at [%d,%d]", int(x), int(y));
-			goto end_size_x;}
+			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			goto end_size_x;
 end_size_x:
 	if (x >= box.origin.x)
 		box.size.width = x-box.origin.x+1;
@@ -143,8 +143,8 @@ end_size_x:
 	// change size.height
 	for (y = box.origin.y+box.size.height-1; y >= box.origin.y; --y)
 		for (x = box.origin.x; x <= box.origin.x+box.size.width; ++x)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1]) { NSLog(@"at [%d,%d]", int(x), int(y));
-			goto end_size_y;}
+			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			goto end_size_y;
 end_size_y:
 	if (y >= box.origin.y)
 		box.size.height = y-box.origin.y+1;

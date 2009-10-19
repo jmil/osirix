@@ -395,9 +395,9 @@
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
+				59E6DDB6105E4259002C8245 /* Copy Headers and Create Nitrogen.h */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
-				59E6DDB6105E4259002C8245 /* Copy headers and create Nitrogen.h */,
 			);
 			buildRules = (
 			);
@@ -439,14 +439,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		59E6DDB6105E4259002C8245 /* Copy headers and create Nitrogen.h */ = {
+		59E6DDB6105E4259002C8245 /* Copy Headers and Create Nitrogen.h */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy headers and create Nitrogen.h";
+			name = "Copy Headers and Create Nitrogen.h";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

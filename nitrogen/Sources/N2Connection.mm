@@ -9,7 +9,7 @@
 #undef DEBUG
 
 #import "N2Connection.h"
-#import <Nitrogen/Nitrogen.h>
+#import "N2Debug.h"
 #include <math.h>
 #include <algorithm>
 #include <iostream>
