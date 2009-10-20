@@ -2,6 +2,7 @@
 - Separate DICOM Auto Query Retrieve window
 - Save DICOM Auto Query Retrieve settings, and automatically restart it when relaunching OsiriX
 - Support Presentation States (PR) SOPClassUID in database
+- Thread DICOM Association negotiation and C-Find, allowing the user to cancel the connection
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
@@ -14,12 +15,12 @@
 - Sync Ortho-MPR
 - OsiriX light
 
-- Test extra print in DCM 2x3, color, interval 2-3
-I mostly use the 1Column, 2Rows format to print 2 images. Nearly every time one of the image is distorted, the other one misses the printed information in the top left corner.
+- Repair SQLite DB :
+	sqlite3 broken.db .dump | sqlite3 repaired.db
+
 
 - Test Colono-CT : supine - prone
 
-- Stop QR process
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Referring Physician QR
 - Query last 6 hours
