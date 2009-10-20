@@ -19,7 +19,6 @@
 - Repair SQLite DB :
 	sqlite3 broken.db .dump | sqlite3 repaired.db
 
-
 - Test Colono-CT : supine - prone
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
