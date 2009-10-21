@@ -71,6 +71,10 @@
 		59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */; };
 		59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */; };
+		59E7A17B108C9ACF007F82BA /* NSURL+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E7A179108C9ACF007F82BA /* NSURL+N2.h */; };
+		59E7A17C108C9ACF007F82BA /* NSURL+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */; };
+		59E7AA7A108DDA4C007F82BA /* NSPanel+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */; };
+		59E7AA7B108DDA4C007F82BA /* NSPanel+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -144,6 +148,10 @@
 		59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
 		59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+N2.h"; sourceTree = "<group>"; };
 		59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSColor+N2.mm"; sourceTree = "<group>"; };
+		59E7A179108C9ACF007F82BA /* NSURL+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+N2.h"; sourceTree = "<group>"; };
+		59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+N2.mm"; sourceTree = "<group>"; };
+		59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPanel+N2.h"; sourceTree = "<group>"; };
+		59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSPanel+N2.mm"; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Nitrogen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nitrogen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -316,6 +324,10 @@
 				59CF7A391068CDEA00A4444F /* NSDictionary+N2.mm */,
 				59CF838C1069306800A4444F /* NSInvocation+N2.h */,
 				59CF838B1069306800A4444F /* NSInvocation+N2.mm */,
+				59E7A179108C9ACF007F82BA /* NSURL+N2.h */,
+				59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */,
+				59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */,
+				59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -383,6 +395,8 @@
 				59CF838E1069306800A4444F /* NSInvocation+N2.h in Headers */,
 				59CF83AB1069309F00A4444F /* ISO8601DateFormatter.h in Headers */,
 				598D1D111070D63400EE85EA /* N2XMLRPC.h in Headers */,
+				59E7A17B108C9ACF007F82BA /* NSURL+N2.h in Headers */,
+				59E7AA7A108DDA4C007F82BA /* NSPanel+N2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +505,8 @@
 				59CF838D1069306800A4444F /* NSInvocation+N2.mm in Sources */,
 				59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */,
 				598D1D121070D63400EE85EA /* N2XMLRPC.mm in Sources */,
+				59E7A17C108C9ACF007F82BA /* NSURL+N2.mm in Sources */,
+				59E7AA7B108DDA4C007F82BA /* NSPanel+N2.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
