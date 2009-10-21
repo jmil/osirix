@@ -3,7 +3,7 @@
 //  HUGE Administration Tool
 //
 //  Created by Alessandro Volz on 7/22/09.
-//  Copyright 2009 HUG. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

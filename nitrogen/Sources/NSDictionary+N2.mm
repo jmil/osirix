@@ -3,7 +3,7 @@
 //  Nitrogen
 //
 //  Created by Alessandro Volz on 22.09.09.
-//  Copyright 2009 HUG. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import "NSDictionary+N2.h"

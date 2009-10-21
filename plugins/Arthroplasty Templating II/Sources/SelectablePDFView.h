@@ -3,7 +3,7 @@
 //  Arthroplasty Templating II
 //
 //  Created by Alessandro Volz on 6/8/09.
-//  Copyright 2009 HUG. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

@@ -19,7 +19,7 @@
 - Repair SQLite DB :
 	sqlite3 broken.db .dump | sqlite3 repaired.db
 
-- Test Colono-CT : supine - prone
+- Test VRAM for large image
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Query last 6 hours
