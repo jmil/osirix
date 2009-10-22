@@ -1,9 +1,10 @@
 - Better views position in MPR and Ortho-MPR for Portrait Mode screens
-- Separate DICOM Auto Query Retrieve window
-- Save DICOM Auto Query Retrieve settings, and automatically restart it when relaunching OsiriX
 - Support Presentation States (PR) SOPClassUID in database
-- Thread DICOM Association negotiation and C-Find, allowing the user to cancel the connection
+- Q&R: Separate DICOM Auto Query Retrieve window
+- Q&R: Save DICOM Auto Query Retrieve settings, and automatically restart it when relaunching OsiriX
+- Q&R: Thread DICOM Association negotiation and C-Find, allowing the user to cancel the connection
 - Q&R: support for Referring Physician field
+- Q&R: query last 6 or 12 hours
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
@@ -16,13 +17,8 @@
 - Sync Ortho-MPR
 - OsiriX light
 
-- Repair SQLite DB :
-	sqlite3 broken.db .dump | sqlite3 repaired.db
-
 - AutoRetrieve : only display errors if window is visible
-
 - QR: when searching 2 or more server, keep the study with the highest number of images
-- Query last 6 hours
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
