@@ -18,6 +18,8 @@
 - Sync Ortho-MPR
 - OsiriX light
 
+- Ortho MPR : 4D export
+
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - WADO
