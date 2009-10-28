@@ -18,14 +18,13 @@
 - Sync Ortho-MPR
 - OsiriX light
 
+- Add/edit/delete ROIs through DB sharing
+
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - WADO
 - DICOM TLS
 - SDK Primera
-
-- Previous Button in Retrieve
-- Test Abort incoming connections
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
