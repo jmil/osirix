@@ -18,6 +18,9 @@
 - Sync Ortho-MPR
 - OsiriX light
 
+- ROI : test parser
+- ROIs in DB shared: ROIs folder?
+
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - WADO
