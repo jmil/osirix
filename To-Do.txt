@@ -18,7 +18,7 @@
 - Sync Ortho-MPR
 - OsiriX light
 
-- ROIs in DB shared: ROIs folder?
+- Add local path : button disabled?
 - 3D ROIs avec Rectangles et Ellipses
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
