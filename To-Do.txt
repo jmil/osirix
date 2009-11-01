@@ -19,6 +19,7 @@
 - OsiriX light
 
 - Add local path : button disabled?
+- Test async reading in db sharing
 - 3D ROIs avec Rectangles et Ellipses
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
