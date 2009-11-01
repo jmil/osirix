@@ -18,6 +18,7 @@
 - Sync Ortho-MPR
 - OsiriX light
 
+- Test 16-bit export : subtraction
 - Test async reading in db sharing
 - 3D ROIs avec Rectangles et Ellipses
 
