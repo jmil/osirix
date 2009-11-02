@@ -7,12 +7,12 @@
 - Q&R: query last 6 or 12 hours
 - Network functions are now grouped in the Network menu
 - Abort Incoming DICOM Processes (Store-SCU) function
+- Add, Delete and Modify ROIs on shared database
 
 - SUV > 24h
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
 - Hanging Protocols
-- 4D Support for DICOM Export in 2D Viewer
 - Display current image in 3D plane
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
