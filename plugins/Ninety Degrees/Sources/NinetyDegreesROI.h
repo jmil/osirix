@@ -17,7 +17,7 @@
 @property(readonly) ROI* roi1;
 @property(readonly) ROI* roi2;
 
--(id)initWithRoi1:(ROI*)roi1 roi2:(ROI*)roi2;
+-(id)initWithRoi1:(ROI*)roi1 roi2:(ROI*)roi2 type:(long)roitype;
 -(BOOL)isOnROI:(ROI*)roi;
 
 @end

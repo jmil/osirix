@@ -97,6 +97,8 @@ NSLine NSMakeLine(const NSPoint& p1, const NSPoint& p2);
 
 CGFloat NSAngle(const NSLine& l);
 BOOL NSParallel(const NSLine& l1, const NSLine& l2);
+CGFloat NSLineInterceptionValue(const NSLine& l1, const NSLine& l2);
+NSPoint NSLineAtValue(const NSLine& l, CGFloat u);
 NSPoint operator*(const NSLine& l1, const NSLine& l2);		// intersection of lines
 CGFloat NSLineYAtX(const NSLine& l1, CGFloat x);
 

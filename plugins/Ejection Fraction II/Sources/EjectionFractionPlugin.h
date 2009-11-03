@@ -6,9 +6,10 @@
 //  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
-#import <OsiriX.Headers/PluginFilter.h>
+#import <OsiriX Headers/PluginFilter.h>
 
 @interface EjectionFractionPlugin : PluginFilter {
+	NSMutableArray* _wfs;
 }
 
 -(long)filterImage:(NSString*)menuName;

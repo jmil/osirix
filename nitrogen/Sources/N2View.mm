@@ -29,7 +29,7 @@ NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
 
 -(void)dealloc {
 	[self setLayout:NULL];
-	[_n2rows release];
+	[_n2rows release]; _n2rows = NULL;
 	[super dealloc];
 }
 

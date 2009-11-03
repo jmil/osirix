@@ -7,15 +7,16 @@
 //
 
 #import "EjectionFractionStepsController.h"
+#import "EjectionFractionWorkflow.h"
 
 @implementation EjectionFractionStepsController
 
--(id)initWithPlugin:(EjectionFractionPlugin*)plugin {
+-(id)initWithWorkflow:(EjectionFractionWorkflow*)workflow {
 	self = [self initWithWindowNibName:@"EjectionFractionSteps"];
-	_plugin = plugin;
+	_workflow = workflow;
 	_activeSteps = [NSMutableArray arrayWithCapacity:8];
 	
-	[self window];
+	[[self window] setDelegate:self];
 	
 	return self;
 }
@@ -35,11 +36,18 @@
 }
 
 -(void)dealloc {
+	NSLog(@"%X [EjectionFractionStepsController dealloc]", self);
 	[_activeSteps release];
 	[super dealloc];
 }
 
--(void)setAlgorithmImage:(NSImage*)image {
+-(void)windowWillClose:(NSNotification*)notification {
+	//[self autorelease];
+}
+
+-(void)setAlgorithmImage:(NSString*)name {
+	NSImage* image = name? [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"png"]] autorelease] : NULL;
+	
 	NSSize size = NSMakeSize([_viewAlgorithmPreview frame].size.width, 0);
 	if (image) {
 		NSSize imageSize = [image size];
@@ -63,17 +71,17 @@
 	if (sender == _viewAlgorithmChoice) { // changed algorithm choice
 		switch ([_viewAlgorithmChoice indexOfSelectedItem]) {
 			case 0: // Monoplane
-				[self setAlgorithmImage:[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"PreviewMonoplane" ofType:@"png"]]];
+				[self setAlgorithmImage:@"PreviewMonoplane"];
 				//[self showSteps:[NSArray arrayWithObjects: _stepAlgorithm, , NULL]];
 				break;
 			case 1: // Biplane
-				[self setAlgorithmImage:[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"PreviewBiplane" ofType:@"png"]]];
+				[self setAlgorithmImage:@"PreviewBiplane"];
 				break;
 			case 2: // Hemi-ellipse
-				[self setAlgorithmImage:[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"PreviewHemi-ellipse" ofType:@"png"]]];
+				[self setAlgorithmImage:@"PreviewHemi-ellipse"];
 				break;
 			case 3: // Simpson
-				[self setAlgorithmImage:[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"PreviewSimpson" ofType:@"png"]]];
+				[self setAlgorithmImage:@"PreviewSimpson"];
 				break;
 			case 4: // Teichholz
 				[self setAlgorithmImage:NULL];

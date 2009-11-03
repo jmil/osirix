@@ -6,10 +6,10 @@
 //  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
-@class N2Steps, N2Step, EjectionFractionPlugin, ROI;
+@class N2Steps, N2Step, EjectionFractionWorkflow, ROI;
 
 @interface EjectionFractionStepsController : NSWindowController {
-	EjectionFractionPlugin* _plugin;
+	EjectionFractionWorkflow* _workflow;
 
 	IBOutlet N2Steps* _steps;
 	IBOutlet N2StepsView* _stepsView;
@@ -20,15 +20,10 @@
 	IBOutlet NSPopUpButton* _viewAlgorithmChoice;
 	IBOutlet NSImageView* _viewAlgorithmPreview;
 	NSMutableArray* _activeSteps;
-	
-	N2Step* _stepDiastolic;
-	ROI *_diasLongAxis, *_diasArea1, *_diasArea2;
-	
-	N2Step* _stepSystolic;
-	ROI *_systLongAxis, *_systArea1, *_systArea2;
 }
 
--(id)initWithPlugin:(EjectionFractionPlugin*)plugin;
+-(id)initWithWorkflow:(EjectionFractionWorkflow*)plugin;
+
 -(void)steps:(N2Steps*)steps willBeginStep:(N2Step*)step;
 -(void)steps:(N2Steps*)steps valueChanged:(id)sender;
 -(BOOL)steps:(N2Steps*)steps shouldValidateStep:(N2Step*)step;

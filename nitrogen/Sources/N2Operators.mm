@@ -316,11 +316,18 @@ BOOL NSParallel(const NSLine& l1, const NSLine& l2) {
 	return NSAngle(l1) == NSAngle(l2);
 }
 
-NSPoint operator*(const NSLine& l1, const NSLine& l2) {
+CGFloat NSLineInterceptionValue(const NSLine& l1, const NSLine& l2) {
 	if (NSParallel(l1, l2))
 		[NSException raise:N2LinesDontInterceptException format:@"The two lines are parallel and therefore have no interception."];
-	CGFloat u = (l2.direction.x*(l1.origin.y-l2.origin.y)-l2.direction.y*(l1.origin.x-l2.origin.x))/(l2.direction.y*l1.direction.x-l2.direction.x*l1.direction.y);
-	return NSMakePoint(l1.origin.x+u*l1.direction.x, l1.origin.y+u*l1.direction.y);
+	return (l2.direction.x*(l1.origin.y-l2.origin.y)-l2.direction.y*(l1.origin.x-l2.origin.x))/(l2.direction.y*l1.direction.x-l2.direction.x*l1.direction.y);
+}
+
+NSPoint NSLineAtValue(const NSLine& l, CGFloat u) {
+	return NSMakePoint(l.origin.x+u*l.direction.x, l.origin.y+u*l.direction.y);
+}
+
+NSPoint operator*(const NSLine& l1, const NSLine& l2) {
+	return NSLineAtValue(l1, NSLineInterceptionValue(l1, l2));
 }
 
 CGFloat NSLineYAtX(const NSLine& l, CGFloat x) {

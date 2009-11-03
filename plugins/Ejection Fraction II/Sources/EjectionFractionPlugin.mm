@@ -7,7 +7,9 @@
 //
 
 #import "EjectionFractionPlugin.h"
+#import "EjectionFractionWorkflow.h"
 #import "EjectionFractionStepsController.h"
+#import <OsiriX Headers/Notifications.h>
 
 @implementation EjectionFractionPlugin
 
@@ -40,13 +42,64 @@
 }*/
 
 -(void)initPlugin {
+	_wfs = [[NSMutableArray alloc] initWithCapacity:1];
+	
 	//[self n2test];
-	EjectionFractionStepsController* controller = [[EjectionFractionStepsController alloc] initWithPlugin:self];
+	EjectionFractionStepsController* controller = [[EjectionFractionStepsController alloc] initWithWorkflow:NULL];
 	[controller showWindow:NULL];
 //	NSLog(@"controller window [%f, %f, %f, %f]", [[controller window] frame].origin.x, [[controller window] frame].origin.y, [[controller window] frame].size.width, [[controller window] frame].size.height);
 }
 
+-(void)dealloc {
+	[_wfs release]; _wfs = NULL;
+	[super dealloc];
+}
+
+-(void)addWorkflow:(EjectionFractionWorkflow*)workflow {
+	[_wfs addObject:workflow];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsWindowWillClose:) name:NSWindowWillCloseNotification object:[[workflow steps] window]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:OsirixCloseViewerNotification object:[workflow viewer]];
+}
+
+-(void)removeWorkflow:(EjectionFractionWorkflow*)workflow {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:[[workflow steps] window]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:OsirixCloseViewerNotification object:[workflow viewer]];
+	[_wfs removeObject:workflow];
+}
+
+-(void)stepsWindowWillClose:(NSNotification*)notification {
+	NSWindow* win = [notification object];
+	
+	EjectionFractionWorkflow* workflow = NULL;
+	for (EjectionFractionWorkflow* wf in _wfs)
+		if ([[wf steps] window] == win)
+			workflow = wf;
+	
+	[workflow setSteps:NULL];
+	[self removeWorkflow:workflow];
+}
+
+-(void)viewerWillClose:(NSNotification*)notification {
+	ViewerController* viewer = [notification object];
+	
+	EjectionFractionWorkflow* workflow = NULL;
+	for (EjectionFractionWorkflow* wf in _wfs)
+		if ([wf viewer] == viewer)
+			workflow = wf;
+	
+	[workflow setViewer:NULL];
+	[self removeWorkflow:workflow];
+}
+
 -(long)filterImage:(NSString*)menuName {
+	EjectionFractionWorkflow* workflow = NULL;
+	for (EjectionFractionWorkflow* wf in _wfs)
+		if ([wf viewer] == viewerController)
+			workflow = wf;
+	
+	if (!workflow) [self addWorkflow: workflow = [[[EjectionFractionWorkflow alloc] initWithViewer:viewerController] autorelease]];
+	[[[workflow steps] window] makeKeyAndOrderFront:self];
+
 	return 0;
 }
 

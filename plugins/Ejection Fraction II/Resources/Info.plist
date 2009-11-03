@@ -8,6 +8,10 @@
 	<string>Ejection Fraction</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>ToolbarIcon</key>
+	<string>Test</string>
+	<key>allowToolbarIcon</key>
+	<string>YES</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -20,7 +24,7 @@
 	<string>EjectionFractionPlugin</string>
 	<key>MenuTitles</key>
 	<array>
-		<string>Ejection Fraction II</string>
+		<string>Ejection Fraction</string>
 	</array>
 	<key>pluginType</key>
 	<string>roiTool</string>

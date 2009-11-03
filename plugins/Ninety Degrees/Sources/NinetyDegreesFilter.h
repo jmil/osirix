@@ -10,6 +10,7 @@
 
 @interface NinetyDegreesFilter : PluginFilter {
 	NSMutableArray* _ndrois;
+	NSMutableArray* _distrois;
 }
 
 -(long)filterImage:(NSString*)menuName;
