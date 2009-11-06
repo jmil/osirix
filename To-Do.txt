@@ -18,6 +18,9 @@
 - Sync Ortho-MPR
 - OsiriX light
 
+
+- FINIR SUV 23 h dcmpix papyrus
+
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - WADO
