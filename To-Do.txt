@@ -16,7 +16,9 @@
 - Display current image in 3D plane
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
-- OsiriX light
+
+- OsiriX light: dcm print, idisk, burning, decompress app
+- test texture.tif, echoscu
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings

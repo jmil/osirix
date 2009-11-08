@@ -39,7 +39,7 @@ void drawTextualData(NSString* path, float width)
 		float fontSize = 14.*width/512.;
 //		if( fontSize < 10) fontSize = 10;
 		
-		NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, 0L];
+		NSDictionary	*attributes = [NSDictionary dictionaryWithObjectsAndKeys: shadow, NSShadowAttributeName, [NSFont fontWithName:@"Helvetica" size:fontSize], NSFontAttributeName, [NSColor whiteColor], NSForegroundColorAttributeName, nil];
 		
 		NSMutableString	*text = [NSMutableString string];
 		
