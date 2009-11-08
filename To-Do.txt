@@ -9,6 +9,7 @@
 - Abort Incoming DICOM Processes (Store-SCU) function
 - Add, Delete and Modify ROIs on shared database
 - Support SUV computation for more than 24 hours
+- OsiriX Lite version
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
@@ -17,8 +18,8 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 
-- OsiriX light: dcm print, idisk, burning, decompress app
-- test texture.tif, echoscu
+- OsiriX lite: dcm print, idisk, burning, decompress app, plugins
+- test texture.tif, echoscu, growl, dotmat, ilcrash, 32-bit, libtiff
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
