@@ -9,7 +9,7 @@
 - Abort Incoming DICOM Processes (Store-SCU) function
 - Add, Delete and Modify ROIs on shared database
 - Support SUV computation for more than 24 hours
-- OsiriX Lite version
+- OsiriX Lite version (for CD/DVD burning) 26MB versus instead of 141MB
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
