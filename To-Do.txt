@@ -18,9 +18,6 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 
-- OsiriX lite: dcm print, idisk, burning, decompress app, plugins, autorouting
-- test texture.tif, echoscu, growl, dotmat, ilcrash, 32-bit, libtiff, dcm export
-
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - WADO
