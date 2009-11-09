@@ -10,6 +10,8 @@
 - Add, Delete and Modify ROIs on shared database
 - Support SUV computation for more than 24 hours
 - OsiriX Lite version (for CD/DVD burning) 15MB versus instead of 150MB
+- Search by Patient ID on the built-in Web server
+- Customize the built-in Web server, by copying the WebServicesHTML folder in the OsiriX Data folder
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
