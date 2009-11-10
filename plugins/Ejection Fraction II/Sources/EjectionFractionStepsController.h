@@ -19,10 +19,19 @@
 	CGFloat _viewAlgorithmOriginalFrameHeight;
 	IBOutlet NSPopUpButton* _viewAlgorithmChoice;
 	IBOutlet NSImageView* _viewAlgorithmPreview;
-	NSMutableArray* _activeSteps;
+	
+	N2Step* _stepROIs;
+	IBOutlet NSView* _viewROIs;
+	
+//	NSMutableArray* _activeSteps;
 }
 
+@property(readonly) N2Step* stepROIs;
+@property(readonly) N2StepsView* stepsView;
+
 -(id)initWithWorkflow:(EjectionFractionWorkflow*)plugin;
+
+-(void)setSelectedAlgorithm:(EjectionFractionAlgorithm*)algorithm;
 
 -(void)steps:(N2Steps*)steps willBeginStep:(N2Step*)step;
 -(void)steps:(N2Steps*)steps valueChanged:(id)sender;

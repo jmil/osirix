@@ -130,12 +130,14 @@
 	if ([roi isKindOfClass:[NinetyDegreesDistanceROI class]])
 		[_distrois removeObject:roi];
 	else
-		for (NinetyDegreesDistanceROI* distroi in _distrois)
+		for (int i = [_distrois count]-1; i >= 0; --i) {
+			NinetyDegreesDistanceROI* distroi = [_distrois objectAtIndex:i];
 			if ([distroi isOnROI:roi]) {
 				[[[distroi curView] curRoiList] removeObject:distroi];
-				[_distrois removeObject:distroi];
+				[_distrois removeObjectAtIndex:i];
 				// [[NSNotificationCenter defaultCenter] postNotificationName:OsirixRemoveROINotification object:distroi];
 			}
+		}
 }
 
 @end

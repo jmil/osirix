@@ -10,8 +10,17 @@
 #import "EjectionFractionWorkflow.h"
 #import "EjectionFractionStepsController.h"
 #import <OsiriX Headers/Notifications.h>
+#import "MonoPlaneEjectionFractionAlgorithm.h"
+#import "BiPlaneEjectionFractionAlgorithm.h"
+#import "HemiEllipseEjectionFractionAlgorithm.h"
+#import "SimpsonEjectionFractionAlgorithm.h"
+#import "TeichholzEjectionFractionAlgorithm.h"
+
+NSString* EjectionFractionAlgorithmAddedNotification = @"EjectionFractionWorkflowAlgorithmAddedNotification";
+NSString* EjectionFractionAlgorithmRemovedNotification = @"EjectionFractionWorkflowAlgorithmRemovedNotification";
 
 @implementation EjectionFractionPlugin
+@synthesize algorithms = _algorithms;
 
 /*-(void)n2test {
 	NSLog(@"n2test n2test n2test n2test n2test n2test n2test n2test n2test n2test n2test");
@@ -41,16 +50,34 @@
 	NSLog(@"Ok");
 }*/
 
+-(void)addAlgorithm:(EjectionFractionAlgorithm*)algorithm {
+	[_algorithms addObject:algorithm];
+	[[NSNotificationCenter defaultCenter] postNotificationName:EjectionFractionAlgorithmAddedNotification object:algorithm];
+}
+
+-(void)removeAlgorithm:(EjectionFractionAlgorithm*)algorithm {
+	[_algorithms removeObject:algorithm];
+	[[NSNotificationCenter defaultCenter] postNotificationName:EjectionFractionAlgorithmRemovedNotification object:algorithm];
+}
+
 -(void)initPlugin {
 	_wfs = [[NSMutableArray alloc] initWithCapacity:1];
+	_algorithms = [[NSMutableArray alloc] initWithCapacity:5];
+	
+	[self addAlgorithm:[[[MonoPlaneEjectionFractionAlgorithm alloc] init] autorelease]];
+	[self addAlgorithm:[[[BiPlaneEjectionFractionAlgorithm alloc] init] autorelease]];
+	[self addAlgorithm:[[[HemiEllipseEjectionFractionAlgorithm alloc] init] autorelease]];
+	[self addAlgorithm:[[[SimpsonEjectionFractionAlgorithm alloc] init] autorelease]];
+	[self addAlgorithm:[[[TeichholzEjectionFractionAlgorithm alloc] init] autorelease]];
 	
 	//[self n2test];
-	EjectionFractionStepsController* controller = [[EjectionFractionStepsController alloc] initWithWorkflow:NULL];
+	EjectionFractionStepsController* controller = [[EjectionFractionStepsController alloc] initWithWorkflow:[[EjectionFractionWorkflow alloc] initWithPlugin:self viewer:NULL]];
 	[controller showWindow:NULL];
 //	NSLog(@"controller window [%f, %f, %f, %f]", [[controller window] frame].origin.x, [[controller window] frame].origin.y, [[controller window] frame].size.width, [[controller window] frame].size.height);
 }
 
 -(void)dealloc {
+	[_algorithms release]; _algorithms = NULL;
 	[_wfs release]; _wfs = NULL;
 	[super dealloc];
 }
@@ -97,7 +124,7 @@
 		if ([wf viewer] == viewerController)
 			workflow = wf;
 	
-	if (!workflow) [self addWorkflow: workflow = [[[EjectionFractionWorkflow alloc] initWithViewer:viewerController] autorelease]];
+	if (!workflow) [self addWorkflow: workflow = [[[EjectionFractionWorkflow alloc] initWithPlugin:self viewer:viewerController] autorelease]];
 	[[[workflow steps] window] makeKeyAndOrderFront:self];
 
 	return 0;

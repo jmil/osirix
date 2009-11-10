@@ -36,6 +36,8 @@ extern NSString* N2StepsNotificationStep;
 -(IBAction)stepValueChanged:(id)sender;
 -(IBAction)reset:(id)sender;
 
+-(void)setCurrentStep:(N2Step*)step;
+
 @end
 
 @interface NSObject (N2StepsDelegate)

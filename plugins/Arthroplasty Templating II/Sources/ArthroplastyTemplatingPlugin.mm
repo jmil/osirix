@@ -25,6 +25,10 @@
 
 - (void)initPlugin {
 	_windows = [[NSMutableArray alloc] initWithCapacity:4];
+	
+	//[self initialize];
+	//[[_templatesWindowController window] makeKeyAndOrderFront:self];
+	
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewerWillClose:) name:@"CloseViewerNotification" object:viewerController];
 }
 

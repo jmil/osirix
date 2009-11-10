@@ -13,6 +13,9 @@ extern NSString* N2LinesDontInterceptException;
 CGFloat NSSign(const CGFloat f);
 CGFloat NSLimit(const CGFloat v, const CGFloat min, const CGFloat max);
 
+#pragma mark NSSize
+
+NSSize NSRoundSize(NSSize s);
 NSSize NSMakeSize(CGFloat wh);
 NSSize operator-(const NSSize& s);						// -[x,y] = [-x,-y]
 NSSize operator+(const NSSize& s1, const NSSize& s2);	// [x,y]+[X,Y] = [x+X,y+Y]

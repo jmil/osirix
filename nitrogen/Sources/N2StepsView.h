@@ -7,7 +7,7 @@
 //
 
 #import "N2View.h"
-@class N2Steps, N2Step;
+@class N2Steps, N2Step, N2StepView;
 
 @interface N2StepsView : N2View {
 	IBOutlet N2Steps* _steps;
@@ -22,5 +22,6 @@
 //-(void)addStep:(N2Step*)step;
 //-(void)recomputeSubviewFramesAndAdjustSizes;
 -(void)stepsDidAddStep:(NSNotification*)notification;
+-(N2StepView*)stepViewForStep:(N2Step*)step;
 
 @end

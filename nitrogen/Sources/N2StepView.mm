@@ -20,6 +20,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepDidBecomeActiveInactive:) name:N2StepDidBecomeInactiveNotification object:step];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepDidBecomeEnabledDisabled:) name:N2StepDidBecomeEnabledNotification object:step];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepDidBecomeEnabledDisabled:) name:N2StepDidBecomeDisabledNotification object:step];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepTitleDidChange:) name:N2StepTitleDidChangeNotification object:step];
 	
 	return self;
 }
@@ -38,6 +39,10 @@
 
 -(void)stepDidBecomeEnabledDisabled:(NSNotification*)notification {
 	[self setEnabled:[[notification name] isEqualToString:N2StepDidBecomeEnabledNotification]];
+}
+
+-(void)stepTitleDidChange:(NSNotification*)notification {
+	[self setTitle:[_step title]];
 }
 
 @end

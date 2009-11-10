@@ -13,6 +13,7 @@ extern NSString* N2StepDidBecomeActiveNotification;
 extern NSString* N2StepDidBecomeInactiveNotification;
 extern NSString* N2StepDidBecomeEnabledNotification;
 extern NSString* N2StepDidBecomeDisabledNotification;
+extern NSString* N2StepTitleDidChangeNotification;
 
 @interface N2Step : NSObject {
 	NSString* _title;
@@ -20,7 +21,7 @@ extern NSString* N2StepDidBecomeDisabledNotification;
 	BOOL _necessary, _active, _enabled, _done, _shouldStayVisibleWhenInactive;
 }
 
-@property(readonly) NSString* title;
+@property(retain) NSString* title;
 @property(readonly) NSView* enclosedView;
 @property(getter=isNecessary) BOOL necessary;
 @property(getter=isActive) BOOL active;

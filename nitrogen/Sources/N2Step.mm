@@ -13,6 +13,7 @@ NSString* N2StepDidBecomeActiveNotification = @"N2StepDidBecomeActiveNotificatio
 NSString* N2StepDidBecomeInactiveNotification = @"N2StepDidBecomeInactiveNotification";
 NSString* N2StepDidBecomeEnabledNotification = @"N2StepDidBecomeEnabledNotification";
 NSString* N2StepDidBecomeDisabledNotification = @"N2StepDidBecomeDisabledNotification";
+NSString* N2StepTitleDidChangeNotification = @"N2StepTitleDidChangeNotification";
 
 @implementation N2Step
 @synthesize enclosedView = _enclosedView, title = _title, active = _active, necessary = _necessary, done = _done, enabled = _enabled, shouldStayVisibleWhenInactive = _shouldStayVisibleWhenInactive;
@@ -51,6 +52,10 @@ NSString* N2StepDidBecomeDisabledNotification = @"N2StepDidBecomeDisabledNotific
 	}
 }
 
-
+-(void)setTitle:(NSString*)title {
+	[_title release];
+	_title = [title retain];
+	[[NSNotificationCenter defaultCenter] postNotificationName:N2StepTitleDidChangeNotification object:self];
+}
 
 @end

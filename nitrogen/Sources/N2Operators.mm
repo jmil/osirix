@@ -28,6 +28,10 @@ CGFloat NSLimit(const CGFloat v, const CGFloat min, const CGFloat max) {
 
 /// NSSize
 
+NSSize NSRoundSize(NSSize s) {
+	return NSMakeSize(roundf(s.width), roundf(s.height));
+}
+
 NSSize NSMakeSize(CGFloat wh) {
 	return NSMakeSize(wh, wh);
 }

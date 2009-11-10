@@ -7,11 +7,19 @@
 //
 
 #import <OsiriX Headers/PluginFilter.h>
+#import "EjectionFractionAlgorithm.h"
+
+extern NSString* EjectionFractionAlgorithmAddedNotification;
+extern NSString* EjectionFractionAlgorithmRemovedNotification;
 
 @interface EjectionFractionPlugin : PluginFilter {
 	NSMutableArray* _wfs;
+	NSMutableArray* _algorithms;
 }
 
--(long)filterImage:(NSString*)menuName;
+@property(readonly) NSArray* algorithms;
+
+-(void)addAlgorithm:(EjectionFractionAlgorithm*)algorithm;
+-(void)removeAlgorithm:(EjectionFractionAlgorithm*)algorithm;	
 
 @end

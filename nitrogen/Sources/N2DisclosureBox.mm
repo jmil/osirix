@@ -115,4 +115,12 @@ NSString* N2DisclosureBoxDidCollapseNotification = @"N2DisclosureBoxDidCollapseN
 	[_titleCell calcDrawInfo:[self frame]];
 }
 
+-(void)setTitle:(NSString*)title {
+	[_titleCell setTitle:title];
+}
+
+-(NSString*)title {
+	return [_titleCell title];
+}
+
 @end

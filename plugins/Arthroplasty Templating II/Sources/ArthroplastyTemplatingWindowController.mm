@@ -206,6 +206,7 @@
 	if ([_familiesTableView selectedRow] == -1) return NULL;
 	PDFPage* page = [_pdfView currentPage];
 	NSRect pageBox = [_pdfView convertRect:[page boundsForBox:kPDFDisplayBoxMediaBox] fromPage:page];
+	pageBox.size = NSRoundSize(pageBox.size);
 	return [self templateImage:templat entirePageSizePixels:pageBox.size];
 }
 
