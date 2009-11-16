@@ -8,30 +8,27 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString* N2ViewWillDeallocNotification;
+@class N2Layout;
 
-@class N2LayoutManager, NSLayoutDescriptor;
+extern NSString* N2ViewBoundsSizeDidChangeNotification;
+extern NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize;
 
 @interface N2View : NSView {
+	NSControlSize _controlSize;
 	NSSize _minSize, _maxSize;
-	NSMutableArray* _n2rows;
-	NSUInteger _n2InsertionRowIndex;
-	N2LayoutManager* _layout;
+	N2Layout* _layout;
+	NSColor* _foreColor;
+	NSColor* _backColor;
 }
 
+@property NSControlSize controlSize;
 @property NSSize minSize, maxSize;
-@property(retain) N2LayoutManager* layout;
-@property(readonly) NSArray* content;
-@property NSUInteger insertionRowIndex;
+@property(retain) N2Layout* layout;
+@property(retain) NSColor* foreColor;
+@property(retain) NSColor* backColor;
 
--(void)insertRow;
--(void)insertRow:(NSUInteger)index;
--(NSUInteger)addRow;
--(void)addDescriptor:(NSLayoutDescriptor*)descriptor;
--(NSInteger)viewRow:(NSView*)view;
--(NSUInteger)numberOfElementsInCurrentRow;
-
--(void)recalculate;
+-(void)formatSubview:(NSView*)view;
+-(void)resizeSubviews;
 
 @end
 

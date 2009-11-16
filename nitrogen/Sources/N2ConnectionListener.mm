@@ -1,6 +1,6 @@
 //
 //  ClientListener.mm
-//  HUGE Administration Tool
+//  Nitrogen
 //
 //  Created by Alessandro Volz on 7/22/09.
 //  Copyright 2009 OsiriX Team. All rights reserved.

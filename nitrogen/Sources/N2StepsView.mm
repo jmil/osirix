@@ -11,11 +11,11 @@
 #import <Nitrogen/N2Step.h>
 #import <Nitrogen/N2Steps.h>
 #import <Nitrogen/N2StepView.h>
-#import <Nitrogen/N2LayoutManager.h>
+#import <Nitrogen/N2ColumnLayout.h>
 #import <Nitrogen/N2DisclosureButtonCell.h>
+#import <Nitrogen/N2ColumnDescriptor.h>
 
 @implementation N2StepsView
-@synthesize foreColor = _foreColor, controlSize = _controlSize;
 
 -(id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -24,19 +24,10 @@
 }
 
 -(void)awakeFromNib {
-	[super awakeFromNib];
-	
-	//	_views = [[NSMutableDictionary dictionaryWithCapacity:8] retain];
-	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewWillExpand:) name:N2DisclosureBoxWillExpandNotification object:NULL];
-	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandCollapse:) name:N2DisclosureBoxDidExpandNotification object:NULL];
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidToggle:) name:N2DisclosureBoxDidToggleNotification object:NULL];
-	//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewDidExpandCollapse:) name:N2DisclosureBoxDidCollapseNotification object:NULL];
-    
-	N2LayoutManager* layout = [[N2LayoutManager alloc] initWithControlSize:NSMiniControlSize];
-	[layout setStretchesToFill:YES];
-	[layout setForcesSuperviewSize:YES];
+	NSArray* columnDescriptors = [NSArray arrayWithObject:[N2ColumnDescriptor descriptor]];
+	N2ColumnLayout* layout = [[[N2ColumnLayout alloc] initForView:self columnDescriptors:columnDescriptors controlSize:NSMiniControlSize] autorelease];
+	[layout setForcesSuperviewHeight:YES];
 	[layout setSeparation:NSZeroSize];
-	[self setLayout:[layout autorelease]];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsDidAddStep:) name:N2StepsDidAddStepNotification object:_steps];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepsWillRemoveStep:) name:N2StepsWillRemoveStepNotification object:_steps];
@@ -45,7 +36,7 @@
 		for (N2Step* step in [_steps content])
 			[self stepsDidAddStep:[NSNotification notificationWithName:N2StepsDidAddStepNotification object:_steps userInfo:[NSDictionary dictionaryWithObject:step forKey:N2StepsNotificationStep]]];
 	
-	[self recalculate];
+	[[self layout] layOut];
 }
 
 -(void)setForeColor:(NSColor*)color {
@@ -107,25 +98,19 @@
 															 [self foreColor], NSForegroundColorAttributeName,
 															 [NSFont labelFontOfSize:[NSFont systemFontSizeForControlSize:[self controlSize]]], NSFontAttributeName,
 															 NULL]];
-	[_layout didAddSubview:[step enclosedView]];
 	
 	[view setPostsFrameChangedNotifications:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewFrameDidChange:) name:NSViewFrameDidChangeNotification object:view];
 	
-	[self addRow];
-	[self addSubview:view];
+	[(N2ColumnLayout*)_layout appendLine:[NSArray arrayWithObject:view]];
 	
-	[self recalculate];
+	[self layOut];
 }
 
 -(N2StepView*)stepViewForStep:(N2Step*)step {
-	for (NSUInteger i = 0; i < [_n2rows count]; ++i) {
-		NSArray* row = [_n2rows objectAtIndex:i];
-		for (N2StepView* view in row)
-			if ([view isKindOfClass:[N2StepView class]] && [view step] == step)
-				return view;
-	}
-	
+	for (NSView* view in [self subviews])
+		if ([view isKindOfClass:[N2StepView class]] && [(N2StepView*)view step] == step)
+			return (N2StepView*)view;
 	return NULL;
 }
 
@@ -136,11 +121,23 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewFrameDidChangeNotification object:view];
 	[view removeFromSuperview];
 	
-	[self recalculate];
+	[[self layout] layOut];
 }
 
 -(void)stepViewFrameDidChange:(NSNotification*)notification {
-	[self recalculate];
+	[[self layout] layOut];
+}
+
+-(void)layOut {
+	[_layout layOut];
+}
+
+-(NSSize)optimalSize {
+	return [_layout optimalSize];
+}
+
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	return [_layout optimalSizeForWidth:width];
 }
 
 @end

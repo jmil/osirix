@@ -6,30 +6,31 @@
 //  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
-#import <Nitrogen/N2LayoutManager.h>
-#import <Nitrogen/N2Operators.h>
+#import <Nitrogen/N2Layout.h>
 #import <Nitrogen/N2View.h>
-#include <algorithm>
-#import <Nitrogen/N2Debug.h>
+#import <Nitrogen/N2Operators.h>
+#import <Nitrogen/N2Exceptions.h>
 
-@implementation N2LayoutManager
-@synthesize occupiesEntireSuperview = _occupiesEntireSuperview, forcesSuperviewSize = _forcesSuperviewSize, stretchesToFill = _stretchesToFill, foreColor = _foreColor;
-@synthesize separation = _separation;
+@implementation N2Layout
+@synthesize view = _view, controlSize = _controlSize, margin = _margin, forcesSuperviewHeight = _forcesSuperviewHeight, forcesSuperviewWidth = _forcesSuperviewWidth, separation = _separation, enabled = _enabled;
 
--(id)initWithControlSize:(NSControlSize)size {
+-(id)initWithView:(N2View*)view controlSize:(NSControlSize)size {
 	self = [super init];
+	_view = view;
+	[view setLayout:self];
+	[self setEnabled:YES];
 	
 	switch (_controlSize = size) {
 		case NSRegularControlSize:
-			_padding = NSMakeRect(NSMakePoint(17,17), NSMakeSize(34));
+			_margin = NSMakeRect(NSMakePoint(17,17), NSMakeSize(34));
 			_separation = NSMakeSize(2,6);
 			break;
 		case NSSmallControlSize:
-			_padding = NSMakeRect(NSMakePoint(10,10), NSMakeSize(20));
+			_margin = NSMakeRect(NSMakePoint(10,10), NSMakeSize(20));
 			_separation = NSMakeSize(2,4);
 			break;
 		case NSMiniControlSize:
-			_padding = NSMakeRect(NSMakePoint(5,5), NSMakeSize(10));
+			_margin = NSMakeRect(NSMakePoint(5,5), NSMakeSize(10));
 			_separation = NSMakeSize(1,2);
 			break;
 	}
@@ -39,13 +40,34 @@
 	return self;
 }
 
--(void)dealloc {
-	if (_foreColor) [_foreColor release];
-	if (_backColor) [_backColor release];
-	[super dealloc];
+-(void)layOutImpl {
+	[NSException raise:N2VirtualMethodException format:@"Method -[%@ layOut] must be defined", [self className]];	
 }
 
--(void)adaptSubview:(NSView*)view {
+-(void)layOut {
+	if (!_enabled) return;
+	
+	if (_layingOut) return;
+	_layingOut = YES;
+	
+	[_view formatSubview:NULL];
+	[self layOutImpl];
+	
+	_layingOut = NO;
+}
+
+-(NSSize)optimalSize {
+	[NSException raise:N2VirtualMethodException format:@"Method -[%@ optimalSize] must be defined", [self className]];	
+	return NSZeroSize;
+}
+
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	[NSException raise:N2VirtualMethodException format:@"Method -[%@ optimalSizeForWidth:] must be defined", [self className]];	
+	return NSZeroSize;
+}
+
+/*
+ -(void)adaptSubview:(NSView*)view {
 	if (_foreColor && [view respondsToSelector:@selector(setTextColor:)])
 		[(NSTextView*)view setTextColor:_foreColor];
 	if (_backColor && [view respondsToSelector:@selector(setBackgroundColor:)])
@@ -163,6 +185,11 @@
 -(void)setForeColor:(NSColor*)color {
 	if (_foreColor) [_foreColor release];
 	_foreColor = [color retain];
+}
+ */
+
+-(void)setForeColor:(NSColor*)color {
+	// temporarily here for backwards compatibility with the Arthroplasty Templating II plugin
 }
 
 @end

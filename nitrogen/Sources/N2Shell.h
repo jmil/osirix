@@ -1,9 +1,9 @@
 //
 //  Shell.h
-//  HUGE Administration Tool
+//  Nitrogen
 //
 //  Created by Alessandro Volz on 7/28/09.
-//  Copyright 2009 HUG. All rights reserved.
+//  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

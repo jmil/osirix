@@ -18,11 +18,9 @@
 		59A6333810428715003F4069 /* N2Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6330E10428715003F4069 /* N2Window.mm */; };
 		59A6333A10428715003F4069 /* N2Steps.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331010428715003F4069 /* N2Steps.mm */; };
 		59A6333B10428715003F4069 /* N2Step.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331110428715003F4069 /* N2Step.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		59A6333C10428715003F4069 /* N2LayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331210428715003F4069 /* N2LayoutManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333D10428715003F4069 /* N2Steps.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331310428715003F4069 /* N2Steps.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6333E10428715003F4069 /* N2StepsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331410428715003F4069 /* N2StepsView.mm */; };
 		59A6333F10428715003F4069 /* N2View.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331510428715003F4069 /* N2View.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		59A6334010428715003F4069 /* N2LayoutManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331610428715003F4069 /* N2LayoutManager.mm */; };
 		59A6334110428715003F4069 /* N2Step.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331710428715003F4069 /* N2Step.mm */; };
 		59A6334210428715003F4069 /* N2StepsView.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331810428715003F4069 /* N2StepsView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6334310428715003F4069 /* N2Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331910428715003F4069 /* N2Window.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,8 +29,6 @@
 		59A6334610428715003F4069 /* N2Pair.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331C10428715003F4069 /* N2Pair.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6334710428715003F4069 /* N2Operators.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331D10428715003F4069 /* N2Operators.mm */; };
 		59A6334810428715003F4069 /* N2Operators.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6331E10428715003F4069 /* N2Operators.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		59A6334910428715003F4069 /* N2LayoutDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */; };
-		59A6334A10428715003F4069 /* N2LayoutDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332010428715003F4069 /* N2LayoutDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59A6334B10428715003F4069 /* N2DisclosureButtonCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */; };
 		59A6334C10428715003F4069 /* N2SingletonObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59A6332210428715003F4069 /* N2SingletonObject.mm */; };
 		59A6334D10428715003F4069 /* N2SingletonObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 59A6332310428715003F4069 /* N2SingletonObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -71,6 +67,22 @@
 		59CF838E1069306800A4444F /* NSInvocation+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF838C1069306800A4444F /* NSInvocation+N2.h */; };
 		59CF83AB1069309F00A4444F /* ISO8601DateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 59CF83A91069309F00A4444F /* ISO8601DateFormatter.h */; };
 		59CF83AC1069309F00A4444F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */; };
+		59D8755D10AABD1900AAA0FE /* N2Layout.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8755B10AABD1900AAA0FE /* N2Layout.h */; };
+		59D8755E10AABD1900AAA0FE /* N2Layout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8755C10AABD1900AAA0FE /* N2Layout.mm */; };
+		59D8756110AABE2200AAA0FE /* N2ColumnLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8755F10AABE2200AAA0FE /* N2ColumnLayout.h */; };
+		59D8756210AABE2200AAA0FE /* N2ColumnLayout.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8756010AABE2200AAA0FE /* N2ColumnLayout.mm */; };
+		59D8756610AAC39C00AAA0FE /* NSView+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8756410AAC39C00AAA0FE /* NSView+N2.h */; };
+		59D8756710AAC39C00AAA0FE /* NSView+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8756510AAC39C00AAA0FE /* NSView+N2.mm */; };
+		59D8757B10AAC94900AAA0FE /* N2Exceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8757910AAC94900AAA0FE /* N2Exceptions.h */; };
+		59D8757C10AAC94900AAA0FE /* N2Exceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8757A10AAC94900AAA0FE /* N2Exceptions.mm */; };
+		59D875A810AAEE8000AAA0FE /* N2ColumnDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */; };
+		59D875A910AAEE8000AAA0FE /* N2ColumnDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */; };
+		59D875AC10AAEF2000AAA0FE /* N2MinMax.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D875AA10AAEF2000AAA0FE /* N2MinMax.h */; };
+		59D875AD10AAEF2000AAA0FE /* N2MinMax.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D875AB10AAEF2000AAA0FE /* N2MinMax.mm */; };
+		59D8775D10AC0F7C00AAA0FE /* N2Alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8775B10AC0F7C00AAA0FE /* N2Alignment.h */; };
+		59D8775E10AC0F7C00AAA0FE /* N2Alignment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */; };
+		59D8899F10B1812500AAA0FE /* N2Resizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8899D10B1812500AAA0FE /* N2Resizer.h */; };
+		59D889A010B1812500AAA0FE /* N2Resizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8899E10B1812500AAA0FE /* N2Resizer.mm */; };
 		59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */; };
 		59E7A17B108C9ACF007F82BA /* NSURL+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E7A179108C9ACF007F82BA /* NSURL+N2.h */; };
@@ -97,11 +109,9 @@
 		59A6330E10428715003F4069 /* N2Window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Window.mm; sourceTree = "<group>"; };
 		59A6331010428715003F4069 /* N2Steps.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Steps.mm; sourceTree = "<group>"; };
 		59A6331110428715003F4069 /* N2Step.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Step.h; sourceTree = "<group>"; };
-		59A6331210428715003F4069 /* N2LayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2LayoutManager.h; sourceTree = "<group>"; };
 		59A6331310428715003F4069 /* N2Steps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Steps.h; sourceTree = "<group>"; };
 		59A6331410428715003F4069 /* N2StepsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2StepsView.mm; sourceTree = "<group>"; };
 		59A6331510428715003F4069 /* N2View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2View.h; sourceTree = "<group>"; };
-		59A6331610428715003F4069 /* N2LayoutManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2LayoutManager.mm; sourceTree = "<group>"; };
 		59A6331710428715003F4069 /* N2Step.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Step.mm; sourceTree = "<group>"; };
 		59A6331810428715003F4069 /* N2StepsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2StepsView.h; sourceTree = "<group>"; };
 		59A6331910428715003F4069 /* N2Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Window.h; sourceTree = "<group>"; };
@@ -110,8 +120,6 @@
 		59A6331C10428715003F4069 /* N2Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Pair.h; sourceTree = "<group>"; };
 		59A6331D10428715003F4069 /* N2Operators.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Operators.mm; sourceTree = "<group>"; };
 		59A6331E10428715003F4069 /* N2Operators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Operators.h; sourceTree = "<group>"; };
-		59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2LayoutDescriptor.mm; sourceTree = "<group>"; };
-		59A6332010428715003F4069 /* N2LayoutDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2LayoutDescriptor.h; sourceTree = "<group>"; };
 		59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2DisclosureButtonCell.mm; sourceTree = "<group>"; };
 		59A6332210428715003F4069 /* N2SingletonObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2SingletonObject.mm; sourceTree = "<group>"; };
 		59A6332310428715003F4069 /* N2SingletonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2SingletonObject.h; sourceTree = "<group>"; };
@@ -150,6 +158,22 @@
 		59CF838C1069306800A4444F /* NSInvocation+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+N2.h"; sourceTree = "<group>"; };
 		59CF83A91069309F00A4444F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		59CF83AA1069309F00A4444F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		59D8755B10AABD1900AAA0FE /* N2Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Layout.h; sourceTree = "<group>"; };
+		59D8755C10AABD1900AAA0FE /* N2Layout.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Layout.mm; sourceTree = "<group>"; };
+		59D8755F10AABE2200AAA0FE /* N2ColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ColumnLayout.h; sourceTree = "<group>"; };
+		59D8756010AABE2200AAA0FE /* N2ColumnLayout.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ColumnLayout.mm; sourceTree = "<group>"; };
+		59D8756410AAC39C00AAA0FE /* NSView+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+N2.h"; sourceTree = "<group>"; };
+		59D8756510AAC39C00AAA0FE /* NSView+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSView+N2.mm"; sourceTree = "<group>"; };
+		59D8757910AAC94900AAA0FE /* N2Exceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Exceptions.h; sourceTree = "<group>"; };
+		59D8757A10AAC94900AAA0FE /* N2Exceptions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Exceptions.mm; sourceTree = "<group>"; };
+		59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ColumnDescriptor.h; sourceTree = "<group>"; };
+		59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ColumnDescriptor.mm; sourceTree = "<group>"; };
+		59D875AA10AAEF2000AAA0FE /* N2MinMax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2MinMax.h; sourceTree = "<group>"; };
+		59D875AB10AAEF2000AAA0FE /* N2MinMax.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2MinMax.mm; sourceTree = "<group>"; };
+		59D8775B10AC0F7C00AAA0FE /* N2Alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Alignment.h; sourceTree = "<group>"; };
+		59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Alignment.mm; sourceTree = "<group>"; };
+		59D8899D10B1812500AAA0FE /* N2Resizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Resizer.h; sourceTree = "<group>"; };
+		59D8899E10B1812500AAA0FE /* N2Resizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Resizer.mm; sourceTree = "<group>"; };
 		59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+N2.h"; sourceTree = "<group>"; };
 		59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSColor+N2.mm"; sourceTree = "<group>"; };
 		59E7A179108C9ACF007F82BA /* NSURL+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+N2.h"; sourceTree = "<group>"; };
@@ -246,20 +270,21 @@
 				59A6332610428715003F4069 /* N2Debug.mm */,
 				59A6331E10428715003F4069 /* N2Operators.h */,
 				59A6331D10428715003F4069 /* N2Operators.mm */,
-				59A6331510428715003F4069 /* N2View.h */,
-				59A6331A10428715003F4069 /* N2View.mm */,
-				59A641BA1042E108003F4069 /* N2Panel.h */,
-				59A641BB1042E108003F4069 /* N2Panel.mm */,
-				59A6331910428715003F4069 /* N2Window.h */,
-				59A6330E10428715003F4069 /* N2Window.mm */,
+				59D875AA10AAEF2000AAA0FE /* N2MinMax.h */,
+				59D875AB10AAEF2000AAA0FE /* N2MinMax.mm */,
+				59D8775B10AC0F7C00AAA0FE /* N2Alignment.h */,
+				59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */,
 				598E50301043CB90005BCDC7 /* N2ButtonCell.h */,
 				598E50311043CB90005BCDC7 /* N2ButtonCell.mm */,
 				59A6332710428715003F4069 /* N2DisclosureBox.h */,
 				59A6333510428715003F4069 /* N2DisclosureBox.mm */,
 				59A6333410428715003F4069 /* N2DisclosureButtonCell.h */,
 				59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */,
+				59D8899D10B1812500AAA0FE /* N2Resizer.h */,
+				59D8899E10B1812500AAA0FE /* N2Resizer.mm */,
 				5915D5EE1099D8CC0024F610 /* N2Shell.h */,
 				5915D5EF1099D8CC0024F610 /* N2Shell.mm */,
+				59D8757810AAC93900AAA0FE /* Exceptions */,
 				59CF837210692FFC00A4444F /* Connections */,
 				59A633621042877D003F4069 /* Layout */,
 				59A6336110428751003F4069 /* Steps */,
@@ -288,10 +313,18 @@
 		59A633621042877D003F4069 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				59A6331210428715003F4069 /* N2LayoutManager.h */,
-				59A6331610428715003F4069 /* N2LayoutManager.mm */,
-				59A6332010428715003F4069 /* N2LayoutDescriptor.h */,
-				59A6331F10428715003F4069 /* N2LayoutDescriptor.mm */,
+				59A6331510428715003F4069 /* N2View.h */,
+				59A6331A10428715003F4069 /* N2View.mm */,
+				59A641BA1042E108003F4069 /* N2Panel.h */,
+				59A641BB1042E108003F4069 /* N2Panel.mm */,
+				59A6331910428715003F4069 /* N2Window.h */,
+				59A6330E10428715003F4069 /* N2Window.mm */,
+				59D8755B10AABD1900AAA0FE /* N2Layout.h */,
+				59D8755C10AABD1900AAA0FE /* N2Layout.mm */,
+				59D8755F10AABE2200AAA0FE /* N2ColumnLayout.h */,
+				59D8756010AABE2200AAA0FE /* N2ColumnLayout.mm */,
+				59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */,
+				59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -334,6 +367,8 @@
 				59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */,
 				59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */,
 				59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */,
+				59D8756410AAC39C00AAA0FE /* NSView+N2.h */,
+				59D8756510AAC39C00AAA0FE /* NSView+N2.mm */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -362,6 +397,15 @@
 			name = "3rd Party";
 			sourceTree = "<group>";
 		};
+		59D8757810AAC93900AAA0FE /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				59D8757910AAC94900AAA0FE /* N2Exceptions.h */,
+				59D8757A10AAC94900AAA0FE /* N2Exceptions.mm */,
+			);
+			name = Exceptions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -371,14 +415,12 @@
 			files = (
 				59A6333710428715003F4069 /* N2StepView.h in Headers */,
 				59A6333B10428715003F4069 /* N2Step.h in Headers */,
-				59A6333C10428715003F4069 /* N2LayoutManager.h in Headers */,
 				59A6333D10428715003F4069 /* N2Steps.h in Headers */,
 				59A6333F10428715003F4069 /* N2View.h in Headers */,
 				59A6334210428715003F4069 /* N2StepsView.h in Headers */,
 				59A6334310428715003F4069 /* N2Window.h in Headers */,
 				59A6334610428715003F4069 /* N2Pair.h in Headers */,
 				59A6334810428715003F4069 /* N2Operators.h in Headers */,
-				59A6334A10428715003F4069 /* N2LayoutDescriptor.h in Headers */,
 				59A6334D10428715003F4069 /* N2SingletonObject.h in Headers */,
 				59A6334E10428715003F4069 /* N2Debug.h in Headers */,
 				59A6335110428715003F4069 /* N2DisclosureBox.h in Headers */,
@@ -404,6 +446,14 @@
 				59E7A17B108C9ACF007F82BA /* NSURL+N2.h in Headers */,
 				59E7AA7A108DDA4C007F82BA /* NSPanel+N2.h in Headers */,
 				5915D5F01099D8CC0024F610 /* N2Shell.h in Headers */,
+				59D8755D10AABD1900AAA0FE /* N2Layout.h in Headers */,
+				59D8756110AABE2200AAA0FE /* N2ColumnLayout.h in Headers */,
+				59D8756610AAC39C00AAA0FE /* NSView+N2.h in Headers */,
+				59D8757B10AAC94900AAA0FE /* N2Exceptions.h in Headers */,
+				59D875A810AAEE8000AAA0FE /* N2ColumnDescriptor.h in Headers */,
+				59D875AC10AAEF2000AAA0FE /* N2MinMax.h in Headers */,
+				59D8775D10AC0F7C00AAA0FE /* N2Alignment.h in Headers */,
+				59D8899F10B1812500AAA0FE /* N2Resizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,12 +535,10 @@
 				59A6333810428715003F4069 /* N2Window.mm in Sources */,
 				59A6333A10428715003F4069 /* N2Steps.mm in Sources */,
 				59A6333E10428715003F4069 /* N2StepsView.mm in Sources */,
-				59A6334010428715003F4069 /* N2LayoutManager.mm in Sources */,
 				59A6334110428715003F4069 /* N2Step.mm in Sources */,
 				59A6334410428715003F4069 /* N2View.mm in Sources */,
 				59A6334510428715003F4069 /* N2Pair.mm in Sources */,
 				59A6334710428715003F4069 /* N2Operators.mm in Sources */,
-				59A6334910428715003F4069 /* N2LayoutDescriptor.mm in Sources */,
 				59A6334B10428715003F4069 /* N2DisclosureButtonCell.mm in Sources */,
 				59A6334C10428715003F4069 /* N2SingletonObject.mm in Sources */,
 				59A6335010428715003F4069 /* N2Debug.mm in Sources */,
@@ -515,6 +563,14 @@
 				59E7A17C108C9ACF007F82BA /* NSURL+N2.mm in Sources */,
 				59E7AA7B108DDA4C007F82BA /* NSPanel+N2.mm in Sources */,
 				5915D5F11099D8CC0024F610 /* N2Shell.mm in Sources */,
+				59D8755E10AABD1900AAA0FE /* N2Layout.mm in Sources */,
+				59D8756210AABE2200AAA0FE /* N2ColumnLayout.mm in Sources */,
+				59D8756710AAC39C00AAA0FE /* NSView+N2.mm in Sources */,
+				59D8757C10AAC94900AAA0FE /* N2Exceptions.mm in Sources */,
+				59D875A910AAEE8000AAA0FE /* N2ColumnDescriptor.mm in Sources */,
+				59D875AD10AAEF2000AAA0FE /* N2MinMax.mm in Sources */,
+				59D8775E10AC0F7C00AAA0FE /* N2Alignment.mm in Sources */,
+				59D889A010B1812500AAA0FE /* N2Resizer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

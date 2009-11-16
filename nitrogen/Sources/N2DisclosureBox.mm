@@ -117,10 +117,17 @@ NSString* N2DisclosureBoxDidCollapseNotification = @"N2DisclosureBoxDidCollapseN
 
 -(void)setTitle:(NSString*)title {
 	[_titleCell setTitle:title];
+	[_titleCell setAlternateTitle:title];
 }
 
 -(NSString*)title {
 	return [_titleCell title];
+}
+
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	NSSize size = [self frame].size;
+	size.width = width;
+	return size;
 }
 
 @end

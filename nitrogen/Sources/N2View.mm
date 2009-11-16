@@ -7,110 +7,57 @@
 //
 
 #import <Nitrogen/N2View.h>
-#import <Nitrogen/N2LayoutManager.h>
-#import <Nitrogen/N2LayoutDescriptor.h>
-#import <Nitrogen/N2Operators.h>
+#import <Nitrogen/N2Layout.h>
+// #import <Nitrogen/N2Operators.h>
 
-NSString* N2ViewWillDeallocNotification = @"N2ViewWillDeallocNotification";
+NSString* N2ViewBoundsSizeDidChangeNotification = @"N2ViewBoundsSizeDidChangeNotification";
+NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
 
 @implementation N2View
-@synthesize minSize = _minSize, maxSize = _maxSize, layout = _layout, content = _n2rows, insertionRowIndex = _n2InsertionRowIndex;
-
--(id)initWithFrame:(NSRect)frame {
-	self = [super initWithFrame:frame];
-	[self awakeFromNib];
-	return self;
-}
-
--(void)awakeFromNib {
-	_n2rows = [[NSMutableArray arrayWithCapacity:4] retain];
-	[self addRow];	
-}
+@synthesize controlSize = _controlSize, minSize = _minSize, maxSize = _maxSize, layout = _layout, foreColor = _foreColor, backColor = _backColor;
 
 -(void)dealloc {
+	[self setForeColor:NULL];
+	[self setBackColor:NULL];
 	[self setLayout:NULL];
-	[_n2rows release]; _n2rows = NULL;
 	[super dealloc];
 }
 
--(void)insertRow:(NSUInteger)index {
-	if (index > [_n2rows count])
-		[NSException raise:NSRangeException format:@"Row insertion index too high"];
-	if (index < [_n2rows count] && [[_n2rows objectAtIndex:index] count] == 0)
-		return;
-	[_n2rows insertObject:[NSMutableArray arrayWithCapacity:4] atIndex:index];
-	_n2InsertionRowIndex = index;
-}
-
--(void)insertRow {
-	[self insertRow:_n2InsertionRowIndex];
-}
-
--(NSUInteger)addRow {
-	NSUInteger index = [_n2rows count];
-	if (index > 0 && [[_n2rows objectAtIndex:index-1] count] == 0)
-		return _n2InsertionRowIndex = index-1;
-	[self insertRow:index];
-	return _n2InsertionRowIndex = index;
-}
-
--(void)addDescriptor:(NSLayoutDescriptor*)descriptor {
-	[[_n2rows objectAtIndex:_n2InsertionRowIndex] addObject:descriptor];
-}
-
--(NSInteger)viewRow:(NSView*)view {
-	for (NSUInteger i = 0; i < [_n2rows count]; ++i)
-		for (id element in [_n2rows objectAtIndex:i])
-			if ([element isEqual:view])
-				return i;
-	return -1;
-}
-
--(void)setInsertionRowIndex:(NSUInteger)index {
-	if (index >= [_n2rows count])
-		[NSException raise:NSRangeException format:@"Insertion row index too high"];
-	_n2InsertionRowIndex = index;
-}
-
--(void)didAddSubview:(NSView*)view {
-	[[_n2rows objectAtIndex:_n2InsertionRowIndex] addObject:view];
-	if (_layout) [_layout didAddSubview:view];
-//	if ([self autoresizesSubviews]) [self recalculate];
-//	[super didAddSubview:view];
-}
-
--(void)willRemoveSubview:(NSView*)view {
-//	if (_layout) [_layout willRemoveSubview:view];
-	NSInteger rowIndex = [self viewRow:view];
-	if (rowIndex != -1) {
-		[[_n2rows objectAtIndex:rowIndex] removeObject:view];
-		_n2InsertionRowIndex = rowIndex;
-		if ([[_n2rows objectAtIndex:rowIndex] count] == 0)
-			[_n2rows removeObjectAtIndex:rowIndex];
-//		if ([self autoresizesSubviews]) [self recalculate];
-	}
-//	[super didRemoveSubview:view];
-}
-
--(NSUInteger)numberOfElementsInCurrentRow {
-	return [[_n2rows objectAtIndex:_n2InsertionRowIndex] count];
-}
-
--(void)recalculate {
+-(void)resizeSubviews {
 	[self resizeSubviewsWithOldSize:[self bounds].size];
 }
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize {
-	if (_layout && [[self subviews] count])
-		[_layout recalculate:self];
+	[_layout layOut];
+	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:N2ViewBoundsSizeDidChangeNotification object:self userInfo:[NSDictionary dictionaryWithObject:[NSValue valueWithSize:oldBoundsSize] forKey:N2ViewBoundsSizeDidChangeNotificationOldBoundsSize]]];
+}
+
+-(void)formatSubview:(NSView*)view {
+	if (view) {
+		if (_foreColor && [view respondsToSelector:@selector(setTextColor:)])
+			[view performSelector:@selector(setTextColor:) withObject:_foreColor];
+		if (_backColor && [view respondsToSelector:@selector(setBackgroundColor:)])
+			[view performSelector:@selector(setBackgroundColor:) withObject:_backColor];
+		else if ([view respondsToSelector:@selector(setDrawsBackground:)])
+			[(NSText*)view setDrawsBackground:NO];
+	} else
+		view = self;
+	
+	for (NSView* subview in [view subviews])
+		if (![subview isKindOfClass:[N2View class]] || [(N2View*)subview layout] == NULL)
+			[self formatSubview:subview];
+}
+
+-(void)didAddSubview:(NSView*)view {
+	[self formatSubview:view];
+}
+
+-(void)setForeColor:(NSColor*)color {
+	[_foreColor release];
+	_foreColor = [color retain];
+	for (NSView* view in [self subviews])
+		[self formatSubview:view];
 }
 
 @end
 
-@implementation NSView (N2)
-
--(id)initWithSize:(NSSize)size {
-	return [self initWithFrame:NSMakeRect(NSZeroPoint, size)];
-}
-
-@end

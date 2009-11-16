@@ -12,12 +12,20 @@
 
 @implementation NSTextView (N2)
 
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	return [[self textStorage] sizeForWidth:width height:CGFLOAT_MAX];
+}
+
+-(NSSize)optimalSize {
+	return [self optimalSizeForWidth:CGFLOAT_MAX];
+}
+
 -(NSSize)adaptToContent {
-	return [self adaptToContent:MAXFLOAT];
+	return [self adaptToContent:CGFLOAT_MAX];
 }
 
 -(NSSize)adaptToContent:(CGFloat)maxWidth {
-	NSSize stringSize = [[self textStorage] sizeForWidth:maxWidth height:MAXFLOAT];
+	NSSize stringSize = [[self textStorage] sizeForWidth:maxWidth height:CGFLOAT_MAX];
 	[self setFrame:NSMakeRect([self frame].origin, stringSize)];
 	return stringSize;
 }
