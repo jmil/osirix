@@ -4623,48 +4623,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		2CA3261F0896AD4900168862 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = i386;
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/build/Development\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Development 64-bits\"";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Library/QuickLook;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"\"$(SRCROOT)/../osirix/Binaries/openjpeg\"",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../osirix/build/Development\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../osirix/Binaries/Jasper\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 64-bit\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 32-bit\"";
-				PRODUCT_NAME = DICOMQuickLook;
-				VALID_ARCHS = i386;
-				WRAPPER_EXTENSION = qlgenerator;
-				ZERO_LINK = YES;
-			};
-			name = Debug;
-		};
 		2CA326200896AD4900168862 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4698,28 +4656,15 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = DICOMQuickLook;
 				STRIP_INSTALLED_PRODUCT = YES;
-				VALID_ARCHS = "i386 ppc";
 				WRAPPER_EXTENSION = qlgenerator;
 			};
 			name = Release;
-		};
-		2CA326230896AD4900168862 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = i386;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_PREFIX_HEADER = DICOMQuickLook_Prefix.pch;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				PREBINDING = NO;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
-			};
-			name = Debug;
 		};
 		2CA326240896AD4900168862 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
+					x86_64,
 					i386,
 					ppc,
 				);
@@ -4742,7 +4687,6 @@
 		2CA3261E0896AD4900168862 /* Build configuration list for PBXNativeTarget "DICOMQuickLook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CA3261F0896AD4900168862 /* Debug */,
 				2CA326200896AD4900168862 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4751,7 +4695,6 @@
 		2CA326220896AD4900168862 /* Build configuration list for PBXProject "DICOMQuickLook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CA326230896AD4900168862 /* Debug */,
 				2CA326240896AD4900168862 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
