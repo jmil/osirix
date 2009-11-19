@@ -7,11 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "BullsEyeController.h"
 
 @interface BullsEyeView : NSView
 {
 	NSMutableArray *segments;
+	BullsEyeController *c;
 }
+
++ (BullsEyeView*) view;
+- (void) setText: (int) i :(NSMutableDictionary*) seg;
+- (void) refresh;
 
 @end

@@ -8,9 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface BullsEyeController : NSWindowController
 {
+	IBOutlet NSTableView *presetsTable;
+	IBOutlet NSArrayController *presetBullsEye, *presetsList;
 }
+
+- (NSArray*) presetBullsEyeArray;
+- (IBAction) refresh: (id) sender;
 
 @end
