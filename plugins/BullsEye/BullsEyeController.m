@@ -100,12 +100,12 @@ const NSString* FileTypeDICOM = @"dcm";
 	if (accessoryView)
 		[panel setAccessoryView:accessoryView];
 	
-	[panel beginSheetForDirectory:NULL file:NULL modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveAsPanelDidEnd:returnCode:contextInfo:) contextInfo:format];
+	[panel beginSheetForDirectory:NULL file: [[presetsList selection] valueForKey: @"name"] modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(saveAsPanelDidEnd:returnCode:contextInfo:) contextInfo:format];
 }
 
 -(IBAction) saveDICOM:(id)sender
 {
-	[self dicomSave: @"bullsEye" backgroundColor: [NSColor whiteColor] toFile: [[[BrowserController currentBrowser] fixedDocumentsDirectory] stringByAppendingPathComponent: @"INCOMING.noindex/bullsEye.dcm"]];
+	[self dicomSave: [[presetsList selection] valueForKey: @"name"] backgroundColor: [NSColor whiteColor] toFile: [[[BrowserController currentBrowser] fixedDocumentsDirectory] stringByAppendingPathComponent: @"INCOMING.noindex/bullsEye.dcm"]];
 }
 
 -(IBAction)saveAsPDF:(id)sender
@@ -185,8 +185,7 @@ const NSString* FileTypeDICOM = @"dcm";
 		}
 		else
 		{ // dicom
-			unsigned lastSlash = [[panel filename] rangeOfString:@"/" options:NSBackwardsSearch].location+1;
-			[self dicomSave:[[panel filename] substringWithRange: NSMakeRange(lastSlash, [[panel filename] rangeOfString:@"." options:NSBackwardsSearch].location-lastSlash)] backgroundColor: [NSColor whiteColor] toFile:[panel filename]];
+			[self dicomSave: [[presetsList selection] valueForKey: @"name"] backgroundColor: [NSColor whiteColor] toFile:[panel filename]];
 		}
 	
 	if (error)

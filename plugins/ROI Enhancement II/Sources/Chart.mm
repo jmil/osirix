@@ -91,11 +91,13 @@
 	[self setNeedsToReloadData:YES];
 }
 
--(void)mouseDown:(NSEvent*)theEvent {
+-(void)mouseDown:(NSEvent*)theEvent
+{
 	_tracking = YES;
 	[NSCursor hide];
 	
 	[self mouseDragged:theEvent];
+	[[self window] makeFirstResponder: self];
 }
 
 -(void)mouseDragged:(NSEvent*)theEvent {
@@ -394,6 +396,14 @@
 	}	
 	
 	[context restoreGraphicsState];
+}
+
+-(IBAction) copy:(id) sender
+{
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+	
+	[pb declareTypes: [NSArray arrayWithObject: NSPDFPboardType] owner: self];
+	[pb setData: [self dataWithPDFInsideRect:[self bounds]] forType: NSPDFPboardType];
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
