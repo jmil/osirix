@@ -18,5 +18,5 @@
 + (BullsEyeView*) view;
 - (void) setText: (int) i :(NSMutableDictionary*) seg;
 - (void) refresh;
-
+- (NSRect) squareBounds;
 @end

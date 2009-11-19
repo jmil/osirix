@@ -10,20 +10,12 @@
 		84C2E21B10285C9600C38AF1 /* Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 84C2E21A10285C9600C38AF1 /* Prefix.pch */; };
 		84C2E21F10285CDB00C38AF1 /* BullsEye.h in Headers */ = {isa = PBXBuildFile; fileRef = 84C2E21D10285CDB00C38AF1 /* BullsEye.h */; };
 		84C2E22010285CDB00C38AF1 /* BullsEye.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E21E10285CDB00C38AF1 /* BullsEye.m */; };
-		84C2E264102864CC00C38AF1 /* OsiriX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E263102864CC00C38AF1 /* OsiriX.framework */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		AB01B9BD067FAC0500CDDB0F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB01B9BC067FAC0500CDDB0F /* WebKit.framework */; };
 		AB5A33C410B58DC0000D3A60 /* PresetsArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = AB5A33C210B58DC0000D3A60 /* PresetsArrayController.h */; };
 		AB5A33C510B58DC0000D3A60 /* PresetsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB5A33C310B58DC0000D3A60 /* PresetsArrayController.m */; };
 		AB5A342710B5956A000D3A60 /* PopUpMenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */; };
-		ABB76340067FB2A8000912C1 /* DCMPix.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB76339067FB2A8000912C1 /* DCMPix.h */; };
-		ABB76341067FB2A8000912C1 /* DCMView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633A067FB2A8000912C1 /* DCMView.h */; };
-		ABB76342067FB2A8000912C1 /* dicomFile.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633B067FB2A8000912C1 /* dicomFile.h */; };
-		ABB76343067FB2A8000912C1 /* MyPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633C067FB2A8000912C1 /* MyPoint.h */; };
-		ABB76344067FB2A8000912C1 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633D067FB2A8000912C1 /* PluginFilter.h */; };
-		ABB76345067FB2A8000912C1 /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633E067FB2A8000912C1 /* ROI.h */; };
-		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
 		ABEB176A10B5297C00245C73 /* ColorCell.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEB176810B5297C00245C73 /* ColorCell.h */; };
 		ABEB176B10B5297C00245C73 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEB176910B5297C00245C73 /* ColorCell.m */; };
 		ABEB178010B52BCB00245C73 /* PresetsListArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEB177E10B52BCB00245C73 /* PresetsListArrayController.h */; };
@@ -33,6 +25,8 @@
 		CE5CC4CE10B489D9006A5B6D /* BullsEyeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */; };
 		CE5CC4D410B48A3E006A5B6D /* BullsEyeView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE5CC4D210B48A3E006A5B6D /* BullsEyeView.h */; };
 		CE5CC4D510B48A3E006A5B6D /* BullsEyeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5CC4D310B48A3E006A5B6D /* BullsEyeView.m */; };
+		CE9B942D10B5E4CC002451B0 /* OsiriX Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9B942C10B5E4CC002451B0 /* OsiriX Headers.framework */; };
+		CE9B95F210B5F04D002451B0 /* Perfusion.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CE9B95F110B5F04D002451B0 /* Perfusion.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,20 +37,12 @@
 		84C2E21A10285C9600C38AF1 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		84C2E21D10285CDB00C38AF1 /* BullsEye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BullsEye.h; sourceTree = "<group>"; };
 		84C2E21E10285CDB00C38AF1 /* BullsEye.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BullsEye.m; sourceTree = "<group>"; };
-		84C2E263102864CC00C38AF1 /* OsiriX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OsiriX.framework; path = "../../osirix/build/Deployment Universal 64-bit/OsiriX.framework"; sourceTree = SOURCE_ROOT; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB01B9BC067FAC0500CDDB0F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		AB1411F40677B3BE004B0074 /* BullsEye.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BullsEye.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB5A33C210B58DC0000D3A60 /* PresetsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetsArrayController.h; sourceTree = "<group>"; };
 		AB5A33C310B58DC0000D3A60 /* PresetsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetsArrayController.m; sourceTree = "<group>"; };
 		AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpMenuIcon.png; sourceTree = "<group>"; };
-		ABB76339067FB2A8000912C1 /* DCMPix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMPix.h; sourceTree = "<group>"; };
-		ABB7633A067FB2A8000912C1 /* DCMView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DCMView.h; sourceTree = "<group>"; };
-		ABB7633B067FB2A8000912C1 /* dicomFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = dicomFile.h; sourceTree = "<group>"; };
-		ABB7633C067FB2A8000912C1 /* MyPoint.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyPoint.h; sourceTree = "<group>"; };
-		ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
-		ABB7633E067FB2A8000912C1 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
-		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		ABEB176810B5297C00245C73 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		ABEB176910B5297C00245C73 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
 		ABEB177E10B52BCB00245C73 /* PresetsListArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetsListArrayController.h; sourceTree = "<group>"; };
@@ -66,6 +52,8 @@
 		CE5CC4CD10B489D9006A5B6D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BullsEyeController.xib; sourceTree = "<group>"; };
 		CE5CC4D210B48A3E006A5B6D /* BullsEyeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BullsEyeView.h; sourceTree = "<group>"; };
 		CE5CC4D310B48A3E006A5B6D /* BullsEyeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BullsEyeView.m; sourceTree = "<group>"; };
+		CE9B942C10B5E4CC002451B0 /* OsiriX Headers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "OsiriX Headers.framework"; path = "../../osirix/build/Development/OsiriX Headers.framework"; sourceTree = SOURCE_ROOT; };
+		CE9B95F110B5F04D002451B0 /* Perfusion.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Perfusion.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +63,7 @@
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				AB01B9BD067FAC0500CDDB0F /* WebKit.framework in Frameworks */,
-				84C2E264102864CC00C38AF1 /* OsiriX.framework in Frameworks */,
+				CE9B942D10B5E4CC002451B0 /* OsiriX Headers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */,
+				CE9B95F110B5F04D002451B0 /* Perfusion.pdf */,
 				AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
@@ -117,7 +106,6 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				ABB76338067FB2A8000912C1 /* OsiriX Headers */,
 				84C2E21D10285CDB00C38AF1 /* BullsEye.h */,
 				84C2E21E10285CDB00C38AF1 /* BullsEye.m */,
 				CE5CC4C510B489A5006A5B6D /* BullsEyeController.h */,
@@ -137,8 +125,8 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE9B942C10B5E4CC002451B0 /* OsiriX Headers.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
-				84C2E263102864CC00C38AF1 /* OsiriX.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -169,20 +157,6 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
-		ABB76338067FB2A8000912C1 /* OsiriX Headers */ = {
-			isa = PBXGroup;
-			children = (
-				ABB7633D067FB2A8000912C1 /* PluginFilter.h */,
-				ABB76339067FB2A8000912C1 /* DCMPix.h */,
-				ABB7633A067FB2A8000912C1 /* DCMView.h */,
-				ABB7633B067FB2A8000912C1 /* dicomFile.h */,
-				ABB7633C067FB2A8000912C1 /* MyPoint.h */,
-				ABB7633E067FB2A8000912C1 /* ROI.h */,
-				ABB7633F067FB2A8000912C1 /* ViewerController.h */,
-			);
-			path = "OsiriX Headers";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -190,13 +164,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABB76340067FB2A8000912C1 /* DCMPix.h in Headers */,
-				ABB76341067FB2A8000912C1 /* DCMView.h in Headers */,
-				ABB76342067FB2A8000912C1 /* dicomFile.h in Headers */,
-				ABB76343067FB2A8000912C1 /* MyPoint.h in Headers */,
-				ABB76344067FB2A8000912C1 /* PluginFilter.h in Headers */,
-				ABB76345067FB2A8000912C1 /* ROI.h in Headers */,
-				ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */,
 				84C2E21B10285C9600C38AF1 /* Prefix.pch in Headers */,
 				84C2E21F10285CDB00C38AF1 /* BullsEye.h in Headers */,
 				CE5CC4C710B489A5006A5B6D /* BullsEyeController.h in Headers */,
@@ -258,6 +225,7 @@
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				CE5CC4CE10B489D9006A5B6D /* BullsEyeController.xib in Resources */,
 				AB5A342710B5956A000D3A60 /* PopUpMenuIcon.png in Resources */,
+				CE9B95F210B5F04D002451B0 /* Perfusion.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +285,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../osirix/build/Deployment Universal 64-bit\"",
+					"\"$(SRCROOT)/../../osirix/build/Development\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;

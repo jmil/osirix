@@ -41,6 +41,24 @@ static BullsEyeView *bullsEyeView= nil;
     return self;
 }
 
+- (NSRect) squareBounds
+{
+	NSRect squareBounds = [self bounds];
+	
+	if( squareBounds.size.width < squareBounds.size.height)
+	{
+		squareBounds.origin.y += (squareBounds.size.height - squareBounds.size.width)/2;
+		squareBounds.size.height = squareBounds.size.width;
+	}
+	else
+	{
+		squareBounds.origin.x += (squareBounds.size.width - squareBounds.size.height)/2;
+		squareBounds.size.width = squareBounds.size.height;
+	}
+	
+	return squareBounds;
+}
+
 - (void) refresh
 {
 	[self setNeedsDisplay: YES];
@@ -104,7 +122,16 @@ static BullsEyeView *bullsEyeView= nil;
 		}
 	}
 	
+	[[self window] makeFirstResponder: self];
 	[self setNeedsDisplay: YES];
+}
+
+-(IBAction) copy:(id) sender
+{
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+	
+	[pb declareTypes: [NSArray arrayWithObject: NSPDFPboardType] owner:self];
+	[pb setData: [self dataWithPDFInsideRect:[self squareBounds]] forType: NSPDFPboardType];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
