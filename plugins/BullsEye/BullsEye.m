@@ -6,14 +6,15 @@
 //
 
 #import "BullsEye.h"
-#import "OsiriX/DCMObject.h"
-#import "OsiriX/DCMTransferSyntax.h"
-#import "DCMPix.h"
+#import "BullsEyeController.h"
 
 @implementation BullsEye
 
 - (long) filterImage:(NSString*) menuName
 {
+	BullsEyeController *c = [[BullsEyeController alloc] initWithWindowNibName: @"BullsEyeController"];
+	
+	[[c window] makeKeyAndOrderFront: self];
 	
 	return 0;   // No Errors
 }

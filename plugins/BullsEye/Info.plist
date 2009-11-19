@@ -18,7 +18,7 @@
 	<string>1.0</string>
 	<key>MenuTitles</key>
 	<array>
-		<string>JPEG2000 Test</string>
+		<string>BullsEye</string>
 	</array>
 	<key>NSPrincipalClass</key>
 	<string>BullsEye</string>

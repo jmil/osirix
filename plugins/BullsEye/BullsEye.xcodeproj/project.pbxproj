@@ -21,6 +21,11 @@
 		ABB76344067FB2A8000912C1 /* PluginFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633D067FB2A8000912C1 /* PluginFilter.h */; };
 		ABB76345067FB2A8000912C1 /* ROI.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633E067FB2A8000912C1 /* ROI.h */; };
 		ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABB7633F067FB2A8000912C1 /* ViewerController.h */; };
+		CE5CC4C710B489A5006A5B6D /* BullsEyeController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE5CC4C510B489A5006A5B6D /* BullsEyeController.h */; };
+		CE5CC4C810B489A5006A5B6D /* BullsEyeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5CC4C610B489A5006A5B6D /* BullsEyeController.m */; };
+		CE5CC4CE10B489D9006A5B6D /* BullsEyeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */; };
+		CE5CC4D410B48A3E006A5B6D /* BullsEyeView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE5CC4D210B48A3E006A5B6D /* BullsEyeView.h */; };
+		CE5CC4D510B48A3E006A5B6D /* BullsEyeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5CC4D310B48A3E006A5B6D /* BullsEyeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +47,11 @@
 		ABB7633D067FB2A8000912C1 /* PluginFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PluginFilter.h; sourceTree = "<group>"; };
 		ABB7633E067FB2A8000912C1 /* ROI.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ROI.h; sourceTree = "<group>"; };
 		ABB7633F067FB2A8000912C1 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
+		CE5CC4C510B489A5006A5B6D /* BullsEyeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BullsEyeController.h; sourceTree = "<group>"; };
+		CE5CC4C610B489A5006A5B6D /* BullsEyeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BullsEyeController.m; sourceTree = "<group>"; };
+		CE5CC4CD10B489D9006A5B6D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BullsEyeController.xib; sourceTree = "<group>"; };
+		CE5CC4D210B48A3E006A5B6D /* BullsEyeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BullsEyeView.h; sourceTree = "<group>"; };
+		CE5CC4D310B48A3E006A5B6D /* BullsEyeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BullsEyeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -94,6 +105,10 @@
 				ABB76338067FB2A8000912C1 /* OsiriX Headers */,
 				84C2E21D10285CDB00C38AF1 /* BullsEye.h */,
 				84C2E21E10285CDB00C38AF1 /* BullsEye.m */,
+				CE5CC4C510B489A5006A5B6D /* BullsEyeController.h */,
+				CE5CC4C610B489A5006A5B6D /* BullsEyeController.m */,
+				CE5CC4D210B48A3E006A5B6D /* BullsEyeView.h */,
+				CE5CC4D310B48A3E006A5B6D /* BullsEyeView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -163,6 +178,8 @@
 				ABB76346067FB2A8000912C1 /* ViewerController.h in Headers */,
 				84C2E21B10285C9600C38AF1 /* Prefix.pch in Headers */,
 				84C2E21F10285CDB00C38AF1 /* BullsEye.h in Headers */,
+				CE5CC4C710B489A5006A5B6D /* BullsEyeController.h in Headers */,
+				CE5CC4D410B48A3E006A5B6D /* BullsEyeView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				CE5CC4CE10B489D9006A5B6D /* BullsEyeController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +254,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				84C2E22010285CDB00C38AF1 /* BullsEye.m in Sources */,
+				CE5CC4C810B489A5006A5B6D /* BullsEyeController.m in Sources */,
+				CE5CC4D510B48A3E006A5B6D /* BullsEyeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +268,14 @@
 				089C167EFE841241C02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE5CC4CD10B489D9006A5B6D /* English */,
+			);
+			name = BullsEyeController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -302,6 +330,7 @@
 					ppc,
 					x86_64,
 				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = macosx10.5;
 			};
