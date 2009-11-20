@@ -14,7 +14,10 @@
 - Customize the built-in Web server, by copying the WebServicesHTML folder in the OsiriX Data folder
 - Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) 
 - WADO Client support for Q&R
-- WADO Server support (included in the Web HTTP Server) url: wado?
+- WADO Server support (included in the Web HTTP Server, url: wado)
+- BullsEye plugin
+
+- Check patient merging
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
@@ -26,13 +29,6 @@
 - OO for reports
 
 - Cardiac MR bullseye plugin
-
-NSBezierPath* frame = [[[NSBezierPath alloc] init] autorelease];
-[frame appendBezierPathWithArcWithCenter:center radius:centerSize startAngle:eAngle endAngle:sAngle clockwise:YES];
-[frame appendBezierPathWithArcWithCenter:center radius:radius startAngle:sAngle endAngle:eAngle];
-[frame closePath];
-[frame setLineWidth: 0.5];
-[frame setLineJoinStyle:NSRoundLineJoinStyle];
 
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
