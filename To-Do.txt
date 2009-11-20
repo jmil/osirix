@@ -26,8 +26,6 @@
 - Sync Ortho-MPR
 - OO for reports
 
-- Cardiac MR bullseye plugin
-
 - QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - DICOM TLS
