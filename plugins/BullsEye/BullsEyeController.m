@@ -51,16 +51,38 @@ const NSString* FileTypeDICOM = @"dcm";
 	if( [[NSUserDefaults standardUserDefaults] objectForKey: @"presetsBullsEyeList"] == nil)
 	{
 		NSDictionary *dict1, *dict2, *dict3, *dict4;
+		NSMutableArray *list = [NSMutableArray array];
 		
 		dict1 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"normal", @"state", [NSArchiver archivedDataWithRootObject: [NSColor whiteColor]], @"color", nil];
 		dict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"hypokinesia", @"state", [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]], @"color", nil];
 		dict3 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"akinesia", @"state", [NSArchiver archivedDataWithRootObject: [NSColor orangeColor]], @"color", nil];
 		dict4 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"dyskinesia", @"state", [NSArchiver archivedDataWithRootObject: [NSColor redColor]], @"color", nil];
+		[list addObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObjects: dict1, dict2, dict3, dict4, nil], @"array", @"Wall Motion", @"name", nil]];
 		
-		[[NSUserDefaults standardUserDefaults] setValue: [NSArray arrayWithObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObjects: dict1, dict2, dict3, dict4, nil], @"array", @"Wall Motion", @"name", nil]] forKey: @"presetsBullsEyeList"];
+		dict1 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"normal", @"state", [NSArchiver archivedDataWithRootObject: [NSColor whiteColor]], @"color", nil];
+		dict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"<50%", @"state", [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]], @"color", nil];
+		dict3 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @">50%", @"state", [NSArchiver archivedDataWithRootObject: [NSColor orangeColor]], @"color", nil];
+		dict4 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"100%", @"state", [NSArchiver archivedDataWithRootObject: [NSColor redColor]], @"color", nil];
+		[list addObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObjects: dict1, dict2, dict3, dict4, nil], @"array", @"Enhancement", @"name", nil]];
+		
+		dict1 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"normal", @"state", [NSArchiver archivedDataWithRootObject: [NSColor whiteColor]], @"color", nil];
+		dict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"artefact", @"state", [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]], @"color", nil];
+		dict3 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"physiologic", @"state", [NSArchiver archivedDataWithRootObject: [NSColor orangeColor]], @"color", nil];
+		dict4 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"pathologic", @"state", [NSArchiver archivedDataWithRootObject: [NSColor redColor]], @"color", nil];
+		[list addObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObjects: dict1, dict2, dict3, dict4, nil], @"array", @"Perfusion", @"name", nil]];
+		
+		dict1 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"normal", @"state", [NSArchiver archivedDataWithRootObject: [NSColor whiteColor]], @"color", nil];
+		dict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"hypotrophic", @"state", [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]], @"color", nil];
+		dict3 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"hypertrophic", @"state", [NSArchiver archivedDataWithRootObject: [NSColor orangeColor]], @"color", nil];
+		dict4 = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"aneurysmal", @"state", [NSArchiver archivedDataWithRootObject: [NSColor redColor]], @"color", nil];
+		[list addObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObjects: dict1, dict2, dict3, dict4, nil], @"array", @"Wall Thickness", @"name", nil]];
+		
+		[[NSUserDefaults standardUserDefaults] setValue: list forKey: @"presetsBullsEyeList"];
 	}
 	
 	self = [super initWithWindowNibName: windowNibName];
+	
+	[self setWindowFrameAutosaveName: @"bullsEyeWindowPosition"];
 	
 	return self;
 }
