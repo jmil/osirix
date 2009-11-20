@@ -17,8 +17,6 @@
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
 
-- Check patient merging
-
 - HTTPS
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
