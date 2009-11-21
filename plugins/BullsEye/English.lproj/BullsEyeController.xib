@@ -11,7 +11,7 @@
 			<string key="NS.object.0">732</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="309"/>
+			<integer value="129"/>
 			<integer value="7"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -610,13 +610,13 @@
 																		<object class="NSTableView" id="808904799">
 																			<reference key="NSNextResponder" ref="264302041"/>
 																			<int key="NSvFlags">4352</int>
-																			<string key="NSFrameSize">{181, 159}</string>
+																			<string key="NSFrameSize">{180, 159}</string>
 																			<reference key="NSSuperview" ref="264302041"/>
 																			<bool key="NSEnabled">YES</bool>
 																			<object class="NSTableHeaderView" key="NSHeaderView" id="676390909">
 																				<reference key="NSNextResponder" ref="982707279"/>
 																				<int key="NSvFlags">256</int>
-																				<string key="NSFrameSize">{181, 17}</string>
+																				<string key="NSFrameSize">{180, 17}</string>
 																				<reference key="NSSuperview" ref="982707279"/>
 																				<reference key="NSTableView" ref="808904799"/>
 																			</object>
@@ -629,9 +629,9 @@
 																			<array class="NSMutableArray" key="NSTableColumns">
 																				<object class="NSTableColumn" id="616848172">
 																					<string key="NSIdentifier">state</string>
-																					<double key="NSWidth">92</double>
-																					<double key="NSMinWidth">92</double>
-																					<double key="NSMaxWidth">92</double>
+																					<double key="NSWidth">80</double>
+																					<double key="NSMinWidth">80</double>
+																					<double key="NSMaxWidth">80</double>
 																					<object class="NSTableHeaderCell" key="NSHeaderCell">
 																						<int key="NSCellFlags">75628096</int>
 																						<int key="NSCellFlags2">2048</int>
@@ -715,7 +715,7 @@
 																					</object>
 																					<object class="NSTextFieldCell" key="NSDataCell" id="523399631">
 																						<int key="NSCellFlags">337772096</int>
-																						<int key="NSCellFlags2">-2147350528</int>
+																						<int key="NSCellFlags2">-2013132800</int>
 																						<string key="NSContents">Text Cell</string>
 																						<reference key="NSSupport" ref="26"/>
 																						<object class="NSNumberFormatter" key="NSFormatter" id="891247055">
@@ -723,16 +723,15 @@
 																								<boolean value="YES" key="allowsFloats"/>
 																								<integer value="1040" key="formatterBehavior"/>
 																								<boolean value="NO" key="lenient"/>
-																								<object class="NSLocale" key="locale">
-																									<string key="NS.identifier"/>
-																								</object>
+																								<integer value="0" key="maximumFractionDigits"/>
 																								<string key="negativeInfinitySymbol">-∞</string>
 																								<string key="nilSymbol"/>
 																								<integer value="1" key="numberStyle"/>
 																								<string key="positiveInfinitySymbol">+∞</string>
+																								<integer value="0" key="roundingMode"/>
 																							</dictionary>
-																							<string key="NS.positiveformat">#,##0.###</string>
-																							<string key="NS.negativeformat">#,##0.###</string>
+																							<string key="NS.positiveformat">#,##0</string>
+																							<string key="NS.negativeformat">#,##0</string>
 																							<nil key="NS.positiveattrs"/>
 																							<nil key="NS.negativeattrs"/>
 																							<nil key="NS.zero"/>
@@ -753,15 +752,15 @@
 																							</object>
 																							<reference key="NS.max" ref="536188474"/>
 																							<object class="NSDecimalNumberHandler" key="NS.rounding">
-																								<int key="NS.roundingmode">3</int>
+																								<int key="NS.roundingmode">2</int>
 																								<bool key="NS.raise.overflow">YES</bool>
 																								<bool key="NS.raise.underflow">YES</bool>
 																								<bool key="NS.raise.dividebyzero">YES</bool>
 																							</object>
 																							<string key="NS.decimal">.</string>
-																							<string key="NS.thousand">,</string>
+																							<string key="NS.thousand">'</string>
 																							<bool key="NS.hasthousands">YES</bool>
-																							<bool key="NS.localized">NO</bool>
+																							<bool key="NS.localized">YES</bool>
 																							<bool key="NS.allowsfloats">YES</bool>
 																						</object>
 																						<reference key="NSControlView" ref="808904799"/>
@@ -819,7 +818,6 @@
 																	<int key="NSvFlags">-2147483392</int>
 																	<string key="NSFrame">{{-100, -100}, {250, 15}}</string>
 																	<reference key="NSSuperview" ref="148132314"/>
-																	<bool key="NSEnabled">YES</bool>
 																	<int key="NSsFlags">1</int>
 																	<reference key="NSTarget" ref="148132314"/>
 																	<string key="NSAction">_doScroller:</string>
@@ -844,7 +842,7 @@
 															<string key="NSFrame">{{8, 36}, {182, 177}}</string>
 															<reference key="NSSuperview" ref="743196779"/>
 															<reference key="NSNextKeyView" ref="264302041"/>
-															<int key="NSsFlags">658</int>
+															<int key="NSsFlags">530</int>
 															<reference key="NSVScroller" ref="17995691"/>
 															<reference key="NSHScroller" ref="666696482"/>
 															<reference key="NSContentView" ref="264302041"/>
@@ -1065,38 +1063,6 @@
 						<reference key="destination" ref="780141926"/>
 					</object>
 					<int key="connectionID">6</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.color</string>
-						<reference key="source" ref="943123830"/>
-						<reference key="destination" ref="474428215"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="943123830"/>
-							<reference key="NSDestination" ref="474428215"/>
-							<string key="NSLabel">value: arrangedObjects.color</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.color</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">169</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.state</string>
-						<reference key="source" ref="616848172"/>
-						<reference key="destination" ref="474428215"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="616848172"/>
-							<reference key="NSDestination" ref="474428215"/>
-							<string key="NSLabel">value: arrangedObjects.state</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.state</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">170</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1437,6 +1403,46 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.state</string>
+						<reference key="source" ref="616848172"/>
+						<reference key="destination" ref="474428215"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="616848172"/>
+							<reference key="NSDestination" ref="474428215"/>
+							<string key="NSLabel">value: arrangedObjects.state</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.state</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSCreatesSortDescriptor</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">327</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.color</string>
+						<reference key="source" ref="943123830"/>
+						<reference key="destination" ref="474428215"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="943123830"/>
+							<reference key="NSDestination" ref="474428215"/>
+							<string key="NSLabel">value: arrangedObjects.color</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.color</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSCreatesSortDescriptor</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">328</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.score</string>
 						<reference key="source" ref="1063528181"/>
 						<reference key="destination" ref="474428215"/>
@@ -1446,10 +1452,14 @@
 							<string key="NSLabel">value: arrangedObjects.score</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">arrangedObjects.score</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSCreatesSortDescriptor</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">325</int>
+					<int key="connectionID">329</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2038,8 +2048,9 @@
 				<string key="315.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="318.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="319.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="1041" key="326.IBNumberFormatterBehaviorMetadataKey"/>
+				<integer value="1040" key="326.IBNumberFormatterBehaviorMetadataKey"/>
 				<boolean value="YES" key="326.IBNumberFormatterLocalizesFormatMetadataKey"/>
+				<real value="5" key="326.IBNumberFormatterSampleNumberKey"/>
 				<string key="326.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2056,7 +2067,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">326</int>
+			<int key="maxID">329</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

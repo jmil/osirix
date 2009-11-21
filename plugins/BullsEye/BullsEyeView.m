@@ -43,7 +43,7 @@ static BullsEyeView *bullsEyeView= nil;
 
 - (IBAction) reset: (id) sender
 {
-	for( int i = 0 ; i < 17; i++)
+	for( int i = 0 ; i < [segments count]; i++)
 		[segments replaceObjectAtIndex:i withObject: [NSMutableDictionary dictionary]];
 			
 	[self refresh];
@@ -86,15 +86,18 @@ static BullsEyeView *bullsEyeView= nil;
 	if( val >= [[c presetBullsEyeArray] count])
 		val = [[c presetBullsEyeArray] count] -1;
 	
-	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
-		text = [NSString stringWithFormat: @"%d\r%@", i+1, [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue])
+		text = [text stringByAppendingFormat: @"%d\r", i+1];
 		
-	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] == NO && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
-		text = [NSString stringWithFormat: @"%@", [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
+		text = [text stringByAppendingFormat: @"%@\r", [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
+		
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplaySegmentsScore"] boolValue])
+		text = [text stringByAppendingFormat: @"%d\r", [[[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"score"] intValue]];
 	
-	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue] == NO)
-		text = [NSString stringWithFormat: @"%d", i];
-	
+	if( [text length] > 0)
+		text = [text substringToIndex: [text length]-1];
+		
 	[seg setObject: text forKey: @"text"];
 }
 
@@ -114,19 +117,6 @@ static BullsEyeView *bullsEyeView= nil;
 				val = 0;
 				
 			[seg setObject: [NSNumber numberWithInt: val] forKey: @"state"];
-			
-			NSString *text = @"";
-			
-			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
-				text = [NSString stringWithFormat: @"%d\r%@", i+1, [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
-				
-			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] == NO && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
-				text = [NSString stringWithFormat: @"%@", [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
-			
-			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue] == NO)
-				text = [NSString stringWithFormat: @"%d", i];
-			
-			[seg setObject: text forKey: @"text"];
 		}
 	}
 	
@@ -147,7 +137,7 @@ static BullsEyeView *bullsEyeView= nil;
 	// Set up
 	c = [[self window] windowController];
 	
-	for( int i = 0 ; i < 17; i++)
+	for( int i = 0 ; i < [segments count]; i++)
 		[self setText: i :[segments objectAtIndex: i]];
 	
 	NSRect frame = [self frame];
@@ -216,17 +206,24 @@ static BullsEyeView *bullsEyeView= nil;
 	[s closePath];
 	[s setLineWidth: 0.5];
 	[s setLineJoinStyle:NSRoundLineJoinStyle];
+	
 	[[segments objectAtIndex: a++] setObject: s forKey: @"drawing"];
 	
+	// Font style
 	NSFont *font = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica" traits:NSBoldFontMask weight:9 size:12.];
 	NSMutableParagraphStyle *para = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	[para setAlignment: NSCenterTextAlignment];
-	
 	NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys: font, NSFontAttributeName, para, NSParagraphStyleAttributeName, nil];
 	
-   // Drawing
-   for( int i = 0; i < [segments count]; i++)
-   {
+	
+	// Drawing
+	int segmentsTotal = 16;
+	
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplaySegment17"] boolValue])
+		segmentsTotal = 17;
+	
+	for( int i = 0; i < segmentsTotal; i++)
+	{
 		NSMutableDictionary* s = [segments objectAtIndex: i];
 		
 		if( [[s objectForKey: @"state"] intValue] >= [[c presetBullsEyeArray] count] && [[c presetBullsEyeArray] count] > 0)
@@ -251,17 +248,50 @@ static BullsEyeView *bullsEyeView= nil;
 			bounds = NSOffsetRect( bounds, -radius/D, radius/D);
 		if( i+1 == 6)
 			bounds = NSOffsetRect( bounds, radius/D, radius/D);
+		if( i+1 == 1)
+			bounds = NSOffsetRect( bounds, 0, radius/D);
+		if( i+1 == 4)
+			bounds = NSOffsetRect( bounds, 0, -radius/D);
 		if( i+1 == 3)
 			bounds = NSOffsetRect( bounds, -radius/D, -radius/D);
 		if( i+1 == 5)
 			bounds = NSOffsetRect( bounds, radius/D, -radius/D);
-			
+		
 		NSRect rect;
 		rect.origin = NSMakePoint( bounds.origin.x + bounds.size.width/2 - size.width/2, bounds.origin.y + bounds.size.height/2 - size.height/2);
 		rect.size = size;
 		
 		[[s objectForKey: @"text"] drawInRect: rect withAttributes: attr];
    }
+   
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayScoreSum"] boolValue])
+	{
+		int maxScore = -10000;
+		int maxTotal = 0, total = 0;
+		
+		if( maxTotal > 0)
+		{
+			for( NSDictionary *d in [c.presetBullsEye arrangedObjects])
+			{
+				if( maxScore < [[d valueForKey: @"score"] intValue])
+					maxScore = [[d valueForKey: @"score"] intValue];
+			}
+			
+			for( int i = 0; i < segmentsTotal; i++)
+			{
+				maxTotal += maxScore;
+				
+				NSDictionary *d = [[c presetBullsEyeArray] objectAtIndex: [[[segments objectAtIndex: i] objectForKey: @"state"] intValue]];
+				total += [[d objectForKey: @"score"] intValue];
+			}
+			
+			NSFont *font2 = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica" traits:NSBoldFontMask weight:9 size:12];
+			NSMutableParagraphStyle *para2 = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+			NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys: font2, NSFontAttributeName, para2, NSParagraphStyleAttributeName, nil];
+			
+			[[NSString stringWithFormat:@"Total: %d / %d (%2.2f%%)\rMean: %2.2f", total, maxTotal, (float) total * 100. / (float) maxTotal, (float) total / (float) segmentsTotal]  drawInRect: NSInsetRect( [self squareBounds],  10,  10)  withAttributes: attr2];
+		}
+	}
 }
 
 @end
