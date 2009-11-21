@@ -269,22 +269,22 @@ static BullsEyeView *bullsEyeView= nil;
 		int maxScore = -10000;
 		int maxTotal = 0, total = 0;
 		
+		for( NSDictionary *d in [c.presetBullsEye arrangedObjects])
+		{
+			if( maxScore < [[d valueForKey: @"score"] intValue])
+				maxScore = [[d valueForKey: @"score"] intValue];
+		}
+		
+		for( int i = 0; i < segmentsTotal; i++)
+		{
+			maxTotal += maxScore;
+			
+			NSDictionary *d = [[c presetBullsEyeArray] objectAtIndex: [[[segments objectAtIndex: i] objectForKey: @"state"] intValue]];
+			total += [[d objectForKey: @"score"] intValue];
+		}
+		
 		if( maxTotal > 0)
 		{
-			for( NSDictionary *d in [c.presetBullsEye arrangedObjects])
-			{
-				if( maxScore < [[d valueForKey: @"score"] intValue])
-					maxScore = [[d valueForKey: @"score"] intValue];
-			}
-			
-			for( int i = 0; i < segmentsTotal; i++)
-			{
-				maxTotal += maxScore;
-				
-				NSDictionary *d = [[c presetBullsEyeArray] objectAtIndex: [[[segments objectAtIndex: i] objectForKey: @"state"] intValue]];
-				total += [[d objectForKey: @"score"] intValue];
-			}
-			
 			NSFont *font2 = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica" traits:NSBoldFontMask weight:9 size:12];
 			NSMutableParagraphStyle *para2 = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 			NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys: font2, NSFontAttributeName, para2, NSParagraphStyleAttributeName, nil];
