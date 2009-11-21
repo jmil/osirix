@@ -19,4 +19,5 @@
 - (void) setText: (int) i :(NSMutableDictionary*) seg;
 - (void) refresh;
 - (NSRect) squareBounds;
+- (IBAction) reset: (id) sender;
 @end

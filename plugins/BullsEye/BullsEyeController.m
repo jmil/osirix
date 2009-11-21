@@ -21,6 +21,8 @@ const NSString* FileTypeDICOM = @"dcm";
 
 @implementation BullsEyeController
 
+@synthesize presetsList, presetBullsEye;
+
 - (void) dealloc
 {
 	[super dealloc];

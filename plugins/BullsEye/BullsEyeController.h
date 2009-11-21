@@ -14,13 +14,15 @@
 	IBOutlet NSArrayController *presetBullsEye, *presetsList;
 }
 
+@property (readonly) NSArrayController *presetsList, *presetBullsEye;
+
 - (NSArray*) presetBullsEyeArray;
 - (IBAction) refresh: (id) sender;
-- (void) saveAs:(NSString*)format accessoryView:(NSView*)accessoryView;
-- (IBAction) saveDICOM:(id)sender;
-- (IBAction) saveAsPDF:(id)sender;
-- (IBAction) saveAsTIFF:(id)sender;
-- (IBAction) saveAsDICOM:(id)sender;
+- (void) saveAs:(NSString*) format accessoryView: (NSView*) accessoryView;
+- (IBAction) saveDICOM:(id) sender;
+- (IBAction) saveAsPDF:(id) sender;
+- (IBAction) saveAsTIFF:(id) sender;
+- (IBAction) saveAsDICOM:(id) sender;
 - (void) dicomSave:(NSString*)seriesDescription backgroundColor:(NSColor*)backgroundColor toFile:(NSString*)filename;
 
 @end

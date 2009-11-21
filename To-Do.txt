@@ -25,14 +25,11 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 - OO for reports
-
-- C-GET bug?
-- Test DICOM Send ROI
-
-- QR: when searching 2 or more server, keep the study with the highest number of images
 - Propagate sub-settings
 - DICOM TLS
 - SDK Primera
+
+- C-GET bug?
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 

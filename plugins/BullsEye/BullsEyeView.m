@@ -33,12 +33,20 @@ static BullsEyeView *bullsEyeView= nil;
 		
 		segments = [[NSMutableArray alloc] init];
 		
-		for( int i = 0 ; i < 16; i++)
+		for( int i = 0 ; i < 17; i++)
 			[segments addObject: [NSMutableDictionary dictionary]];
 			
 		[self refresh];
     }
     return self;
+}
+
+- (IBAction) reset: (id) sender
+{
+	for( int i = 0 ; i < 17; i++)
+		[segments replaceObjectAtIndex:i withObject: [NSMutableDictionary dictionary]];
+			
+	[self refresh];
 }
 
 - (NSRect) squareBounds
@@ -78,13 +86,13 @@ static BullsEyeView *bullsEyeView= nil;
 	if( val >= [[c presetBullsEyeArray] count])
 		val = [[c presetBullsEyeArray] count] -1;
 	
-	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"])
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
 		text = [NSString stringWithFormat: @"%d\r%@", i+1, [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
 		
-	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] == NO && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"])
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] == NO && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
 		text = [NSString stringWithFormat: @"%@", [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
 	
-	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"] == NO)
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue] == NO)
 		text = [NSString stringWithFormat: @"%d", i];
 	
 	[seg setObject: text forKey: @"text"];
@@ -109,13 +117,13 @@ static BullsEyeView *bullsEyeView= nil;
 			
 			NSString *text = nil;
 			
-			if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"])
+			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
 				text = [NSString stringWithFormat: @"%d\r%@", i+1, [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
 				
-			if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] == NO && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"])
+			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] == NO && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
 				text = [NSString stringWithFormat: @"%@", [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
 			
-			if( [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsNumber"] && [[NSUserDefaults standardUserDefaults] boolForKey: @"bullsEyeDisplayLegendSegmentsText"] == NO)
+			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue] == NO)
 				text = [NSString stringWithFormat: @"%d", i];
 			
 			[seg setObject: text forKey: @"text"];
@@ -139,7 +147,7 @@ static BullsEyeView *bullsEyeView= nil;
 	// Set up
 	c = [[self window] windowController];
 	
-	for( int i = 0 ; i < 16; i++)
+	for( int i = 0 ; i < 17; i++)
 		[self setText: i :[segments objectAtIndex: i]];
 	
 	NSRect frame = [self frame];
@@ -202,6 +210,14 @@ static BullsEyeView *bullsEyeView= nil;
 		[[segments objectAtIndex: a++] setObject: s forKey: @"drawing"];
 	}
 	
+	NSBezierPath* s = [[[NSBezierPath alloc] init] autorelease];
+	[s appendBezierPathWithArcWithCenter: center radius: radius*1/7 startAngle: 0 endAngle: 180 clockwise: YES];
+	[s appendBezierPathWithArcWithCenter: center radius: radius*1/7 startAngle: 180 endAngle: 360 clockwise: YES];
+	[s closePath];
+	[s setLineWidth: 0.5];
+	[s setLineJoinStyle:NSRoundLineJoinStyle];
+	[[segments objectAtIndex: a++] setObject: s forKey: @"drawing"];
+	
 	NSFont *font = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica" traits:NSBoldFontMask weight:9 size:12.];
 	NSMutableParagraphStyle *para = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	[para setAlignment: NSCenterTextAlignment];
@@ -215,7 +231,6 @@ static BullsEyeView *bullsEyeView= nil;
 		
 		if( [[s objectForKey: @"state"] intValue] >= [[c presetBullsEyeArray] count] && [[c presetBullsEyeArray] count] > 0)
 			[s setObject: [NSNumber numberWithInt: [[c presetBullsEyeArray] count]-1] forKey: @"state"];
-		
 		
 		NSColor *color = [NSColor whiteColor];
 		
