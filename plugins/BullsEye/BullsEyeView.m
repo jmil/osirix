@@ -115,7 +115,7 @@ static BullsEyeView *bullsEyeView= nil;
 				
 			[seg setObject: [NSNumber numberWithInt: val] forKey: @"state"];
 			
-			NSString *text = nil;
+			NSString *text = @"";
 			
 			if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsNumber"] boolValue] && [[[c.presetsList selection] valueForKey: @"bullsEyeDisplayLegendSegmentsText"] boolValue])
 				text = [NSString stringWithFormat: @"%d\r%@", i+1, [[[c presetBullsEyeArray] objectAtIndex: val] objectForKey: @"state"]];
