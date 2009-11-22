@@ -23,7 +23,7 @@
 - (IBAction) saveAsPDF:(id) sender;
 - (IBAction) saveAsTIFF:(id) sender;
 - (IBAction) saveAsDICOM:(id) sender;
-- (IBAction)saveAsCSV:(id)sender;
+- (IBAction) saveAsCSV:(id)sender;
 - (void) dicomSave:(NSString*)seriesDescription backgroundColor:(NSColor*)backgroundColor toFile:(NSString*)filename;
 
 @end

@@ -11,8 +11,8 @@
 			<string key="NS.object.0">732</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="7"/>
 			<integer value="106"/>
+			<integer value="7"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -32,7 +32,7 @@
 				<int key="NSWindowStyleMask">4127</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{157, -124}, {784, 585}}</string>
-				<int key="NSWTFlags">611845120</int>
+				<int key="NSWTFlags">-1535638528</int>
 				<string key="NSWindowTitle">BullsEye Plugin</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSToolbar" key="NSViewClass" id="884061748">
