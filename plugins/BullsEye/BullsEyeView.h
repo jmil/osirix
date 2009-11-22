@@ -20,4 +20,5 @@
 - (void) refresh;
 - (NSRect) squareBounds;
 - (IBAction) reset: (id) sender;
+-(NSString*) csv:(BOOL) includeHeaders;
 @end

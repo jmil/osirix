@@ -132,6 +132,54 @@ static BullsEyeView *bullsEyeView= nil;
 	[pb setData: [self dataWithPDFInsideRect:[self squareBounds]] forType: NSPDFPboardType];
 }
 
+-(NSString*) csv:(BOOL) includeHeaders
+{
+	NSMutableString* csv = [[NSMutableString alloc] initWithCapacity:512];
+	
+	int segmentsTotal = 16;
+	
+	if( [[[c.presetsList selection] valueForKey: @"bullsEyeDisplaySegment17"] boolValue])
+		segmentsTotal = 17;
+	
+//	if (includeHeaders)
+//	{
+//		[csv appendString:@"\"index\","];
+//		
+//		for( int i = 0; i < segmentsTotal; i++)
+//		{
+//			NSMutableString* name = [[[[[[_interface roiList] displayedROIRec:i] roi] name] mutableCopy] autorelease];
+//			
+//			[name replaceOccurrencesOfString:@"\"" withString:@"\"\"" options:0 range:NSMakeRange(0, [name length])];
+//			
+//			if ([[_interface options] mean])
+//				[csv appendFormat: @"\"%@ mean\",", name];
+//			if ([[_interface options] min] || [[_interface options] fill])
+//				[csv appendFormat: @"\"%@ min\",", name];
+//			if ([[_interface options] max] || [[_interface options] fill])
+//				[csv appendFormat: @"\"%@ max\",", name];
+//		}
+//
+//		[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
+//		[csv appendString:@"\n"];
+//	}
+//	
+//	for( int i = 0; i < segmentsTotal; i++)
+//	{
+//		ROIRec* roiRec = [[_interface roiList] displayedROIRec:i];
+//		if ([[_interface options] mean])
+//			[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec meanDataSet] element:x]];
+//		if ([[_interface options] min] || [[_interface options] fill])
+//			[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec minDataSet] element:x]];
+//		if ([[_interface options] max] || [[_interface options] fill])
+//			[csv appendFormat: @"\"%f\",", [self chart:self yValueForDataSet:[roiRec maxDataSet] element:x]];
+//	}
+	
+	[csv deleteCharactersInRange:NSMakeRange([csv length]-1, 1)];
+	[csv appendString:@"\n"];
+	
+	return [csv autorelease];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Set up

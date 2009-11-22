@@ -11,8 +11,8 @@
 			<string key="NS.object.0">732</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="129"/>
 			<integer value="7"/>
+			<integer value="106"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -786,7 +786,7 @@
 																				</object>
 																			</object>
 																			<double key="NSRowHeight">14</double>
-																			<int key="NSTvFlags">316669952</int>
+																			<int key="NSTvFlags">312475648</int>
 																			<reference key="NSDelegate"/>
 																			<reference key="NSDataSource"/>
 																			<int key="NSGridStyleMask">1</int>
@@ -1006,6 +1006,12 @@
 					<object class="NSMenuItem" id="468716857">
 						<reference key="NSMenu" ref="612072608"/>
 						<string key="NSTitle">Save as DICOM file...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+					</object>
+					<object class="NSMenuItem" id="427367653">
+						<reference key="NSMenu" ref="612072608"/>
+						<string key="NSTitle">Save data as CSV file...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 					</object>
@@ -1461,6 +1467,14 @@
 					</object>
 					<int key="connectionID">329</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">saveAsCSV:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="427367653"/>
+					</object>
+					<int key="connectionID">332</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1515,6 +1529,7 @@
 							<reference ref="652539106"/>
 							<reference ref="468716857"/>
 							<reference ref="393013849"/>
+							<reference ref="427367653"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Export</string>
@@ -1980,6 +1995,11 @@
 						<reference key="object" ref="891247055"/>
 						<reference key="parent" ref="523399631"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">330</int>
+						<reference key="object" ref="427367653"/>
+						<reference key="parent" ref="612072608"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -2052,9 +2072,10 @@
 				<boolean value="YES" key="326.IBNumberFormatterLocalizesFormatMetadataKey"/>
 				<real value="5" key="326.IBNumberFormatterSampleNumberKey"/>
 				<string key="326.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="330.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="7.IBEditorWindowLastContentRect">{{499, 1046}, {309, 93}}</string>
+				<string key="7.IBEditorWindowLastContentRect">{{499, 1026}, {309, 113}}</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="89.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2067,7 +2088,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">329</int>
+			<int key="maxID">332</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2076,6 +2097,7 @@
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="refresh:">id</string>
+						<string key="saveAsCSV:">id</string>
 						<string key="saveAsDICOM:">id</string>
 						<string key="saveAsPDF:">id</string>
 						<string key="saveAsTIFF:">id</string>

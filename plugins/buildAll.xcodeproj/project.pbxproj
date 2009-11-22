@@ -114,14 +114,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = CE47B53E0CD0C62A00293F52 /* Cobb.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = AB94F8DF0682170900733F34 /* Cobb.osirixplugin */;
+			remoteGlobalIDString = AB94F8DF0682170900733F34;
 			remoteInfo = Cobb;
 		};
 		CE47B5470CD0C63200293F52 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CE47B53E0CD0C62A00293F52 /* Cobb.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* Cobb */;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
 			remoteInfo = Cobb;
 		};
 		CE76EE320994DBAD007B9067 /* PBXContainerItemProxy */ = {

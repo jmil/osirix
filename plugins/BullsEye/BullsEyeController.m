@@ -18,6 +18,7 @@
 const NSString* FileTypePDF = @"pdf";
 const NSString* FileTypeTIFF = @"tiff";
 const NSString* FileTypeDICOM = @"dcm";
+const NSString* FileTypeCSV = @"csv";
 
 @implementation BullsEyeController
 
@@ -147,6 +148,11 @@ const NSString* FileTypeDICOM = @"dcm";
 	[self saveAs: (NSString*) FileTypeDICOM accessoryView: nil];
 }
 
+-(IBAction)saveAsCSV:(id)sender
+{
+	[self saveAs: (NSString*) FileTypeCSV accessoryView: nil];
+}
+
 -(void)dicomSave:(NSString*)seriesDescription backgroundColor:(NSColor*)backgroundColor toFile:(NSString*)filename
 {
 	NSBitmapImageRep* bitmapImageRep = [[BullsEyeView view] bitmapImageRepForCachingDisplayInRect:[[BullsEyeView view] squareBounds]];
@@ -197,6 +203,10 @@ const NSString* FileTypeDICOM = @"dcm";
 		{
 			[[[BullsEyeView view] dataWithPDFInsideRect:[[BullsEyeView view] squareBounds]] writeToFile:[panel filename] options:NSAtomicWrite error:&error];
 			
+		}
+		else if (format == FileTypeCSV)
+		{
+			[[[BullsEyeView view] csv: YES] writeToFile: [panel filename] atomically: YES encoding: NSUTF8StringEncoding error:&error];
 		}
 		else if (format == FileTypeTIFF)
 		{
