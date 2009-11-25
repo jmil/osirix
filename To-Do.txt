@@ -18,6 +18,7 @@
 - BullsEye plugin
 
 - Autocropping - non-squared pixels
+- Use soundex algorithm -> refresh
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
