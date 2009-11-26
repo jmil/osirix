@@ -10,15 +10,9 @@
 
 @interface DCMPDFImportFilter : PluginFilter
 {
-	IBOutlet NSView *accessoryView;
-	IBOutlet id patientNameField;
-	IBOutlet id patientIDField;
-	IBOutlet id studyDesciptionID;
-	IBOutlet NSDatePicker *datePicker;
-	
 	NSString *_patientName;
 	NSString *_patientID;
-	NSString *_patientDOB;
+	DCMCalendarDate *_patientDOB;
 	NSString *_patientSex;
 		
 	NSString *_docTitle;

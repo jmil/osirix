@@ -13,9 +13,8 @@
 
 @interface DCMJpegImportFilter : PluginFilter
 {
-	IBOutlet NSView *accessoryView;
-	
-	NSString *patientName, *patientDOB;
+	NSString *patientName;
+	DCMCalendarDate *patientDOB;
 	NSString *patientID, *patientSex;
 	NSString *studyDescription;
 	NSDate *datePicker;

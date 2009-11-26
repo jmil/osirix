@@ -10,7 +10,8 @@
 
 @interface Quicktime2DICOM : PluginFilter
 {
-	NSString *patientName, *patientDOB;
+	NSString *patientName;
+	DCMCalendarDate *patientDOB;
 	NSString *patientID, *patientSex;
 	NSString *studyDescription;
 	NSDate *datePicker;

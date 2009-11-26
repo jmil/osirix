@@ -284,6 +284,8 @@
 				
 				NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], studyID, imageNumber];
 				[dcmObject writeToFile:destination withTransferSyntax:ts quality:DCMLosslessQuality atomically:YES];
+				
+				free( data);
 			}
 			
 			previousTime = [movie currentTime];

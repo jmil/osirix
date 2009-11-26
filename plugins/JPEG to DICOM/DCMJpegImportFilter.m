@@ -25,18 +25,11 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	self.addtoCurrentStudy = [[NSUserDefaults standardUserDefaults] boolForKey: @"JPEGtoDICOMaddToCurrentStudy"];
-	
-	if( addtoCurrentStudy)
-		[self studyInfo];
-		
-	NSArray *topLevelObjects;
-	NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
-	NSNib *nib = [[[NSNib alloc] initWithNibNamed:@"ConversionInfo" bundle:thisBundle] autorelease];
-	[nib instantiateNibWithOwner:self topLevelObjects:&topLevelObjects];
+	addtoCurrentStudy = YES;
+
 	self.datePicker = [NSDate date];
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setAccessoryView:accessoryView];
+	
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setAllowsMultipleSelection:YES];
 	[openPanel setTitle:NSLocalizedString(@"Import", nil)];
@@ -84,8 +77,6 @@
 				[self convertImageToDICOM:fpath];
 		}
 	}
-	
-	[[NSUserDefaults standardUserDefaults] setBool: addtoCurrentStudy forKey: @"JPEGtoDICOMaddToCurrentStudy"];
 	
 	[pool release];
 	
@@ -146,6 +137,12 @@
 			if( patientName)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientName] forName:@"PatientsName"];
 			
+			if( patientDOB)
+					[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientDOB] forName:@"PatientsBirthDate"];
+			
+			if( patientSex)
+				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientSex] forName:@"PatientsSex"];
+				
 			if( patientID)
 				[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:patientID] forName:@"PatientID"];
 			
@@ -162,6 +159,7 @@
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyTime] forName:@"StudyTime"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyDate] forName:@"SeriesDate"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:studyTime] forName:@"SeriesTime"];
+			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@"9998"] forName:@"SeriesNumber"];
 					
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:rows]] forName:@"Rows"];
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[NSNumber numberWithInt:columns]] forName:@"Columns"];

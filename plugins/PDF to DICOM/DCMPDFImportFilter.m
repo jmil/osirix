@@ -14,24 +14,16 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	self.addtoCurrentStudy = [[NSUserDefaults standardUserDefaults] boolForKey: @"PDFtoDICOMaddToCurrentStudy"];
+	_addtoCurrentStudy = YES;
 	
-	if (_addtoCurrentStudy)
-		[self studyInfo];
-	
-	NSDate *date = [datePicker dateValue];
+	NSDate *date = [NSDate date];
 	_studyDate = [DCMCalendarDate dicomDateWithDate:date];
 	_studyTime = [DCMCalendarDate dicomTimeWithDate:date];
 	_seriesTime = nil;
-	_seriesDate= nil;
+	_seriesDate = nil;
 	[self setDocTitle:@"PDF"];
-	NSArray *topLevelObjects;
-	NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
-	NSNib *nib = [[NSNib alloc] initWithNibNamed:@"ConversionInfo" bundle:thisBundle];
-	[nib instantiateNibWithOwner:self topLevelObjects:&topLevelObjects];
-	[datePicker setDateValue:[NSDate date]];
+	
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setAccessoryView:accessoryView];
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setAllowsMultipleSelection:YES];
 	[openPanel setTitle:NSLocalizedString(@"Import", nil)];
@@ -39,8 +31,6 @@
 	
 	if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]] == NSOKButton)
 	{
-		self.docTitle = [studyDesciptionID stringValue];
-		
 		DCMObject *dcmObject = [DCMObject dcmObject];
 		[dcmObject newStudyInstanceUID];
 		[dcmObject newSeriesInstanceUID];
@@ -51,11 +41,10 @@
 			_imageNumber = 0;
 		
 		if (!_studyInstanceUID)
-			_studyInstanceUID = [dcmObject attributeValueWithName:@"StudyInstanceUID"];	
-			
+			_studyInstanceUID = [[dcmObject attributeValueWithName:@"StudyInstanceUID"] copy];	
+		
 		if (!_seriesInstanceUID)
-		_seriesInstanceUID = [dcmObject attributeValueWithName:@"SeriesInstanceUID"];
-			
+			_seriesInstanceUID = [[dcmObject attributeValueWithName:@"SeriesInstanceUID"] copy];
 		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		_studyID = [defaults  integerForKey:@"JTDStudyID"];
@@ -84,17 +73,12 @@
 		}
 	}
 	
-	[nib release];
-	
 	[self setPatientName:@"No Name"];
 	[self setPatientID:@""];
-	[self setDocTitle:nil];
 
 	_patientID = nil;
 	_patientDOB = nil;
-	_patientSex = nil;;
-		
-
+	_patientSex = nil;
 	_studyDate = nil;
 	_studyTime = nil;
 	_seriesDate = nil;
@@ -102,9 +86,6 @@
 	
 	_studyInstanceUID = nil;
 	_seriesInstanceUID = nil;
-	
-	
-	[[NSUserDefaults standardUserDefaults] setBool: _addtoCurrentStudy forKey: @"PDFtoDICOMaddToCurrentStudy"];
 	
 	[pool release];
 	
@@ -164,6 +145,7 @@
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyDate] forName:@"StudyDate"];	
 		else
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[DCMCalendarDate dicomDateWithDate:[NSDate date]]] forName:@"StudyDate"];
+			
 		if (_studyTime)	
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"StudyTime"];
 		else
@@ -173,13 +155,14 @@
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_seriesDate] forName:@"SeriesDate"];
 		else
 		
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyDate] forName:@"SeriesDate"];
+			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[DCMCalendarDate dicomTimeWithDate:[NSDate date]]] forName:@"SeriesDate"];
 		
 		if (_seriesTime) 
 			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_seriesTime] forName:@"SeriesTime"];
-		
 		else			
-			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:_studyTime] forName:@"SeriesTime"];
+			[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:[DCMCalendarDate dicomTimeWithDate:[NSDate date]]] forName:@"SeriesTime"];
+		
+		[dcmObject setAttributeValues:[NSMutableArray arrayWithObject:@"9997"] forName:@"SeriesNumber"];
 		
 		//get Incoming Folder Path;
 		NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/PDF%d%d.dcm", [[BrowserController currentBrowser] documentsDirectory], _studyID, _imageNumber];
@@ -196,6 +179,10 @@
 	[_patientName release];
 	[_patientID release];
 	[_docTitle release];
+	
+	[_seriesInstanceUID release];
+	[_studyInstanceUID release];
+	
 	[super dealloc];
 }
 
@@ -257,7 +244,7 @@
 			if (!pid)
 				pid = @"0";
 			[self setPatientID:pid];
-			_patientDOB = [DCMCalendarDate dicomDateWithDate:[study valueForKeyPath:@"dateOfBirth"]];
+			_patientDOB = [DCMCalendarDate dicomDateWithDate: [study valueForKeyPath:@"dateOfBirth"]];
 			_patientSex = [study valueForKeyPath:@"patientSex"];
 			
 			_studyID = [[selection valueForKeyPath:@"id"] intValue];
