@@ -17,7 +17,7 @@
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
 
-- poseAsClass?
+- poseAsClass? JoriX WTF??
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
