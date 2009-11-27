@@ -1,7 +1,6 @@
 //
 //   Quicktime2DICOM
 //  
-//
 
 #import "Quicktime2DICOM.h"
 #import <OsiriX/DCM.h>
@@ -61,7 +60,7 @@
 	[otherImage drawInRect: NSMakeRect(0,0,[r size].width, [r size].height) fromRect:NSMakeRect(0,0,[otherImage size].width, [otherImage size].height) operation: NSCompositeSourceOver fraction: 1.0];
 	[r unlockFocus];
 	
-	NSBitmapImageRep *TIFFRep = [[NSBitmapImageRep alloc] initWithData: [r TIFFRepresentation]];
+	NSBitmapImageRep *TIFFRep = [[[NSBitmapImageRep alloc] initWithData: [r TIFFRepresentation]] autorelease];
 	
 	*height = [TIFFRep pixelsHigh];
 	*width = [TIFFRep pixelsWide];
@@ -72,93 +71,91 @@
 	int totSize = *height * *width * 3;
 
 	rgbImage = malloc( totSize);
-	
-	switch( [TIFFRep bitsPerPixel])
+	if( rgbImage)
 	{
-		case 8:
-			tmpPtr = rgbImage;
-			for( y = 0 ; y < *height; y++)
-			{
-				srcPtr = srcImage + y*[TIFFRep bytesPerRow];
-				
-				x = *width;
-				while( x-->0)
+		switch( [TIFFRep bitsPerPixel])
+		{
+			case 8:
+				tmpPtr = rgbImage;
+				for( y = 0 ; y < *height; y++)
 				{
-					*tmpPtr++ = *srcPtr;
-					*tmpPtr++ = *srcPtr;
-					*tmpPtr++ = *srcPtr;
-					srcPtr++;
-				}
-			}
-		break;
-			
-		case 32:
-			tmpPtr = rgbImage;
-			for( y = 0 ; y < *height; y++)
-			{
-				srcPtr = srcImage + y*[TIFFRep bytesPerRow];
-				
-				x = *width;
-				while( x-->0)
-				{
-					*tmpPtr++ = *srcPtr++;
-					*tmpPtr++ = *srcPtr++;
-					*tmpPtr++ = *srcPtr++;
-					srcPtr++;
-				}
-			}
-		break;
-			
-		case 24:
-			tmpPtr = rgbImage;
-			for( y = 0 ; y < *height; y++)
-			{
-				srcPtr = srcImage + y*[TIFFRep bytesPerRow];
-				
-				x = *width;
-				while( x-->0)
-				{
-					*((short*)tmpPtr) = *((short*)srcPtr);
-					tmpPtr+=2;
-					srcPtr+=2;
+					srcPtr = srcImage + y*[TIFFRep bytesPerRow];
 					
-					*tmpPtr++ = *srcPtr++;
+					x = *width;
+					while( x-->0)
+					{
+						*tmpPtr++ = *srcPtr;
+						*tmpPtr++ = *srcPtr;
+						*tmpPtr++ = *srcPtr;
+						srcPtr++;
+					}
 				}
-			}
-		break;
-			
-		case 48:
-			tmpPtr = rgbImage;
-			for( y = 0 ; y < *height; y++)
-			{
-				srcPtr = srcImage + y*[TIFFRep bytesPerRow];
+			break;
 				
-				x = *width;
-				while( x-->0)
+			case 32:
+				tmpPtr = rgbImage;
+				for( y = 0 ; y < *height; y++)
 				{
-					*tmpPtr++ = *srcPtr;	srcPtr += 2;
-					*tmpPtr++ = *srcPtr;	srcPtr += 2;
-					*tmpPtr++ = *srcPtr;	srcPtr += 2;
+					srcPtr = srcImage + y*[TIFFRep bytesPerRow];
+					
+					x = *width;
+					while( x-->0)
+					{
+						*tmpPtr++ = *srcPtr++;
+						*tmpPtr++ = *srcPtr++;
+						*tmpPtr++ = *srcPtr++;
+						srcPtr++;
+					}
 				}
-			}
-		break;
-			
-		default:
-			NSLog(@"Error - Unknow bitsPerPixel ...");
-		break;
+			break;
+				
+			case 24:
+				tmpPtr = rgbImage;
+				for( y = 0 ; y < *height; y++)
+				{
+					srcPtr = srcImage + y*[TIFFRep bytesPerRow];
+					
+					x = *width;
+					while( x-->0)
+					{
+						*((short*)tmpPtr) = *((short*)srcPtr);
+						tmpPtr+=2;
+						srcPtr+=2;
+						
+						*tmpPtr++ = *srcPtr++;
+					}
+				}
+			break;
+				
+			case 48:
+				tmpPtr = rgbImage;
+				for( y = 0 ; y < *height; y++)
+				{
+					srcPtr = srcImage + y*[TIFFRep bytesPerRow];
+					
+					x = *width;
+					while( x-->0)
+					{
+						*tmpPtr++ = *srcPtr;	srcPtr += 2;
+						*tmpPtr++ = *srcPtr;	srcPtr += 2;
+						*tmpPtr++ = *srcPtr;	srcPtr += 2;
+					}
+				}
+			break;
+				
+			default:
+				NSLog(@"Error - Unknow bitsPerPixel ...");
+			break;
+		}
 	}
-	
 	float *fImage = (float*) rgbImage;
 	*isRGB = YES;
-	
-	[TIFFRep release];
 	
 	return fImage;
 }
 
 - (void)convertMovieToDICOM:(NSString *)path source:(NSString*) src
 {
-	//create image
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[QTMovie enterQTKitOnThreadDisablingThreadSafetyProtection];
@@ -187,20 +184,21 @@
 		BOOL stop = NO;
 		do
 		{
+			int width, height;
+			BOOL isRGB;
+			float *data = [self getDataFromNSImage: [movie currentFrameImage] w: &width h: &height rgb: &isRGB];
+			
+			if( data)
 			{
-				int width, height;
-				BOOL isRGB;
-				float *data = [self getDataFromNSImage: [movie currentFrameImage] w: &width h: &height rgb: &isRGB];
 				int spp = 1;
 				if( isRGB)
 					spp = 3;
 				
-				[e setPixelData: (unsigned char*) data samplesPerPixel: 3 bitsPerSample: 8 width:width height:height];
+				[e setPixelData: (unsigned char*) data samplesPerPixel: spp bitsPerSample: 8 width:width height:height];
 				[e writeDCMFile: [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d.dcm", [[BrowserController currentBrowser] documentsDirectory], imageNumber++]];
 				
 				free( data);
 			}
-			
 			previousTime = [movie currentTime];
 			curFrame++;
 			[movie stepForward];

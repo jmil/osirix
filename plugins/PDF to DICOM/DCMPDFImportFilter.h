@@ -4,42 +4,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PluginFilter.h"
+#import "OsiriX Headers/PluginFilter.h"
 
 @class DCMCalendarDate;
 
 @interface DCMPDFImportFilter : PluginFilter
 {
-	NSString *_patientName;
-	NSString *_patientID;
-	DCMCalendarDate *_patientDOB;
-	NSString *_patientSex;
-		
-	NSString *_docTitle;
-	DCMCalendarDate *_studyDate;
-	DCMCalendarDate *_studyTime;
-	DCMCalendarDate *_seriesDate;
-	DCMCalendarDate *_seriesTime;
-	
-	NSString *_studyInstanceUID;
-	NSString *_seriesInstanceUID;
-	int _studyID;
-	int _imageNumber;
-	
-	BOOL _addtoCurrentStudy;
+	int imageNumber;
 }
 
 - (long) filterImage:(NSString*) menuName;
-- (void)convertImageToDICOM:(NSString *)path;
-
--(BOOL) addtoCurrentStudy;
--(void) setAddtoCurrentStudy:(BOOL)value;
--(NSString *)patientName;
--(NSString *)patientID;
--(void)setPatientName:(NSString *)name;
--(void)setPatientID:(NSString *)pid;
-- (void)studyInfo;
-- (NSString *)docTitle;
-- (void)setDocTitle:(NSString *)docTitle;
+- (void)convertImageToDICOM:(NSString *)path source:(NSString *) source;
 
 @end

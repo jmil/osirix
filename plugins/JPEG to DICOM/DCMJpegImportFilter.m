@@ -80,11 +80,9 @@
 			[e setSeriesDescription: [[path lastPathComponent] stringByDeletingPathExtension]];
 			
 			if( [rep isPlanar])
-				NSLog( @"DCMJpegImportFilter Planar is not yet supported....");
+				NSLog( @"********** DCMJpegImportFilter Planar is not yet supported....");
 			
-			NSString *destination = [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d.dcm", [[BrowserController currentBrowser] documentsDirectory], imageNumber];
-			
-			[e writeDCMFile: destination];
+			[e writeDCMFile: [NSString stringWithFormat: @"%@/INCOMING.noindex/JTD%d.dcm", [[BrowserController currentBrowser] documentsDirectory], imageNumber++]];
 		}
 	}
 	[pool release];
