@@ -82,7 +82,8 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				AB2C26750677B0C400A08910 /* plugin */,
+				ABA48A640680BB600089EB4F /* Quicktime2DICOM.h */,
+				ABA48A660680BB690089EB4F /* Quicktime2DICOM.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -119,15 +120,6 @@
 				32DBCF630370AF2F00C91783 /* Prefix.pch */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		AB2C26750677B0C400A08910 /* plugin */ = {
-			isa = PBXGroup;
-			children = (
-				ABA48A640680BB600089EB4F /* Quicktime2DICOM.h */,
-				ABA48A660680BB690089EB4F /* Quicktime2DICOM.m */,
-			);
-			name = plugin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

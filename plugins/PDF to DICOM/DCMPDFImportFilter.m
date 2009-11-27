@@ -14,78 +14,82 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	_addtoCurrentStudy = YES;
-	
-	NSDate *date = [NSDate date];
-	_studyDate = [DCMCalendarDate dicomDateWithDate:date];
-	_studyTime = [DCMCalendarDate dicomTimeWithDate:date];
-	_seriesTime = nil;
-	_seriesDate = nil;
-	[self setDocTitle:@"PDF"];
-	
-	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setCanChooseDirectories:YES];
-	[openPanel setAllowsMultipleSelection:YES];
-	[openPanel setTitle:NSLocalizedString(@"Import", nil)];
-	[openPanel setMessage:NSLocalizedString(@"Select PDF or folder of PDFs to convert to DICOM", nil)];
-	
-	if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]] == NSOKButton)
+	NSArray *currentSelection = [[BrowserController currentBrowser] databaseSelection];
+	if ([currentSelection count] > 0)
 	{
-		DCMObject *dcmObject = [DCMObject dcmObject];
-		[dcmObject newStudyInstanceUID];
-		[dcmObject newSeriesInstanceUID];
+		_addtoCurrentStudy = YES;
 		
-		if (_addtoCurrentStudy)
-			[self studyInfo];
-		else 
-			_imageNumber = 0;
+		NSDate *date = [NSDate date];
+		_studyDate = [DCMCalendarDate dicomDateWithDate:date];
+		_studyTime = [DCMCalendarDate dicomTimeWithDate:date];
+		_seriesTime = nil;
+		_seriesDate = nil;
+		[self setDocTitle:@"PDF"];
 		
-		if (!_studyInstanceUID)
-			_studyInstanceUID = [[dcmObject attributeValueWithName:@"StudyInstanceUID"] copy];	
+		NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+		[openPanel setCanChooseDirectories:YES];
+		[openPanel setAllowsMultipleSelection:YES];
+		[openPanel setTitle:NSLocalizedString(@"Import", nil)];
+		[openPanel setMessage:NSLocalizedString(@"Select PDF or folder of PDFs to convert to DICOM", nil)];
 		
-		if (!_seriesInstanceUID)
-			_seriesInstanceUID = [[dcmObject attributeValueWithName:@"SeriesInstanceUID"] copy];
-		
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		_studyID = [defaults  integerForKey:@"JTDStudyID"];
-		if (_studyID = 0)
-			_studyID = 10001;
-		[defaults setInteger:_studyID++ forKey:@"JTDStudyID"];
-		
-		NSEnumerator *enumerator = [[openPanel filenames] objectEnumerator];
-		NSString *fpath;
-		BOOL isDir;
-		while(fpath = [enumerator nextObject])
+		if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]] == NSOKButton)
 		{
-			[[NSFileManager defaultManager] fileExistsAtPath:fpath isDirectory:&isDir];
-			//loop through directory if true
-			if (isDir)
+			DCMObject *dcmObject = [DCMObject dcmObject];
+			[dcmObject newStudyInstanceUID];
+			[dcmObject newSeriesInstanceUID];
+			
+			if (_addtoCurrentStudy)
+				[self studyInfo];
+			else 
+				_imageNumber = 0;
+			
+			if (!_studyInstanceUID)
+				_studyInstanceUID = [[dcmObject attributeValueWithName:@"StudyInstanceUID"] copy];	
+			
+			if (!_seriesInstanceUID)
+				_seriesInstanceUID = [[dcmObject attributeValueWithName:@"SeriesInstanceUID"] copy];
+			
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+			_studyID = [defaults  integerForKey:@"JTDStudyID"];
+			if (_studyID = 0)
+				_studyID = 10001;
+			[defaults setInteger:_studyID++ forKey:@"JTDStudyID"];
+			
+			NSEnumerator *enumerator = [[openPanel filenames] objectEnumerator];
+			NSString *fpath;
+			BOOL isDir;
+			while(fpath = [enumerator nextObject])
 			{
-				NSDirectoryEnumerator *dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:fpath];
-				NSString *path;
-				while (path = [dirEnumerator nextObject])
-					if  ([[NSImage imageFileTypes] containsObject:[path pathExtension]] 
-					|| [[NSImage imageFileTypes] containsObject:NSFileTypeForHFSTypeCode([[[[NSFileManager defaultManager] fileSystemAttributesAtPath:path] objectForKey:NSFileHFSTypeCode] longValue])])
-						[self convertImageToDICOM:[fpath stringByAppendingPathComponent:path]];
+				[[NSFileManager defaultManager] fileExistsAtPath:fpath isDirectory:&isDir];
+				//loop through directory if true
+				if (isDir)
+				{
+					NSDirectoryEnumerator *dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:fpath];
+					NSString *path;
+					while (path = [dirEnumerator nextObject])
+						if  ([[NSImage imageFileTypes] containsObject:[path pathExtension]] 
+						|| [[NSImage imageFileTypes] containsObject:NSFileTypeForHFSTypeCode([[[[NSFileManager defaultManager] fileSystemAttributesAtPath:path] objectForKey:NSFileHFSTypeCode] longValue])])
+							[self convertImageToDICOM:[fpath stringByAppendingPathComponent:path]];
+				}
+				else
+					[self convertImageToDICOM:fpath];
 			}
-			else
-				[self convertImageToDICOM:fpath];
 		}
-	}
-	
-	[self setPatientName:@"No Name"];
-	[self setPatientID:@""];
+		
+		[self setPatientName:@"No Name"];
+		[self setPatientID:@""];
 
-	_patientID = nil;
-	_patientDOB = nil;
-	_patientSex = nil;
-	_studyDate = nil;
-	_studyTime = nil;
-	_seriesDate = nil;
-	_seriesTime = nil;
-	
-	_studyInstanceUID = nil;
-	_seriesInstanceUID = nil;
+		_patientID = nil;
+		_patientDOB = nil;
+		_patientSex = nil;
+		_studyDate = nil;
+		_studyTime = nil;
+		_seriesDate = nil;
+		_seriesTime = nil;
+		
+		_studyInstanceUID = nil;
+		_seriesInstanceUID = nil;
+	}
 	
 	[pool release];
 	
