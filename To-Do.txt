@@ -16,6 +16,7 @@
 - WADO Client support for Q&R
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
+- OpenOffice support (odt format) for Reports
 
 - poseAsClass? JoriX WTF??
 
@@ -26,7 +27,6 @@
 - Display current image in 3D plane
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
-- OO for reports
 - Propagate sub-settings
 - DICOM TLS
 - SDK Primera
