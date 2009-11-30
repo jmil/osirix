@@ -6,11 +6,12 @@
 #import <Foundation/Foundation.h>
 #import "OsiriX Headers/PluginFilter.h"
 
-@class DCMCalendarDate;
+@class DCMCalendarDate, DICOMExport;
 
 @interface DCMJpegImportFilter : PluginFilter
 {
 	int imageNumber;
+	DICOMExport *e;
 }
 
 - (long) filterImage:(NSString*) menuName;

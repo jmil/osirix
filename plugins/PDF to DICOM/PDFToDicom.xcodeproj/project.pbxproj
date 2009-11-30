@@ -263,7 +263,6 @@
 				ARCHS = (
 					i386,
 					ppc,
-					ppc64,
 					x86_64,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;

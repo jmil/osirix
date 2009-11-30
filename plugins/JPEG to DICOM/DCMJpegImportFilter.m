@@ -32,6 +32,9 @@
 		[openPanel setTitle:NSLocalizedString( @"Import", nil)];
 		[openPanel setMessage:NSLocalizedString( @"Select image or folder of images to convert to DICOM", nil)];
 		
+		if( e == nil)
+			e = [[DICOMExport alloc] init];
+		
 		if([openPanel runModalForTypes:[NSImage imageFileTypes]] == NSOKButton)
 		{
 			imageNumber = 0;
@@ -44,7 +47,9 @@
 				
 				if (isDir)
 				{
-					NSDirectoryEnumerator *dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:fpath];
+					[e setSeriesDescription: [[fpath lastPathComponent] stringByDeletingPathExtension]];
+					
+					NSDirectoryEnumerator *dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath: fpath];
 					NSString *path;
 					while( path = [dirEnumerator nextObject])
 						if( [[NSImage imageFileTypes] containsObject:[path pathExtension]] 
@@ -52,8 +57,15 @@
 							[self convertImageToDICOM:[fpath stringByAppendingPathComponent:path] source: source];
 				}
 				else
-					[self convertImageToDICOM:fpath source: source];
+				{
+					[e setSeriesDescription: [[fpath lastPathComponent] stringByDeletingPathExtension]];
+						
+					[self convertImageToDICOM: fpath source: source];
+				}
 			}
+			
+			[e release];
+			e = nil;
 		}
 	}
 	[pool release];
@@ -74,10 +86,18 @@
 		
 		if ([rep isMemberOfClass: [NSBitmapImageRep class]])
 		{
-			DICOMExport *e = [[[DICOMExport alloc] init] autorelease];
 			[e setSourceFile: src];
-			[e setPixelData: [rep bitmapData] samplesPerPixel: [rep samplesPerPixel] bitsPerSample: [rep bitsPerPixel]/[rep samplesPerPixel] width:[rep pixelsWide] height:[rep pixelsHigh]];
-			[e setSeriesDescription: [[path lastPathComponent] stringByDeletingPathExtension]];
+			
+			int bpp = [rep bitsPerPixel]/[rep samplesPerPixel];
+			int spp = [rep samplesPerPixel];
+			
+			if( [rep bitsPerPixel] == 32 && spp == 3)
+			{
+				bpp = 8;
+				spp = 4;
+			}
+			
+			[e setPixelData: [rep bitmapData] samplesPerPixel: spp bitsPerSample: bpp width:[rep pixelsWide] height:[rep pixelsHigh]];
 			
 			if( [rep isPlanar])
 				NSLog( @"********** DCMJpegImportFilter Planar is not yet supported....");
