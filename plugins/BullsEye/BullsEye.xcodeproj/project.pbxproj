@@ -16,7 +16,6 @@
 		AB01B9BD067FAC0500CDDB0F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB01B9BC067FAC0500CDDB0F /* WebKit.framework */; };
 		AB5A33C410B58DC0000D3A60 /* PresetsArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = AB5A33C210B58DC0000D3A60 /* PresetsArrayController.h */; };
 		AB5A33C510B58DC0000D3A60 /* PresetsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB5A33C310B58DC0000D3A60 /* PresetsArrayController.m */; };
-		AB5A342710B5956A000D3A60 /* PopUpMenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */; };
 		ABEB176A10B5297C00245C73 /* ColorCell.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEB176810B5297C00245C73 /* ColorCell.h */; };
 		ABEB176B10B5297C00245C73 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEB176910B5297C00245C73 /* ColorCell.m */; };
 		ABEB178010B52BCB00245C73 /* PresetsListArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEB177E10B52BCB00245C73 /* PresetsListArrayController.h */; };
@@ -44,7 +43,6 @@
 		AB1411F40677B3BE004B0074 /* BullsEye.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BullsEye.osirixplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB5A33C210B58DC0000D3A60 /* PresetsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetsArrayController.h; sourceTree = "<group>"; };
 		AB5A33C310B58DC0000D3A60 /* PresetsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresetsArrayController.m; sourceTree = "<group>"; };
-		AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpMenuIcon.png; sourceTree = "<group>"; };
 		ABEB176810B5297C00245C73 /* ColorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
 		ABEB176910B5297C00245C73 /* ColorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
 		ABEB177E10B52BCB00245C73 /* PresetsListArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresetsListArrayController.h; sourceTree = "<group>"; };
@@ -99,7 +97,6 @@
 				CE5CC4CC10B489D9006A5B6D /* BullsEyeController.xib */,
 				CE1F172710B832FC00344DCA /* BullsEyeIcon.tiff */,
 				CE9B95F110B5F04D002451B0 /* Perfusion.pdf */,
-				AB5A342610B5956A000D3A60 /* PopUpMenuIcon.png */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -227,7 +224,6 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				CE5CC4CE10B489D9006A5B6D /* BullsEyeController.xib in Resources */,
-				AB5A342710B5956A000D3A60 /* PopUpMenuIcon.png in Resources */,
 				CE9B95F210B5F04D002451B0 /* Perfusion.pdf in Resources */,
 				CE1F172810B832FC00344DCA /* BullsEyeIcon.tiff in Resources */,
 			);

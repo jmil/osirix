@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		596DB8130FAF0BD400FEE841 /* PopUpMenuButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 596DB80F0FAF0BD400FEE841 /* PopUpMenuButton.h */; };
-		596DB8140FAF0BD400FEE841 /* PopUpMenuButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 596DB8100FAF0BD400FEE841 /* PopUpMenuButton.mm */; };
 		596DB8150FAF0BD400FEE841 /* SpecialSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = 596DB8110FAF0BD400FEE841 /* SpecialSplitView.h */; };
 		596DB8160FAF0BD400FEE841 /* SpecialSplitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 596DB8120FAF0BD400FEE841 /* SpecialSplitView.mm */; };
 		597131A20FA6F7E100FA0701 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = 597131960FA6F7E100FA0701 /* Interface.h */; };
@@ -31,7 +29,6 @@
 		5977157B0FA97FAF003CBDE8 /* StaticScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 597715700FA97FAF003CBDE8 /* StaticScheduler.h */; };
 		5977157C0FA97FAF003CBDE8 /* ViewerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 597715710FA97FAF003CBDE8 /* ViewerController.h */; };
 		597715800FA97FE3003CBDE8 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5977157F0FA97FE3003CBDE8 /* Interface.xib */; };
-		597715A50FA9805A003CBDE8 /* PopUpMenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 597715A40FA9805A003CBDE8 /* PopUpMenuIcon.png */; };
 		597816040FB9520800774713 /* DicomSaveDialog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597816020FB9520800774713 /* DicomSaveDialog.mm */; };
 		597816050FB9520800774713 /* DicomSaveDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 597816030FB9520800774713 /* DicomSaveDialog.h */; };
 		598960770F9EFBE200BEFEE4 /* GRAreaDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5989606F0F9EFBE200BEFEE4 /* GRAreaDataSet.h */; };
@@ -60,8 +57,6 @@
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		596DB80F0FAF0BD400FEE841 /* PopUpMenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpMenuButton.h; sourceTree = "<group>"; };
-		596DB8100FAF0BD400FEE841 /* PopUpMenuButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PopUpMenuButton.mm; sourceTree = "<group>"; };
 		596DB8110FAF0BD400FEE841 /* SpecialSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialSplitView.h; sourceTree = "<group>"; };
 		596DB8120FAF0BD400FEE841 /* SpecialSplitView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpecialSplitView.mm; sourceTree = "<group>"; };
 		597131960FA6F7E100FA0701 /* Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interface.h; path = Sources/Interface.h; sourceTree = "<group>"; };
@@ -85,7 +80,6 @@
 		597715710FA97FAF003CBDE8 /* ViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerController.h; sourceTree = "<group>"; };
 		5977157D0FA97FD3003CBDE8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		5977157F0FA97FE3003CBDE8 /* Interface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Interface.xib; path = Resources/Interface.xib; sourceTree = "<group>"; };
-		597715A40FA9805A003CBDE8 /* PopUpMenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PopUpMenuIcon.png; path = Resources/PopUpMenuIcon.png; sourceTree = "<group>"; };
 		597816020FB9520800774713 /* DicomSaveDialog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DicomSaveDialog.mm; path = Sources/DicomSaveDialog.mm; sourceTree = "<group>"; };
 		597816030FB9520800774713 /* DicomSaveDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DicomSaveDialog.h; path = Sources/DicomSaveDialog.h; sourceTree = "<group>"; };
 		5989606F0F9EFBE200BEFEE4 /* GRAreaDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRAreaDataSet.h; sourceTree = "<group>"; };
@@ -150,7 +144,6 @@
 				5977157D0FA97FD3003CBDE8 /* Info.plist */,
 				59D64E7A0FAF36D60021E211 /* InfoPlist.strings */,
 				5977157F0FA97FE3003CBDE8 /* Interface.xib */,
-				597715A40FA9805A003CBDE8 /* PopUpMenuIcon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -217,8 +210,6 @@
 		596DB80E0FAF0BD400FEE841 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				596DB80F0FAF0BD400FEE841 /* PopUpMenuButton.h */,
-				596DB8100FAF0BD400FEE841 /* PopUpMenuButton.mm */,
 				596DB8110FAF0BD400FEE841 /* SpecialSplitView.h */,
 				596DB8120FAF0BD400FEE841 /* SpecialSplitView.mm */,
 			);
@@ -302,7 +293,6 @@
 				5977157A0FA97FAF003CBDE8 /* Scheduler.h in Headers */,
 				5977157B0FA97FAF003CBDE8 /* StaticScheduler.h in Headers */,
 				5977157C0FA97FAF003CBDE8 /* ViewerController.h in Headers */,
-				596DB8130FAF0BD400FEE841 /* PopUpMenuButton.h in Headers */,
 				596DB8150FAF0BD400FEE841 /* SpecialSplitView.h in Headers */,
 				59E53C1B0FAF17E1004AE16E /* AreaDataSet.h in Headers */,
 				59D655E00FB195730021E211 /* UserDefaults.h in Headers */,
@@ -360,7 +350,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				597715800FA97FE3003CBDE8 /* Interface.xib in Resources */,
-				597715A50FA9805A003CBDE8 /* PopUpMenuIcon.png in Resources */,
 				59D64E7C0FAF36D60021E211 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,7 +375,6 @@
 				597131A60FA6F7E100FA0701 /* Interface.mm in Sources */,
 				597131AA0FA6F7E100FA0701 /* Options.mm in Sources */,
 				597131AC0FA6F7E100FA0701 /* Chart.mm in Sources */,
-				596DB8140FAF0BD400FEE841 /* PopUpMenuButton.mm in Sources */,
 				596DB8160FAF0BD400FEE841 /* SpecialSplitView.mm in Sources */,
 				59E53C1A0FAF17E1004AE16E /* AreaDataSet.mm in Sources */,
 				59D655E10FB195730021E211 /* UserDefaults.mm in Sources */,
