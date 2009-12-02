@@ -634,7 +634,7 @@
 			
 		_femurLayer = [_viewerController createLayerROIFromROI:_femurRoi];
 		[_femurLayer roiMove:NSMakePoint(-10,10)]; // when the layer is created it is shifted, but we don't want this so we move it back // TODO: pas possible de faire [x setOrigin:[x origin]] ?
-		[_femurLayer setOpacity:2];
+		[_femurLayer setOpacity:1];
 		[_femurLayer setDisplayTextualData:NO];
 		
 		
