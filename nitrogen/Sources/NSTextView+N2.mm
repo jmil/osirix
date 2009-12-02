@@ -12,6 +12,19 @@
 
 @implementation NSTextView (N2)
 
++(NSTextView*)labelWithText:(NSString*)text {
+	return [self labelWithText:text alignment:NSNaturalTextAlignment];
+}
+
++(NSTextView*)labelWithText:(NSString*)text alignment:(NSTextAlignment)alignment {
+	NSTextView* ret = [[NSTextView alloc] initWithSize:NSZeroSize];
+	[ret setString:text];
+	[ret setAlignment:alignment];
+	[ret setEditable:NO];
+	[ret setSelectable:NO];
+	return [ret autorelease];
+}
+
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
 	return [[self textStorage] sizeForWidth:width height:CGFLOAT_MAX];
 }
@@ -25,7 +38,7 @@
 }
 
 -(NSSize)adaptToContent:(CGFloat)maxWidth {
-	NSSize stringSize = [[self textStorage] sizeForWidth:maxWidth height:CGFLOAT_MAX];
+	NSSize stringSize = [self optimalSizeForWidth:maxWidth];
 	[self setFrame:NSMakeRect([self frame].origin, stringSize)];
 	return stringSize;
 }

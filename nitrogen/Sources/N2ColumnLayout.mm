@@ -85,32 +85,33 @@
 			colWidth[i] = std::max(colWidth[i], optimalWidth);
 		}
 	
-	while (true) {
-		// apply constraints
-		CGFloat currentWidth = 0, targetWidth = width - _margin.size.width - _separation.width*std::max((int)colsCount-1, 0);
-		for (NSUInteger i = 0; i < colsCount; ++i)
-			currentWidth += colWidth[i] = std::ceil(N2MinMaxConstrainedValue(constraints[i], colWidth[i]));
-		
-		if (currentWidth == targetWidth)
-			break;
-		
-		CGFloat deltaWidth = targetWidth-currentWidth; // if (deltaWidth > 0) increase
-		BOOL colFixed[colsCount];
-		int unfixedColsCount = 0;
-		CGFloat unfixedRefWidth = 0;
-		for (NSUInteger i = 0; i < colsCount; ++i)
-			if (!(colFixed[i] = !((deltaWidth > 0 && colWidth[i] < constraints[i].max) || (deltaWidth < 0 && colWidth[i] > constraints[i].min)))) {
-				++unfixedColsCount;
-				unfixedRefWidth += colWidth[i];
-			}
-		
-		if (!unfixedColsCount)
-			break;
-		
-		for (NSUInteger i = 0; i < colsCount; ++i)
-			if (!colFixed[i])
-				colWidth[i] += deltaWidth*unfixedRefWidth/colWidth[i];
-	}
+	if (!_forcesSuperviewWidth)
+		while (true) {
+			// apply constraints
+			CGFloat currentWidth = 0, targetWidth = width - _margin.size.width - _separation.width*std::max((int)colsCount-1, 0);
+			for (NSUInteger i = 0; i < colsCount; ++i)
+				currentWidth += colWidth[i] = std::floor(N2MinMaxConstrainedValue(constraints[i], colWidth[i])+0.5);
+			
+			if (currentWidth == targetWidth || targetWidth <= 0)
+				break;
+			
+			CGFloat deltaWidth = targetWidth-currentWidth; // if (deltaWidth > 0) increase
+			BOOL colFixed[colsCount];
+			int unfixedColsCount = 0;
+			CGFloat unfixedRefWidth = 0;
+			for (NSUInteger i = 0; i < colsCount; ++i)
+				if (!(colFixed[i] = !((deltaWidth > 0 && colWidth[i] < constraints[i].max) || (deltaWidth < 0 && colWidth[i] > constraints[i].min)))) {
+					++unfixedColsCount;
+					unfixedRefWidth += colWidth[i];
+				}
+			
+			if (!unfixedColsCount)
+				break;
+			
+			for (NSUInteger i = 0; i < colsCount; ++i)
+				if (!colFixed[i])
+					colWidth[i] *= 1+deltaWidth/unfixedRefWidth;
+		}
 	
 	// get cell sizes and line heights
 	NSSize sizes[linesCount][colsCount];

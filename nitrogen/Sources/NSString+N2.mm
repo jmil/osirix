@@ -7,6 +7,7 @@
 //
 
 #import <Nitrogen/NSString+N2.h>
+#include <cmath>
 
 
 @implementation NSString (N2)
@@ -34,11 +35,11 @@
 +(NSString*)timeString:(NSTimeInterval)time {
 	NSString* unit; unsigned value;
 	if (time < 60-1) {
-		unit = @"seconde"; value = ceil(time);
+		unit = @"seconde"; value = std::ceil(time);
 	} else if (time < 3600-1) {
-		unit = @"minute"; value = ceil(time/60);
+		unit = @"minute"; value = std::ceil(time/60);
 	} else {
-		unit = @"heure"; value = ceil(time/3600);
+		unit = @"heure"; value = std::ceil(time/3600);
 	}
 	
 	return [NSString stringWithFormat:@"%d %@%@", value, unit, value==1? @"" : @"s"];

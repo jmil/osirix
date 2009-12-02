@@ -120,7 +120,7 @@
 		for (NSView* view in [content objectAtIndex:i])
 			if ([view isKindOfClass:[NSView class]]) {
 				++rowViewCounts[i];
-				rowWidths[i] += ceilf([view frame].size.width)+_separation.width+[self marginFor:view].size.width;
+				rowWidths[i] += std::ceil([view frame].size.width)+_separation.width+[self marginFor:view].size.width;
 			}
 		rowWidths[i] -= _separation.width;
 		maxWidth = std::max(maxWidth, rowWidths[i]);
@@ -144,8 +144,8 @@
 				if (xFactor != 0) frame.size.width *= xFactor;
 				else frame.size.width = maxWidth;
 				[view setFrame:frame];
-				x += ceilf(frame.size.width)+_separation.width+viewMargin.size.width;
-				maxHeight = std::max(maxHeight, ceilf([view frame].size.height)+viewMargin.size.height);
+				x += std::ceil(frame.size.width)+_separation.width+viewMargin.size.width;
+				maxHeight = std::max(maxHeight, std::ceil([view frame].size.height)+viewMargin.size.height);
 			}
 		
 //		CGFloat difference = bounds.size.width - x;
