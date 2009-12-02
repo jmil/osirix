@@ -20,4 +20,21 @@
 	return self;
 }
 
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	NSSize size = [[self cell] cellSize];
+	if (size.width > width) size.width = width;
+	
+	switch ([self bezelStyle]) {
+		case NSRecessedBezelStyle: {
+			if ([[self cell] controlSize] == NSMiniControlSize) size.height -= 4;
+		} break;
+	}
+	
+	return size;
+}
+
+-(NSSize)optimalSize {
+	return [self optimalSizeForWidth:CGFLOAT_MAX];
+}
+
 @end

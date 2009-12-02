@@ -46,6 +46,10 @@ NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
 	for (NSView* subview in [view subviews])
 		if (![subview isKindOfClass:[N2View class]] || [(N2View*)subview layout] == NULL)
 			[self formatSubview:subview];
+	if ([view respondsToSelector:@selector(additionalSubviews)])
+		for (NSView* subview in [view performSelector:@selector(additionalSubviews)])
+			if (![subview isKindOfClass:[N2View class]] || [(N2View*)subview layout] == NULL)
+				[self formatSubview:subview];
 }
 
 -(void)didAddSubview:(NSView*)view {

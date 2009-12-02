@@ -11,13 +11,18 @@
 
 @implementation NSDictionary (N2)
 
--(id)objectForKey:(NSString*)k ofClass:(Class)cl {
-	if (![self isKindOfClass:[NSDictionary class]])
-		[NSException raise:NSGenericException format:@"NSDictionary expected, actually %@", [self className]];
-	id o = [self objectForKey:k];
-	if (o && ![o isKindOfClass:cl])
-		[NSException raise:NSGenericException format:@"%s expected, actually %@", [[NSClassDescription classDescriptionForClass:cl] description], [o className]];\
-	return o;
+-(id)objectForKey:(id)key ofClass:(Class)cl {
+	id obj = [self objectForKey:key];
+	if (obj && ![obj isKindOfClass:cl])
+		[NSException raise:NSGenericException format:@"%s expected, actually %@", [[NSClassDescription classDescriptionForClass:cl] description], [obj className]];\
+	return obj;
+}
+
+-(id)keyForObject:(id)obj {
+	for (id key in self)
+		if ([self objectForKey:key] == obj)
+			return key;
+	return NULL;
 }
 
 @end

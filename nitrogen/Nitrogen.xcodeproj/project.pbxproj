@@ -83,6 +83,10 @@
 		59D8775E10AC0F7C00AAA0FE /* N2Alignment.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */; };
 		59D8899F10B1812500AAA0FE /* N2Resizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8899D10B1812500AAA0FE /* N2Resizer.h */; };
 		59D889A010B1812500AAA0FE /* N2Resizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8899E10B1812500AAA0FE /* N2Resizer.mm */; };
+		59D892CC10B2E8D100AAA0FE /* NSMutableDictionary+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D892CA10B2E8D100AAA0FE /* NSMutableDictionary+N2.h */; };
+		59D892CD10B2E8D100AAA0FE /* NSMutableDictionary+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D892CB10B2E8D100AAA0FE /* NSMutableDictionary+N2.mm */; };
+		59D89B8910B3FFAE00AAA0FE /* N2Button.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D89B8710B3FFAE00AAA0FE /* N2Button.h */; };
+		59D89B8A10B3FFAE00AAA0FE /* N2Button.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D89B8810B3FFAE00AAA0FE /* N2Button.mm */; };
 		59E6DD11105E3DBD002C8245 /* NSColor+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59E6DD12105E3DBD002C8245 /* NSColor+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */; };
 		59E7A17B108C9ACF007F82BA /* NSURL+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E7A179108C9ACF007F82BA /* NSURL+N2.h */; };
@@ -174,6 +178,10 @@
 		59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Alignment.mm; sourceTree = "<group>"; };
 		59D8899D10B1812500AAA0FE /* N2Resizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Resizer.h; sourceTree = "<group>"; };
 		59D8899E10B1812500AAA0FE /* N2Resizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Resizer.mm; sourceTree = "<group>"; };
+		59D892CA10B2E8D100AAA0FE /* NSMutableDictionary+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+N2.h"; sourceTree = "<group>"; };
+		59D892CB10B2E8D100AAA0FE /* NSMutableDictionary+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSMutableDictionary+N2.mm"; sourceTree = "<group>"; };
+		59D89B8710B3FFAE00AAA0FE /* N2Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Button.h; sourceTree = "<group>"; };
+		59D89B8810B3FFAE00AAA0FE /* N2Button.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Button.mm; sourceTree = "<group>"; };
 		59E6DD0F105E3DBD002C8245 /* NSColor+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+N2.h"; sourceTree = "<group>"; };
 		59E6DD10105E3DBD002C8245 /* NSColor+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSColor+N2.mm"; sourceTree = "<group>"; };
 		59E7A179108C9ACF007F82BA /* NSURL+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+N2.h"; sourceTree = "<group>"; };
@@ -276,6 +284,8 @@
 				59D8775C10AC0F7C00AAA0FE /* N2Alignment.mm */,
 				598E50301043CB90005BCDC7 /* N2ButtonCell.h */,
 				598E50311043CB90005BCDC7 /* N2ButtonCell.mm */,
+				59D89B8710B3FFAE00AAA0FE /* N2Button.h */,
+				59D89B8810B3FFAE00AAA0FE /* N2Button.mm */,
 				59A6332710428715003F4069 /* N2DisclosureBox.h */,
 				59A6333510428715003F4069 /* N2DisclosureBox.mm */,
 				59A6333410428715003F4069 /* N2DisclosureButtonCell.h */,
@@ -361,6 +371,8 @@
 				59A6333210428715003F4069 /* NS(Attributed)String+Geometrics.m */,
 				59CF7A381068CDEA00A4444F /* NSDictionary+N2.h */,
 				59CF7A391068CDEA00A4444F /* NSDictionary+N2.mm */,
+				59D892CA10B2E8D100AAA0FE /* NSMutableDictionary+N2.h */,
+				59D892CB10B2E8D100AAA0FE /* NSMutableDictionary+N2.mm */,
 				59CF838C1069306800A4444F /* NSInvocation+N2.h */,
 				59CF838B1069306800A4444F /* NSInvocation+N2.mm */,
 				59E7A179108C9ACF007F82BA /* NSURL+N2.h */,
@@ -454,6 +466,8 @@
 				59D875AC10AAEF2000AAA0FE /* N2MinMax.h in Headers */,
 				59D8775D10AC0F7C00AAA0FE /* N2Alignment.h in Headers */,
 				59D8899F10B1812500AAA0FE /* N2Resizer.h in Headers */,
+				59D892CC10B2E8D100AAA0FE /* NSMutableDictionary+N2.h in Headers */,
+				59D89B8910B3FFAE00AAA0FE /* N2Button.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +585,8 @@
 				59D875AD10AAEF2000AAA0FE /* N2MinMax.mm in Sources */,
 				59D8775E10AC0F7C00AAA0FE /* N2Alignment.mm in Sources */,
 				59D889A010B1812500AAA0FE /* N2Resizer.mm in Sources */,
+				59D892CD10B2E8D100AAA0FE /* NSMutableDictionary+N2.mm in Sources */,
+				59D89B8A10B3FFAE00AAA0FE /* N2Button.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

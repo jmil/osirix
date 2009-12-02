@@ -10,7 +10,8 @@
 #import "N2ColumnDescriptor.h"
 #import "NSView+N2.h"
 #import "N2Operators.h"
-#import <algorithm>
+#include <algorithm>
+#include <cmath>
 
 @implementation N2ColumnLayout
 
@@ -88,7 +89,7 @@
 		// apply constraints
 		CGFloat currentWidth = 0, targetWidth = width - _margin.size.width - _separation.width*std::max((int)colsCount-1, 0);
 		for (NSUInteger i = 0; i < colsCount; ++i)
-			currentWidth += (colWidth[i] = N2MinMaxConstrainedValue(constraints[i], colWidth[i]));
+			currentWidth += colWidth[i] = std::ceil(N2MinMaxConstrainedValue(constraints[i], colWidth[i]));
 		
 		if (currentWidth == targetWidth)
 			break;
@@ -120,8 +121,8 @@
 		for (NSUInteger i = 0; i < colsCount; ++i) {
 			NSView* view = [line objectAtIndex:i];
 			if ([view respondsToSelector:@selector(optimalSizeForWidth:)])
-				sizes[l][i] = [(NSView<OptimalSize>*)view optimalSizeForWidth:colWidth[i]];
-			else sizes[l][i] = [view frame].size;
+				sizes[l][i] = NSRoundSize([(NSView<OptimalSize>*)view optimalSizeForWidth:colWidth[i]]);
+			else sizes[l][i] = NSRoundSize([view frame].size);
 //			lineHeights[l] = std::max(lineHeights[l], sizes[l][i].height);
 		}
 	}
@@ -160,9 +161,6 @@
 		}
 	}
 		
-
-	NSLog(@"=======> layOutImpl");
-	
 	// apply computed column widths
 	CGFloat y = _margin.origin.y;
 	CGFloat maxX = 0;
@@ -173,8 +171,10 @@
 		for (NSUInteger i = 0; i < colsCount; ++i) {
 			NSView* view = [line objectAtIndex:i];
 			NSPoint origin = NSMakePoint(x, y);
+			NSSize size = sizes[l][i];
+			if (size.width < colWidth[i]) size.width = colWidth[i];
 			// TODO: position size in cell.size by changing origin (cell size must be known)
-			[view setFrame:NSMakeRect(origin, sizes[l][i])];
+			[view setFrame:NSMakeRect(origin, size)];
 			x += colWidth[i]+_separation.width;
 		}
 		x += _margin.size.width-_margin.origin.x - _separation.width;
@@ -241,7 +241,7 @@
 }
 
 -(NSSize)optimalSize {
-	return [self optimalSizeForWidth:0];
+	return [self optimalSizeForWidth:CGFLOAT_MAX];
 }
 
 @end

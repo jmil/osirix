@@ -11,6 +11,7 @@
 
 @interface NSDictionary (N2)
 
--(id)objectForKey:(NSString*)k ofClass:(Class)cl;
+-(id)objectForKey:(id)k ofClass:(Class)cl;
+-(id)keyForObject:(id)obj;
 
 @end
