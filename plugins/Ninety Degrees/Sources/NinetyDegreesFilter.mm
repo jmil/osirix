@@ -134,8 +134,9 @@
 			NinetyDegreesDistanceROI* distroi = [_distrois objectAtIndex:i];
 			if ([distroi isOnROI:roi]) {
 				[[[distroi curView] curRoiList] removeObject:distroi];
+				[[distroi retain] autorelease];
 				[_distrois removeObjectAtIndex:i];
-				// [[NSNotificationCenter defaultCenter] postNotificationName:OsirixRemoveROINotification object:distroi];
+				[[NSNotificationCenter defaultCenter] postNotificationName:OsirixRemoveROINotification object:distroi];
 			}
 		}
 }
