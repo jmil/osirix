@@ -19,7 +19,6 @@
 - OpenOffice support (odt format) for Reports
 
 - poseAsClass? JoriX WTF??
-- MAC address
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
