@@ -6,7 +6,7 @@
 //  Copyright 2009 OsiriX Team. All rights reserved.
 //
 
-@class N2Steps, N2Step, EjectionFractionWorkflow, ROI;
+@class N2Steps, N2Step, EjectionFractionWorkflow, ROI, N2View, N2Resizer;
 
 @interface EjectionFractionStepsController : NSWindowController {
 	EjectionFractionWorkflow* _workflow;
@@ -22,20 +22,36 @@
 	
 	N2Step* _stepROIs;
 	IBOutlet NSView* _viewROIs;
+	IBOutlet NSTextField* _viewROIsText;
+	NSString* _viewROIsTextFormat;
+	IBOutlet N2View* _viewROIsList;
+	N2Resizer* _stepROIsResizer;
+	
+	N2Step* _stepResult;
+	IBOutlet NSView* _viewResult;
+	IBOutlet NSTextField* _viewResultText;
+	NSString* _viewResultTextFormat;
+	IBOutlet NSButton* _viewResultShowResultWindow;
+	
+	NSImage* _checkmarkImage;
+	NSImage* _arrowImage;
 	
 //	NSMutableArray* _activeSteps;
 }
 
-@property(readonly) N2Step* stepROIs;
+@property(readonly) N2Step* stepResult;
 @property(readonly) N2StepsView* stepsView;
 
 -(id)initWithWorkflow:(EjectionFractionWorkflow*)plugin;
 
 -(void)setSelectedAlgorithm:(EjectionFractionAlgorithm*)algorithm;
+-(void)setResult:(CGFloat)result;
 
 -(void)steps:(N2Steps*)steps willBeginStep:(N2Step*)step;
 -(void)steps:(N2Steps*)steps valueChanged:(id)sender;
 -(BOOL)steps:(N2Steps*)steps shouldValidateStep:(N2Step*)step;
 -(void)steps:(N2Steps*)steps validateStep:(N2Step*)step;
+
+-(IBAction)detailsButtonClicked:(id)sender;
 
 @end

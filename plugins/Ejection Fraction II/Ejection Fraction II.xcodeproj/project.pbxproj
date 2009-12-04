@@ -9,12 +9,19 @@
 /* Begin PBXBuildFile section */
 		5915EF06109F203A0024F610 /* Nitrogen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5915EF05109F203A0024F610 /* Nitrogen.framework */; };
 		5915EF0A109F204B0024F610 /* OsiriX Headers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5915EF09109F204B0024F610 /* OsiriX Headers.framework */; };
+		5950673010BE827C00846DA7 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5950672F10BE827C00846DA7 /* Checkmark.png */; };
 		595F756D109F3B970024974D /* EjectionFractionWorkflow.h in Headers */ = {isa = PBXBuildFile; fileRef = 595F756B109F3B970024974D /* EjectionFractionWorkflow.h */; };
 		595F756E109F3B970024974D /* EjectionFractionWorkflow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 595F756C109F3B970024974D /* EjectionFractionWorkflow.mm */; };
+		596DF1FA10B59936006351CD /* EjectionFractionWorkflow+OsiriX.h in Headers */ = {isa = PBXBuildFile; fileRef = 596DF1F810B59936006351CD /* EjectionFractionWorkflow+OsiriX.h */; };
+		596DF1FB10B59936006351CD /* EjectionFractionWorkflow+OsiriX.mm in Sources */ = {isa = PBXBuildFile; fileRef = 596DF1F910B59936006351CD /* EjectionFractionWorkflow+OsiriX.mm */; };
+		596F86C010C67A4D007D6C82 /* EjectionFractionResultsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 596F86BE10C67A4D007D6C82 /* EjectionFractionResultsController.h */; };
+		596F86C110C67A4D007D6C82 /* EjectionFractionResultsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 596F86BF10C67A4D007D6C82 /* EjectionFractionResultsController.mm */; };
 		5987F5D3103018A5006D39F5 /* Ejection_Fraction_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 5987F5D2103018A5006D39F5 /* Ejection_Fraction_Prefix.pch */; };
 		5987F605103019B0006D39F5 /* EjectionFractionPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */; };
 		5987F606103019B0006D39F5 /* EjectionFractionPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5987F604103019B0006D39F5 /* EjectionFractionPlugin.h */; };
 		598E525810442462005BCDC7 /* EjectionFractionSteps.xib in Resources */ = {isa = PBXBuildFile; fileRef = 598E525710442462005BCDC7 /* EjectionFractionSteps.xib */; };
+		59D6010A10BEAE990024DC67 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 59D6010910BEAE990024DC67 /* Arrow.png */; };
+		59D892A510B2945B00AAA0FE /* EjectionFractionAlgorithm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D892A410B2945B00AAA0FE /* EjectionFractionAlgorithm.mm */; };
 		59E8B2901046A19D00B83E7D /* EjectionFractionStepsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */; };
 		59E8B2911046A19D00B83E7D /* EjectionFractionStepsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */; };
 		59E8B2981046A1D100B83E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59E8B2961046A1D100B83E7D /* InfoPlist.strings */; };
@@ -33,8 +40,6 @@
 		59FB4F9310A2ECFD00283D52 /* Simpson.png in Resources */ = {isa = PBXBuildFile; fileRef = 59FB4F9110A2ECFD00283D52 /* Simpson.png */; };
 		59FB4F9510A2ED0100283D52 /* Hemi-ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 59FB4F9410A2ED0100283D52 /* Hemi-ellipse.png */; };
 		59FB4F9710A2ED0700283D52 /* Biplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 59FB4F9610A2ED0700283D52 /* Biplane.png */; };
-		59FB4FA610A2ED3400283D52 /* Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 59FB4FA510A2ED3400283D52 /* Test.png */; };
-		59FB570B10A2F96A00283D52 /* EjectionFractionAlgorithm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59FB570A10A2F96A00283D52 /* EjectionFractionAlgorithm.mm */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,13 +49,20 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		5915EF05109F203A0024F610 /* Nitrogen.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nitrogen.framework; path = ../../nitrogen/build/Development/Nitrogen.framework; sourceTree = SOURCE_ROOT; };
 		5915EF09109F204B0024F610 /* OsiriX Headers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "OsiriX Headers.framework"; path = "../../osirix/build/Development/OsiriX Headers.framework"; sourceTree = SOURCE_ROOT; };
+		5950672F10BE827C00846DA7 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkmark.png; path = Resources/Checkmark.png; sourceTree = "<group>"; };
 		595F756B109F3B970024974D /* EjectionFractionWorkflow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EjectionFractionWorkflow.h; path = Sources/EjectionFractionWorkflow.h; sourceTree = "<group>"; };
 		595F756C109F3B970024974D /* EjectionFractionWorkflow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionWorkflow.mm; path = Sources/EjectionFractionWorkflow.mm; sourceTree = "<group>"; };
+		596DF1F810B59936006351CD /* EjectionFractionWorkflow+OsiriX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EjectionFractionWorkflow+OsiriX.h"; path = "Sources/EjectionFractionWorkflow+OsiriX.h"; sourceTree = "<group>"; };
+		596DF1F910B59936006351CD /* EjectionFractionWorkflow+OsiriX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EjectionFractionWorkflow+OsiriX.mm"; path = "Sources/EjectionFractionWorkflow+OsiriX.mm"; sourceTree = "<group>"; };
+		596F86BE10C67A4D007D6C82 /* EjectionFractionResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EjectionFractionResultsController.h; sourceTree = "<group>"; };
+		596F86BF10C67A4D007D6C82 /* EjectionFractionResultsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EjectionFractionResultsController.mm; sourceTree = "<group>"; };
 		5987F5D2103018A5006D39F5 /* Ejection_Fraction_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ejection_Fraction_Prefix.pch; path = Sources/Ejection_Fraction_Prefix.pch; sourceTree = "<group>"; };
 		5987F5D8103018C4006D39F5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionPlugin.mm; path = Sources/EjectionFractionPlugin.mm; sourceTree = "<group>"; };
 		5987F604103019B0006D39F5 /* EjectionFractionPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EjectionFractionPlugin.h; path = Sources/EjectionFractionPlugin.h; sourceTree = "<group>"; };
 		598E525710442462005BCDC7 /* EjectionFractionSteps.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EjectionFractionSteps.xib; path = Resources/EjectionFractionSteps.xib; sourceTree = "<group>"; };
+		59D6010910BEAE990024DC67 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Arrow.png; path = Resources/Arrow.png; sourceTree = "<group>"; };
+		59D892A410B2945B00AAA0FE /* EjectionFractionAlgorithm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionAlgorithm.mm; path = Sources/Algorithms/EjectionFractionAlgorithm.mm; sourceTree = "<group>"; };
 		59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EjectionFractionStepsController.mm; path = Sources/EjectionFractionStepsController.mm; sourceTree = "<group>"; };
 		59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EjectionFractionStepsController.h; path = Sources/EjectionFractionStepsController.h; sourceTree = "<group>"; };
 		59E8B2971046A1D100B83E7D /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -69,8 +81,6 @@
 		59FB4F9110A2ECFD00283D52 /* Simpson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Simpson.png; path = Resources/Simpson.png; sourceTree = "<group>"; };
 		59FB4F9410A2ED0100283D52 /* Hemi-ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Hemi-ellipse.png"; path = "Resources/Hemi-ellipse.png"; sourceTree = "<group>"; };
 		59FB4F9610A2ED0700283D52 /* Biplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Biplane.png; path = Resources/Biplane.png; sourceTree = "<group>"; };
-		59FB4FA510A2ED3400283D52 /* Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Test.png; path = Resources/Test.png; sourceTree = "<group>"; };
-		59FB570A10A2F96A00283D52 /* EjectionFractionAlgorithm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EjectionFractionAlgorithm.mm; sourceTree = "<group>"; };
 		AB5D36050680E57E00F4007A /* Ejection Fraction.osirixplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ejection Fraction.osirixplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -118,7 +128,8 @@
 				59FB4F9110A2ECFD00283D52 /* Simpson.png */,
 				598E525710442462005BCDC7 /* EjectionFractionSteps.xib */,
 				5987F5D8103018C4006D39F5 /* Info.plist */,
-				59FB4FA510A2ED3400283D52 /* Test.png */,
+				59D6010910BEAE990024DC67 /* Arrow.png */,
+				5950672F10BE827C00846DA7 /* Checkmark.png */,
 				59E8B2951046A1D100B83E7D /* English.lproj */,
 			);
 			name = Resources;
@@ -158,8 +169,12 @@
 				5987F603103019B0006D39F5 /* EjectionFractionPlugin.mm */,
 				595F756B109F3B970024974D /* EjectionFractionWorkflow.h */,
 				595F756C109F3B970024974D /* EjectionFractionWorkflow.mm */,
+				596DF1F810B59936006351CD /* EjectionFractionWorkflow+OsiriX.h */,
+				596DF1F910B59936006351CD /* EjectionFractionWorkflow+OsiriX.mm */,
 				59E8B28F1046A19D00B83E7D /* EjectionFractionStepsController.h */,
 				59E8B28E1046A19D00B83E7D /* EjectionFractionStepsController.mm */,
+				596F86BE10C67A4D007D6C82 /* EjectionFractionResultsController.h */,
+				596F86BF10C67A4D007D6C82 /* EjectionFractionResultsController.mm */,
 				59FB4F1510A2D22400283D52 /* Algorithms */,
 			);
 			name = Sources;
@@ -188,7 +203,7 @@
 				59FB4F7610A2D68800283D52 /* TeichholzEjectionFractionAlgorithm.h */,
 				59FB4F7710A2D68800283D52 /* TeichholzEjectionFractionAlgorithm.mm */,
 				59FB4F2E10A2D24400283D52 /* EjectionFractionAlgorithm.h */,
-				59FB570A10A2F96A00283D52 /* EjectionFractionAlgorithm.mm */,
+				59D892A410B2945B00AAA0FE /* EjectionFractionAlgorithm.mm */,
 			);
 			name = Algorithms;
 			sourceTree = "<group>";
@@ -210,6 +225,8 @@
 				59FB4F5610A2D4DC00283D52 /* HemiEllipseEjectionFractionAlgorithm.h in Headers */,
 				59FB4F5C10A2D5AD00283D52 /* SimpsonEjectionFractionAlgorithm.h in Headers */,
 				59FB4F7810A2D68800283D52 /* TeichholzEjectionFractionAlgorithm.h in Headers */,
+				596DF1FA10B59936006351CD /* EjectionFractionWorkflow+OsiriX.h in Headers */,
+				596F86C010C67A4D007D6C82 /* EjectionFractionResultsController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +281,8 @@
 				59FB4F9310A2ECFD00283D52 /* Simpson.png in Resources */,
 				59FB4F9510A2ED0100283D52 /* Hemi-ellipse.png in Resources */,
 				59FB4F9710A2ED0700283D52 /* Biplane.png in Resources */,
-				59FB4FA610A2ED3400283D52 /* Test.png in Resources */,
+				5950673010BE827C00846DA7 /* Checkmark.png in Resources */,
+				59D6010A10BEAE990024DC67 /* Arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +311,9 @@
 				59FB4F5710A2D4DC00283D52 /* HemiEllipseEjectionFractionAlgorithm.mm in Sources */,
 				59FB4F5D10A2D5AD00283D52 /* SimpsonEjectionFractionAlgorithm.mm in Sources */,
 				59FB4F7910A2D68800283D52 /* TeichholzEjectionFractionAlgorithm.mm in Sources */,
-				59FB570B10A2F96A00283D52 /* EjectionFractionAlgorithm.mm in Sources */,
+				59D892A510B2945B00AAA0FE /* EjectionFractionAlgorithm.mm in Sources */,
+				596DF1FB10B59936006351CD /* EjectionFractionWorkflow+OsiriX.mm in Sources */,
+				596F86C110C67A4D007D6C82 /* EjectionFractionResultsController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

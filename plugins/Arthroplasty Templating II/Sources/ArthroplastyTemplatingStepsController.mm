@@ -58,7 +58,6 @@
 }
 
 -(void)awakeFromNib {
-	[[_stepsView layout] setForeColor:[NSColor whiteColor]];
 	[_stepsView setForeColor:[NSColor whiteColor]];
 	[_stepsView setControlSize:NSSmallControlSize];
 
