@@ -85,10 +85,10 @@
 			<li>Open the <code>Osirix.xcodeproj</code> (in <code>osirix/</code>) and select & run the 'Unzip Binaries' target</li>
 			<li>Select & run the 'Development' target to build OsiriX</li>
 		</ul>
-		<p>To download only specific part of OsiriX:</p>
-		<ul id='getting_source_code_alternate_download'>
-			<li>Active application project only: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/osirix&nbsp;osirix</code></li>
-		  <li>Plugins only: <code>svn&nbsp;co&nbsp;https://osirix.svn.sourceforge.net/svnroot/osirix/plugins&nbsp;plugins</code></li>
+		<p>To download the plugins distributed with OsiriX:</p>
+		<ul id='getting_plugins'>
+			<li>Open your Terminal application (in <code>/Applications/Utilities/</code>)</li>
+			<li>Type <code>svn co https://osirixplugins.svn.sourceforge.net/svnroot/osirixplugins osirixplugins</code> and hit return</li>
 		</ul>
 		
 	  <p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
@@ -105,7 +105,7 @@
 		<p>A convenient way to create a new plugin is to use the Plugin Generator from the OsiriX source code folder.
 			You will find it in: <code>plugins/_help/</code>. Unzip <code>Osirix Plugin Generator.zip</code> and run the AppleScript. Follow the wizard's instructions. The basic project will be created automatically.		</p>
 		<p>A small presentation to start writing an OsiriX plugin: <a href="http://www.osirix-viewer.com/OsiriXDevKeynote.html">Keynote presentation</a>.</p>
-	  <p>If you want to use <a href="http://www.itk.org/">ITK</a> in your plugin, here is a quick help file: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/plugins/_help/ITK%20plugins%20Help.txt">ITK plugins Help.txt</a>.</p>
+	  <p>If you want to use <a href="http://www.itk.org/">ITK</a> in your plugin, here is a quick help file: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/*checkout*/osirixplugins/_help/ITK%20plugins%20Help.txt">ITK plugins Help.txt</a>.</p>
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 	
     <a name="XML_RPC_support">
@@ -126,7 +126,7 @@
 			<li>...</li>
 		</ul>
 		<p>With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX integrates now an HTTP server with an XML-RPC protocol. It means that any software/computer that knows your network address can execute methods in OsiriX. These methods can be built-in in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences window in OsiriX. </p>
-		<p>The documentation is available here: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/plugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
+		<p>The documentation is available here: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/*checkout*/osirixplugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
 		<p>A sample plugin is available in the Plugins folder in the SVN repository: XML-RPC-Plugin</p>
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
     
