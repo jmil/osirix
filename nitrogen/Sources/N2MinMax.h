@@ -20,3 +20,4 @@ N2MinMax N2MakeMinMax();
 N2MinMax N2MakeMin(CGFloat min);
 N2MinMax N2MakeMax(CGFloat max);
 CGFloat N2MinMaxConstrainedValue(const N2MinMax& mm, CGFloat val);
+void N2ExtendMinMax(N2MinMax& n2minmax, CGFloat value);

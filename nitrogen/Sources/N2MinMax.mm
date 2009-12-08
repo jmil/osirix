@@ -7,6 +7,7 @@
 //
 
 #import "N2MinMax.h"
+#include <algorithm>
 
 const CGFloat N2NoMin = CGFLOAT_MIN, N2NoMax = CGFLOAT_MAX;
 
@@ -35,4 +36,9 @@ CGFloat N2MinMaxConstrainedValue(const N2MinMax& mm, CGFloat val) {
 	if (val < mm.min) val = mm.min;
 	if (val > mm.max) val = mm.max;
 	return val;
+}
+
+void N2ExtendMinMax(N2MinMax& n2minmax, CGFloat value) {
+	n2minmax.min = std::min(n2minmax.min, value);
+	n2minmax.max = std::max(n2minmax.max, value);
 }
