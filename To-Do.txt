@@ -20,8 +20,6 @@
 
 - poseAsClass? JoriX WTF??
 
-- Web download zip
-
 - HTTPS
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
