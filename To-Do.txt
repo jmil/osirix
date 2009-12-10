@@ -17,8 +17,10 @@
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
 - OpenOffice support (odt format) for Reports
+- New built-in web server
 
-- poseAsClass? JoriX WTF??
+- poseAsClass? test
+- 2.14.17 test
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
