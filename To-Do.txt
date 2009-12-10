@@ -19,7 +19,6 @@
 - OpenOffice support (odt format) for Reports
 - New built-in web server
 
-- poseAsClass? test
 - 2.14.17 test
 
 - HTTPS
