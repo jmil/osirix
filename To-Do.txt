@@ -12,7 +12,7 @@
 - OsiriX Lite version (for CD/DVD burning) 15MB versus instead of 150MB
 - Search by Patient ID on the built-in Web server
 - Customize the built-in Web server, by copying the WebServicesHTML folder in the OsiriX Data folder
-- Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) 
+- Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
 - WADO Client support for Q&R
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
