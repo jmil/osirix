@@ -17,7 +17,7 @@
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
 - OpenOffice support (odt format) for Reports
-- New built-in web server
+- New built-in web server, with HTTPS encryption and ZIP export
 
 - 2.14.17 test
 
