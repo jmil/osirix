@@ -19,7 +19,7 @@
 - OpenOffice support (odt format) for Reports
 - New built-in web server, with HTTPS encryption and ZIP export
 
-- 2.14.17 test
+- decompress : too many arguments?
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
