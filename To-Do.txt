@@ -20,6 +20,7 @@
 - New built-in web server, with HTTPS encryption and ZIP export
 
 - decompress : too many arguments?
+- speed table
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
