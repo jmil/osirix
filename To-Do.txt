@@ -19,7 +19,6 @@
 - OpenOffice support (odt format) for Reports
 - New built-in web server, with HTTPS encryption and ZIP export
 
-- decompress : too many arguments?
 - speed table
 
 - HTTPS
