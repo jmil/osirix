@@ -18,8 +18,7 @@
 - BullsEye plugin
 - OpenOffice support (odt format) for Reports
 - New built-in web server, with HTTPS encryption and ZIP export
-
-- speed table
+- Export studies by email from the DB window
 
 - HTTPS
 - Option to include 3D viewers in Tile Window
