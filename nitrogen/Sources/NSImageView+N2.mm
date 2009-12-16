@@ -7,7 +7,7 @@
 //
 
 #import "NSImageView+N2.h"
-
+#include <algorithm>
 
 @implementation NSImageView (N2)
 
@@ -15,6 +15,16 @@
 	NSImageView* view = [[NSImageView alloc] initWithSize:[image size]];
 	[view setImage:image];
 	return [view autorelease];
+}
+
+-(NSSize)optimalSize {
+	return [[self image] size];
+}
+
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	NSSize imageSize = [[self image] size];
+	if (width == CGFLOAT_MAX) width = imageSize.width;
+	return NSMakeSize(width, width/imageSize.width*imageSize.height);
 }
 
 @end

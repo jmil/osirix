@@ -221,8 +221,16 @@ NSSize operator+(const NSSize& s, const NSPoint& p) {
 	return NSMakeSize(p.x+s.width, p.y+s.height);
 }
 
+NSSize operator+=(NSSize& s, const NSPoint& p) {
+	return s = s+p;
+}
+
 NSPoint operator+(const NSPoint& p, const NSSize& s) {
 	return NSMakePoint(p.x+s.width, p.y+s.height);
+}
+
+NSPoint operator+=(NSPoint& p, const NSSize& s) {
+	return p = p+s;
 }
 
 NSSize operator-(const NSSize& s, const NSPoint& p) {

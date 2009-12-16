@@ -40,6 +40,8 @@ NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
 			[view performSelector:@selector(setBackgroundColor:) withObject:_backColor];
 		else if ([view respondsToSelector:@selector(setDrawsBackground:)])
 			[(NSText*)view setDrawsBackground:NO];
+		//if ([view respondsToSelector:@selector(setFont:)] && [view performSelector:@selector(font)])
+		//	[view performSelector:@selector(setFont:) withObject:[NSFont fontWithName:[[view performSelector:@selector(font)] fontName] size:[NSFont systemFontSizeForControlSize:[self controlSize]]]];
 	} else
 		view = self;
 	
@@ -61,6 +63,29 @@ NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
 	_foreColor = [color retain];
 	for (NSView* view in [self subviews])
 		[self formatSubview:view];
+}
+
+/*-(void)drawRect:(NSRect)rect { // for debugging purposes we may need to identify the view's borders
+	[super drawRect:rect];
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	[[NSColor redColor] set];
+	[[NSBezierPath bezierPathWithRect:[self bounds]] stroke];
+	
+	[context restoreGraphicsState];
+}*/
+
+-(NSSize)optimalSize {
+	if (_layout)
+		return [_layout optimalSize];
+	else return [self frame].size;	
+}
+
+-(NSSize)optimalSizeForWidth:(CGFloat)width {
+	if (_layout)
+		return [_layout optimalSizeForWidth:width];
+	else return [self frame].size;
 }
 
 @end

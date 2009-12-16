@@ -22,3 +22,10 @@
 -(NSSize)optimalSizeForWidth:(CGFloat)width;
 
 @end
+
+
+@protocol SizeAdjusting
+
+-(NSRect)sizeAdjust;
+
+@end

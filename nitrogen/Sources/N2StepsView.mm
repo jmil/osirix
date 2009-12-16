@@ -13,7 +13,7 @@
 #import <Nitrogen/N2StepView.h>
 #import <Nitrogen/N2ColumnLayout.h>
 #import <Nitrogen/N2DisclosureButtonCell.h>
-#import <Nitrogen/N2ColumnDescriptor.h>
+#import <Nitrogen/N2CellDescriptor.h>
 
 @implementation N2StepsView
 
@@ -102,7 +102,7 @@
 	[view setPostsFrameChangedNotifications:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stepViewFrameDidChange:) name:NSViewFrameDidChangeNotification object:view];
 	
-	[(N2ColumnLayout*)_layout appendLine:[NSArray arrayWithObject:view]];
+	[(N2ColumnLayout*)_layout appendRow:[NSArray arrayWithObject:view]];
 	
 	[self layOut];
 }

@@ -27,11 +27,11 @@
 			break;
 		case NSSmallControlSize:
 			_margin = NSMakeRect(NSMakePoint(10,10), NSMakeSize(20));
-			_separation = NSMakeSize(2,4);
+			_separation = NSMakeSize(2,3);
 			break;
 		case NSMiniControlSize:
 			_margin = NSMakeRect(NSMakePoint(5,5), NSMakeSize(10));
-			_separation = NSMakeSize(1,2);
+			_separation = NSMakeSize(1,1);
 			break;
 	}
 	

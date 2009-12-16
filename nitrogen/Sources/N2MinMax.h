@@ -21,3 +21,5 @@ N2MinMax N2MakeMin(CGFloat min);
 N2MinMax N2MakeMax(CGFloat max);
 CGFloat N2MinMaxConstrainedValue(const N2MinMax& mm, CGFloat val);
 void N2ExtendMinMax(N2MinMax& n2minmax, CGFloat value);
+N2MinMax N2ComposeMinMax(const N2MinMax& mm1, const N2MinMax& mm2);
+N2MinMax operator+(const N2MinMax& mm1, const N2MinMax& mm2);

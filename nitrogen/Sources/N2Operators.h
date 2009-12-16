@@ -65,7 +65,9 @@ NSPoint operator/=(NSPoint& p, const CGFloat f);
 
 NSPoint NSMakePoint(const NSSize& s);
 NSSize operator+(const NSSize& s, const NSPoint& p);
+NSSize operator+=(NSSize& s, const NSPoint& p);
 NSPoint operator+(const NSPoint& p, const NSSize& s);
+NSPoint operator+=(NSPoint& p, const NSSize& s);
 NSSize operator-(const NSSize& s, const NSPoint& p);
 NSPoint operator-(const NSPoint& p, const NSSize& s);
 NSSize operator*(const NSSize& s, const NSPoint& p);

@@ -77,8 +77,8 @@
 		59D8756710AAC39C00AAA0FE /* NSView+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8756510AAC39C00AAA0FE /* NSView+N2.mm */; };
 		59D8757B10AAC94900AAA0FE /* N2Exceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8757910AAC94900AAA0FE /* N2Exceptions.h */; };
 		59D8757C10AAC94900AAA0FE /* N2Exceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D8757A10AAC94900AAA0FE /* N2Exceptions.mm */; };
-		59D875A810AAEE8000AAA0FE /* N2ColumnDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */; };
-		59D875A910AAEE8000AAA0FE /* N2ColumnDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */; };
+		59D875A810AAEE8000AAA0FE /* N2CellDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D875A610AAEE8000AAA0FE /* N2CellDescriptor.h */; };
+		59D875A910AAEE8000AAA0FE /* N2CellDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D875A710AAEE8000AAA0FE /* N2CellDescriptor.mm */; };
 		59D875AC10AAEF2000AAA0FE /* N2MinMax.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D875AA10AAEF2000AAA0FE /* N2MinMax.h */; };
 		59D875AD10AAEF2000AAA0FE /* N2MinMax.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59D875AB10AAEF2000AAA0FE /* N2MinMax.mm */; };
 		59D8775D10AC0F7C00AAA0FE /* N2Alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D8775B10AC0F7C00AAA0FE /* N2Alignment.h */; };
@@ -174,8 +174,8 @@
 		59D8756510AAC39C00AAA0FE /* NSView+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSView+N2.mm"; sourceTree = "<group>"; };
 		59D8757910AAC94900AAA0FE /* N2Exceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Exceptions.h; sourceTree = "<group>"; };
 		59D8757A10AAC94900AAA0FE /* N2Exceptions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Exceptions.mm; sourceTree = "<group>"; };
-		59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ColumnDescriptor.h; sourceTree = "<group>"; };
-		59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2ColumnDescriptor.mm; sourceTree = "<group>"; };
+		59D875A610AAEE8000AAA0FE /* N2CellDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2CellDescriptor.h; sourceTree = "<group>"; };
+		59D875A710AAEE8000AAA0FE /* N2CellDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2CellDescriptor.mm; sourceTree = "<group>"; };
 		59D875AA10AAEF2000AAA0FE /* N2MinMax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2MinMax.h; sourceTree = "<group>"; };
 		59D875AB10AAEF2000AAA0FE /* N2MinMax.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2MinMax.mm; sourceTree = "<group>"; };
 		59D8775B10AC0F7C00AAA0FE /* N2Alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Alignment.h; sourceTree = "<group>"; };
@@ -337,8 +337,8 @@
 				59D8755C10AABD1900AAA0FE /* N2Layout.mm */,
 				59D8755F10AABE2200AAA0FE /* N2ColumnLayout.h */,
 				59D8756010AABE2200AAA0FE /* N2ColumnLayout.mm */,
-				59D875A610AAEE8000AAA0FE /* N2ColumnDescriptor.h */,
-				59D875A710AAEE8000AAA0FE /* N2ColumnDescriptor.mm */,
+				59D875A610AAEE8000AAA0FE /* N2CellDescriptor.h */,
+				59D875A710AAEE8000AAA0FE /* N2CellDescriptor.mm */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -468,7 +468,7 @@
 				59D8756110AABE2200AAA0FE /* N2ColumnLayout.h in Headers */,
 				59D8756610AAC39C00AAA0FE /* NSView+N2.h in Headers */,
 				59D8757B10AAC94900AAA0FE /* N2Exceptions.h in Headers */,
-				59D875A810AAEE8000AAA0FE /* N2ColumnDescriptor.h in Headers */,
+				59D875A810AAEE8000AAA0FE /* N2CellDescriptor.h in Headers */,
 				59D875AC10AAEF2000AAA0FE /* N2MinMax.h in Headers */,
 				59D8775D10AC0F7C00AAA0FE /* N2Alignment.h in Headers */,
 				59D8899F10B1812500AAA0FE /* N2Resizer.h in Headers */,
@@ -588,7 +588,7 @@
 				59D8756210AABE2200AAA0FE /* N2ColumnLayout.mm in Sources */,
 				59D8756710AAC39C00AAA0FE /* NSView+N2.mm in Sources */,
 				59D8757C10AAC94900AAA0FE /* N2Exceptions.mm in Sources */,
-				59D875A910AAEE8000AAA0FE /* N2ColumnDescriptor.mm in Sources */,
+				59D875A910AAEE8000AAA0FE /* N2CellDescriptor.mm in Sources */,
 				59D875AD10AAEF2000AAA0FE /* N2MinMax.mm in Sources */,
 				59D8775E10AC0F7C00AAA0FE /* N2Alignment.mm in Sources */,
 				59D889A010B1812500AAA0FE /* N2Resizer.mm in Sources */,

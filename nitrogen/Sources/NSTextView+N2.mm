@@ -22,11 +22,16 @@
 	[ret setAlignment:alignment];
 	[ret setEditable:NO];
 	[ret setSelectable:NO];
+	[ret setFont:[NSFont labelFontOfSize:[NSFont labelFontSize]]];
 	return [ret autorelease];
 }
 
+-(NSRect)sizeAdjust {
+	return NSMakeRect(-3,0,6,0);
+}
+
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
-	return [[self textStorage] sizeForWidth:width height:CGFLOAT_MAX];
+	return [[self textStorage] sizeForWidth:width height:CGFLOAT_MAX]-[self sizeAdjust].size;
 }
 
 -(NSSize)optimalSize {
@@ -38,7 +43,7 @@
 }
 
 -(NSSize)adaptToContent:(CGFloat)maxWidth {
-	NSSize stringSize = [self optimalSizeForWidth:maxWidth];
+	NSSize stringSize = [self optimalSizeForWidth:maxWidth]+[self sizeAdjust].size;
 	[self setFrame:NSMakeRect([self frame].origin, stringSize)];
 	return stringSize;
 }
