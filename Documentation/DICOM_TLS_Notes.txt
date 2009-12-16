@@ -80,6 +80,35 @@ B) in Terminal.app
 C) In OsiriX
 - use the files Key.pem and Certificate.pem with the related password in the TLS settings
 
+D) Give the client certificate to the server.
+- On the client:
+	- Duplicate the client certificate Certificate.pem to CertificatePublic.pem
+	- Edit the new certificate CertificatePublic.pem and keep only text from "-----BEGIN CERTIFICATE-----" to "-----END CERTIFICATE-----"
+	- Copy the certificate CertificatePublic.pem to the server
+- On the server:
+	- add the client certificate to the keystore:
+		$ keytool -import -file CertificatePublic.pem -keystore trust.jks -alias osirix
+	* trust.jks is the name of the truststore on the server (dcm4chee.archive:service=TLSConfig / TrustStoreURL)
+	* the alias name (osirix) can be anything
+	- Trust the certificate:
+		$ Trust this certificate? [no]:  yes
+	- restart the dcm4chee server
+
+==========================================================================
+DICOM TLS in OsiriX: trusting server certificate
+==========================================================================
+To use the options "Trust the following CA certificate" and "Peer Authentication"
+
+A) On the server:
+- Export the server certificate:
+	$ keytool -export -rfc -file vm1.pem -keystore vm1.jks -alias vm1
+* in this case, the server certificate is stores in vm1.jks as alias vm1, the -rfc option ensures the creation of a standard PEM file (vm1.pem)
+- copy the PEM certificate file to the client
+
+B) In OsiriX
+- choose the server's PEM certificate in the "Trust the following CA certificate" option
+- you can now choose to "verify" or "require" "Peer Authentication"
+
 ==========================================================================
 Document ends here. Thanks For reading.
 ==========================================================================
