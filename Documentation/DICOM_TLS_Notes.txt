@@ -9,7 +9,7 @@ Note: 	This document is under construction. It may contain mistakes.
 
 A) in Keychain Access.app
 - Open /Applications/Utilities/Keychain Access.app
-- in the "Keychain Access" Menu, select "Certificate Assistant" > "Create a Certificate…"
+- in the "Keychain Access" Menu, select "Certificate Assistant" > "Create a Certificate..."
 - in "Certificate Assistant":
 	1) "Create Your Certificate"
 	 	- "Name" : chose the name of the certificate (can be anything)
@@ -45,12 +45,12 @@ A) in Keychain Access.app
 	10) "Conclusion"
 		- click "Done"
 - Locate your newly created certificate in your certificates, select it
-- Choose "Export Items…" from the "File" Menu
+- Choose "Export Items..." from the "File" Menu
 - Choose the name (Certificate.p12) and location (certificates_dir), choose "Personal Information Exchange (.p12)" as "File Format"
 - Choose a password (P1)
 
 - Locate the key associated with the newly created certificate in your keys, select it
-- Choose "Export Items…" from the "File" Menu
+- Choose "Export Items..." from the "File" Menu
 - Choose the name (Key.p12) and location (certificates_dir), choose "Personal Information Exchange (.p12)" as "File Format"
 - Choose a password (P2)
 
