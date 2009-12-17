@@ -127,7 +127,7 @@ NSString* N2DisclosureBoxDidCollapseNotification = @"N2DisclosureBoxDidCollapseN
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
 	NSSize size = [self frame].size;
 	size.width = width;
-	return size;
+	return n2::ceil(size);
 }
 
 -(NSView*)additionalSubviews {

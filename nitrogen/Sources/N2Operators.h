@@ -15,7 +15,14 @@ CGFloat NSLimit(const CGFloat v, const CGFloat min, const CGFloat max);
 
 #pragma mark NSSize
 
-NSSize NSRoundSize(NSSize s);
+namespace n2 {
+	NSSize floor(const NSSize& s);
+	NSSize ceil(const NSSize& s);
+	NSSize round(const NSSize& s);
+}
+
+NSSize NSRoundSize(NSSize s) DEPRECATED_ATTRIBUTE;
+
 NSSize NSMakeSize(CGFloat wh);
 NSSize operator-(const NSSize& s);						// -[x,y] = [-x,-y]
 NSSize operator+(const NSSize& s1, const NSSize& s2);	// [x,y]+[X,Y] = [x+X,y+Y]

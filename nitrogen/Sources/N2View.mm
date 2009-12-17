@@ -8,7 +8,7 @@
 
 #import <Nitrogen/N2View.h>
 #import <Nitrogen/N2Layout.h>
-// #import <Nitrogen/N2Operators.h>
+#import <Nitrogen/N2Operators.h>
 
 NSString* N2ViewBoundsSizeDidChangeNotification = @"N2ViewBoundsSizeDidChangeNotification";
 NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
@@ -78,13 +78,13 @@ NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";
 
 -(NSSize)optimalSize {
 	if (_layout)
-		return [_layout optimalSize];
+		return n2::ceil([_layout optimalSize]);
 	else return [self frame].size;	
 }
 
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
 	if (_layout)
-		return [_layout optimalSizeForWidth:width];
+		return n2::ceil([_layout optimalSizeForWidth:width]);
 	else return [self frame].size;
 }
 

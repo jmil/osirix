@@ -28,8 +28,24 @@ CGFloat NSLimit(const CGFloat v, const CGFloat min, const CGFloat max) {
 
 /// NSSize
 
+namespace n2 {
+	
+	NSSize floor(const NSSize& s) {
+		return NSMakeSize(std::floor(s.width), std::floor(s.height));
+	}
+	
+	NSSize ceil(const NSSize& s) {
+		return NSMakeSize(std::ceil(s.width), std::ceil(s.height));
+	}
+	
+	NSSize round(const NSSize& s) {
+		return floor(s+0.5);
+	}
+	
+}
+
 NSSize NSRoundSize(NSSize s) {
-	return NSMakeSize(roundf(s.width), roundf(s.height));
+	return n2::round(s);
 }
 
 NSSize NSMakeSize(CGFloat wh) {

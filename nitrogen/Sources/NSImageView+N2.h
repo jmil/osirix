@@ -14,3 +14,7 @@
 +(NSImageView*)createWithImage:(NSImage*)image;
 
 @end
+
+@interface N2ImageView : NSImageView
+
+@end

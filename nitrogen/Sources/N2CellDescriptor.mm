@@ -75,14 +75,14 @@
 
 -(NSSize)optimalSize {
 	if ([_view respondsToSelector:@selector(optimalSize)])
-		return [(id<OptimalSize>)_view optimalSize];
+		return n2::ceil([(id<OptimalSize>)_view optimalSize]);
 	else return [_view frame].size;	
 }
 
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
 	if ([_view respondsToSelector:@selector(optimalSizeForWidth:)])
-		return NSRoundSize([(id<OptimalSize>)_view optimalSizeForWidth:width]);
-	else return NSRoundSize([_view frame].size);
+		return n2::ceil([(id<OptimalSize>)_view optimalSizeForWidth:width]);
+	else return n2::ceil([_view frame].size);
 }
 
 #pragma mark Deprecated

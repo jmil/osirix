@@ -31,7 +31,7 @@
 }
 
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
-	return [[self textStorage] sizeForWidth:width height:CGFLOAT_MAX]-[self sizeAdjust].size;
+	return n2::ceil([[self textStorage] sizeForWidth:width height:CGFLOAT_MAX]-[self sizeAdjust].size);
 }
 
 -(NSSize)optimalSize {

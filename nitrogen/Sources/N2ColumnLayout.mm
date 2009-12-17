@@ -151,7 +151,7 @@ typedef struct ConstrainedFloat {
 							unfixedRefWidth += widths[0][i].value;
 						}
 					
-					if (!unfixedColsCount)
+					if (!unfixedColsCount || unfixedRefWidth < 1)
 						break;
 					
 					for (NSUInteger i = from; i < from+span; ++i)
@@ -351,7 +351,7 @@ typedef struct ConstrainedFloat {
 	}
 	y += _margin.size.height-_margin.origin.y - _separation.height;
 	
-	return NSMakeSize(maxX, y);
+	return n2::ceil(NSMakeSize(maxX, y));
 }
 
 -(NSSize)optimalSize {

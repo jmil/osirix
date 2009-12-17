@@ -8,22 +8,13 @@
 #import <Cocoa/Cocoa.h>
 //#include <boost/numeric/ublas/matrix.hpp>
 
-
-@interface NSBitmapImageRep (ArthroplastyTemplating)
-
--(void)ATMask:(float)level;
--(NSBitmapImageRep*)smoothen:(NSUInteger)margin;
-//-(NSBitmapImageRep*)convolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;
-//-(NSBitmapImageRep*)fftConvolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;
-
-@end
-
-
-@interface NSImage (ArthroplastyTemplating)
+@interface NSImage (N2)
 
 -(void)flipImageHorizontally;
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color inRect:(NSRect)box;
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color;
+
+-(BOOL)isLogicallyResizable;
 
 @end
 

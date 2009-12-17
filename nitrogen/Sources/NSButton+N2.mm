@@ -30,7 +30,7 @@
 		} break;
 	}
 	
-	return size;
+	return n2::ceil(size);
 }
 
 -(NSSize)optimalSize {

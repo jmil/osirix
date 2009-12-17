@@ -14,6 +14,7 @@
 #import <Nitrogen/N2ColumnLayout.h>
 #import <Nitrogen/N2DisclosureButtonCell.h>
 #import <Nitrogen/N2CellDescriptor.h>
+#import <Nitrogen/N2Operators.h>
 
 @implementation N2StepsView
 
@@ -133,11 +134,11 @@
 }
 
 -(NSSize)optimalSize {
-	return [_layout optimalSize];
+	return n2::ceil([_layout optimalSize]);
 }
 
 -(NSSize)optimalSizeForWidth:(CGFloat)width {
-	return [_layout optimalSizeForWidth:width];
+	return n2::ceil([_layout optimalSizeForWidth:width]);
 }
 
 @end
