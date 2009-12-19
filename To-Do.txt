@@ -22,6 +22,7 @@
 - DICOM TLS
 
 - Web: options to web account edit (logged as É )
+- Web : LOCALIZER
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
