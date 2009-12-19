@@ -19,8 +19,10 @@
 - OpenOffice support (odt format) for Reports
 - New built-in web server, with HTTPS encryption and ZIP export
 - Export studies by email from the DB window
+- DICOM TLS
 
-- HTTPS
+- Web: options to dicom send, wado, upload, email notifications
+
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
 - Hanging Protocols
@@ -28,7 +30,6 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 - Propagate sub-settings
-- DICOM TLS
 - SDK Primera
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
