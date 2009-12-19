@@ -21,7 +21,7 @@
 - Export studies by email from the DB window
 - DICOM TLS
 
-- Web: options to dicom send, wado, upload, email notifications
+- Web: options to dicom send, wado, upload, email notifications, web account edit
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
