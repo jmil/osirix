@@ -24,7 +24,7 @@
 - Web : options to web account edit (logged as É )
 - Web : LOCALIZER
 - Web : single notification
-- Log : search box, export
+- Web : Report - PDF
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
