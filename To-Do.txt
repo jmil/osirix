@@ -20,11 +20,11 @@
 - New built-in web server, with HTTPS encryption and ZIP export
 - Export studies by email from the DB window
 - DICOM TLS
+- Option to open PDF & DICOM PDF in Preview application
 
 - Web : options to web account edit (logged as É )
 - Web : LOCALIZER
 - Web : single notification
-- Web : Report - PDF
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
