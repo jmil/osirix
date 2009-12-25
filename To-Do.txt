@@ -24,7 +24,6 @@
 
 - Web : LOCALIZER
 - Web : single notification
-- Web email notifications: Test 64-bit
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
