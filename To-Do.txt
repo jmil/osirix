@@ -22,7 +22,6 @@
 - DICOM TLS
 - Option to open PDF & DICOM PDF in Preview application
 
-- Web : LOCALIZER
 - Web : single notification
 
 - Option to include 3D viewers in Tile Window
