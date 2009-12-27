@@ -25,6 +25,9 @@
 - Web report
 - Web user delete
 - Web : single notification
+- Smart album : test button
+
+- Logs: search box, export
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
