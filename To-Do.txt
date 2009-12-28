@@ -21,13 +21,12 @@
 - Export studies by email from the DB window
 - DICOM TLS
 - Option to open PDF & DICOM PDF in Preview application
+- Search in Logs, Export Logs in csv format
 
 - Web report
 - Web user delete
 - Web : single notification
 - Smart album : test button
-
-- Logs: search box, export
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
