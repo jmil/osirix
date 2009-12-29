@@ -24,7 +24,6 @@
 - Search in Logs, Export Logs in csv format
 
 - Web report
-- Web user delete
 - Web : single notification
 - Smart album : test button
 
