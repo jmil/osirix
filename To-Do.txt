@@ -24,8 +24,7 @@
 - Search in Logs, Export Logs in csv format
 
 - Web report
-- Web : single notification
-- Smart album : test button
+- Web: single notification for a specific study?
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
