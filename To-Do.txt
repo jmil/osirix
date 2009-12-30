@@ -24,7 +24,7 @@
 - Search in Logs, Export Logs in csv format
 
 - Web report
-- Web: single notification for a specific study?
+- Lost password & username
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
