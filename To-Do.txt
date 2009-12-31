@@ -24,8 +24,7 @@
 - Search in Logs, Export Logs in csv format
 
 - Web report
-- Lost password & username
-- Home page with login
+- Test iPhone
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
