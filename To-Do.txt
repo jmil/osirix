@@ -25,6 +25,7 @@
 
 - Web report
 - Lost password & username
+- Home page with login
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
