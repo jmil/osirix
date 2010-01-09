@@ -26,10 +26,7 @@
 - Web report
 - Test iPhone
 - Share study with other user
-- Localized html
-- Test cardiac / html quicktime
 - Q&R Patient Name = "*"
-- HTML : Cardiac series FIVIX
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
