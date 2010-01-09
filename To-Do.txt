@@ -26,7 +26,6 @@
 - Web report
 - Test iPhone
 - Share study with other user
-- Q&R Patient Name = "*"
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
