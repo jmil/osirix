@@ -25,7 +25,6 @@
 
 - Web report
 - Test iPhone
-- Share study with other user
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
