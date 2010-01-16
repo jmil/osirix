@@ -19,7 +19,7 @@
 - OpenOffice support (odt format) for Reports
 - New built-in web server, with HTTPS encryption and ZIP export
 - Export studies by email from the DB window
-- DICOM TLS
+- DICOM TLS for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
 - Option to open PDF & DICOM PDF in Preview application
 - Search in Logs, Export Logs in csv format
 
