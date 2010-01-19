@@ -22,12 +22,14 @@
 - DICOM TLS for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
 - Option to open PDF & DICOM PDF in Preview application
 - Search in Logs, Export Logs in csv format
+- Windows Tiling menu (2D Viewer) and contextual menu
 
 - Web report
 - Test iPhone
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
+- EF Restore: color ROI, and color name
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
@@ -37,6 +39,7 @@
 - Sync Ortho-MPR
 - Propagate sub-settings
 - SDK Primera
+- Phase Cardiac
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
