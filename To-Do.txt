@@ -25,7 +25,9 @@
 
 - Web report
 - Test iPhone
-- Force Windows Tiling
+
+- EF Result: add area, line before area
+- EF Result: vectorial, line thickness, 2x2
 
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
