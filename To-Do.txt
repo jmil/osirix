@@ -24,7 +24,7 @@
 - Search in Logs, Export Logs in csv format
 - Windows Tiling menu (2D Viewer) and contextual menu
 
-- Web report
+- Web report: PDF built-in
 - Test iPhone
 - Ovyiam integration
 
