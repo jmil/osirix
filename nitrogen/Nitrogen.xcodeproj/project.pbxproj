@@ -11,6 +11,9 @@
 		5915D5F11099D8CC0024F610 /* N2Shell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5915D5EF1099D8CC0024F610 /* N2Shell.mm */; };
 		596F881410C6CCDC007D6C82 /* NSImageView+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 596F881210C6CCDC007D6C82 /* NSImageView+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		596F881510C6CCDC007D6C82 /* NSImageView+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 596F881310C6CCDC007D6C82 /* NSImageView+N2.mm */; };
+		597C87C61108A0E100794DF3 /* DebugTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597C87C51108A0E100794DF3 /* DebugTest.mm */; };
+		597C87C91108A0FF00794DF3 /* NSTextViewOptimalSizeTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 597C87C81108A0FF00794DF3 /* NSTextViewOptimalSizeTest.mm */; };
+		597C88191108A40F00794DF3 /* Nitrogen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 597C88181108A40F00794DF3 /* Nitrogen.framework */; };
 		598D1D111070D63400EE85EA /* N2XMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 598D1D0F1070D63400EE85EA /* N2XMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		598D1D121070D63400EE85EA /* N2XMLRPC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 598D1D101070D63400EE85EA /* N2XMLRPC.mm */; };
 		598E50321043CB90005BCDC7 /* N2ButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 598E50301043CB90005BCDC7 /* N2ButtonCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,19 +98,34 @@
 		59E7A17C108C9ACF007F82BA /* NSURL+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */; };
 		59E7AA7A108DDA4C007F82BA /* NSPanel+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59E7AA7B108DDA4C007F82BA /* NSPanel+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */; };
-		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		591403A61105B89300D6A504 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Nitrogen;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		591403A21105B88A00D6A504 /* Unit Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		591403CE1105BDCF00D6A504 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		5915D5EE1099D8CC0024F610 /* N2Shell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Shell.h; sourceTree = "<group>"; };
 		5915D5EF1099D8CC0024F610 /* N2Shell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2Shell.mm; sourceTree = "<group>"; };
 		596F881210C6CCDC007D6C82 /* NSImageView+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImageView+N2.h"; sourceTree = "<group>"; };
 		596F881310C6CCDC007D6C82 /* NSImageView+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSImageView+N2.mm"; sourceTree = "<group>"; };
+		597C87C41108A0E100794DF3 /* DebugTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugTest.h; path = "Unit Tests/DebugTest.h"; sourceTree = SOURCE_ROOT; };
+		597C87C51108A0E100794DF3 /* DebugTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DebugTest.mm; path = "Unit Tests/DebugTest.mm"; sourceTree = SOURCE_ROOT; };
+		597C87C71108A0FF00794DF3 /* NSTextViewOptimalSizeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTextViewOptimalSizeTest.h; path = "Unit Tests/NSTextViewOptimalSizeTest.h"; sourceTree = SOURCE_ROOT; };
+		597C87C81108A0FF00794DF3 /* NSTextViewOptimalSizeTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextViewOptimalSizeTest.mm; path = "Unit Tests/NSTextViewOptimalSizeTest.mm"; sourceTree = SOURCE_ROOT; };
+		597C88181108A40F00794DF3 /* Nitrogen.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nitrogen.framework; path = build/Development/Nitrogen.framework; sourceTree = SOURCE_ROOT; };
 		598D1D0F1070D63400EE85EA /* N2XMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2XMLRPC.h; sourceTree = "<group>"; };
 		598D1D101070D63400EE85EA /* N2XMLRPC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2XMLRPC.mm; sourceTree = "<group>"; };
 		598E50301043CB90005BCDC7 /* N2ButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2ButtonCell.h; sourceTree = "<group>"; };
@@ -192,12 +210,19 @@
 		59E7A17A108C9ACF007F82BA /* NSURL+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+N2.mm"; sourceTree = "<group>"; };
 		59E7AA78108DDA4C007F82BA /* NSPanel+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPanel+N2.h"; sourceTree = "<group>"; };
 		59E7AA79108DDA4C007F82BA /* NSPanel+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSPanel+N2.mm"; sourceTree = "<group>"; };
-		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Nitrogen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nitrogen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5914039F1105B88A00D6A504 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				597C88191108A40F00794DF3 /* Nitrogen.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -214,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* Nitrogen.framework */,
+				591403A21105B88A00D6A504 /* Unit Tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -222,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				59A632821042791E003F4069 /* Sources */,
+				591403E31105BE9A00D6A504 /* Unit Tests */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -242,8 +269,7 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8DC2EF5A0486A6940098B216 /* Info.plist */,
-				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				591403CE1105BDCF00D6A504 /* Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -273,6 +299,19 @@
 				59A636A7104298C0003F4069 /* Nitrogen.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		591403E31105BE9A00D6A504 /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				597C88181108A40F00794DF3 /* Nitrogen.framework */,
+				597C87C71108A0FF00794DF3 /* NSTextViewOptimalSizeTest.h */,
+				597C87C81108A0FF00794DF3 /* NSTextViewOptimalSizeTest.mm */,
+				597C87C41108A0E100794DF3 /* DebugTest.h */,
+				597C87C51108A0E100794DF3 /* DebugTest.mm */,
+			);
+			name = "Unit Tests";
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		59A632821042791E003F4069 /* Sources */ = {
@@ -395,8 +434,8 @@
 			isa = PBXGroup;
 			children = (
 				59CF837E1069301700A4444F /* N2Connection.h */,
-				59CF837F1069301700A4444F /* N2Connection.mm */,
 				59CF83811069301700A4444F /* N2ConnectionListener.h */,
+				59CF837F1069301700A4444F /* N2Connection.mm */,
 				59CF83801069301700A4444F /* N2ConnectionListener.mm */,
 				598D1D0F1070D63400EE85EA /* N2XMLRPC.h */,
 				598D1D101070D63400EE85EA /* N2XMLRPC.mm */,
@@ -481,12 +520,32 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		591403A11105B88A00D6A504 /* Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 591403A51105B88A00D6A504 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildPhases = (
+				5914039D1105B88A00D6A504 /* Resources */,
+				5914039E1105B88A00D6A504 /* Sources */,
+				5914039F1105B88A00D6A504 /* Frameworks */,
+				591403A01105B88A00D6A504 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				591403A71105B89300D6A504 /* PBXTargetDependency */,
+			);
+			name = "Unit Tests";
+			productName = "Unit Tests";
+			productReference = 591403A21105B88A00D6A504 /* Unit Tests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		8DC2EF4F0486A6940098B216 /* Nitrogen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Nitrogen" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
+				597C97A71109B75D00794DF3 /* Change Info.plist Version */,
 				59E6DDB6105E4259002C8245 /* Copy Headers and Create Nitrogen.h */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
@@ -515,22 +574,56 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Nitrogen */,
+				591403A11105B88A00D6A504 /* Unit Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5914039D1105B88A00D6A504 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF520486A6940098B216 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		591403A01105B88A00D6A504 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		597C97A71109B75D00794DF3 /* Change Info.plist Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Change Info.plist Version";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "cd \"${PROJECT_DIR}\"\nSVNVERSION=`/usr/bin/svnversion -n | /usr/bin/sed -e 's/^[^:]*://;s/[A-Za-z]/+/'`\nif [ -n \"${DEBUG:+x}\" ]; then\n\tSVNVERSION=\"${SVNVERSION}d\"\nfi\n\nPLISTPATH=\"${PROJECT_DIR}/Resources/Info.plist\"\nINFOVERSION=`/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' \"$PLISTPATH\"`\n\nVERSION=\"$INFOVERSION b$SVNVERSION\"\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nINFOVERSIONSTR=`/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \"$PLISTPATH\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString ${INFOVERSIONSTR/__VERSION__/$VERSION}\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nexit 0";
+		};
 		59E6DDB6105E4259002C8245 /* Copy Headers and Create Nitrogen.h */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -548,6 +641,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5914039E1105B88A00D6A504 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				597C87C61108A0E100794DF3 /* DebugTest.mm in Sources */,
+				597C87C91108A0FF00794DF3 /* NSTextViewOptimalSizeTest.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF540486A6940098B216 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -600,16 +702,13 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C1667FE841158C02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		591403A71105B89300D6A504 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* Nitrogen */;
+			targetProxy = 591403A61105B89300D6A504 /* PBXContainerItemProxy */;
 		};
-/* End PBXVariantGroup section */
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Development */ = {
@@ -628,7 +727,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Nitrogen.pch;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = Nitrogen;
@@ -660,6 +759,36 @@
 			};
 			name = Development;
 		};
+		591403A41105B88A00D6A504 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/build/Development\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "Unit Tests/Unit-Tests-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Unit Tests";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Development;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -675,6 +804,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Development */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		591403A51105B88A00D6A504 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				591403A41105B88A00D6A504 /* Development */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;

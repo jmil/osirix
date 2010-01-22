@@ -51,7 +51,7 @@
 	NSString* temp = [N2Shell execute:@"/usr/sbin/ipconfig" arguments:[NSArray arrayWithObjects:@"getpacket", @"en0", NULL] expectedStatus:1];
 	NSArray* lines = [temp componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 	
-	NSString* chaddrPrefix = @"chaddr = ";
+	const NSString* const chaddrPrefix = @"chaddr = ";
 	for (NSString* line in lines) {
 		if ([line hasPrefix:chaddrPrefix]) {
 			NSMutableArray* pieces = [[[line substringFromIndex:[chaddrPrefix length]] componentsSeparatedByString:@":"] mutableCopy];

@@ -13,6 +13,7 @@
 
 // Shortcut to [NSView initWithFrame:NSMakeRect(NSZeroPoint, size)]
 -(id)initWithSize:(NSSize)size;
+-(NSRect)sizeAdjust;
 
 @end
 
@@ -20,12 +21,5 @@
 
 -(NSSize)optimalSize;
 -(NSSize)optimalSizeForWidth:(CGFloat)width;
-
-@end
-
-
-@protocol SizeAdjusting
-
--(NSRect)sizeAdjust;
 
 @end

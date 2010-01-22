@@ -56,3 +56,7 @@ CGFloat N2InfinityAwareSum(CGFloat f1, CGFloat f2) {
 N2MinMax operator+(const N2MinMax& mm1, const N2MinMax& mm2) {
 	return N2MakeMinMax(N2InfinityAwareSum(mm1.min, mm2.min), N2InfinityAwareSum(mm1.max, mm2.max));
 }
+
+N2MinMax operator+(const N2MinMax& mm, const CGFloat& f) {
+	return N2MakeMinMax(N2InfinityAwareSum(mm.min, f), N2InfinityAwareSum(mm.max, f));
+}

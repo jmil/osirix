@@ -17,4 +17,7 @@
 -(NSSize)adaptToContent;
 -(NSSize)adaptToContent:(CGFloat)maxWidth;
 
+-(NSSize)optimalSizeForWidth:(CGFloat)width;
+-(NSSize)optimalSize;
+
 @end

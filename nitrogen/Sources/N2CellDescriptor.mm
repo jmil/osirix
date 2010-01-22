@@ -11,7 +11,7 @@
 #import "N2Operators.h"
 
 @implementation N2CellDescriptor
-@synthesize view = _view, alignment = _alignment, widthConstraints = _widthConstraints, /*rowSpan = _rowSpan, */colSpan = _colSpan;
+@synthesize view = _view, alignment = _alignment, widthConstraints = _widthConstraints, /*rowSpan = _rowSpan, */colSpan = _colSpan, invasivity = _invasivity;
 
 +(N2CellDescriptor*)descriptor {
 	return [[[[self alloc] init] autorelease] colSpan:1];
@@ -73,6 +73,11 @@
 	return self;
 }
 
+-(N2CellDescriptor*)invasivity:(CGFloat)invasivity {
+	[self setInvasivity:invasivity];
+	return self;
+}
+
 -(NSSize)optimalSize {
 	if ([_view respondsToSelector:@selector(optimalSize)])
 		return n2::ceil([(id<OptimalSize>)_view optimalSize]);
@@ -83,6 +88,10 @@
 	if ([_view respondsToSelector:@selector(optimalSizeForWidth:)])
 		return n2::ceil([(id<OptimalSize>)_view optimalSizeForWidth:width]);
 	else return n2::ceil([_view frame].size);
+}
+
+-(NSRect)sizeAdjust {
+	return [_view sizeAdjust];
 }
 
 #pragma mark Deprecated

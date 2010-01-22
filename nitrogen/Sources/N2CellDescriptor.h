@@ -14,6 +14,7 @@
 	NSView* _view;
 	N2Alignment _alignment;
 	N2MinMax _widthConstraints;
+	CGFloat _invasivity;
 //	NSUInteger _rowSpan;
 	NSUInteger _colSpan;
 }
@@ -23,6 +24,7 @@
 @property N2MinMax widthConstraints;
 //@property NSUInteger rowSpan;
 @property NSUInteger colSpan;
+@property CGFloat invasivity;
 
 +(N2CellDescriptor*)descriptor;
 +(N2CellDescriptor*)descriptorWithView:(NSView*)view;
@@ -34,9 +36,11 @@
 -(N2CellDescriptor*)widthConstraints:(const N2MinMax&)widthConstraints;
 //-(N2CellDescriptor*)rowSpan:(NSUInteger)rowSpan;
 -(N2CellDescriptor*)colSpan:(NSUInteger)colSpan;
+-(N2CellDescriptor*)invasivity:(CGFloat)invasivity;
 
 -(NSSize)optimalSize;
 -(NSSize)optimalSizeForWidth:(CGFloat)width;
+-(NSRect)sizeAdjust;
 
 #pragma mark Deprecated
 -(N2CellDescriptor*)initWithWidthConstraints:(const N2MinMax&)widthConstraints alignment:(N2Alignment)alignment DEPRECATED_ATTRIBUTE;

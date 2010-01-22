@@ -8,8 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+@interface N2Debug : NSObject {
+}
+
++(BOOL)isActive;
++(void)setActive:(BOOL)active;
+
+@end
+
+
 #ifdef DEBUG
 #define DLog NSLog
 #else
-#define DLog(...) //
+#define DLog(args...) { if ([N2Debug isActive]) NSLog(args); }
 #endif

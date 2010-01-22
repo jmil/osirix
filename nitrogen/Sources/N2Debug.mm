@@ -8,3 +8,16 @@
 
 #import <Nitrogen/N2Debug.h>
 
+@implementation N2Debug
+
+static BOOL _active = NO;
+
++(BOOL)isActive {
+	return _active;
+}
+
++(void)setActive:(BOOL)active {
+	_active = active;
+}
+
+@end

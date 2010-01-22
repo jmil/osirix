@@ -16,4 +16,8 @@
 	return [self initWithFrame:NSMakeRect(NSZeroPoint, size)];
 }
 
+-(NSRect)sizeAdjust {
+	return NSZeroRect;
+}
+
 @end
