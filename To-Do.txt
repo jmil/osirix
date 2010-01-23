@@ -25,6 +25,7 @@
 - Windows Tiling menu (2D Viewer) and contextual menu
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
+- Retest fado: défaut port, original syntax
 - Test iPhone
 - Ovyiam integration
 
