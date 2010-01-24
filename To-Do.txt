@@ -28,6 +28,7 @@
 - CGET retrieve from dc4chee
 - Keep the seriesLevelPredicate? test with and without
 - WADO Localizers
+
 - Test iPhone
 - Ovyiam integration
 
