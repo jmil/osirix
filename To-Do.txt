@@ -26,7 +26,6 @@
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dc4chee
-- Retest fado: défaut port, original syntax, HTTPS !!
 - Test iPhone
 - Ovyiam integration
 
