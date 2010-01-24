@@ -26,6 +26,7 @@
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dc4chee
+- WADO Localizers
 - Test iPhone
 - Ovyiam integration
 
