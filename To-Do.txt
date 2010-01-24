@@ -25,9 +25,6 @@
 - Windows Tiling menu (2D Viewer) and contextual menu
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
-- Invert LOCALIZER - ID
-- Display progress round QR
-
 - CGET retrieve from dc4chee
 - Keep the seriesLevelPredicate? test with and without
 
