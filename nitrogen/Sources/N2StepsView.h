@@ -1,10 +1,17 @@
-//
-//  SBSView.h
-//  Nitrogen Framework
-//
-//  Created by Joris Heuberger on 30/03/07.
-//  Copyright 2007-2009 OsiriX Team. All rights reserved.
-//
+/*=========================================================================
+  Program:   OsiriX
+
+  Copyright (c) OsiriX Team
+  All rights reserved.
+  Distributed under GNU - LGPL
+  
+  See http://www.osirix-viewer.com/copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.
+=========================================================================*/
+
 
 #import "N2View.h"
 @class N2Steps, N2Step, N2StepView, N2ColumnLayout;
