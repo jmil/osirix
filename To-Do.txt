@@ -27,6 +27,7 @@
 
 - CGET retrieve from dc4chee
 - Keep the seriesLevelPredicate? test with and without
+- Test WADO retrieve from dcm4chee
 
 - Test iPhone
 - Ovyiam integration
