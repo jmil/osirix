@@ -1,3 +1,10 @@
+- Full DICOM TLS (Transport Layer Security) support for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
+- OsiriX Lite version (for CD/DVD burning) 14 MB versus instead of 150 MB
+- Network functions are now grouped in the Network menu
+- Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
+- WADO Server support (included in the Web HTTP Server, url: wado)
+- New built-in web server, with HTTPS encryption and ZIP export
+- Customize the built-in Web server, by copying the WebServicesHTML folder in the Library/Applications Support/OsiriX folder
 - Better views position in MPR and Ortho-MPR for Portrait Mode screens
 - Support Presentation States (PR) SOPClassUID in database
 - Q&R: Separate DICOM Auto Query Retrieve window
@@ -5,21 +12,14 @@
 - Q&R: Thread DICOM Association negotiation and C-Find, allowing the user to cancel the connection
 - Q&R: support for Referring Physician field
 - Q&R: query last 6 or 12 hours
-- Network functions are now grouped in the Network menu
 - Abort Incoming DICOM Processes (Store-SCU) function
 - Add, Delete and Modify ROIs on shared database
 - Support SUV computation for more than 24 hours
-- OsiriX Lite version (for CD/DVD burning) 15MB versus instead of 150MB
 - Search by Patient ID on the built-in Web server
-- Customize the built-in Web server, by copying the WebServicesHTML folder in the OsiriX Data folder
-- Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
 - WADO Client support for Q&R
-- WADO Server support (included in the Web HTTP Server, url: wado)
 - BullsEye plugin
 - OpenOffice support (odt format) for Reports
-- New built-in web server, with HTTPS encryption and ZIP export
 - Export studies by email from the DB window
-- DICOM TLS for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
 - Option to open PDF & DICOM PDF in Preview application
 - Search in Logs, Export Logs in csv format
 - Windows Tiling menu (2D Viewer) and contextual menu
