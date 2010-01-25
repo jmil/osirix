@@ -1,7 +1,7 @@
 - Full DICOM TLS (Transport Layer Security) support for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
 - OsiriX Lite version (for CD/DVD burning) 14 MB versus instead of 150 MB
 - Network functions are now grouped in the Network menu
-- Encrypt DICOM CD/DVD with a password with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
+- Encrypt DICOM CD/DVD with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
 - WADO Server support (included in the Web HTTP Server, url: wado)
 - New built-in web server, with HTTPS encryption and ZIP export
 - Customize the built-in Web server, by copying the WebServicesHTML folder in the Library/Applications Support/OsiriX folder
