@@ -31,11 +31,15 @@
 <code>#import &quot;<a class="el" href="_d_i_c_o_m_export_8h.html">DICOMExport.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_defaults_osiri_x_8h.html">DefaultsOsiriX.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_chat_theatre_delegate_8h.html">IChatTheatreDelegate.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_dicom_image_8h.html">DicomImage.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <code>#include &quot;vtkMath.h&quot;</code><br>
 <code>#include &quot;vtkAbstractPropPicker.h&quot;</code><br>
 <code>#include &quot;vtkInteractorStyle.h&quot;</code><br>
 <code>#include &quot;vtkWorldPointPicker.h&quot;</code><br>
 <code>#include &quot;vtkOpenGLVolumeTextureMapper3D.h&quot;</code><br>
+<code>#include &quot;vtkPropAssembly.h&quot;</code><br>
+<code>#include &quot;vtkFixedPointRayCastImage.h&quot;</code><br>
 <code>#include &quot;vtkSphereSource.h&quot;</code><br>
 <code>#include &quot;vtkAssemblyPath.h&quot;</code><br>
 <code>#include &quot;itkImage.h&quot;</code><br>
@@ -63,15 +67,15 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#39c663074332446065723e9be9350139">R2D</a>&nbsp;&nbsp;&nbsp;57.2957795130823208767981548141</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#804089dc912d9be31b788ff330a5430a">BONEVALUE</a>&nbsp;&nbsp;&nbsp;250</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#1bdfffc9838bd1c4e36587366a8ce428">BONEOPACITY</a>&nbsp;&nbsp;&nbsp;1.1</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#63e45eaf93729d5707b89a5340d68334">SMALL_NUM</a>&nbsp;&nbsp;&nbsp;0.00000001</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#7942047af87f6f42fe6880a4c7c842ae">DOT</a>(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>, <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>)&nbsp;&nbsp;&nbsp;(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[0]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[0]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[1]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[1]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[2]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[2])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#b94e42c0c5fa941eefec5ea23e98995d">CHECKINTERVAL</a>&nbsp;&nbsp;&nbsp;3</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#bde8eddf76e5378e70ee41f7f9cbd401">FLYTO</a>&nbsp;&nbsp;&nbsp;30</td></tr>
 
@@ -86,9 +90,13 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#a06ae9ee2b4a26f7c02d11edb546f085">intersect3D_SegmentPlane</a> (float *P0, float *P1, float *Pnormal, float *Ppoint, float *resultPt)</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#ccb936d801e7304fb9b33e20c84f6615">dontRenderVolumeRenderingOsiriX</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_v_r_view.html">VRView</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#ea7328fe1768aacdf4597a8d47ce3491">snVRView</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned short *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#75abf727851b7de993937014c5eb594e">linearOpacity</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_v_r_view.html">VRView</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_v_r_view_8mm.html#ea7328fe1768aacdf4597a8d47ce3491">snVRView</a> = nil</td></tr>
 
 </table>
 <hr><h2>Define Documentation</h2>
@@ -107,12 +115,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="804089dc912d9be31b788ff330a5430a"></a><!-- doxytag: member="VRView.mm::BONEVALUE" ref="804089dc912d9be31b788ff330a5430a" args="" -->
+<a class="anchor" name="b94e42c0c5fa941eefec5ea23e98995d"></a><!-- doxytag: member="VRView.mm::CHECKINTERVAL" ref="b94e42c0c5fa941eefec5ea23e98995d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BONEVALUE&nbsp;&nbsp;&nbsp;250          </td>
+          <td class="memname">#define CHECKINTERVAL&nbsp;&nbsp;&nbsp;3          </td>
         </tr>
       </table>
 </div>
@@ -142,7 +150,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;          </td>
+          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;          </td>
         </tr>
       </table>
 </div>
@@ -391,12 +399,42 @@
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
+<a class="anchor" name="ccb936d801e7304fb9b33e20c84f6615"></a><!-- doxytag: member="VRView.mm::dontRenderVolumeRenderingOsiriX" ref="ccb936d801e7304fb9b33e20c84f6615" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_v_r_view_8mm.html#ccb936d801e7304fb9b33e20c84f6615">dontRenderVolumeRenderingOsiriX</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="8472d41bdf0fd4690337d3c93a694849"></a><!-- doxytag: member="VRView.mm::drawLock" ref="8472d41bdf0fd4690337d3c93a694849" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSRecursiveLock* <a class="el" href="_v_r_view_8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSRecursiveLock* <a class="el" href="_v_r_view___8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="75abf727851b7de993937014c5eb594e"></a><!-- doxytag: member="VRView.mm::linearOpacity" ref="75abf727851b7de993937014c5eb594e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short* <a class="el" href="_v_r_view_8mm.html#75abf727851b7de993937014c5eb594e">linearOpacity</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -411,7 +449,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_v_r_view.html">VRView</a>* <a class="el" href="_v_r_view_8mm.html#ea7328fe1768aacdf4597a8d47ce3491">snVRView</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="interface_v_r_view.html">VRView</a>* <a class="el" href="_v_r_view___8mm.html#ea7328fe1768aacdf4597a8d47ce3491">snVRView</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -421,7 +459,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

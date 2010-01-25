@@ -118,8 +118,6 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#24b7dae65702f7282428877789c1b486">fileList</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#dbbcdfd1d2916dc3adc0d88cb36239da">createContextualMenu</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(float)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#7aaa499b59ef628603f20f38b5bab7c6">factor</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#df223024e3a15363742963efdf04daa6">remove3DPoint:</a></td></tr>
@@ -186,11 +184,15 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSDrawer *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#03146a0e2d614c04f10272805d3d2da5">clutOpacityDrawer</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#a8edbcbca23013cc0143cc6b416746e2">showCLUTOpacityPanel:</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#a8edbcbca23013cc0143cc6b416746e2">showCLUTOpacityPanel:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#eda729834d8f0a98a2de92eb1dcfd250">loadAdvancedCLUTOpacity:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#5d4abdf14420d16f0789834b601a6e08">delete16BitCLUT:returnCode:contextInfo:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#2ec2fb23a8b30028471ac6a477a29910">editGrowingRegion:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#3a08bac1a1fd6dd31426f0be24cefe3c">endEditGrowingRegion:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSMutableDictionary *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_r_controller.html#a57377f10d468404218b15b93980fba8">getCurrent3DSettings</a></td></tr>
 
@@ -254,7 +256,11 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#eb3ec58db759a145d69735546891d2ba">WLWWView</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#c83a77d2396c72dcbbe0cc9abb84ef47">CLUTEditorsView</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#f9e247238ca8ff4504d761702c494382">LODView</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#f563c8748d1e0becc72eed93075ca788">ClippingRangeView</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#e88314835ad876cb90a2991e50387ec9">BlendingView</a></td></tr>
 
@@ -282,11 +288,13 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSWindow *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#59737fc32554a8c1de4fd9541e330572">shadingEditWindow</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSWindow *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#4775d3528fae30e5a10a25585cf46c66">growingRegionWindow</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#16aeb3fa579fa89b93a1224e50702257">growingSet</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSButton *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#9f0f595ac7c5e8a555141388352c0e8e">shadingCheck</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSTextField *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#bf29ec474219b883d592c951f28f9f60">shadingValues</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSMatrix *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#72f79c92279a50ca7ad69c94fe43549a">perspectiveMatrix</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#e088e208e4023f09b6007d68f01f7ee2">convolutionView</a></td></tr>
 
@@ -298,7 +306,7 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_array.html">NSArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#2bb4591abe182c5dd500131970c81b06">fileList</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSData *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#c7b3ceb063de2973ab9a5292f9dc62f3">volumeData</a> [100]</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_data.html">NSData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#c7b3ceb063de2973ab9a5292f9dc62f3">volumeData</a> [100]</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">short&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#b2813a3b7a9bd79f4d9aa7f9b61a73ee">curMovieIndex</a></td></tr>
 
@@ -310,7 +318,7 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#a2e6ec72c4293a792db1417ce29afb89">blending</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSData *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#0ab7ff3dd9367069b4e06fbf2ba67d33">blendingVolumeData</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_data.html">NSData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#0ab7ff3dd9367069b4e06fbf2ba67d33">blendingVolumeData</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#d13689679c70b22a2473ba0cbb3f4272">blendingPixList</a></td></tr>
 
@@ -352,7 +360,7 @@ Inheritance diagram for VRController:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#0bc719851611625c4a9217ae1694f0ea">z2DPointsArray</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#0c6c040f316b50cf00f34fe6ba637ce0">roiVolumes</a> [200]</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#1db4bffffa5e605ad85bfc8e6a9da757">roiVolumes</a> [MAX4D]</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_r_controller.html#a332ec65a0bc003707d2b2a9d9edc03c">_renderingMode</a></td></tr>
 
@@ -735,7 +743,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
         <tr>
           <td class="paramkey">:</td>
           <td></td>
-          <td class="paramtype">(NSData*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_data.html">NSData</a>*)&nbsp;</td>
           <td class="paramname"> <em>vData</em></td>
         </tr>
         <tr>
@@ -782,7 +790,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
         <tr>
           <td class="paramkey">:</td>
           <td></td>
-          <td class="paramtype">(NSData*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_data.html">NSData</a>*)&nbsp;</td>
           <td class="paramname"> <em>vData</em></td>
         </tr>
         <tr>
@@ -1182,7 +1190,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
         <tr>
           <td class="paramkey">:</td>
           <td></td>
-          <td class="paramtype">(NSData*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_data.html">NSData</a>*)&nbsp;</td>
           <td class="paramname"> <em>vData</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -1395,25 +1403,6 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 <p>
 
 <p>Reimplemented from <a class="el" href="interface_window3_d_controller.html#9c9f0fefd4ee3d66e5e8bb43eefdf10a">Window3DController</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="dbbcdfd1d2916dc3adc0d88cb36239da"></a><!-- doxytag: member="VRController::createContextualMenu" ref="dbbcdfd1d2916dc3adc0d88cb36239da" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (void) createContextualMenu           </td>
-          <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
 
 </div>
 </div><p>
@@ -1891,7 +1880,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>*) <a class="el" href="interface_v_r_controller.html#0c6c040f316b50cf00f34fe6ba637ce0">roiVolumes</a>           </td>
+          <td class="memname">- (<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>*) <a class="el" href="interface_v_r_controller.html#1db4bffffa5e605ad85bfc8e6a9da757">roiVolumes</a>           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -2172,6 +2161,46 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
           <td></td>
           <td></td>
           <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="2ec2fb23a8b30028471ac6a477a29910"></a><!-- doxytag: member="VRController::editGrowingRegion:" ref="2ec2fb23a8b30028471ac6a477a29910" args="(id sender)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBAction) editGrowingRegion:           </td>
+          <td></td>
+          <td class="paramtype">(id)&nbsp;</td>
+          <td class="paramname"> <em>sender</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3a08bac1a1fd6dd31426f0be24cefe3c"></a><!-- doxytag: member="VRController::endEditGrowingRegion:" ref="3a08bac1a1fd6dd31426f0be24cefe3c" args="(id sender)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBAction) endEditGrowingRegion:           </td>
+          <td></td>
+          <td class="paramtype">(id)&nbsp;</td>
+          <td class="paramname"> <em>sender</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -2752,12 +2781,42 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="c83a77d2396c72dcbbe0cc9abb84ef47"></a><!-- doxytag: member="VRController::CLUTEditorsView" ref="c83a77d2396c72dcbbe0cc9abb84ef47" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSView *) <a class="el" href="interface_v_r_controller.html#c83a77d2396c72dcbbe0cc9abb84ef47">CLUTEditorsView</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f9e247238ca8ff4504d761702c494382"></a><!-- doxytag: member="VRController::LODView" ref="f9e247238ca8ff4504d761702c494382" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">- (IBOutlet NSView *) <a class="el" href="interface_v_r_controller.html#f9e247238ca8ff4504d761702c494382">LODView</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f563c8748d1e0becc72eed93075ca788"></a><!-- doxytag: member="VRController::ClippingRangeView" ref="f563c8748d1e0becc72eed93075ca788" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSView *) <a class="el" href="interface_v_r_controller.html#f563c8748d1e0becc72eed93075ca788">ClippingRangeView</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -2962,6 +3021,36 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="4775d3528fae30e5a10a25585cf46c66"></a><!-- doxytag: member="VRController::growingRegionWindow" ref="4775d3528fae30e5a10a25585cf46c66" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSWindow*) <a class="el" href="interface_v_r_controller.html#4775d3528fae30e5a10a25585cf46c66">growingRegionWindow</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="16aeb3fa579fa89b93a1224e50702257"></a><!-- doxytag: member="VRController::growingSet" ref="16aeb3fa579fa89b93a1224e50702257" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) <a class="el" href="interface_v_r_controller.html#16aeb3fa579fa89b93a1224e50702257">growingSet</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="9f0f595ac7c5e8a555141388352c0e8e"></a><!-- doxytag: member="VRController::shadingCheck" ref="9f0f595ac7c5e8a555141388352c0e8e" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -2983,21 +3072,6 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">- (IBOutlet NSTextField*) <a class="el" href="interface_v_r_controller.html#bf29ec474219b883d592c951f28f9f60">shadingValues</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="72f79c92279a50ca7ad69c94fe43549a"></a><!-- doxytag: member="VRController::perspectiveMatrix" ref="72f79c92279a50ca7ad69c94fe43549a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (IBOutlet NSMatrix*) <a class="el" href="interface_v_r_controller.html#72f79c92279a50ca7ad69c94fe43549a">perspectiveMatrix</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -3087,7 +3161,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSData* <a class="el" href="interface_v_r_controller.html#c7b3ceb063de2973ab9a5292f9dc62f3">volumeData</a>[100])<code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="class_n_s_data.html">NSData</a>* <a class="el" href="interface_v_r_controller.html#c7b3ceb063de2973ab9a5292f9dc62f3">volumeData</a>[100])<code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -3177,7 +3251,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSData*) <a class="el" href="interface_v_r_controller.html#0ab7ff3dd9367069b4e06fbf2ba67d33">blendingVolumeData</a><code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="class_n_s_data.html">NSData</a>*) <a class="el" href="interface_v_r_controller.html#0ab7ff3dd9367069b4e06fbf2ba67d33">blendingVolumeData</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -3487,12 +3561,12 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="0c6c040f316b50cf00f34fe6ba637ce0"></a><!-- doxytag: member="VRController::roiVolumes" ref="0c6c040f316b50cf00f34fe6ba637ce0" args="[200]" -->
+<a class="anchor" name="1db4bffffa5e605ad85bfc8e6a9da757"></a><!-- doxytag: member="VRController::roiVolumes" ref="1db4bffffa5e605ad85bfc8e6a9da757" args="[MAX4D]" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *) <a class="el" href="interface_v_r_controller.html#0c6c040f316b50cf00f34fe6ba637ce0">roiVolumes</a><code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *) <a class="el" href="interface_v_r_controller.html#1db4bffffa5e605ad85bfc8e6a9da757">roiVolumes</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -4464,7 +4538,7 @@ Window Controller for VR and MIP. <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_v_r_controller_8h.html">VRController.h</a><li><a class="el" href="_v_r_controller_8mm.html">VRController.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:48 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

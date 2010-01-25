@@ -67,9 +67,13 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSDate *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#69f5a2205f1bcf0dbb73128ec8793804">getFileModification:index:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#f5dd939d4b7dde944092ab65fe405482">deleteRoisObject:paths:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#e69646891df757c07c400f3c783faf94">buildFixedIPList</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#d399ed8c7109136f1fd57ede55729a37">buildLocalPathsList</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#c88e48f9b27422b07666d2fe06fb180e">buildDICOMDestinationsList</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_bonjour_browser.html#3f5cf8dc46636cf99529db5438f73d40">arrangeServices</a></td></tr>
 
@@ -84,12 +88,12 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_bonjour_browser.html#45606f5dbf04c7bb5aecf51a8a3dfb7b">uniqueLocalPath:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="interface_bonjour_browser.html">BonjourBrowser</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_bonjour_browser.html#693a1c6b5bf2ffc53b886a2259b465fa">currentBrowser</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#cb9eebf314511e59312dcc6e05b596a9">lock</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#6c7aa1ef67e044a6c0d35f9b5cffd82c">async</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#247662d9e593f64c7b55ca8c243bc16f">async</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#f0e530347379055f833b0edad1102f24">asyncWrite</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#1a3d86295d284846347a59be82cf5c0f">asyncWrite</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#12c56709e1f9f323fc6097864a483f54">lastAsyncPos</a></td></tr>
 
@@ -163,6 +167,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSDate *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#c4668ca18458b6284ad5d3ae3ebd5eed">currentTimeOut</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_bonjour_browser.html#c4d2a1f6b3bc80fb9f54f84ffa6ada72">messageToSend</a></td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documentation</h2>
@@ -195,6 +201,25 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
           <td></td>
           <td class="paramtype">(NSManagedObject*)&nbsp;</td>
           <td class="paramname"> <em>image</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="693a1c6b5bf2ffc53b886a2259b465fa"></a><!-- doxytag: member="BonjourBrowser::currentBrowser" ref="693a1c6b5bf2ffc53b886a2259b465fa" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="interface_bonjour_browser.html">BonjourBrowser</a> *) currentBrowser           </td>
+          <td></td>
+          <td class="paramname">          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -737,6 +762,35 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
 
 </div>
 </div><p>
+<a class="anchor" name="f5dd939d4b7dde944092ab65fe405482"></a><!-- doxytag: member="BonjourBrowser::deleteRoisObject:paths:" ref="f5dd939d4b7dde944092ab65fe405482" args="(NSManagedObject *o,[paths] NSArray *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) deleteRoisObject:           </td>
+          <td></td>
+          <td class="paramtype">(NSManagedObject*)&nbsp;</td>
+          <td class="paramname"> <em>o</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">paths:</td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_array.html">NSArray</a>*)&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="e69646891df757c07c400f3c783faf94"></a><!-- doxytag: member="BonjourBrowser::buildFixedIPList" ref="e69646891df757c07c400f3c783faf94" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -762,6 +816,25 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
       <table class="memname">
         <tr>
           <td class="memname">- (void) buildLocalPathsList           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c88e48f9b27422b07666d2fe06fb180e"></a><!-- doxytag: member="BonjourBrowser::buildDICOMDestinationsList" ref="c88e48f9b27422b07666d2fe06fb180e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) buildDICOMDestinationsList           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -830,7 +903,7 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
         <tr>
           <td class="memname">- (void) incomingConnectionProcess:           </td>
           <td></td>
-          <td class="paramtype">(NSData*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_data.html">NSData</a>*)&nbsp;</td>
           <td class="paramname"> <em>data</em>          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
@@ -864,12 +937,12 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
 </div>
 </div><p>
 <hr><h2>Member Data Documentation</h2>
-<a class="anchor" name="cb9eebf314511e59312dcc6e05b596a9"></a><!-- doxytag: member="BonjourBrowser::lock" ref="cb9eebf314511e59312dcc6e05b596a9" args="" -->
+<a class="anchor" name="6c7aa1ef67e044a6c0d35f9b5cffd82c"></a><!-- doxytag: member="BonjourBrowser::async" ref="6c7aa1ef67e044a6c0d35f9b5cffd82c" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSLock*) <a class="el" href="interface_bonjour_browser.html#cb9eebf314511e59312dcc6e05b596a9">lock</a><code> [protected]</code>          </td>
+          <td class="memname">- (NSRecursiveLock*) <a class="el" href="interface_bonjour_browser.html#6c7aa1ef67e044a6c0d35f9b5cffd82c">async</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -879,27 +952,12 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
 
 </div>
 </div><p>
-<a class="anchor" name="247662d9e593f64c7b55ca8c243bc16f"></a><!-- doxytag: member="BonjourBrowser::async" ref="247662d9e593f64c7b55ca8c243bc16f" args="" -->
+<a class="anchor" name="1a3d86295d284846347a59be82cf5c0f"></a><!-- doxytag: member="BonjourBrowser::asyncWrite" ref="1a3d86295d284846347a59be82cf5c0f" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSLock *) <a class="el" href="interface_bonjour_browser.html#247662d9e593f64c7b55ca8c243bc16f">async</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="f0e530347379055f833b0edad1102f24"></a><!-- doxytag: member="BonjourBrowser::asyncWrite" ref="f0e530347379055f833b0edad1102f24" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (NSLock *) <a class="el" href="interface_bonjour_browser.html#f0e530347379055f833b0edad1102f24">asyncWrite</a><code> [protected]</code>          </td>
+          <td class="memname">- (NSRecursiveLock *) <a class="el" href="interface_bonjour_browser.html#1a3d86295d284846347a59be82cf5c0f">asyncWrite</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1449,9 +1507,24 @@ Searches and retrieves Bonjour shared databases. <hr><h2>Member Function Documen
 
 </div>
 </div><p>
+<a class="anchor" name="c4d2a1f6b3bc80fb9f54f84ffa6ada72"></a><!-- doxytag: member="BonjourBrowser::messageToSend" ref="c4d2a1f6b3bc80fb9f54f84ffa6ada72" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSDictionary*) <a class="el" href="interface_bonjour_browser.html#c4d2a1f6b3bc80fb9f54f84ffa6ada72">messageToSend</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_bonjour_browser_8h.html">BonjourBrowser.h</a><li><a class="el" href="_bonjour_browser_8m.html">BonjourBrowser.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

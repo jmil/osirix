@@ -33,23 +33,24 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#7c8771871ee9e1f8847cf8327d5e63d6">setPoint:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(float)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#b61effec7d8ce46702c127046c97031b">y</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(float)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#9aa4249114874d1cc0a63e7aaac0f19c">x</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(NSPoint)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#6cfb23f11c6b41cd422e96476e355da9">point</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#dc7977d37c49642d13b01ee151ec43c5">move::</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#6b8d3daf58d2dc052208825fb4df20f3">isEqualToPoint:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#9ed51c0a4fc42898c6c314df4971035c">isNearToPoint:::</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_my_point.html#dc7977d37c49642d13b01ee151ec43c5">move::</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="interface_my_point.html">MyPoint</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_my_point.html#e93847adc427f2b909820e9808e8e4df">point:</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSPoint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_my_point.html#00bb00ca1c88a14b52d47746c20a8f5f">pt</a></td></tr>
+
+<tr><td colspan="2"><br><h2>Properties</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">assign NSPoint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_my_point.html#b75f5684e02db26c184e73f5bf1db64c">point</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">readonly float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_my_point.html#1cd29b62f2b08ccd9db9ef4a4c867f1b">x</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">readonly float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_my_point.html#0b8551802a6cab36cbbc301e84715f30">y</a></td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -114,54 +115,26 @@ Wrapper for NSPoint. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="b61effec7d8ce46702c127046c97031b"></a><!-- doxytag: member="MyPoint::y" ref="b61effec7d8ce46702c127046c97031b" args="()" -->
+<a class="anchor" name="dc7977d37c49642d13b01ee151ec43c5"></a><!-- doxytag: member="MyPoint::move::" ref="dc7977d37c49642d13b01ee151ec43c5" args="(float x,[] float y)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (float) y           </td>
+          <td class="memname">- (void) move:           </td>
           <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
+          <td class="paramtype">(float)&nbsp;</td>
+          <td class="paramname"> <em>x</em></td>
         </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="9aa4249114874d1cc0a63e7aaac0f19c"></a><!-- doxytag: member="MyPoint::x" ref="9aa4249114874d1cc0a63e7aaac0f19c" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">- (float) x           </td>
+          <td class="paramkey">:</td>
           <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
+          <td class="paramtype">(float)&nbsp;</td>
+          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
         </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="6cfb23f11c6b41cd422e96476e355da9"></a><!-- doxytag: member="MyPoint::point" ref="6cfb23f11c6b41cd422e96476e355da9" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">- (NSPoint) point           </td>
           <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -226,35 +199,6 @@ Wrapper for NSPoint. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="dc7977d37c49642d13b01ee151ec43c5"></a><!-- doxytag: member="MyPoint::move::" ref="dc7977d37c49642d13b01ee151ec43c5" args="(float x,[] float y)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (void) move:           </td>
-          <td></td>
-          <td class="paramtype">(float)&nbsp;</td>
-          <td class="paramname"> <em>x</em></td>
-        </tr>
-        <tr>
-          <td class="paramkey">:</td>
-          <td></td>
-          <td class="paramtype">(float)&nbsp;</td>
-          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td><td></td><td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <hr><h2>Member Data Documentation</h2>
 <a class="anchor" name="00bb00ca1c88a14b52d47746c20a8f5f"></a><!-- doxytag: member="MyPoint::pt" ref="00bb00ca1c88a14b52d47746c20a8f5f" args="" -->
 <div class="memitem">
@@ -271,9 +215,55 @@ Wrapper for NSPoint. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<hr><h2>Property Documentation</h2>
+<a class="anchor" name="b75f5684e02db26c184e73f5bf1db64c"></a><!-- doxytag: member="MyPoint::point" ref="b75f5684e02db26c184e73f5bf1db64c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (assign NSPoint) point<code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1cd29b62f2b08ccd9db9ef4a4c867f1b"></a><!-- doxytag: member="MyPoint::x" ref="1cd29b62f2b08ccd9db9ef4a4c867f1b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (float) x<code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0b8551802a6cab36cbbc301e84715f30"></a><!-- doxytag: member="MyPoint::y" ref="0b8551802a6cab36cbbc301e84715f30" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (float) y<code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_my_point_8h.html">MyPoint.h</a><li><a class="el" href="_my_point_8m.html">MyPoint.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

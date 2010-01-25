@@ -12,22 +12,28 @@
     <li class="current"><a href="files.html"><span>Files</span></a></li>
   </ul>
 </div>
-<h1>AppController.h File Reference</h1><code>#import &lt;Growl/Growl.h&gt;</code><br>
-<code>#import &lt;AppKit/AppKit.h&gt;</code><br>
+<h1>AppController.h File Reference</h1><code>#import &lt;AppKit/AppKit.h&gt;</code><br>
 <code>#import &quot;<a class="el" href="_x_m_l_r_p_c_methods_8h.html">XMLRPCMethods.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_web_services_methods_8h.html">WebServicesMethods.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_chat_theatre_delegate_8h.html">IChatTheatreDelegate.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Classes</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">protocol &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_growl_application_bridge_delegate-p.html">&lt; GrowlApplicationBridgeDelegate &gt;</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">NSApplication delegate.  <a href="protocol_growl_application_bridge_delegate-p.html#_details">More...</a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_app_controller.html">AppController</a></td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">NSApplication delegate.  <a href="interface_app_controller.html#_details">More...</a><br></td></tr>
 <tr><td colspan="2"><br><h2>Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55b94bec3e41bc9810307020aaae030baa5">always</a> =  0, 
-<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55bd5bc414a885420095157cb157befd3ac">cdOnly</a> =  1, 
-<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55b32bf87745019322f2e5e4d3fe9660991">notMainDrive</a> =  2, 
-<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55bb04140aeae35e72d90ef19d99c59ca75">ask</a> =  3
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55bf8fbef43491084b8140722c03873d833">compression_sameAsDefault</a> =  0, 
+<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55b8e1fab2c7ddf2bedc398d5a6badcf281">compression_none</a> =  1, 
+<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55b31007a83a228c913bbe113f681447611">compression_JPEG</a> =  2, 
+<a class="el" href="_app_controller_8h.html#06fc87d81c62e9abb8790b6e5713c55b0f9c33769240ab5498004fb6c5bc3019">compression_JPEG2000</a> =  3
+ }</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_app_controller_8h.html#df764cbdea00d65edcd07bb9953ad2b794bec3e41bc9810307020aaae030baa5">always</a> =  0, 
+<a class="el" href="_app_controller_8h.html#df764cbdea00d65edcd07bb9953ad2b7d5bc414a885420095157cb157befd3ac">cdOnly</a> =  1, 
+<a class="el" href="_app_controller_8h.html#df764cbdea00d65edcd07bb9953ad2b732bf87745019322f2e5e4d3fe9660991">notMainDrive</a> =  2, 
+<a class="el" href="_app_controller_8h.html#df764cbdea00d65edcd07bb9953ad2b7b04140aeae35e72d90ef19d99c59ca75">ask</a> =  3
  }</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
@@ -35,16 +41,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#3a74eff087c1b831bcfdf5ba588df45f">documentsDirectoryFor</a> (int mode, <a class="el" href="class_n_s_string.html">NSString</a> *url)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#c1347e3b8c04d0dbaafd84f7ae6a89e4">documentsDirectory</a> ()</td></tr>
-
-<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#4f6b76974813b4a32378ac17148a8ddf">LUT12toRGB</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#ddfe8a3c44adbc2ee7650a87c9aeae3d">canDisplay12Bit</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSInvocation *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#215a5076d48afd074039a7673ca65ad1">fill12BitBufferInvocation</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_plugin_filter.html">PluginFilter</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#b4c8f69d78b7cda13bba1b820383730d">totokuPlugin</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8h.html#42a826cb5f3293276dee8a5c30aa651b">documentsDirectory</a> ()</td></tr>
 
 </table>
 <hr><h2>Enumeration Type Documentation</h2>
@@ -62,13 +59,40 @@
 <p>
 <dl compact><dt><b>Enumerator: </b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55b94bec3e41bc9810307020aaae030baa5"></a><!-- doxytag: member="always" ref="06fc87d81c62e9abb8790b6e5713c55b94bec3e41bc9810307020aaae030baa5" args="" -->always</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55bf8fbef43491084b8140722c03873d833"></a><!-- doxytag: member="compression_sameAsDefault" ref="06fc87d81c62e9abb8790b6e5713c55bf8fbef43491084b8140722c03873d833" args="" -->compression_sameAsDefault</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55bd5bc414a885420095157cb157befd3ac"></a><!-- doxytag: member="cdOnly" ref="06fc87d81c62e9abb8790b6e5713c55bd5bc414a885420095157cb157befd3ac" args="" -->cdOnly</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55b8e1fab2c7ddf2bedc398d5a6badcf281"></a><!-- doxytag: member="compression_none" ref="06fc87d81c62e9abb8790b6e5713c55b8e1fab2c7ddf2bedc398d5a6badcf281" args="" -->compression_none</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55b32bf87745019322f2e5e4d3fe9660991"></a><!-- doxytag: member="notMainDrive" ref="06fc87d81c62e9abb8790b6e5713c55b32bf87745019322f2e5e4d3fe9660991" args="" -->notMainDrive</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55b31007a83a228c913bbe113f681447611"></a><!-- doxytag: member="compression_JPEG" ref="06fc87d81c62e9abb8790b6e5713c55b31007a83a228c913bbe113f681447611" args="" -->compression_JPEG</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55bb04140aeae35e72d90ef19d99c59ca75"></a><!-- doxytag: member="ask" ref="06fc87d81c62e9abb8790b6e5713c55bb04140aeae35e72d90ef19d99c59ca75" args="" -->ask</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="06fc87d81c62e9abb8790b6e5713c55b0f9c33769240ab5498004fb6c5bc3019"></a><!-- doxytag: member="compression_JPEG2000" ref="06fc87d81c62e9abb8790b6e5713c55b0f9c33769240ab5498004fb6c5bc3019" args="" -->compression_JPEG2000</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7"></a><!-- doxytag: member="AppController.h::@1" ref="df764cbdea00d65edcd07bb9953ad2b7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+<dl compact><dt><b>Enumerator: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b794bec3e41bc9810307020aaae030baa5"></a><!-- doxytag: member="always" ref="df764cbdea00d65edcd07bb9953ad2b794bec3e41bc9810307020aaae030baa5" args="" -->always</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7d5bc414a885420095157cb157befd3ac"></a><!-- doxytag: member="cdOnly" ref="df764cbdea00d65edcd07bb9953ad2b7d5bc414a885420095157cb157befd3ac" args="" -->cdOnly</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b732bf87745019322f2e5e4d3fe9660991"></a><!-- doxytag: member="notMainDrive" ref="df764cbdea00d65edcd07bb9953ad2b732bf87745019322f2e5e4d3fe9660991" args="" -->notMainDrive</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7b04140aeae35e72d90ef19d99c59ca75"></a><!-- doxytag: member="ask" ref="df764cbdea00d65edcd07bb9953ad2b7b04140aeae35e72d90ef19d99c59ca75" args="" -->ask</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dl>
@@ -76,12 +100,12 @@
 </div>
 </div><p>
 <hr><h2>Function Documentation</h2>
-<a class="anchor" name="c1347e3b8c04d0dbaafd84f7ae6a89e4"></a><!-- doxytag: member="AppController.h::documentsDirectory" ref="c1347e3b8c04d0dbaafd84f7ae6a89e4" args="()" -->
+<a class="anchor" name="42a826cb5f3293276dee8a5c30aa651b"></a><!-- doxytag: member="AppController.h::documentsDirectory" ref="42a826cb5f3293276dee8a5c30aa651b" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a> * documentsDirectory           </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* documentsDirectory           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
@@ -143,68 +167,7 @@
 
 </div>
 </div><p>
-<hr><h2>Variable Documentation</h2>
-<a class="anchor" name="ddfe8a3c44adbc2ee7650a87c9aeae3d"></a><!-- doxytag: member="AppController.h::canDisplay12Bit" ref="ddfe8a3c44adbc2ee7650a87c9aeae3d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOL <a class="el" href="_app_controller_8h.html#ddfe8a3c44adbc2ee7650a87c9aeae3d">canDisplay12Bit</a><code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="215a5076d48afd074039a7673ca65ad1"></a><!-- doxytag: member="AppController.h::fill12BitBufferInvocation" ref="215a5076d48afd074039a7673ca65ad1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">NSInvocation* <a class="el" href="_app_controller_8h.html#215a5076d48afd074039a7673ca65ad1">fill12BitBufferInvocation</a><code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="4f6b76974813b4a32378ac17148a8ddf"></a><!-- doxytag: member="AppController.h::LUT12toRGB" ref="4f6b76974813b4a32378ac17148a8ddf" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned char* <a class="el" href="_app_controller_8h.html#4f6b76974813b4a32378ac17148a8ddf">LUT12toRGB</a><code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="b4c8f69d78b7cda13bba1b820383730d"></a><!-- doxytag: member="AppController.h::totokuPlugin" ref="b4c8f69d78b7cda13bba1b820383730d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="interface_plugin_filter.html">PluginFilter</a>* <a class="el" href="_app_controller_8h.html#b4c8f69d78b7cda13bba1b820383730d">totokuPlugin</a><code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:28 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

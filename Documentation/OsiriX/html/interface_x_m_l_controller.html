@@ -19,16 +19,27 @@
     <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
   </ul>
 </div>
-<h1>XMLController Class Reference</h1><!-- doxytag: class="XMLController" -->Window Controller for XML parsing.  
+<h1>XMLController Class Reference</h1><!-- doxytag: class="XMLController" --><!-- doxytag: inherits="OSIWindowController" -->Window Controller for XML parsing.  
 <a href="#_details">More...</a>
 <p>
 <code>#import &lt;XMLController.h&gt;</code>
 <p>
+<div class="dynheader">
+Inheritance diagram for XMLController:</div>
+<div class="dynsection">
+
+<p><center><img src="interface_x_m_l_controller.png" usemap="#XMLController_map" border="0" alt=""></center>
+<map name="XMLController_map">
+<area href="interface_o_s_i_window_controller.html" alt="OSIWindowController" shape="rect" coords="0,0,133,24">
+</map>
+</div>
 
 <p>
 <a href="class_x_m_l_controller-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#0f3e16fd40c95e2e1d43bcd34d35ace9">changeImageObject:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(id)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#e664891fa7be7c4f97916ff1375fc707">initWithImage:windowName:viewer:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#ad1998e0f63ce505e00fb77cfad7f6b8">setupToolbar</a></td></tr>
@@ -42,6 +53,10 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#3a9f4de5260a8d15d46d18e9efee4463">executeAdd:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#3446e3aa7f31ec86b470c7ea4567ed2f">switchDICOMEditing:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#8ba09fbde4dd7c8f3d67dd38cde1b3b0">validatorWebSite:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#281337681f58ce5f52326e8f27691756">verify:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#98c47aa1e4d710b1366b1d2ed04d2dd3">reload:</a></td></tr>
 
@@ -63,6 +78,9 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_x_m_l_controller.html#2c3d67b6a18e90cc2c430a42ae856afb">traverse:string:</a></td></tr>
 
+<tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="interface_x_m_l_controller.html">XMLController</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_x_m_l_controller.html#e0b2f3187faf3e9780a6689329466379">windowForViewer:</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSOutlineView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#b28de462ca4ff72fff1e4cb289a2e36b">table</a></td></tr>
 
@@ -76,7 +94,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#804876fe318ed485a02bc69e7da05a9f">xmlDcmData</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSData *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#e7d9fb204d9e82d720aeb852a301be10">xmlData</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_data.html">NSData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#e7d9fb204d9e82d720aeb852a301be10">xmlData</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSToolbar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#388d81eeaa56f0e1b235a54866c8dfba">toolbar</a></td></tr>
 
@@ -110,9 +128,62 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSTextField *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#9cc037905f64ca45ad473a46d9e59857">addValue</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSWindow *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#46ce0881ea16e4b62b21d9edf0b26c6b">validatorWindow</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSTextView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#8e3fd0df73a86fa96a79707865eca620">validatorText</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#151f32a66002c9a5355b69822209bf9a">dontListenToIndexChange</a></td></tr>
+
+<tr><td colspan="2"><br><h2>Properties</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">readonly <br>
+NSManagedObject *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#da39486fd033f9120a4dd4a9ea6e1ce1">imObj</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">readonly <br>
+<a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_x_m_l_controller.html#9976b53f8a3a96dc319efb1c24d3e65a">viewer</a></td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Window Controller for XML parsing. <hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="e0b2f3187faf3e9780a6689329466379"></a><!-- doxytag: member="XMLController::windowForViewer:" ref="e0b2f3187faf3e9780a6689329466379" args="(ViewerController *v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="interface_x_m_l_controller.html">XMLController</a> *) windowForViewer:           </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="interface_viewer_controller.html">ViewerController</a>*)&nbsp;</td>
+          <td class="paramname"> <em>v</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0f3e16fd40c95e2e1d43bcd34d35ace9"></a><!-- doxytag: member="XMLController::changeImageObject:" ref="0f3e16fd40c95e2e1d43bcd34d35ace9" args="(NSManagedObject *image)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) changeImageObject:           </td>
+          <td></td>
+          <td class="paramtype">(NSManagedObject*)&nbsp;</td>
+          <td class="paramname"> <em>image</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="e664891fa7be7c4f97916ff1375fc707"></a><!-- doxytag: member="XMLController::initWithImage:windowName:viewer:" ref="e664891fa7be7c4f97916ff1375fc707" args="(NSManagedObject *image,[windowName] NSString *name,[viewer] ViewerController *v)" -->
 <div class="memitem">
 <div class="memproto">
@@ -253,6 +324,46 @@ Window Controller for XML parsing. <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">- (IBAction) switchDICOMEditing:           </td>
+          <td></td>
+          <td class="paramtype">(id)&nbsp;</td>
+          <td class="paramname"> <em>sender</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8ba09fbde4dd7c8f3d67dd38cde1b3b0"></a><!-- doxytag: member="XMLController::validatorWebSite:" ref="8ba09fbde4dd7c8f3d67dd38cde1b3b0" args="(id sender)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBAction) validatorWebSite:           </td>
+          <td></td>
+          <td class="paramtype">(id)&nbsp;</td>
+          <td class="paramname"> <em>sender</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="281337681f58ce5f52326e8f27691756"></a><!-- doxytag: member="XMLController::verify:" ref="281337681f58ce5f52326e8f27691756" args="(id sender)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBAction) verify:           </td>
           <td></td>
           <td class="paramtype">(id)&nbsp;</td>
           <td class="paramname"> <em>sender</em>          </td>
@@ -572,7 +683,7 @@ Window Controller for XML parsing. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSData*) <a class="el" href="interface_x_m_l_controller.html#e7d9fb204d9e82d720aeb852a301be10">xmlData</a><code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="class_n_s_data.html">NSData</a>*) <a class="el" href="interface_x_m_l_controller.html#e7d9fb204d9e82d720aeb852a301be10">xmlData</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -822,9 +933,85 @@ Window Controller for XML parsing. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="46ce0881ea16e4b62b21d9edf0b26c6b"></a><!-- doxytag: member="XMLController::validatorWindow" ref="46ce0881ea16e4b62b21d9edf0b26c6b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSWindow*) <a class="el" href="interface_x_m_l_controller.html#46ce0881ea16e4b62b21d9edf0b26c6b">validatorWindow</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8e3fd0df73a86fa96a79707865eca620"></a><!-- doxytag: member="XMLController::validatorText" ref="8e3fd0df73a86fa96a79707865eca620" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSTextView*) <a class="el" href="interface_x_m_l_controller.html#8e3fd0df73a86fa96a79707865eca620">validatorText</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="151f32a66002c9a5355b69822209bf9a"></a><!-- doxytag: member="XMLController::dontListenToIndexChange" ref="151f32a66002c9a5355b69822209bf9a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) <a class="el" href="interface_x_m_l_controller.html#151f32a66002c9a5355b69822209bf9a">dontListenToIndexChange</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Property Documentation</h2>
+<a class="anchor" name="da39486fd033f9120a4dd4a9ea6e1ce1"></a><!-- doxytag: member="XMLController::imObj" ref="da39486fd033f9120a4dd4a9ea6e1ce1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (readonly NSManagedObject*) <a class="el" href="interface_x_m_l_controller.html#d3fd77057c7573903e8f14da6396f4c6">imObj</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9976b53f8a3a96dc319efb1c24d3e65a"></a><!-- doxytag: member="XMLController::viewer" ref="9976b53f8a3a96dc319efb1c24d3e65a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (readonly <a class="el" href="interface_viewer_controller.html">ViewerController</a>*) <a class="el" href="interface_x_m_l_controller.html#2eb45f29b1e580d85282e727a33aa5e7">viewer</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_x_m_l_controller_8h.html">XMLController.h</a><li><a class="el" href="_x_m_l_controller_8m.html">XMLController.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:48 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

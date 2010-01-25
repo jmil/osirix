@@ -19,6 +19,8 @@
 <code>#import &quot;<a class="el" href="dicom_file_8h.html">DicomFile.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_dicom_image_8h.html">DicomImage.h</a>&quot;</code><br>
 <code>#include &quot;<a class="el" href="_simple_ping_8h.html">SimplePing.h</a>&quot;</code><br>
+<code>#import &quot;DCMNetServiceDelegate.h&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <code>#import &lt;sys/socket.h&gt;</code><br>
 <code>#import &lt;netinet/in.h&gt;</code><br>
 <code>#import &lt;arpa/inet.h&gt;</code><br>
@@ -33,16 +35,14 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#6031083197a5e29ab992f0aa1a129b0f">OSIRIXRUNMODE</a>&nbsp;&nbsp;&nbsp;@&quot;OsiriXLoopMode&quot;</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#42a826cb5f3293276dee8a5c30aa651b">documentsDirectory</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#fb0a20c0fec22d480111740254aa0d8e">GetPrivateIP</a> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#65cbdfbaee7dcefdbe62bc28f9b15ef2">GetPrivateIP</a> ()</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#f56b55a9234bc0893a58950cdc1b5e8c">bugFixedForDNSResolve</a> = NO</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#cb1703e795b348cfb0d1efae78314f83">TIMEOUT</a> = 10</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSThread *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#3b43b8f4b6b1dd6f3474af8046c96254">resolveServiceThreadLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_bonjour_browser.html">BonjourBrowser</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#fcbe4ad00a58a024559da4664d14f593">currentBrowser</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static volatile BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_bonjour_browser_8m.html#44140f426dc5bd634899dac5637871fe">threadIsRunning</a> = NO</td></tr>
 
@@ -94,12 +94,12 @@
 </div>
 </div><p>
 <hr><h2>Function Documentation</h2>
-<a class="anchor" name="42a826cb5f3293276dee8a5c30aa651b"></a><!-- doxytag: member="BonjourBrowser.m::documentsDirectory" ref="42a826cb5f3293276dee8a5c30aa651b" args="()" -->
+<a class="anchor" name="65cbdfbaee7dcefdbe62bc28f9b15ef2"></a><!-- doxytag: member="BonjourBrowser.m::GetPrivateIP" ref="65cbdfbaee7dcefdbe62bc28f9b15ef2" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* documentsDirectory           </td>
+          <td class="memname">const char* GetPrivateIP           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
@@ -113,32 +113,13 @@
 
 </div>
 </div><p>
-<a class="anchor" name="fb0a20c0fec22d480111740254aa0d8e"></a><!-- doxytag: member="BonjourBrowser.m::GetPrivateIP" ref="fb0a20c0fec22d480111740254aa0d8e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static char* GetPrivateIP           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td width="100%"><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <hr><h2>Variable Documentation</h2>
-<a class="anchor" name="f56b55a9234bc0893a58950cdc1b5e8c"></a><!-- doxytag: member="BonjourBrowser.m::bugFixedForDNSResolve" ref="f56b55a9234bc0893a58950cdc1b5e8c" args="" -->
+<a class="anchor" name="fcbe4ad00a58a024559da4664d14f593"></a><!-- doxytag: member="BonjourBrowser.m::currentBrowser" ref="fcbe4ad00a58a024559da4664d14f593" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_bonjour_browser_8m.html#f56b55a9234bc0893a58950cdc1b5e8c">bugFixedForDNSResolve</a> = NO<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="interface_bonjour_browser.html">BonjourBrowser</a>* <a class="el" href="_bonjour_browser_8m.html#fcbe4ad00a58a024559da4664d14f593">currentBrowser</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -148,12 +129,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="c310edffa97acbbf9fb975cd78c320dc"></a><!-- doxytag: member="BonjourBrowser.m::mainThread" ref="c310edffa97acbbf9fb975cd78c320dc" args="" -->
+<a class="anchor" name="3b43b8f4b6b1dd6f3474af8046c96254"></a><!-- doxytag: member="BonjourBrowser.m::resolveServiceThreadLock" ref="3b43b8f4b6b1dd6f3474af8046c96254" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSThread* <a class="el" href="_web_services_methods_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a>          </td>
+          <td class="memname">NSLock* <a class="el" href="_bonjour_browser_8m.html#3b43b8f4b6b1dd6f3474af8046c96254">resolveServiceThreadLock</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -193,7 +174,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:28 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

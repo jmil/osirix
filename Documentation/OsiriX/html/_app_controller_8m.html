@@ -12,23 +12,22 @@
     <li class="current"><a href="files.html"><span>Files</span></a></li>
   </ul>
 </div>
-<h1>AppController.m File Reference</h1><code>#include &lt;CoreFoundation/CoreFoundation.h&gt;</code><br>
+<h1>AppController.m File Reference</h1><code>#import &quot;SystemConfiguration/SCDynamicStoreCopySpecific.h&quot;</code><br>
+<code>#include &lt;CoreFoundation/CoreFoundation.h&gt;</code><br>
 <code>#include &lt;ApplicationServices/ApplicationServices.h&gt;</code><br>
-<code>#import &quot;<a class="el" href="_d_o_client_8h.html">DOClient.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_toolbar_panel_8h.html">ToolbarPanel.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_app_controller_8h.html">AppController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_preference_pane_controller_8h.html">PreferencePaneController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="browser_controller_8h.html">BrowserController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_browser_controller_d_c_m_t_k_category_8h.html">BrowserControllerDCMTKCategory.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_viewer_controller_8h.html">ViewerController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_x_m_l_controller_8h.html">XMLController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_splash_screen_8h.html">SplashScreen.h</a>&quot;</code><br>
 <code>#import &quot;NSFont_OpenGL.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_survey_8h.html">Survey.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_plugin_manager_8h.html">PluginManager.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="dicom_file_8h.html">DicomFile.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_h_t_t_p_server_8h.html">HTTPServer.h</a>&quot;</code><br>
-<code>#import &lt;OsiriX/DCMNetworking.h&gt;</code><br>
 <code>#import &lt;OsiriX/DCM.h&gt;</code><br>
+<code>#import &quot;<a class="el" href="_plugin_manager_8h.html">PluginManager.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_t_k_query_retrieve_s_c_p_8h.html">DCMTKQueryRetrieveSCP.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_b_l_authentication_8h.html">BLAuthentication.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_app_controller_d_c_m_t_k_category_8h.html">AppControllerDCMTKCategory.h</a>&quot;</code><br>
@@ -38,8 +37,16 @@
 <code>#import &quot;<a class="el" href="_navigator_view_8h.html">NavigatorView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_window_layout_manager_8h.html">WindowLayoutManager.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_query_controller_8h.html">QueryController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_n_s_split_view_save_8h.html">NSSplitViewSave.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="altivec_functions_8h.html">altivecFunctions.h</a>&quot;</code><br>
+<code>#import &lt;ILCrashReporter/ILCrashReporter.h&gt;</code><br>
 <code>#import &quot;<a class="el" href="_plugin_manager_controller_8h.html">PluginManagerController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_o_s_i_window_controller_8h.html">OSIWindowController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_wait_rendering_8h.html">WaitRendering.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_osiri_x_h_t_t_p_connection_8h.html">OsiriXHTTPConnection.h</a>&quot;</code><br>
+<code>#import &quot;ThreadPoolServer.h&quot;</code><br>
+<code>#import &lt;Nitrogen/N2Debug.h&gt;</code><br>
 <code>#include &lt;sys/sysctl.h&gt;</code><br>
 <code>#include &lt;netdb.h&gt;</code><br>
 <code>#include &lt;unistd.h&gt;</code><br>
@@ -52,22 +59,24 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#5e0045c23eab68bce79d835a91add963">kHasAltiVecMask</a>&nbsp;&nbsp;&nbsp;( 1 &lt;&lt; gestaltPowerPCHasVectorInstructions )</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#6ac034a9ecd18b0904128540583e1573">INCOMINGPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/INCOMING/&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#6ac034a9ecd18b0904128540583e1573">INCOMINGPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/INCOMING.noindex/&quot;</td></tr>
 
 <tr><td colspan="2"><br><h2>Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <br>
-&nbsp;&nbsp;<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b7f0536797208144380691e2b376ffc1d1">kSuccess</a> =  0, 
-<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b77e2d03dedfed08825ab5675e4a92cb92">kCouldNotFindRequestedProcess</a> =  -1, 
-<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b74a8b02437c724d51ed12fb5def3d9965">kInvalidArgumentsError</a> =  -2, 
-<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b7acc87482ae10eba7f0a488a8ad837795">kErrorGettingSizeOfBufferRequired</a> =  -3, 
+&nbsp;&nbsp;<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b5f0536797208144380691e2b376ffc1d1">kSuccess</a> =  0, 
+<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b57e2d03dedfed08825ab5675e4a92cb92">kCouldNotFindRequestedProcess</a> =  -1, 
+<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b54a8b02437c724d51ed12fb5def3d9965">kInvalidArgumentsError</a> =  -2, 
+<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b5acc87482ae10eba7f0a488a8ad837795">kErrorGettingSizeOfBufferRequired</a> =  -3, 
 <br>
-&nbsp;&nbsp;<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b73fd2faf89bd794548a2cbbde80f15396">kUnableToAllocateMemoryForBuffer</a> =  -4, 
-<a class="el" href="_app_controller_8m.html#df764cbdea00d65edcd07bb9953ad2b7da86af95e308c7fc83abbb32260b0643">kPIDBufferOverrunError</a> =  -5
+&nbsp;&nbsp;<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b53fd2faf89bd794548a2cbbde80f15396">kUnableToAllocateMemoryForBuffer</a> =  -4, 
+<a class="el" href="_app_controller_8m.html#99fb83031ce9923c84392b4e92f956b5da86af95e308c7fc83abbb32260b0643">kPIDBufferOverrunError</a> =  -5
 <br>
  }</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#fb0a20c0fec22d480111740254aa0d8e">GetPrivateIP</a> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#ed97e48f9200f79f34e2841f36ed2f2f">getMacAddress</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#65cbdfbaee7dcefdbe62bc28f9b15ef2">GetPrivateIP</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#d73c740231f9f38a6cf24495f5d80ed5">GetAllPIDsForProcessName</a> (const char *ProcessName, pid_t ArrayOfReturnedPIDs[], const unsigned int NumberOfPossiblePIDsInArray, unsigned int *NumberOfMatchesFound, int *SysctlError)</td></tr>
 
@@ -83,6 +92,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">short&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#65363674004c2e82ef845aa2dd66de15">HasAltiVec</a> ()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#a9d7adf16fc8715d6dd6a8ef9be3f299">hasMacOSXSnowLeopard</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#2f98719e4d1b37ec25f0b1466846df0c">hasMacOSXLeopard</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#386c8463dd6f94a222e5dc34f3b17710">hasMacOSXTiger</a> ()</td></tr>
@@ -92,11 +103,35 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSRect&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#35fde616151fffeb9f83b4f76750450d">screenFrame</a> ()</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a> [10] = {0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L}</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a> [10] = {nil, nil, nil, nil, nil, nil, nil, nil, nil, nil}</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#41bdc63784328aa173cd23397e4b2431">currentHostName</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#fd15bf28208db5065f57609b160de42f">mainMenuCLUTMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSThread *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#aad04b13905c9d8c55a9808d35e37165">mainMenuWLWWMenu</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#c479f9288baa0c9b9443d1f65c16523d">mainMenuConvMenu</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#f7ef1fadfcfe780ddd5a3808b951bc60">mainOpacityMenu</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#135ac51b71db3085e6cdce517339ea0e">previousWLWWKeys</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#83a7fa4e5f92b10fd34af7fda334fe65">previousCLUTKeys</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#6d595647e379828f3b465b0b0af07427">previousConvKeys</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#03565f7bc1c7bc71c5e54fd2d967ed61">previousOpacityKeys</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#c008bad2eadf7bdafb6448fa756a1e6b">checkForPreferencesUpdate</a> = YES</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_plugin_manager.html">PluginManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#83b674bda91a96ddbb954167da99445b">pluginManager</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#4f6b76974813b4a32378ac17148a8ddf">LUT12toRGB</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#ddfe8a3c44adbc2ee7650a87c9aeae3d">canDisplay12Bit</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSInvocation *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#215a5076d48afd074039a7673ca65ad1">fill12BitBufferInvocation</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSThread *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#eec4205926e6ff906a6383f085ca39a5">NEEDTOREBUILD</a> = NO</td></tr>
 
@@ -108,17 +143,41 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">short&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#1eef8b6f13811e0a2b6fcba25b79782e">UseOpenJpeg</a> = 1</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_app_controller.html">AppController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_app_controller.html">AppController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#ff704118c2b4a7b59a1f3fd30c9a6e3c">dcmtkQRSCP</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#ff704118c2b4a7b59a1f3fd30c9a6e3c">dcmtkQRSCP</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#23a971adc09294ef716360e33062dddb">dicomListenerIP</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#d2255cd7f7657a5e0a03a6c26fae026b">dcmtkQRSCPTLS</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#5f31f29c18e49af259ef26e6f99b2b90">checkSN64String</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSNetService *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#3dd98e9cf8d3f1e6d63485c738b358a6">checkSN64Service</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#4531d1105a89b89ec1ebcff21e297694">STORESCP</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#bd6020128422feb0ed6c1be56d765751">STORESCPTLS</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#8109a49dbd78782dbbf06ec3f53dade5">accumulateAnimationsArray</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#af872e49a4f2c57f695da84df5137dab">accumulateAnimations</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#4f7b25a5b26c5446cf8a6ad43e088417">privateIPstring</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static volatile BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#98f7abb2ac82f26637c42400c76aa78f">converting</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDate *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#9a7cf65d50f2935bc8d7c74b0a5bffa0">lastWarningDate</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDate *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#9a7cf65d50f2935bc8d7c74b0a5bffa0">lastWarningDate</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#6a8476940d5fcfbfedc363e152f60670">checkAllWindowsAreVisibleIsOff</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#61b43f486031a306e19ce479095a7663">filtersMenu</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#fb63982cee033f3fa77e05d983dfd5ec">windowsTilingMenuRows</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#64ce0115ea3fcbb36a8b35f925c41660">windowsTilingMenuColumns</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_app_controller_8m.html#c3eb467e632e7bda8500fc927a61ab40">initialized</a> = NO</td></tr>
 
@@ -144,7 +203,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define INCOMINGPATH&nbsp;&nbsp;&nbsp;@&quot;/INCOMING/&quot;          </td>
+          <td class="memname">#define INCOMINGPATH&nbsp;&nbsp;&nbsp;@&quot;/INCOMING.noindex/&quot;          </td>
         </tr>
       </table>
 </div>
@@ -170,7 +229,7 @@
 </div>
 </div><p>
 <hr><h2>Enumeration Type Documentation</h2>
-<a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7"></a><!-- doxytag: member="AppController.m::@1" ref="df764cbdea00d65edcd07bb9953ad2b7" args="" -->
+<a class="anchor" name="99fb83031ce9923c84392b4e92f956b5"></a><!-- doxytag: member="AppController.m::@2" ref="99fb83031ce9923c84392b4e92f956b5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -184,17 +243,17 @@
 <p>
 <dl compact><dt><b>Enumerator: </b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7f0536797208144380691e2b376ffc1d1"></a><!-- doxytag: member="kSuccess" ref="df764cbdea00d65edcd07bb9953ad2b7f0536797208144380691e2b376ffc1d1" args="" -->kSuccess</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b5f0536797208144380691e2b376ffc1d1"></a><!-- doxytag: member="kSuccess" ref="99fb83031ce9923c84392b4e92f956b5f0536797208144380691e2b376ffc1d1" args="" -->kSuccess</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b77e2d03dedfed08825ab5675e4a92cb92"></a><!-- doxytag: member="kCouldNotFindRequestedProcess" ref="df764cbdea00d65edcd07bb9953ad2b77e2d03dedfed08825ab5675e4a92cb92" args="" -->kCouldNotFindRequestedProcess</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b57e2d03dedfed08825ab5675e4a92cb92"></a><!-- doxytag: member="kCouldNotFindRequestedProcess" ref="99fb83031ce9923c84392b4e92f956b57e2d03dedfed08825ab5675e4a92cb92" args="" -->kCouldNotFindRequestedProcess</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b74a8b02437c724d51ed12fb5def3d9965"></a><!-- doxytag: member="kInvalidArgumentsError" ref="df764cbdea00d65edcd07bb9953ad2b74a8b02437c724d51ed12fb5def3d9965" args="" -->kInvalidArgumentsError</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b54a8b02437c724d51ed12fb5def3d9965"></a><!-- doxytag: member="kInvalidArgumentsError" ref="99fb83031ce9923c84392b4e92f956b54a8b02437c724d51ed12fb5def3d9965" args="" -->kInvalidArgumentsError</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7acc87482ae10eba7f0a488a8ad837795"></a><!-- doxytag: member="kErrorGettingSizeOfBufferRequired" ref="df764cbdea00d65edcd07bb9953ad2b7acc87482ae10eba7f0a488a8ad837795" args="" -->kErrorGettingSizeOfBufferRequired</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b5acc87482ae10eba7f0a488a8ad837795"></a><!-- doxytag: member="kErrorGettingSizeOfBufferRequired" ref="99fb83031ce9923c84392b4e92f956b5acc87482ae10eba7f0a488a8ad837795" args="" -->kErrorGettingSizeOfBufferRequired</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b73fd2faf89bd794548a2cbbde80f15396"></a><!-- doxytag: member="kUnableToAllocateMemoryForBuffer" ref="df764cbdea00d65edcd07bb9953ad2b73fd2faf89bd794548a2cbbde80f15396" args="" -->kUnableToAllocateMemoryForBuffer</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b53fd2faf89bd794548a2cbbde80f15396"></a><!-- doxytag: member="kUnableToAllocateMemoryForBuffer" ref="99fb83031ce9923c84392b4e92f956b53fd2faf89bd794548a2cbbde80f15396" args="" -->kUnableToAllocateMemoryForBuffer</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" name="df764cbdea00d65edcd07bb9953ad2b7da86af95e308c7fc83abbb32260b0643"></a><!-- doxytag: member="kPIDBufferOverrunError" ref="df764cbdea00d65edcd07bb9953ad2b7da86af95e308c7fc83abbb32260b0643" args="" -->kPIDBufferOverrunError</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" name="99fb83031ce9923c84392b4e92f956b5da86af95e308c7fc83abbb32260b0643"></a><!-- doxytag: member="kPIDBufferOverrunError" ref="99fb83031ce9923c84392b4e92f956b5da86af95e308c7fc83abbb32260b0643" args="" -->kPIDBufferOverrunError</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dl>
@@ -372,16 +431,36 @@
 
 </div>
 </div><p>
-<a class="anchor" name="fb0a20c0fec22d480111740254aa0d8e"></a><!-- doxytag: member="AppController.m::GetPrivateIP" ref="fb0a20c0fec22d480111740254aa0d8e" args="()" -->
+<a class="anchor" name="ed97e48f9200f79f34e2841f36ed2f2f"></a><!-- doxytag: member="AppController.m::getMacAddress" ref="ed97e48f9200f79f34e2841f36ed2f2f" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static char* GetPrivateIP           </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* getMacAddress           </td>
+          <td>(</td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="65cbdfbaee7dcefdbe62bc28f9b15ef2"></a><!-- doxytag: member="AppController.m::GetPrivateIP" ref="65cbdfbaee7dcefdbe62bc28f9b15ef2" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* GetPrivateIP           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td width="100%"><code> [static]</code></td>
+          <td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -416,6 +495,25 @@
       <table class="memname">
         <tr>
           <td class="memname">BOOL hasMacOSXLeopard           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a9d7adf16fc8715d6dd6a8ef9be3f299"></a><!-- doxytag: member="AppController.m::hasMacOSXSnowLeopard" ref="a9d7adf16fc8715d6dd6a8ef9be3f299" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL hasMacOSXSnowLeopard           </td>
           <td>(</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
@@ -487,6 +585,36 @@
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
+<a class="anchor" name="af872e49a4f2c57f695da84df5137dab"></a><!-- doxytag: member="AppController.m::accumulateAnimations" ref="af872e49a4f2c57f695da84df5137dab" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_app_controller_8m.html#af872e49a4f2c57f695da84df5137dab">accumulateAnimations</a> = NO          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8109a49dbd78782dbbf06ec3f53dade5"></a><!-- doxytag: member="AppController.m::accumulateAnimationsArray" ref="8109a49dbd78782dbbf06ec3f53dade5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_app_controller_8m.html#8109a49dbd78782dbbf06ec3f53dade5">accumulateAnimationsArray</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="0ac0f83b9393a82b439970e3465f60bc"></a><!-- doxytag: member="AppController.m::Altivec" ref="0ac0f83b9393a82b439970e3465f60bc" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -507,7 +635,82 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_app_controller.html">AppController</a>* <a class="el" href="_viewer_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a> = 0L          </td>
+          <td class="memname"><a class="el" href="interface_app_controller.html">AppController</a>* <a class="el" href="_l_l_m_p_r_viewer_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ddfe8a3c44adbc2ee7650a87c9aeae3d"></a><!-- doxytag: member="AppController.m::canDisplay12Bit" ref="ddfe8a3c44adbc2ee7650a87c9aeae3d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_app_controller_8m.html#ddfe8a3c44adbc2ee7650a87c9aeae3d">canDisplay12Bit</a> = NO<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6a8476940d5fcfbfedc363e152f60670"></a><!-- doxytag: member="AppController.m::checkAllWindowsAreVisibleIsOff" ref="6a8476940d5fcfbfedc363e152f60670" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_app_controller_8m.html#6a8476940d5fcfbfedc363e152f60670">checkAllWindowsAreVisibleIsOff</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c008bad2eadf7bdafb6448fa756a1e6b"></a><!-- doxytag: member="AppController.m::checkForPreferencesUpdate" ref="c008bad2eadf7bdafb6448fa756a1e6b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_app_controller_8m.html#c008bad2eadf7bdafb6448fa756a1e6b">checkForPreferencesUpdate</a> = YES<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3dd98e9cf8d3f1e6d63485c738b358a6"></a><!-- doxytag: member="AppController.m::checkSN64Service" ref="3dd98e9cf8d3f1e6d63485c738b358a6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSNetService* <a class="el" href="_app_controller_8m.html#3dd98e9cf8d3f1e6d63485c738b358a6">checkSN64Service</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="5f31f29c18e49af259ef26e6f99b2b90"></a><!-- doxytag: member="AppController.m::checkSN64String" ref="5f31f29c18e49af259ef26e6f99b2b90" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_app_controller_8m.html#5f31f29c18e49af259ef26e6f99b2b90">checkSN64String</a> = nil          </td>
         </tr>
       </table>
 </div>
@@ -547,27 +750,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="41bdc63784328aa173cd23397e4b2431"></a><!-- doxytag: member="AppController.m::currentHostName" ref="41bdc63784328aa173cd23397e4b2431" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_app_controller_8m.html#41bdc63784328aa173cd23397e4b2431">currentHostName</a> = 0L<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="ff704118c2b4a7b59a1f3fd30c9a6e3c"></a><!-- doxytag: member="AppController.m::dcmtkQRSCP" ref="ff704118c2b4a7b59a1f3fd30c9a6e3c" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a>* <a class="el" href="_app_controller_8m.html#ff704118c2b4a7b59a1f3fd30c9a6e3c">dcmtkQRSCP</a> = 0L          </td>
+          <td class="memname"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a>* <a class="el" href="_app_controller_8m.html#ff704118c2b4a7b59a1f3fd30c9a6e3c">dcmtkQRSCP</a> = nil          </td>
         </tr>
       </table>
 </div>
@@ -577,12 +765,57 @@
 
 </div>
 </div><p>
-<a class="anchor" name="23a971adc09294ef716360e33062dddb"></a><!-- doxytag: member="AppController.m::dicomListenerIP" ref="23a971adc09294ef716360e33062dddb" args="" -->
+<a class="anchor" name="d2255cd7f7657a5e0a03a6c26fae026b"></a><!-- doxytag: member="AppController.m::dcmtkQRSCPTLS" ref="d2255cd7f7657a5e0a03a6c26fae026b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_app_controller_8m.html#23a971adc09294ef716360e33062dddb">dicomListenerIP</a> = 0L          </td>
+          <td class="memname"><a class="el" href="interface_d_c_m_t_k_query_retrieve_s_c_p.html">DCMTKQueryRetrieveSCP</a> * <a class="el" href="_app_controller_8m.html#d2255cd7f7657a5e0a03a6c26fae026b">dcmtkQRSCPTLS</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3ac3a27024fc1740539611b1faa38cdd"></a><!-- doxytag: member="AppController.m::delayedTileWindows" ref="3ac3a27024fc1740539611b1faa38cdd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_x_m_l_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="215a5076d48afd074039a7673ca65ad1"></a><!-- doxytag: member="AppController.m::fill12BitBufferInvocation" ref="215a5076d48afd074039a7673ca65ad1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSInvocation* <a class="el" href="_app_controller_8m.html#215a5076d48afd074039a7673ca65ad1">fill12BitBufferInvocation</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="61b43f486031a306e19ce479095a7663"></a><!-- doxytag: member="AppController.m::filtersMenu" ref="61b43f486031a306e19ce479095a7663" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_app_controller_8m.html#61b43f486031a306e19ce479095a7663">filtersMenu</a>          </td>
         </tr>
       </table>
 </div>
@@ -612,7 +845,82 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSDate* <a class="el" href="_app_controller_8m.html#9a7cf65d50f2935bc8d7c74b0a5bffa0">lastWarningDate</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSDate* <a class="el" href="_app_controller_8m.html#9a7cf65d50f2935bc8d7c74b0a5bffa0">lastWarningDate</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="4f6b76974813b4a32378ac17148a8ddf"></a><!-- doxytag: member="AppController.m::LUT12toRGB" ref="4f6b76974813b4a32378ac17148a8ddf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char* <a class="el" href="_app_controller_8m.html#4f6b76974813b4a32378ac17148a8ddf">LUT12toRGB</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="fd15bf28208db5065f57609b160de42f"></a><!-- doxytag: member="AppController.m::mainMenuCLUTMenu" ref="fd15bf28208db5065f57609b160de42f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_app_controller_8m.html#fd15bf28208db5065f57609b160de42f">mainMenuCLUTMenu</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c479f9288baa0c9b9443d1f65c16523d"></a><!-- doxytag: member="AppController.m::mainMenuConvMenu" ref="c479f9288baa0c9b9443d1f65c16523d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a> * <a class="el" href="_app_controller_8m.html#c479f9288baa0c9b9443d1f65c16523d">mainMenuConvMenu</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="aad04b13905c9d8c55a9808d35e37165"></a><!-- doxytag: member="AppController.m::mainMenuWLWWMenu" ref="aad04b13905c9d8c55a9808d35e37165" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a> * <a class="el" href="_app_controller_8m.html#aad04b13905c9d8c55a9808d35e37165">mainMenuWLWWMenu</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f7ef1fadfcfe780ddd5a3808b951bc60"></a><!-- doxytag: member="AppController.m::mainOpacityMenu" ref="f7ef1fadfcfe780ddd5a3808b951bc60" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a> * <a class="el" href="_app_controller_8m.html#f7ef1fadfcfe780ddd5a3808b951bc60">mainOpacityMenu</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -627,7 +935,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSThread* <a class="el" href="_web_services_methods_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a>          </td>
+          <td class="memname">NSThread* <a class="el" href="_app_controller_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a> = nil          </td>
         </tr>
       </table>
 </div>
@@ -642,7 +950,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_safe_d_b_rebuild_8m.html#eec4205926e6ff906a6383f085ca39a5">NEEDTOREBUILD</a> = NO          </td>
+          <td class="memname">BOOL <a class="el" href="browser_controller_8m.html#eec4205926e6ff906a6383f085ca39a5">NEEDTOREBUILD</a> = NO          </td>
         </tr>
       </table>
 </div>
@@ -652,12 +960,132 @@
 
 </div>
 </div><p>
-<a class="anchor" name="957a2485f5db253e6199d2b24c99999b"></a><!-- doxytag: member="AppController.m::PapyrusLock" ref="957a2485f5db253e6199d2b24c99999b" args="" -->
+<a class="anchor" name="476188598751074db6e5e8689f87ef88"></a><!-- doxytag: member="AppController.m::PapyrusLock" ref="476188598751074db6e5e8689f87ef88" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSLock* <a class="el" href="_safe_d_b_rebuild_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a> = 0L          </td>
+          <td class="memname">NSRecursiveLock* <a class="el" href="_dicom_file_d_c_m_t_k_category_8mm.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="83b674bda91a96ddbb954167da99445b"></a><!-- doxytag: member="AppController.m::pluginManager" ref="83b674bda91a96ddbb954167da99445b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="interface_plugin_manager.html">PluginManager</a>* <a class="el" href="_app_controller_8m.html#83b674bda91a96ddbb954167da99445b">pluginManager</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="83a7fa4e5f92b10fd34af7fda334fe65"></a><!-- doxytag: member="AppController.m::previousCLUTKeys" ref="83a7fa4e5f92b10fd34af7fda334fe65" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSDictionary * <a class="el" href="_app_controller_8m.html#83a7fa4e5f92b10fd34af7fda334fe65">previousCLUTKeys</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6d595647e379828f3b465b0b0af07427"></a><!-- doxytag: member="AppController.m::previousConvKeys" ref="6d595647e379828f3b465b0b0af07427" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSDictionary * <a class="el" href="_app_controller_8m.html#6d595647e379828f3b465b0b0af07427">previousConvKeys</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="03565f7bc1c7bc71c5e54fd2d967ed61"></a><!-- doxytag: member="AppController.m::previousOpacityKeys" ref="03565f7bc1c7bc71c5e54fd2d967ed61" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSDictionary * <a class="el" href="_app_controller_8m.html#03565f7bc1c7bc71c5e54fd2d967ed61">previousOpacityKeys</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="135ac51b71db3085e6cdce517339ea0e"></a><!-- doxytag: member="AppController.m::previousWLWWKeys" ref="135ac51b71db3085e6cdce517339ea0e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSDictionary* <a class="el" href="_app_controller_8m.html#135ac51b71db3085e6cdce517339ea0e">previousWLWWKeys</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="4f7b25a5b26c5446cf8a6ad43e088417"></a><!-- doxytag: member="AppController.m::privateIPstring" ref="4f7b25a5b26c5446cf8a6ad43e088417" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* <a class="el" href="_app_controller_8m.html#4f7b25a5b26c5446cf8a6ad43e088417">privateIPstring</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="4531d1105a89b89ec1ebcff21e297694"></a><!-- doxytag: member="AppController.m::STORESCP" ref="4531d1105a89b89ec1ebcff21e297694" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSRecursiveLock * <a class="el" href="_app_controller_8m.html#4531d1105a89b89ec1ebcff21e297694">STORESCP</a> = nil          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="bd6020128422feb0ed6c1be56d765751"></a><!-- doxytag: member="AppController.m::STORESCPTLS" ref="bd6020128422feb0ed6c1be56d765751" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSRecursiveLock * <a class="el" href="_app_controller_8m.html#bd6020128422feb0ed6c1be56d765751">STORESCPTLS</a> = nil          </td>
         </tr>
       </table>
 </div>
@@ -672,7 +1100,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a>* <a class="el" href="_viewer_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a>[10] = {0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L}          </td>
+          <td class="memname"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a>* <a class="el" href="_viewer_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a>[10] = {nil, nil, nil, nil, nil, nil, nil, nil, nil, nil}          </td>
         </tr>
       </table>
 </div>
@@ -687,7 +1115,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">short <a class="el" href="_safe_d_b_rebuild_8m.html#1eef8b6f13811e0a2b6fcba25b79782e">UseOpenJpeg</a> = 1          </td>
+          <td class="memname">short <a class="el" href="_app_controller_8m.html#1eef8b6f13811e0a2b6fcba25b79782e">UseOpenJpeg</a> = 1          </td>
         </tr>
       </table>
 </div>
@@ -702,7 +1130,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a> = NO          </td>
+          <td class="memname">BOOL <a class="el" href="_toolbar_panel_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a> = NO          </td>
         </tr>
       </table>
 </div>
@@ -712,7 +1140,37 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<a class="anchor" name="64ce0115ea3fcbb36a8b35f925c41660"></a><!-- doxytag: member="AppController.m::windowsTilingMenuColumns" ref="64ce0115ea3fcbb36a8b35f925c41660" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_app_controller_8m.html#64ce0115ea3fcbb36a8b35f925c41660">windowsTilingMenuColumns</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="fb63982cee033f3fa77e05d983dfd5ec"></a><!-- doxytag: member="AppController.m::windowsTilingMenuRows" ref="fb63982cee033f3fa77e05d983dfd5ec" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_app_controller_8m.html#fb63982cee033f3fa77e05d983dfd5ec">windowsTilingMenuRows</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:28 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

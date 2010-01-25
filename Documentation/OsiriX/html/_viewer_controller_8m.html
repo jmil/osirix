@@ -15,7 +15,6 @@
 <h1>ViewerController.m File Reference</h1><code>#import &quot;<a class="el" href="_defaults_osiri_x_8h.html">DefaultsOsiriX.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_n_s_apple_script+_handler_calls_8h.html">NSAppleScript+HandlerCalls.h</a>&quot;</code><br>
 <code>#import &quot;AYDicomPrintWindowController.h&quot;</code><br>
-<code>#import &quot;<a class="el" href="_viewer_controller_window_8h.html">ViewerControllerWindow.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_my_outline_view_8h.html">MyOutlineView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_plugin_filter_8h.html">PluginFilter.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_pix_8h.html">DCMPix.h</a>&quot;</code><br>
@@ -48,7 +47,7 @@
 <code>#import &quot;<a class="el" href="_mailer_8h.html">Mailer.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_t_k_segmentation3_d_controller_8h.html">ITKSegmentation3DController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_t_k_segmentation3_d_8h.html">ITKSegmentation3D.h</a>&quot;</code><br>
-<code>#import &quot;MSRGWindowController.h&quot;</code><br>
+<code>#import &quot;<a class="el" href="_o_s_i_window_8h.html">OSIWindow.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="i_photo_8h.html">iPhoto.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_curved_m_p_r_8h.html">CurvedMPR.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_series_view_8h.html">SeriesView.h</a>&quot;</code><br>
@@ -60,9 +59,8 @@
 <code>#import &quot;<a class="el" href="_endoscopy_viewer_8h.html">EndoscopyViewer.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_palette_controller_8h.html">PaletteController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_r_o_i_manager_controller_8h.html">ROIManagerController.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_m_s_r_g_segmentation_8h.html">MSRGSegmentation.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_t_k_brush_r_o_i_filter_8h.html">ITKBrushROIFilter.h</a>&quot;</code><br>
-<code>#import &quot;DCMAbstractSyntaxUID.h&quot;</code><br>
+<code>#import &quot;OsiriX/DCMAbstractSyntaxUID.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="print_view_8h.html">printView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_t_k_transform_8h.html">ITKTransform.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_l_l_scout_viewer_8h.html">LLScoutViewer.h</a>&quot;</code><br>
@@ -70,7 +68,7 @@
 <code>#import &quot;<a class="el" href="_key_object_controller_8h.html">KeyObjectController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_key_object_popup_controller_8h.html">KeyObjectPopupController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_j_p_e_g_exif_8h.html">JPEGExif.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_s_r_annotation_controller_8h.html">SRAnnotationController.h</a>&quot;</code><br>
+<code>#import &quot;NSFont_OpenGL.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_reports_8h.html">Reports.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_r_o_i_s_r_converter_8h.html">ROISRConverter.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_menu_dictionary_8h.html">MenuDictionary.h</a>&quot;</code><br>
@@ -81,17 +79,30 @@
 <code>#import &quot;<a class="el" href="_plugin_manager_8h.html">PluginManager.h</a>&quot;</code><br>
 <code>#import &lt;InstantMessage/IMService.h&gt;</code><br>
 <code>#import &lt;InstantMessage/IMAVManager.h&gt;</code><br>
+<code>#import &quot;DCMObject.h&quot;</code><br>
+<code>#import &quot;DCMAttributeTag.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_navigator_window_controller_8h.html">NavigatorWindowController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_three_d_position_controller_8h.html">ThreeDPositionController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_thumbnail_cell_8h.html">ThumbnailCell.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_dicom_series_8h.html">DicomSeries.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="dicom_file_8h.html">dicomFile.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_m_p_r_controller_8h.html">MPRController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Classes</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_viewer_controller(_private).html">ViewerController(Private)</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#f36c660a62fa2907cb736bff05475788">UNDOQUEUESIZE</a>&nbsp;&nbsp;&nbsp;40</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#c8e38edd6d2fdac132c6844c4c924937">SENSIBILITY</a>&nbsp;&nbsp;&nbsp;0.05</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#01230a31ae87f7d94735859bbdad161a">ROIDATABASE</a>&nbsp;&nbsp;&nbsp;@&quot;/ROIs/&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#c8e38edd6d2fdac132c6844c4c924937">SENSIBILITY</a>&nbsp;&nbsp;&nbsp;0.05</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#6b5672d566edb895860b77776842de66">kScriptName</a>&nbsp;&nbsp;&nbsp;(@&quot;Mail&quot;)</td></tr>
 
@@ -108,30 +119,24 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#1409378747976a5bb615f2fb82bd5f2a">MAXPOINTS</a>&nbsp;&nbsp;&nbsp;7000</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#42a826cb5f3293276dee8a5c30aa651b">documentsDirectory</a> ()</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#aafa7d3fab3dd74a378d8eef1b307ca8">convertDICOM</a> (<a class="el" href="class_n_s_string.html">NSString</a> *inputfile)</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSInteger&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#20cdd4611eda89436ef5a21cfc2b0790">sortROIByName</a> (id roi1, id roi2, void *context)</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a> = NO</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a> [10]</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_app_controller.html">AppController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#b1fb23b9c197479e56b699f6b934cb07">SYNCSERIES</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#16a4317c7ccbe3311154495ed203ac51">globalLoadImageLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#196eaf8471fa69c4cbcc684fe3a6c4df">ViewBoundsDidChangeProtect</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#1fd832483b3ce98b6b7fbd771ff796f2">recursiveCloseWindowsProtected</a> = NO</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#b6f39192433cb8000b36c5e2d8753a27">ViewerToolbarIdentifier</a> = @&quot;Viewer Toolbar Identifier&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a1efe2293f3fc2a0d1b7dd190ec5d31c">QTSaveToolbarItemIdentifier</a> = @&quot;QTExport.icns&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#40596a3ceef778d401fc2c4c16baba15">iPhotoToolbarItemIdentifier</a> = @&quot;iPhoto2&quot;</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#c057bef7465019219287700597daf626">PagePadToolbarItemIdentifier</a> = @&quot;PagePad&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#9f0691197058bb43b08201cdc07435c9">PlayToolbarItemIdentifier</a> = @&quot;Play.icns&quot;</td></tr>
 
@@ -173,11 +178,11 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#49675061f10d1e1d6cc687f19133a0f2">SyncSeriesToolbarItemIdentifier</a> = @&quot;Sync.tif&quot;</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#83522936e02266295d4a5265ebbc0695">ResetToolbarItemIdentifier</a> = @&quot;Reset.tiff&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#83522936e02266295d4a5265ebbc0695">ResetToolbarItemIdentifier</a> = @&quot;Reset.tif&quot;</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#132357f68afea9b804f5783cf1152047">RevertToolbarItemIdentifier</a> = @&quot;Revert.tiff&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#132357f68afea9b804f5783cf1152047">RevertToolbarItemIdentifier</a> = @&quot;Revert.tif&quot;</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a9f95029585653e061c373bc9ed732b4">FlipDataToolbarItemIdentifier</a> = @&quot;FlipData.tiff&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a9f95029585653e061c373bc9ed732b4">FlipDataToolbarItemIdentifier</a> = @&quot;FlipData.tif&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a5cf8766d46458ed2c29794cc6369bfc">DatabaseWindowToolbarItemIdentifier</a> = @&quot;DatabaseWindow.icns&quot;</td></tr>
 
@@ -189,7 +194,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#4bbf973bfafa99913ba32a7e364d543e">SUVToolbarItemIdentifier</a> = @&quot;SUV.tif&quot;</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#566ce5ada6dceda06888ecc04535ca00">ROIManagerToolbarItemIdentifier</a> = @&quot;ROIManager.tiff&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#566ce5ada6dceda06888ecc04535ca00">ROIManagerToolbarItemIdentifier</a> = @&quot;ROIManager.tif&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#f307256c0abf175ceb22f3b8d1fb8bf2">ReportToolbarItemIdentifier</a> = @&quot;Report.icns&quot;</td></tr>
 
@@ -211,37 +216,65 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#451f79a8eab46d0dd06a31e76f481963">NavigatorToolbarItemIdentifier</a> = @&quot;Navigator&quot;</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#138759804835cdd5f226be9cfa2a92eb">ThreeDPositionToolbarItemIdentifier</a> = @&quot;3DPosition&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#9ced25a617b52caea87e61716dbc9b7d">CobbAngleToolbarItemIdentifier</a> = @&quot;CobbAngle&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#9d95fb297a5a1c251213d3c10859029f">SetPixelValueItemIdentifier</a> = @&quot;SetPixelValue.png&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#76a697322af6a8fd82bbd6d03cf48f5a">GrowingRegionItemIdentifier</a> = @&quot;GrowingRegion.png&quot;</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_array.html">NSArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#5bcee3710dd9e64bd297ea8365f7f4f5">DefaultROINames</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#58359f0e8343202e6223a46f032a8e8f">AUTOHIDEMATRIX</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#5179489a75b26b960e0399d96d0d58f2">blendedwin</a> = 0L</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#6fddc70e5c5cb4d77e0b6280159ec720">deg2rad</a> = 3.14159265358979/180.0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#bc5bbd3fc29510a26dba1bf0f2706928">dontEnterMagneticFunctions</a> = NO</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#3a295af860e90f93b2ca8588b9cee95e">wlwwPresetsMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#3a295af860e90f93b2ca8588b9cee95e">wlwwPresetsMenu</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#e8171699ee3893a19a4b60a66f46101f">contextualMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#e8171699ee3893a19a4b60a66f46101f">contextualMenu</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#9947b1696dd7ef01575764d84b1045d6">clutPresetsMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#9947b1696dd7ef01575764d84b1045d6">clutPresetsMenu</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#4aa2d2a9d39606a8b9635dbefcd8c9ee">convolutionPresetsMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#4aa2d2a9d39606a8b9635dbefcd8c9ee">convolutionPresetsMenu</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#478541692b3105f9beeb609973da8faa">opacityPresetsMenu</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_menu.html">NSMenu</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#478541692b3105f9beeb609973da8faa">opacityPresetsMenu</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSNotification *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#bb123c272edc274e6383780744e445e6">lastMenuNotification</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSNotification *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#bb123c272edc274e6383780744e445e6">lastMenuNotification</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static volatile int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#07866f6c3b7d35698f5dc97134071d69">totalNumberOfLoadingThreads</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#64f7ece10b274dadb1a73f8a92db25c9">numberOf2DViewer</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#00ca3e4770726a251a09af3331eab0c4">numberOf2DViewer</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#ba0122d722182818b94fba32b6649f97">currentOrientationTool</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#df0eb35072893c05d24120f4f6277385">loadingPercentage</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#d3512eea41e7f1e4a8320d18abaf222a">timer</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#8b856422b89afde4d3a36f4d8dfcbbf0">keyImageCheck</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#db433b7bcb21f99dd6a906085408ff2c">injectionDateTime</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#e3b07b8f6bdbf805deb1da38e279170c">blendingTypeWindow</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#61c5fee43a7e9571d2b805c34d39d49a">blendingTypeMultiply</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#b26be50888b92ebc9f07d1cb7870dd0e">blendingTypeSubtract</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#1e1e2f12dca3037673bb11ba5d936e98">blendingTypeRGB</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#64d7b7cb0f8ea15bf5cfa5a83ad5085c">blendingPlugins</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#14f023b7909fb3345353c67916c0dea8">blendingResample</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#3154adac3e7fdff0b71f43a1698b6972">blendedWindow</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#53bf74b49d1d294b89e3c83c7f9d772a">hotKeyToolCrossTable</a> []</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static volatile int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#8dba96039671878c24e0c00e44bcb085">numberOfThreadsForRelisce</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a3d581c52fb13b200f3908a1771bf79e">draggedController</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#a3d581c52fb13b200f3908a1771bf79e">draggedController</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_viewer_controller_8m.html#04ef29a0c67e957774ae6aa55d134151">oldsetww</a></td></tr>
 
@@ -254,7 +287,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;          </td>
+          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;          </td>
         </tr>
       </table>
 </div>
@@ -399,6 +432,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="c8e38edd6d2fdac132c6844c4c924937"></a><!-- doxytag: member="ViewerController.m::SENSIBILITY" ref="c8e38edd6d2fdac132c6844c4c924937" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SENSIBILITY&nbsp;&nbsp;&nbsp;0.05          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f36c660a62fa2907cb736bff05475788"></a><!-- doxytag: member="ViewerController.m::UNDOQUEUESIZE" ref="f36c660a62fa2907cb736bff05475788" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -415,45 +463,6 @@
 </div>
 </div><p>
 <hr><h2>Function Documentation</h2>
-<a class="anchor" name="aafa7d3fab3dd74a378d8eef1b307ca8"></a><!-- doxytag: member="ViewerController.m::convertDICOM" ref="aafa7d3fab3dd74a378d8eef1b307ca8" args="(NSString *inputfile)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* convertDICOM           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td>
-          <td class="paramname"> <em>inputfile</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="42a826cb5f3293276dee8a5c30aa651b"></a><!-- doxytag: member="ViewerController.m::documentsDirectory" ref="42a826cb5f3293276dee8a5c30aa651b" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* documentsDirectory           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="20cdd4611eda89436ef5a21cfc2b0790"></a><!-- doxytag: member="ViewerController.m::sortROIByName" ref="20cdd4611eda89436ef5a21cfc2b0790" args="(id roi1, id roi2, void *context)" -->
 <div class="memitem">
 <div class="memproto">
@@ -490,21 +499,6 @@
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
-<a class="anchor" name="63da2d845d299fcc1428ef7165d61c70"></a><!-- doxytag: member="ViewerController.m::appController" ref="63da2d845d299fcc1428ef7165d61c70" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="interface_app_controller.html">AppController</a>* <a class="el" href="_viewer_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="58359f0e8343202e6223a46f032a8e8f"></a><!-- doxytag: member="ViewerController.m::AUTOHIDEMATRIX" ref="58359f0e8343202e6223a46f032a8e8f" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -520,12 +514,42 @@
 
 </div>
 </div><p>
-<a class="anchor" name="5179489a75b26b960e0399d96d0d58f2"></a><!-- doxytag: member="ViewerController.m::blendedwin" ref="5179489a75b26b960e0399d96d0d58f2" args="" -->
+<a class="anchor" name="3154adac3e7fdff0b71f43a1698b6972"></a><!-- doxytag: member="ViewerController.m::blendedWindow" ref="3154adac3e7fdff0b71f43a1698b6972" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_viewer_controller.html">ViewerController</a>* <a class="el" href="_viewer_controller_8m.html#5179489a75b26b960e0399d96d0d58f2">blendedwin</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#3154adac3e7fdff0b71f43a1698b6972">blendedWindow</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="64d7b7cb0f8ea15bf5cfa5a83ad5085c"></a><!-- doxytag: member="ViewerController.m::blendingPlugins" ref="64d7b7cb0f8ea15bf5cfa5a83ad5085c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#64d7b7cb0f8ea15bf5cfa5a83ad5085c">blendingPlugins</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="14f023b7909fb3345353c67916c0dea8"></a><!-- doxytag: member="ViewerController.m::blendingResample" ref="14f023b7909fb3345353c67916c0dea8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#14f023b7909fb3345353c67916c0dea8">blendingResample</a>          </td>
         </tr>
       </table>
 </div>
@@ -550,12 +574,87 @@
 
 </div>
 </div><p>
+<a class="anchor" name="61c5fee43a7e9571d2b805c34d39d49a"></a><!-- doxytag: member="ViewerController.m::blendingTypeMultiply" ref="61c5fee43a7e9571d2b805c34d39d49a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#61c5fee43a7e9571d2b805c34d39d49a">blendingTypeMultiply</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1e1e2f12dca3037673bb11ba5d936e98"></a><!-- doxytag: member="ViewerController.m::blendingTypeRGB" ref="1e1e2f12dca3037673bb11ba5d936e98" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#1e1e2f12dca3037673bb11ba5d936e98">blendingTypeRGB</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b26be50888b92ebc9f07d1cb7870dd0e"></a><!-- doxytag: member="ViewerController.m::blendingTypeSubtract" ref="b26be50888b92ebc9f07d1cb7870dd0e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#b26be50888b92ebc9f07d1cb7870dd0e">blendingTypeSubtract</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e3b07b8f6bdbf805deb1da38e279170c"></a><!-- doxytag: member="ViewerController.m::blendingTypeWindow" ref="e3b07b8f6bdbf805deb1da38e279170c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#e3b07b8f6bdbf805deb1da38e279170c">blendingTypeWindow</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="9947b1696dd7ef01575764d84b1045d6"></a><!-- doxytag: member="ViewerController.m::clutPresetsMenu" ref="9947b1696dd7ef01575764d84b1045d6" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#9947b1696dd7ef01575764d84b1045d6">clutPresetsMenu</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#9947b1696dd7ef01575764d84b1045d6">clutPresetsMenu</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9ced25a617b52caea87e61716dbc9b7d"></a><!-- doxytag: member="ViewerController.m::CobbAngleToolbarItemIdentifier" ref="9ced25a617b52caea87e61716dbc9b7d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#9ced25a617b52caea87e61716dbc9b7d">CobbAngleToolbarItemIdentifier</a> = @&quot;CobbAngle&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -570,7 +669,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#e8171699ee3893a19a4b60a66f46101f">contextualMenu</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#e8171699ee3893a19a4b60a66f46101f">contextualMenu</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -585,7 +684,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#4aa2d2a9d39606a8b9635dbefcd8c9ee">convolutionPresetsMenu</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#4aa2d2a9d39606a8b9635dbefcd8c9ee">convolutionPresetsMenu</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -655,6 +754,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="3ac3a27024fc1740539611b1faa38cdd"></a><!-- doxytag: member="ViewerController.m::delayedTileWindows" ref="3ac3a27024fc1740539611b1faa38cdd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_x_m_l_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a> = NO          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="c084d8284e45f08f43c4fd83655d071e"></a><!-- doxytag: member="ViewerController.m::DeleteToolbarItemIdentifier" ref="c084d8284e45f08f43c4fd83655d071e" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -670,27 +784,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="bc5bbd3fc29510a26dba1bf0f2706928"></a><!-- doxytag: member="ViewerController.m::dontEnterMagneticFunctions" ref="bc5bbd3fc29510a26dba1bf0f2706928" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#bc5bbd3fc29510a26dba1bf0f2706928">dontEnterMagneticFunctions</a> = NO<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="a3d581c52fb13b200f3908a1771bf79e"></a><!-- doxytag: member="ViewerController.m::draggedController" ref="a3d581c52fb13b200f3908a1771bf79e" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_viewer_controller.html">ViewerController</a>* <a class="el" href="_viewer_controller_8m.html#a3d581c52fb13b200f3908a1771bf79e">draggedController</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="interface_viewer_controller.html">ViewerController</a>* <a class="el" href="_viewer_controller_8m.html#a3d581c52fb13b200f3908a1771bf79e">draggedController</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -735,7 +834,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#a9f95029585653e061c373bc9ed732b4">FlipDataToolbarItemIdentifier</a> = @&quot;FlipData.tiff&quot;<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#a9f95029585653e061c373bc9ed732b4">FlipDataToolbarItemIdentifier</a> = @&quot;FlipData.tif&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -790,12 +889,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="16a4317c7ccbe3311154495ed203ac51"></a><!-- doxytag: member="ViewerController.m::globalLoadImageLock" ref="16a4317c7ccbe3311154495ed203ac51" args="" -->
+<a class="anchor" name="76a697322af6a8fd82bbd6d03cf48f5a"></a><!-- doxytag: member="ViewerController.m::GrowingRegionItemIdentifier" ref="76a697322af6a8fd82bbd6d03cf48f5a" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSLock* <a class="el" href="_viewer_controller_8m.html#16a4317c7ccbe3311154495ed203ac51">globalLoadImageLock</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#76a697322af6a8fd82bbd6d03cf48f5a">GrowingRegionItemIdentifier</a> = @&quot;GrowingRegion.png&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -835,12 +934,42 @@
 
 </div>
 </div><p>
+<a class="anchor" name="db433b7bcb21f99dd6a906085408ff2c"></a><!-- doxytag: member="ViewerController.m::injectionDateTime" ref="db433b7bcb21f99dd6a906085408ff2c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#db433b7bcb21f99dd6a906085408ff2c">injectionDateTime</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="40596a3ceef778d401fc2c4c16baba15"></a><!-- doxytag: member="ViewerController.m::iPhotoToolbarItemIdentifier" ref="40596a3ceef778d401fc2c4c16baba15" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#40596a3ceef778d401fc2c4c16baba15">iPhotoToolbarItemIdentifier</a> = @&quot;iPhoto2&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8b856422b89afde4d3a36f4d8dfcbbf0"></a><!-- doxytag: member="ViewerController.m::keyImageCheck" ref="8b856422b89afde4d3a36f4d8dfcbbf0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#8b856422b89afde4d3a36f4d8dfcbbf0">keyImageCheck</a>          </td>
         </tr>
       </table>
 </div>
@@ -870,7 +999,22 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSNotification* <a class="el" href="_viewer_controller_8m.html#bb123c272edc274e6383780744e445e6">lastMenuNotification</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSNotification* <a class="el" href="_viewer_controller_8m.html#bb123c272edc274e6383780744e445e6">lastMenuNotification</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="df0eb35072893c05d24120f4f6277385"></a><!-- doxytag: member="ViewerController.m::loadingPercentage" ref="df0eb35072893c05d24120f4f6277385" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#df0eb35072893c05d24120f4f6277385">loadingPercentage</a>          </td>
         </tr>
       </table>
 </div>
@@ -940,12 +1084,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="64f7ece10b274dadb1a73f8a92db25c9"></a><!-- doxytag: member="ViewerController.m::numberOf2DViewer" ref="64f7ece10b274dadb1a73f8a92db25c9" args="" -->
+<a class="anchor" name="00ca3e4770726a251a09af3331eab0c4"></a><!-- doxytag: member="ViewerController.m::numberOf2DViewer" ref="00ca3e4770726a251a09af3331eab0c4" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long <a class="el" href="_viewer_controller_8m.html#64f7ece10b274dadb1a73f8a92db25c9">numberOf2DViewer</a> = 0          </td>
+          <td class="memname">int <a class="el" href="_viewer_controller_8m.html#00ca3e4770726a251a09af3331eab0c4">numberOf2DViewer</a> = 0<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1005,7 +1149,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#478541692b3105f9beeb609973da8faa">opacityPresetsMenu</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#478541692b3105f9beeb609973da8faa">opacityPresetsMenu</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1021,21 +1165,6 @@
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#2f95d03f1d316ca0d7ed7a5bab98528f">OrientationToolbarItemIdentifier</a> = @&quot;Orientation&quot;<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="c057bef7465019219287700597daf626"></a><!-- doxytag: member="ViewerController.m::PagePadToolbarItemIdentifier" ref="c057bef7465019219287700597daf626" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#c057bef7465019219287700597daf626">PagePadToolbarItemIdentifier</a> = @&quot;PagePad&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1135,6 +1264,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="1fd832483b3ce98b6b7fbd771ff796f2"></a><!-- doxytag: member="ViewerController.m::recursiveCloseWindowsProtected" ref="1fd832483b3ce98b6b7fbd771ff796f2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#1fd832483b3ce98b6b7fbd771ff796f2">recursiveCloseWindowsProtected</a> = NO<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f307256c0abf175ceb22f3b8d1fb8bf2"></a><!-- doxytag: member="ViewerController.m::ReportToolbarItemIdentifier" ref="f307256c0abf175ceb22f3b8d1fb8bf2" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1155,7 +1299,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#83522936e02266295d4a5265ebbc0695">ResetToolbarItemIdentifier</a> = @&quot;Reset.tiff&quot;<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#83522936e02266295d4a5265ebbc0695">ResetToolbarItemIdentifier</a> = @&quot;Reset.tif&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1170,7 +1314,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#132357f68afea9b804f5783cf1152047">RevertToolbarItemIdentifier</a> = @&quot;Revert.tiff&quot;<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_v_p_r_o_8mm.html#132357f68afea9b804f5783cf1152047">RevertToolbarItemIdentifier</a> = @&quot;Revert.tif&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1200,7 +1344,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_8mm.html#566ce5ada6dceda06888ecc04535ca00">ROIManagerToolbarItemIdentifier</a> = @&quot;ROIManager.tiff&quot;<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_v_r_controller_8mm.html#566ce5ada6dceda06888ecc04535ca00">ROIManagerToolbarItemIdentifier</a> = @&quot;ROIManager.tif&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1231,6 +1375,21 @@
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#5412ab62ec92ed3b2bac9b5e2283a65c">SerieToolbarItemIdentifier</a> = @&quot;Series&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9d95fb297a5a1c251213d3c10859029f"></a><!-- doxytag: member="ViewerController.m::SetPixelValueItemIdentifier" ref="9d95fb297a5a1c251213d3c10859029f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#9d95fb297a5a1c251213d3c10859029f">SetPixelValueItemIdentifier</a> = @&quot;SetPixelValue.png&quot;<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1345,12 +1504,42 @@
 
 </div>
 </div><p>
+<a class="anchor" name="138759804835cdd5f226be9cfa2a92eb"></a><!-- doxytag: member="ViewerController.m::ThreeDPositionToolbarItemIdentifier" ref="138759804835cdd5f226be9cfa2a92eb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#138759804835cdd5f226be9cfa2a92eb">ThreeDPositionToolbarItemIdentifier</a> = @&quot;3DPosition&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f13390d2e4bead2e559fc8ace6fd90c7"></a><!-- doxytag: member="ViewerController.m::TileWindowsToolbarItemIdentifier" ref="f13390d2e4bead2e559fc8ace6fd90c7" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_viewer_controller_8m.html#f13390d2e4bead2e559fc8ace6fd90c7">TileWindowsToolbarItemIdentifier</a> = @&quot;windows.tif&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d3512eea41e7f1e4a8320d18abaf222a"></a><!-- doxytag: member="ViewerController.m::timer" ref="d3512eea41e7f1e4a8320d18abaf222a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_viewer_controller_8m.html#d3512eea41e7f1e4a8320d18abaf222a">timer</a>          </td>
         </tr>
       </table>
 </div>
@@ -1390,12 +1579,27 @@
 
 </div>
 </div><p>
-<a class="anchor" name="306a45d872c28249071c866ef0fdc2a0"></a><!-- doxytag: member="ViewerController.m::USETOOLBARPANEL" ref="306a45d872c28249071c866ef0fdc2a0" args="" -->
+<a class="anchor" name="07866f6c3b7d35698f5dc97134071d69"></a><!-- doxytag: member="ViewerController.m::totalNumberOfLoadingThreads" ref="07866f6c3b7d35698f5dc97134071d69" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a>          </td>
+          <td class="memname">volatile int <a class="el" href="_viewer_controller_8m.html#07866f6c3b7d35698f5dc97134071d69">totalNumberOfLoadingThreads</a> = 0<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="196eaf8471fa69c4cbcc684fe3a6c4df"></a><!-- doxytag: member="ViewerController.m::ViewBoundsDidChangeProtect" ref="196eaf8471fa69c4cbcc684fe3a6c4df" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#196eaf8471fa69c4cbcc684fe3a6c4df">ViewBoundsDidChangeProtect</a> = NO<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1440,7 +1644,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#3a295af860e90f93b2ca8588b9cee95e">wlwwPresetsMenu</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_menu.html">NSMenu</a>* <a class="el" href="_viewer_controller_8m.html#3a295af860e90f93b2ca8588b9cee95e">wlwwPresetsMenu</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1480,7 +1684,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

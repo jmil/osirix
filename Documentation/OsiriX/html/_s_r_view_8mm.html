@@ -18,12 +18,15 @@
 <code>#import &quot;<a class="el" href="_d_c_m_view_8h.html">DCMView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_cursor_8h.html">DCMCursor.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_i_c_o_m_export_8h.html">DICOMExport.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_wait_8h.html">wait.h</a>&quot;</code><br>
 <code>#include &lt;OpenGL/OpenGL.h&gt;</code><br>
 <code>#include &lt;OpenGL/CGLCurrent.h&gt;</code><br>
 <code>#include &quot;math.h&quot;</code><br>
 <code>#include &quot;vtkImageFlip.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_quicktime_export_8h.html">QuicktimeExport.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_app_controller_8h.html">AppController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="browser_controller_8h.html">browserController.h</a>&quot;</code><br>
 <code>#include &quot;vtkRIBExporter.h&quot;</code><br>
 <code>#include &quot;vtkIVExporter.h&quot;</code><br>
 <code>#include &quot;vtkOBJExporter.h&quot;</code><br>
@@ -50,7 +53,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#39c663074332446065723e9be9350139">R2D</a>&nbsp;&nbsp;&nbsp;57.2957795130823208767981548141</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#2e2105e1b30d484615e934d2c9d197ae">DATABASEPATH</a>&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;</td></tr>
 
 <tr><td colspan="2"><br><h2>Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">typedef struct <a class="el" href="struct__xyz_array.html">_xyzArray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#9a2613d1f9705e0c2ae8a67aae9471e0">xyzArray</a></td></tr>
@@ -58,10 +61,8 @@
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">OSErr&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#cb79a941a705a01073bd008331a4c263">InstallConnexionHandlers</a> (ConnexionMessageHandlerProc messageHandler, ConnexionAddedHandlerProc addedHandler, ConnexionRemovedHandlerProc removedHandler) __attribute__((weak_import))</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#e709d180ace5a9ba55f405f692887d11">startRendering</a> (vtkObject *, unsigned long c, void *ptr, void *)</td></tr>
-
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_s_r_view.html">SRView</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#47de56d7a2ed8387dd2080470105a7f0">snSRView</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="interface_s_r_view.html">SRView</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_r_view_8mm.html#47de56d7a2ed8387dd2080470105a7f0">snSRView</a> = nil</td></tr>
 
 </table>
 <hr><h2>Define Documentation</h2>
@@ -85,7 +86,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE/&quot;          </td>
+          <td class="memname">#define DATABASEPATH&nbsp;&nbsp;&nbsp;@&quot;/DATABASE.noindex/&quot;          </td>
         </tr>
       </table>
 </div>
@@ -177,54 +178,13 @@
 
 </div>
 </div><p>
-<a class="anchor" name="e709d180ace5a9ba55f405f692887d11"></a><!-- doxytag: member="SRView.mm::startRendering" ref="e709d180ace5a9ba55f405f692887d11" args="(vtkObject *, unsigned long c, void *ptr, void *)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void startRendering           </td>
-          <td>(</td>
-          <td class="paramtype">vtkObject *&nbsp;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned long&nbsp;</td>
-          <td class="paramname"> <em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&nbsp;</td>
-          <td class="paramname"> <em>ptr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&nbsp;</td>
-          <td class="paramname"></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td width="100%"><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <hr><h2>Variable Documentation</h2>
 <a class="anchor" name="47de56d7a2ed8387dd2080470105a7f0"></a><!-- doxytag: member="SRView.mm::snSRView" ref="47de56d7a2ed8387dd2080470105a7f0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_s_r_view.html">SRView</a>* <a class="el" href="_s_r_view_8mm.html#47de56d7a2ed8387dd2080470105a7f0">snSRView</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="interface_s_r_view.html">SRView</a>* <a class="el" href="_s_r_view_8mm.html#47de56d7a2ed8387dd2080470105a7f0">snSRView</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -234,7 +194,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

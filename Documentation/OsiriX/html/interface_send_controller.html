@@ -45,10 +45,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#b48ef2882412a8dabeff98a8b0766056">setKeyImageIndex:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(int)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#45abcca67bf87da407bdafe2649cbbc4">offisTS</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#9515c37b2c9247b25e7b15c90a6adff7">setOffisTS:</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#54d548770d93f16bc10230cb487f2844">releaseSelfWhenDone:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#8142df3543c8c5eceab75a63603ee252">listenForAbort:</a></td></tr>
@@ -59,17 +55,19 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#f6d80f9a74575f3dabe6c91be0e1240f">selectServer:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#7a0d2ac9ae12cc7ec74ce6ebd7dbe985">sendToNode:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_send_controller.html#9c41cae99be992facc059b4d40674b15">updateDestinationPopup:</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_send_controller.html#391339b066ebb4c7723ca5ff7fc3fed7">sendFiles:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_send_controller.html#6e3159e743e9fd0e613d2efa5246d89d">sendFiles:toNode:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(int)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_send_controller.html#a3ed91bf1f5ea3da00a63a8256a88cf0">sendControllerObjects</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">id&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#da2d9eec5541f2e66cb985e0dcf459c1">_server</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_array.html">NSArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#e3edcd30cee5a668f097579f79949ac0">_files</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#33648bfc6ca84574330b19f92cfa0a4b">_transferSyntaxString</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#32f8b4f6318c5329563653ecfc1c2467">_numberFiles</a></td></tr>
 
@@ -85,11 +83,15 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#61616ede7737f91b1751c303d5658419">_abort</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#ab1381a921e59d52fe77f84bb07922a3">_lock</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#1e2a4cfcf08e3436182d6aa6cf81bf72">sendROIs</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#cde4da77b29044d7a074235262f7257d">_lock</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_d_c_m_t_k_store_s_c_u.html">DCMTKStoreSCU</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#e03ad7e5d88596c670616c601945a9b4">storeSCU</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSComboBox *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#c09f96c0df31736dc0b6902df8e29076">serverList</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#ff1eea4d874e2c8c681f3f52187e71d9">_destinationServer</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSPopUpButton *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#bae7aa894a790c6fcbad1ea594a3de78">newServerList</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSMatrix *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_send_controller.html#62396381d5b696eb9d84e8d775e120a5">keyImageMatrix</a></td></tr>
 
@@ -113,6 +115,35 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
           <td class="paramname"> <em>files</em>          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6e3159e743e9fd0e613d2efa5246d89d"></a><!-- doxytag: member="SendController::sendFiles:toNode:" ref="6e3159e743e9fd0e613d2efa5246d89d" args="(NSArray *files,[toNode] NSDictionary *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (void) sendFiles:           </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td>
+          <td class="paramname"> <em>files</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">toNode:</td>
+          <td></td>
+          <td class="paramtype">(NSDictionary*)&nbsp;</td>
+          <td class="paramname"> <em>node</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -298,45 +329,6 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="45abcca67bf87da407bdafe2649cbbc4"></a><!-- doxytag: member="SendController::offisTS" ref="45abcca67bf87da407bdafe2649cbbc4" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (int) offisTS           </td>
-          <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="9515c37b2c9247b25e7b15c90a6adff7"></a><!-- doxytag: member="SendController::setOffisTS:" ref="9515c37b2c9247b25e7b15c90a6adff7" args="(int index)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (void) setOffisTS:           </td>
-          <td></td>
-          <td class="paramtype">(int)&nbsp;</td>
-          <td class="paramname"> <em>index</em>          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="54d548770d93f16bc10230cb487f2844"></a><!-- doxytag: member="SendController::releaseSelfWhenDone:" ref="54d548770d93f16bc10230cb487f2844" args="(id sender)" -->
 <div class="memitem">
 <div class="memproto">
@@ -436,13 +428,17 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<hr><h2>Member Data Documentation</h2>
-<a class="anchor" name="da2d9eec5541f2e66cb985e0dcf459c1"></a><!-- doxytag: member="SendController::_server" ref="da2d9eec5541f2e66cb985e0dcf459c1" args="" -->
+<a class="anchor" name="7a0d2ac9ae12cc7ec74ce6ebd7dbe985"></a><!-- doxytag: member="SendController::sendToNode:" ref="7a0d2ac9ae12cc7ec74ce6ebd7dbe985" args="(NSDictionary *node)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (id) <a class="el" href="interface_send_controller.html#da2d9eec5541f2e66cb985e0dcf459c1">_server</a><code> [protected]</code>          </td>
+          <td class="memname">- (void) sendToNode:           </td>
+          <td></td>
+          <td class="paramtype">(NSDictionary*)&nbsp;</td>
+          <td class="paramname"> <em>node</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -452,27 +448,33 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="9c41cae99be992facc059b4d40674b15"></a><!-- doxytag: member="SendController::updateDestinationPopup:" ref="9c41cae99be992facc059b4d40674b15" args="(NSNotification *note)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) updateDestinationPopup:           </td>
+          <td></td>
+          <td class="paramtype">(NSNotification*)&nbsp;</td>
+          <td class="paramname"> <em>note</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Member Data Documentation</h2>
 <a class="anchor" name="e3edcd30cee5a668f097579f79949ac0"></a><!-- doxytag: member="SendController::_files" ref="e3edcd30cee5a668f097579f79949ac0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">- (<a class="el" href="class_n_s_array.html">NSArray</a>*) <a class="el" href="interface_send_controller.html#e3edcd30cee5a668f097579f79949ac0">_files</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="33648bfc6ca84574330b19f92cfa0a4b"></a><!-- doxytag: member="SendController::_transferSyntaxString" ref="33648bfc6ca84574330b19f92cfa0a4b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a>*) <a class="el" href="interface_send_controller.html#33648bfc6ca84574330b19f92cfa0a4b">_transferSyntaxString</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -587,12 +589,27 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="ab1381a921e59d52fe77f84bb07922a3"></a><!-- doxytag: member="SendController::_lock" ref="ab1381a921e59d52fe77f84bb07922a3" args="" -->
+<a class="anchor" name="1e2a4cfcf08e3436182d6aa6cf81bf72"></a><!-- doxytag: member="SendController::sendROIs" ref="1e2a4cfcf08e3436182d6aa6cf81bf72" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSLock*) <a class="el" href="interface_send_controller.html#ab1381a921e59d52fe77f84bb07922a3">_lock</a><code> [protected]</code>          </td>
+          <td class="memname">- (BOOL) <a class="el" href="interface_send_controller.html#1e2a4cfcf08e3436182d6aa6cf81bf72">sendROIs</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="cde4da77b29044d7a074235262f7257d"></a><!-- doxytag: member="SendController::_lock" ref="cde4da77b29044d7a074235262f7257d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSRecursiveLock*) <a class="el" href="interface_send_controller.html#cde4da77b29044d7a074235262f7257d">_lock</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -617,12 +634,27 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="c09f96c0df31736dc0b6902df8e29076"></a><!-- doxytag: member="SendController::serverList" ref="c09f96c0df31736dc0b6902df8e29076" args="" -->
+<a class="anchor" name="ff1eea4d874e2c8c681f3f52187e71d9"></a><!-- doxytag: member="SendController::_destinationServer" ref="ff1eea4d874e2c8c681f3f52187e71d9" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (IBOutlet NSComboBox*) <a class="el" href="interface_send_controller.html#c09f96c0df31736dc0b6902df8e29076">serverList</a><code> [protected]</code>          </td>
+          <td class="memname">- (NSDictionary*) <a class="el" href="interface_send_controller.html#ff1eea4d874e2c8c681f3f52187e71d9">_destinationServer</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="bae7aa894a790c6fcbad1ea594a3de78"></a><!-- doxytag: member="SendController::newServerList" ref="bae7aa894a790c6fcbad1ea594a3de78" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSPopUpButton*) <a class="el" href="interface_send_controller.html#bae7aa894a790c6fcbad1ea594a3de78">newServerList</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -694,7 +726,7 @@ Window Controller for DICOM Send. <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_send_controller_8h.html">SendController.h</a><li><a class="el" href="_send_controller_8m.html">SendController.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:48 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

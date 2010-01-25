@@ -21,12 +21,13 @@
 <code>#import &quot;<a class="el" href="_d_c_m_view_8h.html">DCMView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_pix_8h.html">DCMPix.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_t_k_segmentation3_d_8h.html">ITKSegmentation3D.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#bb7aa0b593c2f1217a6a02b888a779b0">CIRCLERESOLUTION</a>&nbsp;&nbsp;&nbsp;200</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#af1f6f2b57a51a9a0b7c5398b0acd119">ROIVERSION</a>&nbsp;&nbsp;&nbsp;8</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#af1f6f2b57a51a9a0b7c5398b0acd119">ROIVERSION</a>&nbsp;&nbsp;&nbsp;11</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#0bd7a99a2bd78ccbc0923ea5c46d38cf">NEIGHBORHOODRADIUS</a>&nbsp;&nbsp;&nbsp;10.0</td></tr>
 
@@ -36,7 +37,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#3c6c5726eec5dc99f3179ef050f30f0f">CUTOFF</a>&nbsp;&nbsp;&nbsp;8</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#7c1b025454484e2ea54fc4d613a74bd3">ARROWSIZE</a>&nbsp;&nbsp;&nbsp;30.0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#239199f0731562e6fa8c3e17b844f76f">ARROWSIZEConstant</a>&nbsp;&nbsp;&nbsp;25.0</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#db1d153fa0f70d5b903b2eac75f15510">BresLine</a> (int Ax, int Ay, int Bx, int By, long **xBuffer, long **yBuffer)</td></tr>
@@ -45,6 +46,8 @@
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#6fddc70e5c5cb4d77e0b6280159ec720">deg2rad</a> = M_PI / 180.0f</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#8fc5219f9ead102b3596111331374b2f">fontHeight</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#1a0a748587f39f3ef839300ae463d876">defaultName</a></td></tr>
 
@@ -78,6 +81,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#57f33bc03f1901ae5541fa3de3b749c6">ROIRegionColorB</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#0450d5b2c00e3b6913350ed45834c961">ROIArrowThickness</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#eef5e266c34081540dd581945aaa2e16">ROITEXTIFSELECTED</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#e572674cdb699411c44723b7affd2b33">ROITEXTNAMEONLY</a></td></tr>
@@ -86,11 +91,33 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#228e66c472337b8788f1d0b859bcad13">splineForROI</a> = NO</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#c6afcd5f7e08aa5bfbbaae37e530ad48">displayCobbAngle</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#5a9ad0490a95d528c1ee60c93de65448">min</a> = rmin</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#edae9fcc30c83bba7e07a3f0ccda595a">max</a> = rmax</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#a690d9dfb193913fadf309fdbd69410f">mean</a> = rmean</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#dd2078027c4d7b0a28a656d0a2eaf9e2">textureWidth</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#c6106f6fdb21352c8682107f9ed46e57">textureHeight</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#3934eaa92d85c72cdd09430a5af42186">textureBuffer</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#189a17fac1c0956620ee66596fe76f62">locked</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#b8eea9861c68cc2ef89aaf1c4c5a8712">selectable</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#b90c43dbc0bfd0b1dd170fa10582e513">isAliased</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#9fae1ed5e1b0428cc90a71b3300390fb">originalIndexForAlias</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#154e706cffb05c324347a1d0eb6a421a">imageOrigin</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#7a18ac609bb723366255bc4b0bee012b">pixelSpacingX</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#9113dd033e5c44d7589c0f3c17fdacce">pixelSpacingY</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#c20f204d2e6b13c164efed367947fafe">textureDownRightCornerX</a></td></tr>
 
@@ -152,6 +179,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#c302c5366646fa51cdcdeb5df2502704">textualBoxLine5</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#fc316aa6daa374125b0bec02a6046059">textualBoxLine6</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#3dfbd9c3ed7f47ff39919ab9be8f0c22">groupID</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#4f63fab10b7030626d74c39b704cc9af">isLayerOpacityConstant</a></td></tr>
@@ -162,16 +191,14 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#2a1cf8bbddb68f2be5c517405e68b7bb">clickPoint</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_r_o_i_8m.html#17ca4ae3460d8217fdcf12b3d9502fbe">roundboxtype</a> = 15</td></tr>
-
 </table>
 <hr><h2>Define Documentation</h2>
-<a class="anchor" name="7c1b025454484e2ea54fc4d613a74bd3"></a><!-- doxytag: member="ROI.m::ARROWSIZE" ref="7c1b025454484e2ea54fc4d613a74bd3" args="" -->
+<a class="anchor" name="239199f0731562e6fa8c3e17b844f76f"></a><!-- doxytag: member="ROI.m::ARROWSIZEConstant" ref="239199f0731562e6fa8c3e17b844f76f" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ARROWSIZE&nbsp;&nbsp;&nbsp;30.0          </td>
+          <td class="memname">#define ARROWSIZEConstant&nbsp;&nbsp;&nbsp;25.0          </td>
         </tr>
       </table>
 </div>
@@ -216,7 +243,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define max          </td>
+          <td class="memname">#define <a class="el" href="_r_o_i_8m.html#edae9fcc30c83bba7e07a3f0ccda595a">max</a>          </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>,         <tr>
           <td class="paramkey"></td>
@@ -277,7 +304,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ROIVERSION&nbsp;&nbsp;&nbsp;8          </td>
+          <td class="memname">#define ROIVERSION&nbsp;&nbsp;&nbsp;11          </td>
         </tr>
       </table>
 </div>
@@ -518,12 +545,42 @@
 
 </div>
 </div><p>
+<a class="anchor" name="c6afcd5f7e08aa5bfbbaae37e530ad48"></a><!-- doxytag: member="ROI.m::displayCobbAngle" ref="c6afcd5f7e08aa5bfbbaae37e530ad48" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_r_o_i_8m.html#c6afcd5f7e08aa5bfbbaae37e530ad48">displayCobbAngle</a> = NO<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="3dce4f80970be1e2f8ac52a253625f0d"></a><!-- doxytag: member="ROI.m::displayTextualData" ref="3dce4f80970be1e2f8ac52a253625f0d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#3dce4f80970be1e2f8ac52a253625f0d">displayTextualData</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8fc5219f9ead102b3596111331374b2f"></a><!-- doxytag: member="ROI.m::fontHeight" ref="8fc5219f9ead102b3596111331374b2f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="_r_o_i_8m.html#8fc5219f9ead102b3596111331374b2f">fontHeight</a> = 0<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -554,6 +611,36 @@
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="_r_o_i_8m.html#58713e3b624d30ff99b4febd57fd6e5d">gUID</a> = 0<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="154e706cffb05c324347a1d0eb6a421a"></a><!-- doxytag: member="ROI.m::imageOrigin" ref="154e706cffb05c324347a1d0eb6a421a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#154e706cffb05c324347a1d0eb6a421a">imageOrigin</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b90c43dbc0bfd0b1dd170fa10582e513"></a><!-- doxytag: member="ROI.m::isAliased" ref="b90c43dbc0bfd0b1dd170fa10582e513" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#b90c43dbc0bfd0b1dd170fa10582e513">isAliased</a>          </td>
         </tr>
       </table>
 </div>
@@ -638,6 +725,66 @@
 
 </div>
 </div><p>
+<a class="anchor" name="189a17fac1c0956620ee66596fe76f62"></a><!-- doxytag: member="ROI.m::locked" ref="189a17fac1c0956620ee66596fe76f62" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#189a17fac1c0956620ee66596fe76f62">locked</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="edae9fcc30c83bba7e07a3f0ccda595a"></a><!-- doxytag: member="ROI.m::max" ref="edae9fcc30c83bba7e07a3f0ccda595a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#edae9fcc30c83bba7e07a3f0ccda595a">max</a> = rmax          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a690d9dfb193913fadf309fdbd69410f"></a><!-- doxytag: member="ROI.m::mean" ref="a690d9dfb193913fadf309fdbd69410f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#a690d9dfb193913fadf309fdbd69410f">mean</a> = rmean          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="5a9ad0490a95d528c1ee60c93de65448"></a><!-- doxytag: member="ROI.m::min" ref="5a9ad0490a95d528c1ee60c93de65448" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize min = rmin          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="6b348c961d10f6e662a131e1efba6572"></a><!-- doxytag: member="ROI.m::mousePosMeasure" ref="6b348c961d10f6e662a131e1efba6572" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -683,6 +830,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="9fae1ed5e1b0428cc90a71b3300390fb"></a><!-- doxytag: member="ROI.m::originalIndexForAlias" ref="9fae1ed5e1b0428cc90a71b3300390fb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#9fae1ed5e1b0428cc90a71b3300390fb">originalIndexForAlias</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="42168d55e924176643b7975b0e67c4dc"></a><!-- doxytag: member="ROI.m::parentROI" ref="42168d55e924176643b7975b0e67c4dc" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -713,6 +875,36 @@
 
 </div>
 </div><p>
+<a class="anchor" name="7a18ac609bb723366255bc4b0bee012b"></a><!-- doxytag: member="ROI.m::pixelSpacingX" ref="7a18ac609bb723366255bc4b0bee012b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#7a18ac609bb723366255bc4b0bee012b">pixelSpacingX</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9113dd033e5c44d7589c0f3c17fdacce"></a><!-- doxytag: member="ROI.m::pixelSpacingY" ref="9113dd033e5c44d7589c0f3c17fdacce" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#9113dd033e5c44d7589c0f3c17fdacce">pixelSpacingY</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="ae062b54145f03b158da1583afdef798"></a><!-- doxytag: member="ROI.m::rect" ref="ae062b54145f03b158da1583afdef798" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -734,6 +926,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#16c89e668c0efa6de552ac27e48a5498">rgbcolor</a> = color          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0450d5b2c00e3b6913350ed45834c961"></a><!-- doxytag: member="ROI.m::ROIArrowThickness" ref="0450d5b2c00e3b6913350ed45834c961" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="_r_o_i_8m.html#0450d5b2c00e3b6913350ed45834c961">ROIArrowThickness</a><code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1013,12 +1220,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="17ca4ae3460d8217fdcf12b3d9502fbe"></a><!-- doxytag: member="ROI.m::roundboxtype" ref="17ca4ae3460d8217fdcf12b3d9502fbe" args="" -->
+<a class="anchor" name="b8eea9861c68cc2ef89aaf1c4c5a8712"></a><!-- doxytag: member="ROI.m::selectable" ref="b8eea9861c68cc2ef89aaf1c4c5a8712" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="_r_o_i_8m.html#17ca4ae3460d8217fdcf12b3d9502fbe">roundboxtype</a> = 15<code> [static]</code>          </td>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#b8eea9861c68cc2ef89aaf1c4c5a8712">selectable</a>          </td>
         </tr>
       </table>
 </div>
@@ -1124,6 +1331,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#c302c5366646fa51cdcdeb5df2502704">textualBoxLine5</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="fc316aa6daa374125b0bec02a6046059"></a><!-- doxytag: member="ROI.m::textualBoxLine6" ref="fc316aa6daa374125b0bec02a6046059" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_r_o_i_8m.html#fc316aa6daa374125b0bec02a6046059">textualBoxLine6</a>          </td>
         </tr>
       </table>
 </div>
@@ -1283,7 +1505,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

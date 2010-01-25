@@ -45,7 +45,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(id)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#5133aedd52d9218cb6a31afc4bfdb409">initWithXMLDescriptor:path:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#75933ec9ee3a321f1a12efa13fce03e8">patientUID</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#247c30b28cc35233802fd8f50f525711">patientUID</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSMutableDictionary *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#d3c283b95b00c2f870d6e33ce2afd19f">dicomElements</a></td></tr>
 
@@ -83,6 +83,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(int)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#0dec3671aadf5e8958eda1c7c9a35df0">commentsElement</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_dicom_file.html#1648e5e8d2c9dbbf034294ef54e8f4dc">containsString:inArray:</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#afec345dfe7a9dc66a6fc43009e384ee">isTiffFile:</a></td></tr>
 
@@ -94,6 +96,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#80691f092190ec75dd335d31234d9ef9">isDICOMFile:compressed:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#3931f947454e17fb892bf8f228d80fbe">isDICOMFile:compressed:image:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#16e28200bc5b6b4e979322ecead31740">isXMLDescriptedFile:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#1aabb6e22c08884d365e6c004b52c587">isXMLDescriptorFile:</a></td></tr>
@@ -104,7 +108,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#b7246e6ee6c3087e471b61c257bf8f05">resetDefaults</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#ab921b6c256735e63b455d8c38afec6a">NSreplaceBadCharacter:</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#75576edec524a981e7116c700ce1de77">NSreplaceBadCharacter:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(char *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_dicom_file.html#415ba6bfbe2b4d0964720af03be1c7d2">replaceBadCharacter:encoding:</a></td></tr>
 
@@ -151,7 +155,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_dicom_file.html#79182c4b9634aca1e35c1d70007abd4c">NoOfSeries</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSMutableDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_dicom_file.html#63926c5b53785c4c1582af1f5081fd82">dicomElements</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSMutableDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_dicom_file.html#025cea0b46609020f3496602fe2723d6">dicomElements</a></td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -249,7 +253,7 @@ Test for DICOM file format
         <tr>
           <td class="paramkey">compressed:</td>
           <td></td>
-          <td class="paramtype">(BOOL*)&nbsp;</td>
+          <td class="paramtype">(BOOL *)&nbsp;</td>
           <td class="paramname"> <em>compressed</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -263,6 +267,41 @@ Test for DICOM file format
 
 <p>
 Test for DICOM file format, returns YES for compressed BOOL if Transfer syntax is compressed. 
+</div>
+</div><p>
+<a class="anchor" name="3931f947454e17fb892bf8f228d80fbe"></a><!-- doxytag: member="DicomFile::isDICOMFile:compressed:image:" ref="3931f947454e17fb892bf8f228d80fbe" args="(NSString *file,[compressed] BOOL *compressed,[image] BOOL *image)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (BOOL) isDICOMFile:           </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
+          <td class="paramname"> <em>file</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">compressed:</td>
+          <td></td>
+          <td class="paramtype">(BOOL *)&nbsp;</td>
+          <td class="paramname"> <em>compressed</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">image:</td>
+          <td></td>
+          <td class="paramtype">(BOOL *)&nbsp;</td>
+          <td class="paramname"> <em>image</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
 </div>
 </div><p>
 <a class="anchor" name="16e28200bc5b6b4e979322ecead31740"></a><!-- doxytag: member="DicomFile::isXMLDescriptedFile:" ref="16e28200bc5b6b4e979322ecead31740" args="(NSString *file)" -->
@@ -363,14 +402,14 @@ Set DEFAULTSSET flag to NO
 Resets to user defaults 
 </div>
 </div><p>
-<a class="anchor" name="ab921b6c256735e63b455d8c38afec6a"></a><!-- doxytag: member="DicomFile::NSreplaceBadCharacter:" ref="ab921b6c256735e63b455d8c38afec6a" args="(NSString *str)" -->
+<a class="anchor" name="75576edec524a981e7116c700ce1de77"></a><!-- doxytag: member="DicomFile::NSreplaceBadCharacter:" ref="75576edec524a981e7116c700ce1de77" args="(NSString *str)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">+ (<a class="el" href="class_n_s_string.html">NSString</a> *) NSreplaceBadCharacter:           </td>
+          <td class="memname">+ (<a class="el" href="class_n_s_string.html">NSString</a>*) NSreplaceBadCharacter:           </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
           <td class="paramname"> <em>str</em>          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
@@ -425,7 +464,7 @@ Same as NSreplaceBadCharacter, but using char* and encodings
         <tr>
           <td class="paramkey">encodings:</td>
           <td></td>
-          <td class="paramtype">(NSStringEncoding*)&nbsp;</td>
+          <td class="paramtype">(NSStringEncoding *)&nbsp;</td>
           <td class="paramname"> <em>encoding</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -544,7 +583,7 @@ Returns number of seris in the file
         <tr>
           <td class="memname">- (id) init:           </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
           <td class="paramname"> <em>f</em>          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
@@ -564,7 +603,7 @@ Init with file at location NSString* f
         <tr>
           <td class="memname">- (id) init:           </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
           <td class="paramname"> <em>f</em></td>
         </tr>
         <tr>
@@ -612,13 +651,13 @@ Inits and returns an empty dicomFile
         <tr>
           <td class="memname">- (id) initWithXMLDescriptor:           </td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
           <td class="paramname"> <em>pathToXMLDescriptor</em></td>
         </tr>
         <tr>
           <td class="paramkey">path:</td>
           <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
           <td class="paramname"> <em>f</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -634,12 +673,12 @@ Inits and returns an empty dicomFile
 Init with XMLDescriptor for information and f for image data 
 </div>
 </div><p>
-<a class="anchor" name="75933ec9ee3a321f1a12efa13fce03e8"></a><!-- doxytag: member="DicomFile::patientUID" ref="75933ec9ee3a321f1a12efa13fce03e8" args="()" -->
+<a class="anchor" name="247c30b28cc35233802fd8f50f525711"></a><!-- doxytag: member="DicomFile::patientUID" ref="247c30b28cc35233802fd8f50f525711" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a> *) patientUID           </td>
+          <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a>*) patientUID           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -658,7 +697,7 @@ Returns the patientUID
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSMutableDictionary *) <a class="el" href="interface_dicom_file.html#63926c5b53785c4c1582af1f5081fd82">dicomElements</a>           </td>
+          <td class="memname">- (NSMutableDictionary *) <a class="el" href="interface_dicom_file.html#025cea0b46609020f3496602fe2723d6">dicomElements</a>           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -997,6 +1036,35 @@ Returns the commentsGroup default. The DICOM group to get comments from.
 Returns the commentsGroup default. The DICOM element to get get comments from. 
 </div>
 </div><p>
+<a class="anchor" name="1648e5e8d2c9dbbf034294ef54e8f4dc"></a><!-- doxytag: member="DicomFile::containsString:inArray:" ref="1648e5e8d2c9dbbf034294ef54e8f4dc" args="(NSString *s,[inArray] NSArray *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) containsString:           </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td>
+          <td class="paramname"> <em>s</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">inArray:</td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td>
+          <td class="paramname"> <em>a</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr><h2>Member Data Documentation</h2>
 <a class="anchor" name="f5496a31687fd2f5e42278afce7ba6bd"></a><!-- doxytag: member="DicomFile::name" ref="f5496a31687fd2f5e42278afce7ba6bd" args="" -->
 <div class="memitem">
@@ -1283,12 +1351,12 @@ Returns the commentsGroup default. The DICOM element to get get comments from.
 
 </div>
 </div><p>
-<a class="anchor" name="63926c5b53785c4c1582af1f5081fd82"></a><!-- doxytag: member="DicomFile::dicomElements" ref="63926c5b53785c4c1582af1f5081fd82" args="" -->
+<a class="anchor" name="025cea0b46609020f3496602fe2723d6"></a><!-- doxytag: member="DicomFile::dicomElements" ref="025cea0b46609020f3496602fe2723d6" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSMutableDictionary *) <a class="el" href="interface_dicom_file.html#63926c5b53785c4c1582af1f5081fd82">dicomElements</a><code> [protected]</code>          </td>
+          <td class="memname">- (NSMutableDictionary*) <a class="el" href="interface_dicom_file.html#025cea0b46609020f3496602fe2723d6">dicomElements</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1298,9 +1366,9 @@ Returns the commentsGroup default. The DICOM element to get get comments from.
 
 </div>
 </div><p>
-<hr>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="dicom_file_8h.html">dicomFile.h</a><li><a class="el" href="dicom_file_8m.html">dicomFile.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr>The documentation for this class was generated from the following file:<ul>
+<li><a class="el" href="dicom_file_8h.html">dicomFile.h</a></ul>
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

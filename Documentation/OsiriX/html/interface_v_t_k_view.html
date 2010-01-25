@@ -30,13 +30,11 @@ Inheritance diagram for VTKView:</div>
 
 <p><center><img src="interface_v_t_k_view.png" usemap="#VTKView_map" border="0" alt=""></center>
 <map name="VTKView_map">
-<area href="interface_m_p_r_view.html" alt="MPRView" shape="rect" coords="0,56,120,80">
-<area href="interface_r_o_i_volume_view.html" alt="ROIVolumeView" shape="rect" coords="130,56,250,80">
-<area href="interface_s_r_view.html" alt="SRView" shape="rect" coords="260,56,380,80">
-<area href="interface_v_r_p_r_o_view.html" alt="VRPROView" shape="rect" coords="390,56,510,80">
-<area href="interface_v_r_view.html" alt="VRView" shape="rect" coords="520,56,640,80">
-<area href="interface_endoscopy_v_r_view.html" alt="EndoscopyVRView" shape="rect" coords="455,112,575,136">
-<area href="interface_v_r_preset_preview.html" alt="VRPresetPreview" shape="rect" coords="585,112,705,136">
+<area href="interface_r_o_i_volume_view.html" alt="ROIVolumeView" shape="rect" coords="0,56,120,80">
+<area href="interface_v_r_p_r_o_view.html" alt="VRPROView" shape="rect" coords="130,56,250,80">
+<area href="interface_v_r_view.html" alt="VRView" shape="rect" coords="260,56,380,80">
+<area href="interface_endoscopy_v_r_view.html" alt="EndoscopyVRView" shape="rect" coords="195,112,315,136">
+<area href="interface_v_r_preset_preview.html" alt="VRPresetPreview" shape="rect" coords="325,112,445,136">
 </map>
 </div>
 
@@ -55,6 +53,8 @@ Inheritance diagram for VTKView:</div>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="_v_t_k_view_8h.html#b4c2a25cc6683eb0ebf6dd3cef450ac4">vtkCocoaRenderWindow</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_t_k_view.html#91a46bd64750bb171fe3ac7a733e7a52">cocoaWindow</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_t_k_view.html#d586a9ebb7c7ad801ec4bf942f3141f8">removeAllActors</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_v_t_k_view.html#6e92e3ecca956d7a5a954afc55c6cd32">prepareForRelease</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_v_t_k_view_8h.html#b4c2a25cc6683eb0ebf6dd3cef450ac4">vtkCocoaRenderWindow</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_v_t_k_view.html#a6f7c832572e6b08a8e764267537a990">_cocoaRenderWindow</a></td></tr>
@@ -84,7 +84,7 @@ View for using VTK. <hr><h2>Member Function Documentation</h2>
 
 <p>
 
-<p>Reimplemented in <a class="el" href="interface_m_p_r_view.html#3cc2b2af33ae8221b44a21c6e135cd87">MPRView</a>, <a class="el" href="interface_s_r_view.html#712b0a9acc8a0109b58af9c56f38d22b">SRView</a>, <a class="el" href="interface_v_r_view.html#4f92a88b60608324d8c46bb634a853a0">VRView</a>, and <a class="el" href="interface_v_r_p_r_o_view.html#64aab4be4452864c124f0cf747071b41">VRPROView</a>.</p>
+<p>Reimplemented in <a class="el" href="interface_v_r_view.html#4f92a88b60608324d8c46bb634a853a0">VRView</a>, <a class="el" href="interface_v_r_view.html#4f92a88b60608324d8c46bb634a853a0">VRView</a>, and <a class="el" href="interface_v_r_p_r_o_view.html#64aab4be4452864c124f0cf747071b41">VRPROView</a>.</p>
 
 </div>
 </div><p>
@@ -105,7 +105,7 @@ View for using VTK. <hr><h2>Member Function Documentation</h2>
 
 <p>
 
-<p>Reimplemented in <a class="el" href="interface_m_p_r_view.html#02c668fb14c48257e0901df123ccddaf">MPRView</a>, <a class="el" href="interface_s_r_view.html#8d7129580aa830bd0220050f10cfb175">SRView</a>, <a class="el" href="interface_v_r_view.html#7d83955e2948d864317d84e8970c9d3a">VRView</a>, and <a class="el" href="interface_v_r_p_r_o_view.html#c28e92943b4ed1c3e4f0f3af8ca70753">VRPROView</a>.</p>
+<p>Reimplemented in <a class="el" href="interface_v_r_view.html#7d83955e2948d864317d84e8970c9d3a">VRView</a>, <a class="el" href="interface_v_r_view.html#7d83955e2948d864317d84e8970c9d3a">VRView</a>, and <a class="el" href="interface_v_r_p_r_o_view.html#c28e92943b4ed1c3e4f0f3af8ca70753">VRPROView</a>.</p>
 
 </div>
 </div><p>
@@ -185,6 +185,25 @@ View for using VTK. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="6e92e3ecca956d7a5a954afc55c6cd32"></a><!-- doxytag: member="VTKView::prepareForRelease" ref="6e92e3ecca956d7a5a954afc55c6cd32" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) prepareForRelease           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr><h2>Member Data Documentation</h2>
 <a class="anchor" name="a6f7c832572e6b08a8e764267537a990"></a><!-- doxytag: member="VTKView::_cocoaRenderWindow" ref="a6f7c832572e6b08a8e764267537a990" args="" -->
 <div class="memitem">
@@ -233,7 +252,7 @@ View for using VTK. <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_v_t_k_view_8h.html">VTKView.h</a><li><a class="el" href="_v_t_k_view_8mm.html">VTKView.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:48 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

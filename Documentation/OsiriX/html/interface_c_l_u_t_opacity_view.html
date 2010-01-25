@@ -124,6 +124,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#7c6af8255131b1db2ad2a040c8953d5e">drawAddCurveButton:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#88df9b6f861934b490b924caf3f4b2ac">drawCloseButton:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#5c360b18548ea1ad1b80c767bd8d3458">drawRemoveSelectedCurveButton:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#71507bf654f4eb0a1f30f9a94db4811e">drawSaveButton:</a></td></tr>
@@ -135,6 +137,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#2150688b4740d63f087f661e7ab2de2a">clickInRemoveSelectedCurveButtonAtPosition:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#4b16a83e67f67a17e6487470664dbeec">clickInSaveButtonAtPosition:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#bd55f62a040cbf85fdaf1b2883ac1e0a">clickInCloseButtonAtPosition:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_c_l_u_t_opacity_view.html#77c87c0342ad650037cacbc7f4b0ef1e">simplifyHistogram</a></td></tr>
 
@@ -220,8 +224,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#62f0e4a2fa6164d48d992357e4a4ac90">pointBorder</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSColorPanel *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#89970e4436ea1a33ba83038b811624c4">colorPanel</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#85f4c9fefe80770a671300381a90ea47">curves</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#243cc632e2c5186607485e2ce5c09a3e">pointColors</a></td></tr>
@@ -260,11 +262,15 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSRect&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#4730a564174a27e8c870d5b9a70a4a2f">saveButtonRect</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRect&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#de19d871d96320fdfe13b45dc8680271">closeButtonRect</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#5bc7b5b392855d2769b7972f97b5b31f">isAddCurveButtonHighlighted</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#ebe88f13b08a3b291bd9f66bbb4294fa">isRemoveSelectedCurveButtonHighlighted</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#5de8cb5427e4c19d1b6fc2d47ccdb140">isSaveButtonHighlighted</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#6183c780c4b04dc928d61f63afe37572">isCloseButtonHighlighted</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSPoint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_c_l_u_t_opacity_view.html#8210084f2ff25aeb96fdddc76b07f84c">mouseDraggingStartPoint</a></td></tr>
 
@@ -1381,6 +1387,26 @@
 
 </div>
 </div><p>
+<a class="anchor" name="88df9b6f861934b490b924caf3f4b2ac"></a><!-- doxytag: member="CLUTOpacityView::drawCloseButton:" ref="88df9b6f861934b490b924caf3f4b2ac" args="(NSRect rect)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) drawCloseButton:           </td>
+          <td></td>
+          <td class="paramtype">(NSRect)&nbsp;</td>
+          <td class="paramname"> <em>rect</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="5c360b18548ea1ad1b80c767bd8d3458"></a><!-- doxytag: member="CLUTOpacityView::drawRemoveSelectedCurveButton:" ref="5c360b18548ea1ad1b80c767bd8d3458" args="(NSRect rect)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1487,6 +1513,26 @@
       <table class="memname">
         <tr>
           <td class="memname">- (BOOL) clickInSaveButtonAtPosition:           </td>
+          <td></td>
+          <td class="paramtype">(NSPoint)&nbsp;</td>
+          <td class="paramname"> <em>position</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="bd55f62a040cbf85fdaf1b2883ac1e0a"></a><!-- doxytag: member="CLUTOpacityView::clickInCloseButtonAtPosition:" ref="bd55f62a040cbf85fdaf1b2883ac1e0a" args="(NSPoint position)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) clickInCloseButtonAtPosition:           </td>
           <td></td>
           <td class="paramtype">(NSPoint)&nbsp;</td>
           <td class="paramname"> <em>position</em>          </td>
@@ -2232,21 +2278,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="89970e4436ea1a33ba83038b811624c4"></a><!-- doxytag: member="CLUTOpacityView::colorPanel" ref="89970e4436ea1a33ba83038b811624c4" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (NSColorPanel*) <a class="el" href="interface_c_l_u_t_opacity_view.html#89970e4436ea1a33ba83038b811624c4">colorPanel</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="85f4c9fefe80770a671300381a90ea47"></a><!-- doxytag: member="CLUTOpacityView::curves" ref="85f4c9fefe80770a671300381a90ea47" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -2532,6 +2563,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="de19d871d96320fdfe13b45dc8680271"></a><!-- doxytag: member="CLUTOpacityView::closeButtonRect" ref="de19d871d96320fdfe13b45dc8680271" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (NSRect) <a class="el" href="interface_c_l_u_t_opacity_view.html#de19d871d96320fdfe13b45dc8680271">closeButtonRect</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="5bc7b5b392855d2769b7972f97b5b31f"></a><!-- doxytag: member="CLUTOpacityView::isAddCurveButtonHighlighted" ref="5bc7b5b392855d2769b7972f97b5b31f" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -2568,6 +2614,21 @@
       <table class="memname">
         <tr>
           <td class="memname">- (BOOL) <a class="el" href="interface_c_l_u_t_opacity_view.html#5de8cb5427e4c19d1b6fc2d47ccdb140">isSaveButtonHighlighted</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6183c780c4b04dc928d61f63afe37572"></a><!-- doxytag: member="CLUTOpacityView::isCloseButtonHighlighted" ref="6183c780c4b04dc928d61f63afe37572" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) <a class="el" href="interface_c_l_u_t_opacity_view.html#6183c780c4b04dc928d61f63afe37572">isCloseButtonHighlighted</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -2624,7 +2685,7 @@
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_c_l_u_t_opacity_view_8h.html">CLUTOpacityView.h</a><li><a class="el" href="_c_l_u_t_opacity_view_8mm.html">CLUTOpacityView.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

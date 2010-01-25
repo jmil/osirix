@@ -20,6 +20,10 @@
 <code>#import &quot;<a class="el" href="browser_controller_8h.html">BrowserController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_viewer_controller_8h.html">ViewerController.h</a>&quot;</code><br>
 <code>#import &lt;OsiriX/DCMObject.h&gt;</code><br>
+<code>#import &quot;<a class="el" href="_app_controller_8h.html">AppController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_d_c_m_pix_8h.html">DCMPix.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_mutable_array_category_8h.html">MutableArrayCategory.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
@@ -37,7 +41,17 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#f80efed55cdb6026e3caa2759cfe1775">EditingToolbarItemIdentifier</a> = @&quot;Editing&quot;</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#13a5401c478755059981251bccc32b87">SortSeriesToolbarItemIdentifier</a> = @&quot;SortSeries&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#cab7ca9be6c5293817ece8ff02b20394">VerifyToolbarItemIdentifier</a> = @&quot;Validator&quot;</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#65a1c771046d7130be366db379f6c0d7">showWarning</a> = YES</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#efce36806a5d330b81cb9c6f2237cb1f">imObj</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_x_m_l_controller_8m.html#9da318462f6a6564a2e500fe53e9d310">viewer</a></td></tr>
 
 </table>
 <hr><h2>Variable Documentation</h2>
@@ -47,6 +61,21 @@
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_x_m_l_controller_8m.html#09dc5742a774af96e933caf2cb6ebf0e">CollapseAllItemsToolbarItemIdentifier</a> = @&quot;minus-large&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3ac3a27024fc1740539611b1faa38cdd"></a><!-- doxytag: member="XMLController.m::delayedTileWindows" ref="3ac3a27024fc1740539611b1faa38cdd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_x_m_l_controller_8m.html#3ac3a27024fc1740539611b1faa38cdd">delayedTileWindows</a>          </td>
         </tr>
       </table>
 </div>
@@ -116,6 +145,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="efce36806a5d330b81cb9c6f2237cb1f"></a><!-- doxytag: member="XMLController.m::imObj" ref="efce36806a5d330b81cb9c6f2237cb1f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_x_m_l_controller_8m.html#efce36806a5d330b81cb9c6f2237cb1f">imObj</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="3706fb0b8a68780626638eff31e3ab73"></a><!-- doxytag: member="XMLController.m::SearchToolbarItemIdentifier" ref="3706fb0b8a68780626638eff31e3ab73" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -146,6 +190,51 @@
 
 </div>
 </div><p>
+<a class="anchor" name="13a5401c478755059981251bccc32b87"></a><!-- doxytag: member="XMLController.m::SortSeriesToolbarItemIdentifier" ref="13a5401c478755059981251bccc32b87" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_x_m_l_controller_8m.html#13a5401c478755059981251bccc32b87">SortSeriesToolbarItemIdentifier</a> = @&quot;SortSeries&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="cab7ca9be6c5293817ece8ff02b20394"></a><!-- doxytag: member="XMLController.m::VerifyToolbarItemIdentifier" ref="cab7ca9be6c5293817ece8ff02b20394" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* <a class="el" href="_x_m_l_controller_8m.html#cab7ca9be6c5293817ece8ff02b20394">VerifyToolbarItemIdentifier</a> = @&quot;Validator&quot;<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9da318462f6a6564a2e500fe53e9d310"></a><!-- doxytag: member="XMLController.m::viewer" ref="9da318462f6a6564a2e500fe53e9d310" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_x_m_l_controller_8m.html#9da318462f6a6564a2e500fe53e9d310">viewer</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="fe41263de48fb1e1e3f36431f93893e0"></a><!-- doxytag: member="XMLController.m::XMLToolbarIdentifier" ref="fe41263de48fb1e1e3f36431f93893e0" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +250,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

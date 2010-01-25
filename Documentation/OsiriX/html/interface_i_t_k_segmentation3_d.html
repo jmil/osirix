@@ -33,9 +33,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(id)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_i_t_k_segmentation3_d.html#49570b2538a9e791e7023d4c6e5bd42b">initWithPix:volume:slice:resampleData:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_i_t_k_segmentation3_d.html#4cbfbf6884d6bd6c9c77c9108a47f982">regionGrowing3D:::::::::::::</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_i_t_k_segmentation3_d.html#d53570d58a275526da3d048f3955da9f">endoscopySegmentationForViewer:seeds:</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_i_t_k_segmentation3_d.html#9271c9981d26efe451f0c7e2f30c71fa">regionGrowing3D::::::::::::::</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_i_t_k_segmentation3_d.html#42c0b9ca7eac20ef1e25ed9399d5dbb8">fastGrowingRegionWithVolume:width:height:depth:seedPoint:from:pixList:</a></td></tr>
@@ -189,7 +187,7 @@
 
 </div>
 </div><p>
-<a class="anchor" name="4cbfbf6884d6bd6c9c77c9108a47f982"></a><!-- doxytag: member="ITKSegmentation3D::regionGrowing3D:::::::::::::" ref="4cbfbf6884d6bd6c9c77c9108a47f982" args="(ViewerController *srcViewer,[] ViewerController *destViewer,[] long slice,[] NSPoint startingPoint,[] int algorithmNumber,[] NSArray *parameters,[] BOOL setIn,[] float inValue,[] BOOL setOut,[] float outValue,[] int roiType,[] long roiResolution,[] NSString *newname)" -->
+<a class="anchor" name="9271c9981d26efe451f0c7e2f30c71fa"></a><!-- doxytag: member="ITKSegmentation3D::regionGrowing3D::::::::::::::" ref="9271c9981d26efe451f0c7e2f30c71fa" args="(ViewerController *srcViewer,[] ViewerController *destViewer,[] long slice,[] NSPoint startingPoint,[] int algorithmNumber,[] NSArray *parameters,[] BOOL setIn,[] float inValue,[] BOOL setOut,[] float outValue,[] int roiType,[] long roiResolution,[] NSString *newname,[] BOOL mergeWithExistingROIs)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -269,36 +267,13 @@
           <td class="paramkey">:</td>
           <td></td>
           <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
-          <td class="paramname"> <em>newname</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>newname</em></td>
         </tr>
         <tr>
+          <td class="paramkey">:</td>
           <td></td>
-          <td></td>
-          <td></td><td></td><td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="d53570d58a275526da3d048f3955da9f"></a><!-- doxytag: member="ITKSegmentation3D::endoscopySegmentationForViewer:seeds:" ref="d53570d58a275526da3d048f3955da9f" args="(ViewerController *srcViewer,[seeds] NSArray *seeds)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (<a class="el" href="class_n_s_array.html">NSArray</a> *) endoscopySegmentationForViewer:           </td>
-          <td></td>
-          <td class="paramtype">(<a class="el" href="interface_viewer_controller.html">ViewerController</a>*)&nbsp;</td>
-          <td class="paramname"> <em>srcViewer</em></td>
-        </tr>
-        <tr>
-          <td class="paramkey">seeds:</td>
-          <td></td>
-          <td class="paramtype">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td>
-          <td class="paramname"> <em>seeds</em></td><td>&nbsp;</td>
+          <td class="paramtype">(BOOL)&nbsp;</td>
+          <td class="paramname"> <em>mergeWithExistingROIs</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -469,7 +444,7 @@
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_i_t_k_segmentation3_d_8h.html">ITKSegmentation3D.h</a><li><a class="el" href="_i_t_k_segmentation3_d_8mm.html">ITKSegmentation3D.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

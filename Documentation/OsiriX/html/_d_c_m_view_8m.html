@@ -12,17 +12,17 @@
     <li class="current"><a href="files.html"><span>Files</span></a></li>
   </ul>
 </div>
-<h1>DCMView.m File Reference</h1><code>#import &quot;DCMAbstractSyntaxUID.h&quot;</code><br>
+<h1>DCMView.m File Reference</h1><code>#import &quot;OsiriX/DCMAbstractSyntaxUID.h&quot;</code><br>
 <code>#import &lt;<a class="el" href="_d_c_m_view_8h.html">DCMView.h</a>&gt;</code><br>
 <code>#import &quot;<a class="el" href="_string_texture_8h.html">StringTexture.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_pix_8h.html">DCMPix.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_r_o_i_8h.html">ROI.h</a>&quot;</code><br>
 <code>#import &quot;NSFont_OpenGL.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_c_m_cursor_8h.html">DCMCursor.h</a>&quot;</code><br>
-<code>#include &lt;Accelerate/Accelerate.h&gt;</code><br>
+<code>#import &quot;<a class="el" href="_g_l_string_8h.html">GLString.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_d_i_c_o_m_export_8h.html">DICOMExport.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_series_view_8h.html">SeriesView.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_viewer_controller_8h.html">ViewerController.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_m_p_r_controller_8h.html">MPRController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_thick_slab_controller_8h.html">ThickSlabController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="browser_controller_8h.html">browserController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_app_controller_8h.html">AppController.h</a>&quot;</code><br>
@@ -34,20 +34,24 @@
 <code>#import &quot;<a class="el" href="_r_o_i_window_8h.html">ROIWindow.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_toolbar_panel_8h.html">ToolbarPanel.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_i_chat_theatre_delegate_8h.html">IChatTheatreDelegate.h</a>&quot;</code><br>
-<code>#include &lt;QuickTime/ImageCompression.h&gt;</code><br>
-<code>#include &lt;QuickTime/QuickTimeComponents.h&gt;</code><br>
 <code>#include &lt;OpenGL/CGLMacro.h&gt;</code><br>
 <code>#include &lt;OpenGL/CGLCurrent.h&gt;</code><br>
 <code>#include &lt;OpenGL/CGLContext.h&gt;</code><br>
 <code>#import &lt;CoreVideo/CoreVideo.h&gt;</code><br>
 <code>#import &quot;<a class="el" href="_defaults_osiri_x_8h.html">DefaultsOsiriX.h</a>&quot;</code><br>
 <code>#include &quot;NSFont_OpenGL/NSFont_OpenGL.h&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_plugin_manager_8h.html">PluginManager.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#dc1876afa8c1921a3b743523e4369c75">QUALITY</a>&nbsp;&nbsp;&nbsp;kvImageNoFlags</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#580a88f98668df1ac5e1683cae31c0b3">BS</a>&nbsp;&nbsp;&nbsp;10.</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#63e45eaf93729d5707b89a5340d68334">SMALL_NUM</a>&nbsp;&nbsp;&nbsp;0.00000001</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#7942047af87f6f42fe6880a4c7c842ae">DOT</a>(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>, <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>)&nbsp;&nbsp;&nbsp;(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[0]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[0]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[1]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[1]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[2]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[2])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#275587ce22080c4c09deb818b1ce3564">CROSS</a>(dest, <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>, <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>)</td></tr>
 
@@ -69,17 +73,19 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#e629cf86d3fc5a1280de48f9c0efeb13">d</a>(u, v)&nbsp;&nbsp;&nbsp;norm(u-v)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#bb7aa0b593c2f1217a6a02b888a779b0">CIRCLERESOLUTION</a>&nbsp;&nbsp;&nbsp;20</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#a09da2238cc9cb3ac6d872e43a599e74">BARPOSX1</a>&nbsp;&nbsp;&nbsp;62.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#a09da2238cc9cb3ac6d872e43a599e74">BARPOSX1</a>&nbsp;&nbsp;&nbsp;62.f</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#d3e8a1dbb40896a63af24bd6560dfd46">BARPOSX2</a>&nbsp;&nbsp;&nbsp;32.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#d3e8a1dbb40896a63af24bd6560dfd46">BARPOSX2</a>&nbsp;&nbsp;&nbsp;32.f</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#2d1bc2906509080d2eb6866f5b3d97b2">BBARPOSX1</a>&nbsp;&nbsp;&nbsp;55.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#2d1bc2906509080d2eb6866f5b3d97b2">BBARPOSX1</a>&nbsp;&nbsp;&nbsp;55.f</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ceaa799a6586b3d4799f3d6e5ce8464e">BBARPOSX2</a>&nbsp;&nbsp;&nbsp;25.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ceaa799a6586b3d4799f3d6e5ce8464e">BBARPOSX2</a>&nbsp;&nbsp;&nbsp;25.f</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#10e8c7b8458375c3dbfbb4010a2aba8c">LINELENGTH</a>&nbsp;&nbsp;&nbsp;15</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#a06ae9ee2b4a26f7c02d11edb546f085">intersect3D_SegmentPlane</a> (float *P0, float *P1, float *Pnormal, float *Ppoint, float *resultPt)</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#861adb79b64d67337440cf272c99454e">Normalise</a> (<a class="el" href="struct_x_y_z.html">XYZ</a> *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d51bbd59afc6ba88f8e40003aafc1877">p</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_x_y_z.html">XYZ</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#41646e4248955f8703dd4b1cabcb51ed">ArbitraryRotate</a> (<a class="el" href="struct_x_y_z.html">XYZ</a> <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d51bbd59afc6ba88f8e40003aafc1877">p</a>, double <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#ca81c35c21e3a5f7f3a8d24504e76664">theta</a>, <a class="el" href="struct_x_y_z.html">XYZ</a> r)</td></tr>
@@ -92,36 +98,24 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#db34c8dce64e2255a0428619e8b1f310">GetTextureNumFromTextureDim</a> (long textureDimension, long maxTextureSize, Boolean texturesOverlap, Boolean textureRectangle)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8ee42a5dd83886e7ad61d451d5a32956">min</a> (float a, float b)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8ee42a5dd83886e7ad61d451d5a32956">min</a> (float <a class="el" href="_n_s_split_view_save_8m.html#4aec1a5be9d9a4a394a2e49e9744286e">a</a>, float <a class="el" href="_n_s_split_view_save_8m.html#83fc1af92e29717b4513d121b0c72c7d">b</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#16de6f5646dabb23192dc822ef1883d3">distanceNSPoint</a> (NSPoint p1, NSPoint p2)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#204f01bbe15a64f60777a1eaf17a0ab2">lineIntersectsRect</a> (NSPoint lineStarts, NSPoint lineEnds, NSRect <a class="el" href="_r_o_i_8m.html#ae062b54145f03b158da1583afdef798">rect</a>)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSInteger&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#7b6396f5cd476d7cd2afddc2f2dd3de1">studyCompare</a> (<a class="el" href="interface_viewer_controller.html">ViewerController</a> *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>, <a class="el" href="interface_viewer_controller.html">ViewerController</a> *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>, void *context)</td></tr>
+
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSThread *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a> [10]</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_app_controller.html">AppController</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">short&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#6d2d5f2dd39c68ac165cb265218e057d">syncro</a> = syncroLOC</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#6fddc70e5c5cb4d77e0b6280159ec720">deg2rad</a> = 3.14159265358979/180.0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#64f7ece10b274dadb1a73f8a92db25c9">numberOf2DViewer</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8f2158686b49fc0827f6295e7608fefc">PETredTable</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#4cc6eb64690e64afeee521c11a1e16b5">display2DMPRLines</a> = YES</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#0fff73246790b389544f8c5d5baa647c">PETgreenTable</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSMutableDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ee282a1e6239e0e8c567861a35887c76">plugins</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8f2158686b49fc0827f6295e7608fefc">PETredTable</a> = 0L</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#0fff73246790b389544f8c5d5baa647c">PETgreenTable</a> = 0L</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#3dd2dab627914b24092227bd9befb89a">PETblueTable</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#3dd2dab627914b24092227bd9befb89a">PETblueTable</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#9b3fd68481ed13911d122de57e57292b">NOINTERPOLATION</a> = NO</td></tr>
 
@@ -131,8 +125,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#9c96e574743dc449d99fe19800e8fd98">IndependentCRWLWW</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#aa9f80321e1eb8d15d693f6dab76eefb">COPYSETTINGSINSERIES</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#69c22fdebb1c689521589241c07e3cc9">pluginOverridesMouse</a> = NO</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#fae18af948d31b096b98818d6898a451">CLUTBARS</a></td></tr>
@@ -141,23 +133,39 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#f0202cf910a0d39523ac992dcda7b2d1">SOFTWAREINTERPOLATION_MAX</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#e0615d312a0e39452ed9ee048fe9fe65">DISPLAYCROSSREFERENCELINES</a> = YES</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#eea1d174487e3ac5278cc5c4e45e88af">gClickCountSet</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ea1419deaadb54e70abae7fe5aada09e">margin</a> = 2</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#63841d08b09c549881140826da26f001">avoidSetWLWWRentry</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#969fd25406aad3d4ece73f3129d9dd46">_hotKeyDictionary</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#969fd25406aad3d4ece73f3129d9dd46">_hotKeyDictionary</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8d752c13e323d6a2e7ba53ecaf28b5d9">_hotKeyModifiersDictionary</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8d752c13e323d6a2e7ba53ecaf28b5d9">_hotKeyModifiersDictionary</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#d79a5edc2b3402a4599585bda7c4dcf1">globalStringTextureCache</a> = nil</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#e25babed12bbd1d99b7ba76b21972d62">pasteBoardOsiriX</a> = @&quot;OsiriX pasteboard&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#550df53d4bc0f65e3af55dfa2f85949f">pasteBoardOsiriXPlugin</a> = @&quot;OsiriXPluginDataType&quot;</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#82e3613e99a8955381ae721fe0005407">showDescriptionInLarge</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#59f8903bb0a49b3e0863a97d936ab29e">curRoiList</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#c1b1688207d12489838f25b8aa5468ff">drawingFrameRect</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#72f0f4ad38149a003510582f78c45151">dontEnterReshape</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#0a3b4ede9d535c662aa3cdb6b28de7c7">rectArray</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#91343b63f1e2bca2850c83c184a614ef">studyColorR</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#6903daffaed35e279cdc19abf3a5b018">studyColorG</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#50ff1a6dd285501ca25aecfecaaae349">studyColorB</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#9faa4f2835aa3f05bb99648511a0d5e4">flippedData</a></td></tr>
 
@@ -171,12 +179,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#d21a2be56a9e2ce9192dfc447424e632">syncRelativeDiff</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#1bbdce456663364c0ec66aa6dce795a1">cross</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#2ca4bc4b8e31c6c5a98d44089fcbe4cb">crossPrev</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#689841b7a2ba040ea4f4dda9a2eba2e0">slab</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#e4f5775c79c63ab06c9df207e689ae76">blendingMode</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#329e0dc87ee0fce2c51b658f12789f4d">blendingView</a></td></tr>
@@ -188,8 +190,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#f2aa377fb73d073dcad80a4003def5ae">yFlipped</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ef17abbc90935f78555d4711b1d5ca6c">stringID</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ffa420bffef1182b0bde3bb70d092276">angle</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#80024774a6f783c282ce6127a509d166">currentTool</a></td></tr>
 
@@ -211,6 +211,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#4ca40b6ca230c0f4de1aabc4e3585166">curDCM</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#7e8ba2c06743b055e257b1b49fcdeaed">dcmExportPlugin</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#6904cc10e2c9d32192377decf1bbefdf">mouseXPos</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#2823a010f06b4b7baea8f4027482d7d6">mouseYPos</a></td></tr>
@@ -228,8 +230,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#ed71462110cf717db5eb06c320efa687">curWW</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#1a133b2d5131f2d11c8b7cddfae696d3">curWL</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#7848a4fa451d39d03eaa897408105e6d">scaleValue</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_view_8m.html#9cb3990d4416a5bd73ea4b6fc7243a92">rows</a> = _imageRows</td></tr>
 
@@ -254,7 +254,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BARPOSX1&nbsp;&nbsp;&nbsp;62.f          </td>
+          <td class="memname">#define BARPOSX1&nbsp;&nbsp;&nbsp;62.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a>          </td>
         </tr>
       </table>
 </div>
@@ -269,7 +269,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BARPOSX2&nbsp;&nbsp;&nbsp;32.f          </td>
+          <td class="memname">#define BARPOSX2&nbsp;&nbsp;&nbsp;32.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a>          </td>
         </tr>
       </table>
 </div>
@@ -284,7 +284,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BBARPOSX1&nbsp;&nbsp;&nbsp;55.f          </td>
+          <td class="memname">#define BBARPOSX1&nbsp;&nbsp;&nbsp;55.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a>          </td>
         </tr>
       </table>
 </div>
@@ -299,7 +299,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BBARPOSX2&nbsp;&nbsp;&nbsp;25.f          </td>
+          <td class="memname">#define BBARPOSX2&nbsp;&nbsp;&nbsp;25.<a class="el" href="_n_s_split_view_save_8m.html#f900396d7b72ff2a7002e8befe8cf8f1">f</a>          </td>
         </tr>
       </table>
 </div>
@@ -315,21 +315,6 @@
       <table class="memname">
         <tr>
           <td class="memname">#define BS&nbsp;&nbsp;&nbsp;10.          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="bb7aa0b593c2f1217a6a02b888a779b0"></a><!-- doxytag: member="DCMView.m::CIRCLERESOLUTION" ref="bb7aa0b593c2f1217a6a02b888a779b0" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CIRCLERESOLUTION&nbsp;&nbsp;&nbsp;20          </td>
         </tr>
       </table>
 </div>
@@ -373,7 +358,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define d          </td>
+          <td class="memname">#define <a class="el" href="_n_s_split_view_save_8m.html#3fbbd8a3959e76a2bc3455d3bade52dc">d</a>          </td>
           <td>(</td>
           <td class="paramtype">u,         <tr>
           <td class="paramkey"></td>
@@ -428,6 +413,44 @@
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%">&nbsp;&nbsp;&nbsp;(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[0]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[0]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[1]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[1]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[2]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[2])</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7942047af87f6f42fe6880a4c7c842ae"></a><!-- doxytag: member="DCMView.m::DOT" ref="7942047af87f6f42fe6880a4c7c842ae" args="(v1, v2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DOT          </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>,         <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%">&nbsp;&nbsp;&nbsp;(<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[0]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[0]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[1]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[1]+<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#c6b9921caf3e609cdb31b4b7fe8eac41">v1</a>[2]*<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#aff169ecf2a2d9f3329d0ed63ffcc928">v2</a>[2])</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="10e8c7b8458375c3dbfbb4010a2aba8c"></a><!-- doxytag: member="DCMView.m::LINELENGTH" ref="10e8c7b8458375c3dbfbb4010a2aba8c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LINELENGTH&nbsp;&nbsp;&nbsp;15          </td>
         </tr>
       </table>
 </div>
@@ -508,6 +531,21 @@
       <table class="memname">
         <tr>
           <td class="memname">#define ROISELECTORREGION_R&nbsp;&nbsp;&nbsp;0.8          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="63e45eaf93729d5707b89a5340d68334"></a><!-- doxytag: member="DCMView.m::SMALL_NUM" ref="63e45eaf93729d5707b89a5340d68334" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SMALL_NUM&nbsp;&nbsp;&nbsp;0.00000001          </td>
         </tr>
       </table>
 </div>
@@ -844,6 +882,53 @@
 
 </div>
 </div><p>
+<a class="anchor" name="a06ae9ee2b4a26f7c02d11edb546f085"></a><!-- doxytag: member="DCMView.m::intersect3D_SegmentPlane" ref="a06ae9ee2b4a26f7c02d11edb546f085" args="(float *P0, float *P1, float *Pnormal, float *Ppoint, float *resultPt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int intersect3D_SegmentPlane           </td>
+          <td>(</td>
+          <td class="paramtype">float *&nbsp;</td>
+          <td class="paramname"> <em>P0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&nbsp;</td>
+          <td class="paramname"> <em>P1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&nbsp;</td>
+          <td class="paramname"> <em>Pnormal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&nbsp;</td>
+          <td class="paramname"> <em>Ppoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&nbsp;</td>
+          <td class="paramname"> <em>resultPt</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="204f01bbe15a64f60777a1eaf17a0ab2"></a><!-- doxytag: member="DCMView.m::lineIntersectsRect" ref="204f01bbe15a64f60777a1eaf17a0ab2" args="(NSPoint lineStarts, NSPoint lineEnds, NSRect rect)" -->
 <div class="memitem">
 <div class="memproto">
@@ -928,13 +1013,48 @@
 
 </div>
 </div><p>
+<a class="anchor" name="7b6396f5cd476d7cd2afddc2f2dd3de1"></a><!-- doxytag: member="DCMView.m::studyCompare" ref="7b6396f5cd476d7cd2afddc2f2dd3de1" args="(ViewerController *v1, ViewerController *v2, void *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSInteger studyCompare           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td>
+          <td class="paramname"> <em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_viewer_controller.html">ViewerController</a> *&nbsp;</td>
+          <td class="paramname"> <em>v2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&nbsp;</td>
+          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr><h2>Variable Documentation</h2>
 <a class="anchor" name="969fd25406aad3d4ece73f3129d9dd46"></a><!-- doxytag: member="DCMView.m::_hotKeyDictionary" ref="969fd25406aad3d4ece73f3129d9dd46" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSDictionary* <a class="el" href="_d_c_m_view_8m.html#969fd25406aad3d4ece73f3129d9dd46">_hotKeyDictionary</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSDictionary* <a class="el" href="_d_c_m_view_8m.html#969fd25406aad3d4ece73f3129d9dd46">_hotKeyDictionary</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -949,22 +1069,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSDictionary * <a class="el" href="_d_c_m_view_8m.html#8d752c13e323d6a2e7ba53ecaf28b5d9">_hotKeyModifiersDictionary</a> = 0L<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="ffa420bffef1182b0bde3bb70d092276"></a><!-- doxytag: member="DCMView.m::angle" ref="ffa420bffef1182b0bde3bb70d092276" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#ffa420bffef1182b0bde3bb70d092276">angle</a>          </td>
+          <td class="memname">NSDictionary * <a class="el" href="_d_c_m_view_8m.html#8d752c13e323d6a2e7ba53ecaf28b5d9">_hotKeyModifiersDictionary</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -989,12 +1094,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="63da2d845d299fcc1428ef7165d61c70"></a><!-- doxytag: member="DCMView.m::appController" ref="63da2d845d299fcc1428ef7165d61c70" args="" -->
+<a class="anchor" name="63841d08b09c549881140826da26f001"></a><!-- doxytag: member="DCMView.m::avoidSetWLWWRentry" ref="63841d08b09c549881140826da26f001" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_app_controller.html">AppController</a>* <a class="el" href="_viewer_controller_8m.html#63da2d845d299fcc1428ef7165d61c70">appController</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_view_8m.html#63841d08b09c549881140826da26f001">avoidSetWLWWRentry</a> = NO<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1024,7 +1129,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#e4f5775c79c63ab06c9df207e689ae76">blendingMode</a>          </td>
+          <td class="memname">synthesize <a class="el" href="_m_p_r_controller_8m.html#e4f5775c79c63ab06c9df207e689ae76">blendingMode</a>          </td>
         </tr>
       </table>
 </div>
@@ -1109,51 +1214,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="aa9f80321e1eb8d15d693f6dab76eefb"></a><!-- doxytag: member="DCMView.m::COPYSETTINGSINSERIES" ref="aa9f80321e1eb8d15d693f6dab76eefb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_view_8m.html#aa9f80321e1eb8d15d693f6dab76eefb">COPYSETTINGSINSERIES</a><code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1bbdce456663364c0ec66aa6dce795a1"></a><!-- doxytag: member="DCMView.m::cross" ref="1bbdce456663364c0ec66aa6dce795a1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#1bbdce456663364c0ec66aa6dce795a1">cross</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="2ca4bc4b8e31c6c5a98d44089fcbe4cb"></a><!-- doxytag: member="DCMView.m::crossPrev" ref="2ca4bc4b8e31c6c5a98d44089fcbe4cb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#2ca4bc4b8e31c6c5a98d44089fcbe4cb">crossPrev</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="4ca40b6ca230c0f4de1aabc4e3585166"></a><!-- doxytag: member="DCMView.m::curDCM" ref="4ca40b6ca230c0f4de1aabc4e3585166" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1214,6 +1274,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="59f8903bb0a49b3e0863a97d936ab29e"></a><!-- doxytag: member="DCMView.m::curRoiList" ref="59f8903bb0a49b3e0863a97d936ab29e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#59f8903bb0a49b3e0863a97d936ab29e">curRoiList</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="43cc67dd3ea22436f331f2f42d6c76f4"></a><!-- doxytag: member="DCMView.m::cursor" ref="43cc67dd3ea22436f331f2f42d6c76f4" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1250,6 +1325,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#ed71462110cf717db5eb06c320efa687">curWW</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7e8ba2c06743b055e257b1b49fcdeaed"></a><!-- doxytag: member="DCMView.m::dcmExportPlugin" ref="7e8ba2c06743b055e257b1b49fcdeaed" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#7e8ba2c06743b055e257b1b49fcdeaed">dcmExportPlugin</a>          </td>
         </tr>
       </table>
 </div>
@@ -1319,12 +1409,27 @@
 
 </div>
 </div><p>
-<a class="anchor" name="4cc6eb64690e64afeee521c11a1e16b5"></a><!-- doxytag: member="DCMView.m::display2DMPRLines" ref="4cc6eb64690e64afeee521c11a1e16b5" args="" -->
+<a class="anchor" name="e0615d312a0e39452ed9ee048fe9fe65"></a><!-- doxytag: member="DCMView.m::DISPLAYCROSSREFERENCELINES" ref="e0615d312a0e39452ed9ee048fe9fe65" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_view_8m.html#4cc6eb64690e64afeee521c11a1e16b5">display2DMPRLines</a> = YES          </td>
+          <td class="memname">int <a class="el" href="_d_c_m_view_8m.html#e0615d312a0e39452ed9ee048fe9fe65">DISPLAYCROSSREFERENCELINES</a> = YES<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="72f0f4ad38149a003510582f78c45151"></a><!-- doxytag: member="DCMView.m::dontEnterReshape" ref="72f0f4ad38149a003510582f78c45151" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#72f0f4ad38149a003510582f78c45151">dontEnterReshape</a>          </td>
         </tr>
       </table>
 </div>
@@ -1369,7 +1474,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSRecursiveLock* <a class="el" href="_v_r_view_8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSRecursiveLock* <a class="el" href="_v_r_view___8mm.html#8472d41bdf0fd4690337d3c93a694849">drawLock</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1469,6 +1574,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="d79a5edc2b3402a4599585bda7c4dcf1"></a><!-- doxytag: member="DCMView.m::globalStringTextureCache" ref="d79a5edc2b3402a4599585bda7c4dcf1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_d_c_m_view_8m.html#d79a5edc2b3402a4599585bda7c4dcf1">globalStringTextureCache</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="9c96e574743dc449d99fe19800e8fd98"></a><!-- doxytag: member="DCMView.m::IndependentCRWLWW" ref="9c96e574743dc449d99fe19800e8fd98" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1490,36 +1610,6 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#d71a2378c37bf83cfd5469078665bc10">isKeyView</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="c310edffa97acbbf9fb975cd78c320dc"></a><!-- doxytag: member="DCMView.m::mainThread" ref="c310edffa97acbbf9fb975cd78c320dc" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">NSThread* <a class="el" href="_web_services_methods_8m.html#c310edffa97acbbf9fb975cd78c320dc">mainThread</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="ea1419deaadb54e70abae7fe5aada09e"></a><!-- doxytag: member="DCMView.m::margin" ref="ea1419deaadb54e70abae7fe5aada09e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float <a class="el" href="_d_c_m_view_8m.html#ea1419deaadb54e70abae7fe5aada09e">margin</a> = 2<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1580,21 +1670,6 @@
       <table class="memname">
         <tr>
           <td class="memname">BOOL <a class="el" href="_d_c_m_view_8m.html#9b3fd68481ed13911d122de57e57292b">NOINTERPOLATION</a> = NO<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="64f7ece10b274dadb1a73f8a92db25c9"></a><!-- doxytag: member="DCMView.m::numberOf2DViewer" ref="64f7ece10b274dadb1a73f8a92db25c9" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">long <a class="el" href="_viewer_controller_8m.html#64f7ece10b274dadb1a73f8a92db25c9">numberOf2DViewer</a>          </td>
         </tr>
       </table>
 </div>
@@ -1669,7 +1744,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned char * <a class="el" href="_d_c_m_view_8m.html#3dd2dab627914b24092227bd9befb89a">PETblueTable</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">unsigned char * <a class="el" href="_d_c_m_view_8m.html#3dd2dab627914b24092227bd9befb89a">PETblueTable</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1684,7 +1759,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned char * <a class="el" href="_d_c_m_view_8m.html#0fff73246790b389544f8c5d5baa647c">PETgreenTable</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">unsigned char * <a class="el" href="_d_c_m_view_8m.html#0fff73246790b389544f8c5d5baa647c">PETgreenTable</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1699,7 +1774,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned char* <a class="el" href="_d_c_m_view_8m.html#8f2158686b49fc0827f6295e7608fefc">PETredTable</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">unsigned char* <a class="el" href="_d_c_m_view_8m.html#8f2158686b49fc0827f6295e7608fefc">PETredTable</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1715,21 +1790,6 @@
       <table class="memname">
         <tr>
           <td class="memname">BOOL <a class="el" href="_d_c_m_view_8m.html#69c22fdebb1c689521589241c07e3cc9">pluginOverridesMouse</a> = NO<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="ee282a1e6239e0e8c567861a35887c76"></a><!-- doxytag: member="DCMView.m::plugins" ref="ee282a1e6239e0e8c567861a35887c76" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">NSMutableDictionary* <a class="el" href="_safe_d_b_rebuild_8m.html#ee282a1e6239e0e8c567861a35887c76">plugins</a>          </td>
         </tr>
       </table>
 </div>
@@ -1799,27 +1859,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="7848a4fa451d39d03eaa897408105e6d"></a><!-- doxytag: member="DCMView.m::scaleValue" ref="7848a4fa451d39d03eaa897408105e6d" args="" -->
+<a class="anchor" name="82e3613e99a8955381ae721fe0005407"></a><!-- doxytag: member="DCMView.m::showDescriptionInLarge" ref="82e3613e99a8955381ae721fe0005407" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#7848a4fa451d39d03eaa897408105e6d">scaleValue</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="689841b7a2ba040ea4f4dda9a2eba2e0"></a><!-- doxytag: member="DCMView.m::slab" ref="689841b7a2ba040ea4f4dda9a2eba2e0" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#689841b7a2ba040ea4f4dda9a2eba2e0">slab</a>          </td>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#82e3613e99a8955381ae721fe0005407">showDescriptionInLarge</a>          </td>
         </tr>
       </table>
 </div>
@@ -1865,6 +1910,51 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#ef17abbc90935f78555d4711b1d5ca6c">stringID</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="50ff1a6dd285501ca25aecfecaaae349"></a><!-- doxytag: member="DCMView.m::studyColorB" ref="50ff1a6dd285501ca25aecfecaaae349" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#50ff1a6dd285501ca25aecfecaaae349">studyColorB</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6903daffaed35e279cdc19abf3a5b018"></a><!-- doxytag: member="DCMView.m::studyColorG" ref="6903daffaed35e279cdc19abf3a5b018" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#6903daffaed35e279cdc19abf3a5b018">studyColorG</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="91343b63f1e2bca2850c83c184a614ef"></a><!-- doxytag: member="DCMView.m::studyColorR" ref="91343b63f1e2bca2850c83c184a614ef" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_view_8m.html#91343b63f1e2bca2850c83c184a614ef">studyColorR</a>          </td>
         </tr>
       </table>
 </div>
@@ -1964,36 +2054,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="1495127ada1d0d3dfb484ed7647c4168"></a><!-- doxytag: member="DCMView.m::toolbarPanel" ref="1495127ada1d0d3dfb484ed7647c4168" args="[10]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="interface_toolbar_panel_controller.html">ToolbarPanelController</a>* <a class="el" href="_viewer_controller_8m.html#1495127ada1d0d3dfb484ed7647c4168">toolbarPanel</a>[10]          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="306a45d872c28249071c866ef0fdc2a0"></a><!-- doxytag: member="DCMView.m::USETOOLBARPANEL" ref="306a45d872c28249071c866ef0fdc2a0" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOL <a class="el" href="_viewer_controller_8m.html#306a45d872c28249071c866ef0fdc2a0">USETOOLBARPANEL</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="cfb879429cc1946c77664bd3606ceacb"></a><!-- doxytag: member="DCMView.m::volumicSeries" ref="cfb879429cc1946c77664bd3606ceacb" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -2039,7 +2099,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

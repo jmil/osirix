@@ -33,7 +33,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#bf52a1ffc403c80e7d579a4be563d6e5">runScript:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#94939f03c4c8d99425aedb037176e676">reportScriptBody:</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#6119b2e1e49ff0d64a18922da1e3b7f2">reportScriptBody:path:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#648838f6c7f08067347e916cca6f7944">createNewReport:destination:type:</a></td></tr>
 
@@ -43,12 +43,16 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#1be871ff1a4ebc93bfadc8376e61dc7d">createNewPagesReportForStudy:toDestinationPath:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#dfc5bd03a869041221d367c235673eef">createNewOpenDocumentReportForStudy:toDestinationPath:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSMutableString *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#93304f17ef454c0309486f424eb980a4">templateName</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_reports.html#3d8c156554a6316c01663402cef674ab">setTemplateName:</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_reports.html#9ecb99204d0712eaeed3a7fcc17b3152">getUniqueFilename:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_reports.html#141bd1e0d8067d53d52c27ed1917e49f">getOldUniqueFilename:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_reports.html#f7202958efc7874cdf356b36fc8759f6">pagesTemplatesList</a></td></tr>
 
@@ -66,6 +70,26 @@ reports <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">+ (<a class="el" href="class_n_s_string.html">NSString</a> *) getUniqueFilename:           </td>
+          <td></td>
+          <td class="paramtype">(NSManagedObject*)&nbsp;</td>
+          <td class="paramname"> <em>study</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="141bd1e0d8067d53d52c27ed1917e49f"></a><!-- doxytag: member="Reports::getOldUniqueFilename:" ref="141bd1e0d8067d53d52c27ed1917e49f" args="(NSManagedObject *study)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">+ (<a class="el" href="class_n_s_string.html">NSString</a> *) getOldUniqueFilename:           </td>
           <td></td>
           <td class="paramtype">(NSManagedObject*)&nbsp;</td>
           <td class="paramname"> <em>study</em>          </td>
@@ -120,7 +144,7 @@ reports <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="94939f03c4c8d99425aedb037176e676"></a><!-- doxytag: member="Reports::reportScriptBody:" ref="94939f03c4c8d99425aedb037176e676" args="(NSManagedObject *study)" -->
+<a class="anchor" name="6119b2e1e49ff0d64a18922da1e3b7f2"></a><!-- doxytag: member="Reports::reportScriptBody:path:" ref="6119b2e1e49ff0d64a18922da1e3b7f2" args="(NSManagedObject *study,[path] NSString *path)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -128,9 +152,18 @@ reports <hr><h2>Member Function Documentation</h2>
           <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a> *) reportScriptBody:           </td>
           <td></td>
           <td class="paramtype">(NSManagedObject*)&nbsp;</td>
-          <td class="paramname"> <em>study</em>          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
+          <td class="paramname"> <em>study</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">path:</td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramname"> <em>path</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -262,6 +295,35 @@ reports <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="dfc5bd03a869041221d367c235673eef"></a><!-- doxytag: member="Reports::createNewOpenDocumentReportForStudy:toDestinationPath:" ref="dfc5bd03a869041221d367c235673eef" args="(NSManagedObject *aStudy,[toDestinationPath] NSString *aPath)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) createNewOpenDocumentReportForStudy:           </td>
+          <td></td>
+          <td class="paramtype">(NSManagedObject*)&nbsp;</td>
+          <td class="paramname"> <em>aStudy</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">toDestinationPath:</td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_string.html">NSString</a>*)&nbsp;</td>
+          <td class="paramname"> <em>aPath</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f7202958efc7874cdf356b36fc8759f6"></a><!-- doxytag: member="Reports::pagesTemplatesList" ref="f7202958efc7874cdf356b36fc8759f6" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -353,7 +415,7 @@ reports <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_reports_8h.html">Reports.h</a><li><a class="el" href="_reports_8m.html">Reports.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

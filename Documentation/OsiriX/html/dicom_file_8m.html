@@ -41,7 +41,7 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#cba283cd225da5a1647d771a3541a515">replaceBadCharacter</a> (char *str, NSStringEncoding encoding)</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#0d4330667256a9f920004157afc1206d">DEFAULTSSET</a> = NO</td></tr>
 
@@ -63,7 +63,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#6cf09be2355ec815178fa8b6aa38fcc2">combineProjectionSeriesMode</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#b2f811749c582a270e1a4d15b88f1a91">CHECKFORLAVIM</a> = NO</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#ecda6680799124cb33dc2d6909b32ce9">CHECKFORLAVIM</a> = -1</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="dicom_file_8m.html#dd5c3b8f55a9ea2c7234d93c74201d00">COMMENTSGROUP</a> = NO</td></tr>
 
@@ -125,12 +125,12 @@
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
-<a class="anchor" name="b2f811749c582a270e1a4d15b88f1a91"></a><!-- doxytag: member="dicomFile.m::CHECKFORLAVIM" ref="b2f811749c582a270e1a4d15b88f1a91" args="" -->
+<a class="anchor" name="ecda6680799124cb33dc2d6909b32ce9"></a><!-- doxytag: member="dicomFile.m::CHECKFORLAVIM" ref="ecda6680799124cb33dc2d6909b32ce9" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="dicom_file_8m.html#b2f811749c582a270e1a4d15b88f1a91">CHECKFORLAVIM</a> = NO<code> [static]</code>          </td>
+          <td class="memname">int <a class="el" href="dicom_file_8m.html#ecda6680799124cb33dc2d6909b32ce9">CHECKFORLAVIM</a> = -1<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -275,12 +275,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="957a2485f5db253e6199d2b24c99999b"></a><!-- doxytag: member="dicomFile.m::PapyrusLock" ref="957a2485f5db253e6199d2b24c99999b" args="" -->
+<a class="anchor" name="476188598751074db6e5e8689f87ef88"></a><!-- doxytag: member="dicomFile.m::PapyrusLock" ref="476188598751074db6e5e8689f87ef88" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSLock* <a class="el" href="_safe_d_b_rebuild_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a>          </td>
+          <td class="memname">NSRecursiveLock* <a class="el" href="_dicom_file_d_c_m_t_k_category_8mm.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a>          </td>
         </tr>
       </table>
 </div>
@@ -365,7 +365,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

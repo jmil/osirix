@@ -16,6 +16,8 @@
 <code>#import &quot;<a class="el" href="_d_c_m_t_k_store_s_c_u_8h.html">DCMTKStoreSCU.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="browser_controller_8h.html">browserController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="dicom_file_8h.html">DicomFile.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_mutable_array_category_8h.html">MutableArrayCategory.h</a>&quot;</code><br>
 <code>#include &quot;osconfig.h&quot;</code><br>
 <code>#include &quot;ofstdinc.h&quot;</code><br>
 <code>#include &quot;ofstring.h&quot;</code><br>
@@ -43,8 +45,10 @@
 <code>#include &quot;dcrlerp.h&quot;</code><br>
 <code>#import &quot;<a class="el" href="_d_i_c_o_m_to_n_s_string_8h.html">DICOMToNSString.h</a>&quot;</code><br>
 <code>#import &lt;OsiriX/DCMObject.h&gt;</code><br>
+<code>#import &lt;OsiriX/DCM.h&gt;</code><br>
 <code>#import &lt;OsiriX/DCMTransferSyntax.h&gt;</code><br>
 <code>#import &quot;<a class="el" href="_send_controller_8h.html">SendController.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_open_g_l_screen_reader_8h.html">OpenGLScreenReader.h</a>&quot;</code><br>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
@@ -150,19 +154,19 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static OFString&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#77d44f17285748ddf831da77b7c577b4">accessionNumberPrefix</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static OFBool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#d7ac63ecd80b6a2eb163dd1612a5a1c1">opt_secureConnection</a> = OFFalse</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#5edb06286ac2697f72c00857f4c08b76">opt_configFile</a> = NULL</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#8a17d3bd4e87d76ae3a6461eb612cc70">opt_profileName</a> = NULL</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">T_DIMSE_BlockingMode&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#dcfd68364895b1666326b302631ad632">opt_blockMode</a> = DIMSE_BLOCKING</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">T_DIMSE_BlockingMode&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#dcfd68364895b1666326b302631ad632">opt_blockMode</a> = DIMSE_NONBLOCKING</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#5e514e2d657afca02a342c41031c589c">opt_dimse_timeout</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#3abfb84d4a629455bec8b83a1079b11e">opt_acse_timeout</a> = 30</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#93a34baf96f34f53316c90148ace8017">opt_Quality</a> = 90</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#1d54246868af1edf2ecdd7604edb37b9">inc</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#ffb5f34f39f7103b999d198b18ffed8e">seed</a> = 0</td></tr>
 
@@ -892,6 +896,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="1d54246868af1edf2ecdd7604edb37b9"></a><!-- doxytag: member="DCMTKStoreSCU.mm::inc" ref="1d54246868af1edf2ecdd7604edb37b9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="_query_controller_8mm.html#1d54246868af1edf2ecdd7604edb37b9">inc</a> = 0<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="553d876af65c4f70cd6060d64f24a603"></a><!-- doxytag: member="DCMTKStoreSCU.mm::lastStatusCode" ref="553d876af65c4f70cd6060d64f24a603" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -942,7 +961,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">T_DIMSE_BlockingMode <a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#dcfd68364895b1666326b302631ad632">opt_blockMode</a> = DIMSE_BLOCKING          </td>
+          <td class="memname">T_DIMSE_BlockingMode <a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#dcfd68364895b1666326b302631ad632">opt_blockMode</a> = DIMSE_NONBLOCKING          </td>
         </tr>
       </table>
 </div>
@@ -1207,21 +1226,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="d7ac63ecd80b6a2eb163dd1612a5a1c1"></a><!-- doxytag: member="DCMTKStoreSCU.mm::opt_secureConnection" ref="d7ac63ecd80b6a2eb163dd1612a5a1c1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">OFBool <a class="el" href="_d_c_m_t_k_store_s_c_u_8mm.html#d7ac63ecd80b6a2eb163dd1612a5a1c1">opt_secureConnection</a> = OFFalse<code> [static]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="cc32213f5a068ebf56544a336e4dd8c0"></a><!-- doxytag: member="DCMTKStoreSCU.mm::opt_showPresentationContexts" ref="cc32213f5a068ebf56544a336e4dd8c0" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1299,7 +1303,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

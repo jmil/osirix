@@ -19,20 +19,11 @@
     <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
   </ul>
 </div>
-<h1>SRView Class Reference</h1><!-- doxytag: class="SRView" --><!-- doxytag: inherits="VTKView" -->Surface Rendering View.  
+<h1>SRView Class Reference</h1><!-- doxytag: class="SRView" -->Surface Rendering View.  
 <a href="#_details">More...</a>
 <p>
 <code>#import &lt;SRView.h&gt;</code>
 <p>
-<div class="dynheader">
-Inheritance diagram for SRView:</div>
-<div class="dynsection">
-
-<p><center><img src="interface_s_r_view.png" usemap="#SRView_map" border="0" alt=""></center>
-<map name="SRView_map">
-<area href="interface_v_t_k_view.html" alt="VTKView" shape="rect" coords="0,0,64,24">
-</map>
-</div>
 
 <p>
 <a href="class_s_r_view-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
@@ -49,6 +40,8 @@ Inheritance diagram for SRView:</div>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#fe6fdc6ae628283204f0d2065f0aa81c">startRendering</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#182ca277f3ae8e4df1cbc7ffca9e6486">stopRendering</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#495482c46455e5a8dc7c6adca2044424">setViewSizeToMatrix3DExport</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#3dbd2a8f8aa2dd0491c52a244473e7f0">setCurrentTool:</a></td></tr>
 
@@ -118,6 +111,8 @@ Inheritance diagram for SRView:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#e6e4a2cc25d263a20edcf7e8058068e4">switchProjection:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#d5401080baa657a117c4f85a8054f5f8">restoreViewSizeAfterMatrix3DExport</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#38011965bddd7d8c0f274c3c5e67bbcd">add3DPoint:::::::</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#c67ba41795c2b520a7062529cec971cd">add3DPoint:::</a></td></tr>
@@ -170,7 +165,7 @@ Inheritance diagram for SRView:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#17b12bcc1c299aff2d15643eb2fba290">setAnnotationWithPosition:for3DPointAtIndex:</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#27330ecef85e554246fe5d2abfa76a7e">setAnnotation:for3DPointAtIndex:</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#9b18ae6b79a970a0c0bb8a3e6a9e184a">setAnnotation:for3DPointAtIndex:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_s_r_view.html#2a6305fb79afe1987e80d727b87f32e5">displayAnnotationFor3DPointAtIndex:</a></td></tr>
 
@@ -261,8 +256,6 @@ Inheritance diagram for SRView:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#bc230d832da410a71ba2df183b8fb988">rotationOrientation</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">vtkCallbackCommand *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#0df143c1360205382adc1c07b53c6708">cbStart</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSWindow *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#27f7b13dae1d154ecf5f29918e14097a">exportDCMWindow</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSSlider *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#21a4ea47401752b3da2e02c27a682c77">dcmframesSlider</a></td></tr>
@@ -327,7 +320,7 @@ Inheritance diagram for SRView:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_s_r_view_8h.html#6a988cceea137dadccc80c91b2a2f017">vtkMatrix4x4</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#92bbbaa7407cfcb208a74cbecb3a09e4">matriceBlending</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">vtkOrientationMarkerWidget *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#a90064e823bd2cfab6ac894d3474d0e1">orientationWidget</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_v_r_view___8h.html#adfef55aa47f4b26a41d36fd65b6ac5d">vtkOrientationMarkerWidget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#a90064e823bd2cfab6ac894d3474d0e1">orientationWidget</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSDate *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_s_r_view.html#43e32bdeb4add865834bc3514ad45b2b">startRenderingTime</a></td></tr>
 
@@ -552,6 +545,25 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="495482c46455e5a8dc7c6adca2044424"></a><!-- doxytag: member="SRView::setViewSizeToMatrix3DExport" ref="495482c46455e5a8dc7c6adca2044424" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) setViewSizeToMatrix3DExport           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="3dbd2a8f8aa2dd0491c52a244473e7f0"></a><!-- doxytag: member="SRView::setCurrentTool:" ref="3dbd2a8f8aa2dd0491c52a244473e7f0" args="(short i)" -->
 <div class="memitem">
 <div class="memproto">
@@ -589,8 +601,6 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 <div class="memdoc">
 
 <p>
-
-<p>Reimplemented from <a class="el" href="interface_v_t_k_view.html#2d013e24aa59d94bbb5e2f28e351dd6d">VTKView</a>.</p>
 
 </div>
 </div><p>
@@ -639,8 +649,6 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 <div class="memdoc">
 
 <p>
-
-<p>Reimplemented from <a class="el" href="interface_v_t_k_view.html#cabfa53f77ae43260b0aa2a2739a947f">VTKView</a>.</p>
 
 </div>
 </div><p>
@@ -1365,6 +1373,25 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="d5401080baa657a117c4f85a8054f5f8"></a><!-- doxytag: member="SRView::restoreViewSizeAfterMatrix3DExport" ref="d5401080baa657a117c4f85a8054f5f8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) restoreViewSizeAfterMatrix3DExport           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="38011965bddd7d8c0f274c3c5e67bbcd"></a><!-- doxytag: member="SRView::add3DPoint:::::::" ref="38011965bddd7d8c0f274c3c5e67bbcd" args="(double x,[] double y,[] double z,[] float radius,[] float r,[] float g,[] float b)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1987,14 +2014,14 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="27330ecef85e554246fe5d2abfa76a7e"></a><!-- doxytag: member="SRView::setAnnotation:for3DPointAtIndex:" ref="27330ecef85e554246fe5d2abfa76a7e" args="(char *annotation,[for3DPointAtIndex] unsigned int index)" -->
+<a class="anchor" name="9b18ae6b79a970a0c0bb8a3e6a9e184a"></a><!-- doxytag: member="SRView::setAnnotation:for3DPointAtIndex:" ref="9b18ae6b79a970a0c0bb8a3e6a9e184a" args="(const char *annotation,[for3DPointAtIndex] unsigned int index)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">- (void) setAnnotation:           </td>
           <td></td>
-          <td class="paramtype">(char*)&nbsp;</td>
+          <td class="paramtype">(const char*)&nbsp;</td>
           <td class="paramname"> <em>annotation</em></td>
         </tr>
         <tr>
@@ -2759,21 +2786,6 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
-<a class="anchor" name="0df143c1360205382adc1c07b53c6708"></a><!-- doxytag: member="SRView::cbStart" ref="0df143c1360205382adc1c07b53c6708" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (vtkCallbackCommand*) <a class="el" href="interface_s_r_view.html#0df143c1360205382adc1c07b53c6708">cbStart</a><code> [protected]</code>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="27f7b13dae1d154ecf5f29918e14097a"></a><!-- doxytag: member="SRView::exportDCMWindow" ref="27f7b13dae1d154ecf5f29918e14097a" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -3259,7 +3271,7 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (vtkOrientationMarkerWidget*) <a class="el" href="interface_s_r_view.html#a90064e823bd2cfab6ac894d3474d0e1">orientationWidget</a><code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="_v_r_view___8h.html#adfef55aa47f4b26a41d36fd65b6ac5d">vtkOrientationMarkerWidget</a>*) <a class="el" href="interface_s_r_view.html#a90064e823bd2cfab6ac894d3474d0e1">orientationWidget</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -3811,7 +3823,7 @@ Surface Rendering View. <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_s_r_view_8h.html">SRView.h</a><li><a class="el" href="_s_r_view_8mm.html">SRView.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:48 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:31 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

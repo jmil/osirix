@@ -54,6 +54,8 @@ Inheritance diagram for DCMTKQueryNode:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#1f77c3452cb62dbc3a7a86b96c397077">accessionNumber</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_string.html">NSString</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#602f74fef78be258668f36dba0d0fbd6">referringPhysician</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(DCMCalendarDate *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#7374b854ffa63b762c8bc5d83bec01f9">date</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(DCMCalendarDate *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#ebcaefe464020d74c9da779868396990">time</a></td></tr>
@@ -64,6 +66,8 @@ Inheritance diagram for DCMTKQueryNode:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#70150bbea7b0e4adf20a586a0fcd76e4">children</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#c4f9e7488215e79d0a604d24e23ba19b">purgeChildren</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#239ca5573764e05f6a8741324c5ed392">addChild:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(DcmDataset *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#53e0870d8baa15a704b9cb1cd6ed0471">queryPrototype</a></td></tr>
@@ -72,11 +76,15 @@ Inheritance diagram for DCMTKQueryNode:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#d3868e5a4a62d1850a8014142378b206">queryWithValues:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#943c704620a58cb55fa009fda86a16ea">queryWithValues:dataset:</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#c3b38512637f79ff415e79ef4931dd2a">move:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(NSManagedObject *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#c94cbf7dd1da567eb1884e51888611e3">logEntry</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#e46ca50923b55c3946f4b3bfd4cc1822">setLogEntry:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#7ffce67b54fb8750775d6aa32d2811f4">setShowErrorMessage:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(BOOL)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#520e43664a74917266927ce91465e081">setupNetworkWithSyntax:dataset:</a></td></tr>
 
@@ -96,6 +104,14 @@ Inheritance diagram for DCMTKQueryNode:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(OFCondition)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#d0fd6b4174cad3ed8634c438354bc287">moveSCU:network:dataset:destination:</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(OFCondition)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#2f159bd5d95306c3adb93d0ac932b934">cget:network:dataset:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(OFCondition)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#40f2c6e929a2909a3f4193a399e86565">getSCU:network:dataset:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#ef86657498016081a46a3ee6d6c176e4">move:retrieveMode:</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_d_c_m_t_k_query_node.html#c3b38512637f79ff415e79ef4931dd2a">move:</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(id)&nbsp;</td><td class="memItemRight" valign="bottom">+ <a class="el" href="interface_d_c_m_t_k_query_node.html#f1e8212543aab7a2629647dfcd68a151">queryNodeWithDataset:callingAET:calledAET:hostname:port:transferSyntax:compression:extraParameters:</a></td></tr>
 
@@ -109,6 +125,8 @@ Inheritance diagram for DCMTKQueryNode:</div>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#ab920c425e71276964131f9c7d70d14d">_name</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#467c4fab567e9d1a9ab5b6060406d746">_patientID</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#92e032feddd383d4b6cfd9edfcc02435">_referringPhysician</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#32d3fed488e47693a23c148def1227e5">_accessionNumber</a></td></tr>
 
@@ -125,6 +143,8 @@ Inheritance diagram for DCMTKQueryNode:</div>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#95937802534a2ba6b8854a812c5af672">_specificCharacterSet</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">NSManagedObject *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#78bb95cb658ba8d20148c4a88f05049f">_logEntry</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_d_c_m_t_k_query_node.html#1d1b43ae15be97be1609522f29c141ea">showErrorMessage</a></td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -354,6 +374,25 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="602f74fef78be258668f36dba0d0fbd6"></a><!-- doxytag: member="DCMTKQueryNode::referringPhysician" ref="602f74fef78be258668f36dba0d0fbd6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a> *) referringPhysician           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="7374b854ffa63b762c8bc5d83bec01f9"></a><!-- doxytag: member="DCMTKQueryNode::date" ref="7374b854ffa63b762c8bc5d83bec01f9" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -449,6 +488,25 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="c4f9e7488215e79d0a604d24e23ba19b"></a><!-- doxytag: member="DCMTKQueryNode::purgeChildren" ref="c4f9e7488215e79d0a604d24e23ba19b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) purgeChildren           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="239ca5573764e05f6a8741324c5ed392"></a><!-- doxytag: member="DCMTKQueryNode::addChild:" ref="239ca5573764e05f6a8741324c5ed392" args="(DcmDataset *dataset)" -->
 <div class="memitem">
 <div class="memproto">
@@ -527,6 +585,35 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="943c704620a58cb55fa009fda86a16ea"></a><!-- doxytag: member="DCMTKQueryNode::queryWithValues:dataset:" ref="943c704620a58cb55fa009fda86a16ea" args="(NSArray *values,[dataset] DcmDataset *dataset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) queryWithValues:           </td>
+          <td></td>
+          <td class="paramtype">(<a class="el" href="class_n_s_array.html">NSArray</a> *)&nbsp;</td>
+          <td class="paramname"> <em>values</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">dataset:</td>
+          <td></td>
+          <td class="paramtype">(DcmDataset*)&nbsp;</td>
+          <td class="paramname"> <em>dataset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="c3b38512637f79ff415e79ef4931dd2a"></a><!-- doxytag: member="DCMTKQueryNode::move:" ref="c3b38512637f79ff415e79ef4931dd2a" args="(NSDictionary *dict)" -->
 <div class="memitem">
 <div class="memproto">
@@ -575,6 +662,26 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
           <td></td>
           <td class="paramtype">(NSManagedObject *)&nbsp;</td>
           <td class="paramname"> <em>logEntry</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7ffce67b54fb8750775d6aa32d2811f4"></a><!-- doxytag: member="DCMTKQueryNode::setShowErrorMessage:" ref="7ffce67b54fb8750775d6aa32d2811f4" args="(BOOL m)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) setShowErrorMessage:           </td>
+          <td></td>
+          <td class="paramtype">(BOOL)&nbsp;</td>
+          <td class="paramname"> <em>m</em>          </td>
           <td>&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -891,6 +998,125 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="2f159bd5d95306c3adb93d0ac932b934"></a><!-- doxytag: member="DCMTKQueryNode::cget:network:dataset:" ref="2f159bd5d95306c3adb93d0ac932b934" args="(T_ASC_Association *assoc,[network] T_ASC_Network *net,[dataset] DcmDataset *dataset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (OFCondition) cget:           </td>
+          <td></td>
+          <td class="paramtype">(T_ASC_Association *)&nbsp;</td>
+          <td class="paramname"> <em>assoc</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">network:</td>
+          <td></td>
+          <td class="paramtype">(T_ASC_Network *)&nbsp;</td>
+          <td class="paramname"> <em>net</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">dataset:</td>
+          <td></td>
+          <td class="paramtype">(DcmDataset *)&nbsp;</td>
+          <td class="paramname"> <em>dataset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="40f2c6e929a2909a3f4193a399e86565"></a><!-- doxytag: member="DCMTKQueryNode::getSCU:network:dataset:" ref="40f2c6e929a2909a3f4193a399e86565" args="(T_ASC_Association *assoc,[network] T_ASC_Network *net,[dataset] DcmDataset *dataset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (OFCondition) getSCU:           </td>
+          <td></td>
+          <td class="paramtype">(T_ASC_Association *)&nbsp;</td>
+          <td class="paramname"> <em>assoc</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">network:</td>
+          <td></td>
+          <td class="paramtype">(T_ASC_Network *)&nbsp;</td>
+          <td class="paramname"> <em>net</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">dataset:</td>
+          <td></td>
+          <td class="paramtype">(DcmDataset *)&nbsp;</td>
+          <td class="paramname"> <em>dataset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ef86657498016081a46a3ee6d6c176e4"></a><!-- doxytag: member="DCMTKQueryNode::move:retrieveMode:" ref="ef86657498016081a46a3ee6d6c176e4" args="(NSDictionary *dict,[retrieveMode] int retrieveMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) move:           </td>
+          <td></td>
+          <td class="paramtype">(NSDictionary*)&nbsp;</td>
+          <td class="paramname"> <em>dict</em></td>
+        </tr>
+        <tr>
+          <td class="paramkey">retrieveMode:</td>
+          <td></td>
+          <td class="paramtype">(int)&nbsp;</td>
+          <td class="paramname"> <em>retrieveMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c3b38512637f79ff415e79ef4931dd2a"></a><!-- doxytag: member="DCMTKQueryNode::move:" ref="c3b38512637f79ff415e79ef4931dd2a" args="(NSDictionary *dict)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (void) move:           </td>
+          <td></td>
+          <td class="paramtype">(NSDictionary *)&nbsp;</td>
+          <td class="paramname"> <em>dict</em>          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr><h2>Member Data Documentation</h2>
 <a class="anchor" name="c6f6c46ac1dedea0812c9a7ac0206100"></a><!-- doxytag: member="DCMTKQueryNode::_children" ref="c6f6c46ac1dedea0812c9a7ac0206100" args="" -->
 <div class="memitem">
@@ -958,6 +1184,21 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a>*) <a class="el" href="interface_d_c_m_t_k_query_node.html#467c4fab567e9d1a9ab5b6060406d746">_patientID</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="92e032feddd383d4b6cfd9edfcc02435"></a><!-- doxytag: member="DCMTKQueryNode::_referringPhysician" ref="92e032feddd383d4b6cfd9edfcc02435" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (<a class="el" href="class_n_s_string.html">NSString</a>*) <a class="el" href="interface_d_c_m_t_k_query_node.html#92e032feddd383d4b6cfd9edfcc02435">_referringPhysician</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1087,9 +1328,24 @@ Base class for query nodes. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="1d1b43ae15be97be1609522f29c141ea"></a><!-- doxytag: member="DCMTKQueryNode::showErrorMessage" ref="1d1b43ae15be97be1609522f29c141ea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (BOOL) <a class="el" href="interface_d_c_m_t_k_query_node.html#1d1b43ae15be97be1609522f29c141ea">showErrorMessage</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_d_c_m_t_k_query_node_8h.html">DCMTKQueryNode.h</a><li><a class="el" href="_d_c_m_t_k_query_node_8mm.html">DCMTKQueryNode.mm</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

@@ -14,16 +14,16 @@
 </div>
 <h1>DCMPix.m File Reference</h1><code>#import &lt;<a class="el" href="_d_c_m_pix_8h.html">DCMPix.h</a>&gt;</code><br>
 <code>#import &quot;<a class="el" href="_dicom_image_8h.html">DicomImage.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="x_n_s_image_8h.html">xNSImage.h</a>&quot;</code><br>
 <code>#import &quot;Papyrus3/Papyrus3.h&quot;</code><br>
 <code>#import &lt;QuickTime/QuickTime.h&gt;</code><br>
 <code>#import &lt;OsiriX/DCM.h&gt;</code><br>
 <code>#import &lt;OsiriX/DCMAbstractSyntaxUID.h&gt;</code><br>
 <code>#import &quot;<a class="el" href="browser_controller_8h.html">BrowserController.h</a>&quot;</code><br>
-<code>#import &quot;<a class="el" href="_d_o_client_8h.html">DOClient.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_browser_controller_d_c_m_t_k_category_8h.html">BrowserControllerDCMTKCategory.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_plugin_manager_8h.html">PluginManager.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_r_o_i_8h.html">ROI.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="_r_o_i_s_r_converter_8h.html">ROISRConverter.h</a>&quot;</code><br>
+<code>#import &quot;<a class="el" href="_notifications_8h.html">Notifications.h</a>&quot;</code><br>
 <code>#import &lt;<a class="el" href="_d_c_m_view_8h.html">DCMView.h</a>&gt;</code><br>
 <code>#import &quot;<a class="el" href="_thick_slab_controller_8h.html">ThickSlabController.h</a>&quot;</code><br>
 <code>#import &quot;<a class="el" href="dicom_file_8h.html">dicomFile.h</a>&quot;</code><br>
@@ -52,23 +52,21 @@
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#2aeb4dae45debff2125ea4a298f8aea6">PREVIEWSIZE</a>&nbsp;&nbsp;&nbsp;70.0</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#ec4ab7d9387f64d9430336f7c314552c">MAXVERTICAL</a>&nbsp;&nbsp;&nbsp;10000</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#986918a16aa6b4a95219cc98a4b5998f">INIT_DELTAS</a>&nbsp;&nbsp;&nbsp;dx=<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">V2.x</a>-<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">V1.x</a>;  dy=<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">V2.y</a>-<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">V1.y</a>;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#751e089f9907ccac1d7e0c1a7ddb17ef">INIT_CLIP</a>&nbsp;&nbsp;&nbsp;INIT_DELTAS if(dx)m=dy/dx;</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#ec4ab7d9387f64d9430336f7c314552c">MAXVERTICAL</a>&nbsp;&nbsp;&nbsp;10000</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d9e168d90ced0a6e990e495bf9405d88">SetPixel</a>(<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>, <a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>, c)&nbsp;&nbsp;&nbsp;FrameBuffer[<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>*WIDTH+<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>]=c;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d9e168d90ced0a6e990e495bf9405d88">SetPixel</a>(<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>, <a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>, <a class="el" href="_n_s_split_view_save_8m.html#e78103ab33f03590e84ff7bc735629d7">c</a>)&nbsp;&nbsp;&nbsp;FrameBuffer[<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>*WIDTH+<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>]=<a class="el" href="_n_s_split_view_save_8m.html#e78103ab33f03590e84ff7bc735629d7">c</a>;</td></tr>
 
 <tr><td colspan="2"><br><h2>Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">typedef struct <a class="el" href="struct_n_s_point_int.html">NSPointInt</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#3f9fcb0f287679d65de64de74799f85b">NSPointInt</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#aafa7d3fab3dd74a378d8eef1b307ca8">convertDICOM</a> (<a class="el" href="class_n_s_string.html">NSString</a> *inputfile)</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#638999152041529a86234b935782354a">filenameWithDate</a> (<a class="el" href="class_n_s_string.html">NSString</a> *inputfile)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#42a826cb5f3293276dee8a5c30aa651b">documentsDirectory</a> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#b3521b5ea598519af51e8462fdcad4b1">PapyrusLockFunction</a> (int lock)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#efddecbe0d171f3227be64e0355ac385">ConvertFloatToNative</a> (float *theFloat)</td></tr>
 
@@ -78,7 +76,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d6b270c7d2c0321e8d388a4d878720da">MySubtractTime</a> (uint64_t endTime, uint64_t startTime)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#de31497195bc9792e11583346ba6ca4f">CreateIconFrom16</a> (float *image, unsigned char *icon, int height, int width, int <a class="el" href="_d_c_m_pix_8m.html#6dd26ff5497960279d2313e2f7f72f24">rowBytes</a>, long <a class="el" href="_camera_8m.html#671484dd22e7122b7bd6086c55afb047">wl</a>, long <a class="el" href="_camera_8m.html#fbd6ec0476c79137f4776f8768082abb">ww</a>, BOOL <a class="el" href="_d_c_m_pix_8m.html#e37a0c298c07b530c86e4930c88303dc">isRGB</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#a522f80c2f12f7df81f33619aa260ae1">CreateIconFrom16</a> (float *image, unsigned char *icon, int height, int width, int iconWidth, long <a class="el" href="_camera_8m.html#671484dd22e7122b7bd6086c55afb047">wl</a>, long <a class="el" href="_camera_8m.html#fbd6ec0476c79137f4776f8768082abb">ww</a>, BOOL <a class="el" href="_d_c_m_pix_8m.html#e37a0c298c07b530c86e4930c88303dc">isRGB</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#cfdf4f28a13ff04a7027554c0e12c918">CLIP_Left</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *Polygon, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> V1, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> V2)</td></tr>
 
@@ -88,7 +86,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#69d18ffd1ceb09e9a276a764e71e1c5f">CLIP_Bottom</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *Polygon, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> V1, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> V2, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> DownRight)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#8afb7d0df859c3e413b82f4b8d553f25">CLIP_Polygon</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *inPoly, long inCount, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *outPoly, long *outCount, long w, long h)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#8afb7d0df859c3e413b82f4b8d553f25">CLIP_Polygon</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *inPoly, long inCount, <a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *outPoly, long *outCount, long w, long <a class="el" href="_n_s_split_view_save_8m.html#85f2f1bd58b3b44ffdf3881823393959">h</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#fde5d39b49691e8aecca84207456009a">sgn</a> (long <a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>)</td></tr>
 
@@ -96,9 +94,9 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">struct <a class="el" href="structedge.html">edge</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#5220f3a30e437871b9f3db189d491b84">UpdateActive</a> (struct <a class="el" href="structedge.html">edge</a> *active, struct <a class="el" href="structedge.html">edge</a> *edgeTable[], long curY)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7dd0dfe5e188dca57c62f57992ac1c08">DrawRuns</a> (struct <a class="el" href="structedge.html">edge</a> *active, long curY, float *<a class="el" href="_r_o_i_8m.html#8b4b8dc5e8a3a32e4589bf54d1c44dd0">pix</a>, long w, long h, float min, float max, BOOL outside, float newVal, BOOL addition, BOOL RGB, BOOL compute, float *imax, float *imin, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, float *itotal, float *idev, float imean, long orientation, long stackNo, BOOL restore)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7dd0dfe5e188dca57c62f57992ac1c08">DrawRuns</a> (struct <a class="el" href="structedge.html">edge</a> *active, long curY, float *<a class="el" href="_r_o_i_8m.html#8b4b8dc5e8a3a32e4589bf54d1c44dd0">pix</a>, long w, long <a class="el" href="_n_s_split_view_save_8m.html#85f2f1bd58b3b44ffdf3881823393959">h</a>, float min, float <a class="el" href="_r_o_i_8m.html#edae9fcc30c83bba7e07a3f0ccda595a">max</a>, BOOL outside, float newVal, BOOL addition, BOOL RGB, BOOL compute, float *imax, float *imin, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, float *itotal, float *idev, float imean, long orientation, long stackNo, BOOL restore)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#666d2925f746e94b635f8f6c1b5d3528">ras_FillPolygon</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d51bbd59afc6ba88f8e40003aafc1877">p</a>, long no, float *<a class="el" href="_r_o_i_8m.html#8b4b8dc5e8a3a32e4589bf54d1c44dd0">pix</a>, long w, long h, long s, float min, float max, BOOL outside, float newVal, BOOL addition, BOOL RGB, BOOL compute, float *imax, float *imin, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, float *itotal, float *idev, float imean, long orientation, long stackNo, BOOL restore)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#666d2925f746e94b635f8f6c1b5d3528">ras_FillPolygon</a> (<a class="el" href="struct_n_s_point_int.html">NSPointInt</a> *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d51bbd59afc6ba88f8e40003aafc1877">p</a>, long no, float *<a class="el" href="_r_o_i_8m.html#8b4b8dc5e8a3a32e4589bf54d1c44dd0">pix</a>, long w, long <a class="el" href="_n_s_split_view_save_8m.html#85f2f1bd58b3b44ffdf3881823393959">h</a>, long s, float min, float <a class="el" href="_r_o_i_8m.html#edae9fcc30c83bba7e07a3f0ccda595a">max</a>, BOOL outside, float newVal, BOOL addition, BOOL RGB, BOOL compute, float *imax, float *imin, long *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, float *itotal, float *idev, float imean, long orientation, long stackNo, BOOL restore)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#874d0ebdc0cbac64eee9aebe3221db92">pnpoly</a> (NSPoint *<a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d51bbd59afc6ba88f8e40003aafc1877">p</a>, long <a class="el" href="vtk_power_crust_surface_reconstruction_8cxx.html#d43c3812e6d13e0518d9f8b8f463ffcf">count</a>, float <a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>, float <a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>)</td></tr>
 
@@ -109,21 +107,45 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#1ea7f20cab44ebb32a5c247b63e93509">erase_outside_circle</a> (char *buf, int width, int height, int cx, int cy, int rad, char blackIndex)</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7365966e1648696a0cbac818ac04c170">gUserDefaultsSet</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#216e846eff7b043b782605a8a7a432cb">gUseShutter</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#9efa280c9816b643feaa9e1b8bb31138">gDisplayDICOMOverlays</a> = YES</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d6e0ad5ad4405b34b612e9833854561b">gUseVOILUT</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#ee00abfd92cf4fbac458d9058dd9fe9c">gUseJPEGColorSpace</a> = NO</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6dbdf0e2bdb2b9bd3a37ca2f144dd26a">gUSEPAPYRUSDCMPIX</a> = YES</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#581af137b704589ba4967e815dda841b">gFULL32BITPIPELINE</a> = NO</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#09d46ec21dc4b5dba7860f61cb06134d">anonymizedAnnotations</a> = NO</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#e05cb909e2e1dc7147e57b4f0d0379c8">runOsiriXInProtectedMode</a> = NO</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#113d3b14e816cc580943e39ffed1ef8d">quicktimeRunning</a> = NO</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6cebc057f9df05d2170808bbb21e192b">quicktimeThreadLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6cebc057f9df05d2170808bbb21e192b">quicktimeThreadLock</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d1f16dcc5e61b27e267856e5d644af9f">nonLinearWLWWThreads</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <br>
+NSMutableDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#33d13cfbd793ff409a10ba4aebb2cfb4">cachedPapyGroups</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#c7e8fdab8a481cd5566c2fd89a72cc8d">minmaxThreads</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <br>
+NSMutableDictionary *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#36e5822ec5c1c90f07008c7bf2b02bf7">cachedDCMFrameworkFiles</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSConditionLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#164568fb7540867131562154cdb0dafc">processorsLock</a> = 0L</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d1f16dcc5e61b27e267856e5d644af9f">nonLinearWLWWThreads</a> = nil</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static <a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#c7e8fdab8a481cd5566c2fd89a72cc8d">minmaxThreads</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSConditionLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#164568fb7540867131562154cdb0dafc">processorsLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static NSConditionLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#30619986a5fc55eaf732af684d98aafa">purgeCacheLock</a> = nil</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6fddc70e5c5cb4d77e0b6280159ec720">deg2rad</a> = 3.14159265358979/180.0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">NSRecursiveLock *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">short&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#0ac0f83b9393a82b439970e3465f60bc">Altivec</a></td></tr>
 
@@ -133,11 +155,27 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#2c56c0fb9cd739d83f6f6b9fc0e6db10">stackDirection</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#f2ff5446a796e31230c98fd8e360446a">full32bitPipeline</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#dc007f47c2e2789fcbea60184a57aac5">needToCompute8bitRepresentation</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#40664ff611cd679f2a8220c67828662f">subtractedfImage</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#f9fc864bb9cdd68c345acbe570cc1928">frameNo</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6537985675694eb68eb2a535e491236f">notAbleToLoadImage</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#70a821c698e8cea295c3857b5632814f">shutterPolygonal</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#485bf5e1f8908e9e002187cb0a253c26">minValueOfSeries</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#5486045e7f203243ee4df928f05c405c">maxValueOfSeries</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#763864e68316415f60bcec42e8c5ebdb">factorPET2SUV</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#fbad19a2c44d107cdfbd6798f92f18f5">slope</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d6be9db7e948f17e6480d75cf0690fdf">offset</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#e37a0c298c07b530c86e4930c88303dc">isRGB</a></td></tr>
 
@@ -151,6 +189,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7211c0bbf2969bf2c099756fdda8ccc5">subPixOffset</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#aab5aa2d16eaf30d5c9204360042780e">isOriginDefined</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#de02d669daee0c5ace07d8b9930c6b76">DCMPixShutterRectWidth</a> = shutterRect_w</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#fcbc6ec1c231a519317108ee1ad3be17">DCMPixShutterRectHeight</a> = shutterRect_h</td></tr>
@@ -158,6 +198,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d1a6864071f307e2454df55d67b911c8">DCMPixShutterRectOriginX</a> = shutterRect_x</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#2a3262558cdd6e207b567bdfb105a94e">DCMPixShutterRectOriginY</a> = shutterRect_y</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7321e393af8afe3028b26bba8b56928b">frameOfReferenceUID</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#3cbdb741d63841dad7db85836a0ecaa2">repetitiontime</a></td></tr>
 
@@ -173,8 +215,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#84602f3d58c3883a80c6237e2c57f7ac">patientPosition</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6dd26ff5497960279d2313e2f7f72f24">rowBytes</a></td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#ebdc24d7d4063a214c0ac3530dc3c833">serieNo</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d06f8b7ff662e9eb053b8f11eabfd2e7">pixArray</a></td></tr>
@@ -187,7 +227,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#0cf36087683cfd9e61e55a53b9b8ccce">generated</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#eacb9d8f23aa1230da1ba1d6a845ed46">sourceFile</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7daec878cf486ba7e2cbf49bf500b2dc">generatedName</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7312419edf336b93025f41c4e378290e">imageObj</a></td></tr>
 
@@ -207,6 +247,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#407a1d6af3d4f4da9df2fdc5e13a0abf">acquisitionTime</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#b528a4de78ab5c5b9a1e85b7bcdaf8ac">acquisitionDate</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#2a3716ba5fcd6ec1823c934b0eec79df">radiopharmaceuticalStartTime</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#184a903eb44f411ac4709b26b7f4a299">SUVConverted</a></td></tr>
@@ -222,18 +264,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#86955593647c5023f41809f803f00652">displaySUVValue</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">synthesize&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#2e432c67768e49ba5c4502d9b9a2bb68">isLUT12Bit</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#7365966e1648696a0cbac818ac04c170">gUserDefaultsSet</a> = NO</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#216e846eff7b043b782605a8a7a432cb">gUseShutter</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#9efa280c9816b643feaa9e1b8bb31138">gDisplayDICOMOverlays</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#d6e0ad5ad4405b34b612e9833854561b">gUseVOILUT</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#ee00abfd92cf4fbac458d9058dd9fe9c">gUseJPEGColorSpace</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="_d_c_m_pix_8m.html#6dbdf0e2bdb2b9bd3a37ca2f144dd26a">gUSEPAPYRUSDCMPIX</a></td></tr>
 
 </table>
 <hr><h2>Define Documentation</h2>
@@ -310,10 +340,10 @@
           <td class="paramtype"><a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>,         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">c&nbsp;</td>
+          <td class="paramtype"><a class="el" href="_n_s_split_view_save_8m.html#e78103ab33f03590e84ff7bc735629d7">c</a>&nbsp;</td>
           <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
-          <td width="100%">&nbsp;&nbsp;&nbsp;FrameBuffer[<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>*WIDTH+<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>]=c;</td>
+          <td width="100%">&nbsp;&nbsp;&nbsp;FrameBuffer[<a class="el" href="_point3_d_8m.html#30abd9c7e2881402340594c7c873f503">y</a>*WIDTH+<a class="el" href="_point3_d_8m.html#457b04578da9c94764793899686dc480">x</a>]=<a class="el" href="_n_s_split_view_save_8m.html#e78103ab33f03590e84ff7bc735629d7">c</a>;</td>
         </tr>
       </table>
 </div>
@@ -622,26 +652,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="aafa7d3fab3dd74a378d8eef1b307ca8"></a><!-- doxytag: member="DCMPix.m::convertDICOM" ref="aafa7d3fab3dd74a378d8eef1b307ca8" args="(NSString *inputfile)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* convertDICOM           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td>
-          <td class="paramname"> <em>inputfile</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="efddecbe0d171f3227be64e0355ac385"></a><!-- doxytag: member="DCMPix.m::ConvertFloatToNative" ref="efddecbe0d171f3227be64e0355ac385" args="(float *theFloat)" -->
 <div class="memitem">
 <div class="memproto">
@@ -662,7 +672,7 @@
 
 </div>
 </div><p>
-<a class="anchor" name="de31497195bc9792e11583346ba6ca4f"></a><!-- doxytag: member="DCMPix.m::CreateIconFrom16" ref="de31497195bc9792e11583346ba6ca4f" args="(float *image, unsigned char *icon, int height, int width, int rowBytes, long wl, long ww, BOOL isRGB)" -->
+<a class="anchor" name="a522f80c2f12f7df81f33619aa260ae1"></a><!-- doxytag: member="DCMPix.m::CreateIconFrom16" ref="a522f80c2f12f7df81f33619aa260ae1" args="(float *image, unsigned char *icon, int height, int width, int iconWidth, long wl, long ww, BOOL isRGB)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -694,7 +704,7 @@
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>rowBytes</em>, </td>
+          <td class="paramname"> <em>iconWidth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -718,25 +728,6 @@
           <td></td>
           <td>)</td>
           <td></td><td></td><td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="42a826cb5f3293276dee8a5c30aa651b"></a><!-- doxytag: member="DCMPix.m::documentsDirectory" ref="42a826cb5f3293276dee8a5c30aa651b" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_n_s_string.html">NSString</a>* documentsDirectory           </td>
-          <td>(</td>
-          <td class="paramname">          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -1043,6 +1034,26 @@
           <td></td>
           <td>)</td>
           <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b3521b5ea598519af51e8462fdcad4b1"></a><!-- doxytag: member="DCMPix.m::PapyrusLockFunction" ref="b3521b5ea598519af51e8462fdcad4b1" args="(int lock)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PapyrusLockFunction           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>lock</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
         </tr>
       </table>
 </div>
@@ -1359,6 +1370,21 @@
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
+<a class="anchor" name="b528a4de78ab5c5b9a1e85b7bcdaf8ac"></a><!-- doxytag: member="DCMPix.m::acquisitionDate" ref="b528a4de78ab5c5b9a1e85b7bcdaf8ac" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#b528a4de78ab5c5b9a1e85b7bcdaf8ac">acquisitionDate</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="407a1d6af3d4f4da9df2fdc5e13a0abf"></a><!-- doxytag: member="DCMPix.m::acquisitionTime" ref="407a1d6af3d4f4da9df2fdc5e13a0abf" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1410,6 +1436,36 @@
       <table class="memname">
         <tr>
           <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#09d46ec21dc4b5dba7860f61cb06134d">anonymizedAnnotations</a> = NO          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="36e5822ec5c1c90f07008c7bf2b02bf7"></a><!-- doxytag: member="DCMPix.m::cachedDCMFrameworkFiles" ref="36e5822ec5c1c90f07008c7bf2b02bf7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSMutableDictionary* <a class="el" href="_d_c_m_pix_8m.html#36e5822ec5c1c90f07008c7bf2b02bf7">cachedDCMFrameworkFiles</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="33d13cfbd793ff409a10ba4aebb2cfb4"></a><!-- doxytag: member="DCMPix.m::cachedPapyGroups" ref="33d13cfbd793ff409a10ba4aebb2cfb4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSMutableDictionary* <a class="el" href="_d_c_m_pix_8m.html#33d13cfbd793ff409a10ba4aebb2cfb4">cachedPapyGroups</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1524,6 +1580,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="6fddc70e5c5cb4d77e0b6280159ec720"></a><!-- doxytag: member="DCMPix.m::deg2rad" ref="6fddc70e5c5cb4d77e0b6280159ec720" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="_viewer_controller_8m.html#6fddc70e5c5cb4d77e0b6280159ec720">deg2rad</a> = 3.14159265358979/180.0<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="86955593647c5023f41809f803f00652"></a><!-- doxytag: member="DCMPix.m::displaySUVValue" ref="86955593647c5023f41809f803f00652" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1545,6 +1616,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#fa408a3b5d1cbcefac6836138a7e8908">echotime</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="763864e68316415f60bcec42e8c5ebdb"></a><!-- doxytag: member="DCMPix.m::factorPET2SUV" ref="763864e68316415f60bcec42e8c5ebdb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#763864e68316415f60bcec42e8c5ebdb">factorPET2SUV</a>          </td>
         </tr>
       </table>
 </div>
@@ -1584,12 +1670,42 @@
 
 </div>
 </div><p>
+<a class="anchor" name="7321e393af8afe3028b26bba8b56928b"></a><!-- doxytag: member="DCMPix.m::frameOfReferenceUID" ref="7321e393af8afe3028b26bba8b56928b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#7321e393af8afe3028b26bba8b56928b">frameOfReferenceUID</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f2ff5446a796e31230c98fd8e360446a"></a><!-- doxytag: member="DCMPix.m::full32bitPipeline" ref="f2ff5446a796e31230c98fd8e360446a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#f2ff5446a796e31230c98fd8e360446a">full32bitPipeline</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="9efa280c9816b643feaa9e1b8bb31138"></a><!-- doxytag: member="DCMPix.m::gDisplayDICOMOverlays" ref="9efa280c9816b643feaa9e1b8bb31138" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#9efa280c9816b643feaa9e1b8bb31138">gDisplayDICOMOverlays</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#9efa280c9816b643feaa9e1b8bb31138">gDisplayDICOMOverlays</a> = YES          </td>
         </tr>
       </table>
 </div>
@@ -1614,12 +1730,42 @@
 
 </div>
 </div><p>
+<a class="anchor" name="7daec878cf486ba7e2cbf49bf500b2dc"></a><!-- doxytag: member="DCMPix.m::generatedName" ref="7daec878cf486ba7e2cbf49bf500b2dc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#7daec878cf486ba7e2cbf49bf500b2dc">generatedName</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="581af137b704589ba4967e815dda841b"></a><!-- doxytag: member="DCMPix.m::gFULL32BITPIPELINE" ref="581af137b704589ba4967e815dda841b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#581af137b704589ba4967e815dda841b">gFULL32BITPIPELINE</a> = NO          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="ee00abfd92cf4fbac458d9058dd9fe9c"></a><!-- doxytag: member="DCMPix.m::gUseJPEGColorSpace" ref="ee00abfd92cf4fbac458d9058dd9fe9c" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#ee00abfd92cf4fbac458d9058dd9fe9c">gUseJPEGColorSpace</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#ee00abfd92cf4fbac458d9058dd9fe9c">gUseJPEGColorSpace</a> = NO          </td>
         </tr>
       </table>
 </div>
@@ -1634,7 +1780,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#6dbdf0e2bdb2b9bd3a37ca2f144dd26a">gUSEPAPYRUSDCMPIX</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#6dbdf0e2bdb2b9bd3a37ca2f144dd26a">gUSEPAPYRUSDCMPIX</a> = YES          </td>
         </tr>
       </table>
 </div>
@@ -1664,7 +1810,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#216e846eff7b043b782605a8a7a432cb">gUseShutter</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#216e846eff7b043b782605a8a7a432cb">gUseShutter</a> = NO          </td>
         </tr>
       </table>
 </div>
@@ -1679,7 +1825,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#d6e0ad5ad4405b34b612e9833854561b">gUseVOILUT</a>          </td>
+          <td class="memname">BOOL <a class="el" href="_d_c_m_pix_8m.html#d6e0ad5ad4405b34b612e9833854561b">gUseVOILUT</a> = NO          </td>
         </tr>
       </table>
 </div>
@@ -1749,6 +1895,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="aab5aa2d16eaf30d5c9204360042780e"></a><!-- doxytag: member="DCMPix.m::isOriginDefined" ref="aab5aa2d16eaf30d5c9204360042780e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#aab5aa2d16eaf30d5c9204360042780e">isOriginDefined</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="e37a0c298c07b530c86e4930c88303dc"></a><!-- doxytag: member="DCMPix.m::isRGB" ref="e37a0c298c07b530c86e4930c88303dc" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1799,7 +1960,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_d_c_m_pix_8m.html#c7e8fdab8a481cd5566c2fd89a72cc8d">minmaxThreads</a> = 0L<code> [static]</code>          </td>
+          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_d_c_m_pix_8m.html#c7e8fdab8a481cd5566c2fd89a72cc8d">minmaxThreads</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1824,12 +1985,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="d1f16dcc5e61b27e267856e5d644af9f"></a><!-- doxytag: member="DCMPix.m::nonLinearWLWWThreads" ref="d1f16dcc5e61b27e267856e5d644af9f" args="" -->
+<a class="anchor" name="dc007f47c2e2789fcbea60184a57aac5"></a><!-- doxytag: member="DCMPix.m::needToCompute8bitRepresentation" ref="dc007f47c2e2789fcbea60184a57aac5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_d_c_m_pix_8m.html#d1f16dcc5e61b27e267856e5d644af9f">nonLinearWLWWThreads</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#dc007f47c2e2789fcbea60184a57aac5">needToCompute8bitRepresentation</a>          </td>
         </tr>
       </table>
 </div>
@@ -1839,12 +2000,57 @@
 
 </div>
 </div><p>
-<a class="anchor" name="957a2485f5db253e6199d2b24c99999b"></a><!-- doxytag: member="DCMPix.m::PapyrusLock" ref="957a2485f5db253e6199d2b24c99999b" args="" -->
+<a class="anchor" name="d1f16dcc5e61b27e267856e5d644af9f"></a><!-- doxytag: member="DCMPix.m::nonLinearWLWWThreads" ref="d1f16dcc5e61b27e267856e5d644af9f" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSLock* <a class="el" href="_safe_d_b_rebuild_8m.html#957a2485f5db253e6199d2b24c99999b">PapyrusLock</a>          </td>
+          <td class="memname"><a class="el" href="class_n_s_mutable_array.html">NSMutableArray</a>* <a class="el" href="_d_c_m_pix_8m.html#d1f16dcc5e61b27e267856e5d644af9f">nonLinearWLWWThreads</a> = nil<code> [static]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6537985675694eb68eb2a535e491236f"></a><!-- doxytag: member="DCMPix.m::notAbleToLoadImage" ref="6537985675694eb68eb2a535e491236f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#6537985675694eb68eb2a535e491236f">notAbleToLoadImage</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d6be9db7e948f17e6480d75cf0690fdf"></a><!-- doxytag: member="DCMPix.m::offset" ref="d6be9db7e948f17e6480d75cf0690fdf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#d6be9db7e948f17e6480d75cf0690fdf">offset</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="476188598751074db6e5e8689f87ef88"></a><!-- doxytag: member="DCMPix.m::PapyrusLock" ref="476188598751074db6e5e8689f87ef88" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSRecursiveLock* <a class="el" href="_dicom_file_d_c_m_t_k_category_8mm.html#476188598751074db6e5e8689f87ef88">PapyrusLock</a>          </td>
         </tr>
       </table>
 </div>
@@ -1964,7 +2170,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSConditionLock* <a class="el" href="_d_c_m_pix_8m.html#164568fb7540867131562154cdb0dafc">processorsLock</a> = 0L<code> [static]</code>          </td>
+          <td class="memname">NSConditionLock* <a class="el" href="_d_c_m_pix_8m.html#164568fb7540867131562154cdb0dafc">processorsLock</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1980,6 +2186,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#c8597ba9730291d5d08540ad4791ea96">protocolName</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="30619986a5fc55eaf732af684d98aafa"></a><!-- doxytag: member="DCMPix.m::purgeCacheLock" ref="30619986a5fc55eaf732af684d98aafa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSConditionLock* <a class="el" href="_d_c_m_pix_8m.html#30619986a5fc55eaf732af684d98aafa">purgeCacheLock</a> = nil<code> [static]</code>          </td>
         </tr>
       </table>
 </div>
@@ -2024,7 +2245,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NSLock* <a class="el" href="_d_c_m_pix_8m.html#6cebc057f9df05d2170808bbb21e192b">quicktimeThreadLock</a> = 0L          </td>
+          <td class="memname">NSLock* <a class="el" href="_d_c_m_pix_8m.html#6cebc057f9df05d2170808bbb21e192b">quicktimeThreadLock</a> = nil          </td>
         </tr>
       </table>
 </div>
@@ -2109,21 +2330,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="6dd26ff5497960279d2313e2f7f72f24"></a><!-- doxytag: member="DCMPix.m::rowBytes" ref="6dd26ff5497960279d2313e2f7f72f24" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#6dd26ff5497960279d2313e2f7f72f24">rowBytes</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="e05cb909e2e1dc7147e57b4f0d0379c8"></a><!-- doxytag: member="DCMPix.m::runOsiriXInProtectedMode" ref="e05cb909e2e1dc7147e57b4f0d0379c8" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -2154,12 +2360,27 @@
 
 </div>
 </div><p>
-<a class="anchor" name="eacb9d8f23aa1230da1ba1d6a845ed46"></a><!-- doxytag: member="DCMPix.m::sourceFile" ref="eacb9d8f23aa1230da1ba1d6a845ed46" args="" -->
+<a class="anchor" name="70a821c698e8cea295c3857b5632814f"></a><!-- doxytag: member="DCMPix.m::shutterPolygonal" ref="70a821c698e8cea295c3857b5632814f" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#eacb9d8f23aa1230da1ba1d6a845ed46">sourceFile</a>          </td>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#70a821c698e8cea295c3857b5632814f">shutterPolygonal</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="fbad19a2c44d107cdfbd6798f92f18f5"></a><!-- doxytag: member="DCMPix.m::slope" ref="fbad19a2c44d107cdfbd6798f92f18f5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#fbad19a2c44d107cdfbd6798f92f18f5">slope</a>          </td>
         </tr>
       </table>
 </div>
@@ -2220,6 +2441,21 @@
       <table class="memname">
         <tr>
           <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#7211c0bbf2969bf2c099756fdda8ccc5">subPixOffset</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="40664ff611cd679f2a8220c67828662f"></a><!-- doxytag: member="DCMPix.m::subtractedfImage" ref="40664ff611cd679f2a8220c67828662f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">synthesize <a class="el" href="_d_c_m_pix_8m.html#40664ff611cd679f2a8220c67828662f">subtractedfImage</a>          </td>
         </tr>
       </table>
 </div>
@@ -2304,7 +2540,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:46 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:29 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>

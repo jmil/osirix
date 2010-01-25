@@ -47,6 +47,10 @@ Inheritance diagram for OrthogonalMPRViewer:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(<a class="el" href="interface_viewer_controller.html">ViewerController</a> *)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#9234568bf6c751c6848c99b00949a65a">viewer</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(short)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#2788cb97d525bd17a70f0e4968bb9c81">curMovieIndex</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">(short)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#2312e48b8cdd2a8020dd7c9e0aadf316">maxMovieIndex</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#a034e5d6a2337cba977f16ddcff433ec">ApplyCLUTString:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#da949efcba9a843938222c6b3512e163">setWLWW::</a></td></tr>
@@ -66,8 +70,6 @@ Inheritance diagram for OrthogonalMPRViewer:</div>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(IBAction)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#4c1d4fca0a468c67e0fca7748e388c93">activateThickSlab:</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#273633e5e21a66f7b185b180b5cc54f4">adjustSplitView</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#0a532977d205d81cc84184cb462a7d96">turnSplitView</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">(void)&nbsp;</td><td class="memItemRight" valign="bottom">- <a class="el" href="interface_orthogonal_m_p_r_viewer.html#6ff94aba3ebd782199961b8ccf2fd75a">updateToolbarItems</a></td></tr>
 
@@ -181,6 +183,8 @@ Inheritance diagram for OrthogonalMPRViewer:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSTextField *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#e7fe197da4de495ea12c6fb8b08d23cc">dcmIntervalTextField</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSTextField *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#0d3981c4e1c5a07a100b96426199f32c">dcmCountTextField</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSBox *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#f5d5e3867681d73702b50423618b2cf2">dcmBox</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="interface_d_i_c_o_m_export.html">DICOMExport</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#be19bb5f84b6bdafbbc23ecd0c1c719f">exportDCM</a></td></tr>
@@ -199,7 +203,7 @@ Inheritance diagram for OrthogonalMPRViewer:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_string.html">NSString</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#867c49ad5e51d0a50adb8bd3227d94d4">curOpacityMenu</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">NSData *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#2d0fbf0a539f44e5de4ecb27e6a860ee">transferFunction</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="class_n_s_data.html">NSData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#2d0fbf0a539f44e5de4ecb27e6a860ee">transferFunction</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">IBOutlet NSView *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_orthogonal_m_p_r_viewer.html#a112d340d4b43afd031881032a690b7e">movieView</a></td></tr>
 
@@ -243,7 +247,7 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
         <tr>
           <td class="paramkey">:</td>
           <td></td>
-          <td class="paramtype">(NSData*)&nbsp;</td>
+          <td class="paramtype">(<a class="el" href="class_n_s_data.html">NSData</a>*)&nbsp;</td>
           <td class="paramname"> <em>vData</em></td>
         </tr>
         <tr>
@@ -315,6 +319,44 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">- (<a class="el" href="interface_viewer_controller.html">ViewerController</a>*) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#00921c9a6ddaa17facb55edcff69494c">viewer</a>           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="2788cb97d525bd17a70f0e4968bb9c81"></a><!-- doxytag: member="OrthogonalMPRViewer::curMovieIndex" ref="2788cb97d525bd17a70f0e4968bb9c81" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (short) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#4a0b2dd410cccf35ec932b5fbab80392">curMovieIndex</a>           </td>
+          <td></td>
+          <td class="paramname">          </td>
+          <td>&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="2312e48b8cdd2a8020dd7c9e0aadf316"></a><!-- doxytag: member="OrthogonalMPRViewer::maxMovieIndex" ref="2312e48b8cdd2a8020dd7c9e0aadf316" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (short) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#8d9835f7d9e16a2326d6b9c52fdda7a7">maxMovieIndex</a>           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -521,25 +563,6 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
       <table class="memname">
         <tr>
           <td class="memname">- (void) adjustSplitView           </td>
-          <td></td>
-          <td class="paramname">          </td>
-          <td>&nbsp;</td>
-          <td width="100%"></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="0a532977d205d81cc84184cb462a7d96"></a><!-- doxytag: member="OrthogonalMPRViewer::turnSplitView" ref="0a532977d205d81cc84184cb462a7d96" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">- (void) turnSplitView           </td>
           <td></td>
           <td class="paramname">          </td>
           <td>&nbsp;</td>
@@ -1569,6 +1592,21 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
 
 </div>
 </div><p>
+<a class="anchor" name="0d3981c4e1c5a07a100b96426199f32c"></a><!-- doxytag: member="OrthogonalMPRViewer::dcmCountTextField" ref="0d3981c4e1c5a07a100b96426199f32c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">- (IBOutlet NSTextField *) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#0d3981c4e1c5a07a100b96426199f32c">dcmCountTextField</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f5d5e3867681d73702b50423618b2cf2"></a><!-- doxytag: member="OrthogonalMPRViewer::dcmBox" ref="f5d5e3867681d73702b50423618b2cf2" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1709,7 +1747,7 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">- (NSData*) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#2d0fbf0a539f44e5de4ecb27e6a860ee">transferFunction</a><code> [protected]</code>          </td>
+          <td class="memname">- (<a class="el" href="class_n_s_data.html">NSData</a>*) <a class="el" href="interface_orthogonal_m_p_r_viewer.html#2d0fbf0a539f44e5de4ecb27e6a860ee">transferFunction</a><code> [protected]</code>          </td>
         </tr>
       </table>
 </div>
@@ -1871,7 +1909,7 @@ Window Controller for Orthogonal MPR. <hr><h2>Member Function Documentation</h2>
 </div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_orthogonal_m_p_r_viewer_8h.html">OrthogonalMPRViewer.h</a><li><a class="el" href="_orthogonal_m_p_r_viewer_8m.html">OrthogonalMPRViewer.m</a></ul>
-<hr size="1"><address style="text-align: right;"><small>Generated on Fri Feb 29 16:42:47 2008 for OsiriX by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 25 11:26:30 2010 for OsiriX by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.3 </small></address>
 </body>
