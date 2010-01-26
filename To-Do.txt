@@ -35,6 +35,7 @@
 - EF Result: vectorial, line thickness, 2x2
 - EF Restore: color ROI, and color name
 
+- Tool to create a new series from key images of a study
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
 - Hanging Protocols
