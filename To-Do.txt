@@ -30,6 +30,7 @@
 
 - Test iPhone
 - Ovyiam integration
+- Garbage line when 3D-MPR VR export 768 8-bit
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
