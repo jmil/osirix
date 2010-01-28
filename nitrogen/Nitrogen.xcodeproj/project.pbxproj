@@ -14,6 +14,9 @@
 		5903B5FF1110329400F4358B /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 		5903B6811110329A00F4358B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		5903B6831110329C00F4358B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		5903BBA21111E15D00F4358B /* N2PopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 5903BBA01111E15D00F4358B /* N2PopUpButton.h */; };
+		5903BBA31111E15D00F4358B /* N2PopUpButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5903BBA11111E15D00F4358B /* N2PopUpButton.mm */; };
+		5903BBA71111E3B800F4358B /* PopUpArrows.png in Resources */ = {isa = PBXBuildFile; fileRef = 5903BBA61111E3B800F4358B /* PopUpArrows.png */; };
 		5915D5F01099D8CC0024F610 /* N2Shell.h in Headers */ = {isa = PBXBuildFile; fileRef = 5915D5EE1099D8CC0024F610 /* N2Shell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5915D5F11099D8CC0024F610 /* N2Shell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5915D5EF1099D8CC0024F610 /* N2Shell.mm */; };
 		596F881410C6CCDC007D6C82 /* NSImageView+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 596F881210C6CCDC007D6C82 /* NSImageView+N2.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -128,6 +131,9 @@
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		5903B4E511102C8900F4358B /* N2UserDefaultsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2UserDefaultsTest.h; sourceTree = "<group>"; };
 		5903B4E611102C8900F4358B /* N2UserDefaultsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2UserDefaultsTest.mm; sourceTree = "<group>"; };
+		5903BBA01111E15D00F4358B /* N2PopUpButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2PopUpButton.h; sourceTree = "<group>"; };
+		5903BBA11111E15D00F4358B /* N2PopUpButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = N2PopUpButton.mm; sourceTree = "<group>"; };
+		5903BBA61111E3B800F4358B /* PopUpArrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PopUpArrows.png; path = Resources/PopUpArrows.png; sourceTree = "<group>"; };
 		591403A21105B88A00D6A504 /* Unit Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		591403CE1105BDCF00D6A504 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		5915D5EE1099D8CC0024F610 /* N2Shell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = N2Shell.h; sourceTree = "<group>"; };
@@ -291,6 +297,7 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5903BBA61111E3B800F4358B /* PopUpArrows.png */,
 				591403CE1105BDCF00D6A504 /* Info.plist */,
 			);
 			name = Resources;
@@ -495,6 +502,8 @@
 				59A6332110428715003F4069 /* N2DisclosureButtonCell.mm */,
 				59E924CC110F25CD0006FFFB /* N2ColorWell.h */,
 				59E924CD110F25CD0006FFFB /* N2ColorWell.mm */,
+				5903BBA01111E15D00F4358B /* N2PopUpButton.h */,
+				5903BBA11111E15D00F4358B /* N2PopUpButton.mm */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -553,6 +562,7 @@
 				59E924CE110F25CD0006FFFB /* N2ColorWell.h in Headers */,
 				59E924D2110F277B0006FFFB /* N2UserDefaults.h in Headers */,
 				5903B4E711102C8900F4358B /* N2UserDefaultsTest.h in Headers */,
+				5903BBA21111E15D00F4358B /* N2PopUpButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +640,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5903BBA71111E3B800F4358B /* PopUpArrows.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +750,7 @@
 				596F881510C6CCDC007D6C82 /* NSImageView+N2.mm in Sources */,
 				59E924CF110F25CD0006FFFB /* N2ColorWell.mm in Sources */,
 				59E924D3110F277B0006FFFB /* N2UserDefaults.mm in Sources */,
+				5903BBA31111E15D00F4358B /* N2PopUpButton.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

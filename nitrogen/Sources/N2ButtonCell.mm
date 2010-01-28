@@ -34,8 +34,8 @@
 		NSGraphicsContext* context = [NSGraphicsContext currentContext];
 		[context saveGraphicsState];
 		
-		[[NSColor colorWithCalibratedRed:.5 green:.66 blue:1 alpha:.75] setFill];
-		NSRect frame2 = NSInsetRect(frame, 0, 1); frame2.size.height -= 1;
+		[[NSColor colorWithCalibratedRed:.5 green:.66 blue:1 alpha:.5] setFill];
+		NSRect frame2 = NSInsetRect(frame, 0, 2);//frame2.size.height -= 2;
 		[[NSBezierPath bezierPathWithRoundedRect:frame2 xRadius:frame2.size.height/2 yRadius:frame2.size.height/2] fill];
 		
 		[context restoreGraphicsState];
