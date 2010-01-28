@@ -39,10 +39,4 @@
 
 @implementation N2ImageView 
 
--(void)setFrameSize:(NSSize)newSize {
-	if ([[self image] isLogicallyResizable])
-		[[self image] setSize:newSize];
-	[super setFrameSize:newSize];
-}
-
 @end

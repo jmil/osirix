@@ -19,4 +19,7 @@
 
 -(id)initWithOrigin:(NSPoint)origin title:(NSString*)title font:(NSFont*)font;
 
+-(NSSize)optimalSizeForWidth:(CGFloat)width;
+-(NSSize)optimalSize;
+
 @end

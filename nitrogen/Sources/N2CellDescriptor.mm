@@ -17,7 +17,7 @@
 #import "N2Operators.h"
 
 @implementation N2CellDescriptor
-@synthesize view = _view, alignment = _alignment, widthConstraints = _widthConstraints, /*rowSpan = _rowSpan, */colSpan = _colSpan, invasivity = _invasivity;
+@synthesize view = _view, alignment = _alignment, widthConstraints = _widthConstraints, /*rowSpan = _rowSpan, */colSpan = _colSpan, invasivity = _invasivity, filled = _filled;
 
 +(N2CellDescriptor*)descriptor {
 	return [[[[self alloc] init] autorelease] colSpan:1];
@@ -39,6 +39,7 @@
 	self = [super init];
 	[self setWidthConstraints:N2MakeMinMax()];
 	[self setAlignment:N2Left];
+	[self setFilled:YES];
 	return self;
 }
 
@@ -50,7 +51,11 @@
 -(id)copyWithZone:(NSZone*)zone {
 	N2CellDescriptor* copy = [[N2CellDescriptor allocWithZone:zone] initWithWidthConstraints:_widthConstraints alignment:_alignment];
 	[copy setView:_view];
+	[copy setAlignment:_alignment];
+	[copy setWidthConstraints:_widthConstraints];
+	[copy setInvasivity:_invasivity];
 	[copy setColSpan:_colSpan];
+	[copy setFilled:_filled];
 	return copy;
 }
 
@@ -81,6 +86,11 @@
 
 -(N2CellDescriptor*)invasivity:(CGFloat)invasivity {
 	[self setInvasivity:invasivity];
+	return self;
+}
+
+-(N2CellDescriptor*)filled:(BOOL)filled {
+	[self setFilled:filled];
 	return self;
 }
 

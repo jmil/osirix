@@ -23,6 +23,7 @@
 	CGFloat _invasivity;
 //	NSUInteger _rowSpan;
 	NSUInteger _colSpan;
+	BOOL _filled;
 }
 
 @property(retain) NSView* view;
@@ -31,6 +32,7 @@
 //@property NSUInteger rowSpan;
 @property NSUInteger colSpan;
 @property CGFloat invasivity;
+@property BOOL filled;
 
 +(N2CellDescriptor*)descriptor;
 +(N2CellDescriptor*)descriptorWithView:(NSView*)view;
@@ -43,6 +45,7 @@
 //-(N2CellDescriptor*)rowSpan:(NSUInteger)rowSpan;
 -(N2CellDescriptor*)colSpan:(NSUInteger)colSpan;
 -(N2CellDescriptor*)invasivity:(CGFloat)invasivity;
+-(N2CellDescriptor*)filled:(BOOL)filled;
 
 -(NSSize)optimalSize;
 -(NSSize)optimalSizeForWidth:(CGFloat)width;

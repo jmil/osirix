@@ -15,5 +15,13 @@
 #import <Cocoa/Cocoa.h>
 @class N2View;
 
+@interface NSWindow (N2)
+
+-(NSSize)contentSizeForFrameSize:(NSSize)frameSize;
+-(NSSize)frameSizeForContentSize:(NSSize)contentSize;
+
+@end
+
 @interface N2Window : NSWindow
+
 @end

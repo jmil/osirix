@@ -21,8 +21,6 @@
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color inRect:(NSRect)box;
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color;
 
--(BOOL)isLogicallyResizable;
-
 @end
 
 @interface N2Image : NSImage {

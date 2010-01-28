@@ -174,8 +174,4 @@ end_size_y:
 	return [self boundingBoxSkippingColor:color inRect:NSMakeRect(0, 0, imageSize.width, imageSize.height)];
 }
 
--(BOOL)isLogicallyResizable {
-	return NO;
-}
-
 @end

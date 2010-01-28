@@ -14,6 +14,20 @@
 
 #import <Nitrogen/N2Window.h>
 #import <Nitrogen/N2View.h>
+#import <Nitrogen/N2Operators.h>
+
+
+@implementation NSWindow (N2)
+
+-(NSSize)contentSizeForFrameSize:(NSSize)frameSize {
+	return [self contentRectForFrameRect:NSMakeRect([self frame].origin, frameSize)].size;
+}
+
+-(NSSize)frameSizeForContentSize:(NSSize)contentSize {
+	return [self frameRectForContentRect:NSMakeRect([self frame].origin, contentSize)].size; // [self frame].origin isnt't correct but that doesnt matter
+}
+
+@end
 
 
 @implementation N2Window

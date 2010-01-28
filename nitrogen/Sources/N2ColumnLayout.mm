@@ -21,6 +21,8 @@
 #include <cmath>
 #include <iostream> // TODO: remove
 
+#include "N2ColorWell.h"
+
 @implementation N2ColumnLayout
 
 -(id)initForView:(N2View*)view columnDescriptors:(NSArray*)columnDescriptors controlSize:(NSControlSize)controlSize {
@@ -284,9 +286,9 @@ typedef struct ConstrainedFloat {
 			NSPoint origin = NSMakePoint(x, y);
 			NSSize size = sizes[r][colNumber];
 			
-			/*if (size.width < spannedWidth)*/ size.width = spannedWidth; ////// TODO: CHANGE HERE!!!!!!! darn
-			size.width = std::ceil(size.width);
-			size.height = std::ceil(size.height);
+			if ([cell filled])
+				size.width = spannedWidth;
+			size = n2::ceil(size);
 			
 			NSSize extraSpace = NSMakeSize(spannedWidth, rowHeights[r]) - size;
 			N2Alignment alignment = [cell alignment];
@@ -343,6 +345,13 @@ typedef struct ConstrainedFloat {
 	NSUInteger rowsCount = [_rows count];
 	NSUInteger colsCount = [_columnDescriptors count];
 	
+	if ([self forcesSuperviewWidth] && widthWithMarginAndBorder != CGFLOAT_MAX) {
+		NSSize optimalSize = [self optimalSize];
+		widthWithMarginAndBorder = optimalSize.width;
+		if ([self forcesSuperviewHeight])
+			return optimalSize;
+	}
+		
 	NSArray* sizesData = [self computeSizesForWidth:widthWithMarginAndBorder];
 	CGFloat colWidth[colsCount];
 	for (NSUInteger i = 0; i < colsCount; ++i)
