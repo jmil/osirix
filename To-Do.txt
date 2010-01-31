@@ -28,6 +28,9 @@
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
 
+- Pref for left button mouse
+- Web: move to another dcm node
+
 - Test iPhone
 - Ovyiam integration
 
