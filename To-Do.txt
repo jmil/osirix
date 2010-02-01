@@ -28,8 +28,6 @@
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
 
-- ABDULRUDHA: 3D quicktime
-
 - Test iPhone
 - Ovyiam integration
 
