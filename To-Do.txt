@@ -28,7 +28,7 @@
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
 
-- Web: move to another dcm node
+- ABDULRUDHA: 3D quicktime
 
 - Test iPhone
 - Ovyiam integration
