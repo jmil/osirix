@@ -43,4 +43,16 @@
 	return [self optimalSizeForWidth:CGFLOAT_MAX];
 }
 
+-(void)setTextColor:(NSColor*)color {
+	NSMutableAttributedString* text = [[self attributedTitle] mutableCopy];
+	NSRange range = NSMakeRange(0, [text length]);
+	
+	[text addAttribute:NSForegroundColorAttributeName value:color range:range];
+	[text fixAttributesInRange:range];
+	[self setAttributedTitle:text];
+	[text release];
+	
+	[self setNeedsDisplay:YES];
+}
+
 @end

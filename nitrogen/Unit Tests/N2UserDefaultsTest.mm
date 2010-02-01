@@ -32,8 +32,8 @@ const NSString* const TestRectDefaultsKey32 = @"TestRectDefaultsKey32";
 -(void)testReadRect {
 	N2UserDefaults* defaults = [self defaults];
 	STAssertNotNil(defaults, @"defaults must not be NULL");
-	STAssertTrue(NSEqualRects(r, [defaults rectForKey:TestRectDefaultsKey32 default:r]), @"Read 32 bits failure");
-	STAssertTrue(NSEqualRects(r, [defaults rectForKey:TestRectDefaultsKey64 default:r]), @"Read 64 bits failure");
+	STAssertTrue(NSEqualRects(r, [defaults rectForKey:TestRectDefaultsKey32 default:r]), @"Read rect 32 bits failure");
+	STAssertTrue(NSEqualRects(r, [defaults rectForKey:TestRectDefaultsKey64 default:r]), @"Read rect 64 bits failure");
 }
 
 @end
