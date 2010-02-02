@@ -21,7 +21,7 @@
 -(NSImage*)image;
 -(NSBitmapImageRep*)repUsingColorSpaceName:(NSString*)colorSpaceName;
 
--(void)ATMask:(float)level;
+-(void)ATMask:(float)level DEPRECATED_ATTRIBUTE;
 -(NSBitmapImageRep*)smoothen:(NSUInteger)margin;
 //-(NSBitmapImageRep*)convolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;
 //-(NSBitmapImageRep*)fftConvolveWithFilter:(const boost::numeric::ublas::matrix<float>&)filter fillPixel:(NSUInteger[])fillPixel;

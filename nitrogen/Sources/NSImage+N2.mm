@@ -107,29 +107,42 @@
 }
 
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color inRect:(NSRect)box {
-	[self setFlipped:YES];
+	if (box.size.width < 0) {
+		box.origin.x += box.size.width;
+		box.size.width = -box.size.width;
+	}
 	
-	if (box.size.width < 0) { box.origin.x += box.size.width; box.size.width = -box.size.width; } 
-	if (box.size.height < 0) { box.origin.y += box.size.height; box.size.height = -box.size.height; } 
+	if (box.size.height < 0) {
+		box.origin.y += box.size.height;
+		box.size.height = -box.size.height;
+	}
+	
+	NSSize size = [self size];
+	
+	if ([self isFlipped])
+		box.origin.y = size.height-box.origin.y-box.size.height;
 	
 	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[self TIFFRepresentation]];
-//	NSSize imageSize = [self size];
+	uint8* data = [bitmap bitmapData];
 	
-	NSAssert([bitmap numberOfPlanes] == 1, @"Image must be planar");
-	NSAssert([bitmap samplesPerPixel] == 4, @"Image bust be RGBA");
-	NSAssert([bitmap bitmapFormat] == 0, @"Image format must be zero");
-	NSAssert([bitmap bitsPerPixel] == 32, @"Image samples must be 8 bits wide");
+	if ([color colorSpaceName] != NSCalibratedRGBColorSpace)
+		color = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+	NSInteger componentsCount = [color numberOfComponents];
+	CGFloat components[componentsCount];
+	[color getComponents:components];
 	
-	
+	const size_t rowBytes = [bitmap bytesPerRow], pixelBytes = [bitmap bitsPerPixel]/8;
+#define P(x,y) (y*rowBytes+x*pixelBytes)
+
 	int x, y;
+#define Match(x,y) ( (data[P(x,y)] == data[P(x,y)+3]*components[0]) && (data[P(x,y)+1] == data[P(x,y)+3]*components[1]) && (data[P(x,y)+2] == data[P(x,y)+3]*components[2]) )
+	
 	// change origin.x
 	for (x = box.origin.x; x < box.origin.x+box.size.width; ++x)
 		for (y = box.origin.y; y <= box.origin.y+box.size.height; ++y)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			if (!Match(x,y))
 				goto end_origin_x;
 end_origin_x:
-	NSColor* c = [bitmap colorAtX:x y:y];
-	[c isEqualToColor:color alphaThreshold:0.1];
 	if (x < box.origin.x+box.size.width) {
 		box.size.width -= x-box.origin.x;
 		box.origin.x = x;
@@ -138,7 +151,7 @@ end_origin_x:
 	// change origin.y
 	for (y = box.origin.y; y < box.origin.y+box.size.height; ++y)
 		for (x = box.origin.x; x <= box.origin.x+box.size.width; ++x)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			if (!Match(x,y))
 				goto end_origin_y;
 end_origin_y:
 	if (y < box.origin.y+box.size.height) {
@@ -149,7 +162,7 @@ end_origin_y:
 	// change size.width
 	for (x = box.origin.x+box.size.width-1; x >= box.origin.x; --x)
 		for (y = box.origin.y; y <= box.origin.y+box.size.height; ++y)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			if (!Match(x,y))
 				goto end_size_x;
 end_size_x:
 	if (x >= box.origin.x)
@@ -158,15 +171,21 @@ end_size_x:
 	// change size.height
 	for (y = box.origin.y+box.size.height-1; y >= box.origin.y; --y)
 		for (x = box.origin.x; x <= box.origin.x+box.size.width; ++x)
-			if (![[bitmap colorAtX:x y:y] isEqualToColor:color alphaThreshold:0.1])
+			if (!Match(x,y))
 				goto end_size_y;
 end_size_y:
 	if (y >= box.origin.y)
 		box.size.height = y-box.origin.y+1;
 	
 	[bitmap release];
-	[self setFlipped:NO];
+	
+	if ([self isFlipped])
+		box.origin.y = size.height-box.origin.y-box.size.height;
+	
 	return box;
+	
+#undef Match
+#undef P
 }
 
 -(NSRect)boundingBoxSkippingColor:(NSColor*)color {

@@ -211,7 +211,7 @@ typedef struct ConstrainedFloat {
 			for (NSUInteger i = colNumber; i < colNumber+span; ++i)
 				spannedWidth += widths[0][i].value + _separation.width;
 			
-			sizes[r][colNumber] = [cell optimalSizeForWidth:spannedWidth+[cell sizeAdjust].size.width];
+			sizes[r][colNumber] = [cell filled]? NSMakeSize(spannedWidth, [cell optimalSizeForWidth:spannedWidth+[cell sizeAdjust].size.width].height) : [cell optimalSizeForWidth:spannedWidth+[cell sizeAdjust].size.width];
 //			rowHeights[l] = std::max(rowHeights[l], sizes[l][i].height);
 	//		NSSize test = sizes[r][colNumber];
 			

@@ -66,7 +66,7 @@ struct P {
 	P(int x, int y) : x(x), y(y) {}
 };
 
--(void)ATMask:(float)level {
+-(void)ATMask:(float)level { // this method is deprecated
 	NSSize size = [self size];
 	int width = size.width, height = size.height;
 	float v[width][height];
@@ -115,7 +115,6 @@ struct P {
 	}
 	
 	NSLog(@"time5!!!!!! %f", [NSDate timeIntervalSinceReferenceDate]);
-#pragma omp parallel for default(shared)
 	for (int y = 0; y < height/2; ++y)
 		for (int x = 0; x < width; ++x)
 			if (mask[x][y])
