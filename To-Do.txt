@@ -27,6 +27,7 @@
 
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
+- Test: pref, Papy/dcm, cd/dvd, one by one
 
 - Test iPhone
 - Ovyiam integration
