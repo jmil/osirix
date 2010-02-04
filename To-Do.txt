@@ -29,6 +29,7 @@
 - Test WADO retrieve from dcm4chee
 
 - Test testFiles CD
+- Remove notifications when uploading
 
 - Test iPhone
 - Ovyiam integration
