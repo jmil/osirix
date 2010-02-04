@@ -27,6 +27,7 @@
 
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
+
 - Test testFiles CD
 
 - Test iPhone
