@@ -29,7 +29,6 @@
 - Test WADO retrieve from dcm4chee
 
 - Test testFiles CD
-- GlobalLock?
 
 - Test iPhone
 - Ovyiam integration
