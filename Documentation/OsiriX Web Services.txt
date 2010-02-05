@@ -22,32 +22,56 @@ HTML
 JSON
 ====
 
-|-----------------------+-------------------------------------------------------+-------------------------------------------------------+
-|  URL			|  Parameters						|  Result						|
-|-----------------------+-------------------------------------------------------+-------------------------------------------------------+
-|  /albums.json		|  -							|  an array						|
-|			|  							|  each item has 2 keys:				|
-|			|							|  - "name"						|
-|			|  							|  - "type" can be "Album" or "SmartAlbum"		|
-|-----------------------+-------------------------------------------------------+-------------------------------------------------------+
-|  /studyList.json	|  browse = (newAddedStudies|today|6hours|all)		|  an array						|
-|			|  search = (a search string to match in the study name)|  each item has 8 keys:				|
-|			|  searchID = (the studyInstanceUID to search)		|  - "name"						|
-|			|  album = (the name of the album)			|  - "seriesCount" (number of series)			|
-|			|  order = (name|date)					|  - "date" (study date)				|
-|			|  							|  - "comment"						|
-|			|							|  - "studyName"					|
-|			|							|  - "modality"						|
-|			|							|  - "stateText" ("unread"|"dictated"|"reviewed")	|
-|			|							|  - "studyInstanceUID"					|
-|-----------------------+-------------------------------------------------------+-------------------------------------------------------+
-|  /seriesList.json 	| studyUID						|  an array						|
-|			|							|  each item has 2 keys:				|
-|			|							|  - "seriesInstanceUID"				|
-|			|							|  - "keyInstanceUID" which is the sopInstanceUID 	|
-|			|							|  	of the key image (for thumbnail)		|
-|-----------------------+-------------------------------------------------------+-------------------------------------------------------+
+---------------------------------------
+URL
+/albums.json
 
+PARAMETERS
+-
+
+RESULT
+an array
+each item has 2 keys:
+- "name"
+- "type" can be "Album" or "SmartAlbum"
+
+---------------------------------------
+URL
+/studyList.json
+
+PARAMETERS
+browse = (newAddedStudies|today|6hours|all)
+search = (a search string to match in the study name)
+searchID = (the studyInstanceUID to search)
+album = (the name of the album)
+order = (name|date)
+
+RESULT
+an array
+each item has 8 keys:
+- "name"
+- "seriesCount" (number of series)
+- "date" (study date)
+- "comment"			
+- "studyName"
+- "modality"
+- "stateText" ("unread"|"dictated"|"reviewed")
+- "studyInstanceUID"
+
+---------------------------------------
+URL
+/seriesList.json
+
+PARAMETERS
+studyUID
+
+RESULT
+an array
+each item has 2 keys:
+- "seriesInstanceUID"
+- "keyInstanceUID" which is the sopInstanceUID of the key image (for thumbnail)
+
+---------------------------------------
 
 =======================================
 Document ends here. Thanks For reading.
