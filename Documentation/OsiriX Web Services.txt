@@ -63,7 +63,7 @@ URL
 /seriesList.json
 
 PARAMETERS
-studyUID
+id = (the studyInstanceUID of the requested study)
 
 RESULT
 an array
