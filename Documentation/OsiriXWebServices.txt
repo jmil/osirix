@@ -1,45 +1,67 @@
-=================================
-OsiriX Web Services Documentation
-=================================
+***********************************************************************************************
+*
+*		OsiriX Web Services Documentation
+*
+***********************************************************************************************
 
-=======
+
+
+===============================================================================================
 XML-RPC
-=======
+===============================================================================================
 
 A) Activation
 In the Preferences, under "Listener", click "Activate the HTTP XML-RPC SOAP Server"
+Choose a port (default is 8080)
+
+B) Usage
+See http://www.osirix-viewer.com/XML-RPC.pdf
+
+===============================================================================================
+Web Server
+===============================================================================================
+
+A) Activation
+In the Preferences, under "Web Server", click "Activate the built-in Web Server on TCP/IP Port"
 Choose a port (default is 3333)
 
 B) Usage
-to be completed...
+Open a web browser and go to:
+	http://127.0.0.1:3333/
+or
+	http://yourIPAdrress:3333/
+or
+	http://yourHostname:3333/
 
-====
-HTML
-====
+If you choose to turn on the encrypted communications, replace "http://" by "https://"
 
-
-====
+===============================================================================================
 JSON
-====
+===============================================================================================
+
+- The Web Server needs to be turned on.
+- Calls to these services should be of the following format:
+	http://127.0.0.1:3333/URL
+where URL is one of the following:
 
 ---------------------------------------
 URL
 /albums.json
 
-PARAMETERS
--
-
 RESULT
 an array
-each item has 2 keys:
+each item is a dictionary with 2 keys:
 - "name"
-- "type" can be "Album" or "SmartAlbum"
+- "type" ("Album"|"SmartAlbum")
+
+EXAMPLE
+http://127.0.0.1:3333/albums.json
 
 ---------------------------------------
 URL
 /studyList.json
 
-PARAMETERS
+PARAMETERS [all parameters are facultatives]
 browse = (newAddedStudies|today|6hours|all)
 search = (a search string to match in the study name)
 searchID = (the studyInstanceUID to search)
@@ -48,7 +70,7 @@ order = (name|date)
 
 RESULT
 an array
-each item has 8 keys:
+each item is a dictionary with 8 keys:
 - "name"
 - "seriesCount" (number of series)
 - "date" (study date)
@@ -57,6 +79,9 @@ each item has 8 keys:
 - "modality"
 - "stateText" ("unread"|"dictated"|"reviewed")
 - "studyInstanceUID"
+
+EXAMPLE
+http://127.0.0.1:3333/studyList.json
 
 ---------------------------------------
 URL
@@ -67,9 +92,12 @@ id = (the studyInstanceUID of the requested study)
 
 RESULT
 an array
-each item has 2 keys:
+each item is a dictionary with 2 keys:
 - "seriesInstanceUID"
 - "keyInstanceUID" which is the sopInstanceUID of the key image (for thumbnail)
+
+EXAMPLE
+http://127.0.0.1:3333/seriesList.json?id=1234567890
 
 ---------------------------------------
 URL
@@ -81,8 +109,11 @@ id = (seriesInstanceUID of the requested series)
 RESULT
 an array of sopInstanceUID (the images)
 
+EXAMPLE
+http://127.0.0.1:3333/series.json?id=1234567890
+
 ---------------------------------------
 
-=======================================
+===============================================================================================
 Document ends here. Thanks For reading.
-=======================================
+===============================================================================================
