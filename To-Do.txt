@@ -29,7 +29,6 @@
 - Test WADO retrieve from dcm4chee
 
 - Test testFiles CD
-- Quicktime https...
 
 - Test iPhone
 - Ovyiam integration
