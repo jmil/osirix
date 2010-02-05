@@ -111,7 +111,6 @@
 		box.origin.x += box.size.width;
 		box.size.width = -box.size.width;
 	}
-	
 	if (box.size.height < 0) {
 		box.origin.y += box.size.height;
 		box.size.height = -box.size.height;
@@ -119,7 +118,20 @@
 	
 	NSSize size = [self size];
 	
-	if ([self isFlipped])
+	if (box.origin.x < 0) {
+		box.size.width += box.origin.x;
+		box.origin.x = 0;
+	}
+	if (box.origin.y < 0) {
+		box.size.height += box.origin.y;
+		box.origin.y = 0;
+	}
+	if (box.origin.x+box.size.width > size.width)
+		box.size.width = size.width-box.origin.x;
+	if (box.origin.y+box.size.height > size.height)
+		box.size.height = size.height-box.origin.y;
+	
+//	if (![self isFlipped])
 		box.origin.y = size.height-box.origin.y-box.size.height;
 	
 	NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithData:[self TIFFRepresentation]];
@@ -179,7 +191,7 @@ end_size_y:
 	
 	[bitmap release];
 	
-	if ([self isFlipped])
+	//if (![self isFlipped])
 		box.origin.y = size.height-box.origin.y-box.size.height;
 	
 	return box;
