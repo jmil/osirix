@@ -72,6 +72,16 @@ each item has 2 keys:
 - "keyInstanceUID" which is the sopInstanceUID of the key image (for thumbnail)
 
 ---------------------------------------
+URL
+/series.json
+
+PARAMETERS
+id = (seriesInstanceUID of the requested series)
+
+RESULT
+an array of sopInstanceUID (the images)
+
+---------------------------------------
 
 =======================================
 Document ends here. Thanks For reading.
