@@ -28,6 +28,7 @@
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
 
+- Split Cardiac MR (Philips, Siemens)
 - Test testFiles CD
 
 - Test iPhone
