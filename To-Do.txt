@@ -27,8 +27,9 @@
 
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
+- WADO DICOM Header request
 
-- Split Cardiac MR (Philips, Siemens)
+- Split Cardiac MR (Philips: 2001, 1008 ou 2001, 100A, Siemens: )
 - Test testFiles CD
 
 - Test iPhone
