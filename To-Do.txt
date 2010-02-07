@@ -23,6 +23,7 @@
 - Option to open PDF & DICOM PDF in Preview application
 - Search in Logs, Export Logs in csv format
 - Windows Tiling menu (2D Viewer) and contextual menu
+- Crash Test preference to identify corrupted files on CD/DVD
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dc4chee
@@ -30,7 +31,6 @@
 - WADO DICOM Header request
 
 - Split Cardiac MR (Philips: 2001, 1008 ou 2001, 100A, Siemens: )
-- Test testFiles CD
 
 - Test iPhone
 - Ovyiam integration
