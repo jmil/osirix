@@ -30,7 +30,7 @@
 - Test WADO retrieve from dcm4chee
 - WADO DICOM Header request
 
-- Split Cardiac MR (Philips: 2001, 1008 ou 2001, 100A, Siemens: )
+- Split Cardiac MR (Philips: 2001, 1008 ou 2001, 100A, Siemens: TriggerTime)
 
 - Test iPhone
 - Ovyiam integration
