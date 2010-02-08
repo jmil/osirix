@@ -31,7 +31,7 @@
 - WADO DICOM Header request
 
 - Test iPhone
-- Ovyiam integration
+- Ovyiam integration : Q&R
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
