@@ -29,6 +29,7 @@
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
 - WADO DICOM Header request
+- CFIND with Ovyiam
 
 - Test iPhone
 - Ovyiam integration : Q&R
