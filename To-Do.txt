@@ -28,11 +28,11 @@
 
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
+
 - WADO DICOM Header request
-- CFIND with Ovyiam
+- Test CFIND with Ovyiam
 
 - Test iPhone
-- Ovyiam integration : Q&R
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
