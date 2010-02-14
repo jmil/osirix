@@ -24,6 +24,7 @@
 - Search in Logs, Export Logs in csv format
 - Windows Tiling menu (2D Viewer) and contextual menu
 - Crash Test preference to identify corrupted files on CD/DVD
+- Compatible with Oviyam project (http://oviyam.raster.in/)
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dc4chee
