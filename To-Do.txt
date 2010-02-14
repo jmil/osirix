@@ -28,11 +28,7 @@
 
 - CGET retrieve from dc4chee
 - Test WADO retrieve from dcm4chee
-
-- WADO DICOM Header request
 - Test CFIND with Ovyiam
-
-- Test iPhone
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
@@ -48,6 +44,7 @@
 - Propagate sub-settings
 - SDK Primera
 - Phase Cardiac
+- Printing Layout
 
 1) In addition to the existing `key image' function, also add `key sesquence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
