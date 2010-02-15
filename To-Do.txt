@@ -28,8 +28,6 @@
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dc4chee
-- Test WADO retrieve from dcm4chee
-- Test CFIND with Ovyiam
 
 - EF Result: add area, line before area
 - EF Result: vectorial, line thickness, 2x2
