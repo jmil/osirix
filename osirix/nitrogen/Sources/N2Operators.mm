@@ -13,7 +13,7 @@
 =========================================================================*/
 
 
-#import <Nitrogen/N2Operators.h>
+#import <N2Operators.h>
 #include <cmath>
 
 

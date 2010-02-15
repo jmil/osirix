@@ -13,14 +13,14 @@
 =========================================================================*/
 
 
-#import <Nitrogen/NSImage+N2.h>
+#import <NSImage+N2.h>
 #include <algorithm>
 #import <Accelerate/Accelerate.h>
 //#include <boost/numeric/ublas/matrix.hpp>
 //#include <fftw3.h>
 //#include <complex>
-#import <Nitrogen/N2Operators.h>
-#import <Nitrogen/NSColor+N2.h>
+#import <N2Operators.h>
+#import <NSColor+N2.h>
 
 @implementation N2Image
 @synthesize inchSize = _inchSize, portion = _portion;

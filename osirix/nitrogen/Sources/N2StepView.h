@@ -12,19 +12,15 @@
      PURPOSE.
 =========================================================================*/
 
+#import <N2DisclosureBox.h>
+@class N2Step;
 
-#import <Nitrogen/N2Debug.h>
-
-@implementation N2Debug
-
-static BOOL _active = NO;
-
-+(BOOL)isActive {
-	return _active;
+@interface N2StepView : N2DisclosureBox {
+	N2Step* _step;
 }
 
-+(void)setActive:(BOOL)active {
-	_active = active;
-}
+@property(readonly) N2Step* step;
+
+-(id)initWithStep:(N2Step*)step;
 
 @end

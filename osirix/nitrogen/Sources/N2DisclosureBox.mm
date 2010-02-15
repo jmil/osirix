@@ -12,9 +12,9 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2DisclosureBox.h>
-#import <Nitrogen/N2DisclosureButtonCell.h>
-#import <Nitrogen/N2Operators.h>
+#import <N2DisclosureBox.h>
+#import <N2DisclosureButtonCell.h>
+#import <N2Operators.h>
 
 NSString* N2DisclosureBoxDidToggleNotification = @"N2DisclosureBoxDidToggleNotification";
 NSString* N2DisclosureBoxWillExpandNotification = @"N2DisclosureBoxWillExpandNotification";

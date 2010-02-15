@@ -12,7 +12,7 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2CellDescriptor.h>
+#import <N2CellDescriptor.h>
 #import "NSView+N2.h"
 #import "N2Operators.h"
 

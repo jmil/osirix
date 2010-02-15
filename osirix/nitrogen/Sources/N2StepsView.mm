@@ -13,14 +13,14 @@
 =========================================================================*/
 
 
-#import <Nitrogen/N2StepsView.h>
-#import <Nitrogen/N2Step.h>
-#import <Nitrogen/N2Steps.h>
-#import <Nitrogen/N2StepView.h>
-#import <Nitrogen/N2ColumnLayout.h>
-#import <Nitrogen/N2DisclosureButtonCell.h>
-#import <Nitrogen/N2CellDescriptor.h>
-#import <Nitrogen/N2Operators.h>
+#import <N2StepsView.h>
+#import <N2Step.h>
+#import <N2Steps.h>
+#import <N2StepView.h>
+#import <N2ColumnLayout.h>
+#import <N2DisclosureButtonCell.h>
+#import <N2CellDescriptor.h>
+#import <N2Operators.h>
 
 @implementation N2StepsView
 

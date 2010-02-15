@@ -12,7 +12,7 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2Step.h>
+#import <N2Step.h>
 
 NSString* N2StepDidBecomeActiveNotification = @"N2StepDidBecomeActiveNotification";
 NSString* N2StepDidBecomeInactiveNotification = @"N2StepDidBecomeInactiveNotification";

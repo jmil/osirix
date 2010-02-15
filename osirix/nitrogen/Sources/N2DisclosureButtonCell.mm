@@ -12,7 +12,7 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2DisclosureButtonCell.h>
+#import <N2DisclosureButtonCell.h>
 
 @implementation N2DisclosureButtonCell
 @synthesize attributes = _attributes;

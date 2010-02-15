@@ -12,9 +12,9 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/NSButton+N2.h>
-#import <Nitrogen/NS(Attributed)String+Geometrics.h>
-#import <Nitrogen/N2Operators.h>
+#import <NSButton+N2.h>
+#import <NS(Attributed)String+Geometrics.h>
+#import <N2Operators.h>
 
 @implementation NSButton (N2)
 

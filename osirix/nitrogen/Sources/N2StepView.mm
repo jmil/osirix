@@ -12,8 +12,8 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2StepView.h>
-#import <Nitrogen/N2Step.h>
+#import <N2StepView.h>
+#import <N2Step.h>
 
 @implementation N2StepView
 @synthesize step = _step;

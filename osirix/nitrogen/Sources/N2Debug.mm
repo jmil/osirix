@@ -12,24 +12,19 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2Pair.h>
 
-@implementation N2Pair
-@synthesize first = _first, second = _second;
+#import <N2Debug.h>
 
--(id)initWith:(id)first and:(id)second {
-	self = [super init];
-	
-	_first = [first retain];
-	_second = [second retain];
-	
-	return self;
+@implementation N2Debug
+
+static BOOL _active = NO;
+
++(BOOL)isActive {
+	return _active;
 }
 
--(void)dealloc {
-	[_first release];
-	[_second release];
-	[super dealloc];
++(void)setActive:(BOOL)active {
+	_active = active;
 }
 
 @end

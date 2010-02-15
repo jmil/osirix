@@ -12,15 +12,24 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2DisclosureBox.h>
-@class N2Step;
+#import <N2Pair.h>
 
-@interface N2StepView : N2DisclosureBox {
-	N2Step* _step;
+@implementation N2Pair
+@synthesize first = _first, second = _second;
+
+-(id)initWith:(id)first and:(id)second {
+	self = [super init];
+	
+	_first = [first retain];
+	_second = [second retain];
+	
+	return self;
 }
 
-@property(readonly) N2Step* step;
-
--(id)initWithStep:(N2Step*)step;
+-(void)dealloc {
+	[_first release];
+	[_second release];
+	[super dealloc];
+}
 
 @end

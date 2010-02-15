@@ -12,10 +12,10 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2Layout.h>
-#import <Nitrogen/N2View.h>
-#import <Nitrogen/N2Operators.h>
-#import <Nitrogen/N2Exceptions.h>
+#import <N2Layout.h>
+#import <N2View.h>
+#import <N2Operators.h>
+#import <N2Exceptions.h>
 
 @implementation N2Layout
 @synthesize view = _view, controlSize = _controlSize, margin = _margin, forcesSuperviewHeight = _forcesSuperviewHeight, forcesSuperviewWidth = _forcesSuperviewWidth, separation = _separation, enabled = _enabled;

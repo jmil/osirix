@@ -12,9 +12,9 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2View.h>
-#import <Nitrogen/N2Layout.h>
-#import <Nitrogen/N2Operators.h>
+#import <N2View.h>
+#import <N2Layout.h>
+#import <N2Operators.h>
 
 NSString* N2ViewBoundsSizeDidChangeNotification = @"N2ViewBoundsSizeDidChangeNotification";
 NSString* N2ViewBoundsSizeDidChangeNotificationOldBoundsSize = @"oldBoundsSize";

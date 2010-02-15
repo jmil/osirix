@@ -12,7 +12,7 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/NS(Attributed)String+Geometrics.h>
+#import <NS(Attributed)String+Geometrics.h>
 
 int gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior ;
 

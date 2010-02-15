@@ -12,8 +12,8 @@
      PURPOSE.
 =========================================================================*/
 
-#import <Nitrogen/N2Steps.h>
-#import <Nitrogen/N2Step.h>
+#import <N2Steps.h>
+#import <N2Step.h>
 
 NSString* N2StepsDidAddStepNotification = @"N2StepsDidAddStepNotification";
 NSString* N2StepsWillRemoveStepNotification = @"N2StepsWillRemoveStepNotification";

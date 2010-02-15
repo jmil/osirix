@@ -14,8 +14,8 @@
 
 #import "N2XMLRPC.h"
 #import "ISO8601DateFormatter.h"
-#import <Nitrogen/NSData+N2.h>
-#import <Nitrogen/NSString+N2.h>
+#import <NSData+N2.h>
+#import <NSString+N2.h>
 
 @implementation N2XMLRPC
 
