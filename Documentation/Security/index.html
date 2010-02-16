@@ -16,7 +16,8 @@
 		<a href="#OsiriX_TLS_DICOM_Listener_Setup"><li class="table_of_content_item0">OsiriX TLS DICOM Listener Setup</li></a>
 		<a href="#Creating_a_Self_Signed_Certificate"><li class="table_of_content_item1">Creating a Self-Signed Certificate</li></a>
 		<a href="#Requesting_a_Certificate_from_a_Certification_Authority"><li class="table_of_content_item0">Requesting a Certificate from a Certification Authority</li></a>
-		<a href="#More_Help"><li class="table_of_content_item1">More Help?</li></a>
+		<a href="#Changing_the_Trust_Settings_of_a_Certificate"><li class="table_of_content_item1">Changing the Trust Settings of a Certificate</li></a>
+		<a href="#More_Help"><li class="table_of_content_item0">More Help?</li></a>
 		<li id="table_of_content_embellishment_end"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
 	</ul>
 	
@@ -146,7 +147,26 @@
 		<a name="Requesting_a_Certificate_from_a_Certification_Authority"><h2>Requesting a Certificate from a Certification Authority</h2></a>
 			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
 				
-			
+		<a name="Changing_the_Trust_Settings_of_a_Certificate"><h2>Changing the Trust Settings of a Certificate</h2></a>
+		
+			<img class="icon" src="images/KeychainAccessIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
+				<li>Select the <em>My Certificates</em> Category and double-click on your certificate.</li>
+					<img class="screenshot" src="images/TrustSettings1.png" />
+				<li>This will open a window displaying the certificate's infos.
+					Click on the disclosure button near <em>Trust</em>:</li>
+					<img class="screenshot" src="images/TrustSettings2.png" />
+				<li>Change the trust settings to <em>Always Trust</em> and close the window.</li>
+					<img class="screenshot" src="images/TrustSettings3.png" />
+				<li>Authentify to validate your changes.</li>
+					<img class="screenshot" src="images/TrustSettings4.png" />
+				<li>Your certificate is now trusted for the current user.</li>
+					<img class="screenshot" src="images/TrustSettings5.png" />
+			</ul>
+		
+			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+				
 		<a name="More_Help"><h2>More Help?</h2></a>
 			<p>If this guide does not answer all your questions, please try our mailing-list:</p>
 			<p align="center"><a href="http://tech.groups.yahoo.com/group/osirix/">http://tech.groups.yahoo.com/group/osirix/</a></p>
