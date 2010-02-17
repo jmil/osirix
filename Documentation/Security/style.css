@@ -20,6 +20,7 @@ ul#table_of_content{
 
 ul#table_of_content li{
 	padding:5px;
+	margin:0px;
 }
 
 ul#table_of_content li.table_of_content_item0{
@@ -66,6 +67,10 @@ ul#table_of_content a:hover{
 
 ul.enumerate{
 	list-style-type:decimal;
+}
+
+li{
+	margin:5px;
 }
 
 h1{

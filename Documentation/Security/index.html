@@ -126,7 +126,7 @@
 			<ul class="enumerate">
 				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
 				
-				<li>Choose <em>Certificate Assistant > Create a certificate...</em> from the <em>Keychain Access</em> Menu, as shown in the following image:</li>
+				<li>Choose <em>Certificate Assistant > Create a Certificate...</em> from the <em>Keychain Access</em> Menu, as shown in the following image:</li>
 					<img class="screenshot" src="images/KeychainMenu_CreateCertificate.png" />
 					
 				<li>Choose a name for your certificate (it can be anything) and make sure that you choose <em>SSL Server</em> for the <em>Certificate Type</em>:</li>
@@ -160,7 +160,35 @@
 
 		<a name="Requesting_a_Certificate_from_a_Certification_Authority"><h2>Requesting a Certificate from a Certification Authority</h2></a>
 			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
+			<img class="icon" src="images/KeychainAccessIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
 				
+				<li>Choose <em>Certificate Assistant > Request a Certificate from a Certificate Authority...</em> from the <em>Keychain Access</em> Menu, as shown in the following image:</li>
+					<img class="screenshot" src="images/KeychainMenu_RequestCertificate.png" />
+					
+				<li>In the <em>Certificate Information</em> window, enter your e-mail address and the desired name for the requested certificate.
+					Don't fill the <em>CA Email Address</em> field and choose <em>Save to disk</em>:</li>
+					<img class="screenshot" src="images/RequestingCertificate1.png" />
+				<li>Choose a name and location for the request:</li>
+					<img class="screenshot" src="images/RequestingCertificate2.png" />
+				<li>Set the key size:</li>
+					<img class="screenshot" src="images/RequestingCertificate3.png" />
+				<li>When the request has been created, click <em>Show In Finder...</em> and open it with <em>TextEdit.app</em>.</li>
+					<img class="screenshot" src="images/RequestingCertificate4.png" />
+				<li>The content of the certificate request should look like this:</li>
+					<img class="screenshot" src="images/RequestingCertificate5.png" />
+				<li>Copy the content of the certificate request and submit it to your favorite Certification Authority (CA).
+					The usual suspects are:
+					<ul>
+						<li><a href="www.verisign.com/ssl/ssl-information-center">Verisign</a></li>
+						<li><a href="https://www.godaddy.com/gdshop/ssl/ssl.asp">Go Daddy</a></li>
+						<li><a href="www.thawte.com/">Thawte</a></li>
+						<li>etc.</li>
+					</ul>
+				</li>
+			</ul>
+			
 		<a name="Changing_the_Trust_Settings_of_a_Certificate"><h2>Changing the Trust Settings of a Certificate</h2></a>
 		
 			<img class="icon" src="images/KeychainAccessIcon.png" />
