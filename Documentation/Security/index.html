@@ -189,6 +189,27 @@
 				</li>
 			</ul>
 			
+			<h3>Real-case example</h3>
+			<p>This example shows how a valid SSL certificate is created for a server in the University Hospital of Geneva.</p>
+			<ul>
+				<li>A certificate request is created as described before.</li>
+				<li>The certificate request is submitted to <a href="http://www.switch.ch">Switch</a>, a service provider for Swiss Universities.</li>
+					<img class="screenshot" src="images/Switch.png" width="700"/>
+				<li>After approval by the hospital's registration authority person, the certificate is downloaded and added to the server's Keychain.</li>
+				<li>At this point the certificate is still not valid because the intermediate CA certificate is unknown:</li>
+					<img class="screenshot" src="images/cih-1084Invalid.png" />
+				<li>The intermediate CA certificate has to be downloaded from the intermediate CA web site (in this case QuoVadis).</li>				
+					<img class="screenshot" src="images/QuoVadisCertificate.png" width="700"/>
+				<li>The intermediate CA certificate is added to the Keychain of the server:</li>
+				<img class="screenshot" src="images/QuoVadisAddToKeychain.png" />
+				<li>The server's certificate is now recognized as valid:</li>
+				<img class="screenshot" src="images/cih-1084Valid.png" />
+				<li>When using the certificate with an OsiriX Web Server, the intermediate CA certificate should also be installed on clients systems to avoid warning messages from web browsers, such as:</li>
+				<img class="screenshot" src="images/SafariWarning.png" />
+				<img class="screenshot" src="images/FirefoxWarning.png" width="700"/>
+				<img class="screenshot" src="images/ChromeWarning.png" width="700"/>
+			</ul>
+			
 		<a name="Changing_the_Trust_Settings_of_a_Certificate"><h2>Changing the Trust Settings of a Certificate</h2></a>
 		
 			<img class="icon" src="images/KeychainAccessIcon.png" />
