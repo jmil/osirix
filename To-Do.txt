@@ -29,10 +29,8 @@
 
 - CGET retrieve from dc4chee
 
-- EF Result: add area, line before area
-- EF Result: vectorial, line thickness, 2x2
-- EF Restore: color ROI, and color name
 
+- 3D MPR: Text tool, Export all views
 - Tool to create a new series from key images of a study
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
