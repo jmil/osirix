@@ -63,7 +63,7 @@
 						<li>Safari can ask your approval for connecting to a site using an invalid certificate.
 							This occurs if you created a self-signed certificate (as described in <a href="#Creating_a_Self_Signed_Certificate">Creating a Self-Signed Certificate</a>).
 							
-							<p>Here, you can either click <em>Continue</em> (for a one time approval) or click <em>Show Certificate</em> to modify the trust settings.</p>
+							<p>Here, you can either click <em>Continue</em> (for a one time approval) or click <em>Show Certificate</em> to modify the trust settings (see <a href="#Changing_the_Trust_Settings_of_a_Certificate">Changing the Trust Settings of a Certificate</a>).</p>
 							
 							<p><em>Note: Your users will have the same kind of warning when trying to connect to your OsiriX Web Server.
 									This is the down-side of creating self-signed certificates...
@@ -96,6 +96,19 @@
 				<li>Open the <em>Preferences</em> (in the <em>OsiriX</em> Menu).</li>
 				<li>Select the <em>Listener</em> Preferences:</li>
 					<img class="screenshot" src="images/PreferencesListener.png" />
+				<li>The last option of this group of settings, you will find the <em>DICOM TLS Listener</em>. Click on the <em>TLS Settings</em> button:</li>
+					<img class="screenshot" src="images/TLSSettingsButton.png" />
+				<li>In the TLS Settings, click on the <em>Activate DICOM TLS Listener</em> check box, and choose an AETitle and a Port number (it must be different from the default DICOM Listener port).
+					Then click on the <em>Choose</em> button to select the certificate to use for TLS communications:
+					</li>
+					<img class="screenshot" src="images/TLSSettingsDefault.png" />
+				<li>The list of available certificates will appear. Select the one you want to use, and click the <em>Choose</em> button:</li>
+					<img class="screenshot" src="images/TLSSettingsCertificateList.png" />
+				<li>Here is an example of TLS Settings:</li>
+					<img class="screenshot" src="images/TLSSettings.png" />
+				<li>The chosen AETitle and Port will be displayed on the Listener Preferences window:</li>
+					<img class="screenshot" src="images/TLSSettingsAETPort.png" />
+				<li>You can now receive encrypted DICOM communications on the chosen Port.</li>
 			</ul>
 			
 			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
