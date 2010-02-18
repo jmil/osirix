@@ -204,10 +204,23 @@
 				<img class="screenshot" src="images/QuoVadisAddToKeychain.png" />
 				<li>The server's certificate is now recognized as valid:</li>
 				<img class="screenshot" src="images/cih-1084Valid.png" />
-				<li>When using the certificate with an OsiriX Web Server, the intermediate CA certificate should also be installed on clients systems to avoid warning messages from web browsers, such as:</li>
-				<img class="screenshot" src="images/SafariWarning.png" />
-				<img class="screenshot" src="images/FirefoxWarning.png" width="700"/>
-				<img class="screenshot" src="images/ChromeWarning.png" width="700"/>
+				<li>When using the certificate with an OsiriX Web Server, the intermediate CA certificate will be automatically transmitted to the clients systems.
+					Thus clients should see the certificate as valid.
+					<ul>
+						<li>A client using Safari on Mac OS X:</li><img class="screenshot" src="images/HTTPSSafari.png" />
+						<li>A client using Firefox on Mac OS X:</li><img class="screenshot" src="images/HTTPSFirefox.png" />
+						<li>A client using Chrome on Mac OS X:</li><img class="screenshot" src="images/HTTPSChrome.png" />
+						<li>A client using Internet Explorer on Windows XP:</li><img class="screenshot" src="images/HTTPSIE.png" />
+					</ul>
+				</li>
+				<li>If the intermediate CA certificate is not installed or if the certificate is not valid, the clients will received warning messages such as:
+					<ul>
+						<li>Safari on Mac OS X:</li><img class="screenshot" src="images/SafariWarning.png" />
+						<li>Firefox on Mac OS X:</li><img class="screenshot" src="images/FirefoxWarning.png" width="700"/>
+						<li>Chrome on Mac OS X:</li><img class="screenshot" src="images/ChromeWarning.png" width="700"/>
+						<li>Internet Explorer on Windows XP:</li><img class="screenshot" src="images/IEWarning.png" />
+					</ul>
+				</li>				
 			</ul>
 		
 		<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
