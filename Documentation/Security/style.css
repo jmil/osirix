@@ -89,13 +89,13 @@ p{
 }
 
 #keychain_logo{
-	background-image:url('images/KeychainAccessIconBig.png');
+	background-image:url('images/CertificateIconBig.png');
 	position:fixed;
-	width:512px;
-	height:512px;
+	width:672px;
+	height:566px;
 	right:10%;
-	top:-50px;
-	opacity:0.2;
+	top:-30px;
+	opacity:0.07;
 }
 
 .top{
