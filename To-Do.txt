@@ -27,7 +27,7 @@
 - Compatible with Oviyam project (http://oviyam.raster.in/)
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
-- CGET retrieve from dc4chee
+- CGET retrieve from dcm4chee
 - Test iPhone app
 - Test multi screen
 
@@ -53,7 +53,7 @@ When establishing a hanging protocol for MR and using two displays (8 column, 1 
 QA
 - BugZilla (sourceforge?)
 - EggPlant
-- UnitTesting (assert functions) (http://developer.apple.com/tools/unittest.html - SenTestingKit.framewor, OCMock.framework)
+- UnitTesting (assert functions) (http://developer.apple.com/tools/unittest.html - SenTestingKit.framework, OCMock.framework)
 - Regression tests
 - ILCrashReporter
 - Doxygen
