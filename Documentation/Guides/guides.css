@@ -113,3 +113,14 @@ img.screenshot{
 	margin-top:20px;
 	margin-bottom:20px;
 }
+
+
+#osirix_blueprint{
+	background-image:url('images/OsiriXBlueprint.png');
+	position:fixed;
+	width:500px;
+	height:450px;
+	right:0px;
+	top:0px;
+	opacity:0.3;
+}
