@@ -55,6 +55,16 @@ li#table_of_content_embellishment_end{
 	padding-bottom:5px;
 }
 
+li#table_of_content_back{
+	font-weight:bold;	
+	border-bottom:solid thin #AAaaAA;
+	background-color:#ddDDdd;
+}
+
+li#table_of_content_back:hover{
+	background-color:#ffFFff;
+}
+
 ul#table_of_content a{
 	text-decoration:none;
 	color:#333333;
@@ -93,6 +103,7 @@ p{
 }
 
 #content{
+	margin-top:25px;
 	position:relative;
 }
 
@@ -113,7 +124,6 @@ img.screenshot{
 	margin-top:20px;
 	margin-bottom:20px;
 }
-
 
 #osirix_blueprint{
 	background-image:url('images/OsiriXBlueprint.png');
