@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>OsiriX Development Guide</title>
+	<link rel="stylesheet" href="../guides.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
 
@@ -11,17 +12,16 @@
 	<ul id="table_of_content">
 		<li id="table_of_content_embellishment_start"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
 		<li id="table_of_content_title">Table of Content</li>
-		<li><a href="#top">Introduction</a></li>
-		<li><a href="#Developing_on_Mac_OS_X">Developing on Mac OS X</a></li>
-		<li><a href="#Getting_OsiriX_Source_Code">Getting OsiriX Source Code</a></li>
-		<li><a href="#Source_Code_Documentation">Source Code Documentation</a></li>
-		<li><a href="#Creating_a_Plugin">Creating a Plugin</a></li>
-        <li><a href="#XML_RPC_support">XML-RPC support</a></li>
-		<li><a href="#The_Plugins_Architecture_of_OsiriX">The Plugins Architecture</a></li>
-        <li><a href="#ITKPlugin">Build your own ITK library for your plugin</a></li>
-		<li><a href="#Distributing_and_Installing_your_Plugin">Distribution & Installion</a></li>
-        <li><a href="http://osirix.svn.sourceforge.net/viewvc/osirix/Documentation/Security/index.html">Security Protocols</a></li>
-		<li><a href="#More_Help">More Help?</a></li>
+		<a href="#top"><li class="table_of_content_item0">Introduction</li></a>
+		<a href="#Developing_on_Mac_OS_X"><li class="table_of_content_item1">Developing on Mac OS X</li></a>
+		<a href="#Getting_OsiriX_Source_Code"><li class="table_of_content_item0">Getting OsiriX Source Code</li></a>
+		<a href="#Source_Code_Documentation"><li class="table_of_content_item1">Source Code Documentation</li></a>
+		<a href="#Creating_a_Plugin"><li class="table_of_content_item0">Creating a Plugin</li></a>
+        <a href="#XML_RPC_support"><li class="table_of_content_item1">XML-RPC support</li></a>
+		<a href="#The_Plugins_Architecture_of_OsiriX"><li class="table_of_content_item0">The Plugins Architecture</li></a>
+        <a href="#ITKPlugin"><li class="table_of_content_item1">Build your own ITK library for your plugin</li></a>
+		<a href="#Distributing_and_Installing_your_Plugin"><li class="table_of_content_item0">Distribution &amp; Installion</li></a>
+		<a href="#More_Help"><li class="table_of_content_item1">More Help?</li></a>
 		<li id="table_of_content_embellishment_end"><img src="images/toc_embellishment.png" width="24" height="10" border="0" /></li>
 	</ul>
 	
@@ -37,7 +37,7 @@
 			<p>We highly recommend you to read the following books:</p>
 			<ul>
 				<li><i>Cocoa Programming for Mac OS X</i> by Aaron Hillegass</li>
-				<li><i>Learning Cocoa with Objective-C</i> by James Duncan Davidson & Apple, Inc.</li>
+				<li><i>Learning Cocoa with Objective-C</i> by James Duncan Davidson &amp; Apple, Inc.</li>
 				<li><i>Programming in Objective-C</i> by Stephen Kochan</li>
 			</ul>
 			<p>Other useful resources to learn Cocoa and Objective-C:</p>
@@ -56,12 +56,12 @@
 			<p>For Example, you can type <code>roiadd</code> and hit Esc to get this snippet:</p>	
 				
 				<p>
-				<code>ROI *roi = [[ROI alloc] initWithType:<#ROI Type#> :<#pixelSpacingX#> :<#pixelSpacingY#> :<#origin#>];</code><br />
-				<code>roi.name = <#ROI name#>;</code><br />
-				<code>roi.comments = <#ROI comments#>;</code><br />
-				<code>roi.points = <#ROI points#>;</code><br />
-				<code>[[<#viewer controller#> imageView] roiSet:roi];</code><br />
-				<code>[[<#viewer controller#> roiList] addObject:roi];</code><br />
+				<code>ROI *roi = [[ROI alloc] initWithType:&lt;#ROI Type#> :&lt;#pixelSpacingX#> :&lt;#pixelSpacingY#> :&lt;#origin#>];</code><br />
+				<code>roi.name = &lt;#ROI name#>;</code><br />
+				<code>roi.comments = &lt;#ROI comments#>;</code><br />
+				<code>roi.points = &lt;#ROI points#>;</code><br />
+				<code>[[&lt;#viewer controller#> imageView] roiSet:roi];</code><br />
+				<code>[[&lt;#viewer controller#> roiList] addObject:roi];</code><br />
 				<code>[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:roi userInfo:nil];</code><br />
 				<code>[roi release];</code><br />
 				</p>
@@ -83,8 +83,8 @@
 		<ul id='getting_source_code_compile'>
 			<li>Open your Terminal application (in <code>/Applications/Utilities/</code>)</li>
 			<li>Type <code>svn co https://osirix.svn.sourceforge.net/svnroot/osirix osirix</code> and hit return</li>
-			<li>Open the <code>Osirix.xcodeproj</code> (in <code>osirix/</code>) and select & run the 'Unzip Binaries' target</li>
-			<li>Select & run the 'Development' target to build OsiriX</li>
+			<li>Open the <code>Osirix.xcodeproj</code> (in <code>osirix/</code>) and select &amp; run the 'Unzip Binaries' target</li>
+			<li>Select &amp; run the 'Development' target to build OsiriX</li>
 		</ul>
 		<p>To download the plugins distributed with OsiriX:</p>
 		<ul id='getting_plugins'>
@@ -168,7 +168,7 @@
             <p>See PetSpectFusion plugin in the plugins folder for an example.</p>
 			<p class="top"><a href="#top"><img src="images/top.png" border="0"/></a></p>
         
-		<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing & Installing your Plugin</h2></a>
+		<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing &amp; Installing your Plugin</h2></a>
 			<img class="icon" src="images/osirixplugin_icon.png" />
 			<p>The distribution of your plugin is left to you. The OsiriX team does not host nor distribute 3rd party plugins. <i>However</i>, if your plugin match our quality standards, we can reference your plugin page from the Plugin Manager in OsiriX app. A place of choice to be wildly visible by our users. You will find the application form directly in the Plugin Manager window of OsiriX.</p>
 			<p>The OsiriX plugins can be installed in 3 different locations:</p>
