@@ -28,10 +28,12 @@
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - CGET retrieve from dcm4chee
-- Test iPhone app
+- Test iPhone app -> transferts
 - Test multi screen
-
 - WADO FRAMES: tester with oviyam
+- Test encoding values for CFind scu scp
+- Test encoding values for dicom editing
+- Test reports Bonjour
 
 - 3D MPR: Text tool, Export all views
 - Tool to create a new series from key images of a study
