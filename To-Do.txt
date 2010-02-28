@@ -30,8 +30,6 @@
 - CGET retrieve from dcm4chee
 - Test iPhone app -> transferts
 - Test multi screen
-- WADO FRAMES: tester with oviyam
-- Test reports Bonjour
 
 - 3D MPR: Text tool, Export all views
 - Tool to create a new series from key images of a study
