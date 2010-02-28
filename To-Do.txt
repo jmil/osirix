@@ -31,10 +31,10 @@
 - Test iPhone app -> transferts
 - Test multi screen
 - WADO FRAMES: tester with oviyam
-- Test encoding values for CFind scu scp
-- Test encoding values for dicom editing
 - Test reports Bonjour
-- Test Q&R wado
+
+- Encoding: copy/paste word
+- Buc Jerome?
 
 - 3D MPR: Text tool, Export all views
 - Tool to create a new series from key images of a study
