@@ -31,8 +31,6 @@
 - Test iPhone app -> transferts
 - Test multi screen
 
-- sort by slice location
-
 - Continuous 3D cursor
 - 3D MPR: Text tool, Export all views
 - Tool to create a new series from key images of a study
