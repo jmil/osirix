@@ -27,9 +27,8 @@
 - Compatible with Oviyam project (http://oviyam.raster.in/)
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
-- CGET retrieve from dcm4chee - works only if syntax is identical or implicit endian (dicom listener)
 - Test iPhone app -> transferts
-- Test multi screen
+- Check comments : studyList, and series level comments
 
 - Continuous 3D cursor
 - 3D MPR: Text tool, Export all views
