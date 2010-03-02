@@ -40,7 +40,6 @@
 - Registration see Volview - Plugin
 - Sync Ortho-MPR
 - Propagate sub-settings
-- SDK Primera
 - Phase Cardiac
 - Printing Layout
 
