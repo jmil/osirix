@@ -28,7 +28,6 @@
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
 
 - Test iPhone app -> transferts
-- Abort Validating
 
 - Continuous 3D cursor
 - 3D MPR: Export all views
