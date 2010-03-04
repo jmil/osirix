@@ -1036,8 +1036,6 @@
 		CE8CF4450C2EA56200537400 /* PapyTypeDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4060C2EA56200537400 /* PapyTypeDef3.h */; };
 		CE8CF4460C2EA56200537400 /* Papyrus3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4070C2EA56200537400 /* Papyrus3.h */; };
 		CE8CF4470C2EA56200537400 /* PapyPubFunctionDef3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF4080C2EA56200537400 /* PapyPubFunctionDef3.h */; };
-		CE9CEF6D0C75BFCB00752D4B /* DCMObjectDBImport.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9CEF6B0C75BFCB00752D4B /* DCMObjectDBImport.h */; };
-		CE9CEF6E0C75BFCB00752D4B /* DCMObjectDBImport.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9CEF6C0C75BFCB00752D4B /* DCMObjectDBImport.m */; };
 		CE9CEF790C75C0B600752D4B /* dicomDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */; };
 		CE9CEF7A0C75C0B600752D4B /* nameDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9CEF770C75C0B600752D4B /* nameDictionary.plist */; };
 		CE9CEF7B0C75C0B600752D4B /* tagDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9CEF780C75C0B600752D4B /* tagDictionary.plist */; };
@@ -2140,8 +2138,6 @@
 		CE8CFFFD0C2EA8C600537400 /* jconfig16.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jconfig16.h; sourceTree = "<group>"; };
 		CE8CFFFE0C2EA8C600537400 /* jcparam.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcparam.c; sourceTree = "<group>"; };
 		CE8CFFFF0C2EA8C600537400 /* jcphuff.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcphuff.c; sourceTree = "<group>"; };
-		CE9CEF6B0C75BFCB00752D4B /* DCMObjectDBImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCMObjectDBImport.h; path = ../osirix/DCMObjectDBImport.h; sourceTree = SOURCE_ROOT; };
-		CE9CEF6C0C75BFCB00752D4B /* DCMObjectDBImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCMObjectDBImport.m; path = ../osirix/DCMObjectDBImport.m; sourceTree = SOURCE_ROOT; };
 		CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = dicomDictionary.plist; path = "../osirix/DCM Framework/dicomDictionary.plist"; sourceTree = SOURCE_ROOT; };
 		CE9CEF770C75C0B600752D4B /* nameDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = nameDictionary.plist; path = "../osirix/DCM Framework/nameDictionary.plist"; sourceTree = SOURCE_ROOT; };
 		CE9CEF780C75C0B600752D4B /* tagDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tagDictionary.plist; path = "../osirix/DCM Framework/tagDictionary.plist"; sourceTree = SOURCE_ROOT; };
@@ -2254,8 +2250,6 @@
 				CE8C07200C2EADE900537400 /* DicomFileDCMTKCategory.mm */,
 				CE8C07580C2EB00800537400 /* DefaultsOsiriX.h */,
 				CE8C07590C2EB00800537400 /* DefaultsOsiriX.m */,
-				CE9CEF6B0C75BFCB00752D4B /* DCMObjectDBImport.h */,
-				CE9CEF6C0C75BFCB00752D4B /* DCMObjectDBImport.m */,
 				CE9CEFCF0C75CA9F00752D4B /* DICOMToNSString.h */,
 				CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */,
 			);
@@ -3975,7 +3969,6 @@
 				CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */,
 				CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */,
 				CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */,
-				CE9CEF6D0C75BFCB00752D4B /* DCMObjectDBImport.h in Headers */,
 				CE9CEFB40C75CA1500752D4B /* DefaultsOsiriX.h in Headers */,
 				CE9CEFD10C75CA9F00752D4B /* DICOMToNSString.h in Headers */,
 				A92CCDCD0CA7D9B000800211 /* altivecFunctions.h in Headers */,
@@ -4600,7 +4593,6 @@
 				CE8C08740C2EB10800537400 /* dsrxmlc.cc in Sources */,
 				CE8C08760C2EB10800537400 /* dsrxmld.cc in Sources */,
 				CE8C08780C2EB10800537400 /* dsrxrdcc.cc in Sources */,
-				CE9CEF6E0C75BFCB00752D4B /* DCMObjectDBImport.m in Sources */,
 				CE9CEFB30C75CA1400752D4B /* DefaultsOsiriX.m in Sources */,
 				CE9CEFD20C75CA9F00752D4B /* DICOMToNSString.m in Sources */,
 				A92CCDD50CA7DA6600800211 /* altivecFunctions.c in Sources */,

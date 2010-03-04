@@ -52,7 +52,7 @@ void drawTextualData(NSString* path, float width)
 		if( [file elementForKey:@"studyDate"]) s = [NSString stringWithFormat: @"%@ / %@", [date stringFromDate: [file elementForKey:@"studyDate"]], [time stringFromDate: [file elementForKey:@"studyDate"]]];
 		[text appendString: stringFromData( [file elementForKey:@"studyDescription"], s)];
 		[text appendString: @"\r"];
-		[text appendString: @" Displayed by OsiriX Engine¨"];
+		[text appendString: @" Displayed by OsiriX Engine 3.7¨"];
 		[text drawAtPoint: NSMakePoint(0, 0) withAttributes: attributes];
 		
 		[file release];
