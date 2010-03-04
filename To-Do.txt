@@ -235,5 +235,5 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - Update versionLeopard.html xml
 - Update plugins
 - 64bitExtension : upload osirix-viewer.com
-- 64bitExtension : Kagi Blurb
+- 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup
 - 64bitExtension : Mailing to users
