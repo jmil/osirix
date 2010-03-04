@@ -1,0 +1,9 @@
+#blueprint{
+	background-image:url('images/PluginBlueprint.png');
+	position:fixed;
+	width:500px;
+	height:450px;
+	right:0px;
+	top:0px;
+	opacity:0.3;
+}

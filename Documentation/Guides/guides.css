@@ -19,12 +19,12 @@ ul#table_of_content{
 }
 
 ul#table_of_content li{
-	padding:5px;
+	padding:4px;
 	margin:0px;
 }
 
 ul#table_of_content li.table_of_content_item0{
-	background-color:#ddDDdd;
+	background-color:#dddddd;
 }
 
 ul#table_of_content li.table_of_content_item0:hover{
@@ -40,13 +40,21 @@ ul#table_of_content li.table_of_content_item1:hover{
 }
 
 li#table_of_content_title{
-	padding-top:5px;
-	padding-bottom:10px;
 	font-weight:bold;	
+    min-height:30px;
+}
+
+li#table_of_content_embellishment_start, li#table_of_content_embellishment_end {
+    background-image:url('images/toc_embellishment.png');
+    min-width:24px;
+    min-height:30px;
+    border:0;
+    background-repeat:no-repeat;
+    background-position: 50% 50%;
 }
 
 li#table_of_content_embellishment_start{
-	padding-top:0px;
+	padding-top:5px;
 	padding-bottom:5px;
 }
 
@@ -120,12 +128,29 @@ img.icon{
 	width:64px;
 }
 
+img.icon32{
+	float:right;
+	width:32px;
+}
+
 img.screenshot{
 	margin-top:20px;
 	margin-bottom:20px;
 }
 
-#osirix_blueprint{
+img.left {
+    float: left;
+    margin-right: 10px;
+}
+
+img.right {
+    float: right;
+    margin-left: 10px;
+}
+
+
+
+#blueprint{
 	background-image:url('images/OsiriXBlueprint.png');
 	position:fixed;
 	width:500px;
