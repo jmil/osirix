@@ -26,10 +26,10 @@
 - Crash Test preference to identify corrupted files on CD/DVD
 - Compatible with Oviyam project (http://oviyam.raster.in/)
 - This version is the last version to support PowerPC processors (G4 & G5 Macs)
+- Continuously display the 3D cursor, if Control key and Shift key are pressed
 
 - Test iPhone app -> transferts
 
-- Continuous 3D cursor
 - Zoom centered around mouse position
 - 3D MPR: Export all views
 - Tool to create a new series from key images of a study
