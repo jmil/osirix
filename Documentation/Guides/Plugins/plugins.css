@@ -1,9 +1,9 @@
-#blueprint{
-	background-image:url('images/PluginBlueprint.png');
+#PluginIcon{
+	background-image:url('images/PluginIcon.png');
 	position:fixed;
-	width:500px;
-	height:450px;
+	width:512px;
+	height:512px;
 	right:0px;
-	top:0px;
+	top:-30px;
 	opacity:0.3;
 }
