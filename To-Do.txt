@@ -1,34 +1,3 @@
-- Full DICOM TLS (Transport Layer Security) support for network operations (C-ECHO, C-FIND, C-STORE, C-MOVE, C-GET)
-- OsiriX Lite version (for CD/DVD burning) 14 MB versus instead of 150 MB
-- Network functions are now grouped in the Network menu
-- Encrypt DICOM CD/DVD with a password in zip format (compatible with Windows & Linux) - It requires MacOS 10.6 or higher
-- WADO Server support (included in the Web HTTP Server, url: wado)
-- New built-in web server, with HTTPS encryption and ZIP export
-- Customize the built-in Web server, by copying the WebServicesHTML folder in the Library/Applications Support/OsiriX folder
-- Better views position in MPR and Ortho-MPR for Portrait Mode screens
-- Support Presentation States (PR) SOPClassUID in database
-- Q&R: Separate DICOM Auto Query Retrieve window
-- Q&R: Save DICOM Auto Query Retrieve settings, and automatically restart it when relaunching OsiriX
-- Q&R: Thread DICOM Association negotiation and C-Find, allowing the user to cancel the connection
-- Q&R: support for Referring Physician field
-- Q&R: query last 6 or 12 hours
-- Abort Incoming DICOM Processes (Store-SCU) function
-- Add, Delete and Modify ROIs on shared database
-- Support SUV computation for more than 24 hours
-- Search by Patient ID on the built-in Web server
-- WADO Client support for Q&R
-- BullsEye plugin
-- OpenOffice support (odt format) for Reports
-- Export studies by email from the DB window
-- Option to open PDF & DICOM PDF in Preview application
-- Search in Logs, Export Logs in csv format
-- Windows Tiling menu (2D Viewer) and contextual menu
-- Crash Test preference to identify corrupted files on CD/DVD
-- Compatible with Oviyam project (http://oviyam.raster.in/)
-- This version is the last version to support PowerPC processors (G4 & G5 Macs)
-- Continuously display the 3D cursor, if Control key and Shift key are pressed
-
-- Test iPhone app -> transferts
 
 - Zoom centered around mouse position
 - 3D MPR: Export all views
@@ -231,10 +200,10 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - X Localizations strings : genstrings *.m *.mm *.h *.h cocoahttpserver/*.m cocoahttpserver/*.h AYDicomPrint/*.m AYDicomPrint/*.mm -macRoman
 - X OsiriX Lite
 - X QuickLook
-- Update Downloads.html
+- X Update Downloads.html
 - Update versionLeopard.html xml
-- wwww.apple.com/download
+- X wwww.apple.com/download
 - Update plugins
-- 64bitExtension : upload osirix-viewer.com
-- 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup
-- 64bitExtension : Mailing to users
+- X 64bitExtension : upload osirix-viewer.com
+- X 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup
+- X 64bitExtension : Mailing to users
