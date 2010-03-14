@@ -11,8 +11,7 @@
 - Propagate sub-settings
 - Phase Cardiac
 - Printing Layout
-- Exchange Report through Bonjour / Store them in DICOM SR format?
-- Exchange Status/Comments through Bonjour / Store them in DICOM SR format?
+- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m
 
 1) In addition to the existing `key image' function, also add `key sequence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
