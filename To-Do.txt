@@ -1,4 +1,5 @@
 - BUG Ejection Fraction
+- Check Time Zone modifications
 
 - Full screen capture PET-CT viewer
 - Zoom centered around mouse position
