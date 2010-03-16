@@ -1,3 +1,5 @@
+- BUG Ejection Fraction
+
 - Full screen capture PET-CT viewer
 - Zoom centered around mouse position
 - 3D MPR: Export all views
@@ -12,6 +14,7 @@
 - Phase Cardiac
 - Printing Layout
 - Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m
+- re-sort on the fly : slice location, instance number, ...
 
 1) In addition to the existing `key image' function, also add `key sequence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
@@ -204,7 +207,7 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - X Update Downloads.html
 - X Update versionLeopard.html xml
 - X wwww.apple.com/download
-- Update plugins
+- X Update plugins
 - X 64bitExtension : upload osirix-viewer.com
 - X 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup
 - X 64bitExtension : Mailing to users
