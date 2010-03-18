@@ -21,9 +21,10 @@
 		<a href="#Creating_a_Plugin"><li class="table_of_content_item0">Creating a Plugin</li></a>
         <a href="#XML_RPC_support"><li class="table_of_content_item1">XML-RPC support</li></a>
 		<a href="#The_Plugins_Architecture_of_OsiriX"><li class="table_of_content_item0">The Plugins Architecture</li></a>
-        <a href="#ITKPlugin"><li class="table_of_content_item1">Build your own ITK library for your plugin</li></a>
-		<a href="#Distributing_and_Installing_your_Plugin"><li class="table_of_content_item0">Distribution &amp; Installion</li></a>
-		<a href="#More_Help"><li class="table_of_content_item1">More Help?</li></a>
+		<a href="#Same_Plugins_and_Sample_Code"><li class="table_of_content_item1">Sample Code</li></a>
+        <a href="#ITKPlugin"><li class="table_of_content_item0">Build your own ITK library for your plugin</li></a>
+		<a href="#Distributing_and_Installing_your_Plugin"><li class="table_of_content_item1">Distribution &amp; Installion</li></a>
+		<a href="#More_Help"><li class="table_of_content_item0">More Help?</li></a>
 		<li id="table_of_content_embellishment_end"></li>
 	</ul>
 	
@@ -149,16 +150,25 @@
 			<li><code>ROI</code>:  an object that contains a ROI</li>
 			<li><code>MyPoint</code>:  an object that describes a 2D point</li>
 		</ul>
-		<p>See the examples (open source plugins that you will find in the <code>plugins/</code> directory) to understand how to use these objects. Look at the headers files of these objects to find which functions are available and how to call them.</p>
+		
+		<p>Look at the headers files of these objects to find which functions are available and how to call them.</p>
 		
 		<p>The <code>pluginType</code> field of the <code>info.plist</code> file contains one of the following name:<p> 
 		<ul>
-			<li><code>imageFilter</code>: your plug-in will appear in the ‘Image Filters’ menu</li>
-			<li><code>roiTool</code>: your plug-in will appear in the ‘ROIs tools’ menu</li>
-			<li><code>other</code>: your plug-in will appear in the ‘Others’ menu</li>
-			<li><code>fusionFilter</code>: your plug-in will appear in the ‘Fusion’ window</li>
-			<li><code>Database</code>: your plug-in will appear in the ‘Database’ menu</li>
+			<li><code>imageFilter</code>: your plug-in will appear in the 'Image Filters' menu</li>
+			<li><code>roiTool</code>: your plug-in will appear in the 'ROIs tools' menu</li>
+			<li><code>other</code>: your plug-in will appear in the 'Others' menu</li>
+			<li><code>fusionFilter</code>: your plug-in will appear in the 'Fusion' window</li>
+			<li><code>Database</code>: your plug-in will appear in the 'Database' menu</li>
 		</ul>
+		
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		
+		<a name="Same_Plugins_and_Sample_Code"><h2>Same Plugins and Sample Code</h2></a>
+		<p>The <a href="http://sourceforge.net/projects/osirixplugins/">OsiriX Plugins</a> project on Sourceforge provides a large variety of sample plugins.</p>
+		<p>You can download their source code using SVN:<br/><code>svn co https://osirixplugins.svn.sourceforge.net/svnroot/osirixplugins osirixplugins</code></p>
+		<p>The <code>HelloWorld</code> plugin was created to help developers to understand how to interact with OsiriX. 
+			The main class contains several sample methods showing some basic functionalities: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/osirixplugins/HelloWorld/HelloWorldFilter.m"><code>HelloWorldFilter.m</code></a> </p>
 		
 		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
 		
