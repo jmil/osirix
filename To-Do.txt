@@ -1,5 +1,4 @@
-- BUG Ejection Fraction
-
+- Select All for Cipher Suites
 - Full screen capture PET-CT viewer
 - Zoom centered around mouse position
 - 3D MPR: Export all views
