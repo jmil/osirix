@@ -1,5 +1,3 @@
-check frameNumber wado
-
 - SendController : images -> files
 - Select All for Cipher Suites
 - Full screen capture PET-CT viewer
