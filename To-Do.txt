@@ -1,5 +1,4 @@
 - GE Scan orientation cloye
-- DecompressMoveIfFail
 
 - NSSlider for Preferences
 - Add ES modality in Q&R
