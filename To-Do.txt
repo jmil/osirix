@@ -1,4 +1,4 @@
-- GE Scan orientation cloye
+- WADO Retrieve log
 
 - NSSlider for Preferences
 - Add ES modality in Q&R
