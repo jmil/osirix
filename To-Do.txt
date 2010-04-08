@@ -1,3 +1,5 @@
+- Test WADO log
+
 - NSSlider for Preferences
 - Add ES modality in Q&R
 - Select All for Cipher Suites
