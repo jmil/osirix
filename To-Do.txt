@@ -5,6 +5,7 @@
 - Zoom centered around mouse position
 - 3D MPR: Export all views
 - Tool to create a new series from key images of a study
+- Print images, containing ROIs
 - Localize dicom Print
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
