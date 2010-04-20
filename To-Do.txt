@@ -3,8 +3,6 @@
 - Intag
 
 - Multiple Comments //
-- Default frame rate
-- Export from to
 - Export jpg settings
 - OsiriX Lite -> DICOMDIR?
 
