@@ -2,8 +2,7 @@
 - Bulls Eye
 - Intag
 
-- Multiple Comments //
-- Scout Removing, only when needed
+- Multiple Comments
 
 - VTK 5.6 GPUVolumeRendering
 - NSSlider for Preferences
