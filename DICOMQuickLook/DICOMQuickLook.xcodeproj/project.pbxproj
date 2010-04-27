@@ -4658,7 +4658,6 @@
 				ARCHS = (
 					x86_64,
 					i386,
-					ppc,
 				);
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ALTIVEC_EXTENSIONS = YES;
