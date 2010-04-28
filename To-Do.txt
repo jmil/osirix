@@ -3,6 +3,7 @@
 - EF
 - Intag
 
+- SessionID for web server
 - Multiple Comments
 - VTK 5.6 GPUVolumeRendering
 - NSSlider for Preferences
@@ -23,7 +24,6 @@
 - Printing Layout
 - Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m
 - re-sort on the fly : slice location, instance number, ...
-- activate dumpLSArchitecturesForX86_64
 
 1) In addition to the existing `key image' function, also add `key sequence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
