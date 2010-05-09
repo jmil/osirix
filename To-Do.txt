@@ -27,6 +27,7 @@
 - Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m
 - Close Polygon only when finished
 - DICOM Printing 1/1 size
+- Video Test for 32-bit pipeline
 
 1) In addition to the existing `key image' function, also add `key sequence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
