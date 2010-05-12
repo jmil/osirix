@@ -29,6 +29,8 @@
 - DICOM Printing 1/1 size
 - Video Test for 32-bit pipeline
 
+- remove '12bit totoku support' option from viewer preferences, add the option to the plugin preferences (see new preferences layout & plugin support, by al3ss)
+
 1) In addition to the existing `key image' function, also add `key sequence' function. There are so many sequence in a MRI scan nowadays and it would be good if the users can select which series within a study are more important and mark them as key sequences.
 
 2) For the existing `find next key image' and `find previous key image' function, the function is limited to a particular series and the search will stop at the first/last key image within a series. I would like to suggest the find option can proceed to the first key image of next series or the last key image of previous series towards the first and last key image of a particular series, probably within the same study but may also extend to different studies of the same patient. 
