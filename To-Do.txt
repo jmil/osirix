@@ -6,6 +6,9 @@
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 
 - SessionID for web server
+- A list of JPEG, instead of a quicktime movie, if number of images < 20
+- A link for keyimages: jpeg or movie, depending on number of images < 20
+- Web Server: edit report
 - Multiple Comments
 - VTK 5.6 GPUVolumeRendering
 - Full screen capture PET-CT viewer
