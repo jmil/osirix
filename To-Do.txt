@@ -24,11 +24,10 @@
 - Phase Cardiac
 - Printing Layout
 - Growing region: set to new val
-- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m
+- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / Comments->(0020,4000)
 - Close Polygon only when finished
 - DICOM Printing 1/1 size
 - Video Test for 32-bit pipeline
-- Q&R : suport Comments (0020,4000)
 
 - remove '12bit totoku support' option from viewer preferences, add the option to the plugin preferences (see new preferences layout & plugin support, by al3ss)
 
