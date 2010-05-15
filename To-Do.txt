@@ -1,4 +1,4 @@
-- TODO : Query by Comments in Q&R
+- Query by Comments in Q&R
 
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
