@@ -24,7 +24,7 @@
 - Phase Cardiac
 - Printing Layout
 - Growing region: set to new val
-- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / Comments->(0020,4000) DCM_StudyComments, DCM_ImageComments, DCM_ApprovalStatus
+- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / Comments->Series(0020,4000)Study(0x0032, 0x4000), DCM_ApprovalStatus
 - Close Polygon only when finished
 - DICOM Printing 1/1 size
 - Video Test for 32-bit pipeline
