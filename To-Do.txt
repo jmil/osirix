@@ -1,4 +1,5 @@
 - Query by Comments in Q&R
+- Comments are now stored in DICOM files (0020,4000) and (0x0032, 0x4000)
 
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
