@@ -1,5 +1,6 @@
 - Query by Comments in Q&R
-- Comments are now stored in DICOM files (0020,4000) and (0x0032, 0x4000)
+- Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
+- Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
 
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
@@ -25,7 +26,7 @@
 - Phase Cardiac
 - Printing Layout
 - Growing region: set to new val
-- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / Comments->Series(0020,4000)Study(0x0032, 0x4000), DCM_ApprovalStatus
+- Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / DCM_InterpretationStatusID (Study level)
 - Close Polygon only when finished
 - DICOM Printing 1/1 size
 - Video Test for 32-bit pipeline
