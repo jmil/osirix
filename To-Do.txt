@@ -1,4 +1,5 @@
-- Test non-dicom, test all parser/readers
+- TEST Copy from local DB, 
+- TEST Bonjour
 
 - Query by Comments in Q&R
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
