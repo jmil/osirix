@@ -2,7 +2,7 @@
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
 
-- Read SR Report -> PDF
+- Read SR Report -> html (dsr2html)
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
