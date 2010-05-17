@@ -1,3 +1,5 @@
+- Test non-dicom, test all parser/readers
+
 - Query by Comments in Q&R
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
