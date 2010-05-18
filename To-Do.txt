@@ -6,6 +6,8 @@
 - ROI DCM_OsirixROI (0x0071, 0x0011) ? -> Network transfers?
 - Key Images -> DICOM Field ?
 
+- Add time limit in html2pdf
+- Add mimetype osirix: see com.apple.LaunchServices.plist
 - Read SR Report -> html (dsr2html)
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
