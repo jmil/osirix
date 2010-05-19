@@ -6,6 +6,10 @@
 - ROI DCM_OsirixROI (0x0071, 0x0011) ? -> Network transfers?
 - Key Images -> DICOM Field ?
 
+-assert in PowerCrush?
+Assertion failed: (!s->peak.vert && s->peak.simp->peak.vert==p && !op_vert(s,p)->simp->peak.vert), function connect, file /Users/antoinerosset/osirix/osirix/vtkPowerCrustSurfaceReconstruction.cxx, line 5387.
+abort raise kill
+
 - Add time limit in html2pdf
 - Add mimetype osirix: see com.apple.LaunchServices.plist
 - Read SR Report -> html (dsr2html)
