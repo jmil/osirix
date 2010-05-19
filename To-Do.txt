@@ -1,7 +1,8 @@
 - Query by Comments in Q&R
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
-
+- DICOM SR visualization support (displayed in PDF)
+- Mimetype support for osirix://SOPClassUID+SOPInstanceUID
 
 - ROI DCM_OsirixROI (0x0071, 0x0011) ? -> Network transfers?
 - Key Images -> DICOM Field ?
@@ -10,9 +11,6 @@
 Assertion failed: (!s->peak.vert && s->peak.simp->peak.vert==p && !op_vert(s,p)->simp->peak.vert), function connect, file /Users/antoinerosset/osirix/osirix/vtkPowerCrustSurfaceReconstruction.cxx, line 5387.
 abort raise kill
 
-- Add time limit in html2pdf
-- Add mimetype osirix: see com.apple.LaunchServices.plist
-- Read SR Report -> html (dsr2html)
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
