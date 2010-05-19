@@ -2,10 +2,11 @@
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
 - DICOM SR visualization support (displayed in PDF)
+- Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - Mimetype support for 'osirix://?image=SOPClassUID+SOPInstanceUID'
 
-- ROI DCM_OsirixROI (0x0071, 0x0011) ? -> Network transfers?
-- Key Images -> DICOM Field ?
+
+-> Reports in DICOM -> DICOMSR with EncapsulatedDocument?
 
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
