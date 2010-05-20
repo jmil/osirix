@@ -5,11 +5,9 @@
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - Mimetype support for 'osirix://?image=SOPClassUID+SOPInstanceUID'
 
-
 -> Reports in DICOM -> DICOMSR with EncapsulatedDocument?
 
 - crash PowerCrush
-- Drag files from db to finder?
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
