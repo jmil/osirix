@@ -1,7 +1,7 @@
 - Query by Comments in Q&R
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
-- DICOM SR visualization support (displayed in PDF)
+- DICOM SR visualization support (displayed in PDF and/or in 2D Viewer)
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - Mimetype support for 'osirix://?image=SOPClassUID+SOPInstanceUID'
 
