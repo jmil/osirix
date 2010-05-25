@@ -5,6 +5,8 @@
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 
+vImageFtoU -> manual tiling
+
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
 - crash PowerCrush
