@@ -6,6 +6,7 @@
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 
 - Deploy multiThreadedImageConvert
+- html2pdf is NOT thread-safe
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
