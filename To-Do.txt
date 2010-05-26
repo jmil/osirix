@@ -4,9 +4,10 @@
 - DICOM SR visualization support (displayed in PDF and/or in 2D Viewer)
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
+- Finer granularity in multi-threaded processes for better user experience (less stall)
 
-- Deploy multiThreadedImageConvert
-- html2pdf is NOT thread-safe
+- DICOM SR Icon in DB -> PDF Icon
+- if html put it directly in SR, without zip file
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
