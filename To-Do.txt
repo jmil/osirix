@@ -6,7 +6,6 @@
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 - Finer granularity in multi-threaded processes for better user experience (less stall)
 
-- MultiThread vImageConvolve
 - if html put it directly in SR, without zip file
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
