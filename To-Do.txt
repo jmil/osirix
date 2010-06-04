@@ -7,6 +7,7 @@
 - Finer granularity in multi-threaded processes for better user experience (less stall)
 
 - crash dsr2html on minipacs....
+- overdrive copy files when anonymize
 - if html put it directly in SR, without zip file
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
