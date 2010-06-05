@@ -5,14 +5,13 @@
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 - Finer granularity in multi-threaded processes for better user experience (less stall)
+- Reset Preferences (General Preferences)
 
 - crash dsr2html on minipacs....
-- overdrive copy files when anonymize
 - if html put it directly in SR, without zip file
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
-- Reset Preferences
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
