@@ -8,7 +8,7 @@
 - Reset Preferences (General Preferences)
 
 - crash dsr2html on minipacs....
-- if html put it directly in SR, without zip file
+- TEST: if html put it directly in SR, without zip file
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
@@ -40,7 +40,7 @@
 - Growing region: set to new val
 - Archive Report/Status/Comments through Bonjour / Store them in DICOM SR format: see syncReportAndComments in DicomStudy.m / DCM_InterpretationStatusID (Study level)
 - Close Polygon only when finished
-- DICOM Printing 1/1 size
+- DICOM Printing 1/1 size, fit to size
 - Video Test for 32-bit pipeline
 - Resize Locations Pref window
 - 
