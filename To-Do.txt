@@ -16,9 +16,8 @@
 - Specific cases: bonjour sharing
 - For STORE-SCP, SEND, QR, Reload annotations for each study after addToDB?
 
-- SC: SecondaryCaptureDeviceID field == MAC Address
+- SC: Manufacturer : MAC Address 
 - Rule: SQL Rule with SeriesID, SeriesDescription
-
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
