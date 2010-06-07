@@ -11,7 +11,9 @@
 - dcm4chee: re-archive existing UIDs?
 - crash dsr2html on minipacs....
 - TEST: if html put it directly in SR, without zip file
+- Stop writing: CommentAndStatus.xml
 - wado retrieve from minipacs
+- Specific cases: bonjour sharing
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
