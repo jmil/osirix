@@ -15,6 +15,10 @@
 - wado retrieve from minipacs
 - Specific cases: bonjour sharing
 
+- SC: SecondaryCaptureDeviceID field == MAC Address
+- Rule: SQL Rule with SeriesID, SeriesDescription
+
+
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
 - Add defaults smart albums when db is created
