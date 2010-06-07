@@ -14,9 +14,9 @@
 - Stop writing: CommentAndStatus.xml
 - wado retrieve from minipacs
 - Specific cases: bonjour sharing
-- For STORE-SCP, SEND, QR, Reload annotations for each study after addToDB?
+- writeFile export -> generate path directly
 
-- SC: Manufacturer : MAC Address 
+- SC: Manufacturer : MAC Address ?
 - Rule: SQL Rule with SeriesID, SeriesDescription
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
