@@ -6,10 +6,12 @@
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 - Finer granularity in multi-threaded processes for better user experience (less stall)
 - Reset Preferences (General Preferences)
+- New GUI for Anonymization 
 
 - dcm4chee: re-archive existing UIDs?
 - crash dsr2html on minipacs....
 - TEST: if html put it directly in SR, without zip file
+- wado retrieve from minipacs
 
 -> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
