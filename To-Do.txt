@@ -1,7 +1,7 @@
 - Query by Comments in Q&R
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
-- DICOM SR visualization support (displayed in PDF and/or in 2D Viewer)
+- DICOM SR visualization support (displayed in PDF)
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 - Finer granularity in multi-threaded processes for better user experience (less stall)
@@ -11,17 +11,13 @@
 - dcm4chee: re-archive existing UIDs?
 - TEST: if html put it directly in SR, without zip file
 - Stop writing: CommentAndStatus.xml
-- wado retrieve from minipacs
 - Specific cases: bonjour sharing
 - writeFile export -> generate path directly
 
-- DICOM SR export Quicktime/html/web server -> PDF file
-- Quicktime/html/web server : Do not include, PR file (non image series)
+- TEST: Quicktime/html/web server : Do not include, PR file (non image series)
 
-- SC: Manufacturer : MAC Address ?
 - Rule: SQL Rule with SeriesID, SeriesDescription
-
--> Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
+- Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
 
 - Add defaults smart albums when db is created
 - crash PowerCrush
