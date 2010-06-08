@@ -16,9 +16,6 @@
 
 - TEST: Quicktime/html/web server : Do not include, PR file (non image series)
 
-- Rule: SQL Rule with SeriesID, SeriesDescription
-- Show DICOM_SR, but not ROI DICOM_SR: Reports, KeyImages, Comments
-
 - Add defaults smart albums when db is created
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
