@@ -15,6 +15,9 @@
 - Specific cases: bonjour sharing
 - writeFile export -> generate path directly
 
+- DICOM SR export Quicktime/html/web server -> PDF file
+- Quicktime/html/web server : Do not include, PR file (non image series)
+
 - SC: Manufacturer : MAC Address ?
 - Rule: SQL Rule with SeriesID, SeriesDescription
 
