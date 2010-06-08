@@ -8,7 +8,6 @@
 - Reset Preferences (General Preferences)
 - New GUI for Anonymization 
 
-- crash dsr2html on minipacs.... try to compile with 10.5?
 - dcm4chee: re-archive existing UIDs?
 - TEST: if html put it directly in SR, without zip file
 - Stop writing: CommentAndStatus.xml
