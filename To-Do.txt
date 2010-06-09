@@ -9,11 +9,8 @@
 - New GUI for Anonymization 
 
 - dcm4chee: re-archive existing UIDs?
-- TEST: if html put it directly in SR, without zip file
-- Stop writing: CommentAndStatus.xml
+- TEST: write/read from DICOM SR annotations and reports
 - Specific cases: bonjour sharing
-
-- TEST: Quicktime/html/web server : Do not include, PR file (non image series)
 
 - Add defaults smart albums when db is created
 - crash PowerCrush
