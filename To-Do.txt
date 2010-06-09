@@ -12,7 +12,6 @@
 - TEST: if html put it directly in SR, without zip file
 - Stop writing: CommentAndStatus.xml
 - Specific cases: bonjour sharing
-- writeFile export -> generate path directly
 
 - TEST: Quicktime/html/web server : Do not include, PR file (non image series)
 
