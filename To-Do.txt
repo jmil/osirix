@@ -15,7 +15,6 @@
 
 - TEST: Quicktime/html/web server : Do not include, PR file (non image series)
 
-- 3D MPR: size bug when rotation export
 - Add defaults smart albums when db is created
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
