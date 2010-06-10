@@ -14,6 +14,7 @@
 - TEST: write/read from DICOM SR annotations and reports
 - Specific cases: bonjour sharing
 
+- iDisk export/import zip
 Cette tache est assez répétitive mais les choix se réinitialisent par défaut à chaque série en "image courante seule" et "comme affiché en 16 Bits" (seuls le Nom de la série et l'intervalle restent les mêmes). Il faut donc à chaque série cocher "toutes les images" et "comme stocké en mémoire" ce qui fini par être laborieux.
 serait-il possible que la case cochée par défaut soit la même que celle choisie pour la séquence précédente? ou au pire "comme stocké en mémoire"
 - crash PowerCrush
