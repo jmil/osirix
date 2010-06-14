@@ -47,7 +47,7 @@
 - DICOM Printing 1/1 size, fit to size
 - Video Test for 32-bit pipeline
 - Resize Locations Pref window
-- 
+- Add DB toolbar to QR window
 
 - remove '12bit totoku support' option from viewer preferences, add the option to the plugin preferences (see new preferences layout & plugin support, by al3ss)
 
