@@ -11,7 +11,6 @@
 
 - dcm4chee: re-archive existing UIDs?
 - Finish support for other annotations
-- TEST: write/read from DICOM SR annotations and reports
 - Specific cases: bonjour sharing
 - Resample data : z direction doesn't work for RGB
 
