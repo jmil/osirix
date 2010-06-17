@@ -13,6 +13,7 @@
 - Finish support for other annotations
 - Specific cases: bonjour sharing
 - Resample data : z direction doesn't work for RGB
+- Keep all DICOM SR: order them by date? Valid creation date?
 
 - iDisk export/import zip
 - crash PowerCrush
