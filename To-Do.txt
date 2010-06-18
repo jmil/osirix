@@ -13,7 +13,8 @@
 - Finish support for other annotations
 - Specific cases: bonjour sharing
 - Resample data : z direction doesn't work for RGB
-- Keep all DICOM SR: order them by date? Valid creation date? Update date when modify
+- When receiving a DICOM SR: check for date, compared to local date
+- Receive a study without comments -> erase comments?
 
 - iDisk export/import zip
 - crash PowerCrush
