@@ -9,9 +9,9 @@
 - New GUI for Anonymization 
 - Default albums when a new DB is created
 
-- dcm4chee: re-archive existing UIDs?
 - Finish support for other annotations
 - Specific cases: bonjour sharing
+- DICOM SR: albums
 
 - iDisk export/import zip
 - crash PowerCrush
