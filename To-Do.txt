@@ -9,9 +9,8 @@
 - New GUI for Anonymization 
 - Default albums when a new DB is created
 
-- Finish support for other annotations
 - Specific cases: bonjour sharing
-- DICOM SR: albums
+- DICOM SR: test
 
 - iDisk export/import zip
 - crash PowerCrush
