@@ -10,7 +10,6 @@
 - Default albums when a new DB is created
 
 - Specific cases: bonjour sharing
-- Referenced Image in Comments at Image Level?
 
 - iDisk export/import zip
 - crash PowerCrush
