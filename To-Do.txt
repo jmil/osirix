@@ -10,7 +10,7 @@
 - Default albums when a new DB is created
 
 - Specific cases: bonjour sharing
-- DICOM SR ROIs: keep file, even empty; order ROI per date; never delete DICOM SR ROI
+- Referenced Image in Comments at Image Level?
 
 - iDisk export/import zip
 - crash PowerCrush
