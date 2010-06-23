@@ -10,7 +10,7 @@
 - Default albums when a new DB is created
 
 - Specific cases: bonjour sharing
-- referencedUID in comments?
+- ROI frame? They have all same sopinstanceuid...
 
 - iDisk export/import zip
 - crash PowerCrush
