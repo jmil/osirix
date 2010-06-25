@@ -11,8 +11,6 @@
 
 - Specific cases: bonjour sharing
 
-- Export/Send : include ROIs, Comments, Report, 
-
 - iDisk export/import zip
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
