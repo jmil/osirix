@@ -10,6 +10,7 @@
 - Default albums when a new DB is created
 
 - Specific cases: bonjour sharing
+- Set comments in 2D Viewer
 - DICOM SR with non-DICOM?
 
 - iDisk export/import zip
