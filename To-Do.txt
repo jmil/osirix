@@ -12,6 +12,8 @@
 
 - Specific cases: bonjour sharing
 - DICOM SR with non-DICOM?
+- Apply Rule menu
+- ROI: retro-compatibility !
 
 - Quicklook dsr2html support
 - iDisk export/import zip
