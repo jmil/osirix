@@ -13,6 +13,8 @@
 - Specific cases: bonjour sharing
 - DICOM SR with non-DICOM?
 - Apply Rule menu
+- Delete DICOM ROIs menu
+- Is DICOM Report/Annotation archived?
 
 - Quicklook dsr2html support
 - iDisk export/import zip
