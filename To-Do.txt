@@ -8,10 +8,12 @@
 - Reset Preferences (General Preferences)
 - New GUI for Anonymization 
 - Default albums when a new DB is created
+- Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 
 - Specific cases: bonjour sharing
 - DICOM SR with non-DICOM?
 
+- Quicklook dsr2html support
 - iDisk export/import zip
 - crash PowerCrush
 - New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
