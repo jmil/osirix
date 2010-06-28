@@ -14,7 +14,6 @@
 - DICOM SR with non-DICOM?
 - Apply Rule menu
 - Delete DICOM ROIs menu
-- Detect modifications to report by external applications - modification date
 
 - Quicklook dsr2html support
 - iDisk export/import zip
