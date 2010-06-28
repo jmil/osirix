@@ -12,8 +12,6 @@
 
 - Specific cases: bonjour sharing
 - DICOM SR with non-DICOM?
-- Apply Rule menu
-- Delete DICOM ROIs menu
 
 - Quicklook dsr2html support
 - iDisk export/import zip
