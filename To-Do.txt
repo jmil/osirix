@@ -10,7 +10,7 @@
 - Default albums when a new DB is created
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 
-- Specific cases: bonjour sharing
+- Specific cases: bonjour sharing report
 - DICOM SR with non-DICOM?
 
 - Quicklook dsr2html support
