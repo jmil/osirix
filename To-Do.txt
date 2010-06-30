@@ -11,6 +11,7 @@
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 
 - DICOM SR with non-DICOM?
+- DICOM SR Report addFile -> Empty -> Delete Report File
 
 - Quicklook dsr2html support
 - iDisk export/import zip
