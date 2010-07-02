@@ -12,7 +12,7 @@
 
 - DICOM SR with non-DICOM?
 - DICOM SR Apply GeneratedByOsiriX routing rule -> Force Generated?
-- DICOM SR : SENDD (forward GeneratedByOsiriX) if needed (Bonjour connected)
+- DICOM SR : Report bonjour edited doesn't work
 
 - Quicklook dsr2html support
 - iDisk export/import zip
