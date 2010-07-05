@@ -12,7 +12,10 @@
 - Multiple Comments
 
 - DICOM SR with non-DICOM?
+
 - DICOM SR Apply GeneratedByOsiriX routing rule -> Force Generated?
+- Comments 2,3,4
+
 - Bonjour of large DB?
 
 
