@@ -12,12 +12,10 @@
 
 - DICOM SR with non-DICOM?
 - DICOM SR Apply GeneratedByOsiriX routing rule -> Force Generated?
-- DICOM SR : Report bonjour edited doesn't work
 
 - Quicklook dsr2html support
 - iDisk export/import zip
 - crash PowerCrush
-- New autorouting field: generated data (routes status, comments, key images, reports to another OsiriX workstation or PACS server)
 - SessionID for web server
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
 - A link for keyimages: jpeg or movie, depending on number of images < 20
