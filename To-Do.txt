@@ -9,15 +9,11 @@
 - New GUI for Anonymization 
 - Default albums when a new DB is created
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
-- Multiple Comments
+- Multiple Comments available (comments, comments 2, comments 3, comments 4)
 
 - DICOM SR with non-DICOM?
-
 - DICOM SR Apply GeneratedByOsiriX routing rule -> Force Generated?
-- Comments 2,3,4
-
 - Bonjour of large DB?
-
 
 - Quicklook dsr2html support
 - iDisk export/import zip
