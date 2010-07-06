@@ -14,6 +14,7 @@
 - DICOM SR with non-DICOM?
 - DICOM SR Apply GeneratedByOsiriX routing rule -> Force Generated?
 - Bonjour of large DB?
+- DUL bug? related to web server?
 
 - Quicklook dsr2html support
 - iDisk export/import zip
