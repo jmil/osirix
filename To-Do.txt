@@ -11,8 +11,6 @@
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 - Multiple Comments in DB available (comments, comments 2, comments 3, comments 4)
 
-- DICOM SR with non-DICOM?
-
 - Bonjour of large DB?
 - DUL bug? related to web server?
 - Test QR refresh rawNoFiles with large DB
