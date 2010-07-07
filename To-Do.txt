@@ -47,13 +47,8 @@
 - DICOM Printing 1/1 size, fit to size
 - Video Test for 32-bit pipeline
 - Add DB toolbar to QR window
-
-- remove '12bit totoku support' option from viewer preferences, add the option to the plugin preferences (see new preferences layout & plugin support, by al3ss)
-
-
-2) For the existing `find next key image' and `find previous key image' function, the function is limited to a particular series and the search will stop at the first/last key image within a series. I would like to suggest the find option can proceed to the first key image of next series or the last key image of previous series towards the first and last key image of a particular series, probably within the same study but may also extend to different studies of the same patient. 
-
-When establishing a hanging protocol for MR and using two displays (8 column, 1 rows) and there is an odd number of series (say 7), OsiriX puts 6 series on the right display and 1 series on the left.  It does the same for 5 series (4 on right and 1 on left).  It doesn't seem to handle odd numbers of series well.
+- Key Series
+- For the existing `find next key image' and `find previous key image' function, the function is limited to a particular series and the search will stop at the first/last key image within a series. I would like to suggest the find option can proceed to the first key image of next series or the last key image of previous series towards the first and last key image of a particular series, probably within the same study but may also extend to different studies of the same patient. 
 
 QA
 - BugZilla (sourceforge?)
