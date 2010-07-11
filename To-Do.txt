@@ -2,6 +2,7 @@
 - Comments are now stored in DICOM files (0x0020, 0x4000) - ImageComments and (0x0032, 0x4000) - StudyComments
 - Status is now stored in DICOM files (0x4008, 0x0212) - InterpretationStatusID
 - DICOM SR visualization support (displayed in PDF)
+- DICOM SR support for OsiriX QuickLook plugin
 - Key Images are now stored in DICOM files (0x0028, 0x6022) - FramesofInterestDescription
 - MIME type support for 'osirix://?image=SOPClassUID+SOPInstanceUID', allowing to links any documents (PDF, html, É) to an image in OsiriX
 - Finer granularity in multi-threaded processes for better user experience (less stall)
@@ -15,7 +16,6 @@
 - DUL bug? related to web server?
 - Test QR refresh rawNoFiles with large DB
 
-- Quicklook dsr2html support
 - iDisk export/import zip
 - crash PowerCrush
 - SessionID for web server

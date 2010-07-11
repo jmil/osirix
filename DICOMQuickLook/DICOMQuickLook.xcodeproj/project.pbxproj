@@ -1058,6 +1058,9 @@
 		CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
 		CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
 		CECBA1640F2C762B00ADD482 /* jpeg_memsrc.c in Sources */ = {isa = PBXBuildFile; fileRef = CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */; };
+		CED87BE411EA67A200875C55 /* dsr2html in Resources */ = {isa = PBXBuildFile; fileRef = CED87BE311EA67A200875C55 /* dsr2html */; };
+		CED87C0211EA6ACF00875C55 /* dicom.dic in Resources */ = {isa = PBXBuildFile; fileRef = CED87C0111EA6ACF00875C55 /* dicom.dic */; };
+		CED87C3411EA734F00875C55 /* dicomsricon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CED87C3311EA734F00875C55 /* dicomsricon.jpg */; };
 		CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */; };
 		CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE52DC20C7474520044205E /* libjasper2.a */; };
 		F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */; };
@@ -2146,6 +2149,9 @@
 		CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Development/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
 		CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jpeg_memsrc.c; path = ../osirix/Papyrus3/jpeg_memsrc.c; sourceTree = SOURCE_ROOT; };
+		CED87BE311EA67A200875C55 /* dsr2html */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = dsr2html; path = ../osirix/Binaries/DCMTK/dsr2html; sourceTree = SOURCE_ROOT; };
+		CED87C0111EA6ACF00875C55 /* dicom.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicom.dic; path = ../osirix/Binaries/DCMTK/dicom.dic; sourceTree = SOURCE_ROOT; };
+		CED87C3311EA734F00875C55 /* dicomsricon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dicomsricon.jpg; sourceTree = "<group>"; };
 		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
 		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -2198,6 +2204,9 @@
 		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CED87C3311EA734F00875C55 /* dicomsricon.jpg */,
+				CED87BE311EA67A200875C55 /* dsr2html */,
+				CED87C0111EA6ACF00875C55 /* dicom.dic */,
 				CE9CEF760C75C0B600752D4B /* dicomDictionary.plist */,
 				CE9CEF770C75C0B600752D4B /* nameDictionary.plist */,
 				CE9CEF780C75C0B600752D4B /* tagDictionary.plist */,
@@ -4028,6 +4037,9 @@
 				CE9CEF790C75C0B600752D4B /* dicomDictionary.plist in Resources */,
 				CE9CEF7A0C75C0B600752D4B /* nameDictionary.plist in Resources */,
 				CE9CEF7B0C75C0B600752D4B /* tagDictionary.plist in Resources */,
+				CED87BE411EA67A200875C55 /* dsr2html in Resources */,
+				CED87C0211EA6ACF00875C55 /* dicom.dic in Resources */,
+				CED87C3411EA734F00875C55 /* dicomsricon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

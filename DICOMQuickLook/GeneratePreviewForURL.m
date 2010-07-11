@@ -2,7 +2,7 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreServices/CoreServices.h>
 #import <QuickLook/QuickLook.h>
-
+#import <OsiriX/DCMAbstractSyntaxUID.h>
 #import "DCMPix.h"
 #import "dicomFile.h"
 
@@ -73,42 +73,51 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 	
 	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
 	[pix CheckLoad];
-	[pix changeWLWW:[pix savedWL] :[pix savedWW]];
-	NSImage *image = [pix image];
 	
-	NSSize canvasSize = [image size];
-	
-	if( canvasSize.width != maxSize.width)
+	if( [DCMAbstractSyntaxUID isStructuredReport: pix.SOPClassUID])
 	{
-		float ratio = maxSize.width / canvasSize.width;
-		
-		canvasSize.width *= ratio;
-		canvasSize.height *= ratio;
+		CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary dictionary];
+		QLThumbnailRequestSetImageWithData(thumbnail, (CFDataRef)[NSData dataWithContentsOfFile: [[[NSBundle bundleForClass: [pix class]] resourcePath] stringByAppendingPathComponent: @"/dicomsricon.jpg"]], properties);
 	}
-	
-	if( canvasSize.height > maxSize.height)
+	else
 	{
-		float ratio = maxSize.height / canvasSize.height;
+		[pix changeWLWW:[pix savedWL] :[pix savedWW]];
+		NSImage *image = [pix image];
 		
-		canvasSize.width *= ratio;
-		canvasSize.height *= ratio;
-	}
-	 
-    CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&canvasSize, true, NULL);
-    if(cgContext) {
-        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
-        if(context) {
-			[NSGraphicsContext setCurrentContext: context];
-            [context setImageInterpolation: NSImageInterpolationHigh];
-		   [image setScalesWhenResized: YES];
-		   [image setSize: canvasSize];
-           [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, canvasSize.width, canvasSize.height) operation:NSCompositeCopy fraction:1.0];
+		NSSize canvasSize = [image size];
+		
+		if( canvasSize.width != maxSize.width)
+		{
+			float ratio = maxSize.width / canvasSize.width;
 			
-			drawTextualData( [nsurl path], [image size].width);
-        }
-        QLThumbnailRequestFlushContext(thumbnail, cgContext);
-        CFRelease(cgContext);
-    }
+			canvasSize.width *= ratio;
+			canvasSize.height *= ratio;
+		}
+		
+		if( canvasSize.height > maxSize.height)
+		{
+			float ratio = maxSize.height / canvasSize.height;
+			
+			canvasSize.width *= ratio;
+			canvasSize.height *= ratio;
+		}
+		 
+		CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, *(CGSize *)&canvasSize, true, NULL);
+		if(cgContext) {
+			NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
+			if(context) {
+				[NSGraphicsContext setCurrentContext: context];
+				[context setImageInterpolation: NSImageInterpolationHigh];
+			   [image setScalesWhenResized: YES];
+			   [image setSize: canvasSize];
+			   [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, canvasSize.width, canvasSize.height) operation:NSCompositeCopy fraction:1.0];
+				
+				drawTextualData( [nsurl path], [image size].width);
+			}
+			QLThumbnailRequestFlushContext(thumbnail, cgContext);
+			CFRelease(cgContext);
+		}
+	}
 	
 	[pix release];
     [pool release];
@@ -135,36 +144,61 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 
 	DCMPix	*pix = [[DCMPix alloc] myinit:[nsurl path] :0 :1 :0L :0 :0];
 	[pix CheckLoad];
-	[pix changeWLWW:[pix savedWL] :[pix savedWW]];
-	NSImage *image = [pix image];
 	
-	NSSize canvasSize = [image size];
-	
-	if( canvasSize.width < 1024)
+	if( [DCMAbstractSyntaxUID isStructuredReport: pix.SOPClassUID])
 	{
-		float ratio = 1024 / canvasSize.width;
+		if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/dicomsr_osirix/"] == NO)
+			[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/dicomsr_osirix/" attributes: nil];
+				
+		NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [[nsurl path] lastPathComponent]] stringByAppendingPathExtension: @"html"];
 		
-		canvasSize.width *= ratio;
-		canvasSize.height *= ratio;
-	}
-	
-    CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
-    if(cgContext)
-	{
-        NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
-        if(context)
+		if( [[NSFileManager defaultManager] fileExistsAtPath: htmlpath] == NO)
 		{
-		   [NSGraphicsContext setCurrentContext: context];
-		   [context setImageInterpolation: NSImageInterpolationHigh];
-		   [image setScalesWhenResized: YES];
-		   [image setSize: canvasSize];
-           [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, canvasSize.width, canvasSize.height) operation:NSCompositeCopy fraction:1.0];
-		   
-		   drawTextualData( [nsurl path], canvasSize.width);
-        }
-        QLPreviewRequestFlushContext(preview, cgContext);
-        CFRelease(cgContext);
-    }
+			NSTask *aTask = [[[NSTask alloc] init] autorelease];		
+			[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle bundleForClass: [pix class]] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
+			[aTask setLaunchPath: [[[NSBundle bundleForClass: [pix class]] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
+			[aTask setArguments: [NSArray arrayWithObjects: [nsurl path], htmlpath, nil]];		
+			[aTask launch];
+			[aTask waitUntilExit];		
+			[aTask interrupt];
+		}
+		
+		CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary dictionary];
+		QLPreviewRequestSetDataRepresentation(preview, (CFDataRef)[NSData dataWithContentsOfFile: htmlpath], kUTTypeHTML, properties);
+	}
+	else
+	{
+		[pix changeWLWW:[pix savedWL] :[pix savedWW]];
+		NSImage *image = [pix image];
+		
+		NSSize canvasSize = [image size];
+		
+		if( canvasSize.width < 1024)
+		{
+			float ratio = 1024 / canvasSize.width;
+			
+			canvasSize.width *= ratio;
+			canvasSize.height *= ratio;
+		}
+		
+		CGContextRef cgContext = QLPreviewRequestCreateContext(preview, *(CGSize *)&canvasSize, true, NULL);
+		if(cgContext)
+		{
+			NSGraphicsContext* context = [NSGraphicsContext graphicsContextWithGraphicsPort:(void *)cgContext flipped:NO];
+			if(context)
+			{
+			   [NSGraphicsContext setCurrentContext: context];
+			   [context setImageInterpolation: NSImageInterpolationHigh];
+			   [image setScalesWhenResized: YES];
+			   [image setSize: canvasSize];
+			   [image drawAtPoint: NSMakePoint(0, 0) fromRect: NSMakeRect(0, 0, canvasSize.width, canvasSize.height) operation:NSCompositeCopy fraction:1.0];
+			   
+			   drawTextualData( [nsurl path], canvasSize.width);
+			}
+			QLPreviewRequestFlushContext(preview, cgContext);
+			CFRelease(cgContext);
+		}
+	}
 	
 	[pix release];
 	
