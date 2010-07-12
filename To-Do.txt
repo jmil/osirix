@@ -13,7 +13,7 @@
 - Multiple Comments in DB available (comments, comments 2, comments 3, comments 4)
 
 - Bonjour of large DB?
-- DUL bug? related to web server?
+- DUL bug? related to web server? get?
 - Test QR refresh rawNoFiles with large DB
 
 - iDisk export/import zip
