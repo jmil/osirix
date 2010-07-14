@@ -14,7 +14,6 @@
 
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
-- Test QR refresh rawNoFiles with large DB
 
 - iDisk export/import zip
 - crash PowerCrush
