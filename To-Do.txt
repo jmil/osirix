@@ -15,6 +15,7 @@
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
 
+- Activity Window -> DB window
 - iDisk export/import zip
 - crash PowerCrush
 - SessionID for web server
