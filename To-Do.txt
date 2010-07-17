@@ -12,10 +12,12 @@
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 - Multiple Comments in DB available (comments, comments 2, comments 3, comments 4)
 - Activity pane in Database window to display background tasks
+- Importing and indexing files is now an asynchronous process
 
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
-- CopyFileThread async
+
+- OsiriX Lite DB version bug?
 
 - iDisk export/import zip
 - crash PowerCrush
