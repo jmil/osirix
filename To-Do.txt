@@ -12,7 +12,7 @@
 - Options to synchronize and store data generated on OsiriX (comments, status, SC, ROIs, É) as DICOM SR files
 - Multiple Comments in DB available (comments, comments 2, comments 3, comments 4)
 - Activity pane in Database window to display background tasks
-- Importing and indexing files is now an asynchronous process
+- Importing, indexing and exporting files is now a complete asynchronous process
 - Better performance when loading images from CD/DVD : faster loading
 
 - Bonjour of large DB?
