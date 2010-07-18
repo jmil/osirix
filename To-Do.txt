@@ -18,6 +18,9 @@
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
 
+- browserwillclose: check the no of threads
+- copy from db to db
+
 - iDisk export/import zip
 - crash PowerCrush
 - SessionID for web server
