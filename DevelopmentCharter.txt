@@ -2,20 +2,20 @@ The goal of OsiriX software is to deliver the best possible DICOM viewer for ima
 
 We aim to do this in part by (sorted by order of importance):
 
-- Delivering a software with a minimum of bugs (crashes, memory leaks, artifacts, GUI inconsistence, É) - DONT COMMIT BUGS !
+1) Delivering a software with a minimum of bugs (crashes, memory leaks, artifacts, GUI inconsistence, É) - DONT COMMIT BUGS !
 
-- Delivering a well tested and validated software - TEST YOUR COMMITS with different dataset and scenarios !
+2) Delivering a well tested and validated software - TEST YOUR COMMITS with different dataset and scenarios !
 
-- Delivering an optimized software that works rapidly and that uses the available hardware effectively - Multi-Threading, Optimized algorithms, Effective memory management, É  
+3) Delivering an optimized software that works rapidly and that uses the available hardware effectively - Multi-Threading, Optimized algorithms, Effective memory management, É  
 
-- Delivering a software that works on the entire range of MacOS computers: laptops, workstations, small CPU, different graphic boards, É
+4) Delivering a software that works on the entire range of MacOS computers: laptops, workstations, small CPU, different graphic boards, É
 
-- Developing and maintaining the existing features - If you add new features, be sure the 'old' features are still working - TEST, TEST, AND RE-TEST
+5) Developing and maintaining the existing features - If you add new features, be sure the 'old' features are still working - TEST, TEST, AND RE-TEST
 
-- Describing your source code : clear names for function and variables, documented function
+6) Describing your source code : clear names for function and variables, documented function
 
-- Working on one part of OsiriX at a time - We need to understand the modifications on the svn server - DO NOT MODIFY multiples functions and multiple classes at a time ! NO TRANSVERSAL MODIFICATIONS
+7) Working on one part of OsiriX at a time - We need to understand the modifications on the svn server - DO NOT MODIFY multiples functions and multiple classes at a time ! NO TRANSVERSAL MODIFICATIONS
 
-- Delivering the right set of USEFUL features - not too many (the goal is to create a DICOM viewer, not a word processor, a disk utility, a new Photoshop, É)
+8) Delivering the right set of USEFUL features - not too many (the goal is to create a DICOM viewer, not a word processor, a disk utility, a new Photoshop, É)
 
-- Keeping the download size down - DO NOT ADD LIBRARIES/FUNCTIONS THAT *COULD BE* maybe, later useful
+9) Keeping the download size down - DO NOT ADD LIBRARIES/FUNCTIONS THAT *COULD BE* maybe, later useful
