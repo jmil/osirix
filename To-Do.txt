@@ -19,7 +19,8 @@
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
 
-- Fly Through from Fly Assistant
+- Fly Through from Fly Assistant: SR
+- Front/Back button: SR
 - iDisk export/import zip
 - crash PowerCrush
 - SessionID for web server
