@@ -19,6 +19,12 @@
 - Bonjour of large DB?
 - DUL bug? related to web server? get?
 
+- CGDisplayScreenSize, which returns the width and height of a display in millimeters
+- CGDisplayPixelsWide, which returns the number of Pixels in the width of the display
+- CGDisplayPixelsHigh, which returns the number of Pixels in the height of the display
+- DCMView pixelSpacingX
+- DCMView pixelSpacingY
+
 - Fly Through from Fly Assistant: SR
 - Front/Back button: SR
 - iDisk export/import zip
