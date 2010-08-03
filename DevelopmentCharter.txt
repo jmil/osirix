@@ -2,20 +2,23 @@ The goal of OsiriX software is to deliver the best possible DICOM viewer for ima
 
 We aim to do this in part by (sorted by order of importance):
 
-1) Delivering a software with a minimum of bugs (crashes, memory leaks, artifacts, GUI inconsistence, …) - DONT COMMIT BUGS !
+1) Keeping the committed source code *functional* and *compilable*. If a developer commit modifications that prevent other developers to compile OsiriX source code or run OsiriX, this developer will be banned for the rest of his life…
 
-2) Delivering a well tested and validated software - TEST YOUR COMMITS with different dataset and scenarios !
+2) Delivering a software with a minimum of bugs (crashes, memory leaks, artifacts, GUI inconsistence, …) - DONT COMMIT BUGS !
 
-3) Delivering an optimized software that works rapidly and that uses the available hardware effectively - Multi-Threading, Optimized algorithms, Effective memory management, …  
+3) Delivering a well tested and validated software - TEST YOUR COMMITS with different dataset and scenarios !
 
-4) Delivering a software that works on the entire range of MacOS computers: laptops, workstations, small CPU, different graphic boards, …
+4) Delivering an optimized software that works rapidly and that uses the available hardware effectively - Multi-Threading, Optimized algorithms, Effective memory management, …  
 
-5) Developing and maintaining the existing features - If you add new features, be sure the 'old' features are still working - TEST, TEST, AND RE-TEST
+5) Delivering a software that works on the entire range of MacOS computers: laptops, workstations, small CPU, different graphic boards, …
 
-6) Describing your source code : clear names for function and variables, documented function
+6) Developing and maintaining the existing features - If you add new features, be sure the 'old' features are still working - TEST, TEST, AND RE-TEST
 
-7) Working on one part of OsiriX at a time - We need to understand the modifications on the svn server - DO NOT MODIFY multiples functions and multiple classes at a time ! NO TRANSVERSAL MODIFICATIONS
+7) Describing your source code : clear names for function and variables, documented function
 
-8) Delivering the right set of USEFUL features - not too many (the goal is to create a DICOM viewer, not a word processor, a disk utility, a new Photoshop, …)
+8) Working on one part of OsiriX at a time - We need to understand the modifications on the svn server - DO NOT MODIFY multiples functions and multiple classes at a time ! NO TRANSVERSAL MODIFICATIONS
 
-9) Keeping the download size down - DO NOT ADD LIBRARIES/FUNCTIONS THAT *COULD BE* maybe, later useful
+9) Delivering the right set of USEFUL features - not too many (the goal is to create a DICOM viewer, not a word processor, a disk utility, a new Photoshop, …)
+
+10) Keeping the download size down - DO NOT ADD LIBRARIES/FUNCTIONS THAT *COULD BE* maybe, later useful
+
