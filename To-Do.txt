@@ -17,6 +17,7 @@
 - Better performance when loading images from CD/DVD : faster loading
 
 - computemagnifylens conlict with screen capture?
+- progress in threads?
 
 - Fly Through from Fly Assistant: SR
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
