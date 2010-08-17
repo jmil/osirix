@@ -16,6 +16,8 @@
 - Importing, indexing and exporting files is now a complete asynchronous process
 - Better performance when loading images from CD/DVD : faster loading
 
+- Retrieving : cancel ?
+
 - Fly Through from Fly Assistant: SR
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - Front/Back button: SR
