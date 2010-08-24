@@ -17,12 +17,14 @@
 - Better performance when loading images from CD/DVD : faster loading
 
 - Fly Through from Fly Assistant: SR
+- iDisk export/import zip
+- SessionID for web server
+- Video Test for 32-bit pipeline
+
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - Front/Back button: SR
 - CD partial import
-- iDisk export/import zip
 - crash PowerCrush
-- SessionID for web server
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
 - A link for keyimages: jpeg or movie, depending on number of images < 20
 - Web Server: edit report
@@ -47,7 +49,6 @@
 - Growing region: set to new val
 - Close Polygon only when finished
 - DICOM Printing 1/1 size, fit to size
-- Video Test for 32-bit pipeline
 - Add DB toolbar to QR window
 - Key Series
 - For the existing `find next key image' and `find previous key image' function, the function is limited to a particular series and the search will stop at the first/last key image within a series. I would like to suggest the find option can proceed to the first key image of next series or the last key image of previous series towards the first and last key image of a particular series, probably within the same study but may also extend to different studies of the same patient. 
