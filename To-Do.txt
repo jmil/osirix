@@ -20,6 +20,7 @@
 - iDisk export/import zip
 - SessionID for web server
 - Video Test for 32-bit pipeline
+- Localize dicom Print
 
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - Front/Back button: SR
@@ -36,7 +37,6 @@
 - Zoom centered around mouse position
 - Tool to create a new series from key images of a study
 - Print images, containing ROIs
-- Localize dicom Print
 - Option to include 3D viewers in Tile Window
 - ROI Manager (series level)
 - Hanging Protocols
