@@ -16,7 +16,9 @@
 - Importing, indexing and exporting files is now a complete asynchronous process
 - Better performance when loading images from CD/DVD : faster loading
 - Automatic video test for 32-bit pipeline activation
+- Weasis : Java based web viewer for OsiriX Web Server
 
+- Import multiple files
 - Fly Through from Fly Assistant: SR
 - iDisk export/import zip
 - SessionID for web server
