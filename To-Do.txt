@@ -19,6 +19,8 @@
 - Weasis : Java based web viewer for OsiriX Web Server
 
 - Import multiple files
+- DICOM Service
+
 - Fly Through from Fly Assistant: SR
 - iDisk export/import zip
 - SessionID for web server
