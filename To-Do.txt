@@ -18,8 +18,6 @@
 - Automatic video test for 32-bit pipeline activation
 - Weasis : Java based web viewer for OsiriX Web Server
 
-- SC: cult bars
-
 - Fly Through from Fly Assistant: SR
 - iDisk export/import zip
 - SessionID for web server
