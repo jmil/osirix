@@ -23,6 +23,8 @@
 - SessionID for web server
 - Localize dicom Print
 
+- Keep same patient together
+
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - Front/Back button: SR
 - CD partial import
