@@ -22,6 +22,7 @@
 - iDisk export/import zip
 - SessionID for web server
 - Localize dicom Print
+- DICOM TLS in 64-bit
 
 - Update version HipArthroplasty
 
