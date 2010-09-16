@@ -18,8 +18,8 @@
 - Automatic video test for 32-bit pipeline activation
 - Weasis : Java based web viewer for OsiriX Web Server
 - Session ID for web server, allowing to log out
+- iDisk export/import in zip format
 
-- iDisk export/import zip
 - Localize dicom Print
 - Update version HipArthroplasty
 
