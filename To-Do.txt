@@ -20,8 +20,7 @@
 - Session ID for web server, allowing to log out
 - iDisk export/import in zip format
 
-
-- Custom interval: floating panel
+- Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - 3D ROI -> 2D Viewer
