@@ -20,8 +20,6 @@
 - Session ID for web server, allowing to log out
 - iDisk export/import in zip format
 
-- Localize dicom Print
-- Update version HipArthroplasty
 
 - Custom interval: floating panel
 - Anonymize: DCMFramework->DCMTK
