@@ -19,6 +19,8 @@
 - Weasis : Java based web viewer for OsiriX Web Server
 - Session ID for web server, allowing to log out
 - iDisk export/import in zip format
+- Many bugs corrected
+- Better stability and memory management when using OsiriX as a PACS server
 
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
