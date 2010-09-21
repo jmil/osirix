@@ -22,6 +22,8 @@
 - Many bugs corrected
 - Better stability and memory management when using OsiriX as a PACS server
 
+- Password Forgotten
+
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
@@ -238,7 +240,7 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - Localizations strings : genstrings *.m *.mm *.h cocoahttpserver/*.m cocoahttpserver/*.h AYDicomPrint/*.m AYDicomPrint/*.mm nitrogen/*.m nitrogen/*.mm nitrogen/*.h -macRoman
 - Localizations strings Preferences
 - X OsiriX Lite Upload
-- X QuickLook
+- QuickLook
 - X Update Downloads.html
 - X Update versionLeopard.html xml
 - X wwww.apple.com/download

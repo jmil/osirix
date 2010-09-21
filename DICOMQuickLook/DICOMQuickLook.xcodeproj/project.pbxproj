@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		846A53611248B1C4007D5988 /* libPapyrusToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846A53601248B1C4007D5988 /* libPapyrusToolkit.a */; };
+		846A5B0D1248B218007D5988 /* NSString+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 846A5B0B1248B218007D5988 /* NSString+N2.h */; };
+		846A5B0E1248B218007D5988 /* NSString+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 846A5B0C1248B218007D5988 /* NSString+N2.mm */; };
+		846A5B521248B2A1007D5988 /* NSUserDefaultsController+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 846A5B4E1248B2A1007D5988 /* NSUserDefaultsController+N2.h */; };
+		846A5B531248B2A1007D5988 /* NSUserDefaultsController+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 846A5B4F1248B2A1007D5988 /* NSUserDefaultsController+N2.mm */; };
+		846A5B541248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h in Headers */ = {isa = PBXBuildFile; fileRef = 846A5B501248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h */; };
+		846A5B551248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm in Sources */ = {isa = PBXBuildFile; fileRef = 846A5B511248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm */; };
 		8D576312048677EA00EA77CD /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 08FB77B6FE84183AC02AAC07 /* main.c */; settings = {ATTRIBUTES = (); }; };
 		8D576314048677EA00EA77CD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
 		A92CCDCD0CA7D9B000800211 /* altivecFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = A92CCDCC0CA7D9B000800211 /* altivecFunctions.h */; };
 		A92CCDD50CA7DA6600800211 /* altivecFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = A92CCDD40CA7DA6600800211 /* altivecFunctions.c */; };
 		ABEEBB3D1021D40C009D04D4 /* jpeg_memdest.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */; };
-		ABEEBB3E1021D40C009D04D4 /* jpeg_memdest.c in Sources */ = {isa = PBXBuildFile; fileRef = ABEEBB3C1021D40C009D04D4 /* jpeg_memdest.c */; };
 		C86B05270671AA6E00DD9006 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C86B05260671AA6E00DD9006 /* CoreServices.framework */; };
 		CE569C3C0E296AC900F4A234 /* libopenjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE569C3A0E296AC900F4A234 /* libopenjpeg.a */; };
 		CE569C3D0E296AC900F4A234 /* openjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = CE569C3B0E296AC900F4A234 /* openjpeg.h */; };
@@ -810,7 +816,7 @@
 		CE8C05C80C2EA97D00537400 /* dimecho.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00A60C2EA8C600537400 /* dimecho.cc */; };
 		CE8C05C90C2EA97D00537400 /* dimfind.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00A70C2EA8C600537400 /* dimfind.cc */; };
 		CE8C05CA0C2EA97D00537400 /* dimget.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00A80C2EA8C600537400 /* dimget.cc */; };
-		CE8C05CB0C2EA97D00537400 /* dimmove.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00A90C2EA8C600537400 /* dimmove.cc */; };
+		CE8C05CB0C2EA97D00537400 /* dimmove.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00A90C2EA8C600537400 /* dimmove.mm */; };
 		CE8C05CC0C2EA97D00537400 /* dimse.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00AA0C2EA8C600537400 /* dimse.cc */; };
 		CE8C05CD0C2EA97D00537400 /* dimse.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8C00AB0C2EA8C600537400 /* dimse.h */; };
 		CE8C05CE0C2EA97D00537400 /* dimstore.cc in Sources */ = {isa = PBXBuildFile; fileRef = CE8C00AC0C2EA8C600537400 /* dimstore.cc */; };
@@ -992,32 +998,8 @@
 		CE8CF4180C2EA56200537400 /* jas_types.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3D80C2EA56200537400 /* jas_types.h */; };
 		CE8CF4190C2EA56200537400 /* jas_version.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3D90C2EA56200537400 /* jas_version.h */; };
 		CE8CF41A0C2EA56200537400 /* jasper.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3DA0C2EA56200537400 /* jasper.h */; };
-		CE8CF41B0C2EA56200537400 /* DicomDirDatasetRead.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3DC0C2EA56200537400 /* DicomDirDatasetRead.c */; };
-		CE8CF41C0C2EA56200537400 /* DicomDirDataSetWrite.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3DD0C2EA56200537400 /* DicomDirDataSetWrite.c */; };
-		CE8CF41D0C2EA56200537400 /* DicomDirFiles.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3DE0C2EA56200537400 /* DicomDirFiles.c */; };
-		CE8CF41E0C2EA56200537400 /* DicomDirInit.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3DF0C2EA56200537400 /* DicomDirInit.c */; };
-		CE8CF41F0C2EA56200537400 /* DicomDirInitRecords.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E00C2EA56200537400 /* DicomDirInitRecords.c */; };
-		CE8CF4200C2EA56200537400 /* PapyFileSystemUnix3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E10C2EA56200537400 /* PapyFileSystemUnix3.c */; };
-		CE8CF4210C2EA56200537400 /* PapyEallocUnix3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E20C2EA56200537400 /* PapyEallocUnix3.c */; };
-		CE8CF4220C2EA56200537400 /* PapyDataSetWrite3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E30C2EA56200537400 /* PapyDataSetWrite3.c */; };
-		CE8CF4230C2EA56200537400 /* PapyDataSetRead3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E40C2EA56200537400 /* PapyDataSetRead3.c */; };
-		CE8CF4240C2EA56200537400 /* PapyError3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E50C2EA56200537400 /* PapyError3.c */; };
-		CE8CF4250C2EA56200537400 /* PapyFiles3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E60C2EA56200537400 /* PapyFiles3.c */; };
-		CE8CF4260C2EA56200537400 /* PapyGetGlobalVar3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E70C2EA56200537400 /* PapyGetGlobalVar3.c */; };
-		CE8CF4270C2EA56200537400 /* PapyInit3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E80C2EA56200537400 /* PapyInit3.c */; };
-		CE8CF4280C2EA56200537400 /* PapyInitGroups3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3E90C2EA56200537400 /* PapyInitGroups3.c */; };
-		CE8CF4290C2EA56200537400 /* PapyInitModules3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3EA0C2EA56200537400 /* PapyInitModules3.c */; };
-		CE8CF42A0C2EA56200537400 /* PapyList3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3EB0C2EA56200537400 /* PapyList3.c */; };
 		CE8CF42B0C2EA56200537400 /* jasper.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3EC0C2EA56200537400 /* jasper.h */; };
-		CE8CF42C0C2EA56200537400 /* PapyJpeg8.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3ED0C2EA56200537400 /* PapyJpeg8.c */; };
-		CE8CF42D0C2EA56200537400 /* PapyJpeg12.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3EE0C2EA56200537400 /* PapyJpeg12.c */; };
-		CE8CF42E0C2EA56200537400 /* PapyJpeg16.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3EF0C2EA56200537400 /* PapyJpeg16.c */; };
-		CE8CF42F0C2EA56200537400 /* PapyRead3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F00C2EA56200537400 /* PapyRead3.c */; };
-		CE8CF4300C2EA56200537400 /* PapyUtils3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F10C2EA56200537400 /* PapyUtils3.c */; };
 		CE8CF4310C2EA56200537400 /* PapyVars3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F20C2EA56200537400 /* PapyVars3.c */; };
-		CE8CF4320C2EA56200537400 /* PapyWrite3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F30C2EA56200537400 /* PapyWrite3.c */; };
-		CE8CF4330C2EA56200537400 /* PapyWild3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F40C2EA56200537400 /* PapyWild3.c */; };
-		CE8CF4340C2EA56200537400 /* PapyWildexit3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F50C2EA56200537400 /* PapyWildexit3.c */; };
 		CE8CF4350C2EA56200537400 /* PapyGlobalVar3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */; };
 		CE8CF4360C2EA56200537400 /* PapyFileSystem3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */; };
 		CE8CF4370C2EA56200537400 /* PapyErrorMacros3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3F80C2EA56200537400 /* PapyErrorMacros3.h */; };
@@ -1057,7 +1039,6 @@
 		CEC00C530C2EFE6B00537400 /* tiffiop.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A30C2EA48400537400 /* tiffiop.h */; };
 		CEC00C540C2EFE6B00537400 /* tiffvers.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A40C2EA48400537400 /* tiffvers.h */; };
 		CEC00C550C2EFE6B00537400 /* uvcode.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3A50C2EA48400537400 /* uvcode.h */; };
-		CECBA1640F2C762B00ADD482 /* jpeg_memsrc.c in Sources */ = {isa = PBXBuildFile; fileRef = CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */; };
 		CED87BE411EA67A200875C55 /* dsr2html in Resources */ = {isa = PBXBuildFile; fileRef = CED87BE311EA67A200875C55 /* dsr2html */; };
 		CED87C0211EA6ACF00875C55 /* dicom.dic in Resources */ = {isa = PBXBuildFile; fileRef = CED87C0111EA6ACF00875C55 /* dicom.dic */; };
 		CED87C3411EA734F00875C55 /* dicomsricon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CED87C3311EA734F00875C55 /* dicomsricon.jpg */; };
@@ -1092,16 +1073,22 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		08FB77B6FE84183AC02AAC07 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		846A53601248B1C4007D5988 /* libPapyrusToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPapyrusToolkit.a; path = ../osirix/Binaries/libPapyrusToolkit.a; sourceTree = SOURCE_ROOT; };
+		846A5B0B1248B218007D5988 /* NSString+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+N2.h"; path = "../osirix/nitrogen/Sources/NSString+N2.h"; sourceTree = SOURCE_ROOT; };
+		846A5B0C1248B218007D5988 /* NSString+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSString+N2.mm"; path = "../osirix/nitrogen/Sources/NSString+N2.mm"; sourceTree = SOURCE_ROOT; };
+		846A5B4E1248B2A1007D5988 /* NSUserDefaultsController+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaultsController+N2.h"; path = "../osirix/nitrogen/Sources/NSUserDefaultsController+N2.h"; sourceTree = SOURCE_ROOT; };
+		846A5B4F1248B2A1007D5988 /* NSUserDefaultsController+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSUserDefaultsController+N2.mm"; path = "../osirix/nitrogen/Sources/NSUserDefaultsController+N2.mm"; sourceTree = SOURCE_ROOT; };
+		846A5B501248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaultsController+OsiriX.h"; path = "../osirix/NSUserDefaultsController+OsiriX.h"; sourceTree = SOURCE_ROOT; };
+		846A5B511248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSUserDefaultsController+OsiriX.mm"; path = "../osirix/NSUserDefaultsController+OsiriX.mm"; sourceTree = SOURCE_ROOT; };
 		8D576316048677EA00EA77CD /* DICOMQuickLook.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DICOMQuickLook.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A92CCDCC0CA7D9B000800211 /* altivecFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = altivecFunctions.h; path = ../osirix/altivecFunctions.h; sourceTree = SOURCE_ROOT; };
 		A92CCDD40CA7DA6600800211 /* altivecFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = altivecFunctions.c; path = ../osirix/altivecFunctions.c; sourceTree = SOURCE_ROOT; };
 		ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeg_memdest.h; path = ../osirix/Papyrus3/jpeg_memdest.h; sourceTree = SOURCE_ROOT; };
-		ABEEBB3C1021D40C009D04D4 /* jpeg_memdest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jpeg_memdest.c; path = ../osirix/Papyrus3/jpeg_memdest.c; sourceTree = SOURCE_ROOT; };
 		C86B05260671AA6E00DD9006 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		CE569C3A0E296AC900F4A234 /* libopenjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenjpeg.a; path = ../osirix/Binaries/openjpeg/libopenjpeg.a; sourceTree = SOURCE_ROOT; };
 		CE569C3B0E296AC900F4A234 /* openjpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openjpeg.h; path = ../osirix/Binaries/openjpeg/openjpeg.h; sourceTree = SOURCE_ROOT; };
-		CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
+		CE657AA40C29AB7900537400 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
 		CE657D4E0C29AD5100537400 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		CE689C040C33DE3400FA47B4 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		CE8C00000C2EA8C600537400 /* jcpred.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = jcpred.c; sourceTree = "<group>"; };
@@ -1271,7 +1258,7 @@
 		CE8C00A60C2EA8C600537400 /* dimecho.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimecho.cc; sourceTree = "<group>"; };
 		CE8C00A70C2EA8C600537400 /* dimfind.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimfind.cc; sourceTree = "<group>"; };
 		CE8C00A80C2EA8C600537400 /* dimget.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimget.cc; sourceTree = "<group>"; };
-		CE8C00A90C2EA8C600537400 /* dimmove.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimmove.cc; sourceTree = "<group>"; };
+		CE8C00A90C2EA8C600537400 /* dimmove.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = dimmove.mm; sourceTree = "<group>"; };
 		CE8C00AA0C2EA8C600537400 /* dimse.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimse.cc; sourceTree = "<group>"; };
 		CE8C00AB0C2EA8C600537400 /* dimse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = dimse.h; sourceTree = "<group>"; };
 		CE8C00AC0C2EA8C600537400 /* dimstore.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = dimstore.cc; sourceTree = "<group>"; };
@@ -1654,32 +1641,8 @@
 		CE8CF3D80C2EA56200537400 /* jas_types.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jas_types.h; sourceTree = "<group>"; };
 		CE8CF3D90C2EA56200537400 /* jas_version.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jas_version.h; sourceTree = "<group>"; };
 		CE8CF3DA0C2EA56200537400 /* jasper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jasper.h; sourceTree = "<group>"; };
-		CE8CF3DC0C2EA56200537400 /* DicomDirDatasetRead.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = DicomDirDatasetRead.c; path = ../osirix/Papyrus3/DicomDir/DicomDirDatasetRead.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3DD0C2EA56200537400 /* DicomDirDataSetWrite.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = DicomDirDataSetWrite.c; path = ../osirix/Papyrus3/DicomDir/DicomDirDataSetWrite.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3DE0C2EA56200537400 /* DicomDirFiles.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = DicomDirFiles.c; path = ../osirix/Papyrus3/DicomDir/DicomDirFiles.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3DF0C2EA56200537400 /* DicomDirInit.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = DicomDirInit.c; path = ../osirix/Papyrus3/DicomDir/DicomDirInit.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E00C2EA56200537400 /* DicomDirInitRecords.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = DicomDirInitRecords.c; path = ../osirix/Papyrus3/DicomDir/DicomDirInitRecords.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E10C2EA56200537400 /* PapyFileSystemUnix3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyFileSystemUnix3.c; path = ../osirix/Papyrus3/PapyFileSystemUnix3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E20C2EA56200537400 /* PapyEallocUnix3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyEallocUnix3.c; path = ../osirix/Papyrus3/PapyEallocUnix3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E30C2EA56200537400 /* PapyDataSetWrite3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyDataSetWrite3.c; path = ../osirix/Papyrus3/PapyDataSetWrite3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E40C2EA56200537400 /* PapyDataSetRead3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyDataSetRead3.c; path = ../osirix/Papyrus3/PapyDataSetRead3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E50C2EA56200537400 /* PapyError3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyError3.c; path = ../osirix/Papyrus3/PapyError3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E60C2EA56200537400 /* PapyFiles3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyFiles3.c; path = ../osirix/Papyrus3/PapyFiles3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E70C2EA56200537400 /* PapyGetGlobalVar3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyGetGlobalVar3.c; path = ../osirix/Papyrus3/PapyGetGlobalVar3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E80C2EA56200537400 /* PapyInit3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyInit3.c; path = ../osirix/Papyrus3/PapyInit3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3E90C2EA56200537400 /* PapyInitGroups3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyInitGroups3.c; path = ../osirix/Papyrus3/PapyInitGroups3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3EA0C2EA56200537400 /* PapyInitModules3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyInitModules3.c; path = ../osirix/Papyrus3/PapyInitModules3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3EB0C2EA56200537400 /* PapyList3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyList3.c; path = ../osirix/Papyrus3/PapyList3.c; sourceTree = SOURCE_ROOT; };
 		CE8CF3EC0C2EA56200537400 /* jasper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = jasper.h; path = ../osirix/Binaries/Jasper/Headers/jasper.h; sourceTree = SOURCE_ROOT; };
-		CE8CF3ED0C2EA56200537400 /* PapyJpeg8.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyJpeg8.c; path = ../osirix/Papyrus3/PapyJpeg8.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3EE0C2EA56200537400 /* PapyJpeg12.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyJpeg12.c; path = ../osirix/Papyrus3/PapyJpeg12.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3EF0C2EA56200537400 /* PapyJpeg16.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyJpeg16.c; path = ../osirix/Papyrus3/PapyJpeg16.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3F00C2EA56200537400 /* PapyRead3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyRead3.c; path = ../osirix/Papyrus3/PapyRead3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3F10C2EA56200537400 /* PapyUtils3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyUtils3.c; path = ../osirix/Papyrus3/PapyUtils3.c; sourceTree = SOURCE_ROOT; };
 		CE8CF3F20C2EA56200537400 /* PapyVars3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyVars3.c; path = ../osirix/Papyrus3/PapyVars3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3F30C2EA56200537400 /* PapyWrite3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyWrite3.c; path = ../osirix/Papyrus3/PapyWrite3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3F40C2EA56200537400 /* PapyWild3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyWild3.c; path = ../osirix/Papyrus3/PapyWild3.c; sourceTree = SOURCE_ROOT; };
-		CE8CF3F50C2EA56200537400 /* PapyWildexit3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyWildexit3.c; path = ../osirix/Papyrus3/PapyWildexit3.c; sourceTree = SOURCE_ROOT; };
 		CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyGlobalVar3.h; path = ../osirix/Papyrus3/PapyGlobalVar3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyFileSystem3.h; path = ../osirix/Papyrus3/PapyFileSystem3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF3F80C2EA56200537400 /* PapyErrorMacros3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyErrorMacros3.h; path = ../osirix/Papyrus3/PapyErrorMacros3.h; sourceTree = SOURCE_ROOT; };
@@ -2148,7 +2111,6 @@
 		CE9CEFD00C75CA9F00752D4B /* DICOMToNSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DICOMToNSString.m; path = ../osirix/DICOMToNSString.m; sourceTree = SOURCE_ROOT; };
 		CEB9A42D0C80E1BA00DC1331 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libDCM StaticLibrary.a"; path = "../osirix/build/Development/libDCM StaticLibrary.a"; sourceTree = SOURCE_ROOT; };
-		CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jpeg_memsrc.c; path = ../osirix/Papyrus3/jpeg_memsrc.c; sourceTree = SOURCE_ROOT; };
 		CED87BE311EA67A200875C55 /* dsr2html */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = dsr2html; path = ../osirix/Binaries/DCMTK/dsr2html; sourceTree = SOURCE_ROOT; };
 		CED87C0111EA6ACF00875C55 /* dicom.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicom.dic; path = ../osirix/Binaries/DCMTK/dicom.dic; sourceTree = SOURCE_ROOT; };
 		CED87C3311EA734F00875C55 /* dicomsricon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dicomsricon.jpg; sourceTree = "<group>"; };
@@ -2180,6 +2142,7 @@
 				CEB9A42E0C80E1BA00DC1331 /* QTKit.framework in Frameworks */,
 				CEB9A4510C80E20900DC1331 /* libDCM StaticLibrary.a in Frameworks */,
 				CE569C3C0E296AC900F4A234 /* libopenjpeg.a in Frameworks */,
+				846A53611248B1C4007D5988 /* libPapyrusToolkit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2213,6 +2176,7 @@
 				CE569C390E296AC900F4A234 /* openJpeg */,
 				CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */,
 				CEE52DC20C7474520044205E /* libjasper2.a */,
+				846A53601248B1C4007D5988 /* libPapyrusToolkit.a */,
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
 				CE8C06C30C2EAB1200537400 /* libssl.dylib */,
@@ -2243,6 +2207,12 @@
 		08FB77AFFE84173DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				846A5B4E1248B2A1007D5988 /* NSUserDefaultsController+N2.h */,
+				846A5B4F1248B2A1007D5988 /* NSUserDefaultsController+N2.mm */,
+				846A5B501248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h */,
+				846A5B511248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm */,
+				846A5B0B1248B218007D5988 /* NSString+N2.h */,
+				846A5B0C1248B218007D5988 /* NSString+N2.mm */,
 				A92CCDCC0CA7D9B000800211 /* altivecFunctions.h */,
 				A92CCDD40CA7DA6600800211 /* altivecFunctions.c */,
 				CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */,
@@ -2404,7 +2374,7 @@
 				CE8C00A60C2EA8C600537400 /* dimecho.cc */,
 				CE8C00A70C2EA8C600537400 /* dimfind.cc */,
 				CE8C00A80C2EA8C600537400 /* dimget.cc */,
-				CE8C00A90C2EA8C600537400 /* dimmove.cc */,
+				CE8C00A90C2EA8C600537400 /* dimmove.mm */,
 				CE8C00AA0C2EA8C600537400 /* dimse.cc */,
 				CE8C00AB0C2EA8C600537400 /* dimse.h */,
 				CE8C00AC0C2EA8C600537400 /* dimstore.cc */,
@@ -2831,31 +2801,9 @@
 		CE8CF3C70C2EA56200537400 /* Papyrus */ = {
 			isa = PBXGroup;
 			children = (
-				CE8CF3DB0C2EA56200537400 /* DicomDir */,
 				ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */,
-				ABEEBB3C1021D40C009D04D4 /* jpeg_memdest.c */,
-				CECBA1630F2C762B00ADD482 /* jpeg_memsrc.c */,
-				CE8CF3E10C2EA56200537400 /* PapyFileSystemUnix3.c */,
-				CE8CF3E20C2EA56200537400 /* PapyEallocUnix3.c */,
-				CE8CF3E30C2EA56200537400 /* PapyDataSetWrite3.c */,
-				CE8CF3E40C2EA56200537400 /* PapyDataSetRead3.c */,
-				CE8CF3E50C2EA56200537400 /* PapyError3.c */,
-				CE8CF3E60C2EA56200537400 /* PapyFiles3.c */,
-				CE8CF3E70C2EA56200537400 /* PapyGetGlobalVar3.c */,
-				CE8CF3E80C2EA56200537400 /* PapyInit3.c */,
-				CE8CF3E90C2EA56200537400 /* PapyInitGroups3.c */,
-				CE8CF3EA0C2EA56200537400 /* PapyInitModules3.c */,
-				CE8CF3EB0C2EA56200537400 /* PapyList3.c */,
 				CE8CF3EC0C2EA56200537400 /* jasper.h */,
-				CE8CF3ED0C2EA56200537400 /* PapyJpeg8.c */,
-				CE8CF3EE0C2EA56200537400 /* PapyJpeg12.c */,
-				CE8CF3EF0C2EA56200537400 /* PapyJpeg16.c */,
-				CE8CF3F00C2EA56200537400 /* PapyRead3.c */,
-				CE8CF3F10C2EA56200537400 /* PapyUtils3.c */,
 				CE8CF3F20C2EA56200537400 /* PapyVars3.c */,
-				CE8CF3F30C2EA56200537400 /* PapyWrite3.c */,
-				CE8CF3F40C2EA56200537400 /* PapyWild3.c */,
-				CE8CF3F50C2EA56200537400 /* PapyWildexit3.c */,
 				CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */,
 				CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */,
 				CE8CF3F80C2EA56200537400 /* PapyErrorMacros3.h */,
@@ -2904,18 +2852,6 @@
 			name = Headers;
 			path = ../osirix/Binaries/Jasper/Headers;
 			sourceTree = SOURCE_ROOT;
-		};
-		CE8CF3DB0C2EA56200537400 /* DicomDir */ = {
-			isa = PBXGroup;
-			children = (
-				CE8CF3DC0C2EA56200537400 /* DicomDirDatasetRead.c */,
-				CE8CF3DD0C2EA56200537400 /* DicomDirDataSetWrite.c */,
-				CE8CF3DE0C2EA56200537400 /* DicomDirFiles.c */,
-				CE8CF3DF0C2EA56200537400 /* DicomDirInit.c */,
-				CE8CF3E00C2EA56200537400 /* DicomDirInitRecords.c */,
-			);
-			name = DicomDir;
-			sourceTree = "<group>";
 		};
 		CE8CFE3D0C2EA8C500537400 /* dcmtk */ = {
 			isa = PBXGroup;
@@ -3983,6 +3919,9 @@
 				A92CCDCD0CA7D9B000800211 /* altivecFunctions.h in Headers */,
 				CE569C3D0E296AC900F4A234 /* openjpeg.h in Headers */,
 				ABEEBB3D1021D40C009D04D4 /* jpeg_memdest.h in Headers */,
+				846A5B0D1248B218007D5988 /* NSString+N2.h in Headers */,
+				846A5B521248B2A1007D5988 /* NSUserDefaultsController+N2.h in Headers */,
+				846A5B541248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4018,7 +3957,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 2CA326220896AD4900168862 /* Build configuration list for PBXProject "DICOMQuickLook" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* DICOMQuickLook */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -4065,31 +4011,7 @@
 				CE8CF1F70C2EA43100537400 /* DCMPix.m in Sources */,
 				CE8CF3BC0C2EA4BA00537400 /* nifti1_io.c in Sources */,
 				CE8CF3BE0C2EA4BA00537400 /* znzlib.c in Sources */,
-				CE8CF41B0C2EA56200537400 /* DicomDirDatasetRead.c in Sources */,
-				CE8CF41C0C2EA56200537400 /* DicomDirDataSetWrite.c in Sources */,
-				CE8CF41D0C2EA56200537400 /* DicomDirFiles.c in Sources */,
-				CE8CF41E0C2EA56200537400 /* DicomDirInit.c in Sources */,
-				CE8CF41F0C2EA56200537400 /* DicomDirInitRecords.c in Sources */,
-				CE8CF4200C2EA56200537400 /* PapyFileSystemUnix3.c in Sources */,
-				CE8CF4210C2EA56200537400 /* PapyEallocUnix3.c in Sources */,
-				CE8CF4220C2EA56200537400 /* PapyDataSetWrite3.c in Sources */,
-				CE8CF4230C2EA56200537400 /* PapyDataSetRead3.c in Sources */,
-				CE8CF4240C2EA56200537400 /* PapyError3.c in Sources */,
-				CE8CF4250C2EA56200537400 /* PapyFiles3.c in Sources */,
-				CE8CF4260C2EA56200537400 /* PapyGetGlobalVar3.c in Sources */,
-				CE8CF4270C2EA56200537400 /* PapyInit3.c in Sources */,
-				CE8CF4280C2EA56200537400 /* PapyInitGroups3.c in Sources */,
-				CE8CF4290C2EA56200537400 /* PapyInitModules3.c in Sources */,
-				CE8CF42A0C2EA56200537400 /* PapyList3.c in Sources */,
-				CE8CF42C0C2EA56200537400 /* PapyJpeg8.c in Sources */,
-				CE8CF42D0C2EA56200537400 /* PapyJpeg12.c in Sources */,
-				CE8CF42E0C2EA56200537400 /* PapyJpeg16.c in Sources */,
-				CE8CF42F0C2EA56200537400 /* PapyRead3.c in Sources */,
-				CE8CF4300C2EA56200537400 /* PapyUtils3.c in Sources */,
 				CE8CF4310C2EA56200537400 /* PapyVars3.c in Sources */,
-				CE8CF4320C2EA56200537400 /* PapyWrite3.c in Sources */,
-				CE8CF4330C2EA56200537400 /* PapyWild3.c in Sources */,
-				CE8CF4340C2EA56200537400 /* PapyWildexit3.c in Sources */,
 				CE8C01FF0C2EA8C700537400 /* dcbytstr.cc in Sources */,
 				CE8C02010C2EA8C700537400 /* dcchrstr.cc in Sources */,
 				CE8C02030C2EA8C700537400 /* dccodec.cc in Sources */,
@@ -4530,7 +4452,7 @@
 				CE8C05C80C2EA97D00537400 /* dimecho.cc in Sources */,
 				CE8C05C90C2EA97D00537400 /* dimfind.cc in Sources */,
 				CE8C05CA0C2EA97D00537400 /* dimget.cc in Sources */,
-				CE8C05CB0C2EA97D00537400 /* dimmove.cc in Sources */,
+				CE8C05CB0C2EA97D00537400 /* dimmove.mm in Sources */,
 				CE8C05CC0C2EA97D00537400 /* dimse.cc in Sources */,
 				CE8C05CE0C2EA97D00537400 /* dimstore.cc in Sources */,
 				CE8C05CF0C2EA97D00537400 /* diutil.cc in Sources */,
@@ -4608,8 +4530,9 @@
 				CE9CEFB30C75CA1400752D4B /* DefaultsOsiriX.m in Sources */,
 				CE9CEFD20C75CA9F00752D4B /* DICOMToNSString.m in Sources */,
 				A92CCDD50CA7DA6600800211 /* altivecFunctions.c in Sources */,
-				CECBA1640F2C762B00ADD482 /* jpeg_memsrc.c in Sources */,
-				ABEEBB3E1021D40C009D04D4 /* jpeg_memdest.c in Sources */,
+				846A5B0E1248B218007D5988 /* NSString+N2.mm in Sources */,
+				846A5B531248B2A1007D5988 /* NSUserDefaultsController+N2.mm in Sources */,
+				846A5B551248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4651,6 +4574,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 					"\"$(SRCROOT)/../osirix/Binaries/openjpeg\"",
+					"\"$(SRCROOT)/../osirix/Binaries\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../osirix/Binaries/LibTiff\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../osirix/build/Deployment Universal 64-bit\"";
