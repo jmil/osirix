@@ -22,7 +22,7 @@
 - Many bugs corrected
 - Better stability and memory management when using OsiriX as a PACS server
 
-- Password Forgotten
+- Help email login
 
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
