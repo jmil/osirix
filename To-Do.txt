@@ -24,6 +24,7 @@
 
 - Test Bonjour detection
 
+- 'Archived' field (comments?)
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
