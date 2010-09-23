@@ -22,6 +22,8 @@
 - Many bugs corrected
 - Better stability and memory management when using OsiriX as a PACS server
 
+- Test Bonjour detection
+
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
