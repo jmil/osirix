@@ -3957,7 +3957,6 @@
 			isa = PBXProject;
 			buildConfigurationList = 2CA326220896AD4900168862 /* Build configuration list for PBXProject "DICOMQuickLook" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
