@@ -22,8 +22,6 @@
 - Many bugs corrected
 - Better stability and memory management when using OsiriX as a PACS server
 
-- Test Bonjour detection
-
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
