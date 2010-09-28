@@ -241,6 +241,7 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - OsiriX Lite Upload
 - QuickLook
 - Update plugins
+- X codesign -vvv /Applications/OsiriX.app
 - X Update Downloads.html
 - X Update versionLeopard.html xml
 - X wwww.apple.com/download
