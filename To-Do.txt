@@ -245,5 +245,5 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - X Update versionLeopard.html xml
 - X wwww.apple.com/download
 - X 64bitExtension : upload osirix-viewer.com
-- X 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup
+- X 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup AND in pixmeo MySQL DB web site
 - X 64bitExtension : Mailing to users
