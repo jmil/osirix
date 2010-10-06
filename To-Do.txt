@@ -22,6 +22,8 @@
 - Many bugs corrected
 - Better stability and memory management when using OsiriX as a PACS server
 
+- Burner plugin release
+
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
