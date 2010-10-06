@@ -23,6 +23,7 @@
 - Better stability and memory management when using OsiriX as a PACS server
 
 - Burner plugin release
+- Web Server: include previous study for patients
 
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
