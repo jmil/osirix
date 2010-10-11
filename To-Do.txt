@@ -23,7 +23,7 @@
 - Better stability and memory management when using OsiriX as a PACS server
 
 - Burner plugin release
-- Web Server: include previous study for patients
+- Check plugins package
 
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
@@ -37,6 +37,7 @@
 - A link for keyimages: jpeg or movie, depending on number of images < 20
 - Web administration for Web server
 - Web Server: edit report
+- Web Server: include previous study for patients
 - Smart Albums with fixed studies
 - VTK 5.6 GPUVolumeRendering
 - dcmtk 3.5.5 -> JPLS
