@@ -33,6 +33,7 @@
 - Front/Back button: SR
 - CD partial import
 - crash PowerCrush
+- Save default order for albums
 - A list of JPEG, instead of a quicktime movie, if number of images < 20
 - A link for keyimages: jpeg or movie, depending on number of images < 20
 - Web administration for Web server
