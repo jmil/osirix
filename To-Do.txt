@@ -23,7 +23,7 @@
 - Better stability and memory management when using OsiriX as a PACS server
 
 - Burner plugin release
-- Check plugins package
+- QR : Local Comments, Local Status versus Distant Comments, Distant Status
 
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
