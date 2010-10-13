@@ -25,6 +25,7 @@
 - Check SeriesDate / AcquisitionDate
 - Burner plugin release
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
+- Save separator position : album drawer
 
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
