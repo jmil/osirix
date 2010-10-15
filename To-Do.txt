@@ -24,7 +24,7 @@
 
 - Burner plugin release
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
-- Save separator position : album drawer
+- Plugins package update
 
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
