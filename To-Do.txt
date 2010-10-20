@@ -26,7 +26,6 @@
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
 - Plugins package update
 
-- SPECT-CT : re-order by slice location?
 - QR : Institution
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
