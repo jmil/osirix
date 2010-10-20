@@ -27,6 +27,7 @@
 - Plugins package update
 
 - SPECT-CT : re-order by slice location?
+- QR : Institution
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
 - Anonymize: DCMFramework->DCMTK
