@@ -24,7 +24,6 @@
 
 - Burner plugin release
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
-- Plugins package update
 
 - QR : Institution
 - 'Archived' field (comments?)
