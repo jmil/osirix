@@ -23,6 +23,8 @@
 - Better stability and memory management when using OsiriX as a PACS server
 
 - Burner plugin release
+- Test decompress app with TIFF
+- Check AuthorizationExecuteWithPrivileges
 
 - MG in the preference field "series parsing" " combine or split"? 
 - CoreData read/read multithreaded? read/write multithreaded?
@@ -255,5 +257,4 @@ ftp://medical.nema.org/medical/dicom/2008/08_18pu.pdf
 - 64bitExtension : Kagi Blurb AND in products list for CD/DVD backup AND in pixmeo MySQL DB web site
 - Update Downloads.html
 - Update versionLeopard.html xml
-
-- X wwww.apple.com/download
+- wwww.apple.com/download
