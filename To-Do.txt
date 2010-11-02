@@ -24,7 +24,8 @@
 
 - Burner plugin release
 
-- MG in the preference field "series parsing" " combine or split"? 
+- MG in the preference field "series parsing" " combine or split"?
+- DICOM Listener: preferences to force re-index
 - CoreData read/read multithreaded? read/write multithreaded?
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
 - QR : Institution
