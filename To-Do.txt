@@ -23,8 +23,6 @@
 - Better stability and memory management when using OsiriX as a PACS server
 
 - Burner plugin release
-- New Weasis
-- Add contextual menu open sub selection 2D viewer icon
 
 - MG in the preference field "series parsing" " combine or split"?
 - DICOM Listener: preferences to force re-index
