@@ -1,5 +1,6 @@
 - JP2K supported in DCMTK
 
+- https Chrome web server
 - Burner plugin release
 
 - Tomographie rotational angio
