@@ -2,6 +2,8 @@
 
 - Burner plugin release
 
+- Tomographie rotational angio
+- Echo/US : map zone
 - Trackpad : 2 finger zooming
 - MG in the preference field "series parsing" " combine or split"? 
 - DICOM Listener: preferences to force re-index
