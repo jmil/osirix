@@ -1,8 +1,6 @@
 - JP2K supported in DCMTK
 
 - https Chrome web server
-- Update version.xml
-- Burner plugin release
 - Update AsyncSocket.m
 
 - Tomographie rotational angio
