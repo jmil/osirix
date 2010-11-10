@@ -1,8 +1,7 @@
 - JP2K supported in DCMTK
+- Flash support, instead of Quicktime, for the built-in Web Server
 
-- https Chrome web server
-- Update AsyncSocket.m
-
+- Autocleaning during specific hours
 - Tomographie rotational angio
 - Echo/US : map zone
 - Trackpad : 2 finger zooming
