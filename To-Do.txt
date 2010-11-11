@@ -1,5 +1,6 @@
 - JP2K supported in DCMTK
 - Flash support, instead of Quicktime, for the built-in Web Server
+- OpenJPEG library updated to 1.4
 
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
