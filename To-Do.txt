@@ -2,8 +2,6 @@
 - Flash support, instead of Quicktime, for the built-in Web Server
 - OpenJPEG library updated to 1.4
 
-- Test multiframe
-
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
 - Tomographie rotational angio
