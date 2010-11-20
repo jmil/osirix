@@ -1,12 +1,13 @@
 - JP2K supported in DCMTK
 - Flash support, instead of Quicktime, for the built-in Web Server
 - OpenJPEG library updated to 1.4
+- Web Server: Administer Users from the Web
+- Track Pad support : magnification, rotation, swipe
 
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
 - Tomographie rotational angio
 - Echo/US : map zone
-- Trackpad : 2 finger zooming
 - MG in the preference field "series parsing" " combine or split"? 
 - DICOM Listener: preferences to force re-index
 - CoreData read/read multithreaded? read/write multithreaded?
