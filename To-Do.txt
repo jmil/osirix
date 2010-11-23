@@ -4,6 +4,7 @@
 - Web Server: Administer Users from the Web
 - Track Pad support : magnification, rotation, swipe
 
+- Scout series: I propose a text field where one can enter a search expression the series description should match (like ' "protocol" OR "summary" ').
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
 - Tomographie rotational angio
