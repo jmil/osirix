@@ -4,7 +4,9 @@
 - Web Server: Administer Users from the Web
 - Track Pad support : magnification, rotation, swipe
 - Kakadu SDK for JPEG2000
+- DCMTK SDK support for anonymization (better quality compared to DCM Framework)
 
+- Anonymization : fields of the file
 - Scout series: I propose a text field where one can enter a search expression the series description should match (like ' "protocol" OR "summary" ').
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
@@ -17,7 +19,6 @@
 - QR : Institution
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
-- Anonymize: DCMFramework->DCMTK
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
 - 3D ROI -> 2D Viewer
 - Front/Back button: SR
