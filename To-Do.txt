@@ -5,8 +5,8 @@
 - Track Pad support : magnification, rotation, swipe
 - Kakadu SDK for JPEG2000
 - DCMTK SDK support for anonymization (better quality compared to DCM Framework)
+- Anonymization Panel: existing fields of the file(s) displayed
 
-- Anonymization : fields of the file
 - Scout series: I propose a text field where one can enter a search expression the series description should match (like ' "protocol" OR "summary" ').
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
