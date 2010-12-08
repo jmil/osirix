@@ -5,14 +5,17 @@
 - Track Pad support : magnification, rotation, swipe
 - Kakadu SDK for JPEG2000
 - DCMTK SDK support for anonymization (better quality compared to DCM Framework)
-- Anonymization Panel: existing fields of the file(s) displayed
+- Anonymization: existing fields of the file(s) displayed
+- Scout series: customize the Series Description string
 
-- Scout series: I propose a text field where one can enter a search expression the series description should match (like ' "protocol" OR "summary" ').
+- Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
+- Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
+- Web Server: edit report
+- Web Server: include previous study for specific patients
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Autocleaning during specific hours
 - Tomographie rotational angio
 - Echo/US : map zone
-- MG in the preference field "series parsing" " combine or split"? 
 - DICOM Listener: preferences to force re-index
 - CoreData read/read multithreaded? read/write multithreaded?
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
@@ -25,11 +28,6 @@
 - CD partial import
 - crash PowerCrush
 - Save default order for albums
-- A list of JPEG, instead of a quicktime movie, if number of images < 20
-- A link for keyimages: jpeg or movie, depending on number of images < 20
-- Web administration for Web server
-- Web Server: edit report
-- Web Server: include previous study for patients
 - Smart Albums with fixed studies
 - VTK 5.6 GPUVolumeRendering
 - dcmtk 3.5.5 -> JPLS
@@ -48,7 +46,6 @@
 - Phase Cardiac
 - Printing Layout
 - Growing region: set to new val
-- Close Polygon only when finished
 - DICOM Printing 1/1 size, fit to size
 - Add DB toolbar to QR window
 - Key Series
