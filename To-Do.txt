@@ -11,8 +11,10 @@
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
-- Web Server: edit report
-- Web Server: include previous study for specific patients
+- Web Server: Edit report
+- Web Server: Include previous study for specific patients
+- Web Server: Burn option if the CD/DVD is installed
+
 - Tomographie rotational angio
 - Echo/US : map zone
 - DICOM Listener: preferences to force re-index
