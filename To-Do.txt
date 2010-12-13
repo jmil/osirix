@@ -9,6 +9,9 @@
 - Scout series: customize the Series Description string for Localizers parsing
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 
+- Web Server bug no users
+- Scout image : reformatted MR series
+
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
 - Web Server: Edit report
