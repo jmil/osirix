@@ -8,6 +8,7 @@
 - Anonymization: existing fields of the file(s) displayed
 - Scout series: customize the Series Description string for Localizers parsing
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
+- Export 'all views' in 3D-MPR and 2D Ortho-MPR (including PET-CT)
 
 - Web Server bug no users
 - Scout image : reformatted MR series
@@ -34,8 +35,6 @@
 - Save default order for albums
 - VTK 5.6 GPUVolumeRendering
 - dcmtk 3.5.5 -> JPLS
-- Full screen capture PET-CT viewer
-- 3D MPR: Export all views
 - Zoom centered around mouse position
 - Tool to create a new series from key images of a study
 - Print images, containing ROIs
