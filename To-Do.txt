@@ -9,6 +9,7 @@
 - Scout series: customize the Series Description string for Localizers parsing
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Export 'all views' in 3D-MPR and 2D Ortho-MPR (including PET-CT)
+- QR : search by Institution Name
 
 - Web Server bug no users
 - Scout image : reformatted MR series
@@ -24,7 +25,6 @@
 - DICOM Listener: preferences to force re-index
 - CoreData read/read multithreaded? read/write multithreaded?
 - QR : Local Comments, Local Status versus Distant Comments, Distant Status
-- QR : Institution
 - 'Archived' field (comments?)
 - Custom DB time interval: floating panel
 - CGDisplayScreenSize, which returns the width and height of a display in millimeters
