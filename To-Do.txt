@@ -13,7 +13,6 @@
 
 - Web Server bug no users
 - Scout image : reformatted MR series
-- LaTour : JPEG2000 <-> JPEG2000Lossless switch
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
