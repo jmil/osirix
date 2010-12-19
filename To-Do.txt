@@ -20,6 +20,7 @@
 - Web Server: Include previous study for specific patients
 - Web Server: Burn option if the CD/DVD is installed
 
+- DicomExport DCM Framework -> dcmtk
 - Tomographie rotational angio
 - Echo/US : map zone
 - DICOM Listener: preferences to force re-index
