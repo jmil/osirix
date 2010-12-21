@@ -5,14 +5,15 @@
 - Track Pad support : magnification, rotation, swipe
 - Kakadu SDK for JPEG2000
 - DCMTK SDK support for anonymization (better quality compared to DCM Framework)
+- DCMTK SDK support for DICOM export (better quality compared to DCM Framework, all fields are copied)
 - Anonymization: existing fields of the file(s) displayed
 - Scout series: customize the Series Description string for Localizers parsing
 - Rotation / Scaling of ROI (Line, Ellipse) in 3D MPR view
 - Export 'all views' in 3D-MPR and 2D Ortho-MPR (including PET-CT)
 - QR : search by Institution Name
+- Display images in real 'actual size', according to monitor resolution and size (see 2D Viewer contextual menu)
 
 - Web Server bug no users
-- Scout image : reformatted MR series
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
@@ -20,7 +21,6 @@
 - Web Server: Include previous study for specific patients
 - Web Server: Burn option if the CD/DVD is installed
 
-- DicomExport DCM Framework -> dcmtk
 - Tomographie rotational angio
 - Echo/US : map zone
 - DICOM Listener: preferences to force re-index
