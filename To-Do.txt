@@ -15,7 +15,6 @@
 - Zoom centered around mouse position (2D Viewer Preferences)
 
 - Web Server bug no users
-- Test saveDBLock == nil
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
