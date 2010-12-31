@@ -14,6 +14,7 @@
 - Display images in real 'actual size', according to monitor resolution and size (2D Viewer contextual menu)
 - Zoom centered around mouse position (2D Viewer Preferences)
 
+- JP2K DP SPAIR Cor bug
 - Web Server bug no users
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
