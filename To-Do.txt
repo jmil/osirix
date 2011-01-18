@@ -16,7 +16,6 @@
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and space bandwidth)
 
 - Web Server bug no users
-- WADO Performances?
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
