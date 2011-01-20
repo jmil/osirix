@@ -23,6 +23,7 @@
 - Web Server: Include previous study for specific patients
 - Web Server: Burn option if the CD/DVD is installed
 
+- Dont rotate tText
 - Tool to create a new series from key images of a study
 - Tomographie rotational angio
 - Echo/US : map zone
