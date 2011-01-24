@@ -37,6 +37,7 @@
 @class EndoscopyViewer;
 @class MPRController;
 @class ViewerController;
+@class DicomDatabase;
 
 
 @interface NSObject(OsiriXPluginDraggingDestination)
@@ -66,6 +67,8 @@ enum
 @interface ViewerController : OSIWindowController
 #endif
 {
+	DicomDatabase* database;
+	
 	NSLock	*ThreadLoadImageLock;
 	NSLock	*roiLock;
 	NSConditionLock *subLoadingThread, *flipDataThread;
@@ -339,6 +342,9 @@ enum
 	NSCalendarDate			*injectionDateTime;
 	IBOutlet NSWindow		*injectionTimeWindow;
 }
+
+@property(readonly,retain) DicomDatabase* database;
+
 @property(retain) NSCalendarDate *injectionDateTime;
 @property(readonly) short currentOrientationTool;
 @property(readonly) volatile float loadingPercentage;
@@ -626,8 +632,10 @@ enum
 - (IBAction) endQuicktime:(id) sender;
 - (void) setDefaultTool:(id) sender;
 - (OSErr)getFSRefAtPath:(NSString*)sourceItem ref:(FSRef*)sourceRef;
-- (id) viewCinit:(NSMutableArray*)f :(NSMutableArray*) d :(NSData*) v;
-- (id) initWithPix:(NSMutableArray*)f withFiles:(NSMutableArray*) d withVolume:(NSData*) v;
+- (id) viewCinit:(NSMutableArray*)f :(NSMutableArray*) d :(NSData*) v __deprecated;
+- (id) initWithDatabase:(DicomDatabase*)db :(NSMutableArray*)f :(NSMutableArray*)d :(NSData*)v;
+- (id) initWithPix:(NSMutableArray*)f withFiles:(NSMutableArray*) d withVolume:(NSData*) v __deprecated;
+- (id) initWithDatabase:(DicomDatabase*)db withPix:(NSMutableArray*)f withFiles:(NSMutableArray*) d withVolume:(NSData*) v;
 - (void) speedSliderAction:(id) sender;
 - (void) setupToolbar;
 - (NSToolbar*) toolbar;

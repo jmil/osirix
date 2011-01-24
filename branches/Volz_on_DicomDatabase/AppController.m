@@ -44,6 +44,8 @@
 #import "NSUserDefaultsController+OsiriX.h"
 #import <N2Debug.h>
 #import "NSFileManager+N2.h"
+#import "DicomDatabase.h"
+#import "NSException+N2.h"
 #ifndef OSIRIX_LIGHT
 #import <ILCrashReporter/ILCrashReporter.h>
 #endif
@@ -61,7 +63,6 @@
 
 #include <kdu_OsiriXSupport.h>
 
-#include <execinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
 	 
@@ -78,8 +79,8 @@ static BOOL canDisplay12Bit = NO;
 static NSInvocation *fill12BitBufferInvocation = nil;
 static NSString *appStartingDate = nil;
 
-BOOL					NEEDTOREBUILD = NO;
-BOOL					COMPLETEREBUILD = NO;
+//BOOL					NEEDTOREBUILD = NO;
+//BOOL					COMPLETEREBUILD = NO;
 BOOL					USETOOLBARPANEL = NO;
 short					Altivec = 1, UseOpenJpeg = 1, Use_kdu_IfAvailable = 1;
 AppController			*appController = nil;
@@ -368,7 +369,7 @@ int GetAllPIDsForProcessName(const char* ProcessName,
     }
 }
 
-NSString * documentsDirectoryFor( int mode, NSString *url)
+/*NSString * documentsDirectoryFor( int mode, NSString *url)
 {
 	char s[ 4096];
 	FSRef ref;
@@ -440,7 +441,7 @@ NSString * documentsDirectory()
 	}
 	
 	return path;
-}
+}*/
 
 static volatile BOOL converting = NO;
 
@@ -463,7 +464,7 @@ NSString* convertDICOM( NSString *inputfile)
 	if( inputfile == nil)
 		return nil;
 	
-	NSString *outputfile = [documentsDirectory() stringByAppendingFormat:@"/TEMP.noindex/%@", filenameWithDate( inputfile)];
+	NSString* outputfile = [[[DicomDatabase defaultDatabase] temporaryDirectoryPath] stringByAppendingPathComponent:filenameWithDate(inputfile)];
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:outputfile])
 		return outputfile;
@@ -762,7 +763,7 @@ void exceptionHandler(NSException *exception)
 {
     NSLog(@"%@", [exception reason]);
     NSLog(@"%@", [exception userInfo]);
-	[AppController printStackTrace: exception];
+	[exception printStackTrace];
 }
 
 //———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -776,9 +777,9 @@ static NSDate *lastWarningDate = nil;
 
 - (void) pause
 {
-	[[[BrowserController currentBrowser] checkIncomingLock] lock];
+	[[[BrowserController currentBrowser] database] writeLock];
 	sleep( 2);
-	[[[BrowserController currentBrowser] checkIncomingLock] unlock];
+	[[[BrowserController currentBrowser] database] writeUnlock];
 }
 
 // Plugins installation
@@ -991,7 +992,7 @@ static NSDate *lastWarningDate = nil;
 	return YES;                   
 }
 
-+ (void) createNoIndexDirectoryIfNecessary:(NSString*) path
+/*+ (void) createNoIndexDirectoryIfNecessary:(NSString*) path
 {
 	BOOL newFolder = NO;
 	
@@ -1023,7 +1024,7 @@ static NSDate *lastWarningDate = nil;
 			[[NSFileManager defaultManager] changeFileAttributes: m atPath: path];
 		}
 	}
-}
+}*/
 
 + (void) pause
 {
@@ -1137,6 +1138,18 @@ static NSDate *lastWarningDate = nil;
 	[[QueryController currentAutoQueryController] refreshAutoQR: sender];
 }
 #endif
+
+
+- (void) setDockLabel:(NSString*) label
+{
+	[[[NSApplication sharedApplication] dockTile] setBadgeLabel: label];
+	[[[NSApplication sharedApplication] dockTile] display];
+}
+
+- (void) setGrowlMessage:(NSString*) message
+{
+	[[AppController sharedAppController] growlTitle: NSLocalizedString( @"Incoming Files", nil) description: message name: @"newfiles"];
+}
 
 //———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 #pragma mark-
@@ -1874,9 +1887,9 @@ static NSDate *lastWarningDate = nil;
 		}
 		
 		//make sure that there exist a receiver folder at @"folder" path
-		NSString *path = [documentsDirectory() stringByAppendingPathComponent:INCOMINGPATH];
+		NSString* path = [[DicomDatabase activeDatabase] incomingDirectoryPath];
 		
-		[AppController createNoIndexDirectoryIfNecessary: path];
+		//[AppController createNoIndexDirectoryIfNecessary: path];
 		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey: @"USESTORESCP"])
 		{
@@ -1896,8 +1909,8 @@ static NSDate *lastWarningDate = nil;
 		dcmtkQRSCPTLS = nil;
 		
 		//make sure that there exist a receiver folder at @"folder" path
-		NSString *path = [documentsDirectory() stringByAppendingPathComponent:INCOMINGPATH];
-		[AppController createNoIndexDirectoryIfNecessary: path];	
+		NSString *path = [[DicomDatabase activeDatabase] incomingDirectoryPath];
+		//[[NSFileManager] createNoIndexDirectoryIfNecessary: path];	
 		
 		if( [STORESCPTLS tryLock])
 		{
@@ -2179,10 +2192,7 @@ static NSDate *lastWarningDate = nil;
 					NSMutableArray *allImages = [NSMutableArray array];
 					[[BrowserController currentBrowser] filesForDatabaseOutlineSelection: allImages];
 					
-					NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
-					
-					[context lock];
-					
+					[[[[BrowserController currentBrowser] database] context] lock];
 					@try
 					{
 						NSPredicate	*request = [NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: @"compressedSopInstanceUID"] rightExpression: [NSExpression expressionForConstantValue: [DicomImage sopInstanceUIDEncodeString: sopinstanceuid]] customSelector: @selector( isEqualToSopInstanceUID:)];
@@ -2195,34 +2205,31 @@ static NSDate *lastWarningDate = nil;
 							succeeded = YES;
 						}
 					}
-					@catch (NSException * e)
-					{
+					@catch (NSException * e) {
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+					} @finally {
+						[[[[BrowserController currentBrowser] database] context] unlock];
 					}
-					
-					[context unlock];
 				}
-				//Second option, try to find the uid in the ENTIRE db....
 				
+				//Second option, try to find the uid in the ENTIRE db....
 				if( succeeded == NO)
 				{
 					NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-					[dbRequest setEntity: [[[[BrowserController currentBrowser] managedObjectModel] entitiesByName] objectForKey: @"Series"]];
+					[dbRequest setEntity: [[DicomDatabase defaultDatabase] entityForName:@"Series"]];
 					[dbRequest setPredicate: [NSPredicate predicateWithFormat: @"seriesSOPClassUID == %@", sopclassuid]];
-					
-					NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
-					
-					[context lock];
 					
 					WaitRendering *wait = [[WaitRendering alloc] init: NSLocalizedString( @"Locating the image in the database...", nil)];
 					[wait showWindow: self];
 					[wait setCancel: YES];
 					[wait start];
 					
+
+					[[[[BrowserController currentBrowser] database] context] lock];
 					@try
 					{
 						NSError	*error = nil;
-						NSArray *allSeries = [[context executeFetchRequest: dbRequest error: &error] valueForKey: @"images"];
+						NSArray *allSeries = [[[[[BrowserController currentBrowser] database] context] executeFetchRequest: dbRequest error: &error] valueForKey: @"images"];
 						
 						NSMutableArray *allImages = [NSMutableArray array];
 						for( NSSet *s in allSeries)
@@ -2249,12 +2256,12 @@ static NSDate *lastWarningDate = nil;
 					@catch (NSException * e)
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+					} @finally {
+						[[[[BrowserController currentBrowser] database] context] unlock];
+						[wait end];
+						[wait close];
+						[wait release];
 					}
-					[wait end];
-					[wait close];
-					[wait release];
-					
-					[context unlock];
 				}
 			}
 		}
@@ -2439,21 +2446,6 @@ static NSDate *lastWarningDate = nil;
 	
 	[AppController cleanOsiriXSubProcesses];
 	
-	// DELETE THE TEMP.noindex DIRECTORY...
-	NSString *tempDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/TEMP.noindex/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory]) [[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
-	tempDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/TEMP/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory]) [[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
-	
-	// DELETE THE DUMP DIRECTORY...
-	NSString *dumpDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/DUMP/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dumpDirectory]) [[NSFileManager defaultManager] removeFileAtPath:dumpDirectory handler: nil];
-	
-	// DELETE THE DECOMPRESSION.noindex DIRECTORY...
-	NSString *decompressionDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/DECOMPRESSION.noindex/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:decompressionDirectory]) [[NSFileManager defaultManager] removeFileAtPath:decompressionDirectory handler: nil];
-	decompressionDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/DECOMPRESSION/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:decompressionDirectory]) [[NSFileManager defaultManager] removeFileAtPath:decompressionDirectory handler: nil];
 	
 	// Delete all process_state files
 	for( NSString *s in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: @"/tmp" error: nil]) 
@@ -2558,45 +2550,8 @@ static NSDate *lastWarningDate = nil;
 	[p release];
 }
 
-+ (NSString*) printStackTrace: (NSException*) e
-{
-	NSMutableString *r = [NSMutableString string];
-	
-	@try 
-	{
-		NSArray * addresses = [e callStackReturnAddresses];
-		if( [addresses count])
-		{
-			void * backtrace_frames[[addresses count]];
-			int i = 0;
-			for (NSNumber * address in addresses)
-			{
-				backtrace_frames[i] = (void *)[address unsignedLongValue];
-				i++;
-			}
-			
-			char **frameStrings = backtrace_symbols(&backtrace_frames[0], [addresses count]);
-			
-			if(frameStrings != NULL)
-			{
-				int x;
-				for(x = 0; x < [addresses count]; x++)
-				{
-					NSString *frame_description = [NSString stringWithUTF8String:frameStrings[ x]];
-					NSLog( @"------- %@", frame_description);
-					[r appendFormat: @"%@\r", frame_description];
-				}
-				free( frameStrings);
-				frameStrings = nil;
-			}
-		}
-	}
-	@catch (NSException * e) 
-	{
-		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-	}
-	
-	return r;
++ (NSString*) printStackTrace: (NSException*) e { // deprecated
+	return [e printStackTrace];
 }
 
 + (BOOL) isFDACleared
@@ -2633,7 +2588,7 @@ static NSDate *lastWarningDate = nil;
 	return returnValue;
 }
 
-+ (void) createDBFoldersIfNecessary
+/*+ (void) createDBFoldersIfNecessary
 {
 //	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"UseRAMDisk"] && [[NSUserDefaults standardUserDefaults] boolForKey: @"STORESCP"])
 //	{
@@ -2671,7 +2626,7 @@ static NSDate *lastWarningDate = nil;
 		if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory]) [[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectory attributes:nil];
 	}
-}
+}*/
 
 static BOOL initialized = NO;
 + (void) initialize
@@ -2696,7 +2651,7 @@ static BOOL initialized = NO;
 //	{
 //		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 //		#ifdef OSIRIX_VIEWER
-//		[AppController printStackTrace: e];
+//		[e printStackTrace];
 //		#endif
 //	}
 	
@@ -2896,58 +2851,23 @@ static BOOL initialized = NO;
 				}
 				
 				// CREATE A TEMPORATY FILE DURING STARTUP
-				NSString *path = [documentsDirectory() stringByAppendingPathComponent:@"/Loading"];
+				NSString *path = [[NSUserDefaults defaultDicomDatabasePath] stringByAppendingPathComponent:@"Loading"];
 				if ([[NSFileManager defaultManager] fileExistsAtPath:path])
 				{
 					int result = NSRunInformationalAlertPanel(NSLocalizedString(@"OsiriX crashed during last startup", nil), NSLocalizedString(@"Previous crash is maybe related to a corrupt database or corrupted images.\r\rShould I run OsiriX in Protected Mode (recommended) (no images displayed)? To allow you to delete the crashing/corrupted images/studies.\r\rOr Should I rebuild the local database? All albums, comments and status will be lost.", nil), NSLocalizedString(@"Continue normally",nil), NSLocalizedString(@"Protected Mode",nil), NSLocalizedString(@"Rebuild Database",nil));
 					
 					if( result == NSAlertOtherReturn)
 					{
-						NEEDTOREBUILD = YES;
-						COMPLETEREBUILD = YES;
+				//		NEEDTOREBUILD = YES;
+				//		COMPLETEREBUILD = YES;
 					}
 					if( result == NSAlertAlternateReturn) [DCMPix setRunOsiriXInProtectedMode: YES];
 				}
-				
 				[path writeToFile:path atomically:NO encoding: NSUTF8StringEncoding error: nil];
 				
-				if( [[NSFileManager defaultManager] fileExistsAtPath:[documentsDirectory() stringByAppendingPathComponent:@"/TOBEINDEXED.noindex/"]])
-				{
-					[[NSFileManager defaultManager]	movePath: [documentsDirectory() stringByAppendingPathComponent:@"/TOBEINDEXED.noindex/"]
-													toPath: [documentsDirectory() stringByAppendingPathComponent:@"/INCOMING.noindex/TOBEINDEXED.noindex"] handler: nil];
-				}
-				
-				NSString *reportsDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/REPORTS/"];
-				if ([[NSFileManager defaultManager] fileExistsAtPath:reportsDirectory] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:reportsDirectory attributes:nil];
-				
-//				NSString *roisDirectory = [[[BrowserController currentBrowser] documentsDirectory] stringByAppendingPathComponent:@"/ROIs"];
-//				BOOL isDir = YES;
-//				if ([[NSFileManager defaultManager] fileExistsAtPath:roisDirectory isDirectory: &isDir] == YES && isDir == NO) [[NSFileManager defaultManager] removeFileAtPath: roisDirectory handler: nil];
-//				if ([[NSFileManager defaultManager] fileExistsAtPath:roisDirectory] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:roisDirectory attributes:nil];
-				
-				[AppController createDBFoldersIfNecessary];
-				
-				NSString *dumpDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/DUMP/"];
-				if ([[NSFileManager defaultManager] fileExistsAtPath:dumpDirectory] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:dumpDirectory attributes:nil];
-				
-				// CHECK IF THE REPORT TEMPLATE IS AVAILABLE
-				
-				NSString *reportFile;
-				
-				reportFile = [documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.doc"];
-				if ([[NSFileManager defaultManager] fileExistsAtPath:reportFile] == NO)
-					[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/ReportTemplate.doc"] toPath:[documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.doc"] handler:nil];
-
-				reportFile = [documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.rtf"];
-				if ([[NSFileManager defaultManager] fileExistsAtPath:reportFile] == NO)
-					[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/ReportTemplate.rtf"] toPath:[documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.rtf"] handler:nil];
-				
-				reportFile = [documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.odt"];
-				if ([[NSFileManager defaultManager] fileExistsAtPath:reportFile] == NO)
-					[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/ReportTemplate.odt"] toPath:[documentsDirectory() stringByAppendingPathComponent:@"/ReportTemplate.odt"] handler:nil];
 				
 				
-				[AppController checkForHTMLTemplates];
+				
 				[AppController checkForPagesTemplate];
 				
 				UseOpenJpeg = [[NSUserDefaults standardUserDefaults] boolForKey:@"UseOpenJpegForJPEG2000"];
@@ -3077,7 +2997,7 @@ static BOOL initialized = NO;
 {
     if ([[notification name] isEqualToString:  NSWorkspaceSessionDidResignActiveNotification])
     {
-		[[BrowserController currentBrowser] saveDatabase: [[BrowserController currentBrowser] currentDatabasePath]];
+		[[[BrowserController currentBrowser] database] save: NULL];
 		
 		if( [[NSUserDefaults standardUserDefaults] boolForKey:@"RunListenerOnlyIfActive"])
 		{
@@ -3098,7 +3018,7 @@ static BOOL initialized = NO;
 		{
 			NSLog( @"----- OsiriX : session activation: START DICOM LISTENER FOR THIS SESSION");
 			
-			[[BrowserController currentBrowser] loadDatabase: [[BrowserController currentBrowser] currentDatabasePath]];
+			//[[BrowserController currentBrowser] loadDatabase: [[BrowserController currentBrowser] currentDatabasePath]]; // TODO: re-enable
 			
 			[self restartSTORESCP];
 		}
@@ -4766,85 +4686,39 @@ static BOOL initialized = NO;
 //———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 #pragma mark-
-#pragma mark HTML Templates
-+ (void)checkForHTMLTemplates;
-{
-	// directory
-	NSString *htmlTemplatesDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/HTML_TEMPLATES/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:htmlTemplatesDirectory] == NO)
-		[[NSFileManager defaultManager] createDirectoryAtPath:htmlTemplatesDirectory attributes:nil];
-	
-	// HTML templates
-	NSString *templateFile;
+#pragma mark Pages Template
 
-	templateFile = [htmlTemplatesDirectory stringByAppendingPathComponent:@"QTExportPatientsTemplate.html"];
-	NSLog( @"%@", templateFile);
-	if ([[NSFileManager defaultManager] fileExistsAtPath:templateFile] == NO)
-		[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/QTExportPatientsTemplate.html"] toPath:templateFile handler:nil];
-
-	templateFile = [htmlTemplatesDirectory stringByAppendingPathComponent:@"QTExportStudiesTemplate.html"];
-	NSLog( @"%@", templateFile);
-	if ([[NSFileManager defaultManager] fileExistsAtPath:templateFile] == NO)
-		[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/QTExportStudiesTemplate.html"] toPath:templateFile handler:nil];
-
-	templateFile = [htmlTemplatesDirectory stringByAppendingPathComponent:@"QTExportSeriesTemplate.html"];
-	NSLog( @"%@", templateFile);
-	if ([[NSFileManager defaultManager] fileExistsAtPath:templateFile] == NO)
-		[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/QTExportSeriesTemplate.html"] toPath:templateFile handler:nil];
-	
-	// HTML-extra directory
-	NSString *htmlExtraDirectory = [htmlTemplatesDirectory stringByAppendingPathComponent:@"html-extra/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:htmlExtraDirectory] == NO)
-		[[NSFileManager defaultManager] createDirectoryAtPath:htmlExtraDirectory attributes:nil];
-		
-	// CSS file
-	NSString *cssFile = [htmlExtraDirectory stringByAppendingPathComponent:@"style.css"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cssFile] == NO)
-		[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/QTExportStyle.css"] toPath:cssFile handler:nil];
++(NSString*)pagesTemplatesDirectoryPath {
+	return [[[NSFileManager defaultManager] findSystemFolderOfType:kApplicationSupportFolderType forDomain:kUserDomain] stringByAppendingPathComponent:@"iWork/Pages"];
 }
 
-#pragma mark-
-#pragma mark Pages Template
++(NSString*)pagesEnglishOsirixTemplatesDirectoryPath {
+	return [[self pagesTemplatesDirectoryPath] stringByAppendingPathComponent:@"Templates/OsiriX"];
+}
 
 + (void)checkForPagesTemplate;
 {
 	// Pages template directory
-	NSArray *templateDirectoryPathArray = [NSArray arrayWithObjects:NSHomeDirectory(), @"Library", @"Application Support", @"iWork", @"Pages", @"Templates", @"OsiriX", nil];
-	int i;
-	NSString *templateDirectory = nil;
-	for(i=0; i<[templateDirectoryPathArray count]; i++)
-	{
-		templateDirectory = [NSString pathWithComponents:[templateDirectoryPathArray subarrayWithRange:NSMakeRange(0,i+1)]];
-		if(![[NSFileManager defaultManager] fileExistsAtPath:templateDirectory])
-			[[NSFileManager defaultManager] createDirectoryAtPath:templateDirectory attributes:nil];
-	}
-	// Creates paths for other languages...
-	NSArray *LocalizedTemplateDirectoryPathArray = [NSArray arrayWithObjects:NSHomeDirectory(), @"Library", @"Application Support", @"iWork", @"Pages", nil];
-	NSString *localizedDirectory;
-	
-	NSArray	*localizedList = [NSArray arrayWithContentsOfFile: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/localizedTemplatesPages"]];
-	
-	for( i = 0 ; i < [localizedList count]; i++)
-	{
-		localizedDirectory = [NSString pathWithComponents:[LocalizedTemplateDirectoryPathArray arrayByAddingObject: [localizedList objectAtIndex: i]]];
-		if(![[NSFileManager defaultManager] fileExistsAtPath:localizedDirectory]) [[NSFileManager defaultManager] createDirectoryAtPath:localizedDirectory attributes:nil];
-		localizedDirectory = [localizedDirectory stringByAppendingPathComponent:@"OsiriX"];
-		if(![[NSFileManager defaultManager] fileExistsAtPath:localizedDirectory]) [[NSFileManager defaultManager] createSymbolicLinkAtPath:localizedDirectory pathContent:templateDirectory];
-	}
-	
+	NSString* engTemplatesDirectory = [[NSFileManager defaultManager] confirmDirectoryAtPath:[self pagesEnglishOsirixTemplatesDirectoryPath]];
+
 	// Pages template
-	NSString *reportFile = [templateDirectory stringByAppendingPathComponent:@"/OsiriX Basic Report.template"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:reportFile] == NO)
-	{
-		[[NSFileManager defaultManager] copyPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/OsiriX Report.template"] toPath:[templateDirectory stringByAppendingPathComponent:@"/OsiriX Basic Report.template"] handler:nil];
+	NSString* reportFile = [engTemplatesDirectory stringByAppendingPathComponent:@"OsiriX Basic Report.template"];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:reportFile])
+		[[NSFileManager defaultManager] copyItemAtPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OsiriX Report.template"] toPath:reportFile error:nil];
+	
+	// Creates links for other languages...
+	
+	NSString* pagesTemplatesDirectoryPath = [self pagesTemplatesDirectoryPath];
+	for (NSString* dirname in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:pagesTemplatesDirectoryPath error:NULL]) {
+		NSString* dirpath = [pagesTemplatesDirectoryPath stringByAppendingPathComponent:dirname];
+		BOOL isDir;
+		if (![dirname isEqualToString:@"Templates"] && [[NSFileManager defaultManager] fileExistsAtPath:dirpath isDirectory:&isDir] && isDir) {
+			dirpath = [dirpath stringByAppendingPathComponent:@"OsiriX"];
+			if (![[NSFileManager defaultManager] fileExistsAtPath:dirpath])
+				[[NSFileManager defaultManager] createSymbolicLinkAtPath:dirpath pathContent:engTemplatesDirectory];
+		}
 	}
 	
-	// Pages templates in the OsiriX Data folder
-	// creation of the alias to the iWork template folder if needed
-	NSArray *templateDirectoryInOsiriXDataPathArray = [NSArray arrayWithObjects:documentsDirectory(), @"PAGES TEMPLATES", nil];
-	NSString *templateDirectoryInOsiriXData = [NSString pathWithComponents:templateDirectoryInOsiriXDataPathArray];
-	if(![[NSFileManager defaultManager] fileExistsAtPath:templateDirectoryInOsiriXData])
-		[[NSFileManager defaultManager] createSymbolicLinkAtPath:templateDirectoryInOsiriXData pathContent:templateDirectory];
 }
 
 #pragma mark-
@@ -5005,9 +4879,9 @@ static BOOL initialized = NO;
 
 #pragma mark -
 
--(WebPortal*)defaultWebPortal {
+-(WebPortal*)defaultPortal {
 #ifndef OSIRIX_LIGHT
-	return [WebPortal defaultWebPortal];
+	return [WebPortal defaultPortal];
 #else
 	return NULL;
 #endif

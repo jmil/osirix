@@ -25,6 +25,7 @@
 #import "DicomSeries.h"
 #import "BrowserController.h"
 #import "AppController.h"
+#import "NSException+N2.h"
 #import "Wait.h"
 #import "DicomFile.h"
 #import "DICOMToNSString.h"
@@ -348,7 +349,7 @@ static NSString *templateDicomFile = nil;
 			@catch (NSException * e)
 			{
 				NSLog( @"%@", [e description]);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			[pool release];
@@ -409,7 +410,7 @@ static NSString *templateDicomFile = nil;
 			@catch (NSException * e)
 			{
 				NSLog( @"%@", [e description]);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			[pool release];
@@ -472,7 +473,7 @@ static NSString *templateDicomFile = nil;
 		@catch (NSException * e)
 		{
 			NSLog( @"%@", [e description]);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 	}
 	

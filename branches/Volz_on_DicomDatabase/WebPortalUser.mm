@@ -174,10 +174,10 @@ static PSGenerator *generator = nil;
 		request.entity = [NSEntityDescription entityForName:@"Study" inManagedObjectContext:self.managedObjectContext];
 		request.predicate = [DicomDatabase predicateForSmartAlbumFilter:*value];
 		
-		NSError* e = NULL;
-		[WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext executeFetchRequest:request error:&e];
-		if (e) {
-			if (error) *error = [NSError osirixErrorWithCode:-31 localizedDescriptionFormat:NSLocalizedString(@"Syntax error in study predicate filter: %@", NULL), e.localizedDescription? e.localizedDescription : NSLocalizedString(@"Unknown Error", NULL)];
+		NSError* err = NULL;
+		[self.managedObjectContext executeFetchRequest:request error:&err]; 
+		if (err) {
+			if (error) *error = [NSError osirixErrorWithCode:-31 localizedDescriptionFormat:NSLocalizedString(@"Syntax error in study predicate filter: %@", NULL), err.localizedDescription? err.localizedDescription : NSLocalizedString(@"Unknown Error", NULL)];
 			return NO;
 		}
 	} @catch (NSException* e) {

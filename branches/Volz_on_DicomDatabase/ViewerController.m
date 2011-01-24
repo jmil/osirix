@@ -38,6 +38,7 @@
 #import "ROIDefaultsWindow.h"
 #import <ScreenSaver/ScreenSaverView.h>
 #import "AppController.h"
+#import "NSException+N2.h"
 #import "ToolbarPanel.h"
 #import "Papyrus3/Papyrus3.h"
 #import "DCMView.h"
@@ -91,6 +92,7 @@
 #import "dicomFile.h"
 #import "MPRController.h"
 #import "Notifications.h"
+#import "DicomDatabase.h"
 
 int delayedTileWindows = NO;
 
@@ -3758,8 +3760,8 @@ static volatile int numberOfThreadsForRelisce = 0;
 {
 	if( [[self window] isVisible] == NO) return;	//we will do it in checkBuiltMatrixPreview : faster opening !
 	
-	NSManagedObjectModel	*model = [[BrowserController currentBrowser] managedObjectModel];
-	NSManagedObjectContext	*context = [[BrowserController currentBrowser] managedObjectContext];
+	NSManagedObjectContext	*context = [[[BrowserController currentBrowser] database] context];
+	NSManagedObjectModel	*model = [[context persistentStoreCoordinator] managedObjectModel];
 	NSPredicate				*predicate;
 	NSFetchRequest			*dbRequest;
 	NSError					*error = nil;
@@ -3925,7 +3927,7 @@ static volatile int numberOfThreadsForRelisce = 0;
 						int count = [[curSeries valueForKey:@"noFiles"] intValue];
 						if( count == 1)
 						{
-							[[[BrowserController currentBrowser] managedObjectContext] lock];
+							[[[[BrowserController currentBrowser] database] context] lock];
 							
 							@try 
 							{
@@ -3941,8 +3943,9 @@ static volatile int numberOfThreadsForRelisce = 0;
 							{
 								NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 							}
-							
-							[[[BrowserController currentBrowser] managedObjectContext] unlock];
+							@finally {
+								[[[[BrowserController currentBrowser] database] context] unlock];
+							}
 						}
 						else if (count == 0)
 						{
@@ -3994,7 +3997,7 @@ static volatile int numberOfThreadsForRelisce = 0;
 							{
 								@try 
 								{
-									DCMPix* dcmPix = [[DCMPix alloc] initWithPath: [[images objectAtIndex: i] valueForKey:@"completePath"] :0 :0 :nil :0 :[[[images objectAtIndex: i] valueForKeyPath:@"series.id"] intValue] isBonjour:[[BrowserController currentBrowser] isCurrentDatabaseBonjour] imageObj:[images objectAtIndex: i]];
+									DCMPix* dcmPix = [[DCMPix alloc] initWithPath: [[images objectAtIndex: i] valueForKey:@"completePath"] :0 :0 :nil :0 :[[[images objectAtIndex: i] valueForKeyPath:@"series.id"] intValue] isBonjour:[self.database isBonjour] imageObj:[images objectAtIndex: i]];
 								
 									[dcmPix CheckLoad];
 									
@@ -6053,9 +6056,15 @@ return YES;
 	return [self isDataVolumicIn4D: check4D checkEverythingLoaded: YES];
 }
 
-- (id) initWithPix:(NSMutableArray*)f withFiles:(NSMutableArray*)d withVolume:(NSData*) v
+- (id) initWithPix:(NSMutableArray*)f withFiles:(NSMutableArray*)d withVolume:(NSData*) v {
+	return [self initWithDatabase:[[BrowserController currentBrowser] database] withPix:f withFiles:d withVolume:v];
+}
+
+- (id) initWithDatabase:(DicomDatabase*)db withPix:(NSMutableArray*)f withFiles:(NSMutableArray*) d withVolume:(NSData*) v
 {
 //	*(long*)0 = 0xDEADBEEF; // ILCrashReporter test -- DO NOT ACTIVATE THIS LINE 
+	
+	self.database = db;
 	
 	[self setMagnetic: YES];
 	
@@ -6136,10 +6145,14 @@ return YES;
 	return [NSNumber numberWithInt: total];
 }
 
-- (id) viewCinit:(NSMutableArray*)f :(NSMutableArray*)d :(NSData*) v
-{
+- (id) viewCinit:(NSMutableArray*)f :(NSMutableArray*)d :(NSData*) v { // deprecated
 	return [self initWithPix: f withFiles: d withVolume: v]; 
 }
+
+- (id) initWithDatabase:(DicomDatabase*)db :(NSMutableArray*)f :(NSMutableArray*)d :(NSData*)v;
+	return [self initWithDatabase:db withPix: f withFiles: d withVolume: v]; 
+}
+
 
 - (BOOL) updateTilingViewsValue
 {
@@ -6389,8 +6402,7 @@ return YES;
 			[self finalizeSeriesViewing];
 			
 			
-			[[[BrowserController currentBrowser] managedObjectContext] lock];
-			
+			[self.database lock];
 			@try
 			{
 				long index2compare;
@@ -6748,8 +6760,9 @@ return YES;
 				NSLog( @"***** changeImageData exception : %@", e);
 				[[self window] close];
 			}
-			
-			[[[BrowserController currentBrowser] managedObjectContext] unlock];
+			@finally {
+				[[[[BrowserController currentBrowser] database] context] unlock];
+			}
 			
 			[[NSNotificationCenter defaultCenter] postNotificationName: OsirixViewerDidChangeNotification object: self userInfo: nil];
 			
@@ -6763,7 +6776,7 @@ return YES;
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		#ifdef OSIRIX_VIEWER
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 		#endif
 	}
 	
@@ -7162,7 +7175,7 @@ return YES;
 
 -(void) setLoadingPause:(BOOL) lp
 {
-	if( [[BrowserController currentBrowser] isCurrentDatabaseBonjour] == NO && totalNumberOfLoadingWindow < 2)
+	if ([self.database isBonjour] == NO && totalNumberOfLoadingWindow < 2)
 		return;
 	
 	for( ViewerController *v in [ViewerController getDisplayed2DViewers])
@@ -10719,8 +10732,7 @@ short				matrix[25];
 	DicomStudy *study = [[fileList[0] objectAtIndex:0] valueForKeyPath: @"series.study"];
 	NSArray *roisArray = [[[study roiSRSeries] valueForKey: @"images"] allObjects];
 	
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
-	
+	[[[[BrowserController currentBrowser] database] context] lock];
 	@try
 	{
 		if( [[fileList[ mIndex] lastObject] isKindOfClass:[NSManagedObject class]])
@@ -10790,7 +10802,9 @@ short				matrix[25];
 	{
 		NSLog( @"*** load ROI exception: %@", e);
 	}
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	@finally {
+		[[[[BrowserController currentBrowser] database] context] unlock];
+	}
 }
 
 + (BOOL) areROIsArraysIdentical: (NSArray*) copy with: (NSArray*) roisArray
@@ -10825,7 +10839,7 @@ short				matrix[25];
 	
 	if( [[fileList[ mIndex] lastObject] isKindOfClass:[NSManagedObject class]])
 	{
-		[[[BrowserController currentBrowser] managedObjectContext] lock];
+		[[[[BrowserController currentBrowser] database] context] lock];
 		
 		@try
 		{
@@ -10903,20 +10917,19 @@ short				matrix[25];
 				}
 			}
 			
-			[BrowserController addFiles: allDICOMSR
-							  toContext: [[BrowserController currentBrowser] managedObjectContext]
-							 toDatabase: [BrowserController currentBrowser]
+			[[[BrowserController currentBrowser] database] addFiles: allDICOMSR
 							  onlyDICOM: YES 
 					   notifyAddedFiles: YES
 					parseExistingObject: YES
-							   dbFolder: [[BrowserController currentBrowser] fixedDocumentsDirectory]
 					  generatedByOsiriX: YES];
 		}
-		@catch ( NSException *e)
+		@catch (NSException *e)
 		{
 			NSLog( @"****** saveROI exception : %@");
 		}
-		[[[BrowserController currentBrowser] managedObjectContext] unlock];
+		@finally {
+			[[[[BrowserController currentBrowser] database] context] unlock];
+		}
 	}
 }
 
@@ -19286,7 +19299,7 @@ int i,j,l;
 		
 		[imageView setNeedsDisplay:YES];
 		
-		[[BrowserController currentBrowser] saveDatabase: nil];
+		[[[BrowserController currentBrowser] database] save:NULL];
 	}
 }
 
@@ -19424,7 +19437,7 @@ int i,j,l;
 	
 	[self buildMatrixPreview: NO];
 	[imageView setNeedsDisplay:YES];
-	[[BrowserController currentBrowser] saveDatabase: nil];
+	[[[BrowserController currentBrowser] database] save: nil];
 	
 	[self adjustKeyImage];
 }
@@ -19455,7 +19468,7 @@ int i,j,l;
 	
 	[self buildMatrixPreview: NO];
 	[imageView setNeedsDisplay:YES];
-	[[BrowserController currentBrowser] saveDatabase: nil];
+	[[[BrowserController currentBrowser] database] save: nil];
 	
 	[self adjustKeyImage];
 }
@@ -19486,7 +19499,7 @@ int i,j,l;
 	
 	[self buildMatrixPreview: NO];
 	[imageView setNeedsDisplay:YES];
-	[[BrowserController currentBrowser] saveDatabase: nil];
+	[[[BrowserController currentBrowser] database] save: nil];
 	
 	[self adjustKeyImage];
 }

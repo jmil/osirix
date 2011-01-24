@@ -52,7 +52,7 @@ char *GetPrivateIP()
 
 - (NSManagedObjectContext*) managedObjectContext
 {
-	return WebPortal.defaultWebPortal.database.managedObjectContext;
+	return WebPortal.defaultPortal.database.context;
 }
 
 -(NSArray*)IPv4Address;

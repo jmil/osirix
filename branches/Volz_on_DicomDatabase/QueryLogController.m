@@ -16,12 +16,13 @@
 
 #import "QueryLogController.h"
 #import "browserController.h"
+#import "DicomDatabase.h"
 
 @implementation QueryLogController
 
 - (void)awakeFromNib
 {
-	[self setManagedObjectContext: [[BrowserController currentBrowser] managedObjectContext]];
+	[self setManagedObjectContext: [[[BrowserController currentBrowser] database] context]];
 	[self setAutomaticallyPreparesContent: YES];
 	
 	[self fetch: self];
@@ -49,7 +50,7 @@
 
 -(NSManagedObjectContext *)managedObjectContext
 {
-	return [[BrowserController currentBrowser] managedObjectContext];
+	return [[[BrowserController currentBrowser] database] context];
 }
 
 - (IBAction)nothing:(id)sender

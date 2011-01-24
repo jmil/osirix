@@ -24,6 +24,7 @@
 #import "MoveManager.h"
 #import "browserController.h"
 #import "AppController.h"
+#import "NSException+N2.h"
 #import "SendController.h"
 #import "DCMTKQueryRetrieveSCP.h"
 #import "DicomSeries.h"
@@ -760,7 +761,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 //	@catch (NSException * e) 
 //	{
 //		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-//		[AppController printStackTrace: e];
+//		[e printStackTrace];
 //	}
 //	
 //	[pool release];
@@ -819,7 +820,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	@catch (NSException *e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	int quality = 100;
@@ -965,7 +966,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 //		@catch (NSException * e) 
 //		{
 //			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-//			[AppController printStackTrace: e];
+//			[e printStackTrace];
 //		}
 //		
 //		[WADODownloadLock unlock];
@@ -1243,7 +1244,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	@catch (NSException * e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[lock unlock];
@@ -1277,7 +1278,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	@catch (NSException * e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[lock unlock];
@@ -1870,7 +1871,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 				[[AppController sharedAppController] growlTitle: NSLocalizedString(@"Query Failed (1)", nil) description: response name: @"autoquery"];
 			
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 			
 			succeed = NO;
 		}
@@ -1937,7 +1938,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		#ifdef OSIRIX_VIEWER
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 		#endif
 	}
 
@@ -2229,7 +2230,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	@catch (NSException * e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
     return cond;

@@ -23,7 +23,7 @@
 #include "math.h"
 #import "QuicktimeExport.h"
 #import "Notifications.h"
-#import "AppController.h"
+#import "NSException+N2.h"
 
 #define D2R 0.01745329251994329576923690768    // degrees to radians
 #define R2D 57.2957795130823208767981548141    // radians to degrees
@@ -824,7 +824,7 @@
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 			
 			if( [[NSUserDefaults standardUserDefaults] boolForKey:@"UseDelaunayFor3DRoi"] == NO)
 			{

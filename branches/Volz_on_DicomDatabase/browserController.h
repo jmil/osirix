@@ -1,16 +1,16 @@
 /*=========================================================================
-  Program:   OsiriX
-
-  Copyright (c) OsiriX Team
-  All rights reserved.
-  Distributed under GNU - LGPL
-  
-  See http://www.osirix-viewer.com/copyright.html for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.
-=========================================================================*/
+ Program:   OsiriX
+ 
+ Copyright (c) OsiriX Team
+ All rights reserved.
+ Distributed under GNU - LGPL
+ 
+ See http://www.osirix-viewer.com/copyright.html for details.
+ 
+ This software is distributed WITHOUT ANY WARRANTY; without even
+ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.
+ =========================================================================*/
 
 
 #import <Cocoa/Cocoa.h>
@@ -25,6 +25,7 @@
 @class StructuredReportController,BrowserMatrix;
 @class PluginManagerController,WaitRendering, Wait, ActivityWindowController;
 @class WebPortalUser;
+@class DicomDatabase;
 
 enum RootTypes{PatientRootType, StudyRootType, RandomRootType};
 enum simpleSearchType {PatientNameSearch, PatientIDSearch};
@@ -36,25 +37,27 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 @end
 
 /** \brief Window controller for Browser
-*
-*   This is a large class with a lot of functions.
-*   Along with managing the Browser Window it manages all the view in the browser
-*	and manges the database
-*/
+ *
+ *   This is a large class with a lot of functions.
+ *   Along with managing the Browser Window it manages all the view in the browser
+ *	and manges the database
+ */
 
 @interface BrowserController : NSWindowController   //NSObject
 {
-	NSManagedObjectModel			*managedObjectModel;//, *userManagedObjectModel;
-    NSManagedObjectContext			*managedObjectContext;//, *userManagedObjectContext;
-//	NSPersistentStoreCoordinator	*userPersistentStoreCoordinator;
-	NSMutableDictionary				*persistentStoreCoordinatorDictionary;
+	//	NSManagedObjectModel			*managedObjectModel;//, *userManagedObjectModel;
+	//    NSManagedObjectContext			*managedObjectContext;//, *userManagedObjectContext;
+	//	NSPersistentStoreCoordinator	*userPersistentStoreCoordinator;
+	//	NSMutableDictionary				*persistentStoreCoordinatorDictionary;
+	
+	DicomDatabase* database;
 	
 	NSDateFormatter			*DateTimeFormat, *DateOfBirthFormat, *TimeFormat, *TimeWithSecondsFormat, *DateTimeWithSecondsFormat;
 	
 	NSRect					visibleScreenRect[ 40];
-	NSString				*currentDatabasePath;
-	BOOL					isCurrentDatabaseBonjour;
-	NSManagedObjectContext	*bonjourManagedObjectContext;
+	//	NSString				*currentDatabasePath;
+	//	BOOL					isCurrentDatabaseBonjour;
+	//	NSManagedObjectContext	*bonjourManagedObjectContext;
 	NSString				*transferSyntax;
     NSArray                 *dirArray;
     NSToolbar               *toolbar;
@@ -65,7 +68,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
     NSMutableArray          *previewPix, *previewPixThumbnails;
 	
 	NSMutableArray			*draggedItems;
-		
+	
 	NSMutableDictionary		*activeSends;
 	NSMutableArray			*sendLog;
 	NSMutableDictionary		*activeReceives;
@@ -76,7 +79,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	
     DCMPix                  *curPreviewPix;
     
-    NSTimer                 *timer, *IncomingTimer, *matrixDisplayIcons, *refreshTimer, *databaseCleanerTimer, *bonjourTimer, *deleteQueueTimer, *autoroutingQueueTimer;
+    NSTimer                 *timer, *IncomingTimer, *matrixDisplayIcons; /**refreshTimer, *databaseCleanerTimer, *bonjourTimer, *deleteQueueTimer, *autoroutingQueueTimer*/;
 	long					loadPreviewIndex, previousNoOfFiles;
 	NSManagedObject			*previousItem;
     
@@ -169,7 +172,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSRecursiveLock					*checkIncomingLock, *checkBonjourUpToDateThreadLock;
 	NSPredicate						*testPredicate;
 	
-    BOOL							showAllImages, DatabaseIsEdited, isNetworkLogsActive, displayEmptyDatabase;
+    BOOL							showAllImages, /*DatabaseIsEdited,*/ isNetworkLogsActive, displayEmptyDatabase;
 	NSConditionLock					*queueLock;
 	
 	IBOutlet NSScrollView			*thumbnailsScrollView;
@@ -177,13 +180,13 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSPredicate						*_fetchPredicate, *_filterPredicate;
 	NSString						*_filterPredicateDescription;
 	
-	NSString						*fixedDocumentsDirectory, *CDpassword, *pathToEncryptedFile, *passwordForExportEncryption;
+	NSString						/**fixedDocumentsDirectory, */*CDpassword, *pathToEncryptedFile, *passwordForExportEncryption;
 	
-	char							cfixedDocumentsDirectory[ 4096], cfixedIncomingDirectory[ 4096], cfixedTempNoIndexDirectory[ 4096], cfixedIncomingNoIndexDirectory[ 4096];
+	//char							cfixedDocumentsDirectory[ 4096], cfixedIncomingDirectory[ 4096], cfixedTempNoIndexDirectory[ 4096], cfixedIncomingNoIndexDirectory[ 4096];
 	
-	NSTimeInterval					databaseLastModification, lastCheckForDirectory, lastPassiveRefreshDatabase;
+	NSTimeInterval					/*databaseLastModification,*/ lastCheckForDirectory, lastPassiveRefreshDatabase;
 	NSUInteger						previousFlags;
-//	StructuredReportController		*structuredReportController;
+	//	StructuredReportController		*structuredReportController;
 	
 	NSMutableArray					*deleteQueueArray;
 	NSRecursiveLock					*deleteQueue, *deleteInProgress;
@@ -222,10 +225,10 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	BOOL							avoidRecursive, openSubSeriesFlag;
 	
 	IBOutlet PluginManagerController *pluginManagerController;
-	NSTimeInterval					lastCheckIncoming;
+	//	NSTimeInterval					lastCheckIncoming;
 	
 	WaitRendering					*waitOpeningWindow;
-//	Wait							*waitCompressionWindow;
+	//	Wait							*waitCompressionWindow;
 	BOOL							waitCompressionAbort;
 	
 	BOOL							checkForMountedFiles;
@@ -237,24 +240,25 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSArray							*mountedVolumes;
 	
 	IBOutlet NSTableView* AtableView;
-//	IBOutlet NSImageView* AcpuActiView, *AhddActiView, *AnetActiView;
-//	IBOutlet NSTextField* AstatusLabel;
+	//	IBOutlet NSImageView* AcpuActiView, *AhddActiView, *AnetActiView;
+	//	IBOutlet NSTextField* AstatusLabel;
 	NSMutableArray* _activityCells;
 	NSThread* AupdateStatsThread;
 	NSObject* activityObserver;
 }
 
 @property(readonly) NSManagedObjectContext *bonjourManagedObjectContext;
+@property(retain) DicomDatabase* database;
 
 @property(readonly) NSDateFormatter *DateTimeFormat, *DateOfBirthFormat, *TimeFormat, *TimeWithSecondsFormat, *DateTimeWithSecondsFormat;
-@property(readonly) NSRecursiveLock *checkIncomingLock;
+//@property(readonly) NSRecursiveLock *checkIncomingLock;
 @property(readonly) NSArray *matrixViewArray;
 @property(readonly) NSMatrix *oMatrix;
 @property(readonly) long COLUMN, currentBonjourService;
-@property(readonly) BOOL is2DViewer, isCurrentDatabaseBonjour;
+@property(readonly) BOOL is2DViewer;//, isCurrentDatabaseBonjour;
 @property(readonly) MyOutlineView *databaseOutline;
 @property(readonly) NSTableView *albumTable;
-@property(readonly) NSString *currentDatabasePath, *localDatabasePath, *documentsDirectory, *fixedDocumentsDirectory;
+//@property(readonly) NSString *currentDatabasePath, *localDatabasePath, *documentsDirectory, *fixedDocumentsDirectory;
 
 @property(readonly) NSTableView* AtableView;
 //@property(readonly) NSImageView* AcpuActiView, *AhddActiView, *AnetActiView;
@@ -263,7 +267,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 @property volatile BOOL bonjourDownloading;
 @property(readonly) NSBox *bonjourSourcesBox;
 @property(readonly) BonjourBrowser *bonjourBrowser;
-@property(readonly) char *cfixedDocumentsDirectory, *cfixedIncomingDirectory, *cfixedTempNoIndexDirectory, *cfixedIncomingNoIndexDirectory;
+//@property(readonly) char *cfixedDocumentsDirectory, *cfixedIncomingDirectory, *cfixedTempNoIndexDirectory, *cfixedIncomingNoIndexDirectory;
 
 @property(retain) NSString *searchString, *CDpassword, *pathToEncryptedFile, *passwordForExportEncryption, *temporaryNotificationEmail, *customTextNotificationEmail;
 @property(retain) NSPredicate *fetchPredicate, *testPredicate;
@@ -272,27 +276,27 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 
 @property BOOL rtstructProgressBar, needDBRefresh;
 @property float rtstructProgressPercent;
-@property NSTimeInterval databaseLastModification;
+//@property NSTimeInterval databaseLastModification;
 @property(readonly) NSMutableArray *viewersListToReload, *viewersListToRebuild;
 @property(readonly) NSConditionLock* newFilesConditionLock;
 
 @property(readonly) PluginManagerController *pluginManagerController;
 
 + (int) compressionForModality: (NSString*) mod quality:(int*) quality resolution: (int) resolution;
-+ (BrowserController*) currentBrowser;
++ (BrowserController*) currentBrowser; // __deprecated;
 + (NSMutableString*) replaceNotAdmitted: (NSString*)name;
 + (NSArray*) statesArray;
 + (void) updateActivity;
 + (BOOL) isHardDiskFull;
 + (NSData*) produceJPEGThumbnail:(NSImage*) image;
 + (int) DefaultFolderSizeForDB;
-+ (void) computeDATABASEINDEXforDatabase:(NSString*) path;
+//+ (void) computeDATABASEINDEXforDatabase:(NSString*) path;
 + (void) encryptFileOrFolder: (NSString*) srcFolder inZIPFile: (NSString*) destFile password: (NSString*) password;
 + (void) encryptFileOrFolder: (NSString*) srcFolder inZIPFile: (NSString*) destFile password: (NSString*) password deleteSource: (BOOL) deleteSource;
 + (void) encryptFileOrFolder: (NSString*) srcFolder inZIPFile: (NSString*) destFile password: (NSString*) password deleteSource: (BOOL) deleteSource showGUI: (BOOL) showGUI;
 + (void) encryptFiles: (NSArray*) srcFiles inZIPFile: (NSString*) destFile password: (NSString*) password;
 - (IBAction) createDatabaseFolder:(id) sender;
-- (void) openDatabasePath: (NSString*) path;
+//- (void) openDatabasePath: (NSString*) path;
 - (NSArray*)albums;
 + (NSArray*) albumsInContext:(NSManagedObjectContext*)context;
 - (BOOL) shouldTerminate: (id) sender;
@@ -310,22 +314,11 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) emptyDeleteQueueThread;
 - (void) emptyDeleteQueue:(id) sender;
 - (void) addFileToDeleteQueue:(NSString*) file;
-- (NSString*) getNewFileDatabasePath: (NSString*) extension;
-- (NSString*) getNewFileDatabasePath: (NSString*) extension dbFolder: (NSString*) dbFolder;
-- (NSManagedObjectModel *) managedObjectModel;
+//- (NSString*) getNewFileDatabasePath: (NSString*) extension;
+//- (NSString*) getNewFileDatabasePath: (NSString*) extension dbFolder: (NSString*) dbFolder;
 
-- (NSManagedObjectContext *) localManagedObjectContext;
-- (NSManagedObjectContext *) localManagedObjectContextIndependentContext: (BOOL) independentContext;
-
-- (NSManagedObjectContext *) managedObjectContext;
-- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext;
-- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext path: (NSString *) path;
-
-- (NSManagedObjectContext *) defaultManagerObjectContext;
-- (NSManagedObjectContext *) defaultManagerObjectContextIndependentContext: (BOOL) independentContext;
-
-- (BOOL) isBonjour: (NSManagedObjectContext*) c;
-- (NSString *) localDocumentsDirectory;
+//- (BOOL) isBonjour: (NSManagedObjectContext*) c;
+//- (NSString *) localDocumentsDirectory;
 - (NSArray*) childrenArray: (NSManagedObject*) item;
 - (NSArray*) childrenArray: (NSManagedObject*) item onlyImages:(BOOL) onlyImages;
 - (NSArray*) imagesArray: (NSManagedObject*) item;
@@ -343,11 +336,11 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (BOOL) findAndSelectFile: (NSString*) path image: (NSManagedObject*) curImage shouldExpand: (BOOL) expand extendingSelection: (BOOL) extendingSelection;
 - (void) selectServer: (NSArray*) files;
 - (void) loadDICOMFromiPod;
-- (long) saveDatabase;
-- (long) saveDatabase:(NSString*) path;
-- (long) saveDatabase: (NSString*)path context: (NSManagedObjectContext*) context;
+//- (long) saveDatabase;
+//- (long) saveDatabase:(NSString*) path;
+//- (long) saveDatabase: (NSString*)path context: (NSManagedObjectContext*) context;
 - (void) addDICOMDIR:(NSString*) dicomdir :(NSMutableArray*) files;
-- (void) copyFilesIntoDatabaseIfNeeded: (NSMutableArray*)filesInput options: (NSDictionary*) options;
+//- (void) copyFilesIntoDatabaseIfNeeded: (NSMutableArray*)filesInput options: (NSDictionary*) options;
 - (ViewerController*) loadSeries :(NSManagedObject *)curFile :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
 - (void) loadNextPatient:(NSManagedObject *) curImage :(long) direction :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
 - (void) loadNextSeries:(NSManagedObject *) curImage :(long) direction :(ViewerController*) viewer :(BOOL) firstViewer keyImagesOnly:(BOOL) keyImages;
@@ -365,7 +358,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) showDatabase:(id)sender;
 - (NSInteger) displayStudy: (DicomStudy*) study object:(NSManagedObject*) element command:(NSString*) execute;
 - (IBAction) matrixPressed:(id)sender;
-- (void) loadDatabase:(NSString*) path;
+//- (void) loadDatabase:(NSString*) path;
 - (void) viewerDICOMInt:(BOOL) movieViewer dcmFile:(NSArray *)selectedLines viewer:(ViewerController*) viewer;
 - (void) viewerDICOMInt:(BOOL) movieViewer dcmFile:(NSArray *)selectedLines viewer:(ViewerController*) viewer tileWindows: (BOOL) tileWindows;
 - (NSToolbarItem *) toolbar: (NSToolbar *)toolbar itemForItemIdentifier: (NSString *) itemIdent willBeInsertedIntoToolbar:(BOOL) willBeInserted;
@@ -407,7 +400,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) openDatabaseIn:(NSString*) a Bonjour:(BOOL) isBonjour;
 - (void) openDatabaseIn: (NSString*)a Bonjour: (BOOL)isBonjour refresh: (BOOL) refresh;
 - (void) browserPrepareForClose;
-- (IBAction) endReBuildDatabase:(id) sender;
+//- (IBAction) endReBuildDatabase:(id) sender;
 - (IBAction) ReBuildDatabase:(id) sender;
 - (IBAction) ReBuildDatabaseSheet: (id)sender;
 - (void) previewSliderAction:(id) sender;
@@ -428,16 +421,16 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (IBAction) smartAlbumHelpButton:(id) sender;
 - (IBAction) regenerateAutoComments:(id) sender;
 - (DCMPix *)previewPix:(int)i;
-- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray;
+//- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray;
 - (void) addFilesAndFolderToDatabase:(NSArray*) filenames;
-- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles;
-- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject;
-- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject context: (NSManagedObjectContext*) context dbFolder:(NSString*) dbFolder;
-- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  safeRebuild:(BOOL) safeRebuild produceAddedFiles:(BOOL) produceAddedFiles;
-+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder;
-+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context toDatabase:(BrowserController*)browserController onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder;
-+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context toDatabase:(BrowserController*)browserController onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder generatedByOsiriX:(BOOL)generatedByOsiriX;
-+(NSArray*) addFiles:(NSArray*) newFilesArray toContext: (NSManagedObjectContext*) context toDatabase: (BrowserController*) browserController onlyDICOM: (BOOL) onlyDICOM  notifyAddedFiles: (BOOL) notifyAddedFiles parseExistingObject: (BOOL) parseExistingObject dbFolder: (NSString*) dbFolder generatedByOsiriX: (BOOL) generatedByOsiriX mountedVolume: (BOOL) mountedVolume;
+//- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles;
+//- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject;
+//- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject context: (NSManagedObjectContext*) context dbFolder:(NSString*) dbFolder;
+//- (NSArray*) addFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  safeRebuild:(BOOL) safeRebuild produceAddedFiles:(BOOL) produceAddedFiles;
+//+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder;
+//+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context toDatabase:(BrowserController*)browserController onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder;
+//+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context toDatabase:(BrowserController*)browserController onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder generatedByOsiriX:(BOOL)generatedByOsiriX;
+//+(NSArray*) addFiles:(NSArray*) newFilesArray toContext: (NSManagedObjectContext*) context toDatabase: (BrowserController*) browserController onlyDICOM: (BOOL) onlyDICOM  notifyAddedFiles: (BOOL) notifyAddedFiles parseExistingObject: (BOOL) parseExistingObject dbFolder: (NSString*) dbFolder generatedByOsiriX: (BOOL) generatedByOsiriX mountedVolume: (BOOL) mountedVolume;
 - (void) createDBContextualMenu;
 + (BOOL) unzipFile: (NSString*) file withPassword: (NSString*) pass destination: (NSString*) destination;
 + (BOOL) unzipFile: (NSString*) file withPassword: (NSString*) pass destination: (NSString*) destination showGUI: (BOOL) showGUI;
@@ -467,7 +460,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (NSString*) outlineViewRefresh;
 - (void) matrixInit:(long) noOfImages;
 - (IBAction) albumButtons: (id)sender;
-- (NSArray*) albumArray;
+- (NSArray*) albumArray __deprecated;
 - (void) refreshSmartAlbums;
 - (void) refreshAlbums;
 - (void) waitForRunningProcesses;
@@ -512,9 +505,9 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 //DB plugins
 - (void)executeFilterDB:(id)sender;
 
-+ (NSString*) defaultDocumentsDirectory;
-- (NSString *)documentsDirectoryFor:(int) mode url:(NSString*) url;
-- (NSString *)setFixedDocumentsDirectory;
+//+ (NSString*) defaultDocumentsDirectory;
+//- (NSString *)documentsDirectoryFor:(int) mode url:(NSString*) url;
+//- (NSString *)setFixedDocumentsDirectory;
 - (IBAction)showLogWindow: (id)sender;
 - (void) resetLogWindowController;
 
@@ -578,16 +571,25 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) buildThumbnail:(NSManagedObject*) series;
 
 /******Notifactions posted by browserController***********
-OsirixNewStudySelectedNotification with userinfo key @"Selected Study" posted when a newStudy is selected in the browser
-@"Close All Viewers" posted when close open windows if option key pressed.	
-@"DCMImageTilingHasChanged" when image tiling has changed
-OsirixAddToDBNotification posted when files are added to the DB
-*/
+ OsirixNewStudySelectedNotification with userinfo key @"Selected Study" posted when a newStudy is selected in the browser
+ @"Close All Viewers" posted when close open windows if option key pressed.	
+ @"DCMImageTilingHasChanged" when image tiling has changed
+ OsirixAddToDBNotification posted when files are added to the DB
+ */
 
 #pragma mark Deprecated
 
-@property(readonly) NSManagedObjectContext *userManagedObjectContext __deprecated;
-@property(readonly) NSManagedObjectModel *userManagedObjectModel __deprecated;
+//-(NSManagedObjectModel*)managedObjectModel __deprecated;
+//-(NSManagedObjectContext*)localManagedObjectContext __deprecated;
+//-(NSManagedObjectContext*)localManagedObjectContextIndependentContext:(BOOL)independentContext __deprecated;
+//-(NSManagedObjectContext*)managedObjectContext __deprecated;
+//-(NSManagedObjectContext*)managedObjectContextIndependentContext:(BOOL)independentContext __deprecated;
+//-(NSManagedObjectContext*)managedObjectContextIndependentContext:(BOOL)independentContext path:(NSString*)path __deprecated;
+//-(NSManagedObjectContext*)defaultManagerObjectContext __deprecated;
+//-(NSManagedObjectContext*)defaultManagerObjectContextIndependentContext:(BOOL)independentContext __deprecated;
+
+//@property(readonly) NSManagedObjectContext *userManagedObjectContext __deprecated;
+//@property(readonly) NSManagedObjectModel *userManagedObjectModel __deprecated;
 
 -(long)saveUserDatabase __deprecated;
 -(WebPortalUser*)userWithName:(NSString*)name __deprecated;

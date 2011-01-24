@@ -68,8 +68,8 @@ extern "C"
 {
 #endif
 	NSRect screenFrame();
-	NSString * documentsDirectoryFor( int mode, NSString *url);
-	NSString * documentsDirectory();
+//	NSString * documentsDirectoryFor( int mode, NSString *url);
+//	NSString * documentsDirectory();
 #ifdef __cplusplus
 }
 #endif
@@ -132,25 +132,25 @@ extern "C"
 + (BOOL) willExecutePlugin;
 + (BOOL) hasMacOSXSnowLeopard;
 + (BOOL) hasMacOSXLeopard;
-+ (void) createDBFoldersIfNecessary;
+//+ (void) createDBFoldersIfNecessary;
 
 #pragma mark-
 #pragma mark initialization of the main event loop singleton
 
-+ (void) createNoIndexDirectoryIfNecessary:(NSString*) path;
+//+ (void) createNoIndexDirectoryIfNecessary:(NSString*) path;
 + (void) displayImportantNotice:(id) sender;
 + (AppController*) sharedAppController; /**< Return the shared AppController instance */
+
++(NSString*)pagesTemplatesDirectoryPath;
++(NSString*)pagesEnglishOsirixTemplatesDirectoryPath;
 + (void)checkForPagesTemplate; /**< Check for Pages report template */
+
 + (void) resizeWindowWithAnimation:(NSWindow*) window newSize: (NSRect) newWindowFrame;
 + (void) pause;
 + (void) resetToolbars;
-+ (NSString*) printStackTrace: (NSException*) e;
++ (NSString*) printStackTrace: (NSException*) e __deprecated;
 + (int) numberOfSubOsiriXProcesses;
 + (BOOL) isKDUEngineAvailable;
-
-#pragma mark-
-#pragma mark HTML Templates
-+ (void)checkForHTMLTemplates;
 
 
 #pragma mark-
@@ -241,7 +241,7 @@ extern "C"
 -(void)verifyHardwareInterpolation;
 
 #pragma mark -
--(WebPortal*)defaultWebPortal;
+-(WebPortal*)defaultPortal;
 
 @end
 

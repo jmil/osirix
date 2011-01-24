@@ -14,6 +14,7 @@
 
 #import "NSUserDefaults+OsiriX.h"
 #import "N2Shell.h"
+#import "DicomDatabase.h"
 #import <Foundation/Foundation.h>
 
 
@@ -21,14 +22,22 @@
 
 #pragma mark General
 
-NSString* const OsirixDateFormatDefaultsKey = @"DBDateFormat2";
++(NSString*)defaultDicomDatabasePath {
+	NSString* path = NULL;
+#ifdef OSIRIX_VIEWER
+	path = [DicomDatabase baseDirectoryPathForMode:[NSUserDefaultsController.sharedUserDefaultsController integerForKey:@"DATABASELOCATION"] path:[NSUserDefaultsController.sharedUserDefaultsController stringForKey:@"DATABASELOCATIONURL"]];
+	if (!path)
+		path = [DicomDatabase baseDirectoryPathForMode:0 path:NULL];
+#endif
+	return path;
+}
 
+NSString* const OsirixDateFormatDefaultsKey = @"DBDateFormat2";
 +(NSString*)dateFormat {
 	NSString* r = [NSUserDefaultsController.sharedUserDefaultsController stringForKey:OsirixDateFormatDefaultsKey];
 	if (!r) r = [[[[NSDateFormatter alloc] init] autorelease] dateFormat];
 	return r;
 }
-
 +(NSDateFormatter*)dateFormatter {
 	static NSDateFormatter* dateFormatter = NULL;
 	if (!dateFormatter)

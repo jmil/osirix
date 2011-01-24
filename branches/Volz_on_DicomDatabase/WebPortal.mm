@@ -55,24 +55,24 @@ NSString* const WebPortalEnabledContext = @"";
 
 @implementation WebPortal
 
-static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Application Support/OsiriX/WebUsers.sql";
+static const NSString* const defaultPortalDatabasePath = @"~/Library/Application Support/OsiriX/WebUsers.sql";
 
 +(void)initialize {
 	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWadoServiceEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:NULL];
 }
 
 +(void)applicationWillFinishLaunching { // called from AppController
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPortNumberDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalAddressDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsesSSLDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPrefersCustomWebPagesKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalRequiresAuthenticationDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsersCanRestorePasswordDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsesWeasisDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPrefersFlashDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWadoServiceEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPortNumberDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalAddressDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsesSSLDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPrefersCustomWebPagesKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalRequiresAuthenticationDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsersCanRestorePasswordDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalUsesWeasisDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalPrefersFlashDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWadoServiceEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
 	// last because this starts the listener
-	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultWebPortal];
+	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:self.defaultPortal];
 
 	//	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWebPortalNotificationsIntervalDefaultsKey options:NSKeyValueObservingOptionInitial context:NULL];
 }
@@ -135,15 +135,15 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 
 +(void)applicationWillTerminate {
 	//	[NSUserDefaultsController.sharedUserDefaultsController removeObserver:self forValuesKey:OsirixWebPortalNotificationsIntervalDefaultsKey];
-	[self.defaultWebPortal release];
+	[self.defaultPortal release];
 }
 
-+(WebPortal*)defaultWebPortal {
-	static WebPortal* defaultWebPortal = NULL;
-	if (!defaultWebPortal)
-		defaultWebPortal = [[self alloc] initWithDatabaseAtPath:DefaultWebPortalDatabasePath dicomDatabase:[[[DicomDatabase alloc] initWithContext:[[BrowserController currentBrowser] localManagedObjectContext]] autorelease]]; // TODO: should not point to BrowserController
++(WebPortal*)defaultPortal {
+	static WebPortal* defaultPortal = NULL;
+	if (!defaultPortal)
+		defaultPortal = [[self alloc] initWithDatabaseAtPath:defaultPortalDatabasePath dicomDatabase:DicomDatabase.defaultDatabase]; // TODO: should not point to BrowserController
 	
-	return defaultWebPortal;
+	return defaultPortal;
 }
 
 #pragma mark Instance
@@ -177,7 +177,7 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 }
 
 -(id)initWithDatabaseAtPath:(NSString*)sqlFilePath dicomDatabase:(DicomDatabase*)dd; {
-	return [self initWithDatabase:[[[WebPortalDatabase alloc] initWithPath:DefaultWebPortalDatabasePath] autorelease] dicomDatabase:dd];
+	return [self initWithDatabase:[[[WebPortalDatabase alloc] initWithPath:sqlFilePath] autorelease] dicomDatabase:dd];
 }
 
 -(void)invalidate {

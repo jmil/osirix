@@ -32,7 +32,7 @@
 -(BOOL)sendNotificationsEmailsTo:(NSArray*)users aboutStudies:(NSArray*)filteredStudies predicate:(NSString*)predicate message:(NSString*)message replyTo:(NSString*)replyto customText:(NSString*)customText webServerAddress:(NSString*)webServerAddress
 {
 	if (!webServerAddress)
-		webServerAddress = WebPortal.defaultWebPortal.address;
+		webServerAddress = self.address;
 	NSString* webServerURL = [self URLForAddress:webServerAddress];
 	
 	NSString *fromEmailAddress = [[NSUserDefaults standardUserDefaults] valueForKey: @"notificationsEmailsSender"];
@@ -114,51 +114,50 @@
 		return;
 	}
 	
-	if ([[[BrowserController currentBrowser] managedObjectContext] tryLock])
+	if ([self.dicomDatabase.managedObjectContext tryLock])
 	{
-		[WebPortal.defaultWebPortal.database.managedObjectContext lock];
-		
-		// TEMPORARY USERS
-		
-		@try
-		{
-			BOOL toBeSaved = NO;
+		[self.database.managedObjectContext lock];
+		@try {
 			
-			// Find all users
-			NSError *error = nil;
-			NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-			dbRequest.entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:WebPortal.defaultWebPortal.database.managedObjectContext];
-			dbRequest.predicate = [NSPredicate predicateWithValue:YES];
+			// TEMPORARY USERS
 			
-			error = nil;
-			NSArray *users = [WebPortal.defaultWebPortal.database.managedObjectContext executeFetchRequest: dbRequest error:&error];
-			
-			for (WebPortalUser* user in users)
+			@try
 			{
-				if (user.autoDelete.boolValue == YES && user.deletionDate && [user.deletionDate timeIntervalSinceDate: [NSDate date]] < 0)
+				BOOL toBeSaved = NO;
+				
+				// Find all users
+				NSError *error = nil;
+				NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
+				dbRequest.entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.database.managedObjectContext];
+				dbRequest.predicate = [NSPredicate predicateWithValue:YES];
+				
+				error = nil;
+				NSArray *users = [self.database.managedObjectContext executeFetchRequest: dbRequest error:&error];
+				
+				for (WebPortalUser* user in users)
 				{
-					NSLog( @"----- Temporary User reached the EOL (end-of-life) : %@", user.name);
-					
-					[self updateLogEntryForStudy:nil withMessage: @"temporary user deleted" forUser:user.name ip:NSUserDefaults.webPortalAddress];
-					
-					toBeSaved = YES;
-					[WebPortal.defaultWebPortal.database.managedObjectContext deleteObject: user];
+					if (user.autoDelete.boolValue == YES && user.deletionDate && [user.deletionDate timeIntervalSinceDate: [NSDate date]] < 0)
+					{
+						NSLog( @"----- Temporary User reached the EOL (end-of-life) : %@", user.name);
+						
+						[self updateLogEntryForStudy:nil withMessage: @"temporary user deleted" forUser:user.name ip:NSUserDefaults.webPortalAddress];
+						
+						toBeSaved = YES;
+						[self.database.managedObjectContext deleteObject: user];
+					}
 				}
+				
+				if (toBeSaved)
+					[self.database save:NULL];
+			}
+			@catch (NSException *e)
+			{
+				NSLog( @"***** emailNotifications exception for deleting temporary users: %@", e);
 			}
 			
-			if (toBeSaved)
-				[WebPortal.defaultWebPortal.database save:NULL];
-		}
-		@catch (NSException *e)
-		{
-			NSLog( @"***** emailNotifications exception for deleting temporary users: %@", e);
-		}
-		
-		// CHECK dateAdded
-		
-		if ([[NSUserDefaults standardUserDefaults] boolForKey: @"notificationsEmails"] == YES)
-		{
-			@try
+			// CHECK dateAdded
+			
+			if ([[NSUserDefaults standardUserDefaults] boolForKey: @"notificationsEmails"] == YES)
 			{
 				NSFetchRequest* dbRequest = nil;
 				// Find all studies AFTER the lastCheckDate
@@ -173,7 +172,7 @@
 					dbRequest = [[[NSFetchRequest alloc] init] autorelease];
 					[dbRequest setEntity:[NSEntityDescription entityForName:@"User" inManagedObjectContext:database.managedObjectContext]];
 					[dbRequest setPredicate: [NSPredicate predicateWithValue: YES]];
-					NSArray *users = [WebPortal.defaultWebPortal.database.managedObjectContext executeFetchRequest: dbRequest error:NULL];
+					NSArray *users = [self.database.managedObjectContext executeFetchRequest: dbRequest error:NULL];
 					
 					for (WebPortalUser* user in users)
 					{
@@ -202,13 +201,13 @@
 					}
 				}
 			}
-			@catch (NSException *e)
-			{
-				NSLog( @"***** emailNotifications exception: %@", e);
-			}
+		} @catch (NSException *e) {
+			NSLog( @"***** emailNotifications exception: %@", e);
+		} @finally {
+			[self.database.managedObjectContext unlock];
 		}
-		[WebPortal.defaultWebPortal.database.managedObjectContext unlock];
-		[[[BrowserController currentBrowser] managedObjectContext] unlock];
+			
+		[self.dicomDatabase.managedObjectContext unlock];
 	}
 	
 	[[NSUserDefaults standardUserDefaults] setValue: newCheckString forKey: @"lastNotificationsDate"];

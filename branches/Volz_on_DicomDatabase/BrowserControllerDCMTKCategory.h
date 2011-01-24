@@ -21,7 +21,7 @@
 + (NSString*) compressionString: (NSString*) string;
 
 #ifndef OSIRIX_LIGHT
-- (NSData*) getDICOMFile:(NSString*) file inSyntax:(NSString*) syntax quality: (int) quality;
+- (NSData*) getDICOMFile:(NSString*) file inSyntax:(NSString*) syntax quality: (int) quality __deprecated; // use -[DicomDatabase getDICOMFile:inSyntax:quality:]
 - (BOOL) testFiles: (NSArray*) files;
 - (BOOL) needToCompressFile: (NSString*) path;
 - (BOOL) compressDICOMWithJPEG:(NSArray *) paths;

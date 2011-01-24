@@ -43,7 +43,8 @@
 #endif
 
 #include <Accelerate/Accelerate.h>
-#include "AppController.h"
+#import "AppController.h"
+#import "NSException+N2.h"
 
 #import <QTKit/QTKit.h>
 #import "Point3D.h"
@@ -1385,7 +1386,7 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 			#ifdef OSIRIX_VIEWER
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 			#endif
 		}
 	}
@@ -9953,7 +9954,7 @@ END_CREATE_ROIS:
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		#ifdef OSIRIX_VIEWER
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 		#endif
 	}
 	

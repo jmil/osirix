@@ -20,6 +20,7 @@
 #import "DicomStudy.h"
 #import "NSUserDefaultsController+OsiriX.h"
 #import "NSUserDefaultsController+N2.h"
+#import "DicomDatabase.h"
 
 // imports required for socket initialization
 #import <sys/socket.h>
@@ -313,7 +314,7 @@ extern const char *GetPrivateIP();
 
 	[incomingConnection retain];
 	
-	[[interfaceOsiriX managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	if( dbPublished)
 	{
@@ -330,7 +331,7 @@ extern const char *GetPrivateIP();
 				
 				if ([[data subdataWithRange: NSMakeRange(0,6)] isEqualToData: [NSData dataWithBytes:"DATAB" length: 6]])
 				{
-					[interfaceOsiriX saveDatabase: nil];
+					[[[interfaceOsiriX database] context] save: nil];
 					
 					// we send the database SQL file
 					NSString *databasePath = [interfaceOsiriX localDatabasePath];
@@ -385,7 +386,7 @@ extern const char *GetPrivateIP();
 				{
 					if ([[data subdataWithRange: NSMakeRange(0,6)] isEqualToData: [NSData dataWithBytes:"DBSIZ" length: 6]])
 					{
-						[interfaceOsiriX saveDatabase: nil];
+						[[[interfaceOsiriX database] context] save: nil];
 						NSString *databasePath = [interfaceOsiriX localDatabasePath];
 						
 						NSDictionary *fattrs = [[NSFileManager defaultManager] fileAttributesAtPath: databasePath traverseLink: YES];
@@ -510,13 +511,10 @@ extern const char *GetPrivateIP();
 						else
 							NSLog( @"******* unknown order: %@", order);
 							
-						NSArray *objects = [BrowserController addFiles: savedFiles
-															toContext: [[BrowserController currentBrowser] localManagedObjectContext]
-															toDatabase: [BrowserController currentBrowser]
+						NSArray *objects = [[interfaceOsiriX database] addFiles: savedFiles
 															onlyDICOM: NO 
 														notifyAddedFiles: YES
 													parseExistingObject: YES
-														dbFolder: [[BrowserController currentBrowser] documentsDirectory]
 													generatedByOsiriX: generatedByOsiriX];
 						
 						representationToSend = nil;
@@ -563,7 +561,7 @@ extern const char *GetPrivateIP();
 							NSArray *studies = [d objectForKey:@"albumStudies"];
 							NSString *albumUID = [d objectForKey:@"albumUID"];
 							
-							NSManagedObjectContext *context = [interfaceOsiriX defaultManagerObjectContext];
+							NSManagedObjectContext *context = [[interfaceOsiriX database] context];
 							[context lock];
 							
 							@try
@@ -615,7 +613,7 @@ extern const char *GetPrivateIP();
 							NSArray *studies = [d objectForKey:@"albumStudies"];
 							NSString *albumUID = [d objectForKey:@"albumUID"];
 							
-							NSManagedObjectContext *context = [interfaceOsiriX defaultManagerObjectContext];
+							NSManagedObjectContext *context = [[interfaceOsiriX database] context];
 							[context lock];
 							
 							@try
@@ -688,7 +686,7 @@ extern const char *GetPrivateIP();
 						NSString *key = [NSString stringWithUTF8String: [[data subdataWithRange: NSMakeRange(pos,stringSize)] bytes]];
 						pos += stringSize;
 						
-						NSManagedObjectContext *context = [interfaceOsiriX defaultManagerObjectContext];
+						NSManagedObjectContext *context = [[interfaceOsiriX database] context];
 						[context lock];
 						
 						@try
@@ -984,7 +982,7 @@ extern const char *GetPrivateIP();
 		}
 	}
 	
-	[[interfaceOsiriX managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	[incomingConnection closeFile];
 	[incomingConnection release];

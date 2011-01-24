@@ -110,7 +110,7 @@
 
 - (NSManagedObjectContext*)managedObjectContext
 {
-	return WebPortal.defaultWebPortal.database.managedObjectContext;
+	return WebPortal.defaultPortal.database.context;
 }
 
 //- (void) enableControls: (BOOL) val
@@ -151,7 +151,7 @@
 {
 	[[[self mainView] window] makeFirstResponder: nil];
 	
-	[WebPortal.defaultWebPortal.database save:NULL];
+	[WebPortal.defaultPortal.database save:NULL];
 	
 	[BrowserController currentBrowser].testPredicate = nil;
 	[[BrowserController currentBrowser] outlineViewRefresh];

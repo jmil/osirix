@@ -26,6 +26,7 @@
 #import "DicomStudy.h"
 #import "ThreadsManager.h"
 #import "NSThread+N2.h"
+#import "DicomDatabase.h"
 
 static volatile int sendControllerObjects = 0;
 
@@ -386,9 +387,9 @@ static volatile int sendControllerObjects = 0;
 		
 		for( id loopItem in objectsToSend)
 		{
-			[[[BrowserController currentBrowser] managedObjectContext] lock];
+			[[[[BrowserController currentBrowser] database] context] lock];
 			NSString *patientUID = [loopItem valueForKeyPath:@"series.study.patientUID"];
-			[[[BrowserController currentBrowser] managedObjectContext] unlock];
+			[[[[BrowserController currentBrowser] database] context] unlock];
 			
 			if( [previousPatientUID isEqualToString: patientUID])
 			{

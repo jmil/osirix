@@ -44,7 +44,7 @@
 +(void)applicationWillFinishLaunching;
 +(void)applicationWillTerminate;
 
-+(WebPortal*)defaultWebPortal;
++(WebPortal*)defaultPortal;
 
 @property(readonly, retain) WebPortalDatabase* database;
 @property(readonly, retain) DicomDatabase* dicomDatabase;

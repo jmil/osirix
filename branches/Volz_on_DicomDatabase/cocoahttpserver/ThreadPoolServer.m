@@ -1,5 +1,6 @@
 #import "ThreadPoolServer.h"
 #import "AppController.h"
+#import "NSException+N2.h"
 
 @implementation ThreadPoolServer
 
@@ -58,7 +59,7 @@
 	@catch( NSException *e)
 	{
 		NSLog( @"******* ThreadPoolServer exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	goto redo;

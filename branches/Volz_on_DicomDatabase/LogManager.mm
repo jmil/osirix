@@ -16,6 +16,7 @@
 #import "browserController.h"
 #import "DICOMToNSString.h"
 #import "DicomFile.h"
+#import "DicomDatabase.h"
 
 static LogManager *currentLogManager = nil;
 
@@ -40,8 +41,8 @@ static LogManager *currentLogManager = nil;
 
 - (void) resetLogs
 {
-	NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
-	NSManagedObjectModel *model = [[BrowserController currentBrowser] managedObjectModel];
+	NSManagedObjectContext *context = [[[BrowserController currentBrowser] database] context];
+	NSManagedObjectModel *model = [[context persistentStoreCoordinator] managedObjectModel];
 	[context retain];
 	[context lock];
 	
@@ -94,7 +95,7 @@ static LogManager *currentLogManager = nil;
 {
 	if( [[BrowserController currentBrowser] isNetworkLogsActive])
 	{
-		NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
+		NSManagedObjectContext *context = [[[BrowserController currentBrowser] database] context];
 		if( context == nil)
 		{
 			NSLog(@"***** log context == nil");

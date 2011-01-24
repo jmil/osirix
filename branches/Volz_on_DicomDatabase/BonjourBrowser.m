@@ -27,6 +27,7 @@
 #import <arpa/inet.h>
 #import <unistd.h>
 #import "NSUserDefaultsController+OsiriX.h"
+#import "DicomDatabase.h"
 
 #define FILESSIZE 512*512*2
 
@@ -56,7 +57,7 @@ extern const char *GetPrivateIP();
 
 - (void) waitTheLock
 {
-	NSManagedObjectContext *c = [[BrowserController currentBrowser] managedObjectContext];
+	NSManagedObjectContext *c = [[interfaceOsiriX database] context];
 	
 	[c lock];
 	[c unlock];
@@ -849,7 +850,7 @@ extern const char *GetPrivateIP();
 {
 	int			i;
 	NSArray		*dbArray = [[NSUserDefaults standardUserDefaults] arrayForKey: @"localDatabasePaths"];
-	NSString	*defaultPath = documentsDirectoryFor( [[NSUserDefaults standardUserDefaults] integerForKey: @"DEFAULT_DATABASELOCATION"], [[NSUserDefaults standardUserDefaults] stringForKey: @"DEFAULT_DATABASELOCATIONURL"]);
+	NSString	*defaultPath = [[DicomDatabase defaultDatabase] basePath];
 	
 	if( dbArray == nil) dbArray = [NSArray array];
 	
@@ -1264,7 +1265,7 @@ extern const char *GetPrivateIP();
 
 - (NSDictionary*) getDICOMDestinationInfo:(int) index
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1278,7 +1279,7 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	if( dicomListener == nil)
 		dicomListener = [[NSDictionary dictionary] retain];
@@ -1288,12 +1289,12 @@ extern const char *GetPrivateIP();
 
 - (BOOL) isBonjourDatabaseUpToDate: (int) index
 {
-	if( [[[BrowserController currentBrowser] managedObjectContext] tryLock] == NO) return YES;
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	if( [[[interfaceOsiriX database] context] tryLock] == NO) return YES;
+	[[[interfaceOsiriX database] context] unlock];
 	
 	BOOL result;
 	
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1313,14 +1314,14 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	return result;
 }
 
 - (void) removeStudies: (NSArray*) studies fromAlbum: (NSManagedObject*) album bonjourIndex:(int) index
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1345,12 +1346,12 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 }
 
 - (void) addStudies: (NSArray*) studies toAlbum: (NSManagedObject*) album bonjourIndex:(int) index
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1375,12 +1376,12 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 }
 
 - (void) setBonjourDatabaseValue:(int) index item:(NSManagedObject*) obj value:(id) value forKey:(NSString*) key
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1404,7 +1405,7 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 }
 
 - (NSString*) getDatabaseFile:(int) index
@@ -1420,7 +1421,7 @@ extern const char *GetPrivateIP();
 	if( serviceBeingResolvedIndex != index)
 		newConnection = YES;
 	
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1448,7 +1449,7 @@ extern const char *GetPrivateIP();
 			
 			if( [modelVersion isEqualToString: [[NSUserDefaults standardUserDefaults] stringForKey: @"DATABASEVERSION"]] == NO)
 			{
-				[[[BrowserController currentBrowser] managedObjectContext] unlock];
+				[[[interfaceOsiriX database] context] unlock];
 				[waitWindow end];
 				[waitWindow release];
 				waitWindow = nil;
@@ -1487,7 +1488,7 @@ extern const char *GetPrivateIP();
 					
 					if( resolved == NO || wrongPassword == YES)
 					{
-						[[[BrowserController currentBrowser] managedObjectContext] unlock];
+						[[[interfaceOsiriX database] context] unlock];
 						[waitWindow end];
 						[waitWindow release];
 						waitWindow = nil;
@@ -1582,7 +1583,7 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	return returnedPath;
 }
@@ -1610,7 +1611,7 @@ extern const char *GetPrivateIP();
 		if( [dict valueForKey: @"Port"] == nil) return NO;
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	@try 
 	{
@@ -1641,7 +1642,7 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	return YES;
 }
@@ -1658,7 +1659,7 @@ extern const char *GetPrivateIP();
 		if( [[NSFileManager defaultManager] fileExistsAtPath: loopItem] == NO) return NO;
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	BOOL success = NO;
 	
@@ -1678,14 +1679,14 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	return success;
 }
 
 - (NSString*) getDICOMFile:(int) index forObject:(NSManagedObject*) image noOfImages: (int) noOfImages
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[interfaceOsiriX database] context] lock];
 	
 	NSString *returnString = nil;
 	
@@ -1696,7 +1697,7 @@ extern const char *GetPrivateIP();
 		
 		if( [[NSFileManager defaultManager] fileExistsAtPath: dicomFileName])
 		{
-			[[[BrowserController currentBrowser] managedObjectContext] unlock];
+			[[[interfaceOsiriX database] context] unlock];
 			return dicomFileName;
 		}
 		
@@ -1756,7 +1757,7 @@ extern const char *GetPrivateIP();
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[interfaceOsiriX database] context] unlock];
 	
 	return returnString;
 }

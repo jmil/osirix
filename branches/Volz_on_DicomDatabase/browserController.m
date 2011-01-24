@@ -24,6 +24,7 @@
 #import "DCMPix.h"
 #import "SRAnnotation.h"
 #import "AppController.h"
+#import "NSException+N2.h"
 #import "dicomData.h"
 #import "BrowserController.h"
 #import "viewerController.h"
@@ -79,6 +80,9 @@
 #import "NSThread+N2.h"
 #import "BrowserController+Activity.h"
 #import "NSError+OsiriX.h"
+#import "NSException+N2.h"
+
+#import "DicomDatabase.h"
 
 #ifndef OSIRIX_LIGHT
 #import "Anonymization.h"
@@ -91,17 +95,6 @@
 #import "WebPortal+Email+Log.h"
 #import "WebPortalDatabase.h"
 
-#define DEFAULTUSERDATABASEPATH @"~/Library/Application Support/OsiriX/WebUsers.sql"
-//#define USERDATABASEVERSION @"1.0"
-#define DATABASEVERSION @"2.5"
-#define DATABASEPATH @"/DATABASE.noindex/"
-#define DECOMPRESSIONPATH @"/DECOMPRESSION.noindex/"
-#define INCOMINGPATH @"/INCOMING.noindex/"
-#define TOBEINDEXED @"/TOBEINDEXED.noindex/"
-#define ERRPATH @"/NOT READABLE/"
-#define DATABASEFPATH @"/DATABASE.noindex"
-#define DATAFILEPATH @"/Database.sql"
-
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <IOKit/IOKitLib.h>
@@ -111,13 +104,13 @@
 
 static BrowserController *browserWindow = nil;
 static NSString *albumDragType = @"Osirix Album drag";
-static BOOL loadingIsOver = NO, isAutoCleanDatabaseRunning = NO;
+static BOOL loadingIsOver = NO;//, isAutoCleanDatabaseRunning = NO;
 static NSMenu *contextual = nil;
 static NSMenu *contextualRT = nil;  // Alternate menus for RT objects (which often don't have images)
 static int DicomDirScanDepth = 0;
 static int DefaultFolderSizeForDB = 0;
 static NSTimeInterval lastHardDiskCheck = 0;
-static long DATABASEINDEX = 0;
+//static long DATABASEINDEX = 0;
 static unsigned long long lastFreeSpace = 0;
 static NSTimeInterval lastFreeSpaceLogTime = 0;
 
@@ -217,10 +210,10 @@ static volatile BOOL waitForRunningProcess = NO;
 
 @class DCMTKStudyQueryNode;
 
-@synthesize checkIncomingLock, CDpassword, DateTimeFormat, passwordForExportEncryption;
+@synthesize CDpassword, DateTimeFormat, passwordForExportEncryption;
 @synthesize DateOfBirthFormat,TimeFormat, TimeWithSecondsFormat, temporaryNotificationEmail, customTextNotificationEmail;
 @synthesize DateTimeWithSecondsFormat, matrixViewArray, oMatrix, testPredicate;
-@synthesize COLUMN, databaseOutline, albumTable, currentDatabasePath;
+@synthesize COLUMN, databaseOutline, albumTable;//, currentDatabasePath;
 @synthesize isCurrentDatabaseBonjour, bonjourDownloading, bonjourSourcesBox;
 @synthesize bonjourBrowser, pathToEncryptedFile, bonjourManagedObjectContext;
 @synthesize searchString = _searchString, fetchPredicate = _fetchPredicate;
@@ -228,6 +221,7 @@ static volatile BOOL waitForRunningProcess = NO;
 @synthesize rtstructProgressBar, rtstructProgressPercent, pluginManagerController;//, userManagedObjectContext, userManagedObjectModel;
 @synthesize needDBRefresh, viewersListToReload, viewersListToRebuild, newFilesConditionLock, databaseLastModification;
 @synthesize AtableView/*, AcpuActiView, AhddActiView, AnetActiView, AstatusLabel*/;
+@synthesize database;
 
 + (BOOL) tryLock:(id) c during:(NSTimeInterval) sec
 {
@@ -274,7 +268,7 @@ static volatile BOOL waitForRunningProcess = NO;
 	
 	return DefaultFolderSizeForDB;
 }
-
+/*
 + (NSArray*) albumsInContext:(NSManagedObjectContext*)context
 {
 	NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
@@ -282,11 +276,10 @@ static volatile BOOL waitForRunningProcess = NO;
 	[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
 	
 	return [context executeFetchRequest:dbRequest error:NULL];
-}
+}*/
 
--(NSArray*)albums
-{
-	return [BrowserController albumsInContext: [self managedObjectContext]];
+-(NSArray*)albums {
+	return [database albums];
 }
 
 static NSConditionLock *threadLock = nil;
@@ -466,18 +459,8 @@ static NSConditionLock *threadLock = nil;
 	}
 }
 
-- (void) setDockLabel:(NSString*) label
-{
-	[[[NSApplication sharedApplication] dockTile] setBadgeLabel: label];
-	[[[NSApplication sharedApplication] dockTile] display];
-}
 
-- (void) setGrowlMessage:(NSString*) message
-{
-	[[AppController sharedAppController] growlTitle: NSLocalizedString( @"Incoming Files", nil) description: message name: @"newfiles"];
-}
-
--(NSArray*) addFilesToDatabase:(NSArray*) newFilesArray
+/*-(NSArray*) addFilesToDatabase:(NSArray*) newFilesArray
 {
 	return [self addFilesToDatabase: newFilesArray onlyDICOM:NO produceAddedFiles :YES];
 }
@@ -497,1052 +480,12 @@ static NSConditionLock *threadLock = nil;
 	NSManagedObjectContext	*context = self.managedObjectContext;
 	
 	return [self addFilesToDatabase: newFilesArray onlyDICOM: onlyDICOM  produceAddedFiles: produceAddedFiles parseExistingObject: parseExistingObject context: context dbFolder: [self documentsDirectory]];
-}
+}*/
 
-+ (NSString*) extractReportSR: (NSString*) dicomSR contentDate: (NSDate*) date
-{
-	NSString *destPath = nil;
-	NSString *uidName = [SRAnnotation getReportFilenameFromSR: dicomSR];
-	if( [uidName length] > 0)
-	{
-		NSString *zipFile = [@"/tmp/" stringByAppendingPathComponent: uidName];
-		
-		// Extract the CONTENT to the REPORTS folder
-		SRAnnotation *r = [[[SRAnnotation alloc] initWithContentsOfFile: dicomSR] autorelease];
-		[[NSFileManager defaultManager] removeFileAtPath: zipFile handler: nil];
-		
-		// Check for http/https !
-		if( [[r reportURL] length] > 8 && ([[r reportURL] hasPrefix: @"http://"] || [[r reportURL] hasPrefix: @"https://"]))
-			destPath = [[[r reportURL] copy] autorelease];
-		else
-		{
-			if( [[r dataEncapsulated] length] > 0)
-			{
-				[[r dataEncapsulated] writeToFile: zipFile atomically: YES];
-				
-				[[NSFileManager defaultManager] removeFileAtPath: @"/tmp/zippedFile/" handler: nil];
-				[BrowserController unzipFile: zipFile withPassword: nil destination: @"/tmp/zippedFile/" showGUI: NO];
-				[[NSFileManager defaultManager] removeFileAtPath: zipFile handler: nil];
-				
-				for( NSString *f in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: @"/tmp/zippedFile/" error: nil])
-				{
-					if( [f hasPrefix: @"."] == NO)
-					{
-						if( destPath)
-							NSLog( @"*** multiple files in Report decompression ?");
-						
-						destPath = [@"/tmp/" stringByAppendingPathComponent: f];
-						if( destPath)
-						{
-							[[NSFileManager defaultManager] removeItemAtPath: destPath error: nil];
-							[[NSFileManager defaultManager] moveItemAtPath: [@"/tmp/zippedFile/" stringByAppendingPathComponent: f] toPath: destPath error: nil];
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	[[NSFileManager defaultManager] removeFileAtPath: @"/tmp/zippedFile/" handler: nil];
-	
-	if( destPath)
-		[[NSFileManager defaultManager] setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: date, NSFileModificationDate, nil] ofItemAtPath: destPath error: nil];
-	
-	return destPath;
-}
-
-- (void) checkForExistingReport: (NSManagedObject*) study dbFolder: (NSString*) dbFolder
-{
-	#ifndef OSIRIX_LIGHT
-	@try
-	{
-		// Is there a report?
-		NSString	*basePath = [NSString stringWithFormat: @"%@/REPORTS/", dbFolder];
-		NSString	*reportPath = nil;
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.pages",[Reports getUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.odt",[Reports getUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.doc",[Reports getUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.rtf",[Reports getUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.pages",[Reports getOldUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.rtf",[Reports getOldUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-		
-		if( reportPath == nil)
-		{
-			reportPath = [basePath stringByAppendingFormat:@"%@.doc",[Reports getOldUniqueFilename: study]];
-			if( [[NSFileManager defaultManager] fileExistsAtPath: reportPath])
-				[study setValue:reportPath forKey:@"reportURL"];
-			else reportPath = nil;
-		}
-	}
-	@catch ( NSException *e)
-	{
-		NSLog( @"***** checkForExistingReport exception: %@", e);
-		[AppController printStackTrace: e];
-	}
-	#endif
-}
 
 #pragma mark-
-+(NSArray*) addFiles:(NSArray*) newFilesArray toContext: (NSManagedObjectContext*) context toDatabase: (BrowserController*) browserController onlyDICOM: (BOOL) onlyDICOM  notifyAddedFiles: (BOOL) notifyAddedFiles parseExistingObject: (BOOL) parseExistingObject dbFolder: (NSString*) dbFolder
-{
-	return [BrowserController addFiles: newFilesArray toContext: context toDatabase: browserController onlyDICOM: onlyDICOM  notifyAddedFiles: notifyAddedFiles parseExistingObject: parseExistingObject dbFolder:  dbFolder generatedByOsiriX: NO mountedVolume: NO];
-}
 
-+(NSArray*) addFiles:(NSArray*) newFilesArray toContext: (NSManagedObjectContext*) context toDatabase: (BrowserController*) browserController onlyDICOM: (BOOL) onlyDICOM  notifyAddedFiles: (BOOL) notifyAddedFiles parseExistingObject: (BOOL) parseExistingObject dbFolder: (NSString*) dbFolder generatedByOsiriX: (BOOL) generatedByOsiriX
-{
-	return [BrowserController addFiles: newFilesArray toContext: context toDatabase: browserController onlyDICOM: onlyDICOM  notifyAddedFiles: notifyAddedFiles parseExistingObject: parseExistingObject dbFolder:  dbFolder generatedByOsiriX:  generatedByOsiriX mountedVolume: NO];
-}
-
-+(NSArray*) addFiles:(NSArray*) newFilesArray toContext: (NSManagedObjectContext*) context toDatabase: (BrowserController*) browserController onlyDICOM: (BOOL) onlyDICOM  notifyAddedFiles: (BOOL) notifyAddedFiles parseExistingObject: (BOOL) parseExistingObject dbFolder: (NSString*) dbFolder generatedByOsiriX: (BOOL) generatedByOsiriX mountedVolume: (BOOL) mountedVolume
-{
-	NSDate *today = [NSDate date];
-	NSError *error = nil;
-	NSString *curPatientUID = nil, *curStudyID = nil, *curSerieID = nil, *ERRpath = [dbFolder stringByAppendingPathComponent:ERRPATH], *newFile, *dbDirectory = [dbFolder stringByAppendingPathComponent:DATABASEFPATH], *reportsDirectory = [dbFolder stringByAppendingPathComponent:@"/REPORTS/"], *tempDirectory = [dbFolder stringByAppendingPathComponent:@"/TEMP.noindex/"];
-	NSInteger index;
-	Wait *splash = nil;
-	NSManagedObjectModel *model = context.persistentStoreCoordinator.managedObjectModel;
-	NSMutableArray *addedImagesArray = nil, *completeImagesArray = nil, *addedSeries = [NSMutableArray array], *modifiedStudiesArray = nil;
-	BOOL DELETEFILELISTENER = [[NSUserDefaults standardUserDefaults] boolForKey: @"DELETEFILELISTENER"], COMMENTSAUTOFILL = [[NSUserDefaults standardUserDefaults] boolForKey: @"COMMENTSAUTOFILL"], newStudy = NO, newObject = NO, isCDMedia = NO, addFailed = NO;
-	NSMutableArray *vlToRebuild = [NSMutableArray array], *vlToReload = [NSMutableArray array], *dicomFilesArray = [NSMutableArray arrayWithCapacity: [newFilesArray count]];
-	int combineProjectionSeries = [[NSUserDefaults standardUserDefaults] boolForKey: @"combineProjectionSeries"], combineProjectionSeriesMode = [[NSUserDefaults standardUserDefaults] boolForKey: @"combineProjectionSeriesMode"];
-	BOOL isBonjour = [browserController isBonjour: context];
-	NSMutableArray *bonjourFilesToSend = nil;
-	
-	if( isBonjour)
-		bonjourFilesToSend = [NSMutableArray array];
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath: dbDirectory] == NO)
-		[[NSFileManager defaultManager] createDirectoryAtPath: dbDirectory attributes:nil];
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath: reportsDirectory] == NO)
-		[[NSFileManager defaultManager] createDirectoryAtPath: reportsDirectory attributes:nil];
-	
-	if( [newFilesArray count] == 0) return [NSMutableArray array];
-	
-//	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"onlyDICOM"]) onlyDICOM = YES;
-	
-//#define RANDOMFILES
-#ifdef RANDOMFILES
-	NSMutableArray	*randomArray = [NSMutableArray array];
-	for( int i = 0; i < 50000; i++)
-	{
-		[randomArray addObject:@"yahoo/google/osirix/microsoft"];
-	}
-	newFilesArray = randomArray;
-#endif
-	
-	if( [NSThread isMainThread])
-	{
-		isCDMedia = [BrowserController isItCD: [newFilesArray objectAtIndex: 0]];
-		
-		[DicomFile setFilesAreFromCDMedia: isCDMedia];
-		
-		if([NSThread isMainThread] && ([newFilesArray count] > 50 || isCDMedia == YES) && generatedByOsiriX == NO)
-		{
-			splash = [[Wait alloc] initWithString: [NSString stringWithFormat: NSLocalizedString(@"Adding %@ file(s)...", nil), [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[newFilesArray count]]]]];
-			[splash showWindow: browserController];
-			
-			if( isCDMedia) [[splash progress] setMaxValue:[newFilesArray count]];
-			else [[splash progress] setMaxValue:[newFilesArray count]/30];
-			
-			[splash setCancel: YES];
-		}
-	}
-	
-	int ii = 0;
-	for (newFile in newFilesArray)
-	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		@try
-		{
-			DicomFile *curFile = nil;
-			NSMutableDictionary	*curDict = nil;
-			
-			@try
-			{
-				#ifdef RANDOMFILES
-					curFile = [[DicomFile alloc] initRandom];
-				#else
-					curFile = [[DicomFile alloc] init: newFile];
-				#endif
-			}
-			@catch (NSException * e)
-			{
-				NSLog( @"*** exception [[DicomFile alloc] init: newFile] : %@", e);
-				[AppController printStackTrace: e];
-			}
-			
-			if( curFile)
-			{
-				curDict = [curFile dicomElements];
-				
-				if( onlyDICOM)
-				{
-					if( [[curDict objectForKey: @"fileType"] hasPrefix:@"DICOM"] == NO)
-						curDict = nil;
-				}
-				
-				if( curDict)
-				{
-					[dicomFilesArray addObject: curDict];
-				}
-				else
-				{
-					// This file was not readable -> If it is located in the DATABASE folder, we have to delete it or to move it to the 'NOT READABLE' folder
-					if( dbDirectory && [newFile hasPrefix: dbDirectory])
-					{
-						NSLog(@"**** Unreadable file: %@", newFile);
-						
-						if ( DELETEFILELISTENER)
-						{
-							[[NSFileManager defaultManager] removeFileAtPath: newFile handler:nil];
-						}
-						else
-						{
-							NSLog(@"**** This file in the DATABASE folder: move it to the unreadable folder");
-							
-							if( [[NSFileManager defaultManager] movePath: newFile toPath:[ERRpath stringByAppendingPathComponent: [newFile lastPathComponent]]  handler:nil] == NO)
-								[[NSFileManager defaultManager] removeFileAtPath: newFile handler:nil];
-						}
-					}
-				}
-			
-				[curFile release];
-			}
-			
-			if( splash)
-			{
-				if( isCDMedia)
-				{
-					ii++;
-					[splash incrementBy:1];
-				}
-				else
-				{
-					if( (ii++) % 30 == 0)
-						[splash incrementBy:1];
-				}
-			}
-		}
-		
-		@catch (NSException * e)
-		{
-			NSLog( @"**** addFilesToDatabase exception : DicomFile alloc : %@", e);
-			[AppController printStackTrace: e];
-		}
-		
-		[pool release];
-		
-		if( [splash aborted]) break;
-	}
-	
-	[context retain];
-	[context lock];
-	
-	// Find all current studies
-	
-	NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-	[dbRequest setEntity: [[model entitiesByName] objectForKey: @"Study"]];
-	[dbRequest setPredicate: [NSPredicate predicateWithValue: YES]];
-	error = nil;
-	NSMutableArray *studiesArray = nil;
-	
-	@try
-	{
-		studiesArray = [[context executeFetchRequest:dbRequest error:&error] mutableCopy];
-	}
-	@catch( NSException *ne)
-	{
-		NSLog( @"AddFilesToDatabase executeFetchRequest exception: %@", [ne description]);
-		NSLog( @"executeFetchRequest failed for studiesArray.");
-		error = [NSError errorWithDomain:OsirixErrorDomain code:1 userInfo:NULL];
-		[AppController printStackTrace: ne];
-	}
-	
-	if (error)
-	{
-		NSLog( @"addFilesToDatabase ERROR: %@", [error localizedDescription]);
-		
-		[context unlock];
-		[context release];
-		
-		//All these files were NOT saved..... due to an error. Move them back to the INCOMING folder.
-		addFailed = YES;
-	}
-	else
-	{
-		addedImagesArray = [NSMutableArray arrayWithCapacity: [newFilesArray count]];
-		completeImagesArray = [NSMutableArray arrayWithCapacity: [newFilesArray count]];
-		modifiedStudiesArray = [NSMutableArray array];
-		
-		DicomStudy *study = nil;
-		DicomSeries *seriesTable = nil;
-		DicomImage *image = nil;
-		NSMutableArray *studiesArrayStudyInstanceUID = [[studiesArray valueForKey:@"studyInstanceUID"] mutableCopy];
-		
-		// Add the new files
-		for (NSMutableDictionary *curDict in dicomFilesArray)
-		{
-			@try
-			{
-				newFile = [curDict objectForKey:@"filePath"];
-				
-				BOOL DICOMSR = NO;
-				BOOL inParseExistingObject = parseExistingObject;
-				
-				NSString *SOPClassUID = [curDict objectForKey:@"SOPClassUID"];
-				
-				if( [DCMAbstractSyntaxUID isStructuredReport: SOPClassUID])
-				{
-					// Check if it is an OsiriX Annotations SR
-					if( [[curDict valueForKey:@"seriesDescription"] isEqualToString: @"OsiriX Annotations SR"])
-					{
-						[curDict setValue: @"OsiriX Annotations SR" forKey: @"seriesID"];
-						inParseExistingObject = YES;
-						DICOMSR = YES;
-					}
-					
-					// Check if it is an OsiriX ROI SR
-					if( [[curDict valueForKey:@"seriesDescription"] isEqualToString: @"OsiriX ROI SR"])
-					{
-						[curDict setValue: @"OsiriX ROI SR" forKey: @"seriesID"];
-						
-						inParseExistingObject = YES;
-						DICOMSR = YES;
-					}
-					
-					// Check if it is an OsiriX Report SR
-					if( [[curDict valueForKey:@"seriesDescription"] isEqualToString: @"OsiriX Report SR"])
-					{
-						[curDict setValue: @"OsiriX Report SR" forKey: @"seriesID"];
-						
-						inParseExistingObject = YES;
-						DICOMSR = YES;
-					}
-				}
-				
-				if( SOPClassUID != nil 
-				   && [DCMAbstractSyntaxUID isImageStorage: SOPClassUID] == NO 
-				   && [DCMAbstractSyntaxUID isRadiotherapy: SOPClassUID] == NO
-				   && [DCMAbstractSyntaxUID isStructuredReport: SOPClassUID] == NO
-				   && [DCMAbstractSyntaxUID isKeyObjectDocument: SOPClassUID] == NO
-				   && [DCMAbstractSyntaxUID isPresentationState: SOPClassUID] == NO
-				   && [DCMAbstractSyntaxUID isSupportedPrivateClasses: SOPClassUID] == NO)
-				{
-					NSLog(@"unsupported DICOM SOP CLASS (%@)-> Reject the file : %@", SOPClassUID, newFile);
-					curDict = nil;
-				}
-				
-				if( [curDict objectForKey:@"SOPClassUID"] == nil && [[curDict objectForKey: @"fileType"] hasPrefix:@"DICOM"] == YES)
-				{
-					NSLog(@"no DICOM SOP CLASS -> Reject the file: %@", newFile);
-					curDict = nil;
-				}
-				
-				if( curDict != nil)
-				{
-					if( [[curDict objectForKey: @"studyID"] isEqualToString: curStudyID] == YES && [[curDict objectForKey: @"patientUID"] caseInsensitiveCompare: curPatientUID] == NSOrderedSame)
-					{
-						if( [[study valueForKey: @"modality"] isEqualToString: @"SR"] || [[study valueForKey: @"modality"] isEqualToString: @"OT"])
-							[study setValue: [curDict objectForKey: @"modality"] forKey:@"modality"];
-					}
-					else
-					{
-						/*******************************************/
-						/*********** Find study object *************/
-						// match: StudyInstanceUID and patientUID (see patientUID function in dicomFile.m, based on patientName, patientID and patientBirthDate)
-						study = nil;
-						curSerieID = nil;
-						
-						index = [studiesArrayStudyInstanceUID indexOfObject:[curDict objectForKey: @"studyID"]];
-						
-						if( index != NSNotFound)
-						{
-							if( [[curDict objectForKey: @"fileType"] hasPrefix:@"DICOM"] == NO) // We do this double check only for DICOM files.
-							{
-								study = [studiesArray objectAtIndex: index];
-							}
-							else
-							{
-								if( [[curDict objectForKey: @"patientUID"] caseInsensitiveCompare: [[studiesArray objectAtIndex: index] valueForKey: @"patientUID"]] == NSOrderedSame)
-									study = [studiesArray objectAtIndex: index];
-								else
-								{
-									NSLog( @"-*-*-*-*-* same studyUID (%@), but not same patientUID (%@ versus %@)", [curDict objectForKey: @"studyID"], [curDict objectForKey: @"patientUID"], [[studiesArray objectAtIndex: index] valueForKey: @"patientUID"]);
-									
-									NSString *curUID = [curDict objectForKey: @"studyID"];
-									for( int i = 0 ; i < [studiesArrayStudyInstanceUID count]; i++)
-									{
-										NSString *uid = [studiesArrayStudyInstanceUID objectAtIndex: i];
-										
-										if( [uid isEqualToString: curUID])
-										{
-											if( [[curDict objectForKey: @"patientUID"] caseInsensitiveCompare: [[studiesArray objectAtIndex: i] valueForKey: @"patientUID"]] == NSOrderedSame)
-												study = [studiesArray objectAtIndex: i];
-										}
-									}
-								}
-							}
-						}
-						
-						if( study == nil)
-						{
-							// Fields
-							study = [NSEntityDescription insertNewObjectForEntityForName:@"Study" inManagedObjectContext: context];
-							
-							newObject = YES;
-							newStudy = YES;
-							
-							[study setValue:today forKey:@"dateAdded"];
-							
-							[studiesArray addObject: study];
-							[studiesArrayStudyInstanceUID addObject: [curDict objectForKey: @"studyID"]];
-							
-							curSerieID = nil;
-						}
-						else
-						{
-							newObject = NO;
-						}
-						
-						if( newObject || inParseExistingObject)
-						{
-							[study setValue:[curDict objectForKey: @"studyID"] forKey:@"studyInstanceUID"];
-							[study setValue:[curDict objectForKey: @"accessionNumber"] forKey:@"accessionNumber"];
-							[study setValue:[curDict objectForKey: @"modality"] forKey:@"modality"];
-							[study setValue:[curDict objectForKey: @"patientBirthDate"] forKey:@"dateOfBirth"];
-							[study setValue:[curDict objectForKey: @"patientSex"] forKey:@"patientSex"];
-							[study setValue:[curDict objectForKey: @"patientID"] forKey:@"patientID"];
-							[study setValue:[curDict objectForKey: @"patientName"] forKey:@"name"];
-							[study setValue:[curDict objectForKey: @"patientUID"] forKey:@"patientUID"];
-							[study setValue:[curDict objectForKey: @"studyNumber"] forKey:@"id"];
-							
-							if( [DCMAbstractSyntaxUID isStructuredReport: SOPClassUID] && inParseExistingObject)
-							{
-								if( [(NSString*)[curDict objectForKey: @"studyDescription"] length])
-									[study setValue:[curDict objectForKey: @"studyDescription"] forKey:@"studyName"];
-								if( [(NSString*)[curDict objectForKey: @"referringPhysiciansName"] length])
-									[study setValue:[curDict objectForKey: @"referringPhysiciansName"] forKey:@"referringPhysician"];
-								if( [(NSString*)[curDict objectForKey: @"performingPhysiciansName"] length])
-									[study setValue:[curDict objectForKey: @"performingPhysiciansName"] forKey:@"performingPhysician"];
-								if( [(NSString*)[curDict objectForKey: @"institutionName"] length])
-									[study setValue:[curDict objectForKey: @"institutionName"] forKey:@"institutionName"];
-							}
-							else
-							{
-								[study setValue:[curDict objectForKey: @"studyDescription"] forKey:@"studyName"];
-								[study setValue:[curDict objectForKey: @"referringPhysiciansName"] forKey:@"referringPhysician"];
-								[study setValue:[curDict objectForKey: @"performingPhysiciansName"] forKey:@"performingPhysician"];
-								[study setValue:[curDict objectForKey: @"institutionName"] forKey:@"institutionName"];
-							}
-							
-							//need to know if is DICOM so only DICOM is queried for Q/R
-							if ([curDict objectForKey: @"hasDICOM"])
-								[study setValue:[curDict objectForKey: @"hasDICOM"] forKey:@"hasDICOM"];
-							
-							if( newObject)
-								[browserController checkForExistingReport:study dbFolder:dbFolder];
-						}
-						else
-						{
-							if( [[study valueForKey: @"modality"] isEqualToString: @"SR"] || [[study valueForKey: @"modality"] isEqualToString: @"OT"])
-								[study setValue: [curDict objectForKey: @"modality"] forKey:@"modality"];
-								
-							if( [study valueForKey: @"studyName"] == nil || [[study valueForKey: @"studyName"] isEqualToString: @"unnamed"] || [[study valueForKey: @"studyName"] isEqualToString: @""])
-								[study setValue: [curDict objectForKey: @"studyDescription"] forKey:@"studyName"];
-						}
-						
-						if( [curDict objectForKey: @"studyDate"])
-						{
-							if( [study valueForKey: @"date"] == 0L || [[study valueForKey: @"date"] timeIntervalSinceDate: [curDict objectForKey: @"studyDate"]] >= 0)
-								[study setValue:[curDict objectForKey: @"studyDate"] forKey:@"date"];
-						}
-							
-						curStudyID = [curDict objectForKey: @"studyID"];
-						curPatientUID = [curDict objectForKey: @"patientUID"];
-						
-						[modifiedStudiesArray addObject: study];
-					}
-					
-					int NoOfSeries = [[curDict objectForKey: @"numberOfSeries"] intValue];
-					for( int i = 0; i < NoOfSeries; i++)
-					{
-						NSString* SeriesNum = i ? [NSString stringWithFormat:@"%d",i] : @"";
-						
-						if( [[curDict objectForKey: [@"seriesID" stringByAppendingString:SeriesNum]] isEqualToString: curSerieID])
-						{
-						}
-						else
-						{
-							/********************************************/
-							/*********** Find series object *************/
-							
-							NSArray *seriesArray = [[study valueForKey:@"series"] allObjects];
-							
-							index = [[seriesArray valueForKey:@"seriesInstanceUID"] indexOfObject:[curDict objectForKey: [@"seriesID" stringByAppendingString:SeriesNum]]];
-							if( index == NSNotFound)
-							{
-								// Fields
-								seriesTable = [NSEntityDescription insertNewObjectForEntityForName:@"Series" inManagedObjectContext: context];
-								[seriesTable setValue:today forKey:@"dateAdded"];
-								
-								newObject = YES;
-							}
-							else
-							{
-								seriesTable = [seriesArray objectAtIndex: index];
-								newObject = NO;
-							}
-							
-							if( newObject || inParseExistingObject)
-							{
-								if( [curDict objectForKey: @"seriesDICOMUID"]) [seriesTable setValue:[curDict objectForKey: @"seriesDICOMUID"] forKey:@"seriesDICOMUID"];
-								if( [curDict objectForKey: @"SOPClassUID"]) [seriesTable setValue:[curDict objectForKey: @"SOPClassUID"] forKey:@"seriesSOPClassUID"];
-								[seriesTable setValue:[curDict objectForKey: [@"seriesID" stringByAppendingString:SeriesNum]] forKey:@"seriesInstanceUID"];
-								[seriesTable setValue:[curDict objectForKey: [@"seriesDescription" stringByAppendingString:SeriesNum]] forKey:@"name"];
-								[seriesTable setValue:[curDict objectForKey: @"modality"] forKey:@"modality"];
-								[seriesTable setValue:[curDict objectForKey: [@"seriesNumber" stringByAppendingString:SeriesNum]] forKey:@"id"];
-								[seriesTable setValue:[curDict objectForKey: @"studyDate"] forKey:@"date"];
-								[seriesTable setValue:[curDict objectForKey: @"protocolName"] forKey:@"seriesDescription"];
-								
-								// Relations
-								[seriesTable setValue:study forKey:@"study"];
-								// If a study has an SC or other non primary image  series. May need to change modality to true modality
-								if (([[study valueForKey:@"modality"] isEqualToString:@"OT"]  || [[study valueForKey:@"modality"] isEqualToString:@"SC"])
-									&& !([[curDict objectForKey: @"modality"] isEqualToString:@"OT"] || [[curDict objectForKey: @"modality"] isEqualToString:@"SC"]))
-									[study setValue:[curDict objectForKey: @"modality"] forKey:@"modality"];
-							}
-							
-							curSerieID = [curDict objectForKey: @"seriesID"];
-						}
-						
-						/*******************************************/
-						/*********** Find image object *************/
-						
-						BOOL local = NO;
-						
-						if( dbDirectory && [newFile hasPrefix: dbDirectory])
-							local = YES;
-						
-						NSArray	*imagesArray = [[seriesTable valueForKey:@"images"] allObjects];
-						int numberOfFrames = [[curDict objectForKey: @"numberOfFrames"] intValue];
-						if( numberOfFrames == 0) numberOfFrames = 1;
-							
-						for( int f = 0 ; f < numberOfFrames; f++)
-						{
-							index = imagesArray.count? [[imagesArray valueForKey:@"sopInstanceUID"] indexOfObject:[curDict objectForKey: [@"SOPUID" stringByAppendingString: SeriesNum]]] : NSNotFound;
-							
-							if( index != NSNotFound)
-							{
-								image = [imagesArray objectAtIndex: index];
-								
-								// Does this image contain a valid image path? If not replace it, with the new one
-								if( [[NSFileManager defaultManager] fileExistsAtPath: [DicomImage completePathForLocalPath: [image valueForKey:@"path"] directory: dbFolder]] == YES && inParseExistingObject == NO)
-								{
-									[addedImagesArray addObject: image];
-									
-									if( local)	// Delete this file, it's already in the DB folder
-									{
-										if( [[image valueForKey:@"path"] isEqualToString: [newFile lastPathComponent]] == NO)
-											[[NSFileManager defaultManager] removeFileAtPath: newFile handler:nil];
-									}
-									
-									newObject = NO;
-								}
-								else
-								{
-									newObject = YES;
-									[image clearCompletePathCache];
-									
-									NSString *imPath = [DicomImage completePathForLocalPath: [image valueForKey:@"path"] directory: dbFolder];
-									
-									if( [[image valueForKey:@"inDatabaseFolder"] boolValue] && [imPath isEqualToString: newFile] == NO)
-									{
-										if( [[NSFileManager defaultManager] fileExistsAtPath: imPath])
-											[[NSFileManager defaultManager] removeFileAtPath: imPath handler:nil];
-									}
-								}
-							}
-							else
-							{
-								image = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext: context];
-								
-								newObject = YES;
-							}
-							
-							[completeImagesArray addObject: image];
-							
-							if( newObject || inParseExistingObject)
-							{
-								browserController.needDBRefresh = YES;
-								
-								if( DICOMSR == NO)
-									[seriesTable setValue:today forKey:@"dateAdded"];
-								
-								[image setValue: [curDict objectForKey: @"modality"] forKey:@"modality"];
-								
-								if( numberOfFrames > 1)
-								{
-									[image setValue: [NSNumber numberWithInt: f] forKey:@"frameID"];
-									
-									NSString *Modality = [study valueForKey: @"modality"];
-									if( combineProjectionSeries && combineProjectionSeriesMode == 0 && ([Modality isEqualToString:@"MG"] || [Modality isEqualToString:@"CR"] || [Modality isEqualToString:@"DR"] || [Modality isEqualToString:@"DX"] || [Modality  isEqualToString:@"RF"]))
-									{
-										// *******Combine all CR and DR Modality series in a study into one series
-										long imageInstance = [[curDict objectForKey: [ @"imageID" stringByAppendingString: SeriesNum]] intValue];
-										imageInstance *= 10000;
-										imageInstance += f;
-										[image setValue: [NSNumber numberWithLong: imageInstance] forKey:@"instanceNumber"];
-									}
-									else [image setValue: [NSNumber numberWithInt: f] forKey:@"instanceNumber"];
-								}
-								else
-									[image setValue: [curDict objectForKey: [@"imageID" stringByAppendingString: SeriesNum]] forKey:@"instanceNumber"];
-									
-								if( local) [image setValue: [newFile lastPathComponent] forKey:@"path"];
-								else [image setValue:newFile forKey:@"path"];
-								
-								[image setValue:[NSNumber numberWithBool: local] forKey:@"inDatabaseFolder"];
-								
-								[image setValue:[curDict objectForKey: @"studyDate"]  forKey:@"date"];
-								
-								[image setValue:[curDict objectForKey: [@"SOPUID" stringByAppendingString: SeriesNum]] forKey:@"sopInstanceUID"];
-								[image setValue:[curDict objectForKey: @"sliceLocation"] forKey:@"sliceLocation"];
-								[image setValue:[[newFile pathExtension] lowercaseString] forKey:@"extension"];
-								[image setValue:[curDict objectForKey: @"fileType"] forKey:@"fileType"];
-								
-								[image setValue:[curDict objectForKey: @"height"] forKey:@"height"];
-								[image setValue:[curDict objectForKey: @"width"] forKey:@"width"];
-								[image setValue:[curDict objectForKey: @"numberOfFrames"] forKey:@"numberOfFrames"];
-								[image setValue:[NSNumber numberWithBool: mountedVolume] forKey:@"mountedVolume"];
-								if( mountedVolume)
-									[seriesTable setValue:[NSNumber numberWithBool:mountedVolume] forKey:@"mountedVolume"];
-								[image setValue:[curDict objectForKey: @"numberOfSeries"] forKey:@"numberOfSeries"];
-								
-								if( generatedByOsiriX)
-									[image setValue: [NSNumber numberWithBool: generatedByOsiriX] forKey: @"generatedByOsiriX"];
-								else
-									[image setValue: 0L forKey: @"generatedByOsiriX"];
-								
-								[seriesTable setValue:[NSNumber numberWithInt:0]  forKey:@"numberOfImages"];
-								[study setValue:[NSNumber numberWithInt:0]  forKey:@"numberOfImages"];
-								[seriesTable setValue: nil forKey:@"thumbnail"];
-								
-								if( DICOMSR && [curDict objectForKey: @"numberOfROIs"] && [curDict objectForKey: @"referencedSOPInstanceUID"]) // OsiriX ROI SR
-								{
-									NSString *s = [curDict objectForKey: @"referencedSOPInstanceUID"];
-									[image setValue: s forKey:@"comment"];
-									[image setValue: [curDict objectForKey: @"numberOfROIs"] forKey:@"scale"];
-								}
-								
-								// Relations
-								[image setValue:seriesTable forKey:@"series"];
-								
-								if( isBonjour)
-								{
-									if( local)
-									{
-										NSString *bonjourPath = [BonjourBrowser uniqueLocalPath: image];
-										[[NSFileManager defaultManager] removeItemAtPath: bonjourPath error: nil];
-										[[NSFileManager defaultManager] moveItemAtPath: newFile toPath: bonjourPath error: nil];
-										[bonjourFilesToSend addObject: bonjourPath];
-									}
-									else
-										[bonjourFilesToSend addObject: newFile];
-										
-									NSLog( @"------ AddFiles to a shared Bonjour DB: %@", [newFile lastPathComponent]);
-								}
-								
-								if( DICOMSR == NO)
-								{
-									if( COMMENTSAUTOFILL)
-									{
-										if([curDict objectForKey: @"commentsAutoFill"])
-										{
-											[seriesTable setPrimitiveValue: [curDict objectForKey: @"commentsAutoFill"] forKey: @"comment"];
-											[study setPrimitiveValue:[curDict objectForKey: @"commentsAutoFill"] forKey: @"comment"];
-										}
-									}
-									
-									if( generatedByOsiriX == NO && [(NSString*)[curDict objectForKey: @"seriesComments"] length] > 0)
-										[seriesTable setPrimitiveValue: [curDict objectForKey: @"seriesComments"] forKey: @"comment"];
-									
-									if( generatedByOsiriX == NO && [(NSString*)[curDict objectForKey: @"studyComments"] length] > 0)
-										[study setPrimitiveValue: [curDict objectForKey: @"studyComments"] forKey: @"comment"];
-									
-									if( generatedByOsiriX == NO && [[study valueForKey:@"stateText"] intValue] == 0 && [[curDict objectForKey: @"stateText"] intValue] != 0)
-										[study setPrimitiveValue: [curDict objectForKey: @"stateText"] forKey: @"stateText"];
-									
-									if( generatedByOsiriX == NO && [curDict objectForKey: @"keyFrames"])
-									{
-										@try
-										{
-											for( NSString *k in [curDict objectForKey: @"keyFrames"])
-											{
-												if( [k intValue] == f) // corresponding frame
-												{
-													[image setPrimitiveValue: [NSNumber numberWithBool: YES] forKey: @"storedIsKeyImage"];
-													break;
-												}
-											}
-										}
-										@catch (NSException * e) {NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);[AppController printStackTrace: e];}
-									}
-								}
-								
-								if( DICOMSR && [[curDict valueForKey:@"seriesDescription"] isEqualToString: @"OsiriX Report SR"])
-								{
-									BOOL reportUpToDate = NO;
-									NSString *p = [study reportURL];
-									
-									if( p && [[NSFileManager defaultManager] fileExistsAtPath: p])
-									{
-										NSDictionary *fattrs = [[NSFileManager defaultManager] attributesOfItemAtPath: p error: nil];
-										if( [[curDict objectForKey: @"studyDate"] isEqualToDate: [fattrs objectForKey: NSFileModificationDate]])
-											reportUpToDate = YES;
-									}
-									
-									if( reportUpToDate == NO)
-									{
-										NSString *reportURL = nil; // <- For an empty DICOM SR File
-										
-										DicomImage *reportSR = [study reportImage];
-										
-										if( reportSR == image) // Because we can have multiple reports -> only the most recent one is valid
-										{
-											NSString *reportURL = nil, *reportPath = [BrowserController extractReportSR: newFile contentDate: [curDict objectForKey: @"studyDate"]];
-											
-											if( reportPath)
-											{
-												if( [reportPath length] > 8 && ([reportPath hasPrefix: @"http://"] || [reportPath hasPrefix: @"https://"]))
-												{
-													reportURL = reportPath;
-												}
-												else // It's a file!
-												{
-													NSString *reportFilePath = nil;
-													
-													if( isBonjour)
-														reportFilePath = [tempDirectory stringByAppendingPathComponent: [reportPath lastPathComponent]];
-													else
-														reportFilePath = [reportsDirectory stringByAppendingPathComponent: [reportPath lastPathComponent]];
-													
-													[[NSFileManager defaultManager] removeItemAtPath: reportFilePath error: nil];
-													[[NSFileManager defaultManager] moveItemAtPath: reportPath toPath: reportFilePath error: nil];
-													
-													reportURL = [@"REPORTS/" stringByAppendingPathComponent: [reportPath lastPathComponent]];
-												}
-												
-												NSLog( @"--- DICOM SR -> Report : %@", [curDict valueForKey: @"patientName"]);
-											}
-											
-											if( [reportURL length] > 0)
-												[study setPrimitiveValue: reportURL forKey: @"reportURL"];
-											else
-												[study setPrimitiveValue: 0L forKey: @"reportURL"];
-										}
-									}
-								}
-								
-								[addedImagesArray addObject: image];
-								
-								if(seriesTable && [addedSeries containsObject: seriesTable] == NO)
-									[addedSeries addObject: seriesTable];
-								
-								if( DICOMSR == NO && [curDict valueForKey:@"album"] !=nil)
-								{
-									NSArray* albumArray = [BrowserController albumsInContext: context];
-									
-									DicomAlbum* album = NULL;
-									for (album in albumArray)
-									{
-										if ([album.name isEqualToString:[curDict valueForKey:@"album"]])
-											break;
-									}
-									
-									if (album == nil)
-									{
-										//NSString *name = [curDict valueForKey:@"album"];
-										//album = [NSEntityDescription insertNewObjectForEntityForName:@"Album" inManagedObjectContext: context];
-										//[album setValue:name forKey:@"name"];
-										
-										for (album in albumArray)
-										{
-											if ([album.name isEqualToString:@"other"])
-												break;
-										}
-										
-										if (album == nil)
-										{
-											album = [NSEntityDescription insertNewObjectForEntityForName:@"Album" inManagedObjectContext: context];
-											[album setValue:@"other" forKey:@"name"];
-										}
-									}
-									
-									// add the file to the album
-									if ( [[album valueForKey:@"smartAlbum"] boolValue] == NO)
-									{
-										NSMutableSet *studies = [album mutableSetValueForKey: @"studies"];	
-										[studies addObject: [image valueForKeyPath:@"series.study"]];
-										[[image valueForKeyPath:@"series.study"] archiveAnnotationsAsDICOMSR];
-									}
-								}
-							}
-						}
-					}
-				}
-				else
-				{
-					// This file was not readable -> If it is located in the DATABASE folder, we have to delete it or to move it to the 'NOT READABLE' folder
-					if( dbDirectory && [newFile hasPrefix: dbDirectory])
-					{
-						NSLog(@"**** Unreadable file: %@", newFile);
-						
-						if ( DELETEFILELISTENER)
-						{
-							[[NSFileManager defaultManager] removeFileAtPath: newFile handler:nil];
-						}
-						else
-						{
-							if( [[NSFileManager defaultManager] movePath: newFile toPath:[ERRpath stringByAppendingPathComponent: [newFile lastPathComponent]]  handler:nil] == NO)
-								[[NSFileManager defaultManager] removeFileAtPath: newFile handler:nil];
-						}
-					}
-				}
-			}
-				
-			@catch( NSException *ne)
-			{
-				NSLog(@"AddFilesToDatabase DicomFile exception: %@", [ne description]);
-				NSLog(@"Parser failed for this file: %@", newFile);
-				[AppController printStackTrace: ne];
-			}
-		}
-		
-		[studiesArrayStudyInstanceUID release];
-		[studiesArray release];
-		
-		NSString *dockLabel = nil;
-		NSString *growlString = nil;
-		
-		@try
-		{
-			// Compute no of images in studies/series
-			for( NSManagedObject *study in modifiedStudiesArray) [study valueForKey:@"noFiles"];
-			
-			// Reapply annotations from DICOMSR file
-			for( DicomStudy *study in modifiedStudiesArray) [study reapplyAnnotationsFromDICOMSR];
-			
-			if( isBonjour && [bonjourFilesToSend count] > 0)
-			{
-				if( generatedByOsiriX)
-					[NSThread detachNewThreadSelector: @selector( sendFilesToCurrentBonjourGeneratedByOsiriXDB:) toTarget: browserController withObject: bonjourFilesToSend];
-				else 
-					[NSThread detachNewThreadSelector: @selector( sendFilesToCurrentBonjourDB:) toTarget: browserController withObject: bonjourFilesToSend];
-			}
-			
-			if( notifyAddedFiles)
-			{
-				NSAutoreleasePool *p = [[NSAutoreleasePool alloc] init];
-				
-				@try
-				{
-					NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedImagesArray forKey:OsirixAddToDBNotificationImagesArray];
-					[[NSNotificationCenter defaultCenter] postNotificationName:OsirixAddToDBNotification object:nil userInfo:userInfo];
-					
-					userInfo = [NSDictionary dictionaryWithObject:completeImagesArray forKey:OsirixAddToDBCompleteNotificationImagesArray];
-					[[NSNotificationCenter defaultCenter] postNotificationName:OsirixAddToDBCompleteNotification object:nil userInfo:userInfo];
-				}
-				@catch( NSException *ne)
-				{
-					NSLog( @"******* OsirixAddToDBNotification: %@", [ne description]);
-					[AppController printStackTrace: ne];
-				}
-				
-				if( [addedImagesArray count] > 0 && generatedByOsiriX == NO)
-				{
-					dockLabel = [NSString stringWithFormat:@"%d", [addedImagesArray count]];
-					growlString = [NSString stringWithFormat: NSLocalizedString(@"Patient: %@\r%d images added to the database", nil), [[addedImagesArray objectAtIndex:0] valueForKeyPath:@"series.study.name"], [addedImagesArray count]];
-				}
-				
-				[dockLabel retain];
-				[growlString retain];
-				
-				if( isBonjour == NO)
-					[browserController executeAutorouting: addedImagesArray rules: nil manually: NO generatedByOsiriX: generatedByOsiriX];
-				
-				[p release];
-			}
-		}
-		@catch( NSException *ne)
-		{
-			NSLog(@"******* Compute no of images in studies/series: %@", [ne description]);
-			[AppController printStackTrace: ne];
-		}
-		
-		[splash close];
-		[splash release];
-		splash = nil;
-		
-		@try
-		{
-			[browserController autoCleanDatabaseFreeSpace: browserController];
-			
-			NSError *error = nil;
-			[context save: &error];
-			
-			if( error)
-			{
-				NSLog( @"***** error saving DB: %@", [[error userInfo] description]);
-				NSLog( @"***** saveDatabase ERROR: %@", [error localizedDescription]);
-				
-				addFailed = YES;
-			}
-			
-			if( addFailed == NO)
-			{
-				NSMutableArray *viewersList = [ViewerController getDisplayed2DViewers];
-				
-				for( NSManagedObject *seriesTable in addedSeries)
-				{
-					NSString *curPatientID = [seriesTable valueForKeyPath:@"study.patientID"];
-					
-					for( ViewerController *vc in viewersList)
-					{
-						if( [[vc fileList] count])
-						{
-							NSManagedObject	*firstObject = [[vc fileList] objectAtIndex: 0];
-							
-							// For each new image in a pre-existing study, check if a viewer is already opened -> refresh the preview list
-							
-							if( curPatientID == nil || [curPatientID isEqualToString: [firstObject valueForKeyPath:@"series.study.patientID"]])
-							{
-								if( [vlToRebuild containsObject: vc] == NO)
-									[vlToRebuild addObject: vc];
-							}
-							
-							if( seriesTable == [firstObject valueForKey:@"series"])
-							{
-								if( [vlToReload containsObject: vc] == NO)
-									[vlToReload addObject: vc];
-							}
-						}
-					}
-				}
-			}
-		}
-		@catch( NSException *ne)
-		{
-			NSLog(@"******* vlToReload vlToRebuild: %@", [ne description]);
-			[AppController printStackTrace: ne];
-		}
-		
-		[context unlock];
-		[context release];
-		
-		if( addFailed == NO)
-		{
-			if( dockLabel)
-				[browserController performSelectorOnMainThread:@selector( setDockLabel:) withObject: dockLabel waitUntilDone:NO];
-			
-			if( growlString)
-				[browserController performSelectorOnMainThread:@selector( setGrowlMessage:) withObject: growlString waitUntilDone:NO];
-			
-			if([NSThread isMainThread])
-				[browserController newFilesGUIUpdate: browserController];
-				
-			[browserController.newFilesConditionLock lock];
-			
-			int prevCondition = [browserController.newFilesConditionLock condition];
-			
-			for( ViewerController *a in vlToReload)
-			{
-				if( [browserController.viewersListToReload containsObject: a] == NO)
-					[browserController.viewersListToReload addObject: a];
-			}
-			for( ViewerController *a in vlToRebuild)
-			{
-				if( [browserController.viewersListToRebuild containsObject: a] == NO)
-					[browserController.viewersListToRebuild addObject: a];
-			}
-			
-			if( newStudy || prevCondition == 1) [browserController.newFilesConditionLock unlockWithCondition: 1];
-			else [browserController.newFilesConditionLock unlockWithCondition: 2];
-			
-			if([NSThread isMainThread])
-				[browserController newFilesGUIUpdate: browserController];
-			
-			browserController.databaseLastModification = [NSDate timeIntervalSinceReferenceDate];
-		}
-		
-		[dockLabel release]; dockLabel = nil;
-		[growlString release]; growlString = nil;
-	}
-	
-	[DicomFile setFilesAreFromCDMedia: NO];
-	
-	[[NSFileManager defaultManager] removeFileAtPath: @"/tmp/dicomsr_osirix" handler: nil];
-	
-	if( addFailed)
-	{
-		NSLog(@"adding failed....");
-		
-		return nil;
-	}
-	
-	return addedImagesArray;
-}
-#pragma mark-
-
-+(NSArray*)addFiles:(NSArray*)newFilesArray toContext:(NSManagedObjectContext*)context onlyDICOM:(BOOL)onlyDICOM  notifyAddedFiles:(BOOL)notifyAddedFiles parseExistingObject:(BOOL)parseExistingObject dbFolder:(NSString*)dbFolder
-{
-	return [BrowserController addFiles:newFilesArray toContext:context toDatabase:NULL onlyDICOM:onlyDICOM  notifyAddedFiles:notifyAddedFiles parseExistingObject:parseExistingObject dbFolder:dbFolder];
-}
-
-- (NSArray*) subAddFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject context: (NSManagedObjectContext*) context dbFolder:(NSString*) dbFolder
+/*- (NSArray*) subAddFilesToDatabase:(NSArray*) newFilesArray onlyDICOM:(BOOL) onlyDICOM  produceAddedFiles:(BOOL) produceAddedFiles parseExistingObject:(BOOL) parseExistingObject context: (NSManagedObjectContext*) context dbFolder:(NSString*) dbFolder
 {
 	return [BrowserController addFiles:newFilesArray toContext:context toDatabase: [BrowserController currentBrowser] onlyDICOM:onlyDICOM  notifyAddedFiles:produceAddedFiles parseExistingObject:parseExistingObject dbFolder:dbFolder];
 }
@@ -1609,7 +552,7 @@ static NSConditionLock *threadLock = nil;
 		
 		return result;
 	}
-}
+}*/
 
 - (void) newFilesGUIUpdateRun: (int) state viewersListToReload: (NSMutableArray*) cReload viewersListToRebuild: (NSMutableArray*) cRebuild
 {
@@ -1742,7 +685,7 @@ static NSConditionLock *threadLock = nil;
 							@catch( NSException *e)
 							{
 								NSLog( @"******** addFilesAndFolderToDatabase 2 exception : %@", e);
-								[AppController printStackTrace: e];
+								[e printStackTrace];
 							}
 						}
 					}
@@ -1770,7 +713,7 @@ static NSConditionLock *threadLock = nil;
 		@catch ( NSException *e)
 		{
 			NSLog( @"********* addFilesAndFolderToDatabase exception : %@", e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 	}
 	
@@ -1801,7 +744,7 @@ static NSConditionLock *threadLock = nil;
 			@catch( NSException *ne)
 			{
 				NSRunAlertPanel( NSLocalizedString(@"Routing Filter Error", nil),  [NSString stringWithFormat: NSLocalizedString(@"Syntax error in this routing filter: %@\r\r%@\r\rSee Routing Preferences.", nil), [routingRule objectForKey:@"name"], [routingRule objectForKey:@"filter"]], nil, nil, nil);
-				[AppController printStackTrace: ne];
+				[ne printStackTrace];
 			}
 		}
 	}
@@ -2098,7 +1041,7 @@ static NSConditionLock *threadLock = nil;
 					NSLog( @"Error in autorouting filter :");
 					NSLog( @"%@", [ne name]);
 					NSLog( @"%@", [ne reason]);
-					[AppController printStackTrace: ne];
+					[ne printStackTrace];
 				}
 				
 				if( [result count])
@@ -2394,7 +1337,7 @@ static NSConditionLock *threadLock = nil;
 			@catch ( NSException *e)
 			{
 				NSLog( @"********* regenerateAutoComments exception : %@", e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			[splash incrementBy:1];
@@ -2415,123 +1358,48 @@ static NSConditionLock *threadLock = nil;
 	return databaseLastModification;
 }
 
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (managedObjectModel) return managedObjectModel;
-	
-    managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: [NSURL fileURLWithPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/OsiriXDB_DataModel.momd"]]];
-    
-    return managedObjectModel;
+-(NSManagedObjectModel*)managedObjectModel { // deprecated
+    return [database model];
 }
 
-- (void) defaultAlbums: (id) sender
-{
-	// Add default albums
-	DicomAlbum *album = nil;
-	NSArray *albumsArray = [self albumArray];
-	
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Just Added", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Just Added", nil);
-		album.predicateString = @"(dateAdded >= CAST($LASTHOUR, 'NSDate'))";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Today MR", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Today MR", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'MR') AND (date >= CAST($TODAY, 'NSDate'))";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Today CT", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Today CT", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'CT') AND (date >= CAST($TODAY, 'NSDate'))";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Yesterday MR", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Yesterday MR", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'MR') AND (date >= CAST($YESTERDAY, 'NSDate') AND date <= CAST($TODAY, 'NSDate'))";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Yesterday CT", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Yesterday CT", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'CT') AND (date >= CAST($YESTERDAY, 'NSDate') AND date <= CAST($TODAY, 'NSDate'))";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Interesting Cases", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Interesting Cases", nil);
-	}
-	
-	if( [[albumsArray valueForKey:@"name"] indexOfObject: NSLocalizedString( @"Cases with comments", nil)] == NSNotFound)
-	{
-		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
-		album.name = NSLocalizedString( @"Cases with comments", nil);
-		album.predicateString = @"(ANY series.comment != '' AND ANY series.comment != NIL) OR (comment != '' AND comment != NIL)";
-		album.smartAlbum = [NSNumber numberWithBool: YES];
-	}
-
-	[self refreshAlbums];
+-(void)defaultAlbums:(id)sender {
+	[self.database addDefaultAlbums];
 }
 
 // ------------------
 
-- (NSManagedObjectContext *) localManagedObjectContextIndependentContext: (BOOL) independentContext
-{
+/*-(NSManagedObjectContext*)localManagedObjectContextIndependentContext:(BOOL)independentContext { // deprecated
 	if (isCurrentDatabaseBonjour || [[self localDocumentsDirectory] isEqualToString: [self documentsDirectory]] == NO)
-	{
-		return [self defaultManagerObjectContextIndependentContext: independentContext];
-	}
+		return independentContext? [self.database independentContext] : [self.database context];
 	else
-	{
-		return [self managedObjectContext];
-	}
+		return [self.database context];
 }
 
-- (NSManagedObjectContext *) localManagedObjectContext
-{
-	return [self localManagedObjectContextIndependentContext: NO];
+-(NSManagedObjectContext*)localManagedObjectContext { // deprecated
+	return [self.database context];
 }
 
 // ------------------
 
-- (NSManagedObjectContext *) defaultManagerObjectContext
-{
-	return [self defaultManagerObjectContextIndependentContext: NO];
+- (NSManagedObjectContext *) defaultManagerObjectContext { // deprecated
+	return [[DicomDatabase defaultDatabase] context];
 }
 
-- (NSManagedObjectContext *) defaultManagerObjectContextIndependentContext: (BOOL) independentContext
-{
-	return [self managedObjectContextIndependentContext: independentContext path: [self localDatabasePath]];
+- (NSManagedObjectContext *) defaultManagerObjectContextIndependentContext: (BOOL) independentContext {  // deprecated
+	return independentContext? [[DicomDatabase defaultDatabase] independentContext] : [[DicomDatabase defaultDatabase] context];
 }
 
 // ------------------
 
-- (NSManagedObjectContext *) managedObjectContext
-{
+- (NSManagedObjectContext *) managedObjectContext { // deprecated
 	return [self managedObjectContextIndependentContext: NO path: currentDatabasePath];
 }
 
-- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext
-{
+- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext { // deprecated
 	return [self managedObjectContextIndependentContext: independentContext path: currentDatabasePath]; 
 }
 
-- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext path: (NSString *) path
-{
+- (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext path: (NSString *) path {  // deprecated
     NSError *error = nil;
 	
 	if( path == nil)
@@ -2584,7 +1452,7 @@ static NSConditionLock *threadLock = nil;
 		managedObjectContext = [moc retain];
 	
     return moc;
-}
+}*/
 
 // ------------------
 
@@ -2781,7 +1649,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	[wait close];
 	[wait release];
@@ -2866,422 +1734,6 @@ static NSConditionLock *threadLock = nil;
 	}
 }
 
-- (void) updateDatabaseModel: (NSString*) path :(NSString*) DBVersion
-{
-	NSString *model = [NSString stringWithFormat:@"/OsiriXDB_Previous_DataModel%@.mom", DBVersion];
-	
-	if( [DBVersion isEqualToString: DATABASEVERSION]) model = [NSString stringWithFormat:@"/OsiriXDB_DataModel.mom"];
-	
-	if( [[NSFileManager defaultManager] fileExistsAtPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: model]])
-	{
-		displayEmptyDatabase = YES;
-		[self outlineViewRefresh];
-		[self refreshMatrix: self];
-		
-		[checkIncomingLock lock];
-		
-		[managedObjectContext lock];
-		[managedObjectContext retain];
-		
-		Wait *splash = [[Wait alloc] initWithString:NSLocalizedString(@"Updating database model...", nil)];
-		[splash showWindow:self];
-		
-		NSError							*error = nil;
-		NSManagedObjectModel			*previousModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: [NSURL fileURLWithPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: model]]];
-		NSManagedObjectModel			*currentModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: [NSURL fileURLWithPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/OsiriXDB_DataModel.momd"]]];
-		NSPersistentStoreCoordinator	*previousSC = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: previousModel];
-		NSPersistentStoreCoordinator	*currentSC = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: currentModel];
-		NSManagedObjectContext			*currentContext = [[NSManagedObjectContext alloc] init];
-		NSManagedObjectContext			*previousContext = [[NSManagedObjectContext alloc] init];
-
-		@try
-		{
-			NSMutableString *updatingProblems = nil;
-			
-			[currentContext setPersistentStoreCoordinator: currentSC];
-			[previousContext setPersistentStoreCoordinator: previousSC];
-			
-			[currentContext setUndoManager: nil];
-			[previousContext setUndoManager: nil];
-			
-			[[NSFileManager defaultManager] removeFileAtPath: [[self documentsDirectory] stringByAppendingPathComponent:@"/Database3.sql"] handler: nil];
-			[[NSFileManager defaultManager] removeFileAtPath: [[self documentsDirectory] stringByAppendingPathComponent:@"/Database3.sql-journal"] handler: nil];
-			
-			if( [previousSC addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL: [NSURL fileURLWithPath: currentDatabasePath] options:nil error:&error] == nil)
-				NSLog( @"****** previousSC addPersistentStoreWithType error: %@", error);
-				
-			if( [currentSC addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL: [NSURL fileURLWithPath: [[self documentsDirectory] stringByAppendingPathComponent:@"/Database3.sql"]] options:nil error:&error] == nil)
-				NSLog( @"****** currentSC addPersistentStoreWithType error: %@", error);
-			
-			NSManagedObject *currentStudyTable, *currentSeriesTable, *currentImageTable, *currentAlbumTable;
-			NSArray *albumProperties, *studyProperties, *seriesProperties, *imageProperties;
-			
-			NSArray *albums = [BrowserController albumsInContext: previousContext];
-			albumProperties = [[[[previousModel entitiesByName] objectForKey:@"Album"] attributesByName] allKeys];
-			for( NSManagedObject *previousAlbum in albums)
-			{
-				currentAlbumTable = [NSEntityDescription insertNewObjectForEntityForName:@"Album" inManagedObjectContext: currentContext];
-				
-				for ( NSString *name in albumProperties)
-				{
-					[currentAlbumTable setValue: [previousAlbum valueForKey: name] forKey: name];
-				}
-			}
-			
-			error = nil;
-			[currentContext save: &error];
-			
-			// STUDIES
-			NSFetchRequest* dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-			[dbRequest setEntity: [[previousModel entitiesByName] objectForKey:@"Study"]];
-			[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-			
-			error = nil;
-			NSMutableArray *studies = [NSMutableArray arrayWithArray: [previousContext executeFetchRequest:dbRequest error:&error]];
-			
-			[[splash progress] setMaxValue:[studies count]];
-			
-			int chunk = 0;
-			
-			studies = [NSMutableArray arrayWithArray: [studies sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey:@"patientID" ascending:YES] autorelease]]]];
-			if( [studies count] > 100)
-			{
-				int max = [studies count] - chunk*100;
-				if( max > 100) max = 100;
-				studies = [NSMutableArray arrayWithArray: [studies subarrayWithRange: NSMakeRange( chunk*100, max)]];
-				chunk++;
-			}
-			[studies retain];
-			
-			studyProperties = [[[[previousModel entitiesByName] objectForKey:@"Study"] attributesByName] allKeys];
-			seriesProperties = [[[[previousModel entitiesByName] objectForKey:@"Series"] attributesByName] allKeys];
-			imageProperties = [[[[previousModel entitiesByName] objectForKey:@"Image"] attributesByName] allKeys];
-			
-			int counter = 0;
-			
-			NSArray *currentAlbums = nil;
-			NSArray *currentAlbumsNames = nil;
-			
-			while( [studies count] > 0)
-			{
-				NSAutoreleasePool	*poolLoop = [[NSAutoreleasePool alloc] init];
-				
-				
-				NSString *studyName = nil;
-				
-				@try
-				{
-					NSManagedObject *previousStudy = [studies lastObject];
-					
-					[studies removeLastObject];
-					
-					currentStudyTable = [NSEntityDescription insertNewObjectForEntityForName:@"Study" inManagedObjectContext: currentContext];
-					
-					for ( NSString *name in studyProperties)
-					{
-						if( [name isEqualToString: @"isKeyImage"] || 
-							[name isEqualToString: @"comment"] ||
-						    [name isEqualToString: @"comment2"] ||
-						    [name isEqualToString: @"comment3"] ||
-						    [name isEqualToString: @"comment4"] ||
-						    [name isEqualToString: @"reportURL"] ||
-							[name isEqualToString: @"stateText"])
-						{
-							[currentStudyTable setPrimitiveValue: [previousStudy primitiveValueForKey: name] forKey: name];
-						}
-						else [currentStudyTable setValue: [previousStudy primitiveValueForKey: name] forKey: name];
-						
-						if( [name isEqualToString: @"name"])
-							studyName = [previousStudy primitiveValueForKey: name];
-					}
-					
-					// SERIES
-					NSArray *series = [[previousStudy valueForKey:@"series"] allObjects];
-					for( NSManagedObject *previousSeries in series)
-					{
-						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-						
-						@try
-						{
-							currentSeriesTable = [NSEntityDescription insertNewObjectForEntityForName:@"Series" inManagedObjectContext: currentContext];
-							
-							for( NSString *name in seriesProperties)
-							{
-								if( [name isEqualToString: @"xOffset"] || 
-									[name isEqualToString: @"yOffset"] || 
-									[name isEqualToString: @"scale"] || 
-									[name isEqualToString: @"rotationAngle"] || 
-									[name isEqualToString: @"displayStyle"] || 
-									[name isEqualToString: @"windowLevel"] || 
-									[name isEqualToString: @"windowWidth"] || 
-									[name isEqualToString: @"yFlipped"] || 
-									[name isEqualToString: @"xFlipped"])
-								{
-									
-								}
-								else if(  [name isEqualToString: @"isKeyImage"] || 
-										  [name isEqualToString: @"comment"] ||
-										  [name isEqualToString: @"comment2"] ||
-										  [name isEqualToString: @"comment3"] ||
-										  [name isEqualToString: @"comment4"] ||
-										  [name isEqualToString: @"reportURL"] ||
-										  [name isEqualToString: @"stateText"])
-								{
-									[currentSeriesTable setPrimitiveValue: [previousSeries primitiveValueForKey: name] forKey: name];
-								}
-								else [currentSeriesTable setValue: [previousSeries primitiveValueForKey: name] forKey: name];
-							}
-							[currentSeriesTable setValue: currentStudyTable forKey: @"study"];
-							
-							// IMAGES
-							NSArray *images = [[previousSeries valueForKey:@"images"] allObjects];
-							for ( NSManagedObject *previousImage in images)
-							{
-								@try
-								{
-									currentImageTable = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext: currentContext];
-									
-									for( NSString *name in imageProperties)
-									{
-										if( [name isEqualToString: @"xOffset"] || 
-											[name isEqualToString: @"yOffset"] || 
-											[name isEqualToString: @"scale"] || 
-											[name isEqualToString: @"rotationAngle"] || 
-											[name isEqualToString: @"windowLevel"] || 
-											[name isEqualToString: @"windowWidth"] || 
-											[name isEqualToString: @"yFlipped"] || 
-											[name isEqualToString: @"xFlipped"])
-										{
-											
-										}
-										else if( [name isEqualToString: @"isKeyImage"] || 
-												[name isEqualToString: @"comment"] ||
-												[name isEqualToString: @"comment2"] ||
-												[name isEqualToString: @"comment3"] ||
-												[name isEqualToString: @"comment4"] ||
-												[name isEqualToString: @"reportURL"] ||
-												[name isEqualToString: @"stateText"])
-										{
-											[currentImageTable setPrimitiveValue: [previousImage primitiveValueForKey: name] forKey: name];
-										}
-										else [currentImageTable setValue: [previousImage primitiveValueForKey: name] forKey: name];
-									}
-									[currentImageTable setValue: currentSeriesTable forKey: @"series"];
-								}
-								
-								@catch (NSException *e)
-								{
-									NSLog(@"IMAGE LEVEL: Problems during updating: %@", e);
-									[AppController printStackTrace: e];
-								}
-							}
-						}
-						
-						@catch (NSException *e)
-						{
-							NSLog(@"SERIES LEVEL: Problems during updating: %@", e);
-							[AppController printStackTrace: e];
-						}
-						[pool release];
-					}
-					
-					NSArray		*storedInAlbums = [[previousStudy valueForKey: @"albums"] allObjects];
-					
-					if( [storedInAlbums count])
-					{
-						if( currentAlbums == nil)
-						{
-							// Find all current albums
-							NSFetchRequest *r = [[[NSFetchRequest alloc] init] autorelease];
-							[r setEntity: [[currentModel entitiesByName] objectForKey:@"Album"]];
-							[r setPredicate: [NSPredicate predicateWithValue:YES]];
-						
-							error = nil;
-							currentAlbums = [currentContext executeFetchRequest:r error:&error];
-							currentAlbumsNames = [currentAlbums valueForKey:@"name"];
-							
-							[currentAlbums retain];
-							[currentAlbumsNames retain];
-						}
-						
-						@try
-						{
-							for( NSManagedObject *sa in storedInAlbums)
-							{
-								NSString *name = [sa valueForKey:@"name"];
-								NSMutableSet *studiesStoredInAlbum = [[currentAlbums objectAtIndex: [currentAlbumsNames indexOfObject: name]] mutableSetValueForKey:@"studies"];
-								
-								[studiesStoredInAlbum addObject: currentStudyTable];
-							}
-						}
-						
-						@catch (NSException *e)
-						{
-							NSLog(@"ALBUM : %@", e);
-							[AppController printStackTrace: e];
-						}
-					}
-				}
-				
-				@catch (NSException * e)
-				{
-					NSLog(@"STUDY LEVEL: Problems during updating: %@", e);
-					NSLog(@"Patient Name: %@", studyName);
-					if( updatingProblems == nil) updatingProblems = [[NSMutableString stringWithString:@""] retain];
-					
-					[updatingProblems appendFormat:@"%@\r", studyName];
-					
-					[AppController printStackTrace: e];
-				}
-					
-				[splash incrementBy:1];
-				counter++;
-				
-				NSLog(@"%d", counter);
-				
-				if( counter % 100 == 0)
-				{
-					error = nil;
-					[currentContext save: &error];
-					
-					[currentContext reset];
-					[previousContext reset];
-					
-					[currentAlbums release];			currentAlbums = nil;
-					[currentAlbumsNames release];		currentAlbumsNames = nil;
-					
-					[studies release];
-					
-					studies = [NSMutableArray arrayWithArray: [previousContext executeFetchRequest:dbRequest error:&error]];
-					
-					[[splash progress] setMaxValue:[studies count]];
-					
-					studies = [NSMutableArray arrayWithArray: [studies sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey:@"patientID" ascending:YES] autorelease]]]];
-					if( [studies count] > 100)
-					{
-						int max = [studies count] - chunk*100;
-						if( max>100) max = 100;
-						studies = [NSMutableArray arrayWithArray: [studies subarrayWithRange: NSMakeRange( chunk*100, max)]];
-						chunk++;
-					}
-					
-					[studies retain];
-				}
-				
-				[poolLoop release];
-			}
-			
-			error = nil;
-			[currentContext save: &error];
-			
-			[[NSFileManager defaultManager] removeFileAtPath: [[self documentsDirectory] stringByAppendingPathComponent:@"/Database-Old-PreviousVersion.sql"] handler: nil];
-			[[NSFileManager defaultManager] movePath:currentDatabasePath toPath:[[self documentsDirectory] stringByAppendingPathComponent:@"/Database-Old-PreviousVersion.sql"] handler:nil];
-			[[NSFileManager defaultManager] movePath:[[self documentsDirectory] stringByAppendingPathComponent:@"/Database3.sql"] toPath:currentDatabasePath handler:nil];
-			
-			[studies release];					studies = nil;
-			[currentAlbums release];			currentAlbums = nil;
-			[currentAlbumsNames release];		currentAlbumsNames = nil;
-			
-			if( updatingProblems)
-			{
-				NSRunAlertPanel( NSLocalizedString(@"Database Update", nil), [NSString stringWithFormat:NSLocalizedString(@"Database updating generated errors. The corrupted studies have been removed:\r\r%@", nil), updatingProblems], nil, nil, nil);
-
-//				NSRunAlertPanel( NSLocalizedString(@"Database Update", nil), NSLocalizedString(@"Database updating generated errors... The corrupted studies have been removed.", nil), nil, nil, nil);
-				
-				[updatingProblems release];
-				updatingProblems = nil;
-			}
-		}
-		
-		@catch (NSException *e)
-		{
-			NSLog( @"updateDatabaseModel failed...");
-			NSLog( @"%@", [e description]);
-			[AppController printStackTrace: e];
-			
-			NEEDTOREBUILD = YES;
-			COMPLETEREBUILD = YES;
-			
-			NSRunAlertPanel( NSLocalizedString(@"Database Update", nil), NSLocalizedString(@"Database updating failed... The database SQL index file is probably corrupted... The database will be reconstructed.", nil), nil, nil, nil);
-		}
-		
-		[previousModel release];
-		[currentModel release];
-		[previousSC release];
-		[currentSC release];
-		
-		[currentContext reset];
-		[previousContext reset];
-		
-		[currentContext release];
-		[previousContext release];
-		
-		[splash close];
-		[splash release];
-		
-		displayEmptyDatabase = NO;
-		needDBRefresh = YES;
-		
-		[managedObjectContext unlock];
-		[managedObjectContext release]; // For our local retain
-		
-		[managedObjectContext release]; // For the global retain
-		managedObjectContext = nil;
-		
-		[checkIncomingLock unlock];
-	}
-	else
-	{
-		int r = NSRunAlertPanel( NSLocalizedString(@"OsiriX Database", nil), NSLocalizedString(@"OsiriX cannot understand the model of current saved database... The database index will be deleted and reconstructed (no images are lost).", nil), NSLocalizedString(@"OK", nil), NSLocalizedString(@"Quit", nil), nil);
-		if( r == NSAlertAlternateReturn)
-		{
-			NSString *pathTemp = [[self documentsDirectory] stringByAppendingString:@"/Loading"];	// To avoid the crash message during next startup
-			[[NSFileManager defaultManager] removeFileAtPath:pathTemp handler: nil];
-			[[NSApplication sharedApplication] terminate: self];
-		}
-		[[NSFileManager defaultManager] removeFileAtPath:currentDatabasePath handler:nil];
-		NEEDTOREBUILD = YES;
-		COMPLETEREBUILD = YES;
-	}
-}
-
-- (void) recomputePatientUIDs
-{
-	NSLog( @"recomputePatientUIDs");
-	
-	// Find all studies
-	NSFetchRequest	*dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-	[dbRequest setEntity: [[self.managedObjectModel entitiesByName] objectForKey:@"Study"]];
-	[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-	NSManagedObjectContext *context = self.managedObjectContext;
-	
-	[context lock];
-	NSError *error = nil;
-	NSArray *studiesArray = [context executeFetchRequest:dbRequest error:&error];
-	
-	for( NSManagedObject *study in studiesArray)
-	{
-		@try
-		{
-			NSManagedObject *o = [[[[study valueForKey:@"series"] anyObject] valueForKey:@"images"] anyObject];
-			DicomFile	*dcm = [[DicomFile alloc] init: [o valueForKey:@"completePath"]];
-			
-			if( dcm)
-			{
-				if( [dcm elementForKey:@"patientUID"])
-					[study setValue: [dcm elementForKey:@"patientUID"] forKey:@"patientUID"];
-			}
-			
-			[dcm release];
-		}
-		@catch ( NSException *e)
-		{
-			NSLog( @"recomputePatientUIDs exception : %@", e);
-			[AppController printStackTrace: e];
-		}
-	}
-	[context unlock];
-}
 
 - (void)showEntireDatabase
 {
@@ -3447,6 +1899,15 @@ static NSConditionLock *threadLock = nil;
 		return NO;
 }
 
+-(void)setDatabase:(DicomDatabase*)db {
+	if (db == database)
+		return;
+	[database release];
+	database = [db retain];
+	
+	// TODO: notifications, reload, ...
+}
+
 - (void) loadDatabase:(NSString*) path
 {
 	[self waitForRunningProcesses];
@@ -3562,8 +2023,8 @@ static NSConditionLock *threadLock = nil;
 	[managedObjectContext release];
 	managedObjectContext = nil;
 	
-	[self setFixedDocumentsDirectory];
-	[self managedObjectContext];
+//	[self setFixedDocumentsDirectory];
+//	[self managedObjectContext];
 	[managedObjectContext lock];
 	
 	[managedObjectContext setMergePolicy: NSMergeByPropertyObjectTrumpMergePolicy];
@@ -3587,7 +2048,7 @@ static NSConditionLock *threadLock = nil;
 		@catch (NSException *ne)
 		{
 			NSLog( @"recomputePatientUIDs exception: %@ %@", [ne name], [ne reason]);
-			[AppController printStackTrace: ne];
+			[ne printStackTrace];
 		}
 		
 		[wait close];
@@ -3692,7 +2153,7 @@ static NSConditionLock *threadLock = nil;
 			
 			[[NSUserDefaults standardUserDefaults] setObject:DATABASEVERSION forKey: @"DATABASEVERSION"];
 		}
-		@catch (NSException * e) {NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);[AppController printStackTrace: e];}
+		@catch (NSException * e) {NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);[e printStackTrace];}
 		
 		[context unlock];
 	}
@@ -3791,7 +2252,7 @@ static NSConditionLock *threadLock = nil;
 								}
 								else NSLog( @"**** DicomFile *curFile = nil");
 							}
-							@catch (NSException * e) {NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);[AppController printStackTrace: e];}
+							@catch (NSException * e) {NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);[e printStackTrace];}
 						}
 						else
 						{
@@ -3902,7 +2363,7 @@ static NSConditionLock *threadLock = nil;
 		@catch (NSException * e)
 		{
 			NSLog( @"copyFilesThread exception: %@", e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 	}
 	
@@ -3990,7 +2451,7 @@ static NSConditionLock *threadLock = nil;
 	@catch ( NSException *e)
 	{
 		NSLog( @"******** copy to DB exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	[managedObjectContext unlock];
 	[splash close];
@@ -4149,7 +2610,7 @@ static NSConditionLock *threadLock = nil;
 				@catch (NSException * e)
 				{
 					NSLog( @"copyFilesIntoDatabaseIfNeeded exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				[splash incrementBy:1];
 				
@@ -4182,7 +2643,7 @@ static NSConditionLock *threadLock = nil;
 	return;
 }
 
-- (IBAction) endReBuildDatabase:(id) sender
+/*- (IBAction) endReBuildDatabase:(id) sender
 {
 	[NSApp endSheet: rebuildWindow];
 	[rebuildWindow orderOut: self];
@@ -4204,207 +2665,10 @@ static NSConditionLock *threadLock = nil;
 		
 		[self ReBuildDatabase: self];
 	}
-}
+}*/
 
-- (IBAction) ReBuildDatabase:(id) sender
-{	
-	if (isCurrentDatabaseBonjour) return;
-	
-	[self waitForRunningProcesses];
-	
-	[[AppController sharedAppController] closeAllViewers: self];
-	
-	if( COMPLETEREBUILD)	// Delete the database file
-	{
-		if ([[NSFileManager defaultManager] fileExistsAtPath: currentDatabasePath])
-		{
-			[[NSFileManager defaultManager] removeFileAtPath: [currentDatabasePath stringByAppendingString:@" - old"] handler: nil];
-			[[NSFileManager defaultManager] movePath: currentDatabasePath toPath: [currentDatabasePath stringByAppendingString:@" - old"] handler: nil];
-		}
-	}
-	else
-	{
-		[self saveDatabase:currentDatabasePath];
-	}
-	
-	displayEmptyDatabase = YES;
-	[self outlineViewRefresh];
-	[self refreshMatrix: self];
-	
-	[checkIncomingLock lock];
-	
-	[managedObjectContext lock];
-	[managedObjectContext unlock];
-	[managedObjectContext release];
-	managedObjectContext = nil;
-	
-	[databaseOutline reloadData];
-	
-	NSMutableArray				*filesArray;
-	
-	WaitRendering *wait = [[WaitRendering alloc] init: NSLocalizedString(@"Step 1: Checking files...", nil)];
-	[wait showWindow:self];
-	
-	filesArray = [[NSMutableArray alloc] initWithCapacity: 10000];
-	
-	// SCAN THE DATABASE FOLDER, TO BE SURE WE HAVE EVERYTHING!
-	
-	NSString	*aPath = [[self documentsDirectory] stringByAppendingPathComponent:DATABASEPATH];
-	NSString	*incomingPath = [[self documentsDirectory] stringByAppendingPathComponent:INCOMINGPATH];
-	long		totalFiles = 0;
-	
-	[AppController createNoIndexDirectoryIfNecessary: aPath];
-	
-	// In the DATABASE FOLDER, we have only folders! Move all files that are wrongly there to the INCOMING folder.... and then scan these folders containing the DICOM files
-	
-	NSArray	*dirContent = [[NSFileManager defaultManager] directoryContentsAtPath:aPath];
-	for( NSString *dir in dirContent)
-	{
-		NSString * itemPath = [aPath stringByAppendingPathComponent: dir];
-		id fileType = [[[NSFileManager defaultManager] fileAttributesAtPath: itemPath traverseLink: YES] objectForKey:NSFileType];
-		if ([fileType isEqual:NSFileTypeRegular])
-		{
-			[[NSFileManager defaultManager] movePath:itemPath toPath:[incomingPath stringByAppendingPathComponent: [itemPath lastPathComponent]] handler: nil];
-		}
-		else totalFiles += [[[[NSFileManager defaultManager] fileAttributesAtPath: itemPath traverseLink: YES] objectForKey: NSFileReferenceCount] intValue];
-	}
-	
-	dirContent = [[NSFileManager defaultManager] directoryContentsAtPath:aPath];
-	
-	NSLog( @"Start Rebuild");
-	
-	for( NSString *name in dirContent)
-	{
-		NSAutoreleasePool		*pool = [[NSAutoreleasePool alloc] init];
-		
-		NSString	*curDir = [aPath stringByAppendingPathComponent: name];
-		NSArray		*subDir = [[NSFileManager defaultManager] directoryContentsAtPath: [aPath stringByAppendingPathComponent: name]];
-		
-		for( NSString *subName in subDir)
-		{
-			if( [subName characterAtIndex: 0] != '.')
-				[filesArray addObject: [curDir stringByAppendingPathComponent: subName]];
-		}
-				
-		[pool release];
-	}
-	
-	[wait close];
-	[wait release];
-	wait = nil;
-	
-	// ** DICOM ROI SR FOLDER
-	dirContent = [[NSFileManager defaultManager] directoryContentsAtPath: [[self documentsDirectory] stringByAppendingPathComponent:@"ROIs"]];
-	for( NSString *name in dirContent)
-	{
-		if( [name characterAtIndex: 0] != '.')
-		{
-			[filesArray addObject: [[[self documentsDirectory] stringByAppendingPathComponent:@"ROIs"] stringByAppendingPathComponent: name]];
-		}
-	}
-	
-	NSManagedObjectContext *context = self.managedObjectContext;
-	NSManagedObjectModel *model = self.managedObjectModel;
-	
-	[context retain];
-	[context lock];
-	
-	@try
-	{
-		// ** Finish the rebuild
-		[[self addFilesToDatabase: filesArray onlyDICOM:NO produceAddedFiles:NO] valueForKey:@"completePath"];
-		
-		NSLog( @"End Rebuild");
-		
-		[filesArray release];
-		
-		Wait  *splash = [[Wait alloc] initWithString: NSLocalizedString(@"Step 3: Cleaning Database...", nil)];
-		
-		[splash showWindow:self];
-		
-		NSFetchRequest	*dbRequest;
-		NSError			*error = nil;
-		
-		if( COMPLETEREBUILD == NO)
-		{
-			// FIND ALL images, and REMOVE non-available images
-			
-			NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-			[dbRequest setEntity: [[model entitiesByName] objectForKey:@"Image"]];
-			[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-			error = nil;
-			NSArray *imagesArray = [context executeFetchRequest:dbRequest error:&error];
-			
-			[[splash progress] setMaxValue:[imagesArray count]/50];
-			
-			// Find unavailable files
-			int counter = 0;
-			for( NSManagedObject *aFile in imagesArray)
-			{
-				
-				FILE *fp = fopen( [[aFile valueForKey:@"completePath"] UTF8String], "r");
-				if( fp)
-				{
-					fclose( fp);
-				}
-				else
-					[context deleteObject: aFile];
-				
-				if( counter++ % 50 == 0) [splash incrementBy:1];
-			}
-		}
-		
-		dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-		[dbRequest setEntity: [[model entitiesByName] objectForKey:@"Study"]];
-		[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-		error = nil;
-		NSArray *studiesArray = [context executeFetchRequest:dbRequest error:&error];
-		NSString	*basePath = [NSString stringWithFormat: @"%@/REPORTS/", [self documentsDirectory]];
-		
-		if ([studiesArray count] > 0)
-		{
-			for( NSManagedObject *study in studiesArray)
-			{
-				BOOL deleted = NO;
-				
-				[self checkForExistingReport: study dbFolder: [self documentsDirectory]];
-				
-				if( [[study valueForKey:@"series"] count] == 0)
-				{
-					deleted = YES;
-					[context deleteObject: study];
-				}
-				
-				if( [[study valueForKey:@"noFiles"] intValue] == 0)
-				{
-					if( deleted == NO) [context deleteObject: study];
-				}
-			}
-		}
-		
-		[self saveDatabase: currentDatabasePath];
-		
-		[splash close];
-		[splash release];
-		
-		displayEmptyDatabase = NO;
-		
-		[self checkReportsDICOMSRConsistency];
-		
-		[self outlineViewRefresh];
-		
-		[checkIncomingLock unlock];
-	}
-	@catch( NSException *e)
-	{
-		NSLog( @"ReBuildDatabase exception: %@", e);
-		[AppController printStackTrace: e];
-	}
-	[context unlock];
-	[context release];
-	
-	COMPLETEREBUILD = NO;
-	NEEDTOREBUILD = NO;
+- (IBAction) ReBuildDatabase:(id) sender {
+	[self.database rebuild];
 }
 
 - (IBAction) ReBuildDatabaseSheet: (id)sender
@@ -4528,7 +2792,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"***** dumpSQLFile exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[splash close];
@@ -4624,7 +2888,7 @@ static NSConditionLock *threadLock = nil;
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 			#ifdef OSIRIX_VIEWER
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 			#endif
 		}
 		
@@ -4676,7 +2940,7 @@ static NSConditionLock *threadLock = nil;
 		{
 			NSLog( @"autoCleanDatabaseDate exception");
 			NSLog( @"%@", [e description]);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[context unlock];
@@ -4848,7 +3112,7 @@ static NSConditionLock *threadLock = nil;
 				{
 					NSLog( @"autoCleanDatabaseDate");
 					NSLog( @"%@", [e description]);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				if( [toBeRemoved count] > 0)
@@ -4910,7 +3174,7 @@ static NSConditionLock *threadLock = nil;
 					{
 						NSLog( @"autoCleanDatabaseDate");
 						NSLog( @"%@", [e description]);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					[wait close];
 					[wait release];
@@ -5145,7 +3409,7 @@ static NSConditionLock *threadLock = nil;
 						{
 							NSLog( @"autoCleanDatabaseFreeSpace exception 2");
 							NSLog( @"%@", [e description]);
-							[AppController printStackTrace: e];
+							[e printStackTrace];
 						}
 					
 						[self.managedObjectContext unlock];
@@ -5165,7 +3429,7 @@ static NSConditionLock *threadLock = nil;
 				{
 					NSLog( @"autoCleanDatabaseFreeSpace exception");
 					NSLog( @"%@", [e description]);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				NSLog(@"------------------- Limit Reached - Finishing autoCleanDatabaseFreeSpace");
@@ -5213,18 +3477,18 @@ static NSConditionLock *threadLock = nil;
 }
 
 #pragma mark-
-#pragma mark Web Portal Database // deprecated, use WebPortal.defaultWebPortal
+#pragma mark Web Portal Database // deprecated, use WebPortal.defaultPortal
 
 -(long)saveUserDatabase { // deprecated
 #ifndef OSIRIX_LIGHT
-	[[[WebPortal defaultWebPortal] database] save:NULL];
+	[[[WebPortal defaultPortal] database] save:NULL];
 #endif
 	return 0;
 }
 
 -(NSManagedObjectModel*)userManagedObjectModel { // deprecated
 #ifndef OSIRIX_LIGHT
-	return [WebPortalDatabase managedObjectModel];
+	return [[[WebPortalDatabase defaultPortal] database] model];
 #else
 	return NULL;
 #endif
@@ -5232,7 +3496,7 @@ static NSConditionLock *threadLock = nil;
 
 -(NSManagedObjectContext*)userManagedObjectContext { // deprecated
 #ifndef OSIRIX_LIGHT
-	return [[[WebPortal defaultWebPortal] database] managedObjectContext];
+	return [[[WebPortal defaultPortal] database] context];
 #else
 	return NULL;
 #endif
@@ -5240,7 +3504,7 @@ static NSConditionLock *threadLock = nil;
 
 -(WebPortalUser*)userWithName:(NSString*)name { // deprecated
 #ifndef OSIRIX_LIGHT
-	return [[[WebPortal defaultWebPortal] database] userWithName:name];
+	return [[[WebPortal defaultPortal] database] userWithName:name];
 #else
 	return NULL;
 #endif
@@ -5464,7 +3728,7 @@ static NSConditionLock *threadLock = nil;
 		
 		NSLog( @"filter error %@ : %@", [ne name] ,[ne reason]);
 		
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 	}
 	
 	return pred;
@@ -5626,7 +3890,7 @@ static NSConditionLock *threadLock = nil;
 	@catch( NSException *ne)
 	{
 		NSLog(@"OutlineRefresh exception: %@", [ne description]);
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 		
 		[request setPredicate: [NSPredicate predicateWithValue:YES]];
 		outlineViewArray = [context executeFetchRequest:request error:&error];
@@ -5700,7 +3964,7 @@ static NSConditionLock *threadLock = nil;
 		@catch( NSException *ne)
 		{
 			NSLog(@"OutlineRefresh exception: %@", [ne description]);
-			[AppController printStackTrace: ne];
+			[ne printStackTrace];
 		}
 	}
 	else
@@ -5769,7 +4033,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		NSLog( @"checkBonjourUpToDateThread");
 		NSLog( @"%@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 
 	[checkIncomingLock unlock];
@@ -5817,7 +4081,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 			 
 	[pool release];
@@ -5921,7 +4185,7 @@ static NSConditionLock *threadLock = nil;
 			{
 				NSLog( @"refreshDatabase exception");
 				NSLog( @"%@", [e description]);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			[checkIncomingLock unlock];
 		}
@@ -5983,7 +4247,7 @@ static NSConditionLock *threadLock = nil;
 		@catch (NSException * e)
 		{
 			NSLog( @"***** children Array%@", [e description]);
-			[AppController printStackTrace: e];
+			[e ];
 		}
 
 		[managedObjectContext unlock];
@@ -6031,7 +4295,7 @@ static NSConditionLock *threadLock = nil;
 		@catch (NSException * e)
 		{
 			NSLog( @"%@", [e description]);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[managedObjectContext unlock];
@@ -6125,7 +4389,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException *e)
 	{
 		NSLog(@"imagesArray: (NSManagedObject*) item preferredObject: (int) preferredObject onlyImages:(BOOL) onlyImages: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[managedObjectContext unlock];
@@ -6302,7 +4566,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"Exception in filesForDatabaseMatrixSelection: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context release];
@@ -6799,7 +5063,7 @@ static NSConditionLock *threadLock = nil;
 	@catch ( NSException *e)
 	{
 		NSLog( @"******** proceedDeleteObjects exception : %", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	WaitRendering *wait = nil;
@@ -6813,7 +5077,7 @@ static NSConditionLock *threadLock = nil;
 		[context save: nil];
 	}
 	@catch( NSException *e)
-	{	NSLog( @"context save: nil: %@", e); [AppController printStackTrace: e];}
+	{	NSLog( @"context save: nil: %@", e); [e printStackTrace];}
 	
 	@try
 	{
@@ -6835,7 +5099,7 @@ static NSConditionLock *threadLock = nil;
 			@catch( NSException *e)
 			{
 				NSLog( @"context deleteObject: series: %@", e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 		}
 		
@@ -6844,7 +5108,7 @@ static NSConditionLock *threadLock = nil;
 			[context save: nil];
 		}
 		@catch( NSException *e)
-		{	NSLog( @"context save: nil: %@", e); [AppController printStackTrace: e];}
+		{	NSLog( @"context save: nil: %@", e); [e printStackTrace];}
 			
 		// Remove studies without series !
 		for( NSManagedObject *study in studiesArray)
@@ -6863,7 +5127,7 @@ static NSConditionLock *threadLock = nil;
 				}
 			}
 			@catch( NSException *e)
-			{	NSLog( @"context deleteObject: study: %@", e); [AppController printStackTrace: e];}
+			{	NSLog( @"context deleteObject: study: %@", e); [e printStackTrace];}
 		}
 		
 		[previousItem release];
@@ -6876,7 +5140,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		NSLog( @"Exception during delItem");
 		NSLog( @"%@", [ne description]);
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 	}
 	
 	[wait close];
@@ -6937,7 +5201,7 @@ static NSConditionLock *threadLock = nil;
 				@catch (NSException *e)
 				{
 					NSLog(@"series.study.albums.@count exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 			}
 			
@@ -7121,7 +5385,7 @@ static NSConditionLock *threadLock = nil;
 		{
 			NSLog( @"Exception Updating database...");
 			NSLog( @"%@", [ne description]);
-			[AppController printStackTrace: ne];
+			[ne printStackTrace];
 		}
 		
 		[wait close];
@@ -7292,7 +5556,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"%@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 
 	[managedObjectContext unlock];
@@ -7448,7 +5712,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"%@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 
 	[managedObjectContext unlock];
@@ -7619,7 +5883,7 @@ static NSConditionLock *threadLock = nil;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];
@@ -8000,7 +6264,7 @@ static NSConditionLock *threadLock = nil;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					[context unlock];
@@ -8008,7 +6272,7 @@ static NSConditionLock *threadLock = nil;
 				@catch (NSException *e)
 				{
 					NSLog( @"**** databaseOpenStudy exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 			}
 			
@@ -8246,7 +6510,7 @@ static NSConditionLock *threadLock = nil;
 			@catch ( NSException *e)
 			{
 				NSLog( @"findAndSelectFile exception: %@", e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 				curFile = nil;
 			}
 			
@@ -8289,7 +6553,7 @@ static NSConditionLock *threadLock = nil;
 				@catch (NSException * e) 
 				{
 					NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				[curFile release];
@@ -8514,7 +6778,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		NSLog( @"******* BrowserController findObject Exception");
 		NSLog( @"%@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 
 	[context unlock];
@@ -8565,7 +6829,7 @@ static NSConditionLock *threadLock = nil;
 				@catch (NSException * e)
 				{
 					NSLog( @"findObject exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 			}
 			
@@ -8607,7 +6871,7 @@ static NSConditionLock *threadLock = nil;
 			{
 				NSLog( @"******* BrowserController findObject Exception - Delete");
 				NSLog( @"%@", [e description]);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			[context unlock];
@@ -8798,7 +7062,7 @@ static NSConditionLock *threadLock = nil;
 	@catch ( NSException *e)
 	{
 		NSLog( @"***** loadNextSeries exception : %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 		
 	[context unlock];
@@ -9513,7 +7777,7 @@ static BOOL withReset = NO;
 		@catch( NSException *ne)
 		{
 			NSLog(@"matrixNewIcon exception: %@", [ne description]);
-			[AppController printStackTrace: ne];
+			[ne printStackTrace];
 		}
 		
 		[managedObjectContext unlock];
@@ -9554,7 +7818,7 @@ static BOOL withReset = NO;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[managedObjectContext unlock];
@@ -9621,7 +7885,7 @@ static BOOL withReset = NO;
 	@catch( NSException *ne)
 	{
 		NSLog( @"matrixDisplayIcons exception: %@", [ne description]);
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 	}
 }
 
@@ -9667,7 +7931,7 @@ static BOOL withReset = NO;
 		@catch( NSException *ne)
 		{
 			NSLog(@"buildAllThumbnails exception: %@", [ne description]);
-			[AppController printStackTrace: ne];
+			[ne printStackTrace];
 		}
 		
 		if( studyObject)
@@ -9686,7 +7950,7 @@ static BOOL withReset = NO;
 				@catch( NSException *ne)
 				{
 					NSLog(@"buildAllThumbnails exception: %@", [ne description]);
-					[AppController printStackTrace: ne];
+					[ne printStackTrace];
 				}
 				
 				[context unlock];
@@ -9730,7 +7994,7 @@ static BOOL withReset = NO;
 				@catch( NSException *ne)
 				{
 					NSLog(@"buildAllThumbnails exception: %@", [ne description]);
-					[AppController printStackTrace: ne];
+					[ne printStackTrace];
 				}
 				
 				[context unlock];
@@ -9798,7 +8062,7 @@ static BOOL withReset = NO;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];
@@ -9841,7 +8105,7 @@ static BOOL withReset = NO;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];
@@ -9918,7 +8182,7 @@ static BOOL withReset = NO;
 	@catch( NSException *ne)
 	{
 		NSLog(@"matrixLoadIcons exception: %@", ne.description);
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 	}
 	
     [pool release];
@@ -10221,7 +8485,7 @@ static BOOL withReset = NO;
 	@catch (NSException * e)
 	{
 		NSLog( @"Exception in filesForDatabaseMatrixSelection: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context release];
@@ -10274,7 +8538,7 @@ static BOOL withReset = NO;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 		
 	[self.managedObjectContext unlock];
@@ -10317,7 +8581,7 @@ static BOOL withReset = NO;
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[self.managedObjectContext unlock];
@@ -10503,7 +8767,7 @@ static BOOL withReset = NO;
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[context unlock];
@@ -10571,7 +8835,7 @@ static BOOL withReset = NO;
 				@catch (NSException * e) 
 				{
 					NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				[context unlock];
@@ -10617,7 +8881,7 @@ static BOOL withReset = NO;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					[context unlock];
@@ -10699,7 +8963,7 @@ static BOOL needToRezoom;
 		}
 		@catch (NSException * e)
 		{
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 			NSRunCriticalAlertPanel( NSLocalizedString(@"Error",nil), [NSString stringWithFormat: NSLocalizedString(@"This filter is NOT working: %@", nil), e], NSLocalizedString(@"OK",nil), nil, nil);
 		}
 	}
@@ -10776,7 +9040,7 @@ static BOOL needToRezoom;
 				@catch (NSException * e) 
 				{
 					NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				[context unlock];
@@ -10835,7 +9099,7 @@ static BOOL needToRezoom;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					[context unlock];
@@ -10845,41 +9109,9 @@ static BOOL needToRezoom;
 		}
 	}
 }
-- (NSArray*) albumArray
-{
-	NSManagedObjectContext	*context = self.managedObjectContext;
-	NSManagedObjectModel	*model = self.managedObjectModel;
-	
-	[context retain];
-	[context lock];
-	
-	NSArray *albumsArray = nil;
-	NSArray *result = nil;
-	
-	@try
-	{
-		//Find all albums
-		NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-		[dbRequest setEntity: [[model entitiesByName] objectForKey:@"Album"]];
-		[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-		NSError *error = nil;
-		albumsArray = [context executeFetchRequest:dbRequest error:&error];
-		
-		NSSortDescriptor * sort = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
-		albumsArray = [albumsArray sortedArrayUsingDescriptors:  [NSArray arrayWithObjects: sort, nil]];
-		result = [NSArray arrayWithObject: [NSDictionary dictionaryWithObject: NSLocalizedString(@"Database", nil) forKey:@"name"]];
-	}
-	
-	@catch (NSException *e)
-	{
-		NSLog( @"albumArray exception : %@", e);
-		[AppController printStackTrace: e];
-	}
-	
-	[context unlock];
-	[context release];
-	
-	return [result arrayByAddingObjectsFromArray: albumsArray];
+
+-(NSArray*)albumArray { // deprecated
+	return [self.database albums];
 }
 
 //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
@@ -10948,7 +9180,7 @@ static BOOL needToRezoom;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					[context unlock];
@@ -10986,7 +9218,7 @@ static BOOL needToRezoom;
 						@catch( NSException *ne)
 						{
 							NSLog(@"TableView exception: %@", ne.description);
-							[AppController printStackTrace: ne];
+							[ne printStackTrace];
 							if( [albumNoOfStudiesCache count] > rowIndex)
 								[albumNoOfStudiesCache replaceObjectAtIndex:rowIndex withObject:@"err"];
 						}
@@ -11224,7 +9456,7 @@ static BOOL needToRezoom;
 		NSLog( @"Bonjour DICOM Send FAILED");
 		NSLog( @"%@", ne.name);
 		NSLog( @"%@", ne.reason);
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 	}
 	
 	[storeSCU release];
@@ -11258,7 +9490,7 @@ static BOOL needToRezoom;
 	@catch (NSException * e)
 	{
 		NSLog( @"**** findStudyUID exception: %@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];
@@ -11289,7 +9521,7 @@ static BOOL needToRezoom;
 	@catch (NSException * e)
 	{
 		NSLog( @"**** findSeriesUID exception: %@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];
@@ -11578,7 +9810,7 @@ static BOOL needToRezoom;
 					{
 						NSLog( @"%@", [e description]);
 						NSLog( @"Exception LOCAL PATH - DATABASE - tableView *******");
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 				}
 				else NSRunCriticalAlertPanel( NSLocalizedString(@"Error",nil),  NSLocalizedString(@"Destination Database / Index file is not available.", nil), NSLocalizedString(@"OK",nil), nil, nil);
@@ -12168,7 +10400,7 @@ static BOOL needToRezoom;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@ / Pre-Flip Data", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 				}
 				
@@ -12345,8 +10577,8 @@ static BOOL needToRezoom;
 	@catch( NSException *e)
 	{
 		NSLog(@"Exception opening Viewer: %@", e);
-		[AppController printStackTrace: e];
-		NSRunAlertPanel( NSLocalizedString(@"Opening Error", nil), [NSString stringWithFormat: NSLocalizedString(@"Opening Error : %@\r\r%@", nil), e, [AppController printStackTrace: e]] , nil, nil, nil);
+		[e printStackTrace];
+		NSRunAlertPanel( NSLocalizedString(@"Opening Error", nil), [NSString stringWithFormat: NSLocalizedString(@"Opening Error : %@\r\r%@", nil), e, [e printStackTrace]] , nil, nil, nil);
 	}
 	
 	free( memBlockSize);
@@ -12782,7 +11014,7 @@ static BOOL needToRezoom;
 						@catch (NSException * e)
 						{
 							NSLog( @"***** exception during reparsing : %@", e);
-							[AppController printStackTrace: e];
+							[e printStackTrace];
 						}
 						
 						[context unlock];
@@ -12856,7 +11088,7 @@ static BOOL needToRezoom;
 						@catch (NSException * e)
 						{
 							NSLog( @"***** exception during reparsing : %@", e);
-							[AppController printStackTrace: e];
+							[e printStackTrace];
 						}
 						
 						[context unlock];
@@ -13105,8 +11337,8 @@ static BOOL needToRezoom;
 	@catch (NSException *e)
 	{
 		NSLog( @"viewerDICOMInt exception: %@", e);
-		[AppController printStackTrace: e];
-		NSRunAlertPanel( NSLocalizedString(@"Opening Error", nil), [NSString stringWithFormat: NSLocalizedString(@"Opening Error : %@\r\r%@", nil), e, [AppController printStackTrace: e]] , nil, nil, nil);
+		[e printStackTrace];
+		NSRunAlertPanel( NSLocalizedString(@"Opening Error", nil), [NSString stringWithFormat: NSLocalizedString(@"Opening Error : %@\r\r%@", nil), e, [e printStackTrace]] , nil, nil, nil);
 	}
 	
 	[managedObjectContext unlock];
@@ -13175,7 +11407,7 @@ static BOOL needToRezoom;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[managedObjectContext unlock];
@@ -13526,7 +11758,7 @@ static NSArray*	openSubSeriesArray = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"**** computeDATABASEINDEXforDatabase: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 }
 
@@ -13689,7 +11921,7 @@ static NSArray*	openSubSeriesArray = nil;
 		else 
 			[self loadDatabase: currentDatabasePath];
 		
-		[self setFixedDocumentsDirectory];
+	//	[self setFixedDocumentsDirectory];
 		[self setNetworkLogs];
 		
 		// NSString *str = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
@@ -14126,9 +12358,9 @@ static NSArray*	openSubSeriesArray = nil;
 		NSString *path = [[self documentsDirectory] stringByAppendingPathComponent:@"/Loading"];
 		[path writeToFile:path atomically:NO encoding : NSUTF8StringEncoding error: nil];
 		
-		[AppController printStackTrace: ne];
+		[ne printStackTrace];
 		
-		NSString *message = [NSString stringWithFormat: NSLocalizedString(@"A problem occured during start-up of OsiriX:\r\r%@\r\r%@",nil), [ne description], [AppController printStackTrace: ne]];
+		NSString *message = [NSString stringWithFormat: NSLocalizedString(@"A problem occured during start-up of OsiriX:\r\r%@\r\r%@",nil), [ne description], [ne printStackTrace]];
 		
 		NSRunCriticalAlertPanel(NSLocalizedString(@"Error",nil), message, NSLocalizedString( @"OK",nil), nil, nil);
 		
@@ -14286,7 +12518,7 @@ static NSArray*	openSubSeriesArray = nil;
 	@catch (NSException * e)
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	waitForRunningProcess = NO;
@@ -14792,7 +13024,7 @@ static NSArray*	openSubSeriesArray = nil;
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[checkIncomingLock unlock];
@@ -14918,102 +13150,6 @@ static NSArray*	openSubSeriesArray = nil;
 	return nil;
 }
 
-+ (BOOL) unzipFile: (NSString*) file withPassword: (NSString*) pass destination: (NSString*) destination
-{
-	return [BrowserController unzipFile:  file withPassword:  pass destination:  destination showGUI: YES];
-}
-
-+ (BOOL) unzipFile: (NSString*) file withPassword: (NSString*) pass destination: (NSString*) destination showGUI: (BOOL) showGUI
-{
-	[[NSFileManager defaultManager] removeFileAtPath: destination handler: nil];
-	
-	NSTask *t;
-	NSArray *args;
-	WaitRendering *wait = nil;
-	
-	if( [NSThread isMainThread] && showGUI == YES)
-	{
-		wait = [[WaitRendering alloc] init: NSLocalizedString(@"Decompressing the files...", nil)];
-		[wait showWindow:self];
-	}
-	
-	t = [[[NSTask alloc] init] autorelease];
-	
-	@try
-	{
-		[t setLaunchPath: @"/usr/bin/unzip"];
-		
-		if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/"] == NO)
-			[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/" attributes: nil];
-			
-		[t setCurrentDirectoryPath: @"/tmp/"];
-		if( pass)
-			args = [NSArray arrayWithObjects: @"-qq", @"-o", @"-d", destination, @"-P", pass, file, nil];
-		else
-			args = [NSArray arrayWithObjects: @"-qq", @"-o", @"-d", destination, file, nil];
-		[t setArguments: args];
-		[t launch];
-		[t waitUntilExit];
-	}
-	@catch ( NSException *e)
-	{
-		NSLog( @"***** unzipFile exception: %@", e);
-		[AppController printStackTrace: e];
-	}
-	
-	[wait close];
-	[wait release];
-	
-	BOOL fileExist = NO;
-	
-	NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath: destination];
-	NSString *item = nil;
-	while( item = [dirEnum nextObject])
-	{
-		BOOL isDirectory;
-		if( [[NSFileManager defaultManager] fileExistsAtPath: [destination stringByAppendingPathComponent: item] isDirectory: &isDirectory])
-		{
-			if( isDirectory == NO && [[[[NSFileManager defaultManager] attributesOfItemAtPath: [destination stringByAppendingPathComponent: item] error: nil] valueForKey: NSFileSize] longLongValue] > 0)
-			{
-				fileExist = YES;
-				break;
-			}
-		}
-	}
-	
-	if( fileExist)
-	{
-		// Is it on writable media? Ask if the user want to delete the original file?
-		
-		if( [NSThread isMainThread] && [[NSFileManager defaultManager] isWritableFileAtPath: file] && showGUI == YES)
-		{
-			if ([[NSUserDefaults standardUserDefaults] boolForKey: @"HideZIPSuppressionMessage"] == NO)
-			{
-				NSAlert* alert = [[NSAlert new] autorelease];
-				[alert setMessageText: NSLocalizedString(@"Delete ZIP file", nil)];
-				[alert setInformativeText: NSLocalizedString(@"The ZIP file was successfully decompressed and the images successfully incorporated in OsiriX database. Should I delete the ZIP file?", nil)];
-				[alert setShowsSuppressionButton: YES];
-				[alert addButtonWithTitle: NSLocalizedString( @"OK", nil)];
-				[alert addButtonWithTitle: NSLocalizedString( @"Cancel", nil)];
-				int result = [alert runModal];
-				
-				if( result == NSAlertFirstButtonReturn)
-					[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"deleteZIPfile"];
-				else
-					[[NSUserDefaults standardUserDefaults] setBool: NO forKey: @"deleteZIPfile"];
-				
-				if ([[alert suppressionButton] state] == NSOnState)
-					[[NSUserDefaults standardUserDefaults] setBool:YES forKey: @"HideZIPSuppressionMessage"];
-			}
-			
-			if( [[NSUserDefaults standardUserDefaults] boolForKey: @"deleteZIPfile"]) 
-				[[NSFileManager defaultManager] removeItemAtPath: file error: nil];
-		}
-		return YES;
-	}
-	
-	return NO;
-}
 
 - (int) askForZIPPassword: (NSString*) file destination: (NSString*) destination
 {
@@ -15155,7 +13291,7 @@ static NSArray*	openSubSeriesArray = nil;
 							@catch (NSException *e)
 							{
 								NSLog( @"%@", e.description);
-								[AppController printStackTrace: e];
+								[e printStackTrace];
 							}
 							
 							
@@ -15278,7 +13414,7 @@ static NSArray*	openSubSeriesArray = nil;
 			@catch (NSException * e)
 			{
 				NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			[wait close];
 			[wait release];
@@ -15393,7 +13529,7 @@ static NSArray*	openSubSeriesArray = nil;
 		@catch (NSException * e)
 		{
 			NSLog( @"**** listenerAnonymizeFiles : %@", e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 
 		[[NSFileManager defaultManager] removeFileAtPath: file handler: nil];
@@ -15893,7 +14029,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[decompressThreadRunning unlock];
@@ -15903,308 +14039,6 @@ static volatile int numberOfThreadsForJPEG = 0;
 	[pool release];
 }
 #endif
-
-- (void)checkIncomingThread: (id)sender
-{
-	@try
-	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		BOOL DELETEFILELISTENER = [[NSUserDefaults standardUserDefaults] boolForKey: @"DELETEFILELISTENER"];
-		BOOL ListenerCompressionSettings = [[NSUserDefaults standardUserDefaults] integerForKey: @"ListenerCompressionSettings"];
-		BOOL twoStepsIndexing = [[NSUserDefaults standardUserDefaults] boolForKey: @"twoStepsIndexing"];
-		NSMutableArray *filesArray = [NSMutableArray array];
-		NSMutableArray *compressedPathArray = [NSMutableArray array];
-		
-		#ifdef OSIRIX_LIGHT
-		ListenerCompressionSettings = 0;
-		#endif
-		
-		[checkIncomingLock lock];
-		
-		lastCheckIncoming = [NSDate timeIntervalSinceReferenceDate];
-		
-		@try
-		{
-			NSString *dbFolder = [self localDocumentsDirectory];
-			NSString *INpath = [dbFolder stringByAppendingPathComponent:INCOMINGPATH];
-			NSString *ERRpath = [dbFolder stringByAppendingPathComponent:ERRPATH];
-			NSString *OUTpath = [dbFolder stringByAppendingPathComponent:DATABASEPATH];
-			NSString *DECOMPRESSIONpath = [dbFolder stringByAppendingPathComponent:DECOMPRESSIONPATH];
-			NSString *toBeIndexed = [dbFolder stringByAppendingPathComponent:TOBEINDEXED];
-			
-			NSMutableArray *twoStepsIndexingArrayFrom = [NSMutableArray array];
-			NSMutableArray *twoStepsIndexingArrayTo = [NSMutableArray array];
-			
-			if( bonjourDownloading == NO)
-			{
-				//need to resolve aliases and symbolic links
-				INpath = [self folderPathResolvingAliasAndSymLink:INpath];
-				OUTpath = [self folderPathResolvingAliasAndSymLink:OUTpath];
-				ERRpath = [self folderPathResolvingAliasAndSymLink:ERRpath];
-				DECOMPRESSIONpath = [self folderPathResolvingAliasAndSymLink:DECOMPRESSIONpath];
-				if( twoStepsIndexing)
-					toBeIndexed = [self folderPathResolvingAliasAndSymLink: toBeIndexed];
-					
-				[AppController createNoIndexDirectoryIfNecessary: OUTpath];
-				
-				NSString *pathname;
-				
-				NSDirectoryEnumerator *enumer = [[NSFileManager defaultManager] enumeratorAtPath:INpath];
-				
-				int maxNumberOfFiles = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxNumberOfFilesForCheckIncoming"];
-				if( maxNumberOfFiles < 100) maxNumberOfFiles = 100;
-				if( maxNumberOfFiles > 10000) maxNumberOfFiles = 10000;
-				
-				while( (pathname = [enumer nextObject]) && [filesArray count] < maxNumberOfFiles)
-				{
-					NSString *srcPath = [INpath stringByAppendingPathComponent:pathname];
-					NSString *originalPath = srcPath;
-					NSString *lastPathComponent = [srcPath lastPathComponent];
-					
-					if ([[lastPathComponent uppercaseString] isEqualToString:@".DS_STORE"])
-						continue;
-					
-					if ( [lastPathComponent length] > 0 && [lastPathComponent characterAtIndex: 0] == '.')
-					{
-						NSDictionary *atr = [enumer fileAttributes];// [[NSFileManager defaultManager] attributesOfItemAtPath: srcPath error: nil];
-						if( [atr fileModificationDate] && [[atr fileModificationDate] timeIntervalSinceNow] < -60*60*24)
-						{
-							[NSThread sleepForTimeInterval: 0.1]; //We want to be 100% sure...
-							
-							atr = [[NSFileManager defaultManager] attributesOfItemAtPath: srcPath error: nil];
-							if( [atr fileModificationDate] && [[atr fileModificationDate] timeIntervalSinceNow] < -60*60*24)
-							{
-								NSLog( @"old files with '.' -> delete it : %@", srcPath);
-								if( srcPath)
-									[[NSFileManager defaultManager] removeItemAtPath: srcPath error: nil];
-							}
-						}
-						continue;
-					}
-					
-					BOOL result, isAlias = [self isAliasPath: srcPath];
-					if( isAlias)
-						srcPath = [self pathResolved: srcPath];
-					
-					// Is it a real file? Is it writable (transfer done)?
-//					if ([[NSFileManager defaultManager] isWritableFileAtPath:srcPath] == YES)	<- Problems with CD : read-only files, but valid files
-					{
-						NSDictionary *fattrs = [enumer fileAttributes];	//[[NSFileManager defaultManager] fileAttributesAtPath:srcPath traverseLink: YES];
-						
-//						// http://www.noodlesoft.com/blog/2007/03/07/mystery-bug-heisenbergs-uncertainty-principle/
-//						[fattrs allKeys];
-						
-//						NSLog( @"%@", [fattrs objectForKey:NSFileBusy]);
-						
-						if( [[fattrs objectForKey:NSFileType] isEqualToString: NSFileTypeDirectory] == YES)
-						{
-							NSArray		*dirContent = [[NSFileManager defaultManager] directoryContentsAtPath: srcPath];
-							
-							//Is this directory empty?? If yes, delete it!
-							//if alias assume nested folders should stay
-							if( [dirContent count] == 0 && !isAlias) [[NSFileManager defaultManager] removeFileAtPath:srcPath handler:nil];
-							if( [dirContent count] == 1)
-							{
-								if( [[[dirContent objectAtIndex: 0] uppercaseString] isEqualToString:@".DS_STORE"]) [[NSFileManager defaultManager] removeFileAtPath:srcPath handler:nil];
-							}
-						}
-						else if( fattrs != nil && [[fattrs objectForKey:NSFileBusy] boolValue] == NO && [[fattrs objectForKey:NSFileSize] longLongValue] > 0)
-						{
-							if( [[srcPath pathExtension] isEqualToString: @"zip"] || [[srcPath pathExtension] isEqualToString: @"osirixzip"])
-							{
-								NSString *compressedPath = [DECOMPRESSIONpath stringByAppendingPathComponent: lastPathComponent];
-								[[NSFileManager defaultManager] movePath:srcPath toPath:compressedPath handler:nil];
-								[compressedPathArray addObject: compressedPath];
-							}
-							else
-							{
-								BOOL isDicomFile, isJPEGCompressed, isImage;
-								NSString *dstPath = [OUTpath stringByAppendingPathComponent: lastPathComponent];
-								
-								isDicomFile = [DicomFile isDICOMFile:srcPath compressed: &isJPEGCompressed image: &isImage];
-								
-								if( isDicomFile == YES ||
-								   (([DicomFile isFVTiffFile:srcPath] ||
-									 [DicomFile isTiffFile:srcPath] ||
-									 [DicomFile isNRRDFile:srcPath])
-									&& [[NSFileManager defaultManager] fileExistsAtPath:dstPath] == NO))
-								{
-									newFilesInIncoming = YES;
-									
-									if (isDicomFile && isImage)
-									{
-										#ifndef OSIRIX_LIGHT
-										if( (isJPEGCompressed == YES && ListenerCompressionSettings == 1) || (isJPEGCompressed == NO && ListenerCompressionSettings == 2 && [self needToCompressFile: srcPath]))
-										#else
-										if( (isJPEGCompressed == YES && ListenerCompressionSettings == 1) || (isJPEGCompressed == NO && ListenerCompressionSettings == 2))
-										#endif
-										{
-											NSString *compressedPath = [DECOMPRESSIONpath stringByAppendingPathComponent: lastPathComponent];
-											
-											[[NSFileManager defaultManager] movePath:srcPath toPath:compressedPath handler:nil];
-											
-											[compressedPathArray addObject: compressedPath];
-											
-											continue;
-										}
-										
-										dstPath = [self getNewFileDatabasePath: @"dcm" dbFolder: dbFolder];
-									}
-									else dstPath = [self getNewFileDatabasePath: [[srcPath pathExtension] lowercaseString] dbFolder: dbFolder];
-									
-									if( isAlias)
-									{
-										if( twoStepsIndexing)
-										{
-											NSString *stepsPath = [toBeIndexed stringByAppendingPathComponent: [dstPath lastPathComponent]];
-											
-											result = [[NSFileManager defaultManager] copyPath:srcPath toPath: stepsPath handler:nil];
-											[[NSFileManager defaultManager] removeFileAtPath:originalPath handler:nil];
-											
-											if( result)
-											{
-												[twoStepsIndexingArrayFrom addObject: stepsPath];
-												[twoStepsIndexingArrayTo addObject: dstPath];
-											}
-										}
-										else
-										{
-											result = [[NSFileManager defaultManager] copyPath:srcPath toPath: dstPath handler:nil];
-											[[NSFileManager defaultManager] removeFileAtPath:originalPath handler:nil];
-										}
-									}
-									else
-									{
-										if( twoStepsIndexing)
-										{
-											NSString *stepsPath = [toBeIndexed stringByAppendingPathComponent: [dstPath lastPathComponent]];
-											
-											result = [[NSFileManager defaultManager] movePath:srcPath toPath: stepsPath handler:nil];
-											
-											if( result)
-											{
-												[twoStepsIndexingArrayFrom addObject: stepsPath];
-												[twoStepsIndexingArrayTo addObject: dstPath];
-											}
-										}
-										else
-											result = [[NSFileManager defaultManager] movePath:srcPath toPath: dstPath handler:nil];
-									}
-									
-									if( result == YES)
-										[filesArray addObject:dstPath];
-								}
-								else // DELETE or MOVE THIS UNKNOWN FILE ?
-								{
-									if ( DELETEFILELISTENER)
-										[[NSFileManager defaultManager] removeFileAtPath:srcPath handler:nil];
-									else
-									{
-										//NSLog( [ERRpath stringByAppendingPathComponent: [srcPath lastPathComponent]]);
-										
-										if( [[NSFileManager defaultManager] movePath:srcPath toPath:[ERRpath stringByAppendingPathComponent: lastPathComponent]  handler:nil] == NO)
-											[[NSFileManager defaultManager] removeFileAtPath:srcPath handler:nil];
-									}
-								}
-							}
-						}
-					}
-				}
-				
-				if( twoStepsIndexing == YES && [twoStepsIndexingArrayFrom count] > 0)
-				{
-					[checkIncomingLock unlock];
-					
-					for( int i = 0 ; i < [twoStepsIndexingArrayFrom count] ; i++)
-					{
-						[[NSFileManager defaultManager] removeItemAtPath: [twoStepsIndexingArrayTo objectAtIndex: i]  error: nil];
-						[[NSFileManager defaultManager] moveItemAtPath: [twoStepsIndexingArrayFrom objectAtIndex: i] toPath: [twoStepsIndexingArrayTo objectAtIndex: i] error: nil];
-						[[NSFileManager defaultManager] removeItemAtPath: [twoStepsIndexingArrayFrom objectAtIndex: i]  error: nil];
-					}
-					
-					[checkIncomingLock lock];
-				}
-				
-				if ( [filesArray count] > 0)
-				{
-					newFilesInIncoming = YES;
-					
-					if ( [[NSUserDefaults standardUserDefaults] boolForKey:@"ANONYMIZELISTENER"] == YES)
-						[self listenerAnonymizeFiles: filesArray];
-					
-					for( id filter in [PluginManager preProcessPlugins])
-					{
-						[filter processFiles: filesArray];
-					}
-					
-					NSManagedObjectContext *sqlContext = [self localManagedObjectContextIndependentContext: YES];
-					NSArray* addedFiles = [[self addFilesToDatabase: filesArray onlyDICOM:NO produceAddedFiles:YES parseExistingObject: NO context: sqlContext dbFolder: dbFolder] valueForKey:@"completePath"];
-					
-					if( addedFiles)
-					{
-					}
-					else	// Add failed.... Keep these files: move them back to the INCOMING folder and try again later....
-					{
-						NSString *dstPath;
-						int x = 0;
-						
-						NSLog(@"Move the files back to the incoming folder...");
-						
-						for( NSString *file in filesArray)
-						{
-							do
-							{
-								dstPath = [INpath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d", x]];
-								x++;
-							}
-							while( [[NSFileManager defaultManager] fileExistsAtPath:dstPath] == YES);
-							
-							[[NSFileManager defaultManager] movePath: file toPath: dstPath handler: nil];
-						}
-					}
-				}
-				else
-				{
-					if( [compressedPathArray count] == 0) newFilesInIncoming = NO;
-					else newFilesInIncoming = YES;
-				}
-			}
-			else newFilesInIncoming = NO;
-		}
-		@catch( NSException *ne)
-		{
-			NSLog( @"WARNING ******** - CheckIncomingThread Exception : %@", [ne description]);
-			[AppController printStackTrace: ne];
-		}
-		
-		[checkIncomingLock unlock];
-		
-		#ifndef OSIRIX_LIGHT
-		if( [compressedPathArray count] > 0)
-		{
-			[decompressThreadRunning lock];
-			[decompressArrayLock lock];
-			[decompressArray addObjectsFromArray: compressedPathArray];
-			[decompressArrayLock unlock];
-			
-			if( ListenerCompressionSettings == 1 || ListenerCompressionSettings == 0)		// Decompress, ListenerCompressionSettings == 0 for zip support !
-				[self decompressThread: [NSNumber numberWithChar: 'I']];
-			else if( ListenerCompressionSettings == 2)	// Compress
-				[self decompressThread: [NSNumber numberWithChar: 'X']];
-			[decompressThreadRunning unlock];
-		}
-		#endif
-		
-		lastCheckIncoming  = [NSDate timeIntervalSinceReferenceDate];
-		
-		[pool release];
-	}
-	@catch (NSException * e)
-	{
-		NSLog( @"checkIncomingThread exception %@", e);
-		[AppController printStackTrace: e];
-	}
-}
 
 - (void)setDockIcon
 {
@@ -16224,86 +14058,8 @@ static volatile int numberOfThreadsForJPEG = 0;
 	}
 }
 
-- (void) checkIncomingNow: (id) sender
-{
-	if( DatabaseIsEdited == YES && [[self window] isKeyWindow] == YES) return;
-	if( managedObjectContext == nil) return;
-	if( [NSDate timeIntervalSinceReferenceDate] - lastCheckIncoming < 0.4) return;
-	if( DICOMDIRCDMODE) return;
-	
-	[checkIncomingLock lock];
-	if( [managedObjectContext tryLock])
-	{
-		[self checkIncomingThread: self];
-		[NSThread sleepForTimeInterval: 1];
-		
-		// Do we have a compression/decompression process? re-checkincoming to include these compression/decompression images
-		[self checkIncomingThread: self];
-		[NSThread sleepForTimeInterval: 1];
-		
-		[self checkIncomingThread: self];
-		
-		[managedObjectContext unlock];
-		[checkIncomingLock unlock];
-	}
-	else
-	{
-		[checkIncomingLock unlock];
-		
-		[self checkIncoming: self];
-		[NSThread sleepForTimeInterval: 1];
-		
-		// Do we have a compression/decompression process? re-checkincoming to include these compression/decompression images
-		[self checkIncoming: self];
-		[NSThread sleepForTimeInterval: 1];
-		
-		[self checkIncoming: self];
-		
-		NSLog( @"*** We will not checkIncomingNow, because we can find ourself in a locked in loop....");
-	}
-}
 
-- (void)checkIncoming: (id)sender
-{
-	if( [[AppController sharedAppController] isSessionInactive] || waitForRunningProcess) return;
-	if( DICOMDIRCDMODE) return;
-	if( DatabaseIsEdited == YES && [[self window] isKeyWindow] == YES) return;
-	if( managedObjectContext == nil) return;
-	if( [NSDate timeIntervalSinceReferenceDate] - lastCheckIncoming < 0.5) return;
-	
-	if( [checkIncomingLock tryLock])
-	{
-//		NSString *dbFolder = [self localDocumentsDirectory];
-//		NSString *INpath = [dbFolder stringByAppendingPathComponent:INCOMINGPATH];
-//		INpath = [self folderPathResolvingAliasAndSymLink:INpath];
-//		
-//		NSThread* t = [[[NSThread alloc] initWithTarget:self selector:@selector( checkIncomingThread:) object: self] autorelease];
-//		t.name = NSLocalizedString( @"Incoming files...", nil);
-//		
-//		if( [[[[NSFileManager defaultManager] attributesOfItemAtPath: INpath error: nil] objectForKey: NSFileReferenceCount] intValue] > 5)
-//			[[ThreadsManager defaultManager] addThreadAndStart: t];
-		
-		
-		[NSThread detachNewThreadSelector: @selector( checkIncomingThread:) toTarget:self withObject: self];
-		[checkIncomingLock unlock];
-	}
-	else
-	{
-		NSLog( @"checkIncoming locked...");
-		newFilesInIncoming = YES;
-	}
-	
-	// HARD DISK CHECK
-	if( [BrowserController isHardDiskFull])
-	{
-		// Kill the incoming directory
-		[[NSFileManager defaultManager] removeItemAtPath: [[self localDocumentsDirectory] stringByAppendingPathComponent: INCOMINGPATH] error: nil];
-		
-		[[AppController sharedAppController] growlTitle: NSLocalizedString( @"WARNING", nil) description: NSLocalizedString(@"Hard Disk is Full ! Cannot accept more files.", nil) name:@"newfiles"];
-	}
-	
-	[self setDockIcon];
-}
+
 
 + (void) createEmptyMovie:(NSMutableDictionary*)dict
 {
@@ -16393,7 +14149,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch( NSException *e)
 	{
 		NSLog( @"****** writeMovie exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	@finally
@@ -16589,7 +14345,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 					@catch ( NSException *e)
 					{
 						NSLog( @"********* Failed to generate the thumbnail : %@", e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					if(!thumbnail)
@@ -16640,7 +14396,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 				@catch (NSException * e)
 				{
 					NSLog( @"******* pdfData exportQuicktime exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 			}
 			else if( [DCMAbstractSyntaxUID isStructuredReport: [curImage valueForKeyPath: @"series.seriesSOPClassUID"]])
@@ -16730,7 +14486,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 					@catch( NSException *e)
 					{
 						NSLog( @"*** exportQuicktimeInt Loop: %@", e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					[pool release];
 				}
@@ -16800,7 +14556,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch (NSException * e)
 	{
 		NSLog( @"******** %@", [e description]);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	@finally {
@@ -17048,13 +14804,13 @@ static volatile int numberOfThreadsForJPEG = 0;
 							@catch (NSException * e)
 							{
 								NSLog( @"********** [self.userManagedObjectContext save: nil]");
-								[AppController printStackTrace: e];
+								[e printStackTrace];
 							}
 							
 							studiesArrayStudyInstanceUID = [[[user valueForKey: @"studies"] allObjects] valueForKey: @"studyInstanceUID"];
 							studiesArrayPatientUID = [[[user valueForKey: @"studies"] allObjects] valueForKey: @"patientUID"];
 							
-							[[WebPortal defaultWebPortal] updateLogEntryForStudy: study withMessage: @"Add Study to User" forUser: [user valueForKey: @"name"] ip: nil];
+							[[WebPortal defaultPortal] updateLogEntryForStudy: study withMessage: @"Add Study to User" forUser: [user valueForKey: @"name"] ip: nil];
 						}
 					}
 				}
@@ -17062,7 +14818,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 			@catch (NSException * e) 
 			{
 				NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			[self.userManagedObjectContext unlock];
 		}
@@ -17145,7 +14901,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 							[user setValue: [NSNumber numberWithBool: YES] forKey: @"autoDelete"];
 							[user setValue: @"NO == YES" forKey: @"studyPredicate"];
 							
-							[[WebPortal defaultWebPortal] updateLogEntryForStudy: [[self databaseSelection] lastObject] withMessage: @"Temporary User Created" forUser: [user valueForKey: @"name"] ip: nil];
+							[[WebPortal defaultPortal] updateLogEntryForStudy: [[self databaseSelection] lastObject] withMessage: @"Temporary User Created" forUser: [user valueForKey: @"name"] ip: nil];
 							
 							// Send a separate email with user name and password
 							
@@ -17165,7 +14921,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 							[emailMessage appendString: @"\r\r"];
 							[emailMessage appendFormat: NSLocalizedString( @"This account is a temporary account. It will be automatically deleted in %d days.", nil), [[NSUserDefaults standardUserDefaults] integerForKey: @"temporaryUserDuration"]];
 							
-							[[WebPortal defaultWebPortal] updateLogEntryForStudy: [[self databaseSelection] lastObject] withMessage: @"Temporary User name & password sent by email" forUser: [user valueForKey: @"name"] ip: nil];
+							[[WebPortal defaultPortal] updateLogEntryForStudy: [[self databaseSelection] lastObject] withMessage: @"Temporary User name & password sent by email" forUser: [user valueForKey: @"name"] ip: nil];
 							
 							[[CSMailMailClient mailClient] deliverMessage: [[[NSAttributedString alloc] initWithString: emailMessage] autorelease] headers: [NSDictionary dictionaryWithObjectsAndKeys: temporaryNotificationEmail, @"To", fromEmailAddress, @"Sender", emailSubject, @"Subject", nil]];
 						
@@ -17206,30 +14962,30 @@ static volatile int numberOfThreadsForJPEG = 0;
 									@catch (NSException * e)
 									{
 										NSLog( @"************ [self.userManagedObjectContext save: nil]");
-										[AppController printStackTrace: e];
+										[e printStackTrace];
 									}
 									
 									studiesArrayStudyInstanceUID = [[[user valueForKey: @"studies"] allObjects] valueForKey: @"studyInstanceUID"];
 									studiesArrayPatientUID = [[[user valueForKey: @"studies"] allObjects] valueForKey: @"patientUID"];
 									
-									[[WebPortal defaultWebPortal] updateLogEntryForStudy: study withMessage: @"Add Study to User" forUser: [user valueForKey: @"name"] ip: nil];
+									[[WebPortal defaultPortal] updateLogEntryForStudy: study withMessage: @"Add Study to User" forUser: [user valueForKey: @"name"] ip: nil];
 								}
 							}
 						}
 						
-						[[WebPortal defaultWebPortal] sendNotificationsEmailsTo: destinationUsers aboutStudies: [self databaseSelection] predicate: nil message: nil replyTo: nil customText: self.customTextNotificationEmail];
+						[[WebPortal defaultPortal] sendNotificationsEmailsTo: destinationUsers aboutStudies: [self databaseSelection] predicate: nil message: nil replyTo: nil customText: self.customTextNotificationEmail];
 					}
 				}
 				@catch( NSException *e)
 				{
 					NSLog( @"***** sendEmailNotification exception: %@", e);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 			}
 			@catch( NSException *e)
 			{
 				NSLog( @"***** sendEmailNotification exception: %@", e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			[self.userManagedObjectContext unlock];
@@ -17429,7 +15185,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 		@catch (NSException * e)
 		{
 			NSLog( @"importCommentsAndStatusFromDictionary exception: %@", e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[context unlock];
@@ -17724,7 +15480,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 		@catch (NSException * e)
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[[DicomStudy dbModifyLock] unlock];
@@ -17839,7 +15595,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		#ifdef OSIRIX_VIEWER
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 		#endif
 	}
 	
@@ -17920,7 +15676,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch (NSException *e)
 	{
 		NSLog( @"**** encryptFileOrFolder exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[wait close];
@@ -17989,7 +15745,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch (NSException *e)
 	{
 		NSLog( @"**** encryptFileOrFolder exception: %@", e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[wait close];
@@ -18046,7 +15802,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 			@catch (NSException *e)
 			{
 				NSLog( @"**** exportDICOMFile exception: %@", e);
-				[AppController printStackTrace: e];
+				[e printStackTrace];
 			}
 			
 			filesToExport = [[[dicomFiles2Export valueForKey: @"completePath"] mutableCopy] autorelease];
@@ -18742,7 +16498,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 			{
 				NSLog( @"Unmount exception");
 				NSLog( @"%@", [ne description]);
-				[AppController printStackTrace: ne];
+				[ne printStackTrace];
 			}
 			
 			if( needsUpdate)
@@ -19071,7 +16827,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[self.managedObjectContext unlock];
@@ -19173,7 +16929,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 		@catch (NSException * e) 
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
+			[e printStackTrace];
 		}
 		
 		[checkBonjourUpToDateThreadLock unlock];
@@ -19232,7 +16988,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-						[AppController printStackTrace: e];
+						[e printStackTrace];
 					}
 					
 					[checkBonjourUpToDateThreadLock unlock];
@@ -19347,7 +17103,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 				@catch (NSException * e)
 				{
 					NSLog( @"Generate Report: %@", [e description]);
-					[AppController printStackTrace: e];
+					[e printStackTrace];
 				}
 				
 				[checkBonjourUpToDateThreadLock unlock];
@@ -20414,8 +18170,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 
 - (void)resetToLocalDatabase 
 {
-	[bonjourServicesList selectRowIndexes: [NSIndexSet indexSetWithIndex: 0] byExtendingSelection:NO];
-	[self bonjourServiceClicked: bonjourServicesList];
+//	[bonjourServicesList selectRowIndexes: [NSIndexSet indexSetWithIndex: 0] byExtendingSelection:NO];
+//	[self bonjourServiceClicked: bonjourServicesList];
+	self.database = [DicomDatabase defaultDatabase];
 }
 
 - (void) switchToDefaultDBIfNeeded
@@ -20424,6 +18181,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 	
 	if( [[self documentsDirectory] isEqualToString: defaultPath] == NO)
 		[self resetToLocalDatabase];
+	
+	if (self.database != [DicomDatabase defaultDatabase])
+		self.database = [DicomDatabase defaultDatabase];
 }
 
 - (void)openDatabasePath: (NSString*)path
@@ -20558,10 +18318,10 @@ static volatile int numberOfThreadsForJPEG = 0;
 	[self performSelector:@selector( bonjourServiceClickedProceed:) withObject: sender afterDelay: 0.01];
 }
 
-- (NSString*) localDatabasePath
+/*- (NSString*) localDatabasePath
 {
 	return [[self localDocumentsDirectory] stringByAppendingPathComponent:DATAFILEPATH];
-}
+}*/
 
 //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
 
@@ -20608,7 +18368,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	return isNetworkLogsActive;
 }
 
-- (NSString *)setFixedDocumentsDirectory
+/*- (NSString *)setFixedDocumentsDirectory
 {
 	[fixedDocumentsDirectory release];
 	fixedDocumentsDirectory = [[self documentsDirectory] retain];
@@ -20641,9 +18401,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 	strcpy( cfixedIncomingNoIndexDirectory, [r UTF8String]);
 	
 	return fixedDocumentsDirectory;
-}
+}*/
 
-- (NSString *) localDocumentsDirectory
+/*- (NSString *) localDocumentsDirectory
 {
 	NSString *p;
 	
@@ -20689,7 +18449,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 {
 	NSString *dir = documentsDirectoryFor( mode, url);
 	return dir;
-}
+}*/
 
 - (IBAction)showLogWindow: (id)sender
 {
@@ -20925,7 +18685,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	@catch (NSException * e) 
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 	}
 	
 	[context unlock];

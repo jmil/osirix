@@ -19,6 +19,7 @@
 #import "Notifications.h"
 #import "MutableArrayCategory.h"
 #import "NSThread+N2.h"
+#import "DicomDatabase.h"
 #undef verify
 #include "osconfig.h" /* make sure OS specific configuration is included first */
 
@@ -1784,7 +1785,7 @@ cstore(T_ASC_Association * assoc, const OFString& fname)
 {
 	if( [[BrowserController currentBrowser] isNetworkLogsActive] == NO) return;
 	
-	NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
+	NSManagedObjectContext *context = [[[BrowserController currentBrowser] database] context];
 	if( context == nil)
 		return;
 	

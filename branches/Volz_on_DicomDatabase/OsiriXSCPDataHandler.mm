@@ -23,6 +23,7 @@
 #import "DicomSeries.h"
 #import "DICOMToNSString.h"
 #import "MutableArrayCategory.h"
+#import "NSException+N2.h"
 
 #include "dctk.h"
 
@@ -1942,7 +1943,7 @@ extern NSManagedObjectContext *staticContext;
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		#ifdef OSIRIX_VIEWER
-		[AppController printStackTrace: e];
+		[e printStackTrace];
 		#endif
 	}
 	[pool release];

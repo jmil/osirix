@@ -1293,7 +1293,7 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 
 // wado?requestType=WADO&studyUID=XXXXXXXXXXX&seriesUID=XXXXXXXXXXX&objectUID=XXXXXXXXXXX
 // 127.0.0.1:3333/wado?requestType=WADO&frameNumber=1&studyUID=2.16.840.1.113669.632.20.1211.10000591592&seriesUID=1.3.6.1.4.1.19291.2.1.2.2867252960399100001&objectUID=1.3.6.1.4.1.19291.2.1.3.2867252960616100004
--(void)processWado {/*
+-(void)processWado {
 	if (!self.portal.wadoEnabled) {
 		self.statusCode = 403;
 		[self setDataWithString:NSLocalizedString(@"OsiriX cannot fulfill your request because the WADO service is disabled.", NULL)];
@@ -1305,7 +1305,6 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 		return;
 	}
 		
-		
 	NSString* studyUID = [parameters objectForKey:@"studyUID"];
 	NSString* seriesUID = [parameters objectForKey:@"seriesUID"];
 	NSString* objectUID = [parameters objectForKey:@"objectUID"];
@@ -1313,8 +1312,7 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 	if (objectUID == nil)
 		NSLog(@"***** WADO with objectUID == nil -> wado will fail");
 	
-	NSString *contentType = [[[[parameters objectForKey:@"contentType"] lowercaseString] componentsSeparatedByString: @","] objectAtIndex: 0];
-	//					contentType = [contentType stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	NSString* contentType = [[[[parameters objectForKey:@"contentType"] lowercaseString] componentsSeparatedByString: @","] objectAtIndex: 0];
 	int rows = [[parameters objectForKey:@"rows"] intValue];
 	int columns = [[parameters objectForKey:@"columns"] intValue];
 	int windowCenter = [[parameters objectForKey:@"windowCenter"] intValue];
@@ -1322,24 +1320,24 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 	int frameNumber = [[parameters objectForKey:@"frameNumber"] intValue];	// -> OsiriX stores frames as images
 	int imageQuality = DCMLosslessQuality;
 	
-	if ([parameters objectForKey:@"imageQuality"])
-	{
-		if ([[parameters objectForKey:@"imageQuality"] intValue] > 80)
+	NSString* imageQualityParam = [parameters objectForKey:@"imageQuality"];
+	if (imageQualityParam) {
+		int imageQualityParamInt = imageQualityParam.intValue;
+		if (imageQualityParamInt > 80)
 			imageQuality = DCMLosslessQuality;
-		else if ([[parameters objectForKey:@"imageQuality"] intValue] > 60)
+		else if (imageQualityParamInt > 60)
 			imageQuality = DCMHighQuality;
-		else if ([[parameters objectForKey:@"imageQuality"] intValue] > 30)
+		else if (imageQualityParamInt > 30)
 			imageQuality = DCMMediumQuality;
-		else if ([[parameters objectForKey:@"imageQuality"] intValue] >= 0)
+		else if (imageQualityParamInt >= 0)
 			imageQuality = DCMLowQuality;
 	}
 	
-	NSString *transferSyntax = [[parameters objectForKey:@"transferSyntax"] lowercaseString];
-	NSString *useOrig = [[parameters objectForKey:@"useOrig"] lowercaseString];
+	NSString* transferSyntax = [[parameters objectForKey:@"transferSyntax"] lowercaseString];
+	NSString* useOrig = [[parameters objectForKey:@"useOrig"] lowercaseString];
 	
-	NSError *error = nil;
-	NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-	[dbRequest setEntity: [[[[BrowserController currentBrowser] managedObjectModel] entitiesByName] objectForKey:@"Study"]];
+	NSFetchRequest* dbRequest = [[[NSFetchRequest alloc] init] autorelease];
+	dbRequest.entity = [self.portal.dicomDatabase entityForName:@"Study"];
 	
 	@try {
 		NSMutableDictionary *imageCache = nil;
@@ -1363,7 +1361,7 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 			else
 				[dbRequest setPredicate: [NSPredicate predicateWithValue: YES]];
 			
-			NSArray *studies = [[[BrowserController currentBrowser] managedObjectContext] executeFetchRequest: dbRequest error: &error];
+			NSArray *studies = [self.portal.dicomDatabase.managedObjectContext executeFetchRequest:dbRequest error:NULL];
 			
 			if ([studies count] == 0)
 				NSLog( @"****** WADO Server : study not found");
@@ -1422,7 +1420,7 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 					else // Explicit VR Little Endian
 						ts = [DCMTransferSyntax ExplicitVRLittleEndianTransferSyntax];
 					
-					data = [[BrowserController currentBrowser] getDICOMFile: [[images lastObject] valueForKey: @"completePath"] inSyntax: ts.transferSyntax quality: imageQuality];
+					data = [self.portal.dicomDatabase getDICOMFile:[[images lastObject] valueForKey: @"completePath"] inSyntax: ts.transferSyntax quality: imageQuality];
 				}
 				err = NO;
 			}
@@ -1594,7 +1592,7 @@ static NSTimeInterval StartOfDay(NSCalendarDate* day) {
 	} @catch (NSException * e) {
 		NSLog(@"Error: [WebPortalResponse processWado:] %@", e);
 		self.statusCode = 500;
-	}*/
+	}
 }
 
 #pragma mark Weasis

@@ -20,6 +20,8 @@
 
 #pragma mark General
 
++(NSString*)defaultDicomDatabasePath;
+
 extern NSString* const OsirixDateFormatDefaultsKey;
 +(NSDateFormatter*)dateFormatter;
 

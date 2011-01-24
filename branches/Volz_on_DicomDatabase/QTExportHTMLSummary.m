@@ -20,6 +20,7 @@
 #import "DicomSeries.h"
 #import "BrowserController.h"
 #import "NSString+N2.h"
+#import "DicomDatabase.h"
 
 @implementation QTExportHTMLSummary
 
@@ -71,12 +72,12 @@
 
 - (void)readTemplates;
 {
-	[AppController checkForHTMLTemplates];
-	patientsListTemplate = [[NSString stringWithContentsOfFile:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/HTML_TEMPLATES/QTExportPatientsTemplate.html"]] retain];
-	[AppController checkForHTMLTemplates];
-	examsListTemplate = [[NSString stringWithContentsOfFile:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/HTML_TEMPLATES/QTExportStudiesTemplate.html"]] retain];
-	[AppController checkForHTMLTemplates];
-	seriesTemplate = [[NSString stringWithContentsOfFile:[[[BrowserController currentBrowser] documentsDirectory] stringByAppendingFormat:@"/HTML_TEMPLATES/QTExportSeriesTemplate.html"]] retain];
+//	[AppController checkForHTMLTemplates];
+	patientsListTemplate = [[NSString stringWithContentsOfFile:[[[[BrowserController currentBrowser] database] htmlTemplatesDirectoryPath] stringByAppendingPathComponent:@"QTExportPatientsTemplate.html"]] retain];
+//	[AppController checkForHTMLTemplates];
+	examsListTemplate = [[NSString stringWithContentsOfFile:[[[[BrowserController currentBrowser] database] htmlTemplatesDirectoryPath] stringByAppendingPathComponent:@"QTExportStudiesTemplate.html"]] retain];
+//	[AppController checkForHTMLTemplates];
+	seriesTemplate = [[NSString stringWithContentsOfFile:[[[[BrowserController currentBrowser] database] htmlTemplatesDirectoryPath] stringByAppendingPathComponent:@"QTExportSeriesTemplate.html"]] retain];
 }
 
 - (NSString*)fillPatientsListTemplates;
@@ -401,13 +402,13 @@
 
 - (void)createHTMLfiles;
 {
-	[[[BrowserController currentBrowser] managedObjectContext] lock];
+	[[[[BrowserController currentBrowser] database] context] lock];
 
 	[self createHTMLPatientsList];
 	[self createHTMLStudiesList];
 	[self createHTMLExtraDirectory];
 	
-	[[[BrowserController currentBrowser] managedObjectContext] unlock];
+	[[[[BrowserController currentBrowser] database] context] unlock];
 }
 
 - (void)createHTMLPatientsList;
