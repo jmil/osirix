@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title>OsiriX Development Guide</title>
+	<link rel="stylesheet" href="../guides.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link REL="SHORTCUT ICON" HREF="../favicon.ico">
+</head>
+
+<body>
+	<div id="xcode_logo"></div>
+	<ul id="table_of_content">
+		<a href="../index.html"><li id="table_of_content_back">OsiriX Technical Guides</li></a>
+		<li id="table_of_content_embellishment_start"></li>
+		<li id="table_of_content_title">Table of Contents</li>
+		<a href="#top"><li class="table_of_content_item0">Introduction</li></a>
+		<a href="#Developing_on_Mac_OS_X"><li class="table_of_content_item1">Developing on Mac OS X</li></a>
+		<a href="#Getting_OsiriX_Source_Code"><li class="table_of_content_item0">Getting OsiriX Source Code</li></a>
+		<a href="#Source_Code_Documentation"><li class="table_of_content_item1">Source Code Documentation</li></a>
+		<a href="#Creating_a_Plugin"><li class="table_of_content_item0">Creating a Plugin</li></a>
+		<a href="#The_Plugins_Architecture_of_OsiriX"><li class="table_of_content_item1">The Plugins Architecture</li></a>
+		<a href="#Same_Plugins_and_Sample_Code"><li class="table_of_content_item0">Sample Code</li></a>
+		<a href="#Distributing_and_Installing_your_Plugin"><li class="table_of_content_item1">Distribution &amp; Installion</li></a>
+		<a href="#XML_RPC_support"><li class="table_of_content_item0">XML-RPC support</li></a>
+        <a href="#ITKPlugin"><li class="table_of_content_item1">Build your own ITK library for your plugin</li></a>
+		<a href="#More_Help"><li class="table_of_content_item0">More Help?</li></a>
+		<li id="table_of_content_embellishment_end"></li>
+	</ul>
+	
+	<div id="content">
+	<a name="top"><h1>OsiriX Development Guide</h1></a>
+		<p>Welcome to the OsiriX development Guide. This Guide was brought to you by the OsiriX development Team and is frequently updated.</p>
+		<p>For global information about the project, contributors, visit the <a href="http://www.ohloh.net/projects/8340/">Ohloh Web Site</a>.</p>
+		
+		<a name="Developing_on_Mac_OS_X"><h2>Developing on Mac OS X</h2></a>
+		<img class="icon" src="images/xcode_icon.png" />
+			<p>Developing software on Mac OS X is really easy, great and it's totally free! The complete development environment is available with any Mac! The language you will use to develop an OsiriX plugin is Objective-C. Objective-C is a dynamic and object-oriented language, like Java. It is very similar to Java and C++. It uses the same syntax as Java and C++. It is much less complex than C++ and much faster than Java. If you already know Java or C++, you could probably learn Objective-C in less than 2 days...</p>
+			<p>The framework you will use is Cocoa. Cocoa is a powerful and object-oriented framework that will allow you to create any kind of plugin with complex graphic user interface.</p>
+			<p>We highly recommend you to read the following books:</p>
+			<ul>
+				<li><i>Cocoa Programming for Mac OS X</i> by Aaron Hillegass</li>
+				<li><i>Learning Cocoa with Objective-C</i> by James Duncan Davidson &amp; Apple, Inc.</li>
+				<li><i>Programming in Objective-C</i> by Stephen Kochan</li>
+			</ul>
+			<p>Other useful resources to learn Cocoa and Objective-C:</p>
+			<ul>
+				<li><a href="http://www.cocoadevcentral.com/">Cocoa Dev Central</a></li>
+				<li><a href="http://www.cocoadev.com/">CocoaDev</a></li>
+				<li><a href="http://www.oreillynet.com/pub/ct/37">O'Reilly</a></li>
+				<li><a href="http://developer.apple.com/macosx/">Apple's Developer Connection</a></li>
+				<li><a href="http://www.macresearch.org/cocoa_for_scientists">Mac Research</a></li>
+				<li>And the Help menu of Xcode: "Documentation"</li>
+			</ul>
+
+			<p>The development environment is Xcode. Xcode is a really powerful development environment, based on the open-source GCC compiler. Writing a plugin for OsiriX is much easier than developing in IDL or in ImageJ...</p>
+			
+			<h3>Xcode Macros</h3>
+			<p>In Xcode you can personalise Text Macros (<a href="http://developer.apple.com/documentation/DeveloperTools/Conceptual/XcodeUserGuide/Contents/Resources/en.lproj/03_03_editing_editor_window/chapter_22_section_7.html">See here</a> for documentation) and add your own. Here is a file containing OsiriX specific code Macros for Xcode: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/OsiriX.xctxtmacro">OsiriX.xctxtmacro</a>. Copy this file to <code>~/Library/Application Support/Developer/3.2/Xcode/Specifications/</code> (replace 3.2 by the version of Xcode you are using) and restart Xcode.</p>
+			<p>For Example, you can type <code>roiadd</code> and hit Esc to get this snippet:</p>	
+				
+				<p>
+				<code>ROI *roi = [[ROI alloc] initWithType:&lt;#ROI Type#> :&lt;#pixelSpacingX#> :&lt;#pixelSpacingY#> :&lt;#origin#>];</code><br />
+				<code>roi.name = &lt;#ROI name#>;</code><br />
+				<code>roi.comments = &lt;#ROI comments#>;</code><br />
+				<code>roi.points = &lt;#ROI points#>;</code><br />
+				<code>[[&lt;#viewer controller#> imageView] roiSet:roi];</code><br />
+				<code>[[&lt;#viewer controller#> roiList] addObject:roi];</code><br />
+				<code>[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:roi userInfo:nil];</code><br />
+				<code>[roi release];</code><br />
+				</p>
+			<p>This file being under version control, you will have all the new snippets with <code>svn update</code>...</p>
+			
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+			
+	<a name="Getting_OsiriX_Source_Code"><h2>Getting OsiriX Source Code</h2></a>
+		<img class="icon" src="images/terminal_icon.png" />
+		<p>You will find here a quick step by step to download OsiriX Source Code from SourceForge.</p>
+		<p>Before starting anything, make sure that you have the following installed:</p>
+		<ul id='getting_source_code_required_tools'>
+			<li>Mac OS X 10.5 Leopard (10.6 or 10.7 recommended)</li>
+			<li>X-Code 3.2 - <a href="http://developer.apple.com/technology/xcode.html">Download Page</a></li>
+			<li>Subversion (SVN) - <a href="http://metissian.com/projects/macosx/subversion/">Download Page</a></li>
+		</ul>
+		
+		<p>Then:</p>
+		<ul id='getting_source_code_compile'>
+			<li>Open your Terminal application (in <code>/Applications/Utilities/</code>)</li>
+			<li>Type <code>svn co https://osirix.svn.sourceforge.net/svnroot/osirix osirix</code> and hit return</li>
+			<li>Open the <code>Osirix.xcodeproj</code> (in <code>osirix/</code>) and select &amp; run the 'Unzip Binaries' target</li>
+			<li>Select &amp; run the 'Development' target to build OsiriX</li>
+		</ul>
+		<p>To download the plugins distributed with OsiriX:</p>
+		<ul id='getting_plugins'>
+			<li>Open your Terminal application (in <code>/Applications/Utilities/</code>)</li>
+			<li>Type <code>svn co https://osirixplugins.svn.sourceforge.net/svnroot/osirixplugins osirixplugins</code> and hit return</li>
+		</ul>
+		
+	  <p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+	
+<a name="Source_Code_Documentation"><h2>Source Code Documentation</h2></a>
+		<p>Source Code documentation is generated by Doxygen.</p>
+		<p>Available here: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/Documentation/OsiriX/html/index.html"> doxygen web site</a></p>
+		
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+	
+<a name="Creating_a_Plugin"><h2>Creating a Plugin</h2></a>
+		<img class="icon" src="images/applescript_icon.png" />
+		<p>The plugins architecture of OsiriX allows you to implements the features that you need. You will be able to access the images data, DICOM header data, make an integration of OsiriX in you specific Hospital environment, and much more.</p>
+		<p>A convenient way to create a new plugin is to use the Plugin Generator from the OsiriX source code folder.
+			You will find it in: <code>plugins/_help/</code>. Unzip <code>Osirix Plugin Generator.zip</code> and run the AppleScript. Follow the wizard's instructions. The basic project will be created automatically.		</p>
+		<p>A small presentation to start writing an OsiriX plugin: <a href="http://www.osirix-viewer.com/OsiriXDevKeynote.html">Keynote presentation</a>.</p>
+	  <p>If you want to use <a href="http://www.itk.org/">ITK</a> in your plugin, here is a quick help file: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/*checkout*/osirixplugins/_help/ITK%20plugins%20Help.txt">ITK plugins Help.txt</a>.</p>
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+	    
+<a name="The_Plugins_Architecture_of_OsiriX"><h2>The Plugins Architecture of OsiriX</h2></a>
+		<img class="icon" src="images/mfile_icon.png" />
+		<p>When OsiriX is launched, it will look in the 'plugin' folders for files with the <code>.osirixplugin</code> or <code>.plugin</code> extensions. It will then try to find if the plugin contains a sub-class of <code>PluginFilter</code> having a <code>-(long)filterImage:(NSString*)menuName;</code> method. OsiriX will then run once the <code>initPlugin</code> function if available.</p>
+		<p>Your plugin is a sub-class of <code>PluginFilter</code>. The <code>PluginFilter</code> class is defined in <code>PluginFilter.m</code>, available in the <code>OsiriX headers</code> folder. Don't modify this file!</p>
+		<p>The <code>-(long)filterImage:(NSString*)menuName;</code> method is the main function of a plugin. OsiriX will always use this function to call your plugin. The <code>menuName</code> string contains the menu selected by the user. You can can define more than one menu for your plugin (in the <code>Info.plist</code> file).</p>
+		<p>In your plugin you can call virtually any function of OsiriX.</p>
+		<p>Here is a list of available objects in OsiriX:</p>
+		<ul>
+			<li><code>PluginFilter</code>: your plugin is a sub-class of this object, it contains some useful functions</li>
+			<li><code>ViewerController</code>: <code>NSWindowController</code> of a '2D Viewer' window</li>
+			<li><code>DCMView</code>: <code>NSOpenGLView</code> that contains the displayed image</li>
+			<li><code>DCMPix</code>:  object that contains the pixel data of an image</li>
+			<li><code>dicomFile</code>:  an object that contains data about the DICOM file</li>
+			<li><code>ROI</code>:  an object that contains a ROI</li>
+			<li><code>MyPoint</code>:  an object that describes a 2D point</li>
+		</ul>
+		
+		<p>Look at the headers files of these objects to find which functions are available and how to call them.</p>
+		
+		<p>The <code>pluginType</code> field of the <code>info.plist</code> file contains one of the following name:<p> 
+		<ul>
+			<li><code>imageFilter</code>: your plug-in will appear in the 'Image Filters' menu</li>
+			<li><code>roiTool</code>: your plug-in will appear in the 'ROIs tools' menu</li>
+			<li><code>other</code>: your plug-in will appear in the 'Others' menu</li>
+			<li><code>fusionFilter</code>: your plug-in will appear in the 'Fusion' window</li>
+			<li><code>Database</code>: your plug-in will appear in the 'Database' menu</li>
+		</ul>
+		
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		
+<a name="Same_Plugins_and_Sample_Code"><h2>Same Plugins and Sample Code</h2></a>
+		<img class="icon" src="images/mfile_icon.png" />
+		<p>The <a href="http://sourceforge.net/projects/osirixplugins/">OsiriX Plugins</a> project on Sourceforge provides a large variety of sample plugins.</p>
+		<p>You can download their source code using SVN:<br/><code>svn co https://osirixplugins.svn.sourceforge.net/svnroot/osirixplugins osirixplugins</code></p>
+		<p>The <code>HelloWorld</code> plugin was created to help developers to understand how to interact with OsiriX. 
+			The main class contains several sample methods showing some basic functionalities: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/osirixplugins/HelloWorld/HelloWorldFilter.m"><code>HelloWorldFilter.m</code></a> </p>
+		
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+        
+<a name="Distributing_and_Installing_your_Plugin"><h2>Distributing &amp; Installing your Plugin</h2></a>
+			<img class="icon" src="images/osirixplugin_icon.png" />
+			<p>The distribution of your plugin is left to you. The OsiriX team does not host nor distribute 3rd party plugins. <i>However</i>, if your plugin match our quality standards, we can reference your plugin page from the Plugin Manager in OsiriX app. A place of choice to be wildly visible by our users. You will find the application form directly in the Plugin Manager window of OsiriX.</p>
+			<p>The OsiriX plugins can be installed in 3 different locations:</p>
+			<ul>
+				<li><code>/Library/Application Support/OsiriX/Plugins/</code> - The plugins installed in this folder will be accessible by any user of the computer</li>
+				<li><code>/Users/.../Library/Application Support/OsiriX/Plugins/</code> - The plugins installed in this folder will be accessible only by the specified user (replace the <code>...</code> by the user short name)</li>
+				<li><code>/Applications/OsiriX/Plugins/</code> - The plugins installed in the OsiriX Bundle will be accessible by any user. If you copy OsiriX from one computer to an other, the plugins installed in the bundle will be copied too.</li>
+			</ul>
+			<p>The installation of you plugin is automatic if you chose the <code>.osirixplugin</code> extension. In this case, the user just has to double-clic the plugin icon and OsiriX will install it for the current user.</p>
+			<p>The generic <code>.plugin</code> extension is still supported but will not provide this mechanism. The user will have to manually copy the plugin into one of the 3 directories.</p>
+			
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+
+<a name="XML_RPC_support"><h2>Adding support for XML-RPC messages - RIS/HIS Integration</h2></a>
+			<img class="icon" src="images/xmlrpc.png" />
+			<p>OsiriX is a DICOM Viewer, aka PACS Workstation, but it is not a HIS or a RIS software. If you have such software installed, it can be useful to 'control' OsiriX or 'get' informations from/to another application: </p>
+			<ul>
+				<li>an application running on the same computer. For example a Java application or a Web based software</li>
+				<li>an application running on the same computer, but in a different environment. For example in Windows OS, in Parallels or VMware Fusion software.</li>
+				<li>an application running on a different computer on the same network. For example a web server application, like an ASP software.</li>
+			</ul>
+			 <p>This application should be able to control OsiriX to facilitate the integration. For example, the other application should be able to:</p>
+			<ul>
+				<li>Check if a study is available in the OsiriX Database</li>
+				<li>Open a specific study, and display the images</li>
+				<li>Delete a study</li>
+				<li>...</li>
+			</ul>
+			<p>With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX integrates now an HTTP server with an XML-RPC protocol. It means that any software/computer that knows your network address can execute methods in OsiriX. These methods can be built-in in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences window in OsiriX. </p>
+			<p>The documentation is available here: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/*checkout*/osirixplugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
+			<p>A sample plugin is available in the Plugins folder in the SVN repository: XML-RPC-Plugin</p>
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+
+<a name="ITKPlugin"><h2>Build your own ITK library for your plugin</h2></a>
+			<img class="icon" src="images/osirixplugin_icon.png" />
+			<p>If you want to include your own version of ITK (or VTK) in your plugin, you need to be sure there are no conflicts with the compiled libraries included in the OsiriX main source code.</p>
+			<p>This <a href="ITK-OsiriX-Plugin.pdf">PDF document</a> will help you to prepare and include your own ITK libraries in a plugin.</p>
+			<p>Special thanks to Brian Jensen.</p>
+            <p>See PetSpectFusion plugin in the plugins folder for an example.</p>
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		
+<a name="More_Help"><h2>More Help?</h2></a>
+	  <p>If this guide does not answer all your questions, please try our developers mailing-list:</p>
+			<p align="center"><a href="http://tech.groups.yahoo.com/group/osirix-dev/">http://tech.groups.yahoo.com/group/osirix-dev/</a></p>
+			<p>Your can directly subscribe through here:</p>
+			<form method="get" action="http://tech.groups.yahoo.com/subscribe/osirix-dev">
+				<div align="center">
+			    <table cellspacing="0" cellpadding="2" border="0">
+					<tr><td colspan="2" align="center"><em>Subscribe to OsiriX Developers group</em></td></tr>
+					<tr><td><input type="text" name="user" value="enter email address" size="20"></td><td><input type="image" border="0" alt="Click here to join osirix-dev" name="Click here to join osirix-dev" src="http://us.i1.yimg.com/us.yimg.com/i/yg/img/i/us/ui/join.gif"></td></tr>
+				</table>
+                </div>
+			</form>
+			
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		</div>
+				
+		<div id="footer">&copy;2010 The OsiriX Development Team - <i>Developing Swiss Quality DICOM Viewer since 2003</i></div>
+</body>
+</html>

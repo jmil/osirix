@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title>OsiriX Security Guide</title>
+	<link rel="stylesheet" href="../guides.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link REL="SHORTCUT ICON" HREF="../favicon.ico">
+</head>
+
+<body>
+	<div id="keychain_logo"></div>
+	<ul id="table_of_content">
+		<a href="../index.html"><li id="table_of_content_back">OsiriX Technical Guides</li></a>
+		<li id="table_of_content_embellishment_start"></li>
+		<li id="table_of_content_title">Table of Contents</li>
+		<a href="#top"><li class="table_of_content_item0">Introduction</li></a>
+		<a href="#OsiriX_Secure_Web_Server_Setup"><li class="table_of_content_item1">OsiriX Secure Web Server Setup</li></a>
+		<a href="#OsiriX_TLS_DICOM_Listener_Setup"><li class="table_of_content_item0">OsiriX TLS DICOM Listener Setup</li></a>
+		<a href="#Creating_a_Self_Signed_Certificate"><li class="table_of_content_item1">Creating a Self-Signed Certificate</li></a>
+		<a href="#Requesting_a_Certificate_from_a_Certification_Authority"><li class="table_of_content_item0">Requesting a Certificate from a Certification Authority</li></a>
+		<a href="#Changing_the_Trust_Settings_of_a_Certificate"><li class="table_of_content_item1">Changing the Trust Settings of a Certificate</li></a>
+		<a href="#More_Help"><li class="table_of_content_item0">More Help?</li></a>
+		<li id="table_of_content_embellishment_end"></li>
+	</ul>
+		
+	<div id="content">
+		<a name="top"><h1>OsiriX Security Guide</h1></a>
+			<p>Welcome to the OsiriX Security Guide. This Guide was brought to you by the OsiriX development Team and is frequently updated.</p>
+			<p>This document will guide you step by step in creating SSL Certificates and setting up the OsiriX HTTPS Web Server and DICOM TLS Listener.</p>
+		
+		<a name="OsiriX_Secure_Web_Server_Setup"><h2>OsiriX Secure Web Server Setup</h2></a>
+			<p><em>Requirement: Make sure you have a valid certificate in your Keychain (see <a href="#Creating_a_Self_Signed_Certificate">Creating a Self-Signed Certificate</a> or <a href="#Requesting_a_Certificate_from_a_Certification_Authority">Requesting a Certificate from a Certification Authority</a>)</em></p>
+
+			<img class="icon" src="images/OsiriXIcon.png" />
+			<ul class="enumerate">			
+				<li>Open <em>OsiriX</em>.</li>
+				
+				<li>Open the <em>Preferences</em> (in the <em>OsiriX</em> Menu).</li>
+				
+				<li>Select the <em>Web Server</em> Preferences:</li>
+					<img class="screenshot" src="images/PreferencesWebServer.png" />
+					
+				<li>Activate the <em>Web Server</em>:</li>
+					<img class="screenshot" src="images/WebServerActivate.png" />
+					
+				<li>Activate the encryption:</li>
+					<img class="screenshot" src="images/WebServerEncrypted.png" />
+					
+				<li>Click <em>Choose</em> to select the certificate to use for encryption:</li>
+					<img class="screenshot" src="images/WebServerChooseCertificate.png" />
+					
+				<li>The list of available certificates will appear. Select the one you want to use, and click the <em>Choose</em> button:</li>
+					<img class="screenshot" src="images/ListOfCertificates.png" />
+
+				<li>The chosen certificate will be displayed in the Web Server preferences:</li>
+					<img class="screenshot" src="images/WebServerCertificate.png" />
+
+				<li><strong>[DO NOT SKIP THIS STEP]</strong> Test the OsiriX Web Server at:
+					<p><a href="https://127.0.0.1:3333/">https://127.0.0.1:3333/</a></p>
+					<p>or:</p>
+					<p><a href="https://localhost:3333/">https://localhost:3333/</a></p>
+					When you try to load this page, you may have 1 or 2 warnings:
+					
+					<ul class="enumerate">
+						<li>Safari can ask your approval for connecting to a site using an invalid certificate.
+							This occurs if you created a self-signed certificate (as described in <a href="#Creating_a_Self_Signed_Certificate">Creating a Self-Signed Certificate</a>).
+							
+							<p>Here, you can either click <em>Continue</em> (for a one time approval) or click <em>Show Certificate</em> to modify the trust settings (see <a href="#Changing_the_Trust_Settings_of_a_Certificate">Changing the Trust Settings of a Certificate</a>).</p>
+							
+							<p><em>Note: Your users will have the same kind of warning when trying to connect to your OsiriX Web Server.
+									This is the down-side of creating self-signed certificates...
+							</em></p>
+						</li>
+						<img class="screenshot" src="images/SafariCantVerifyIdentity.png" />
+						<li>OsiriX asks your permission to use the private key associated to your certificate.
+							<p><strong>You have to click the <em>Always Allow</em> button</strong>:</p>
+						</li>
+						<img class="screenshot" src="images/AllowAccessToPrivateKey.png" />
+					</ul>
+				</li>
+					
+				<li>The OsiriX Web Server is now completely secure and can be visited at:
+					<p>http<span style="color:red;">s</span>://yourIPAddress:3333/</p>
+					<p>or:</p>
+					<p>http<span style="color:red;">s</span>://yourHostname:3333/</p>
+				</li>
+				<img class="screenshot" src="images/OsiriXSecureWebPortalInSafari.png" />
+			</ul>
+						
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+			
+		<a name="OsiriX_TLS_DICOM_Listener_Setup"><h2>OsiriX TLS DICOM Listener Setup</h2></a>
+			<p><em>Requirement: Make sure you have a valid certificate in your Keychain (see <a href="#Creating_a_Self_Signed_Certificate">Creating a Self-Signed Certificate</a> or <a href="#Requesting_a_Certificate_from_a_Certification_Authority">Requesting a Certificate from a Certification Authority</a>)</em></p>
+			
+			<img class="icon" src="images/OsiriXIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>OsiriX</em>.</li>
+				<li>Open the <em>Preferences</em> (in the <em>OsiriX</em> Menu).</li>
+				<li>Select the <em>Listener</em> Preferences:</li>
+					<img class="screenshot" src="images/PreferencesListener.png" />
+				<li>The last option of this group of settings, you will find the <em>DICOM TLS Listener</em>. Click on the <em>TLS Settings</em> button:</li>
+					<img class="screenshot" src="images/TLSSettingsButton.png" />
+				<li>In the TLS Settings, click on the <em>Activate DICOM TLS Listener</em> check box, and choose an AETitle and a Port number (it must be different from the default DICOM Listener port).
+					Then click on the <em>Choose</em> button to select the certificate to use for TLS communications:
+					</li>
+					<img class="screenshot" src="images/TLSSettingsDefault.png" />
+				<li>The list of available certificates will appear. Select the one you want to use, and click the <em>Choose</em> button:</li>
+					<img class="screenshot" src="images/TLSSettingsCertificateList.png" />
+				<li>Here is an example of TLS Settings:</li>
+					<img class="screenshot" src="images/TLSSettings.png" />
+				<li>The chosen AETitle and Port will be displayed on the Listener Preferences window:</li>
+					<img class="screenshot" src="images/TLSSettingsAETPort.png" />
+				<li>You can now receive encrypted DICOM communications on the chosen Port.</li>
+			</ul>
+			
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		
+		
+		<a name="Creating_a_Self_Signed_Certificate"><h2>Creating a Self-Signed Certificate</h2></a>
+			<img class="icon" src="images/CertificateAssistantIcon.png" />
+			<p>The easiest and quickest way to create a certificate is to make a <em>self-signed certificate</em> using the Certificate Assistant.</p>
+			<p>The problem with self-signed certificates is that they will not be trusted by default on your users' computers (they may receive security warnings).</p>
+			<p>But it could be useful for testing purpose or internal use.</p>
+			<p>To create a self-signed certificate:</p>
+			
+			<img class="icon" src="images/KeychainAccessIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
+				
+				<li>Choose <em>Certificate Assistant > Create a Certificate...</em> from the <em>Keychain Access</em> Menu, as shown in the following image:</li>
+					<img class="screenshot" src="images/KeychainMenu_CreateCertificate.png" />
+					
+				<li>Choose a name for your certificate (it can be anything) and make sure that you choose <em>SSL Server</em> for the <em>Certificate Type</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate1.png" />
+
+				<li>Confirm that you want to create a self-signed certificate by clicking the <em>Continue</em> button:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate2.png" />
+				
+				<li>Choose a <em>Serial Number</em> and a <em>Validity Period</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate3.png" />
+				<li>Enter the required informations, for example:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate4.png" />
+				<li>Choose the <em>Key Size</em> and the <em>Algorithm</em>. Click <em>Learn Mode...</em> for informations about theses options.</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate5.png" />
+				<li>Select all capabilities for the <em>Key Usage Extension</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate6.png" />
+				<li>Select only the specific <em>Extended Key Usage Extension</em>, which is <em>SSL Server Authentication</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate7.png" />
+				<li>Don't include the <em>Basic Constrains Extension</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate8.png" />
+				<li>Don't include the <em>Subject Alternate Name Extension</em>:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate9.png" />
+				<li>Select the <em>Login</em> Keychain to store the certificate:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate10.png" />
+				<li>The Certificate is now created:</li>
+					<img class="screenshot" src="images/CreateSelfSignedCertificate11.png" />
+			</ul>
+			
+		
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+
+		<a name="Requesting_a_Certificate_from_a_Certification_Authority"><h2>Requesting a Certificate from a Certification Authority</h2></a>
+
+			<img class="icon" src="images/KeychainAccessIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
+				
+				<li>Choose <em>Certificate Assistant > Request a Certificate from a Certificate Authority...</em> from the <em>Keychain Access</em> Menu, as shown in the following image:</li>
+					<img class="screenshot" src="images/KeychainMenu_RequestCertificate.png" />
+					
+				<li>In the <em>Certificate Information</em> window, enter your e-mail address and the desired name for the requested certificate.
+					Don't fill the <em>CA Email Address</em> field and choose <em>Save to disk</em>:</li>
+					<img class="screenshot" src="images/RequestingCertificate1.png" />
+				<li>Choose a name and location for the request:</li>
+					<img class="screenshot" src="images/RequestingCertificate2.png" />
+				<li>Set the key size:</li>
+					<img class="screenshot" src="images/RequestingCertificate3.png" />
+				<li>When the request has been created, click <em>Show In Finder...</em> and open it with <em>TextEdit.app</em>.</li>
+					<img class="screenshot" src="images/RequestingCertificate4.png" />
+				<li>The content of the certificate request should look like this:</li>
+					<img class="screenshot" src="images/RequestingCertificate5.png" />
+				<li>Copy the content of the certificate request and submit it to your favorite Certification Authority (CA).
+					The usual suspects are:
+					<ul>
+						<li><a href="http://www.verisign.com/ssl/ssl-information-center">Verisign</a></li>
+						<li><a href="https://www.godaddy.com/gdshop/ssl/ssl.asp">Go Daddy</a></li>
+						<li><a href="http://www.thawte.com/">Thawte</a></li>
+						<li>etc.</li>
+					</ul>
+				</li>
+			</ul>
+			
+			<h3>Real-case example</h3>
+			<p>This example shows how a valid SSL certificate is created for a server in the University Hospital of Geneva.</p>
+			<ul>
+				<li>A certificate request is created as described before.</li>
+				<li>The certificate request is submitted to <a href="http://www.switch.ch">Switch</a>, a service provider for Swiss Universities.</li>
+					<img class="screenshot" src="images/Switch.png" width="700"/>
+				<li>After approval by the hospital's registration authority person, the certificate is downloaded and added to the server's Keychain.</li>
+				<li>At this point the certificate is still not valid because the intermediate CA certificate is unknown:</li>
+					<img class="screenshot" src="images/cih-1084Invalid.png" />
+				<li>The intermediate CA certificate has to be downloaded from the intermediate CA web site (in this case QuoVadis).</li>				
+					<img class="screenshot" src="images/QuoVadisCertificate.png" width="700"/>
+				<li>The intermediate CA certificate is added to the Keychain of the server:</li>
+				<img class="screenshot" src="images/QuoVadisAddToKeychain.png" />
+				<li>The server's certificate is now recognized as valid:</li>
+				<img class="screenshot" src="images/cih-1084Valid.png" />
+				<li>When using the certificate with an OsiriX Web Server, the intermediate CA certificate will be automatically transmitted to the clients systems.
+					Thus clients should see the certificate as valid.
+					<ul>
+						<li>A client using Safari on Mac OS X:</li><img class="screenshot" src="images/HTTPSSafari.png" />
+						<li>A client using Firefox on Mac OS X:</li><img class="screenshot" src="images/HTTPSFirefox.png" />
+						<li>A client using Chrome on Mac OS X:</li><img class="screenshot" src="images/HTTPSChrome.png" />
+						<li>A client using Internet Explorer on Windows XP:</li><img class="screenshot" src="images/HTTPSIE.png" />
+					</ul>
+				</li>
+				<li>If the intermediate CA certificate is not installed or if the certificate is not valid, the clients will received warning messages such as:
+					<ul>
+						<li>Safari on Mac OS X:</li><img class="screenshot" src="images/SafariWarning.png" />
+						<li>Firefox on Mac OS X:</li><img class="screenshot" src="images/FirefoxWarning.png" width="700"/>
+						<li>Chrome on Mac OS X:</li><img class="screenshot" src="images/ChromeWarning.png" width="700"/>
+						<li>Internet Explorer on Windows XP:</li><img class="screenshot" src="images/IEWarning.png" />
+					</ul>
+				</li>				
+			</ul>
+		
+		<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+		
+		<a name="Changing_the_Trust_Settings_of_a_Certificate"><h2>Changing the Trust Settings of a Certificate</h2></a>
+		
+			<img class="icon" src="images/KeychainAccessIcon.png" />
+			<ul class="enumerate">
+				<li>Open <em>Keychain Access.app</em> located in <em>/Applications/Utilities</em>.</li>
+				<li>Select the <em>My Certificates</em> Category and double-click on your certificate.</li>
+					<img class="screenshot" src="images/TrustSettings1.png" />
+				<li>This will open a window displaying the certificate's infos.
+					Click on the disclosure button near <em>Trust</em>:</li>
+					<img class="screenshot" src="images/TrustSettings2.png" />
+				<li>Change the trust settings to <em>Always Trust</em> and close the window.</li>
+					<img class="screenshot" src="images/TrustSettings3.png" />
+				<li>Authenticate to validate your changes.</li>
+					<img class="screenshot" src="images/TrustSettings4.png" />
+				<li>Your certificate is now trusted for the current user.</li>
+					<img class="screenshot" src="images/TrustSettings5.png" />
+			</ul>
+		
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+				
+		<a name="More_Help"><h2>More Help?</h2></a>
+			<p>If this guide does not answer all your questions, please try our mailing-list:</p>
+			<p align="center"><a href="http://tech.groups.yahoo.com/group/osirix/">http://tech.groups.yahoo.com/group/osirix/</a></p>
+			<p>Your can directly subscribe through here:</p>
+			<form method="get" action="http://tech.groups.yahoo.com/subscribe/osirix">
+				<div align="center">
+			    <table cellspacing="0" cellpadding="2" border="0">
+					<tr><td colspan="2" align="center"><em>Subscribe to OsiriX Users group</em></td></tr>
+					<tr><td><input type="text" name="user" value="enter email address" size="20"></td><td><input type="image" border="0" alt="Click here to join osirix" name="Click here to join osirix" src="http://us.i1.yimg.com/us.yimg.com/i/yg/img/i/us/ui/join.gif"></td></tr>
+				</table>
+	               </div>
+			</form>
+
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+
+	</div>				
+	<div id="footer">&copy;2010 The OsiriX Development Team - <i>Developing Swiss Quality DICOM Viewer since 2003</i></div>
+</body>
+</html>
