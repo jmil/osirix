@@ -82,6 +82,33 @@
 		183C865C08563F3A000E6A68 /* VRFlyThruAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 183C864808563F3A000E6A68 /* VRFlyThruAdapter.h */; };
 		183C865D08563F3A000E6A68 /* VRFlyThruAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 183C864908563F3A000E6A68 /* VRFlyThruAdapter.m */; };
 		32E422150C97301600E193CA /* altivecFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E422140C97301600E193CA /* altivecFunctions.h */; };
+		4FAA76E912F7046200994AFE /* OSICoalescedROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76CE12F7046200994AFE /* OSICoalescedROI.h */; };
+		4FAA76EA12F7046200994AFE /* OSICoalescedROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76CF12F7046200994AFE /* OSICoalescedROI.m */; };
+		4FAA76EB12F7046200994AFE /* OSIEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D012F7046200994AFE /* OSIEnvironment.h */; };
+		4FAA76EC12F7046200994AFE /* OSIEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D112F7046200994AFE /* OSIEnvironment.m */; };
+		4FAA76ED12F7046200994AFE /* OSIEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D212F7046200994AFE /* OSIEnvironment+Private.h */; };
+		4FAA76EE12F7046200994AFE /* OSIFloatVolumeData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D312F7046200994AFE /* OSIFloatVolumeData.h */; };
+		4FAA76EF12F7046200994AFE /* OSIFloatVolumeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */; };
+		4FAA76F012F7046200994AFE /* OSIGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D512F7046200994AFE /* OSIGeometry.h */; };
+		4FAA76F112F7046200994AFE /* OSIGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D612F7046200994AFE /* OSIGeometry.m */; };
+		4FAA76F212F7046200994AFE /* OSIPathROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D712F7046200994AFE /* OSIPathROI.h */; };
+		4FAA76F312F7046200994AFE /* OSIPathROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D812F7046200994AFE /* OSIPathROI.m */; };
+		4FAA76F412F7046200994AFE /* OSIROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D912F7046200994AFE /* OSIROI.h */; };
+		4FAA76F512F7046200994AFE /* OSIROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76DA12F7046200994AFE /* OSIROI.m */; };
+		4FAA76F612F7046200994AFE /* OSIROI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76DB12F7046200994AFE /* OSIROI+Private.h */; };
+		4FAA76F712F7046200994AFE /* OSIROIFloatPixelData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76DC12F7046200994AFE /* OSIROIFloatPixelData.h */; };
+		4FAA76F812F7046200994AFE /* OSIROIFloatPixelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76DD12F7046200994AFE /* OSIROIFloatPixelData.m */; };
+		4FAA76F912F7046200994AFE /* OSIROIManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76DE12F7046200994AFE /* OSIROIManager.h */; };
+		4FAA76FA12F7046200994AFE /* OSIROIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76DF12F7046200994AFE /* OSIROIManager.m */; };
+		4FAA76FB12F7046200994AFE /* OSIROIMask.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76E012F7046200994AFE /* OSIROIMask.h */; };
+		4FAA76FC12F7046200994AFE /* OSIROIMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76E112F7046200994AFE /* OSIROIMask.m */; };
+		4FAA76FD12F7046200994AFE /* OSIStudy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76E212F7046200994AFE /* OSIStudy.h */; };
+		4FAA76FE12F7046200994AFE /* OSIStudy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76E312F7046200994AFE /* OSIStudy.m */; };
+		4FAA76FF12F7046200994AFE /* OSIVolumeWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76E412F7046200994AFE /* OSIVolumeWindow.h */; };
+		4FAA770012F7046200994AFE /* OSIVolumeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76E512F7046200994AFE /* OSIVolumeWindow.m */; };
+		4FAA770112F7046200994AFE /* OSIVolumeWindow+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76E612F7046200994AFE /* OSIVolumeWindow+Private.h */; };
+		4FAA770212F7046200994AFE /* pluginSDKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76E712F7046200994AFE /* pluginSDKAdditions.h */; };
+		4FAA770312F7046200994AFE /* pluginSDKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76E812F7046200994AFE /* pluginSDKAdditions.m */; };
 		590A3DCD12A92920004581C2 /* WebPortalDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 590A3DCB12A92920004581C2 /* WebPortalDatabase.h */; };
 		590A3DCE12A92920004581C2 /* WebPortalDatabase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 590A3DCC12A92920004581C2 /* WebPortalDatabase.mm */; };
 		590BB22012A002FA009E9758 /* WebPortalStudy.h in Headers */ = {isa = PBXBuildFile; fileRef = 590BB21E12A002FA009E9758 /* WebPortalStudy.h */; };
@@ -8374,6 +8401,33 @@
 		4A16D0970965E15300F82EC4 /* Unit Testing (Cocoa)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit Testing (Cocoa)-Info.plist"; path = "UnitTesting/Unit Testing (Cocoa)-Info.plist"; sourceTree = "<group>"; };
 		4A16D0A20965E21800F82EC4 /* UnitTestingBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitTestingBase.h; path = UnitTesting/UnitTestingBase.h; sourceTree = "<group>"; };
 		4A16D0A30965E21800F82EC4 /* UnitTestingBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnitTestingBase.m; path = UnitTesting/UnitTestingBase.m; sourceTree = "<group>"; };
+		4FAA76CE12F7046200994AFE /* OSICoalescedROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSICoalescedROI.h; sourceTree = "<group>"; };
+		4FAA76CF12F7046200994AFE /* OSICoalescedROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSICoalescedROI.m; sourceTree = "<group>"; };
+		4FAA76D012F7046200994AFE /* OSIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIEnvironment.h; sourceTree = "<group>"; };
+		4FAA76D112F7046200994AFE /* OSIEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIEnvironment.m; sourceTree = "<group>"; };
+		4FAA76D212F7046200994AFE /* OSIEnvironment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIEnvironment+Private.h"; sourceTree = "<group>"; };
+		4FAA76D312F7046200994AFE /* OSIFloatVolumeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIFloatVolumeData.h; sourceTree = "<group>"; };
+		4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIFloatVolumeData.m; sourceTree = "<group>"; };
+		4FAA76D512F7046200994AFE /* OSIGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIGeometry.h; sourceTree = "<group>"; };
+		4FAA76D612F7046200994AFE /* OSIGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIGeometry.m; sourceTree = "<group>"; };
+		4FAA76D712F7046200994AFE /* OSIPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIPathROI.h; sourceTree = "<group>"; };
+		4FAA76D812F7046200994AFE /* OSIPathROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIPathROI.m; sourceTree = "<group>"; };
+		4FAA76D912F7046200994AFE /* OSIROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROI.h; sourceTree = "<group>"; };
+		4FAA76DA12F7046200994AFE /* OSIROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROI.m; sourceTree = "<group>"; };
+		4FAA76DB12F7046200994AFE /* OSIROI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIROI+Private.h"; sourceTree = "<group>"; };
+		4FAA76DC12F7046200994AFE /* OSIROIFloatPixelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIFloatPixelData.h; sourceTree = "<group>"; };
+		4FAA76DD12F7046200994AFE /* OSIROIFloatPixelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIFloatPixelData.m; sourceTree = "<group>"; };
+		4FAA76DE12F7046200994AFE /* OSIROIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIManager.h; sourceTree = "<group>"; };
+		4FAA76DF12F7046200994AFE /* OSIROIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIManager.m; sourceTree = "<group>"; };
+		4FAA76E012F7046200994AFE /* OSIROIMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIMask.h; sourceTree = "<group>"; };
+		4FAA76E112F7046200994AFE /* OSIROIMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIMask.m; sourceTree = "<group>"; };
+		4FAA76E212F7046200994AFE /* OSIStudy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIStudy.h; sourceTree = "<group>"; };
+		4FAA76E312F7046200994AFE /* OSIStudy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIStudy.m; sourceTree = "<group>"; };
+		4FAA76E412F7046200994AFE /* OSIVolumeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIVolumeWindow.h; sourceTree = "<group>"; };
+		4FAA76E512F7046200994AFE /* OSIVolumeWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIVolumeWindow.m; sourceTree = "<group>"; };
+		4FAA76E612F7046200994AFE /* OSIVolumeWindow+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIVolumeWindow+Private.h"; sourceTree = "<group>"; };
+		4FAA76E712F7046200994AFE /* pluginSDKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pluginSDKAdditions.h; sourceTree = "<group>"; };
+		4FAA76E812F7046200994AFE /* pluginSDKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginSDKAdditions.m; sourceTree = "<group>"; };
 		590A3DCB12A92920004581C2 /* WebPortalDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPortalDatabase.h; sourceTree = "<group>"; };
 		590A3DCC12A92920004581C2 /* WebPortalDatabase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebPortalDatabase.mm; sourceTree = "<group>"; };
 		590BB21E12A002FA009E9758 /* WebPortalStudy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPortalStudy.h; sourceTree = "<group>"; };
@@ -12444,6 +12498,7 @@
 				A93CFF6E0A5169FE00078038 /* LL */,
 				A9333D280F56E68B0097DAB7 /* MPR */,
 				CE90547412F5B5D700263AB6 /* CPR */,
+				4FAA76CB12F7041900994AFE /* PluginSDK */,
 				AB3F4A1D0672674000E61A6C /* Window3DController.h */,
 				AB3F4A1E0672674000E61A6C /* Window3DController.m */,
 				A9F2E557092227A400055899 /* DarkWindow.h */,
@@ -12756,6 +12811,56 @@
 				AB381B020ABE9F9A00239326 /* OSIAutoroutingPreferencePane.xcodeproj */,
 			);
 			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		4FAA76CB12F7041900994AFE /* PluginSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4FAA770612F7047500994AFE /* Private */,
+				4FAA770912F7048F00994AFE /* ROIs */,
+				4FAA76D012F7046200994AFE /* OSIEnvironment.h */,
+				4FAA76D112F7046200994AFE /* OSIEnvironment.m */,
+				4FAA76D312F7046200994AFE /* OSIFloatVolumeData.h */,
+				4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */,
+				4FAA76D512F7046200994AFE /* OSIGeometry.h */,
+				4FAA76D612F7046200994AFE /* OSIGeometry.m */,
+				4FAA76D912F7046200994AFE /* OSIROI.h */,
+				4FAA76DA12F7046200994AFE /* OSIROI.m */,
+				4FAA76DC12F7046200994AFE /* OSIROIFloatPixelData.h */,
+				4FAA76DD12F7046200994AFE /* OSIROIFloatPixelData.m */,
+				4FAA76DE12F7046200994AFE /* OSIROIManager.h */,
+				4FAA76DF12F7046200994AFE /* OSIROIManager.m */,
+				4FAA76E012F7046200994AFE /* OSIROIMask.h */,
+				4FAA76E112F7046200994AFE /* OSIROIMask.m */,
+				4FAA76E212F7046200994AFE /* OSIStudy.h */,
+				4FAA76E312F7046200994AFE /* OSIStudy.m */,
+				4FAA76E412F7046200994AFE /* OSIVolumeWindow.h */,
+				4FAA76E512F7046200994AFE /* OSIVolumeWindow.m */,
+				4FAA76E712F7046200994AFE /* pluginSDKAdditions.h */,
+				4FAA76E812F7046200994AFE /* pluginSDKAdditions.m */,
+			);
+			name = PluginSDK;
+			sourceTree = "<group>";
+		};
+		4FAA770612F7047500994AFE /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				4FAA76D212F7046200994AFE /* OSIEnvironment+Private.h */,
+				4FAA76DB12F7046200994AFE /* OSIROI+Private.h */,
+				4FAA76E612F7046200994AFE /* OSIVolumeWindow+Private.h */,
+			);
+			name = Private;
+			sourceTree = "<group>";
+		};
+		4FAA770912F7048F00994AFE /* ROIs */ = {
+			isa = PBXGroup;
+			children = (
+				4FAA76CE12F7046200994AFE /* OSICoalescedROI.h */,
+				4FAA76CF12F7046200994AFE /* OSICoalescedROI.m */,
+				4FAA76D712F7046200994AFE /* OSIPathROI.h */,
+				4FAA76D812F7046200994AFE /* OSIPathROI.m */,
+			);
+			name = ROIs;
 			sourceTree = "<group>";
 		};
 		590A3DCF12A9293C004581C2 /* Web Portal */ = {
@@ -19856,6 +19961,21 @@
 				CE90550F12F5B64300263AB6 /* CPRUnsignedInt16ImageRep.h in Headers */,
 				CE90551112F5B64300263AB6 /* CPRView.h in Headers */,
 				CE90551312F5B64300263AB6 /* CPRVolumeData.h in Headers */,
+				4FAA76E912F7046200994AFE /* OSICoalescedROI.h in Headers */,
+				4FAA76EB12F7046200994AFE /* OSIEnvironment.h in Headers */,
+				4FAA76ED12F7046200994AFE /* OSIEnvironment+Private.h in Headers */,
+				4FAA76EE12F7046200994AFE /* OSIFloatVolumeData.h in Headers */,
+				4FAA76F012F7046200994AFE /* OSIGeometry.h in Headers */,
+				4FAA76F212F7046200994AFE /* OSIPathROI.h in Headers */,
+				4FAA76F412F7046200994AFE /* OSIROI.h in Headers */,
+				4FAA76F612F7046200994AFE /* OSIROI+Private.h in Headers */,
+				4FAA76F712F7046200994AFE /* OSIROIFloatPixelData.h in Headers */,
+				4FAA76F912F7046200994AFE /* OSIROIManager.h in Headers */,
+				4FAA76FB12F7046200994AFE /* OSIROIMask.h in Headers */,
+				4FAA76FD12F7046200994AFE /* OSIStudy.h in Headers */,
+				4FAA76FF12F7046200994AFE /* OSIVolumeWindow.h in Headers */,
+				4FAA770112F7046200994AFE /* OSIVolumeWindow+Private.h in Headers */,
+				4FAA770212F7046200994AFE /* pluginSDKAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -24552,6 +24672,18 @@
 				CE90551012F5B64300263AB6 /* CPRUnsignedInt16ImageRep.m in Sources */,
 				CE90551212F5B64300263AB6 /* CPRView.m in Sources */,
 				CE90551412F5B64300263AB6 /* CPRVolumeData.m in Sources */,
+				4FAA76EA12F7046200994AFE /* OSICoalescedROI.m in Sources */,
+				4FAA76EC12F7046200994AFE /* OSIEnvironment.m in Sources */,
+				4FAA76EF12F7046200994AFE /* OSIFloatVolumeData.m in Sources */,
+				4FAA76F112F7046200994AFE /* OSIGeometry.m in Sources */,
+				4FAA76F312F7046200994AFE /* OSIPathROI.m in Sources */,
+				4FAA76F512F7046200994AFE /* OSIROI.m in Sources */,
+				4FAA76F812F7046200994AFE /* OSIROIFloatPixelData.m in Sources */,
+				4FAA76FA12F7046200994AFE /* OSIROIManager.m in Sources */,
+				4FAA76FC12F7046200994AFE /* OSIROIMask.m in Sources */,
+				4FAA76FE12F7046200994AFE /* OSIStudy.m in Sources */,
+				4FAA770012F7046200994AFE /* OSIVolumeWindow.m in Sources */,
+				4FAA770312F7046200994AFE /* pluginSDKAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

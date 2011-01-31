@@ -92,6 +92,7 @@
 #import "MPRController.h"
 #import "CPRController.h"
 #import "Notifications.h"
+#import "OSIEnvironment+Private.h"
 
 int delayedTileWindows = NO;
 
@@ -2604,6 +2605,7 @@ static volatile int numberOfThreadsForRelisce = 0;
 	
 	[self release];
 	
+	[[OSIEnvironment sharedEnvironment] removeViewerController:self];
 	numberOf2DViewer--;
 	if( numberOf2DViewer == 0)
 	{
@@ -18057,6 +18059,7 @@ int i,j,l;
 {
 	[[self window] zoom: self];
 	
+	[[OSIEnvironment sharedEnvironment] addViewerController:self];
 	numberOf2DViewer++;
 	if( numberOf2DViewer > 1 || [[NSUserDefaults standardUserDefaults] boolForKey: @"USEALWAYSTOOLBARPANEL2"] == YES)
 	{
