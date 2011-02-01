@@ -1,9 +1,9 @@
-- JP2K supported in DCMTK
+- JPEG2000 supported in DCMTK
 - Flash support, instead of Quicktime, for the built-in Web Server
 - OpenJPEG library updated to 1.4
 - Web Server: Administer Users from the Web
 - Track Pad support : magnification, rotation, swipe
-- Kakadu SDK for JPEG2000
+- Kakadu SDK for JPEG2000 : Up to 6 times faster than OpenJPEG
 - DCMTK SDK support for anonymization (better quality compared to DCM Framework)
 - DCMTK SDK support for DICOM export (better quality compared to DCM Framework, all fields are copied)
 - Anonymization: existing fields of the file(s) displayed
