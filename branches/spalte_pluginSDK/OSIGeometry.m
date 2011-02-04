@@ -8,7 +8,3 @@
 
 #import "OSIGeometry.h"
 
-
-@implementation OSIGeometry
-
-@end

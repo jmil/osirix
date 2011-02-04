@@ -11,4 +11,10 @@
 
 @implementation OSICoalescedROI
 
+- (id)initWithOSIROIs:(NSArray *)rois
+{
+	[self autorelease];
+	return nil;
+}
+
 @end

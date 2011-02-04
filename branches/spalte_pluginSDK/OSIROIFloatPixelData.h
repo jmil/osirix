@@ -7,31 +7,31 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "OSIROIMask.h"
 // this is the representation of the data within the generic ROI
 
 
 @class OSIFloatVolumeData;
-@class OSIROIMask;
 @class OSIStudy;
 
 @interface OSIROIFloatPixelData : NSObject {
-
+	OSIROIMask *_ROIMask;
+	OSIFloatVolumeData *_volumeData;
 }
 
-- (id)initWithROIMask:(OSIROIMask *) floatVolumeData:(OSIFloatVolumeData *)volumeData;
+- (id)initWithROIMask:(OSIROIMask *)roiMask floatVolumeData:(OSIFloatVolumeData *)volumeData;
 
-- (OSIROIMask *)ROIMask;
-- (OSIFloatVolumeData *)floatVolumeData;
+@property (nonatomic, readonly, retain) OSIROIMask *ROIMask;
+@property (nonatomic, readonly, retain) OSIFloatVolumeData *floatVolumeData;
 
 - (float)meanIntensity;
 - (float)maxIntensity;
 - (float)minIntensity;
 
 - (NSUInteger)floatCount;
-- (void)getFloatData:(float *)buffer floatCount:(NSUInteger)count;
+- (NSUInteger)getFloatData:(float *)buffer floatCount:(NSUInteger)count;
 
-- (OSIStudy *)study; // really just a shortcut to get the volume's study
-
+- (NSRange)volumeRangeForROIMaskRun:(OSIROIMaskRun)maskRun;
+- (NSRange)volumeRangeForROIMaskIndex:(OSIROIMaskIndex)maskIndex;
 
 @end

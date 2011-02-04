@@ -15,6 +15,8 @@
 //@class OSIFloatVolumeData;
 @class OSIStudy;
 @class ROI;
+@class OSIROIMask;
+@class OSIFloatVolumeData;
 
 // this is an abstract class
 // how do you identify an ROI? Does an ROI have an ID and that is how you know what an ROI is, or is the ROI the actual object...
@@ -38,13 +40,16 @@
 
 //- (OSIStudy *)study;
 //- (OSIROIFloatPixelData *)ROIFloatPixelDataForFloatVolumeData:(OSIFloatVolumeData *)floatVolume; // resamples the ROI onto the other volume data
-//- (OSIROIMask *)ROIMaskForFloatVolumeData:(OSIFloatVolumeData *)floatVolume;
+- (OSIROIMask *)ROIMaskForFloatVolumeData:(OSIFloatVolumeData *)floatVolume;
 //- (BOOL)containsVector:(OSIVector)vector;
 
 - (NSArray *)convexHull; // OSIVectors stored in NSValue objects. The ROI promises to live inside of these points
 						 // all concrete implementation MUST implement this!
 
 //- (NSDictionary *)dictionaryRepresentation; // make sure this is a plist serializable dictionary;
+
+// to get down and dirty
+- (NSArray *)osiriXROIs; // returns the primitive ROIs that are represented by this object
 
 // at some point I would love to support drawing new ROI types...
 

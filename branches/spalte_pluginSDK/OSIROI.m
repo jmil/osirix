@@ -8,7 +8,7 @@
 
 #import "OSIROI.h"
 #import "OSIROI+Private.h"
-#import "OSIPathROI.h"
+#import "OSIPlanarPathROI.h"
 #import "OSICoalescedROI.h"
 #import "DCMView.h"
 #import "CPRGeometry.h"
@@ -28,6 +28,15 @@
 	return nil;
 }
 
+- (OSIROIMask *)ROIMaskForFloatVolumeData:(OSIFloatVolumeData *)floatVolume
+{
+	return nil;
+}
+
+- (NSArray *)osiriXROIs
+{
+	return [NSArray array];
+}
 
 @end
 
@@ -38,7 +47,8 @@
 	switch ([roi type]) {
 		case tMesure:
 		case tOPolygon:
-			return [[[OSIPathROI alloc] initWithOsiriXROI:roi pixToDICOMTransfrom:pixToDICOMTransfrom] autorelease];
+		case tCPolygon:
+			return [[[OSIPlanarPathROI alloc] initWithOsiriXROI:roi pixToDICOMTransfrom:pixToDICOMTransfrom] autorelease];
 			break;
 		default:
 			return nil;;

@@ -48,6 +48,11 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 	return _ROIManager;
 }
 
+- (NSString *)title
+{
+	return [[_viewerController window] title];
+}
+
 @end
 
 @implementation OSIVolumeWindow (Private)

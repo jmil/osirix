@@ -12,6 +12,8 @@
 #import "OSIVolumeWindow+Private.h"
 #import "ViewerController.h"
 
+NSString* const OSIEnvironmentOpenVolumeWindowsDidUpdateNotification = @"OSIEnvironmentOpenVolumeWindowsDidUpdateNotification";
+
 static OSIEnvironment *sharedEnvironment = nil;
 
 @implementation OSIEnvironment
@@ -122,16 +124,18 @@ static OSIEnvironment *sharedEnvironment = nil;
 	[self willChangeValueForKey:@"openVolumeWindows"];
 	[_volumeWindows setObject:volumeWindow forKey:[NSValue valueWithPointer:viewerController]];
 	[self didChangeValueForKey:@"openVolumeWindows"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:OSIEnvironmentOpenVolumeWindowsDidUpdateNotification object:nil];
 	[volumeWindow release];
 }
 
 - (void)removeViewerController:(ViewerController *)viewerController
 {
-	assert([_volumeWindows objectForKey:[NSValue valueWithPointer:viewerController]] == NO); // already added this viewerController!
+	assert([_volumeWindows objectForKey:[NSValue valueWithPointer:viewerController]]); // make sure this one was added!
 	
 	[self willChangeValueForKey:@"openVolumeWindows"];
 	[_volumeWindows removeObjectForKey:[NSValue valueWithPointer:viewerController]];
 	[self didChangeValueForKey:@"openVolumeWindows"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:OSIEnvironmentOpenVolumeWindowsDidUpdateNotification object:nil];
 }
 
 @end

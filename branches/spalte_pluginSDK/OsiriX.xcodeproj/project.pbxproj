@@ -91,8 +91,8 @@
 		4FAA76EF12F7046200994AFE /* OSIFloatVolumeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */; };
 		4FAA76F012F7046200994AFE /* OSIGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D512F7046200994AFE /* OSIGeometry.h */; };
 		4FAA76F112F7046200994AFE /* OSIGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D612F7046200994AFE /* OSIGeometry.m */; };
-		4FAA76F212F7046200994AFE /* OSIPathROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D712F7046200994AFE /* OSIPathROI.h */; };
-		4FAA76F312F7046200994AFE /* OSIPathROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D812F7046200994AFE /* OSIPathROI.m */; };
+		4FAA76F212F7046200994AFE /* OSIPlanarPathROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D712F7046200994AFE /* OSIPlanarPathROI.h */; };
+		4FAA76F312F7046200994AFE /* OSIPlanarPathROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76D812F7046200994AFE /* OSIPlanarPathROI.m */; };
 		4FAA76F412F7046200994AFE /* OSIROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76D912F7046200994AFE /* OSIROI.h */; };
 		4FAA76F512F7046200994AFE /* OSIROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA76DA12F7046200994AFE /* OSIROI.m */; };
 		4FAA76F612F7046200994AFE /* OSIROI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAA76DB12F7046200994AFE /* OSIROI+Private.h */; };
@@ -8410,8 +8410,8 @@
 		4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIFloatVolumeData.m; sourceTree = "<group>"; };
 		4FAA76D512F7046200994AFE /* OSIGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIGeometry.h; sourceTree = "<group>"; };
 		4FAA76D612F7046200994AFE /* OSIGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIGeometry.m; sourceTree = "<group>"; };
-		4FAA76D712F7046200994AFE /* OSIPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIPathROI.h; sourceTree = "<group>"; };
-		4FAA76D812F7046200994AFE /* OSIPathROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIPathROI.m; sourceTree = "<group>"; };
+		4FAA76D712F7046200994AFE /* OSIPlanarPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIPlanarPathROI.h; sourceTree = "<group>"; };
+		4FAA76D812F7046200994AFE /* OSIPlanarPathROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIPlanarPathROI.m; sourceTree = "<group>"; };
 		4FAA76D912F7046200994AFE /* OSIROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROI.h; sourceTree = "<group>"; };
 		4FAA76DA12F7046200994AFE /* OSIROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROI.m; sourceTree = "<group>"; };
 		4FAA76DB12F7046200994AFE /* OSIROI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIROI+Private.h"; sourceTree = "<group>"; };
@@ -12818,14 +12818,14 @@
 			children = (
 				4FAA770612F7047500994AFE /* Private */,
 				4FAA770912F7048F00994AFE /* ROIs */,
+				4FAA76D912F7046200994AFE /* OSIROI.h */,
+				4FAA76DA12F7046200994AFE /* OSIROI.m */,
 				4FAA76D012F7046200994AFE /* OSIEnvironment.h */,
 				4FAA76D112F7046200994AFE /* OSIEnvironment.m */,
 				4FAA76D312F7046200994AFE /* OSIFloatVolumeData.h */,
 				4FAA76D412F7046200994AFE /* OSIFloatVolumeData.m */,
 				4FAA76D512F7046200994AFE /* OSIGeometry.h */,
 				4FAA76D612F7046200994AFE /* OSIGeometry.m */,
-				4FAA76D912F7046200994AFE /* OSIROI.h */,
-				4FAA76DA12F7046200994AFE /* OSIROI.m */,
 				4FAA76DC12F7046200994AFE /* OSIROIFloatPixelData.h */,
 				4FAA76DD12F7046200994AFE /* OSIROIFloatPixelData.m */,
 				4FAA76DE12F7046200994AFE /* OSIROIManager.h */,
@@ -12857,8 +12857,8 @@
 			children = (
 				4FAA76CE12F7046200994AFE /* OSICoalescedROI.h */,
 				4FAA76CF12F7046200994AFE /* OSICoalescedROI.m */,
-				4FAA76D712F7046200994AFE /* OSIPathROI.h */,
-				4FAA76D812F7046200994AFE /* OSIPathROI.m */,
+				4FAA76D712F7046200994AFE /* OSIPlanarPathROI.h */,
+				4FAA76D812F7046200994AFE /* OSIPlanarPathROI.m */,
 			);
 			name = ROIs;
 			sourceTree = "<group>";
@@ -19966,7 +19966,7 @@
 				4FAA76ED12F7046200994AFE /* OSIEnvironment+Private.h in Headers */,
 				4FAA76EE12F7046200994AFE /* OSIFloatVolumeData.h in Headers */,
 				4FAA76F012F7046200994AFE /* OSIGeometry.h in Headers */,
-				4FAA76F212F7046200994AFE /* OSIPathROI.h in Headers */,
+				4FAA76F212F7046200994AFE /* OSIPlanarPathROI.h in Headers */,
 				4FAA76F412F7046200994AFE /* OSIROI.h in Headers */,
 				4FAA76F612F7046200994AFE /* OSIROI+Private.h in Headers */,
 				4FAA76F712F7046200994AFE /* OSIROIFloatPixelData.h in Headers */,
@@ -24676,7 +24676,7 @@
 				4FAA76EC12F7046200994AFE /* OSIEnvironment.m in Sources */,
 				4FAA76EF12F7046200994AFE /* OSIFloatVolumeData.m in Sources */,
 				4FAA76F112F7046200994AFE /* OSIGeometry.m in Sources */,
-				4FAA76F312F7046200994AFE /* OSIPathROI.m in Sources */,
+				4FAA76F312F7046200994AFE /* OSIPlanarPathROI.m in Sources */,
 				4FAA76F512F7046200994AFE /* OSIROI.m in Sources */,
 				4FAA76F812F7046200994AFE /* OSIROIFloatPixelData.m in Sources */,
 				4FAA76FA12F7046200994AFE /* OSIROIManager.m in Sources */,

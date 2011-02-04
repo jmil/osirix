@@ -2520,6 +2520,10 @@ static volatile int numberOfThreadsForRelisce = 0;
 
 - (void)windowWillClose:(NSNotification *)notification
 {
+#ifndef OSIRIX_LIGHT
+	[[OSIEnvironment sharedEnvironment] removeViewerController:self];
+#endif
+
 	[[self window] setAcceptsMouseMovedEvents: NO];
 	
 	[imageView stopROIEditingForce: YES];
@@ -2605,7 +2609,6 @@ static volatile int numberOfThreadsForRelisce = 0;
 	
 	[self release];
 	
-	[[OSIEnvironment sharedEnvironment] removeViewerController:self];
 	numberOf2DViewer--;
 	if( numberOf2DViewer == 0)
 	{
@@ -6123,6 +6126,10 @@ return YES;
 	
 	[self willChangeValueForKey: @"KeyImageCounter"];
 	[self didChangeValueForKey: @"KeyImageCounter"];
+	
+#ifndef OSIRIX_LIGHT
+	[[OSIEnvironment sharedEnvironment] addViewerController:self];
+#endif
 	
 	return self;
 }
@@ -18059,7 +18066,6 @@ int i,j,l;
 {
 	[[self window] zoom: self];
 	
-	[[OSIEnvironment sharedEnvironment] addViewerController:self];
 	numberOf2DViewer++;
 	if( numberOf2DViewer > 1 || [[NSUserDefaults standardUserDefaults] boolForKey: @"USEALWAYSTOOLBARPANEL2"] == YES)
 	{

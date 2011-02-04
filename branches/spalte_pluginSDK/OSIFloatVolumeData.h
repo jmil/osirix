@@ -7,16 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <CPRVolumeData.h>
 
 // volume data represents a volume in the three natural dimensions
 // this strictly represents a float volume, color volumes will be supported with a OSIRGBVolumeData, but no one really cares about that so it is being put off
 
-@class OSIStudy;
 
-@interface OSIFloatVolumeData : NSObject {
+@interface OSIFloatVolumeData : CPRVolumeData {
 
 }
 
-- (OSIStudy *)study;
 
 @end

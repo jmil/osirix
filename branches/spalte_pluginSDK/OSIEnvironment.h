@@ -14,6 +14,8 @@
 
 // the OSI environment owns the volumeWindows
 
+extern NSString* const OSIEnvironmentOpenVolumeWindowsDidUpdateNotification; 
+
 
 @interface OSIEnvironment : NSObject {
 	NSMutableDictionary *_volumeWindows;

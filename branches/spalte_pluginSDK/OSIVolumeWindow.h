@@ -34,6 +34,7 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 // a super lightweight object
 
 - (OSIROIManager *)ROIManager; // no not mess with the delegate of this ROI manager, but feel free to ask if for it's list of ROIs
+- (NSString *)title;
 
 
 // not done

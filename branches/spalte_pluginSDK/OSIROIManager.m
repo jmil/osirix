@@ -14,6 +14,8 @@
 #import "Notifications.h"
 #import "pluginSDKAdditions.h"
 
+NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidUpdateNotification"; 
+
 @interface OSIROIManager ()
 
 - (void)_volumeWindowDidCloseNotification:(NSNotification *)notification;
@@ -22,6 +24,8 @@
 - (void)_addROINotification:(NSNotification *)notification;
 - (NSArray *)_ROIList;
 - (NSArray *)_coalescedROIList;
+
+- (BOOL)_isROIManaged:(ROI *)roi;
 
 - (void)_rebuildOSIROIs;
 
@@ -47,10 +51,10 @@
 		_OSIROIs = [[NSMutableArray alloc] init];
 		_coalesceROIs = coalesceROIs;
 		[self _rebuildOSIROIs];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_volumeWindowDidCloseNotification:) name:OSIVolumeWindowDidCloseNotification object:_volumeWindow];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_ROIChangeNotification:) name:OsirixROIChangeNotification object:_volumeWindow];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_removeROINotification:) name:OsirixRemoveROINotification object:_volumeWindow];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_addROINotification:) name:OsirixAddROINotification object:_volumeWindow];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_volumeWindowDidCloseNotification:) name:OSIVolumeWindowDidCloseNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_ROIChangeNotification:) name:OsirixROIChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_removeROINotification:) name:OsirixRemoveROINotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_addROINotification:) name:OsirixAddROINotification object:nil];
 		
 	}
 	return self;
@@ -127,13 +131,19 @@
 
 - (void)_ROIChangeNotification:(NSNotification *)notification
 {
-	[self _rebuildOSIROIs];
-//	[self _sendDidModifyROI:<#(OSIROI *)roi#>];
+//	if ([self _isROIManaged:[notification object]]) {
+		[self _rebuildOSIROIs];
+//	}
+//	[self _sendDidModifyROI:];
 }
 
 - (void)_removeROINotification:(NSNotification *)notification
 {
-	[self _rebuildOSIROIs];
+	if ([self _isROIManaged:[notification object]]) {
+		assert([NSThread isMainThread]);
+		[self performSelector:@selector(_rebuildOSIROIs) withObject:nil afterDelay:0]; // OsiriX manages to send this notification before the ROI is
+												// actually removed. This super ultra sketchy bit of code copies the stratagy used by ROIManagerController
+	}
 }
 
 - (void)_addROINotification:(NSNotification *)notification
@@ -141,16 +151,44 @@
 	[self _rebuildOSIROIs];
 }
 
+- (BOOL)_isROIManaged:(ROI *)roi
+{
+	OSIROI *osiROI;
+	
+	for (osiROI in [self ROIs]) {
+		if ([[osiROI osiriXROIs] containsObject:roi]) {
+			return YES;
+		}
+	}
+	return NO;
+}
+
 - (void)_rebuildOSIROIs
 {
+	NSAutoreleasePool *pool;
+	// because the OsiriX ROI post notifications at super weird times (like within dealloc!?!?!) 
+	// we need to make surewe don't renter our ROI rebuilding call while rebuilding the ROIs;
+
+	if (_rebuildingROIs) {
+		return;
+	}
+	
+	pool = [[NSAutoreleasePool alloc] init];
+	
+	_rebuildingROIs = YES;
+	
 	[self willChangeValueForKey:@"ROIs"];
 	[_OSIROIs removeAllObjects];
-	if (_OSIROIs) {
+	if (_coalesceROIs) {
 		[_OSIROIs addObjectsFromArray:[self _coalescedROIList]];
 	} else {
 		[_OSIROIs addObjectsFromArray:[self _ROIList]];
 	}
 	[self didChangeValueForKey:@"ROIs"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:OSIROIManagerROIsDidUpdateNotification object:self];
+	
+	_rebuildingROIs = NO;
+	[pool release];
 }
 
 - (NSArray *)_ROIList;
@@ -162,6 +200,7 @@
 	OSIROI *roi;
 	ROI *osirixROI;
 	NSMutableArray *newROIs;
+	NSArray *pixROIArray;
 	DCMPix *pix;
 	CPRAffineTransform3D pixToDicomTransform;
 	
@@ -184,10 +223,12 @@
 				continue; // if there is something weird going on and there is no pix to look at, just go on to the next one
 			}
 			
-			for (osirixROI in movieFrameROIs) {
-				roi = [OSIROI ROIWithOsiriXROI:osirixROI pixToDICOMTransfrom:pixToDicomTransform];
-				if (roi) {
-					[newROIs addObject:roi];
+			for (pixROIArray in movieFrameROIs) {
+				for (osirixROI in pixROIArray) {
+					roi = [OSIROI ROIWithOsiriXROI:osirixROI pixToDICOMTransfrom:pixToDicomTransform];
+					if (roi) {
+						[newROIs addObject:roi];
+					}
 				}
 			}
 		}

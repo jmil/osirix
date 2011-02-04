@@ -1019,7 +1019,10 @@ int spline(NSPoint *Pt, int tot, NSPoint **newPt, double scale)
 - (void) dealloc
 {
 	self.parentROI = nil;
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[[NSNotificationCenter defaultCenter] postNotificationName: OsirixRemoveROINotification object:self userInfo: nil];
+	[pool release];
 	
 	while( [ctxArray count]) [self deleteTexture: [ctxArray lastObject]];
 	[ctxArray release];

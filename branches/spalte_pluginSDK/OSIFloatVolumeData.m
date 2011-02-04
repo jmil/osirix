@@ -6,9 +6,9 @@
 //  Copyright 2011 OsiriX Team. All rights reserved.
 //
 
-#import "OSIVolumeData.h"
+#import "OSIFloatVolumeData.h"
 
 
-@implementation OSIVolumeData
+@implementation OSIFloatVolumeData
 
 @end

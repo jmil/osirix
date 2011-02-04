@@ -21,6 +21,7 @@ extern const NSString *OSI;
 @class OSIROI;
 @class OSIVolumeWindow;
 
+extern NSString* const OSIROIManagerROIsDidUpdateNotification; 
 
 @protocol OSIROIManagerDelegate;
 
@@ -31,6 +32,8 @@ extern const NSString *OSI;
 	OSIVolumeWindow *_volumeWindow;
 	BOOL _coalesceROIs;
 	
+	BOOL _rebuildingROIs;
+	
 	NSMutableArray *_OSIROIs;
 }
 
@@ -39,9 +42,9 @@ extern const NSString *OSI;
 - (id)initWithVolumeWindow:(OSIVolumeWindow *)volumeWindow;
 - (id)initWithVolumeWindow:(OSIVolumeWindow *)volumeWindow coalesceROIs:(BOOL)coalesceROIs; // if coalesceROIs is YES, ROIs with the same name will 
 
-- (NSArray *)ROIs; // return OSIROIs
+- (NSArray *)ROIs; // return OSIROIs observable
 
-- (OSIROI *)firstROIWithName:(NSString *)name; // convenience method to get the first ROI with 
+- (OSIROI *)firstROIWithName:(NSString *)name; // convenience method to get the first ROI with a given name
 - (NSArray *)ROIsWithName:(NSString *)name;
 - (NSArray *)ROINames; // returns all the unique ROI names
 
