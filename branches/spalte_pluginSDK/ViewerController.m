@@ -1098,16 +1098,15 @@ static volatile int numberOfThreadsForRelisce = 0;
 {
 	NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
 	
-	int x,y;
-	int i = [[dict valueForKey:@"i"] intValue];
-	int sign = [[dict valueForKey:@"sign"] intValue];
-	int newX = [[dict valueForKey:@"newX"] intValue];
-	float *curPixFImage = [[dict valueForKey:@"curPix"] fImage];
-	int rowBytes = [[dict valueForKey:@"rowBytes"] intValue];
-	int j = [[dict valueForKey:@"curMovieIndex"] intValue];
+	register int i = [[dict valueForKey:@"i"] intValue];
+	register int sign = [[dict valueForKey:@"sign"] intValue];
+	register int newX = [[dict valueForKey:@"newX"] intValue];
+	register float *restrict curPixFImage = [[dict valueForKey:@"curPix"] fImage];
+	register int rowBytes = [[dict valueForKey:@"rowBytes"] intValue] / 4;
+	register int j = [[dict valueForKey:@"curMovieIndex"] intValue];
 	
-	float *srcPtr, *dstPtr, *mainSrcPtr;
-	int count = [pixList[ j] count];
+	register float *restrict srcPtr, *restrict dstPtr, *restrict mainSrcPtr;
+	register int count = [pixList[ j] count];
 	
 	count /= 2;
 	count *= 2;
@@ -1119,19 +1118,38 @@ static volatile int numberOfThreadsForRelisce = 0;
 	
 	int sliceSize = [[pixList[ j] objectAtIndex: 0] pwidth] * [[pixList[ j] objectAtIndex: 0] pheight];
 	
-	for(x = 0; x < count; x++)
+	mainSrcPtr += i;
+	
+	if( sign > 0)
 	{
-		if( sign > 0)
-			srcPtr = mainSrcPtr - x*sliceSize + i;
-		else
-			srcPtr = mainSrcPtr + x*sliceSize + i;
-		dstPtr = curPixFImage + x * newX;
-		
-		y = newX;
-		while (y-->0)
+		register int x = count;
+		while (x-->0)
 		{
-			*dstPtr++ = *srcPtr;
-			srcPtr += rowBytes/4;
+			srcPtr = mainSrcPtr - x*sliceSize;
+			dstPtr = curPixFImage + x * newX;
+			
+			register int y = newX;
+			while (y-->0)
+			{
+				*dstPtr++ = *srcPtr;
+				srcPtr += rowBytes;
+			}
+		}
+	}
+	else
+	{
+		register int x = count;
+		while (x-->0)
+		{
+			srcPtr = mainSrcPtr + x*sliceSize;
+			dstPtr = curPixFImage + x * newX;
+			
+			register int y = newX;
+			while (y-->0)
+			{
+				*dstPtr++ = *srcPtr;
+				srcPtr += rowBytes;
+			}
 		}
 	}
 
@@ -6264,7 +6282,7 @@ return YES;
 	
 	[ROINamesArray release];
 	
-	[curvedController release];
+//	[curvedController release];
 	
 	[roiLock release];
 	
@@ -6752,6 +6770,12 @@ return YES;
 				
 				for( ViewerController *v in [ViewerController getDisplayed2DViewers])
 					[v buildMatrixPreview: NO];
+				
+				NSPoint subtractionOffset = [[imageView curDCM] subPixOffset];
+				[self offsetMatrixSetting:([self threeTestsFivePosibilities: (int)subtractionOffset.y] * 5) + [self threeTestsFivePosibilities: (int)subtractionOffset.x]];
+				
+				[subCtrlSum setFloatValue: 1];
+				[subCtrlPercent setFloatValue: 1];
 			}
 			@catch ( NSException *e)
 			{
@@ -7714,6 +7738,8 @@ return YES;
 			[subCtrlOnOff setEnabled: YES];
 		}
 		
+		[self subSumSlider: nil];
+		
 		[imageView setIndex: [imageView curImage]]; //refresh viewer only
 	}
 	else
@@ -7760,14 +7786,16 @@ return YES;
 
 - (IBAction) subCtrlOffset:(id) sender
 {
-	if(enableSubtraction)
+	if( enableSubtraction)
 	{
 		if ([subCtrlOnOff state] == NSOnState) //only when in subtraction mode
 		{
-		subCtrlOffset = [  [[imageView dcmPixList] objectAtIndex:[imageView curImage]]  subPixOffset];
-		NSLog(@"subPixOffset before x:%f y:%f", subCtrlOffset.x, subCtrlOffset.y);
-		switch( [sender tag]) //same tags in the main menu and in the subtraction tool
-				{
+			subCtrlOffset = [[[imageView dcmPixList] objectAtIndex:[imageView curImage]] subPixOffset];
+			
+			NSLog( @"subPixOffset before x: %2.2f y: %2.2f", subCtrlOffset.x, subCtrlOffset.y);
+			
+			switch( [sender tag]) //same tags in the main menu and in the subtraction tool
+			{
 				case 1://SW
 						--subCtrlOffset.x;
 						--subCtrlOffset.y;
@@ -7808,22 +7836,19 @@ return YES;
 						++subCtrlOffset.x;
 						++subCtrlOffset.y;
 				break;				
-				}
-				//NSLog(@"subCtrlOffset x:%f :y:%f",subCtrlOffset.x, subCtrlOffset.y);
+			}
 		}
 
-	if ((subCtrlOffset.x > -30) && (subCtrlOffset.x < 30) && (subCtrlOffset.y > -30) && (subCtrlOffset.y < 30))
+		if ((subCtrlOffset.x > -30) && (subCtrlOffset.x < 30) && (subCtrlOffset.y > -30) && (subCtrlOffset.y < 30))
 		{
-		//write changes in dcmPixList
-		long i;	
-		for ( i = 0; i < [[imageView dcmPixList] count]; i ++) [[[imageView dcmPixList] objectAtIndex:i] setSubPixOffset: subCtrlOffset];
-		//refresh tool
-		[self offsetMatrixSetting:([self threeTestsFivePosibilities: (int)subCtrlOffset.y] * 5) + [self threeTestsFivePosibilities: (int)subCtrlOffset.x]];		
-		//refresh window image
-		[imageView setIndex:[imageView curImage]];
+			for(int i = 0; i < [[imageView dcmPixList] count]; i ++)
+				[[[imageView dcmPixList] objectAtIndex:i] setSubPixOffset: subCtrlOffset];
+			
+			[self offsetMatrixSetting:([self threeTestsFivePosibilities: (int)subCtrlOffset.y] * 5) + [self threeTestsFivePosibilities: (int)subCtrlOffset.x]];
+			
+			[imageView setIndex:[imageView curImage]];
 		}
-	}	
-
+	}
 }
 
 - (int) threeTestsFivePosibilities: (int) f
@@ -7848,7 +7873,7 @@ return YES;
 
 - (void) offsetMatrixSetting: (int) twentyFiveCodes
 {
-		switch(twentyFiveCodes)
+	switch(twentyFiveCodes)
 	{
 	// On stronger than Off
 	//----------------------------------------------------------------------------------  y=-2
@@ -8009,8 +8034,7 @@ return YES;
 				case 36: [imageView setWLWW:cwl	:cww+5];		break;
 			}
 			
-			long i;				
-			for ( i = 0; i < [[imageView dcmPixList] count]; i ++)
+			for(int i = 0; i < [[imageView dcmPixList] count]; i ++)
 			{
 				[[[imageView dcmPixList] objectAtIndex:i]	setSubSlidersPercent:	[subCtrlPercent floatValue]];
 //															gamma:					[subCtrlGamma floatValue] 
@@ -8032,15 +8056,14 @@ return YES;
 		case 33: [subCtrlSum setFloatValue:[subCtrlSum floatValue]+1];	break;  //Sum + (max 10)
 	}
 	[self setFusionMode: 3];
-	long x, i;
 	
 	[imageView setFusion:-1 :[subCtrlSum intValue]];
 	
-	for ( x = 0; x < maxMovieIndex; x++)
+	for( int x = 0; x < maxMovieIndex; x++)
 	{
 		if( x != curMovieIndex) // [imageView setFusion] already did it for current serie!
 		{
-			for ( i = 0; i < [pixList[ x] count]; i ++)
+			for( int i = 0; i < [pixList[ x] count]; i ++)
 			{
 				[[pixList[ x] objectAtIndex:i] setFusion:-1 :[subCtrlSum intValue] :-1];
 			}
@@ -8048,6 +8071,13 @@ return YES;
 	}
 	
 	[stacksFusion setIntValue:[subCtrlSum intValue]];
+	[sliderFusion setIntValue:[subCtrlSum intValue]];
+	
+	if( [subCtrlSum intValue] <= 1)
+	{
+		[activatedFusion setState: NSOffState];
+		[sliderFusion setEnabled:NO];
+	}
 	
 	[[NSUserDefaults standardUserDefaults] setInteger:[subCtrlSum intValue] forKey:@"stackThickness"];
 	
@@ -10181,15 +10211,13 @@ short				matrix[25];
 
 - (void) sliderFusionAction:(id) sender
 {
-	long x, i;
-	
 	[imageView setFusion:-1 :[sender intValue]];
 	
-	for ( x = 0; x < maxMovieIndex; x++)
+	for( int x = 0; x < maxMovieIndex; x++)
 	{
 		if( x != curMovieIndex) // [imageView setFusion] already did it for current serie!
 		{
-			for ( i = 0; i < [pixList[ x] count]; i ++)
+			for( int i = 0; i < [pixList[ x] count]; i ++)
 			{
 				[[pixList[ x] objectAtIndex:i] setFusion:-1 :[sender intValue] :-1];
 			}
@@ -14361,12 +14389,13 @@ int i,j,l;
 		
 		float fValue;
 		
-		if(  curvedController == nil && [vC curvedController] == nil)
+//		if(  curvedController == nil && [vC curvedController] == nil)
 		{
 			#define SENSIBILITY 0.05
 			if( fabs( vectorsA[ 0] - vectorsB[ 0]) < SENSIBILITY && fabs( vectorsA[ 1] - vectorsB[ 1]) < SENSIBILITY && fabs( vectorsA[ 2] - vectorsB[ 2]) < SENSIBILITY &&
-				fabs( vectorsA[ 3] - vectorsB[ 3]) < SENSIBILITY && fabs( vectorsA[ 4] - vectorsB[ 4]) < SENSIBILITY && fabs( vectorsA[ 5] - vectorsB[ 5]) < SENSIBILITY &&
-				curvedController == nil)
+				fabs( vectorsA[ 3] - vectorsB[ 3]) < SENSIBILITY && fabs( vectorsA[ 4] - vectorsB[ 4]) < SENSIBILITY && fabs( vectorsA[ 5] - vectorsB[ 5]) < SENSIBILITY)
+//				&&
+//				curvedController == nil)
 			{
 			//	if( [[vC modality] isEqualToString:[self modality]])	For PET CT, we have to sync this even if the modalities are not equal!
 				
@@ -14394,8 +14423,8 @@ int i,j,l;
 		}
 		
 		if(		fabs( vectorsA[ 0] - vectorsB[ 0]) < SENSIBILITY && fabs( vectorsA[ 1] - vectorsB[ 1]) < SENSIBILITY && fabs( vectorsA[ 2] - vectorsB[ 2]) < SENSIBILITY &&
-				fabs( vectorsA[ 3] - vectorsB[ 3]) < SENSIBILITY && fabs( vectorsA[ 4] - vectorsB[ 4]) < SENSIBILITY && fabs( vectorsA[ 5] - vectorsB[ 5]) < SENSIBILITY &&
-				curvedController == nil)
+				fabs( vectorsA[ 3] - vectorsB[ 3]) < SENSIBILITY && fabs( vectorsA[ 4] - vectorsB[ 4]) < SENSIBILITY && fabs( vectorsA[ 5] - vectorsB[ 5]) < SENSIBILITY)
+//			&& curvedController == nil)
 		{
 			//if( [self isEverythingLoaded])
 			{
@@ -18557,186 +18586,186 @@ int i,j,l;
 }
 #endif
 
--(CurvedMPR*) curvedController
-{
-	return curvedController;
-}
-
-- (void) setCurvedController: (CurvedMPR*) cmpr
-{
-	if( cmpr != curvedController)
-	{
-		[curvedController release];
-		curvedController = [cmpr retain];
-	}
-}
-
--(IBAction) setCurvedMPRslider:(id) sender
-{
-	long i;
-	
-	i = [sender intValue];
-	
-	switch( [sender tag])
-	{
-		case 0:		
-			i /= 2;
-			i *= 2;
-			i++;
-			[curvedMPRtext setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d images, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
-		break;
-		
-		case 1:		
-			i /= 2;
-			i *= 2;
-			[curvedMPRintervalText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
-		break;
-		
-		case 2:		
-			i /= 4;
-			i *= 4;
-			[curvedMPRsizeText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
-		break;
-	}
-}
-
--(IBAction) endCurvedMPR:(id) sender
-{
-	[curvedMPRWindow orderOut:sender];
-    
-    [NSApp endSheet:curvedMPRWindow returnCode:[sender tag]];
-	
-	if( [sender tag] == 1)
-	{
-		long	i;
-		ROI		*selectedRoi = nil;
-	
-		// Find the first selected
-		for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]; i++)
-		{
-			long mode = [[[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i] ROImode];
-			
-			if( mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing)
-			{
-				selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i];
-				
-				if( [selectedRoi type] == tOPolygon || [selectedRoi type] == tCPolygon || [selectedRoi type] == tPencil || [selectedRoi type] == tMesure)
-				{
-				
-				}
-				else selectedRoi = nil;
-			}
-		}
-		
-		if( selectedRoi)
-		{
-			if( [curvedMPRper state] == NSOnState)
-				[[[CurvedMPR alloc] initWithObjectsPer:pixList[0] :fileList[0] :volumeData[0] :selectedRoi :self :[curvedMPRinterval intValue] :[curvedMPRsize intValue]] autorelease];
-			
-			[[[CurvedMPR alloc] initWithObjects:pixList[0] :fileList[0] :volumeData[0] :selectedRoi :self :[curvedMPRslid intValue] forAxial:[[curvedMPRaxis cellWithTag: 0] state] forCoronal:[[curvedMPRaxis cellWithTag: 1] state] forSagittal:[[curvedMPRaxis cellWithTag: 2] state]] autorelease];
-		}
-	}
-}
-
--(IBAction) CurvedMPR:(id) sender
-{
-	[self checkEverythingLoaded];
-	[self clear8bitRepresentations];
-	
-	if( [self isDataVolumicIn4D: YES] == NO)
-	{
-		NSRunAlertPanel(NSLocalizedString(@"MPR", nil), NSLocalizedString(@"MPR requires volumic data.", nil), nil, nil, nil);
-		return;
-	}
-	
-	[self squareDataSet: self];			// CurvedMPR works better if pixel are squares !
-	
-	if( [self computeInterval] == 0 ||
-		[[pixList[0] objectAtIndex:0] pixelSpacingX] == 0 ||
-		[[pixList[0] objectAtIndex:0] pixelSpacingY] == 0 ||
-		([[[NSApplication sharedApplication] currentEvent] modifierFlags]  & NSShiftKeyMask))
-	{
-		[self SetThicknessInterval:sender];
-	}
-	else
-	{
-		[self displayAWarningIfNonTrueVolumicData];
-		[self displayWarningIfGantryTitled];
-		
-		long	i;
-		ROI		*selectedRoi = nil;
-	
-		// Find the first selected
-		for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]; i++)
-		{
-			long mode = [[[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i] ROImode];
-			
-			if( mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing)
-			{
-				selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i];
-				
-				[selectedRoi setROIMode: ROI_selected];
-				
-				if( [selectedRoi type] == tOPolygon || [selectedRoi type] == tCPolygon || [selectedRoi type] == tPencil || [selectedRoi type] == tMesure)
-				{
-				
-				}
-				else selectedRoi = nil;
-			}
-		}
-
-		// if no ROI is selected and there is only one -> we know that is the one the user wants to use
-		if( selectedRoi == nil && [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]==1)
-		{
-			selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: 0];
-			[selectedRoi setROIMode: ROI_selected];
-		}
-		
-		if( selectedRoi == nil)
-		{
-			NSRunCriticalAlertPanel(NSLocalizedString(@"Curved-MPR Error", nil), NSLocalizedString(@"Select a Polygon ROI to compute a Curved MPR.", nil) , NSLocalizedString(@"OK", nil), nil, nil);
-		}
-		else
-		{
-			[curvedMPRslid setIntValue:1];
-			[curvedMPRtext setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d images, %2.2f mm", nil), [curvedMPRslid intValue], [[imageView curDCM] pixelSpacingX]]];
-			
-			[curvedMPRinterval setIntValue:4];
-			[curvedMPRintervalText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), [curvedMPRinterval intValue], [curvedMPRinterval intValue]*[[imageView curDCM] pixelSpacingX]]];
-			
-			[curvedMPRsize setIntValue:48];
-			[curvedMPRsizeText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), [curvedMPRsize intValue], [curvedMPRsize intValue]*[[imageView curDCM] pixelSpacingX]]];
-
-			int oldStateForCellWithTag[3];
-			oldStateForCellWithTag[1] = [[curvedMPRaxis cellWithTag:1] state];
-			oldStateForCellWithTag[2] = [[curvedMPRaxis cellWithTag:2] state];
-			[[curvedMPRaxis cellWithTag:1] setState:NSOffState];
-			[[curvedMPRaxis cellWithTag:2] setState:NSOffState];
-			[[curvedMPRaxis cellWithTag:1] setEnabled:NO];
-			[[curvedMPRaxis cellWithTag:2] setEnabled:NO];
-			
-			NSArray *zPosArray = [selectedRoi zPositions];
-			
-			if( [zPosArray count])
-			{
-				int zPos = [[zPosArray objectAtIndex:0] intValue];
-				for(i=1; i < [zPosArray count]; i++)
-				{
-					if(zPos != [[zPosArray objectAtIndex:i] intValue])
-					{
-						[[curvedMPRaxis cellWithTag:1] setEnabled:YES];
-						[[curvedMPRaxis cellWithTag:2] setEnabled:YES];
-						[[curvedMPRaxis cellWithTag:1] setState:oldStateForCellWithTag[1]];
-						[[curvedMPRaxis cellWithTag:2] setState:oldStateForCellWithTag[2]];
-						i = [zPosArray count];
-					}
-				}
-			}
-			
-			[NSApp beginSheet: curvedMPRWindow modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
-		}
-	}
-}
+//-(CurvedMPR*) curvedController
+//{
+//	return curvedController;
+//}
+//
+//- (void) setCurvedController: (CurvedMPR*) cmpr
+//{
+//	if( cmpr != curvedController)
+//	{
+//		[curvedController release];
+//		curvedController = [cmpr retain];
+//	}
+//}
+//
+//-(IBAction) setCurvedMPRslider:(id) sender
+//{
+//	long i;
+//	
+//	i = [sender intValue];
+//	
+//	switch( [sender tag])
+//	{
+//		case 0:		
+//			i /= 2;
+//			i *= 2;
+//			i++;
+//			[curvedMPRtext setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d images, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
+//		break;
+//		
+//		case 1:		
+//			i /= 2;
+//			i *= 2;
+//			[curvedMPRintervalText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
+//		break;
+//		
+//		case 2:		
+//			i /= 4;
+//			i *= 4;
+//			[curvedMPRsizeText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), i, i * [[imageView curDCM] pixelSpacingX]]];
+//		break;
+//	}
+//}
+//
+//-(IBAction) endCurvedMPR:(id) sender
+//{
+//	[curvedMPRWindow orderOut:sender];
+//    
+//    [NSApp endSheet:curvedMPRWindow returnCode:[sender tag]];
+//	
+//	if( [sender tag] == 1)
+//	{
+//		long	i;
+//		ROI		*selectedRoi = nil;
+//	
+//		// Find the first selected
+//		for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]; i++)
+//		{
+//			long mode = [[[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i] ROImode];
+//			
+//			if( mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing)
+//			{
+//				selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i];
+//				
+//				if( [selectedRoi type] == tOPolygon || [selectedRoi type] == tCPolygon || [selectedRoi type] == tPencil || [selectedRoi type] == tMesure)
+//				{
+//				
+//				}
+//				else selectedRoi = nil;
+//			}
+//		}
+//		
+//		if( selectedRoi)
+//		{
+//			if( [curvedMPRper state] == NSOnState)
+//				[[[CurvedMPR alloc] initWithObjectsPer:pixList[0] :fileList[0] :volumeData[0] :selectedRoi :self :[curvedMPRinterval intValue] :[curvedMPRsize intValue]] autorelease];
+//			
+//			[[[CurvedMPR alloc] initWithObjects:pixList[0] :fileList[0] :volumeData[0] :selectedRoi :self :[curvedMPRslid intValue] forAxial:[[curvedMPRaxis cellWithTag: 0] state] forCoronal:[[curvedMPRaxis cellWithTag: 1] state] forSagittal:[[curvedMPRaxis cellWithTag: 2] state]] autorelease];
+//		}
+//	}
+//}
+//
+//-(IBAction) CurvedMPR:(id) sender
+//{
+//	[self checkEverythingLoaded];
+//	[self clear8bitRepresentations];
+//	
+//	if( [self isDataVolumicIn4D: YES] == NO)
+//	{
+//		NSRunAlertPanel(NSLocalizedString(@"MPR", nil), NSLocalizedString(@"MPR requires volumic data.", nil), nil, nil, nil);
+//		return;
+//	}
+//	
+//	[self squareDataSet: self];			// CurvedMPR works better if pixel are squares !
+//	
+//	if( [self computeInterval] == 0 ||
+//		[[pixList[0] objectAtIndex:0] pixelSpacingX] == 0 ||
+//		[[pixList[0] objectAtIndex:0] pixelSpacingY] == 0 ||
+//		([[[NSApplication sharedApplication] currentEvent] modifierFlags]  & NSShiftKeyMask))
+//	{
+//		[self SetThicknessInterval:sender];
+//	}
+//	else
+//	{
+//		[self displayAWarningIfNonTrueVolumicData];
+//		[self displayWarningIfGantryTitled];
+//		
+//		long	i;
+//		ROI		*selectedRoi = nil;
+//	
+//		// Find the first selected
+//		for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]; i++)
+//		{
+//			long mode = [[[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i] ROImode];
+//			
+//			if( mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing)
+//			{
+//				selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: i];
+//				
+//				[selectedRoi setROIMode: ROI_selected];
+//				
+//				if( [selectedRoi type] == tOPolygon || [selectedRoi type] == tCPolygon || [selectedRoi type] == tPencil || [selectedRoi type] == tMesure)
+//				{
+//				
+//				}
+//				else selectedRoi = nil;
+//			}
+//		}
+//
+//		// if no ROI is selected and there is only one -> we know that is the one the user wants to use
+//		if( selectedRoi == nil && [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] count]==1)
+//		{
+//			selectedRoi = [[roiList[curMovieIndex] objectAtIndex: [imageView curImage]] objectAtIndex: 0];
+//			[selectedRoi setROIMode: ROI_selected];
+//		}
+//		
+//		if( selectedRoi == nil)
+//		{
+//			NSRunCriticalAlertPanel(NSLocalizedString(@"Curved-MPR Error", nil), NSLocalizedString(@"Select a Polygon ROI to compute a Curved MPR.", nil) , NSLocalizedString(@"OK", nil), nil, nil);
+//		}
+//		else
+//		{
+//			[curvedMPRslid setIntValue:1];
+//			[curvedMPRtext setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d images, %2.2f mm", nil), [curvedMPRslid intValue], [[imageView curDCM] pixelSpacingX]]];
+//			
+//			[curvedMPRinterval setIntValue:4];
+//			[curvedMPRintervalText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), [curvedMPRinterval intValue], [curvedMPRinterval intValue]*[[imageView curDCM] pixelSpacingX]]];
+//			
+//			[curvedMPRsize setIntValue:48];
+//			[curvedMPRsizeText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"%d pixels, %2.2f mm", nil), [curvedMPRsize intValue], [curvedMPRsize intValue]*[[imageView curDCM] pixelSpacingX]]];
+//
+//			int oldStateForCellWithTag[3];
+//			oldStateForCellWithTag[1] = [[curvedMPRaxis cellWithTag:1] state];
+//			oldStateForCellWithTag[2] = [[curvedMPRaxis cellWithTag:2] state];
+//			[[curvedMPRaxis cellWithTag:1] setState:NSOffState];
+//			[[curvedMPRaxis cellWithTag:2] setState:NSOffState];
+//			[[curvedMPRaxis cellWithTag:1] setEnabled:NO];
+//			[[curvedMPRaxis cellWithTag:2] setEnabled:NO];
+//			
+//			NSArray *zPosArray = [selectedRoi zPositions];
+//			
+//			if( [zPosArray count])
+//			{
+//				int zPos = [[zPosArray objectAtIndex:0] intValue];
+//				for(i=1; i < [zPosArray count]; i++)
+//				{
+//					if(zPos != [[zPosArray objectAtIndex:i] intValue])
+//					{
+//						[[curvedMPRaxis cellWithTag:1] setEnabled:YES];
+//						[[curvedMPRaxis cellWithTag:2] setEnabled:YES];
+//						[[curvedMPRaxis cellWithTag:1] setState:oldStateForCellWithTag[1]];
+//						[[curvedMPRaxis cellWithTag:2] setState:oldStateForCellWithTag[2]];
+//						i = [zPosArray count];
+//					}
+//				}
+//			}
+//			
+//			[NSApp beginSheet: curvedMPRWindow modalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+//		}
+//	}
+//}
 
 - (OrthogonalMPRViewer *)openOrthogonalMPRViewer
 {

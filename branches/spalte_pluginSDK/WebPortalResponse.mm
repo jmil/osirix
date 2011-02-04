@@ -141,15 +141,24 @@
 		keyPath = [[parts subarrayWithRange:NSMakeRange(1,parts.count-1)] componentsJoinedByString:@"."];
 	}*/
 
-	if ([o isKindOfClass:[NSString class]])
+	if ([o isKindOfClass:NSString.class])
 		return [self object:[WebPortalProxy createWithObject:o transformer:[StringTransformer create]] valueForKeyPath:keyPath context:context];
-	if ([o isKindOfClass:[NSDate class]])
+	if ([o isKindOfClass:NSDate.class])
 		return [self object:[WebPortalProxy createWithObject:o transformer:[DateTransformer create]] valueForKeyPath:keyPath context:context];
-	if ([o isKindOfClass:[NSArray class]])
-		return [self object:[WebPortalProxy createWithObject:o transformer:[ArrayTransformer create]] valueForKeyPath:keyPath context:context];
-	if ([o isKindOfClass:[NSSet class]])
-		return [self object:[WebPortalProxy createWithObject:o transformer:[SetTransformer create]] valueForKeyPath:keyPath context:context];
+//	if ([o isKindOfClass:NSArray.class])
+//		return [self object:[WebPortalProxy createWithObject:o transformer:[ArrayTransformer create]] valueForKeyPath:keyPath context:context];
+//	if ([o isKindOfClass:NSSet.class])
+//		return [self object:[WebPortalProxy createWithObject:o transformer:[SetTransformer create]] valueForKeyPath:keyPath context:context];
+	if ([o isKindOfClass:WebPortalUser.class])
+		return [self object:[WebPortalProxy createWithObject:o transformer:[WebPortalUserTransformer create]] valueForKeyPath:keyPath context:context];
+	if ([o isKindOfClass:DicomStudy.class])
+		return [self object:[WebPortalProxy createWithObject:o transformer:[DicomStudyTransformer create]] valueForKeyPath:keyPath context:context];
+	if ([o isKindOfClass:DicomSeries.class])
+		return [self object:[WebPortalProxy createWithObject:o transformer:[DicomSeriesTransformer create]] valueForKeyPath:keyPath context:context];
 	
+	if ([o isKindOfClass:NSManagedObject.class])
+		return [self object:[WebPortalProxy createWithObject:o transformer:[WebPortalProxyObjectTransformer create]] valueForKeyPath:keyPath context:context];
+
 	/*@try {
 		id value = [o valueForKeyPath:keyPath];
 		if (value)
@@ -160,8 +169,12 @@
 	@try {
 		id value = NULL;
 		if ([o isKindOfClass:WebPortalProxy.class])
-			value = [o valueForKey:part0 context:wpc];
-		else value = [o valueForKey:part0];
+			value = [o valueForKey:part0 context:context];
+		else {
+			if ([o isKindOfClass:NSArray.class] || [o isKindOfClass:NSSet.class])
+				part0 = [@"@" stringByAppendingString:part0];
+			value = [o valueForKey:part0];
+		}
 		if (parts.count > 1)
 			return [self object:value valueForKeyPath:[[parts subarrayWithRange:NSMakeRange(1,parts.count-1)] componentsJoinedByString:@"."] context:context];
 		return value;
@@ -430,6 +443,10 @@
 
 @implementation WebPortalProxyObjectTransformer : NSObject
 
++(id)create {
+	return [[[self alloc] init] autorelease];
+}
+
 -(id)valueForKey:(NSString*)key object:(NSObject*)o context:(WebPortalConnection*)wpc {
 	if ([key isEqual:@"webUID"])
 		@try {
@@ -440,14 +457,11 @@
 		}
 	
 	if ([key isEqual:@"isSelected"]) {
-		NSLog(@"sel: %@", [wpc.parameters objectForKey:@"selected"]);
+		NSString* myId = [self valueForKey:@"webUID" object:o context:wpc];
+		for (NSString* selectedID in [WebPortalConnection MakeArray:[wpc.parameters objectForKey:@"selected"]])
+			if ([selectedID isEqualToString:myId])
+				return [NSNumber numberWithBool:YES];
 		return [NSNumber numberWithBool:NO];
-		
-		/*		for (NSString* selectedID in [parameters objectForKey:@"selected"])
-		 {
-		 if ([[series valueForKey:@"seriesInstanceUID"] isEqualToString:[selectedID stringByReplacingOccurrencesOfString:@"+" withString:@" "]])
-		 checked = @"checked";
-		 }*/
 	}
 	
 	return NULL;
@@ -485,14 +499,15 @@
 	if ([key isEqual:@"newChallenge"])
 		return [wpc.session newChallenge];
 	if ([key isEqual:@"proposeDicomUpload"])
-		return [NSNumber numberWithBool: (!wpc.user || wpc.user.uploadDICOM) && !wpc.requestIsIOS ];
-	if ([key isEqual:@"proposeDicomSend"])
-		return [NSNumber numberWithBool: (!wpc.user || wpc.user.sendDICOMtoSelfIP) && !wpc.requestIsIOS ];
+		return [NSNumber numberWithBool: (!wpc.user || wpc.user.uploadDICOM.boolValue) && !wpc.requestIsIOS ];
+	if ([key isEqual:@"proposeDicomSend"]) {
+		return [NSNumber numberWithBool: ((!wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue) && !wpc.requestIsIOS) || (wpc.user.sendDICOMtoAnyNodes.boolValue /* TODO: && destinations.count */)]; 
+	}
 	if ([key isEqual:@"proposeZipDownload"])
-		return [NSNumber numberWithBool: (!wpc.user || wpc.user.downloadZIP) && !wpc.requestIsIOS ];
+		return [NSNumber numberWithBool: (!wpc.user || wpc.user.downloadZIP.boolValue) && !wpc.requestIsIOS ];
 	
 	if ([key isEqual:@"proposeShare"])
-		if (!wpc.user || wpc.user.shareStudyWithUser) {
+		if (!wpc.user || wpc.user.shareStudyWithUser.boolValue) {
 			NSFetchRequest* req = [[[NSFetchRequest alloc] init] autorelease];
 			req.entity = [wpc.portal.database entityForName:@"User"];
 			req.predicate = [NSPredicate predicateWithValue:YES];
@@ -569,26 +584,16 @@ NSString* iPhoneCompatibleNumericalFormat(NSString* aString) { // this is to avo
 @end
 
 
-@implementation ArrayTransformer
+/*@implementation ArrayTransformer
 
 +(id)create {
 	return [[[self alloc] init] autorelease];
 }
 
 -(id)valueForKey:(NSString*)key object:(NSArray*)object context:(WebPortalConnection*)wpc {
-	if ([key isEqual:@"count"])
-		return [NSNumber numberWithUnsignedInt:object.count];
-	
-	if ([key isEqual:@"areSelected"]) {
-		NSLog(@"sel2: %@", [wpc.parameters objectForKey:@"selected"]);
-		return [NSNumber numberWithBool:NO];
-		
-		/*		for (NSString* selectedID in [parameters objectForKey:@"selected"])
-		 {
-		 if ([[series valueForKey:@"seriesInstanceUID"] isEqualToString:[selectedID stringByReplacingOccurrencesOfString:@"+" withString:@" "]])
-		 checked = @"checked";
-		 }*/
-	}
+//	if ([key isEqual:@"count"])
+//		NSLog();
+	//	return [NSNumber numberWithUnsignedInt:object.count];
 	
 	return [super valueForKey:key object:object context:wpc];
 }
@@ -603,13 +608,13 @@ NSString* iPhoneCompatibleNumericalFormat(NSString* aString) { // this is to avo
 }
 
 -(id)valueForKey:(NSString*)key object:(NSSet*)object context:(WebPortalConnection*)wpc {
-	if ([key isEqual:@"count"])
-		return [NSNumber numberWithUnsignedInt:object.count];
+	//if ([key isEqual:@"count"])
+	//	return [NSNumber numberWithUnsignedInt:object.count];
 	
 	return [super valueForKey:key object:object context:wpc];
 }
 
-@end
+@end*/
 
 
 @implementation DateTransformer

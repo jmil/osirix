@@ -62,6 +62,7 @@
 
 @interface WebPortalProxyObjectTransformer : NSObject
 
++(id)create;
 -(id)valueForKey:(NSString*)k object:(NSObject*)o context:(id)context;
 
 @end
@@ -86,14 +87,14 @@
 @end
 
 
-@interface ArrayTransformer : WebPortalProxyObjectTransformer
+/*@interface ArrayTransformer : WebPortalProxyObjectTransformer
 +(id)create;
 @end
 
 
 @interface SetTransformer : WebPortalProxyObjectTransformer
 +(id)create;
-@end
+@end*/
 
 
 @interface DateTransformer : WebPortalProxyObjectTransformer

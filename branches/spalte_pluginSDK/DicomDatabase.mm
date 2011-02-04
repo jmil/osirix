@@ -16,55 +16,53 @@
 #import "NSString+N2.h"
 
 
-@interface DicomDatabase ()
-
-@property(readwrite, retain) NSManagedObjectContext* managedObjectContext;
-
-@end
+#import "BrowserController.h"
 
 
 @implementation DicomDatabase
 
-@synthesize managedObjectContext;
++(DicomDatabase*)defaultDatabase {
+	static DicomDatabase* database = NULL;
+	@synchronized(self) {
+		if (!database) // TODO: the next line MUST CHANGE and BrowserController MUST DISAPPEAR
+			database = [[self alloc] initWithPath:[[BrowserController currentBrowser] documentsDirectory] context:[[BrowserController currentBrowser] defaultManagerObjectContext]];
+	}
+	return database;
+}
 
-+(NSManagedObjectModel*)managedObjectModel {
+-(NSManagedObjectModel*)managedObjectModel {
 	static NSManagedObjectModel* managedObjectModel = NULL;
-	
 	if (!managedObjectModel)
 		managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSBundle.mainBundle.resourcePath stringByAppendingPathComponent:@"OsiriXDB_DataModel.momd"]]];
-    
     return managedObjectModel;
 }
 
--(id)initWithContext:(NSManagedObjectContext*)context {
-	self = [super init];
-	self.managedObjectContext = context;
-	return self;
+-(NSString*)sqlFilePath {
+	return [self.basePath stringByAppendingPathComponent:@"Database.sql"];
 }
 
--(void)dealloc {
-	self.managedObjectContext = NULL;
-	[super dealloc];
++(NSArray*)albumsInContext:(NSManagedObjectContext*)context {
+	NSFetchRequest* req = [[[NSFetchRequest alloc] init] autorelease];
+	req.entity = [NSEntityDescription entityForName:@"Album" inManagedObjectContext:context];
+	req.predicate = [NSPredicate predicateWithValue:YES];
+	return [context executeFetchRequest:req error:NULL];	
 }
 
--(void)save:(NSError**)err {
-	[managedObjectContext lock];
+-(NSArray*)albums {
+	[self.managedObjectContext lock];
 	@try {
-		NSError* perr = NULL;
-		NSError** rerr = err? err : &perr;
-		[managedObjectContext save:rerr];
-		if (!err && perr) NSLog(@"Error: [DicomDatabase save:] %@", perr.description);
-	} @catch(NSException* e) {
-		if (!err)
-			NSLog(@"Exception: [DicomDatabase save:] %@", e.description);
-		else *err = [NSError errorWithDomain:@"Exception" code:-1 userInfo:[NSDictionary dictionaryWithObject:e forKey:@"Exception"]];
-	} @finally {
-		[managedObjectContext unlock];
-	}
-}
+		NSArray* albums = [DicomDatabase albumsInContext:self.managedObjectContext];
+		
+		NSSortDescriptor* sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 
--(NSEntityDescription*)entityForName:(NSString*)name {
-	return [NSEntityDescription entityForName:name inManagedObjectContext:self.managedObjectContext];
+		return [albums sortedArrayUsingDescriptors:[NSArray arrayWithObject: sd]];
+	} @catch (NSException* e) {
+		NSLog(@"Exception: [DicomDatabase albums] %@", e);
+	} @finally {
+		[self.managedObjectContext unlock];
+	}
+	
+	return NULL;
 }
 
 +(NSPredicate*)predicateForSmartAlbumFilter:(NSString*)string {

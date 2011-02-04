@@ -46,12 +46,6 @@
 {
 	[[NSUserDefaults standardUserDefaults] setBool: v forKey: @"useDCMTKForJP2K"];
 	
-	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"useDCMTKForJP2K"])
-	{
-		// Jasper not available with DCMTK
-		[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"UseOpenJpegForJPEG2000"];
-	}
-	
 	[self willChangeValueForKey: @"JP2KWriter"];
 	[self didChangeValueForKey: @"JP2KWriter"];
 	
@@ -60,7 +54,7 @@
 }
 
 - (void) setJP2KEngine: (NSUInteger) val;
-{
+{	
 	if( val == 1) // Kakadu
 	{
 		[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"UseKDUForJPEG2000"];
@@ -97,7 +91,7 @@
 		return 0; // OpenJPEG
 	}
 	
-	return 2; // Jasper
+	return 0; // OpenJPEG
 }
 
 - (IBAction) resetPreferences: (id) sender

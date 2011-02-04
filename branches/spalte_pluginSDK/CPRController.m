@@ -580,7 +580,22 @@ static float deg2rad = 3.14159265358979/180.0;
 	}
 }
 
-- (void) propagateWLWW:(CPRMPRDCMView*) sender
+- (void) propagateOriginRotationAndZoomToTransverseViews: (DCMView*) sender
+{
+	[topTransverseView setOrigin: [sender origin]];
+	[middleTransverseView setOrigin: [sender origin]];
+	[bottomTransverseView setOrigin: [sender origin]];
+	
+	[topTransverseView setScaleValue: [sender scaleValue]];
+	[middleTransverseView setScaleValue: [sender scaleValue]];
+	[bottomTransverseView setScaleValue: [sender scaleValue]];
+	
+	[topTransverseView setRotation: [sender rotation]];
+	[middleTransverseView setRotation: [sender rotation]];
+	[bottomTransverseView setRotation: [sender rotation]];
+}
+
+- (void) propagateWLWW:(DCMView*) sender
 {
 	[mprView1 setWLWW: [sender curWL] :[sender curWW]];
 	[mprView2 setWLWW: [sender curWL] :[sender curWW]];

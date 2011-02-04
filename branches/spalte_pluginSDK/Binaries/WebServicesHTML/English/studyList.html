@@ -3,39 +3,12 @@
 	<a class="back" href="../main">Home</a>
 </div>
 
-<script language="JavaScript">
-
-/*function insertParam(key, value) {
-	key = escape(key); value = escape(value);
-	
-	var kvp = document.location.search.substr(1).split('&');
-	
-	if (kvp == "") {
-		document.location.search = key + "=" + value;
-	} else {
-		var i = kvp.length; var x; while (i--) {
-			x = kvp[i].split('=');
-			if (x[0] == key) {
-				x[1] = value;
-				kvp[i] = x.join('=');
-				break;
-			}
-		}
-
-		if (i < 0)
-			kvp[kvp.length] = [key, value].join('=');
-		
-		document.location.search = kvp.join('&');
-	}
-}*/
-
-</script>
-
 <div id="content">
 	%INCLUDE:/errors.pvt.html%
 	%INCLUDE:/messages.pvt.html%
 
 	<div>
+		%[IF:Studies.count%
 		<div class="title">Studies</div>
 		<div>
 			<div class="smaller right gray">
@@ -69,7 +42,7 @@
 					
 						%[IF:Info.proposeZipDownload%
 						<td class="narrow middle">
-							<a href="%U:Study.name%.%[IF:Info.isMacOS%osirixzip%ELSE:Info.isMacOS%zip%]IF:Info.isMacOS%?id=%U:Study.studyInstanceUID%"><img src="images/download.png"/></a>
+							<a href="%U:Study.name%.%[IF:Info.isMacOS%osirixzip%ELSE:Info.isMacOS%zip%]IF:Info.isMacOS%?studyID=%U:Study.studyInstanceUID%"><img src="images/download.png"/></a>
 						</td>
 						%]IF:Info.proposeZipDownload%
 						
@@ -82,6 +55,9 @@
 				%]FOREACH:Studies:Study%
 			</table>
 		</div>
+		%ELSE:Studies.count%
+		This list is empty.
+		%]IF:Studies.count%
 	</div>
 
 </div>

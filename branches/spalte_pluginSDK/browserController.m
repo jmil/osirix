@@ -1640,6 +1640,7 @@ static NSConditionLock *threadLock = nil;
 		[self outlineViewSelectionDidChange: nil];
 	}
 	
+	[self refreshAlbums];
 	[self reloadViewers: cReload];
 	[self rebuildViewers: cRebuild];
 }
@@ -2499,7 +2500,9 @@ static NSConditionLock *threadLock = nil;
 		album.predicateString = @"(ANY series.comment != '' AND ANY series.comment != NIL) OR (comment != '' AND comment != NIL)";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
-
+	
+	[[self managedObjectContext] save: nil];
+	
 	[self refreshAlbums];
 }
 
@@ -2549,6 +2552,7 @@ static NSConditionLock *threadLock = nil;
 - (NSManagedObjectContext *) managedObjectContextIndependentContext:(BOOL) independentContext path: (NSString *) path
 {
     NSError *error = nil;
+	NSManagedObjectContext *moc = nil;
 	
 	if( path == nil)
 		return nil;
@@ -2556,48 +2560,64 @@ static NSConditionLock *threadLock = nil;
     if( managedObjectContext && independentContext == NO && [path isEqualToString: currentDatabasePath] == YES)
 		return managedObjectContext;
 	
-	NSPersistentStoreCoordinator *psc = [persistentStoreCoordinatorDictionary objectForKey: path];
-	if( psc == nil)
+	@synchronized( self)
 	{
-		psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: self.managedObjectModel] autorelease];
-		[persistentStoreCoordinatorDictionary setObject: psc forKey: path];
-	}
-	
-    NSManagedObjectContext *moc = [[[NSManagedObjectContext alloc] init] autorelease];
-    [moc setPersistentStoreCoordinator: psc];
-	[moc setUndoManager: nil];
-	
-    NSURL *url = [NSURL fileURLWithPath: path];
-	
-	BOOL newDB = NO;
-	if( [[NSFileManager defaultManager] fileExistsAtPath: path] == NO)
-		newDB = YES;
-	
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
-	
-	if( [psc persistentStoreForURL: url] == nil)
-	{
-		if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:options error:&error])
+		NSPersistentStoreCoordinator *psc = [persistentStoreCoordinatorDictionary objectForKey: path];
+		
+		if( psc)
 		{
-			NSLog(@"********** managedObjectContext FAILED: %@", error);
-			error = [NSError osirixErrorWithCode:0 underlyingError:error localizedDescriptionFormat:NSLocalizedString(@"Store Configuration Failure: %@", NULL), error.localizedDescription? error.localizedDescription : NSLocalizedString(@"Unknown Error", NULL)];
-			
-			moc = nil;
-		}
-		else
-		{
-			if( newDB)
+			if( [[NSFileManager defaultManager] fileExistsAtPath: path] == NO)
 			{
-				NSLog( @"New SQL DB file created: %@", path);
-				[self defaultAlbums: self];
+				NSLog( @"-------- WARNING: persistentStore exists, but not the associated file : persistentStore will be reseted to a new one.");
+				psc = nil;
 			}
 		}
-	}
+		
+		if( psc == nil)
+		{
+			psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: self.managedObjectModel] autorelease];
+			[persistentStoreCoordinatorDictionary setObject: psc forKey: path];
+		}
+		
+		moc = [[[NSManagedObjectContext alloc] init] autorelease];
+		[moc setPersistentStoreCoordinator: psc];
+		[moc setUndoManager: nil];
+		
+		NSURL *url = [NSURL fileURLWithPath: path];
+		
+		BOOL newDB = NO;
+		if( [[NSFileManager defaultManager] fileExistsAtPath: path] == NO)
+			newDB = YES;
+		
+		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
+		
+		if( [psc persistentStoreForURL: url] == nil)
+		{
+			if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:options error:&error])
+			{
+				NSLog(@"********** managedObjectContext FAILED: %@", error);
+				error = [NSError osirixErrorWithCode:0 underlyingError:error localizedDescriptionFormat:NSLocalizedString(@"Store Configuration Failure: %@", NULL), error.localizedDescription? error.localizedDescription : NSLocalizedString(@"Unknown Error", NULL)];
+				
+				moc = nil;
+			}
+			else
+			{
+				if( newDB)
+					NSLog( @"New SQL DB file created: %@", path);
+			}
+		}
 
-	[moc save: &error];	// This line is very important, if there is NO database.sql file
-	
-	if( managedObjectContext == nil && [path isEqualToString: currentDatabasePath] == YES && independentContext == NO)
-		managedObjectContext = [moc retain];
+		if( [moc save: &error] == NO)	// This line is very important, if there is NO database.sql file
+			NSLog( @"**** managedObjectContextIndependentContext save error: %@", error);
+			
+		if( managedObjectContext == nil && [path isEqualToString: currentDatabasePath] == YES && independentContext == NO)
+			managedObjectContext = [moc retain];
+		
+		if( newDB)
+		{
+			[self defaultAlbums: self];
+		}
+	}
 	
     return moc;
 }
@@ -3468,7 +3488,6 @@ static NSConditionLock *threadLock = nil;
 	
 	[[LogManager currentLogManager] checkLogs: nil];
 	[self resetLogWindowController];
-	[[LogManager currentLogManager] resetLogs];
 	
 	[[AppController sharedAppController] closeAllViewers: self];
 	
@@ -3568,8 +3587,11 @@ static NSConditionLock *threadLock = nil;
 		[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"recomputePatientUID"];
 	}
 	
-	[self resetLogWindowController];
-	[[LogManager currentLogManager] resetLogs];
+	if( managedObjectContext)
+	{
+		[self resetLogWindowController];
+		[[LogManager currentLogManager] resetLogs];
+	}
 	
 	[managedObjectContext lock];
 	[managedObjectContext unlock];
@@ -3646,6 +3668,8 @@ static NSConditionLock *threadLock = nil;
 	[AppController createDBFoldersIfNecessary];
 	
 	[managedObjectContext unlock];
+	
+	[[LogManager currentLogManager] resetLogs];
 	
 //	NSData *str = [DicomImage sopInstanceUIDEncodeString: @"1.2.826.0.1.3680043.2.1143.8797283371159.20060125163148762.58"];
 //	
@@ -4255,7 +4279,7 @@ static NSConditionLock *threadLock = nil;
 	
 	[databaseOutline reloadData];
 	
-	NSMutableArray				*filesArray;
+	NSMutableArray *filesArray;
 	
 	WaitRendering *wait = [[WaitRendering alloc] init: NSLocalizedString(@"Step 1: Checking files...", nil)];
 	[wait showWindow:self];
@@ -4657,7 +4681,7 @@ static NSConditionLock *threadLock = nil;
 	if( managedObjectContext == nil) return;
 	if( [NSDate timeIntervalSinceReferenceDate] - gLastActivity < 60*10) return;
 	
-	[self refreshSmartAlbums];
+	[self refreshAlbums];
 	
 	// Log cleaning
 	
@@ -5238,7 +5262,7 @@ static NSConditionLock *threadLock = nil;
 
 -(NSManagedObjectModel*)userManagedObjectModel { // deprecated
 #ifndef OSIRIX_LIGHT
-	return [WebPortalDatabase managedObjectModel];
+	return [[[WebPortal defaultWebPortal] database] managedObjectModel];
 #else
 	return NULL;
 #endif
@@ -5544,7 +5568,7 @@ static NSConditionLock *threadLock = nil;
 		
 		if( [albumArray count] > albumTable.selectedRow)
 		{
-			NSManagedObject	*album = [self.albumArray objectAtIndex: albumTable.selectedRow];
+			NSManagedObject	*album = [albumArray objectAtIndex: albumTable.selectedRow];
 			NSString		*albumName = [album valueForKey:@"name"];
 			
 			if( [[album valueForKey:@"smartAlbum"] boolValue] == YES)
@@ -5894,80 +5918,88 @@ static NSConditionLock *threadLock = nil;
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	@try
+	if( displayEmptyDatabase == NO && [[self window] isVisible] == YES)
 	{
-		NSMutableArray *NoOfStudies = [NSMutableArray array];
-		
-		NSManagedObjectContext *context = [self managedObjectContextIndependentContext: YES];
-
-		// Find all studies
-		NSFetchRequest	*dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-		[dbRequest setEntity: [[context.persistentStoreCoordinator.managedObjectModel entitiesByName] objectForKey:@"Study"]];
-		[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
-		
-		NSError *error = nil;
-		NSArray *studiesArray = nil;
-		@try 
+		@try
 		{
-			studiesArray = [context executeFetchRequest:dbRequest error:&error];
+			NSMutableArray *NoOfStudies = [NSMutableArray array];
+			
+			NSManagedObjectContext *context = [self managedObjectContextIndependentContext: YES];
+
+			// Find all studies
+			NSFetchRequest	*dbRequest = [[[NSFetchRequest alloc] init] autorelease];
+			[dbRequest setEntity: [[context.persistentStoreCoordinator.managedObjectModel entitiesByName] objectForKey:@"Study"]];
+			[dbRequest setPredicate: [NSPredicate predicateWithValue:YES]];
+			
+			NSError *error = nil;
+			NSArray *studiesArray = nil;
+			@try 
+			{
+				studiesArray = [context executeFetchRequest:dbRequest error:&error];
+			}
+			@catch (NSException * e) 
+			{
+				NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+				[AppController printStackTrace: e];
+			}
+			
+			[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[studiesArray count]]]]];
+			
+			NSArray *albums = [BrowserController albumsInContext: context];
+			
+			for( int rowIndex = 0 ; rowIndex < [albums count]; rowIndex++)
+			{
+				NSManagedObject	*object = [albums objectAtIndex: rowIndex];
+				
+				if( [[object valueForKey:@"smartAlbum"] boolValue] == YES)
+				{
+					@try
+					{
+						error = nil;
+						[dbRequest setPredicate: [self smartAlbumPredicate: object]];
+						
+						NSArray *studiesArray = [context executeFetchRequest:dbRequest error:&error];
+						
+						[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[studiesArray count]]]]];
+					}
+					
+					@catch( NSException *e)
+					{
+						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+						[AppController printStackTrace: e];
+					}
+				}
+				else
+					[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[[object valueForKey:@"studies"] count]]]]];
+			}
+			
+			if( albumNoOfStudiesCache == nil)
+				albumNoOfStudiesCache = [[NSMutableArray array] retain];
+			
+			@synchronized( albumNoOfStudiesCache)
+			{
+				[albumNoOfStudiesCache removeAllObjects];
+				[albumNoOfStudiesCache addObjectsFromArray: NoOfStudies];
+			}
+			
+			[albumTable performSelectorOnMainThread: @selector( reloadData) withObject: nil waitUntilDone: NO];
 		}
-		@catch (NSException * e) 
+		@catch (NSException * e)
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
 		}
-		
-		[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[studiesArray count]]]]];
-		
-		NSArray *albums = [BrowserController albumsInContext: context];
-		
-		for( int rowIndex = 0 ; rowIndex < [albums count]; rowIndex++)
-		{
-			NSManagedObject	*object = [albums objectAtIndex: rowIndex];
-			
-			if( [[object valueForKey:@"smartAlbum"] boolValue] == YES)
-			{
-				@try
-				{
-					error = nil;
-					[dbRequest setPredicate: [self smartAlbumPredicate: object]];
-					
-					NSArray *studiesArray = [context executeFetchRequest:dbRequest error:&error];
-					
-					[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[studiesArray count]]]]];
-				}
-				
-				@catch( NSException *e)
-				{
-					NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					[AppController printStackTrace: e];
-				}
-			}
-			else
-				[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[[object valueForKey:@"studies"] count]]]]];
-		}
-		
-		if( albumNoOfStudiesCache == nil)
-			albumNoOfStudiesCache = [[NSMutableArray array] retain];
-		
-		@synchronized( albumNoOfStudiesCache)
-		{
-			[albumNoOfStudiesCache removeAllObjects];
-			[albumNoOfStudiesCache addObjectsFromArray: NoOfStudies];
-		}
-		
-		[albumTable performSelectorOnMainThread: @selector( reloadData) withObject: nil waitUntilDone: NO];
 	}
-	@catch (NSException * e)
+	else
 	{
-		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+		[self performSelectorOnMainThread: @selector( delayedRefreshAlbums) withObject: nil waitUntilDone: NO];
 	}
 	[pool release];
 }
 
-- (void)refreshSmartAlbums
+- (void)delayedRefreshAlbums
 {
-	[NSThread detachNewThreadSelector: @selector( computeNumberOfStudiesForAlbums) toTarget:self withObject:nil];
+	[NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector( computeNumberOfStudiesForAlbums) object: nil];
+	[self performSelector: @selector( computeNumberOfStudiesForAlbums) withObject: nil afterDelay: 3];
 }
 
 - (void)refreshAlbums
@@ -5983,32 +6015,28 @@ static NSConditionLock *threadLock = nil;
 	if( DatabaseIsEdited) return;
 	if( [databaseOutline editedRow] != -1) return;
 	
-	if( albumTable.selectedRow >= [self.albumArray count]) return;
+	NSArray *albumArray = self.albumArray;
 	
-	if( [[[self.albumArray objectAtIndex: albumTable.selectedRow] valueForKey:@"smartAlbum"] boolValue] == YES)
+	if( albumTable.selectedRow >= [albumArray count]) return;
+	
+	if( [[[albumArray objectAtIndex: albumTable.selectedRow] valueForKey:@"smartAlbum"] boolValue] == YES)
 	{
-		if( [checkIncomingLock tryLock])
+		@try
 		{
-			@try
-			{
-				[self outlineViewRefresh];
-				[self refreshAlbums];
-			}
-			@catch (NSException * e)
-			{
-				NSLog( @"refreshDatabase exception");
-				NSLog( @"%@", [e description]);
-				[AppController printStackTrace: e];
-			}
-			[checkIncomingLock unlock];
+			[self outlineViewRefresh];
+			[self refreshAlbums];
 		}
-		else NSLog(@"refreshDatabase locked...");
+		@catch (NSException * e)
+		{
+			NSLog( @"refreshDatabase exception");
+			NSLog( @"%@", [e description]);
+			[AppController printStackTrace: e];
+		}
 	}
 	else
 	{
 		//For filters depending on time....
 		[self refreshAlbums];
-		
 		[databaseOutline reloadData];
 	}
 	
@@ -7133,9 +7161,11 @@ static NSConditionLock *threadLock = nil;
 	[context retain];
 	[context lock];
 	
+	NSArray *albumArray = self.albumArray;
+	
 	if( albumTable.selectedRow > 0 && matrixThumbnails == NO)
 	{
-		NSManagedObject	*album = [self.albumArray objectAtIndex: albumTable.selectedRow];
+		NSManagedObject	*album = [albumArray objectAtIndex: albumTable.selectedRow];
 		
 		if( [[album valueForKey:@"smartAlbum"] boolValue] == NO)
 			result = NSRunInformationalAlertPanel(NSLocalizedString(@"Delete/Remove images", nil), [NSString stringWithFormat: NSLocalizedString(@"Do you want to only remove the selected images from the current album or delete them from the database? (%@)", nil), level], NSLocalizedString(@"Delete",nil), NSLocalizedString(@"Cancel",nil), NSLocalizedString(@"Remove from current album",nil));
@@ -7156,7 +7186,7 @@ static NSConditionLock *threadLock = nil;
 		if( [databaseOutline selectedRow] >= 0)
 		{
 			NSMutableArray *studiesToRemove = [NSMutableArray array];
-			NSManagedObject	*album = [self.albumArray objectAtIndex: albumTable.selectedRow];
+			NSManagedObject	*album = [albumArray objectAtIndex: albumTable.selectedRow];
 			
 			for( NSInteger x = 0; x < [selectedRows count] ; x++)
 			{
@@ -10969,9 +10999,15 @@ static BOOL needToRezoom;
 		}
 		else
 		{
-			NSManagedObject	*object = [self.albumArray  objectAtIndex: rowIndex];
+			NSArray *albumsArray = self.albumArray;
 			
-			return [object valueForKey:@"name"];
+			if( rowIndex >= 0 && rowIndex < albumsArray.count)
+			{
+				NSManagedObject	*object = [albumsArray  objectAtIndex: rowIndex];
+				return [object valueForKey:@"name"];
+			}
+			else
+				return NSLocalizedString( @"n/a", nil);
 		}
 	}
 	else if ([aTableView isEqual:bonjourServicesList])
@@ -13669,7 +13705,7 @@ static NSArray*	openSubSeriesArray = nil;
 		[[NSRunLoop currentRunLoop] addTimer: IncomingTimer forMode: NSDefaultRunLoopMode];
 		
 		if( [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"] == NO)
-			refreshTimer = [[NSTimer scheduledTimerWithTimeInterval: 40.3 target:self selector:@selector(refreshDatabase:) userInfo:self repeats:YES] retain];	//63.33
+			refreshTimer = [[NSTimer scheduledTimerWithTimeInterval: 5*60 target:self selector:@selector(refreshDatabase:) userInfo:self repeats:YES] retain];
 		
 		bonjourTimer = [[NSTimer scheduledTimerWithTimeInterval: 120 target:self selector:@selector(checkBonjourUpToDate:) userInfo:self repeats:YES] retain];	//120
 		databaseCleanerTimer = [[NSTimer scheduledTimerWithTimeInterval: 3*60 + 2.5 target:self selector:@selector(autoCleanDatabaseDate:) userInfo:self repeats:YES] retain]; // 20*60 + 2.5
@@ -13706,6 +13742,8 @@ static NSArray*	openSubSeriesArray = nil;
 //		[[NSTimer scheduledTimerWithTimeInterval: 5 target:self selector:@selector(autoTest:) userInfo:self repeats:NO] retain];
 		
 		displayEmptyDatabase = NO;
+		
+		[self refreshAlbums];
 	}
 	return self;
 }
@@ -14203,8 +14241,20 @@ static NSArray*	openSubSeriesArray = nil;
 	
 	@try
 	{
+		// ----------
+		
+		BOOL hideListenerError_copy = [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"];
+		
+		[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"hideListenerError"];
+		[[NSFileManager defaultManager] createFileAtPath: @"/tmp/kill_all_storescu" contents: [NSData data] attributes: nil];
+		
 		for( NSInteger x = 0, row; x < [[ThreadsManager defaultManager] threadsCount]; x++)  
 			[[[ThreadsManager defaultManager] objectInThreadsAtIndex: x] cancel];
+		
+		unlink( "/tmp/kill_all_storescu");
+		[[NSUserDefaults standardUserDefaults] setBool: hideListenerError_copy forKey: @"hideListenerError"];
+		
+		// ----------
 		
 		NSTimeInterval ti = [NSDate timeIntervalSinceReferenceDate] + 240;
 		while( ti - [NSDate timeIntervalSinceReferenceDate] > 0 && [[ThreadsManager defaultManager] threadsCount] > 0)
@@ -14338,8 +14388,6 @@ static NSArray*	openSubSeriesArray = nil;
 		{
 			if( r == NSAlertDefaultReturn)
 				return NO;
-			
-			[[AppController sharedAppController] killAllStoreSCU: self];
 		}
 	}
 	
