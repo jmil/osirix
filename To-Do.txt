@@ -15,11 +15,9 @@
 - Zoom centered around mouse position (2D Viewer Preferences)
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and space bandwidth)
 
-- Double-Click point
+- Double-Click point -> AND orientation
 - SetROI TOOL bug
-- Double-Click hide cross references
 - Test 4D, Blending
-- Hide points too far away?
 
 - Web Server bug no users
 
