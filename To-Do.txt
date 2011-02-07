@@ -18,6 +18,8 @@
 - Double-Click point -> AND orientation
 - SetROI TOOL bug
 - Test 4D, Blending
+- BUG: Check box TLS
+- BUG: compressFile StoreSCU NSLog bug
 
 - Web Server bug no users
 
