@@ -11,10 +11,11 @@
 #import "CPRGeometry.h"
 
 @class ROI;
+@class OSIFloatVolumeData;
 
 @interface OSIROI (Private)
 
-+ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom;
++ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 + (id)ROICoalescedWithOSIROIs:(NSArray *)rois;
 
 @end

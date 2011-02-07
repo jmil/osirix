@@ -75,7 +75,8 @@ typedef NSInteger CPRBezierPathElement;
 - (CGFloat)relalativePositionClosestToLine:(CPRLine)line closestVector:(CPRVectorPointer)vectorPointer;
 - (CPRBezierPath *)bezierPathByCollapsingZ;
 
-- (NSArray*)intersectionsWithPlane:(CPRPlane)plane; // returns NSNumbers of the relativePositions of the intersections with the plane.
+- (NSArray*)intersectionsWithPlane:(CPRPlane)plane; // returns NSValues containing CPRVectors of the intersections.
+- (NSArray*)intersectionsWithPlane:(CPRPlane)plane relativePositions:(NSArray **)returnedRelativePositions;
 
 @end
 

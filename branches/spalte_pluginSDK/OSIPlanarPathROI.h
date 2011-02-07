@@ -12,6 +12,7 @@
 
 @class ROI;
 @class CPRMutableBezierPath;
+@class OSIFloatVolumeData;
 
 // for now implement closed poly first
 
@@ -19,9 +20,10 @@
 	ROI *_osiriXROI;
 	
 	CPRMutableBezierPath *_bezierPath;
+	OSIFloatVolumeData *_homeFloatVolumeData;
 	CPRPlane _plane;
 }
 
-- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom;
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 
 @end

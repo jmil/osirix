@@ -912,7 +912,7 @@ static void _CPRBezierCoreElementDivide(CPRBezierCoreElementRef element)
     CPRVector b;
     
 	assert(element->segmentType != CPRMoveToBezierCoreSegmentType); // it doesn't make any sense to divide a moveTo
-    assert(element->segmentType == CPRCurveToBezierCoreSegmentType || element->segmentType == CPRLineToBezierCoreSegmentType);
+    assert(element->segmentType == CPRCurveToBezierCoreSegmentType || element->segmentType == CPRLineToBezierCoreSegmentType || element->segmentType == CPRCloseBezierCoreSegmentType);
     assert(element->previous); // there better be a previous so that the starting position is set.
     
     newElement = malloc(sizeof(CPRBezierCoreElement));

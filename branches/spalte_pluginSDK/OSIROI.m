@@ -10,6 +10,7 @@
 #import "OSIROI+Private.h"
 #import "OSIPlanarPathROI.h"
 #import "OSICoalescedROI.h"
+#import "OSIROIFloatPixelData.h"
 #import "DCMView.h"
 #import "CPRGeometry.h"
 #import "ROI.h"
@@ -38,17 +39,85 @@
 	return [NSArray array];
 }
 
+- (NSString *)label
+{
+	NSString *metric;
+	NSMutableString *label;
+	
+	label = [NSMutableString string];
+	for (metric in [self metricNames]) {
+		[label appendFormat:@"%@: %@%@, ", [self labelForMetric:metric], [self valueForMetric:metric], [self unitForMetric:metric]];
+	}
+	return label;
+}
+
+- (NSArray *)metricNames
+{
+	return [NSArray arrayWithObjects:@"meanIntensity", @"maxIntensity", @"minIntensity", nil];
+}
+
+- (NSString *)labelForMetric:(NSString *)metric
+{
+	if ([metric isEqualToString:@"meanIntensity"]) {
+		return @"Mean Intensity"; // localize me!
+	} else if ([metric isEqualToString:@"maxIntensity"]) {
+		return @"Maximum Intensity"; // localize me!
+	} else if ([metric isEqualToString:@"minIntensity"]) {
+		return @"Minimum Intensity"; // localize me!
+	}
+	return nil;
+}
+
+- (NSString *)unitForMetric:(NSString *)metric // make me smarter! this is not always HU values
+{
+	if ([metric isEqualToString:@"meanIntensity"]) {
+		return @"HU";
+	} else if ([metric isEqualToString:@"maxIntensity"]) {
+		return @"HU"; 
+	} else if ([metric isEqualToString:@"minIntensity"]) {
+		return @"HU";
+	}
+	return nil;
+}
+
+- (id)valueForMetric:(NSString *)metric
+{
+	if ([metric isEqualToString:@"meanIntensity"]) {
+		return [NSNumber numberWithDouble:[[self ROIFloatPixelData] meanIntensity]];
+	} else if ([metric isEqualToString:@"maxIntensity"]) {
+		return [NSNumber numberWithDouble:[[self ROIFloatPixelData] maxIntensity]];
+	} else if ([metric isEqualToString:@"minIntensity"]) {
+		return [NSNumber numberWithDouble:[[self ROIFloatPixelData] minIntensity]];
+	}
+	return nil;
+}	
+
+- (OSIROIFloatPixelData *)ROIFloatPixelData
+{
+	return [self ROIFloatPixelDataForFloatVolumeData:[self homeFloatVolumeData]];
+}
+
+- (OSIROIFloatPixelData *)ROIFloatPixelDataForFloatVolumeData:(OSIFloatVolumeData *)floatVolume; // convenience method
+{
+	return [[[OSIROIFloatPixelData alloc] initWithROIMask:[self ROIMaskForFloatVolumeData:floatVolume] floatVolumeData:floatVolume] autorelease];
+}
+
+- (OSIFloatVolumeData *)homeFloatVolumeData // the volume data on which the ROI was drawn
+{
+	return nil;
+}
+
 @end
 
 @implementation OSIROI (Private)
 
-+ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom
++ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 {
 	switch ([roi type]) {
 		case tMesure:
 		case tOPolygon:
 		case tCPolygon:
-			return [[[OSIPlanarPathROI alloc] initWithOsiriXROI:roi pixToDICOMTransfrom:pixToDICOMTransfrom] autorelease];
+			return [[[OSIPlanarPathROI alloc] initWithOsiriXROI:roi pixToDICOMTransfrom:pixToDICOMTransfrom homeFloatVolumeData:floatVolumeData] autorelease];
 			break;
 		default:
 			return nil;;

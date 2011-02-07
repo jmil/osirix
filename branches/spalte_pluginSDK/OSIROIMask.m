@@ -83,7 +83,7 @@ NSArray *OSIROIMaskIndexesInRun(OSIROIMaskRun maskRun)
 	return [NSValue valueWithBytes:&volumeRun objCType:@encode(OSIROIMaskRun)];
 }
 
-- (OSIROIMaskRun)OSIMaskRunValue
+- (OSIROIMaskRun)OSIROIMaskRunValue
 {
 	OSIROIMaskRun run;
     assert(strcmp([self objCType], @encode(OSIROIMaskRun)) == 0);

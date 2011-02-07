@@ -11,13 +11,16 @@
 #import "CPRGeometry.h"
 #import "DCMPix.h"
 
+@class OSIFloatVolumeData;
 @class OSIVolumeWindow;
 
 @interface ViewerController (PluginSDKAdditions)
 
 - (OSIVolumeWindow *)volumeWindow;
+- (OSIFloatVolumeData *)floatVolumeDataForMovieIndex:(long)index;
 
 @end
+
 
 @interface DCMPix (PluginSDKAdditions)
 

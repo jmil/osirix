@@ -17,7 +17,7 @@
 
 @implementation OSIPlanarPathROI
 
-- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData
 {
 	NSPoint point;
 	NSArray *pointArray;
@@ -28,6 +28,7 @@
 		_osiriXROI = [roi retain];
 		
 		_plane = CPRPlaneApplyTransform(CPRPlaneMake(CPRVectorZero, CPRVectorMake(0, 0, 1)), pixToDICOMTransfrom);
+		_homeFloatVolumeData = [floatVolumeData retain];
 		
 		if ([roi type] == tMesure && [[roi points] count] > 1) {
 			_bezierPath = [[CPRMutableBezierPath alloc] init];
@@ -71,6 +72,9 @@
 	
 	[_osiriXROI release];
 	_osiriXROI = nil;
+	
+	[_homeFloatVolumeData release];
+	_homeFloatVolumeData = nil;
 	
 	[super dealloc];
 }
@@ -147,7 +151,7 @@
 #endif		
 		[volumeBezierPath setVectorsForElementAtIndex:i control1:CPRVectorZero control2:CPRVectorZero endpoint:endpoint];
 		minY = MIN(minY, endpoint.y);
-		maxY = MAX(minY, endpoint.y);
+		maxY = MAX(maxY, endpoint.y);
 		
 		if (zSet == NO) {
 			z = endpoint.z;
@@ -158,7 +162,7 @@
 	}
 	
 	minY = floor(minY);
-	minY = ceil(maxY);
+	maxY = ceil(maxY);
 	maskRun.depthIndex = z;
 	
 	for (i = minY; i <= maxY; i++) {
@@ -175,9 +179,8 @@
 			runEnd = round([[intersectionNumbers objectAtIndex:j+1] doubleValue]);
 			if (runEnd > runStart) {
 				maskRun.widthRange = NSMakeRange(runStart, runEnd - runStart);
+                [ROIRuns addObject:[NSValue valueWithOSIROIMaskRun:maskRun]];
 			}
-			
-			[ROIRuns addObject:[NSValue valueWithOSIROIMaskRun:maskRun]];
 			j++;
 		}
 	}
@@ -192,6 +195,11 @@
 - (NSArray *)osiriXROIs
 {
 	return [NSArray arrayWithObject:_osiriXROI];
+}
+
+- (OSIFloatVolumeData *)homeFloatVolumeData // the volume data on which the ROI was drawn
+{
+	return _homeFloatVolumeData;
 }
 
 @end

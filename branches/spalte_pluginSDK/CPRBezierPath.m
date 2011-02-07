@@ -437,33 +437,53 @@
     return [collapsedBezierPath autorelease];
 }
 
-- (NSArray*)intersectionsWithPlane:(CPRPlane)plane // returns NSNumbers of the relativePositions of the intersections with the plane.
+- (NSArray*)intersectionsWithPlane:(CPRPlane)plane; // returns NSValues containing CPRVectors of the intersections.
+{
+    return [self intersectionsWithPlane:plane relativePositions:NULL];
+}
+
+- (NSArray*)intersectionsWithPlane:(CPRPlane)plane relativePositions:(NSArray **)returnedRelativePositions;
 {
 	CPRMutableBezierPath *flattenedPath;
 	CPRBezierCoreRef bezierCore;
 	NSInteger intersectionCount;
 	NSInteger i;
 	NSMutableArray *intersectionArray;
+	NSMutableArray *relativePositionArray;
 	CGFloat *relativePositions;
+	CPRVector *intersections;
 	
-	flattenedPath = [self mutableCopy];
-	[flattenedPath subdivide:CPRBezierDefaultSubdivideSegmentLength];
-	[flattenedPath flatten:CPRBezierDefaultFlatness];
-	
-	bezierCore = [flattenedPath CPRBezierCore];
+    if (CPRBezierCoreHasCurve(_bezierCore)) {
+        flattenedPath = [self mutableCopy];
+        [flattenedPath subdivide:CPRBezierDefaultSubdivideSegmentLength];
+        [flattenedPath flatten:CPRBezierDefaultFlatness];
+        
+        bezierCore = CPRBezierCoreRetain([flattenedPath CPRBezierCore]);
+        [flattenedPath release];
+    } else {
+        bezierCore = CPRBezierCoreRetain(_bezierCore);
+    }
+
 	intersectionCount = CPRBezierCoreCountIntersectionsWithPlane(bezierCore, plane);
+	intersections = malloc(intersectionCount * sizeof(CPRVector));
 	relativePositions = malloc(intersectionCount * sizeof(CGFloat));
 	
-	intersectionCount = CPRBezierCoreIntersectionsWithPlane(bezierCore, plane, NULL, relativePositions, intersectionCount);
+	intersectionCount = CPRBezierCoreIntersectionsWithPlane(bezierCore, plane, intersections, relativePositions, intersectionCount);
 	
 	intersectionArray = [NSMutableArray arrayWithCapacity:intersectionCount];
+	relativePositionArray = [NSMutableArray arrayWithCapacity:intersectionCount];
 	for (i = 0; i < intersectionCount; i++) {
-		[intersectionArray addObject:[NSNumber numberWithDouble:relativePositions[i]]];
+		[intersectionArray addObject:[NSValue valueWithCPRVector:intersections[i]]];
+		[relativePositionArray addObject:[NSNumber numberWithDouble:relativePositions[i]]];
 	}
 	
 	free(relativePositions);
-	[flattenedPath release];
-	
+	free(intersections);
+    CPRBezierCoreRelease(bezierCore);
+    
+    if (returnedRelativePositions) {
+        *returnedRelativePositions = relativePositionArray;
+    }
 	return intersectionArray;
 }
 

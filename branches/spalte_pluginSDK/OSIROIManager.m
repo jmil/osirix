@@ -225,7 +225,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 			
 			for (pixROIArray in movieFrameROIs) {
 				for (osirixROI in pixROIArray) {
-					roi = [OSIROI ROIWithOsiriXROI:osirixROI pixToDICOMTransfrom:pixToDicomTransform];
+					roi = [OSIROI ROIWithOsiriXROI:osirixROI pixToDICOMTransfrom:pixToDicomTransform homeFloatVolumeData:[viewController floatVolumeDataForMovieIndex:i]];
 					if (roi) {
 						[newROIs addObject:roi];
 					}

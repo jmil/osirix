@@ -17,6 +17,7 @@
 @class ROI;
 @class OSIROIMask;
 @class OSIFloatVolumeData;
+@class OSIROIFloatPixelData;
 
 // this is an abstract class
 // how do you identify an ROI? Does an ROI have an ID and that is how you know what an ROI is, or is the ROI the actual object...
@@ -31,20 +32,23 @@
 //- (id)initWithDictionaryRepresentation:(NSDictionary *)dict;
 
 - (NSString *)name;
-//- (NSString *)label;
+- (NSString *)label;
 
-//- (NSString *)metricNames;
-//- (NSString *)labelForMetric:(NSString *)metric;
-//- (NSString *)unitForMetric:(NSString *)metric;
-//- (id)valueForMetric:(NSString *)metric;
+- (NSArray *)metricNames;
+- (NSString *)labelForMetric:(NSString *)metric;
+- (NSString *)unitForMetric:(NSString *)metric;
+- (id)valueForMetric:(NSString *)metric;
 
 //- (OSIStudy *)study;
-//- (OSIROIFloatPixelData *)ROIFloatPixelDataForFloatVolumeData:(OSIFloatVolumeData *)floatVolume; // resamples the ROI onto the other volume data
+- (OSIROIFloatPixelData *)ROIFloatPixelData; // convenience method
+- (OSIROIFloatPixelData *)ROIFloatPixelDataForFloatVolumeData:(OSIFloatVolumeData *)floatVolume; // convenience method
 - (OSIROIMask *)ROIMaskForFloatVolumeData:(OSIFloatVolumeData *)floatVolume;
 //- (BOOL)containsVector:(OSIVector)vector;
 
 - (NSArray *)convexHull; // OSIVectors stored in NSValue objects. The ROI promises to live inside of these points
 						 // all concrete implementation MUST implement this!
+
+- (OSIFloatVolumeData *)homeFloatVolumeData; // the volume data on which the ROI was drawn
 
 //- (NSDictionary *)dictionaryRepresentation; // make sure this is a plist serializable dictionary;
 

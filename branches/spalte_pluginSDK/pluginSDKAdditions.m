@@ -9,12 +9,18 @@
 #import "pluginSDKAdditions.h"
 #import "OSIEnvironment.h"
 #import "OSIVolumeWindow.h"
+#import "OSIFloatVolumeData.h"
 
 @implementation ViewerController (PluginSDKAdditions)
 
 - (OSIVolumeWindow *)volumeWindow
 {
 	return [[OSIEnvironment sharedEnvironment] volumeWindowForViewerController:self];
+}
+
+- (OSIFloatVolumeData *)floatVolumeDataForMovieIndex:(long)index
+{
+	return [[[OSIFloatVolumeData alloc] initWithWithPixList:pixList[index] volume:volumeData[index]] autorelease];
 }
 
 @end

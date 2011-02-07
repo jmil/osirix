@@ -95,7 +95,7 @@ bool CPRLineIntersectsPlane(CPRLine line, CPRPlane plane);
 CPRVector CPRLineIntersectionWithPlane(CPRLine line, CPRPlane plane);
 CPRVector CPRLinePointClosestToVector(CPRLine line, CPRVector vector);
 CPRLine CPRLineApplyTransform(CPRLine line, CPRAffineTransform3D transform);
-CGFloat CPRLineClosestPoints(CPRLine line1, CPRLine line2, CPRVectorPointer line1PointPtr, CPRVectorPointer line2PointPtr); // given two lines, find points on each line that are the closest to each other, note that the line the goes through these two points will be normal to both lines
+CGFloat CPRLineClosestPoints(CPRLine line1, CPRLine line2, CPRVectorPointer line1PointPtr, CPRVectorPointer line2PointPtr); // given two lines, find points on each line that are the closest to each other. Returns the distance between these two points. Note that the line that goes through these two points will be normal to both lines
 
 CPRPlane CPRPlaneMake(CPRVector point, CPRVector normal);
 bool CPRPlaneEqualToPlane(CPRPlane plane1, CPRPlane plane2);
