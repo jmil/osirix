@@ -18,7 +18,11 @@
 - Double-Click point -> AND orientation
 - SetROI TOOL bug
 - Test 4D, Blending
+
 - BUG: Check box TLS
+- BUG: turn off 32-bit pipeline for printing
+- Delete DB -> Rebuild QR
+- Delete QR -> check for valid patient
 
 - Web Server bug no users
 
