@@ -76,7 +76,7 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 
 /** Returns the dimensions available in the Volume Window.
  
- Volume Data objects represent a volume in the three natural dimensions. Additional dimensions such as Time may be available in a given Volume Window. This method returns the names of the available dimensions as NSString objects
+ Volume Data objects represent a volume in the three natural dimensions. Additional dimensions such as _movieIndex_ may be available in a given Volume Window. This method returns the names of the available dimensions as NSString objects
  
  @return An array of NSString objects representing the names of the available dimensions.
  */

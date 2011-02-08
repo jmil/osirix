@@ -14,7 +14,7 @@
 
 /**  
  
- The `OSIFloatVolumeData` class represents a volume in the three natural dimensions. Objects of this class strictly represent flot intensity data.
+ The `OSIFloatVolumeData` class represents a volume in the three natural dimensions. Objects of this class strictly represent float intensity data.
  In the future a `OSIRGBVolumeData` may represent RGB data.
  
  */

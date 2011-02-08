@@ -47,6 +47,45 @@ CF_EXTERN_C_END
 
 /** `OSIROIMask` instances represent a mask that can be applied to a volume. The Mask itself is stored as a set of individual mask runs.
  
+ Stored masks use the following structs.
+ 
+ `test`
+ 
+ 
+ 
+ `struct OSIROIMaskRun {`
+ 
+ `NSRange widthRange;`
+ 
+ `NSUInteger heightIndex;`
+ 
+ `NSUInteger depthIndex;`
+ 
+ `};`
+ 
+ `typedef struct OSIROIMaskRun OSIROIMaskRun;`
+ 
+ `struct OSIROIMaskIndex {`
+ 
+ `NSUInteger x;`
+ 
+ `NSUInteger y;`
+ 
+ `NSUInteger z;`
+ 
+ `};`
+ 
+ `typedef struct OSIROIMaskIndex OSIROIMaskIndex;`
+ 
+ Use the following functions are also available
+ 
+ `BOOL OSIROIMaskIndexInRun(OSIROIMaskIndex maskIndex, OSIROIMaskRun maskRun);`
+ 
+ `NSArray *OSIROIMaskIndexesInRun(OSIROIMaskRun maskRun);`
+ 
+ 
+ 
+ 
  */
 
 

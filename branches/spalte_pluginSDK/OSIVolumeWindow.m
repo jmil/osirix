@@ -57,7 +57,7 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 - (NSArray *)dimensions // dimensions other than the 3 natural dimensions
 {
 	if ([_viewerController maxMovieIndex] > 1) {
-		return [NSArray arrayWithObject:@"time"];
+		return [NSArray arrayWithObject:@"movieIndex"];
 	} else {
 		return [NSArray array];
 	}
@@ -65,7 +65,7 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 
 - (NSUInteger)depthOfDimension:(NSString *)dimension
 {
-	if ([dimension isEqualToString:@"time"]) {
+	if ([dimension isEqualToString:@"movieIndex"]) {
 		return [_viewerController maxMovieIndex];
 	} else {
 		return 0;
