@@ -16,7 +16,6 @@
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and space bandwidth)
 
 - Double-Click point -> AND orientation
-- SetROI TOOL bug
 - Test 4D, Blending
 
 - Web Server bug no users
