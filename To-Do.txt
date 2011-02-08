@@ -19,8 +19,6 @@
 - SetROI TOOL bug
 - Test 4D, Blending
 
-- Delete QR -> check for valid patient
-
 - Web Server bug no users
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
