@@ -24,8 +24,6 @@
 - Delete DB -> Rebuild QR
 - Delete QR -> check for valid patient
 
-- Store SCU : syntax from preferences
-
 - Web Server bug no users
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
