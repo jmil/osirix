@@ -62,9 +62,8 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
   
  @return The title of the window represented by this Volume Window.
  
- @warning *Important:* The Volume Window is the delegate of this ROIManger, so you should never change the delegate of this ROIManager.
+ @warning *Important:* The Volume Window is the delegate of this ROIManger, you should never change its delegate.
  */
-
 - (OSIROIManager *)ROIManager; // no not mess with the delegate of this ROI manager, but feel free to ask if for it's list of ROIs
 
 ///-----------------------------------
@@ -72,7 +71,6 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 ///-----------------------------------
 
 // not done
-//- (OSIROIManager *)ROIManager; // no not mess with the delegate of this ROI manager, but feel free to ask if for it's list of ROIs
 //- (NSArray *)selectedROIs; // observable list of selected ROIs
 //
 
@@ -111,7 +109,7 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 //- (OSIFloatVolumeData *)displayedFloatVolumeData;
 
 ///-----------------------------------
-/// @name Breaking out of the SKD
+/// @name Breaking out of the SDK
 ///-----------------------------------
 
 /** Returns the shared `ViewerController` this Volume Window is paired with.

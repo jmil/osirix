@@ -8,6 +8,7 @@
  */
 
 #import "OSIROI.h"
+#import "OSIPlanarPathROI.h"
 #import "CPRGeometry.h"
 
 @class ROI;
@@ -17,5 +18,11 @@
 
 + (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 + (id)ROICoalescedWithOSIROIs:(NSArray *)rois;
+
+@end
+
+@interface OSIPlanarPathROI (Private)
+
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 
 @end

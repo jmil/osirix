@@ -14,8 +14,9 @@
 #import "DCMView.h"
 #import "OSIFloatVolumeData.h"
 #import "OSIROIMask.h"
+#import "OSIROI.h"
 
-@implementation OSIPlanarPathROI
+@implementation OSIPlanarPathROI (Private)
 
 - (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData
 {
@@ -64,6 +65,12 @@
 	}
 	return self;
 }
+
+@end
+
+
+@implementation OSIPlanarPathROI
+
 
 - (void)dealloc
 {
@@ -203,8 +210,6 @@
 }
 
 @end
-
-
 
 
 
