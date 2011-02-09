@@ -18,7 +18,6 @@
 - Double-Click point -> AND orientation
 - Test 4D, Blending
 
-- CPR: creationPath : mouseOver node -> Hand
 - CPR: toolbar item slider for transverse spacing
 - CPR: CPRView : origin, scale, ...
 - CPR: transverse : resolution?
