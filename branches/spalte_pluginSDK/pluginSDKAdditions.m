@@ -28,9 +28,9 @@
 
 @implementation DCMPix (PluginSDKAdditions)
 
-- (CPRAffineTransform3D)pixToDicomTransform // converts points in the DCMPix's coordinate space ("Slice Coordinates") into the DICOM space (patient space with mm units)
+- (N3AffineTransform)pixToDicomTransform // converts points in the DCMPix's coordinate space ("Slice Coordinates") into the DICOM space (patient space with mm units)
 {
-    CPRAffineTransform3D pixToDicomTransform;
+    N3AffineTransform pixToDicomTransform;
     double spacingX;
     double spacingY;
     //    double spacingZ;
@@ -42,7 +42,7 @@
     spacingY = [self pixelSpacingY];
     //    spacingZ = pix.sliceInterval;
     
-    pixToDicomTransform = CPRAffineTransform3DIdentity;
+    pixToDicomTransform = N3AffineTransformIdentity;
     pixToDicomTransform.m41 = [self originX];
     pixToDicomTransform.m42 = [self originY];
     pixToDicomTransform.m43 = [self originZ];

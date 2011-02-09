@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "ViewerController.h"
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 #import "DCMPix.h"
 
 @class OSIFloatVolumeData;
@@ -70,6 +70,6 @@
 
  @return A transformation matrix that converts pixel coordinates in the receiver to coordinates in Patient Space (Dicom space in mm).
  */
-- (CPRAffineTransform3D)pixToDicomTransform; // converts points in the DCMPix's coordinate space ("Slice Coordinates") into the DICOM space (patient space with mm units)
+- (N3AffineTransform)pixToDicomTransform; // converts points in the DCMPix's coordinate space ("Slice Coordinates") into the DICOM space (patient space with mm units)
 
 @end

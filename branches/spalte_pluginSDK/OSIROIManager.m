@@ -202,7 +202,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 	NSMutableArray *newROIs;
 	NSArray *pixROIArray;
 	DCMPix *pix;
-	CPRAffineTransform3D pixToDicomTransform;
+	N3AffineTransform pixToDicomTransform;
 	
 	newROIs = [NSMutableArray array];
 	

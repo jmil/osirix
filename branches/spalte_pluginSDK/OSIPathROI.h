@@ -10,16 +10,16 @@
 #import "OSIROI.h"
 
 @class ROI;
-@class CPRMutableBezierPath;
+@class N3MutableBezierPath;
 
 // for now implement closed poly first
 
 @interface OSIPathROI : OSIROI {
 	ROI *_osiriXROI;
 	
-	CPRMutableBezierPath *_bezierPath;
+	N3MutableBezierPath *_bezierPath;
 }
 
-- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom;
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom;
 
 @end

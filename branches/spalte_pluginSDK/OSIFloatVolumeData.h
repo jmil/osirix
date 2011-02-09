@@ -95,7 +95,7 @@
  @see pixelSpacingY
  @see pixelSpacingZ
  */
-@property (readonly) CPRAffineTransform3D volumeTransform; // volumeTransform is the transform from Dicom (patient) space to pixel data coordinates.
+@property (readonly) N3AffineTransform volumeTransform; // volumeTransform is the transform from Dicom (patient) space to pixel data coordinates.
 
 ///-----------------------------------
 /// @name Accessing Volume Pixel Data
@@ -146,6 +146,6 @@
  @see getFloatData:range:
  @see floatAtPixelCoordinateX:y:z:
  */
-- (float)linearInterpolatedFloatAtDicomVector:(CPRVector)vector; // these are slower, use the inline buffer if you care about speed
+- (float)linearInterpolatedFloatAtDicomVector:(N3Vector)vector; // these are slower, use the inline buffer if you care about speed
 
 @end

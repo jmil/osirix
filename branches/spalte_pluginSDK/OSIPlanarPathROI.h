@@ -8,10 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "OSIROI.h"
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 
 @class ROI;
-@class CPRMutableBezierPath;
+@class N3MutableBezierPath;
 @class OSIFloatVolumeData;
 
 // for now implement closed poly first
@@ -19,9 +19,9 @@
 @interface OSIPlanarPathROI : OSIROI {
 	ROI *_osiriXROI;
 	
-	CPRMutableBezierPath *_bezierPath;
+	N3MutableBezierPath *_bezierPath;
 	OSIFloatVolumeData *_homeFloatVolumeData;
-	CPRPlane _plane;
+	N3Plane _plane;
 }
 
 

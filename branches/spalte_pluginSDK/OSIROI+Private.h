@@ -9,20 +9,20 @@
 
 #import "OSIROI.h"
 #import "OSIPlanarPathROI.h"
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 
 @class ROI;
 @class OSIFloatVolumeData;
 
 @interface OSIROI (Private)
 
-+ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
++ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 + (id)ROICoalescedWithOSIROIs:(NSArray *)rois;
 
 @end
 
 @interface OSIPlanarPathROI (Private)
 
-- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 
 @end

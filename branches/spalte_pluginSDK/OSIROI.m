@@ -12,7 +12,7 @@
 #import "OSICoalescedROI.h"
 #import "OSIROIFloatPixelData.h"
 #import "DCMView.h"
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 #import "ROI.h"
 
 @implementation OSIROI
@@ -111,7 +111,7 @@
 
 @implementation OSIROI (Private)
 
-+ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
++ (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 {
 	switch ([roi type]) {
 		case tMesure:

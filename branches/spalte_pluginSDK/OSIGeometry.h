@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 
-typedef CPRVector OSIVector;
+typedef N3Vector OSIVector;
 

@@ -7,9 +7,9 @@
 //
 
 #import "OSIPlanarPathROI.h"
-#import "CPRBezierPath.h"
+#import "N3BezierPath.h"
 #import "ROI.h"
-#import "CPRGeometry.h"
+#import "N3Geometry.h"
 #import "MyPoint.h"
 #import "DCMView.h"
 #import "OSIFloatVolumeData.h"
@@ -18,7 +18,7 @@
 
 @implementation OSIPlanarPathROI (Private)
 
-- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(CPRAffineTransform3D)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData
+- (id)initWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData
 {
 	NSPoint point;
 	NSArray *pointArray;
@@ -28,32 +28,32 @@
 	if ( (self = [super init]) ) {
 		_osiriXROI = [roi retain];
 		
-		_plane = CPRPlaneApplyTransform(CPRPlaneMake(CPRVectorZero, CPRVectorMake(0, 0, 1)), pixToDICOMTransfrom);
+		_plane = N3PlaneApplyTransform(N3PlaneMake(N3VectorZero, N3VectorMake(0, 0, 1)), pixToDICOMTransfrom);
 		_homeFloatVolumeData = [floatVolumeData retain];
 		
 		if ([roi type] == tMesure && [[roi points] count] > 1) {
-			_bezierPath = [[CPRMutableBezierPath alloc] init];
+			_bezierPath = [[N3MutableBezierPath alloc] init];
 			point = [roi pointAtIndex:0];
-			[_bezierPath moveToVector:CPRVectorApplyTransform(CPRVectorMakeFromNSPoint(point), pixToDICOMTransfrom)];
+			[_bezierPath moveToVector:N3VectorApplyTransform(N3VectorMakeFromNSPoint(point), pixToDICOMTransfrom)];
 			point = [roi pointAtIndex:1];
-			[_bezierPath lineToVector:CPRVectorApplyTransform(CPRVectorMakeFromNSPoint(point), pixToDICOMTransfrom)];
+			[_bezierPath lineToVector:N3VectorApplyTransform(N3VectorMakeFromNSPoint(point), pixToDICOMTransfrom)];
 		} else if ([roi type] == tOPolygon) {
 			pointArray = [roi points];
 			
 			nodes = [[NSMutableArray alloc] init];
 			for (myPoint in pointArray) {
-				[nodes addObject:[NSValue valueWithCPRVector:CPRVectorApplyTransform(CPRVectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
+				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[CPRMutableBezierPath alloc] initWithNodeArray:nodes];
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
 			[nodes release];
 		} else if ([roi type] == tCPolygon) {
 			pointArray = [roi points];
 			
 			nodes = [[NSMutableArray alloc] init];
 			for (myPoint in pointArray) {
-				[nodes addObject:[NSValue valueWithCPRVector:CPRVectorApplyTransform(CPRVectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
+				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[CPRMutableBezierPath alloc] initWithNodeArray:nodes];
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
 			if ([_bezierPath elementCount]) {
 				[_bezierPath close];
 			}
@@ -95,24 +95,24 @@
 {
 	NSMutableArray *convexHull;
 	NSUInteger i;
-	CPRVector control1;
-	CPRVector control2;
-	CPRVector endpoint;
-	CPRBezierPathElement elementType;
+	N3Vector control1;
+	N3Vector control2;
+	N3Vector endpoint;
+	N3BezierPathElement elementType;
 	
 	convexHull = [NSMutableArray array];
 	
 	for (i = 0; i < [_bezierPath elementCount]; i++) {
 		elementType = [_bezierPath elementAtIndex:i control1:&control1 control2:&control2 endpoint:&endpoint];
 		switch (elementType) {
-			case CPRMoveToBezierPathElement:
-			case CPRLineToBezierPathElement:
-				[convexHull addObject:[NSValue valueWithCPRVector:endpoint]];
+			case N3MoveToBezierPathElement:
+			case N3LineToBezierPathElement:
+				[convexHull addObject:[NSValue valueWithN3Vector:endpoint]];
 				break;
-			case CPRCurveToBezierPathElement:
-				[convexHull addObject:[NSValue valueWithCPRVector:control1]];
-				[convexHull addObject:[NSValue valueWithCPRVector:control2]];
-				[convexHull addObject:[NSValue valueWithCPRVector:endpoint]];
+			case N3CurveToBezierPathElement:
+				[convexHull addObject:[NSValue valueWithN3Vector:control1]];
+				[convexHull addObject:[NSValue valueWithN3Vector:control2]];
+				[convexHull addObject:[NSValue valueWithN3Vector:endpoint]];
 				break;
 			default:
 				break;
@@ -124,9 +124,9 @@
 
 - (OSIROIMask *)ROIMaskForFloatVolumeData:(OSIFloatVolumeData *)floatVolume
 {
-	CPRMutableBezierPath *volumeBezierPath;
-	CPRBezierPathElement segmentType;
-	CPRVector endpoint;
+	N3MutableBezierPath *volumeBezierPath;
+	N3BezierPathElement segmentType;
+	N3Vector endpoint;
 	NSArray	*intersections;
 	NSMutableArray *intersectionNumbers;
 	NSMutableArray *ROIRuns;
@@ -143,7 +143,7 @@
 	NSUInteger runEnd;
 	
 	volumeBezierPath = [[_bezierPath bezierPathByApplyingTransform:floatVolume.volumeTransform] mutableCopy];
-	[volumeBezierPath flatten:CPRBezierDefaultFlatness];
+	[volumeBezierPath flatten:N3BezierDefaultFlatness];
 	zSet = NO;
 	ROIRuns = [NSMutableArray array];
 	minY = CGFLOAT_MAX;
@@ -156,7 +156,7 @@
 #else
 		endpoint.z = roundf(endpoint.z);		
 #endif		
-		[volumeBezierPath setVectorsForElementAtIndex:i control1:CPRVectorZero control2:CPRVectorZero endpoint:endpoint];
+		[volumeBezierPath setVectorsForElementAtIndex:i control1:N3VectorZero control2:N3VectorZero endpoint:endpoint];
 		minY = MIN(minY, endpoint.y);
 		maxY = MAX(maxY, endpoint.y);
 		
@@ -174,11 +174,11 @@
 	
 	for (i = minY; i <= maxY; i++) {
 		maskRun.heightIndex = i;
-		intersections = [volumeBezierPath intersectionsWithPlane:CPRPlaneMake(CPRVectorMake(0, i, 0), CPRVectorMake(0, 1, 0))];
+		intersections = [volumeBezierPath intersectionsWithPlane:N3PlaneMake(N3VectorMake(0, i, 0), N3VectorMake(0, 1, 0))];
 		
 		intersectionNumbers = [NSMutableArray array];
 		for (vectorValue in intersections) {
-			[intersectionNumbers addObject:[NSNumber numberWithDouble:[vectorValue CPRVectorValue].x]];
+			[intersectionNumbers addObject:[NSNumber numberWithDouble:[vectorValue N3VectorValue].x]];
 		}
 		[intersectionNumbers sortUsingSelector:@selector(compare:)];
 		for(j = 0; j+1 < [intersectionNumbers count]; j++) {
