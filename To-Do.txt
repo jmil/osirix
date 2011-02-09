@@ -21,7 +21,6 @@
 - CPR: creationPath : mouseOver node -> Hand
 - CPR: toolbar item slider for transverse spacing
 - CPR: CPRView : origin, scale, ...
-- CPR: CPRView : double-click fullscreen
 - CPR: transverse : resolution?
 - CPR: CPRView : measurements
 
