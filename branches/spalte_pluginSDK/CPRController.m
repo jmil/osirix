@@ -32,7 +32,7 @@
 #import "CPRGeneratorRequest.h"
 #import "CPRGenerator.h"
 #import "CPRUnsignedInt16ImageRep.h"
-
+#import "CPRMPRDCMView.h"
 
 #define PRESETS_DIRECTORY @"/3DPRESETS/"
 #define CLUTDATABASE @"/CLUTs/"
@@ -149,14 +149,11 @@ static float deg2rad = 3.14159265358979/180.0;
 		
         curvedPath = [[CPRCurvedPath alloc] init];
         displayInfo = [[CPRDisplayInfo alloc] init];
-        curvedPathCreationMode = YES;
+        
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:0], @"CPRColorR",
                                                                                                            [NSNumber numberWithFloat:1], @"CPRColorG",
                                                                                                            [NSNumber numberWithFloat:0], @"CPRColorB", nil]];
-        curvedPathColor = [[NSColor colorWithDeviceRed:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorR"]
-                                                 green:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorG"]
-                                                  blue:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorB"]
-                                                 alpha:1] retain];
+		self.curvedPathCreationMode = YES;
         cprView.volumeData = [[[CPRVolumeData alloc] initWithWithPixList:pix volume:volume] autorelease];
         mprView1.delegate = self;
         mprView2.delegate = self;
@@ -378,20 +375,23 @@ static float deg2rad = 3.14159265358979/180.0;
 	
 	if( sender)
 	{
-		[[self window] makeFirstResponder: sender];
+		if( [[self window] firstResponder] != sender)
+			[[self window] makeFirstResponder: sender];
 		[sender restoreCamera];
 		[sender updateViewMPR];
 	}
 	else
 	{
 		CPRMPRDCMView *selectedView = [self selectedView];
-		[[self window] makeFirstResponder: selectedView];
+		if( [[self window] firstResponder] != selectedView)
+			[[self window] makeFirstResponder: selectedView];
 		[selectedView restoreCamera];
 		[selectedView updateViewMPR];
 	}
 	
 	if( view)
-		[[self window] makeFirstResponder: view];
+		if( [[self window] firstResponder] != view)
+			[[self window] makeFirstResponder: view];
 	
 	[mprView1 setNeedsDisplay: YES];
 	[mprView2 setNeedsDisplay: YES];
@@ -955,7 +955,7 @@ static float deg2rad = 3.14159265358979/180.0;
 		
 		if( im)
 		{
-			NSButtonCell *cell = [toolsMatrix cellAtRow:0 column:6];
+			NSButtonCell *cell = [toolsMatrix cellAtRow:0 column:7];
 			[cell setTag: roitype];
 			[cell setImage: im];
 			
@@ -2971,20 +2971,22 @@ static float deg2rad = 3.14159265358979/180.0;
 
 - (void)toogleAxisVisibility:(id) sender;
 {
-	if ([[[NSApplication sharedApplication] currentEvent] modifierFlags]  & NSShiftKeyMask)
+	if ([[[NSApplication sharedApplication] currentEvent] modifierFlags] & NSShiftKeyMask)
 	{
-		if( mprView1 != [self selectedView]) mprView1.displayCrossLines = !mprView1.displayCrossLines;
-		if( mprView2 != [self selectedView]) mprView2.displayCrossLines = !mprView2.displayCrossLines;
-		if( mprView3 != [self selectedView]) mprView3.displayCrossLines = !mprView3.displayCrossLines;
+		[self selectedView].displayCrossLines = ![self selectedView].displayCrossLines;
 	}
 	else
 	{
-		[self selectedView].displayCrossLines = ![self selectedView].displayCrossLines;
+		mprView1.displayCrossLines = !mprView1.displayCrossLines;
+		mprView2.displayCrossLines = !mprView2.displayCrossLines;
+		mprView3.displayCrossLines = !mprView3.displayCrossLines;
+		cprView.displayCrossLines = !cprView.displayCrossLines;
 	}
 	
 	[mprView1 setNeedsDisplay: YES];
 	[mprView2 setNeedsDisplay: YES];
 	[mprView3 setNeedsDisplay: YES];
+	[cprView setNeedsDisplay: YES];
 	
 	[self updateToolbarItems];
 }
@@ -2999,6 +3001,7 @@ static float deg2rad = 3.14159265358979/180.0;
 	[mprView1 setNeedsDisplay: YES];
 	[mprView2 setNeedsDisplay: YES];
 	[mprView3 setNeedsDisplay: YES];
+	[cprView setNeedsDisplay: YES];
 	
 	[self updateToolbarItems];
 }
@@ -3222,6 +3225,26 @@ static float deg2rad = 3.14159265358979/180.0;
 }
 
 #pragma mark CPR
+
+- (void) setCurvedPathCreationMode: (BOOL) m
+{
+	curvedPathCreationMode = m;
+	
+	[curvedPathColor release];
+	
+	if( curvedPathCreationMode)
+		curvedPathColor = [NSColor colorWithDeviceRed: 1.0
+                                                 green: 0.1
+                                                  blue: 0
+                                                 alpha:1];
+	else
+		curvedPathColor = [NSColor colorWithDeviceRed:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorR"]
+                                                 green:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorG"]
+                                                  blue:[[NSUserDefaults standardUserDefaults] floatForKey: @"CPRColorB"]
+                                                 alpha:1];
+												 
+	[curvedPathColor retain];
+}
 
 - (void)setCurvedPath:(CPRCurvedPath *)newCurvedPath
 {
@@ -3527,55 +3550,48 @@ static float deg2rad = 3.14159265358979/180.0;
     bottomTransverseView.sectionWidth = cprView.generatedHeight;
 }
 
-- (void)CPRView:(id)CPRMPRDCMView setCrossCenter:(CPRVector)crossCenter
+- (void)CPRView:(CPRMPRDCMView*) CPRMPRDCMView setCrossCenter:(CPRVector)crossCenter
 {
-//	CPRVector position;
-//	CPRVector focalPoint;
-//	CPRVector newPosition;
-//	CPRVector newFocalPoint;
-//	Camera *newView1Camera;
-//	Camera *newView2Camera;
-//	Camera *newView3Camera;
-//	
-//	newPosition = crossCenter;
-//	newView1Camera = [mprView1.camera copy];
-//	newView2Camera = [mprView2.camera copy];
-//	newView3Camera = [mprView3.camera copy];
-//	
-//	position = [mprView1.camera.position CPRVectorValue];
-//	focalPoint = [mprView1.camera.focalPoint CPRVectorValue];
-//	newFocalPoint = CPRVectorAdd(newPosition, CPRVectorSubtract(position, focalPoint));
-//	mprView1.camera.position = [Point3D pointWithCPRVector:newPosition];
-//	mprView1.camera.focalPoint = [Point3D pointWithCPRVector:newFocalPoint];
-//	
-//	position = [mprView2.camera.position CPRVectorValue];
-//	focalPoint = [mprView2.camera.focalPoint CPRVectorValue];
-//	newFocalPoint = CPRVectorAdd(newPosition, CPRVectorSubtract(position, focalPoint));
-//	mprView2.camera.position = [Point3D pointWithCPRVector:newPosition];
-//	mprView2.camera.focalPoint = [Point3D pointWithCPRVector:newFocalPoint];
-//	
-//	position = [mprView3.camera.position CPRVectorValue];
-//	focalPoint = [mprView3.camera.focalPoint CPRVectorValue];
-//	newFocalPoint = CPRVectorAdd(newPosition, CPRVectorSubtract(position, focalPoint));
-//	mprView3.camera.position = [Point3D pointWithCPRVector:newPosition];
-//	mprView3.camera.focalPoint = [Point3D pointWithCPRVector:newFocalPoint];
-//	
-//	[self updateViewsAccordingToFrame: nil];
-//	
-//	[newView1Camera release];
-//	[newView2Camera release];
-//	[newView3Camera release];
-//		
 	CPRVector viewCrossCenter;
-//    Camera *view;
 	
     viewCrossCenter = CPRVectorApplyTransform(crossCenter, CPRAffineTransform3DInvert(CPRAffineTransform3DConcat([mprView1 viewToPixTransform], [mprView1 pixToDicomTransform])));
     [mprView1 setCrossCenter:NSPointFromCPRVector(viewCrossCenter)];
-//	viewCrossCenter = CPRVectorApplyTransform(crossCenter, CPRAffineTransform3DInvert(CPRAffineTransform3DConcat([mprView2 viewToPixTransform], [mprView2 pixToDicomTransform])));
-//    [mprView2 setCrossCenter:NSPointFromCPRVector(viewCrossCenter)];
-//    
-//    viewCrossCenter = CPRVectorApplyTransform(crossCenter, CPRAffineTransform3DInvert(CPRAffineTransform3DConcat([mprView3 viewToPixTransform], [mprView3 pixToDicomTransform])));
-//    [mprView3 setCrossCenter:NSPointFromCPRVector(viewCrossCenter)];
+	
+	viewCrossCenter = CPRVectorApplyTransform(crossCenter, CPRAffineTransform3DInvert(CPRAffineTransform3DConcat([mprView2 viewToPixTransform], [mprView2 pixToDicomTransform])));
+    [mprView2 setCrossCenter:NSPointFromCPRVector(viewCrossCenter)];
+	
+	viewCrossCenter = CPRVectorApplyTransform(crossCenter, CPRAffineTransform3DInvert(CPRAffineTransform3DConcat([mprView3 viewToPixTransform], [mprView3 pixToDicomTransform])));
+    [mprView3 setCrossCenter:NSPointFromCPRVector(viewCrossCenter)];
+
+	
+	
+	if( [curvedPath.nodes count] > 1 && curvedPathCreationMode)
+	{
+		// Orient the planes to the last point
+		CPRVector normal;
+		CPRVector tangent;
+		CPRVector cross;
+		
+		tangent = [curvedPath.bezierPath tangentAtRelativePosition: 1];
+		normal = [curvedPath.bezierPath normalAtRelativePosition: 1 initialNormal:curvedPath.initialNormal];
+		
+		cross = CPRVectorNormalize(CPRVectorCrossProduct(normal, tangent));
+		
+		NSLog( @"%2.2f %2.2f %2.2f", cross.x, cross.y, cross.z);
+		NSLog( @"%2.2f %2.2f %2.2f", tangent.x, tangent.y, tangent.z);
+		NSLog( @"%2.2f %2.2f %2.2f", normal.x, normal.y, normal.z);
+		
+		mprView1.camera.rollAngle = 0;
+		mprView1.angleMPR = 0;
+		mprView2.camera.rollAngle = 0;
+		mprView2.angleMPR = 0;
+		mprView3.camera.rollAngle = 0;
+		mprView3.angleMPR = 0;
+
+		CPRMPRDCMView.camera.viewUp = [Point3D pointWithX: cross.x y: cross.y z: cross.z];
+	}
+	
+	[self delayedFullLODRendering: CPRMPRDCMView];
 }
 
 @end

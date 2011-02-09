@@ -82,35 +82,6 @@
 		183C865C08563F3A000E6A68 /* VRFlyThruAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 183C864808563F3A000E6A68 /* VRFlyThruAdapter.h */; };
 		183C865D08563F3A000E6A68 /* VRFlyThruAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 183C864908563F3A000E6A68 /* VRFlyThruAdapter.m */; };
 		32E422150C97301600E193CA /* altivecFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 32E422140C97301600E193CA /* altivecFunctions.h */; };
-		4F7E3EB812FC443F007B0B3F /* pluginSDKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F7E3EB612FC443F007B0B3F /* pluginSDKAdditions.h */; };
-		4F7E3EB912FC443F007B0B3F /* pluginSDKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7E3EB712FC443F007B0B3F /* pluginSDKAdditions.m */; };
-		4FEBAAF512FC37A0009C577E /* OSICoalescedROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAADA12FC37A0009C577E /* OSICoalescedROI.h */; };
-		4FEBAAF612FC37A0009C577E /* OSICoalescedROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAADB12FC37A0009C577E /* OSICoalescedROI.m */; };
-		4FEBAAF712FC37A0009C577E /* OSIEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAADC12FC37A0009C577E /* OSIEnvironment.h */; };
-		4FEBAAF812FC37A0009C577E /* OSIEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAADD12FC37A0009C577E /* OSIEnvironment.m */; };
-		4FEBAAF912FC37A0009C577E /* OSIEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAADE12FC37A0009C577E /* OSIEnvironment+Private.h */; };
-		4FEBAAFA12FC37A0009C577E /* OSIFloatVolumeData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAADF12FC37A0009C577E /* OSIFloatVolumeData.h */; };
-		4FEBAAFB12FC37A0009C577E /* OSIFloatVolumeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAE012FC37A0009C577E /* OSIFloatVolumeData.m */; };
-		4FEBAAFC12FC37A0009C577E /* OSIGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAE112FC37A0009C577E /* OSIGeometry.h */; };
-		4FEBAAFD12FC37A0009C577E /* OSIGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAE212FC37A0009C577E /* OSIGeometry.m */; };
-		4FEBAAFE12FC37A0009C577E /* OSIPathROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAE312FC37A0009C577E /* OSIPathROI.h */; };
-		4FEBAAFF12FC37A0009C577E /* OSIPathROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAE412FC37A0009C577E /* OSIPathROI.m */; };
-		4FEBAB0012FC37A0009C577E /* OSIPlanarPathROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAE512FC37A0009C577E /* OSIPlanarPathROI.h */; };
-		4FEBAB0112FC37A0009C577E /* OSIPlanarPathROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAE612FC37A0009C577E /* OSIPlanarPathROI.m */; };
-		4FEBAB0212FC37A0009C577E /* OSIROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAE712FC37A0009C577E /* OSIROI.h */; };
-		4FEBAB0312FC37A0009C577E /* OSIROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAE812FC37A0009C577E /* OSIROI.m */; };
-		4FEBAB0412FC37A0009C577E /* OSIROI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAE912FC37A0009C577E /* OSIROI+Private.h */; };
-		4FEBAB0512FC37A0009C577E /* OSIROIFloatPixelData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAEA12FC37A0009C577E /* OSIROIFloatPixelData.h */; };
-		4FEBAB0612FC37A0009C577E /* OSIROIFloatPixelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAEB12FC37A0009C577E /* OSIROIFloatPixelData.m */; };
-		4FEBAB0712FC37A0009C577E /* OSIROIManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAEC12FC37A0009C577E /* OSIROIManager.h */; };
-		4FEBAB0812FC37A0009C577E /* OSIROIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAED12FC37A0009C577E /* OSIROIManager.m */; };
-		4FEBAB0912FC37A0009C577E /* OSIROIMask.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAEE12FC37A0009C577E /* OSIROIMask.h */; };
-		4FEBAB0A12FC37A0009C577E /* OSIROIMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAEF12FC37A0009C577E /* OSIROIMask.m */; };
-		4FEBAB0B12FC37A0009C577E /* OSIStudy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAF012FC37A0009C577E /* OSIStudy.h */; };
-		4FEBAB0C12FC37A0009C577E /* OSIStudy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAF112FC37A0009C577E /* OSIStudy.m */; };
-		4FEBAB0D12FC37A0009C577E /* OSIVolumeWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAF212FC37A0009C577E /* OSIVolumeWindow.h */; };
-		4FEBAB0E12FC37A0009C577E /* OSIVolumeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBAAF312FC37A0009C577E /* OSIVolumeWindow.m */; };
-		4FEBAB0F12FC37A0009C577E /* OSIVolumeWindow+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBAAF412FC37A0009C577E /* OSIVolumeWindow+Private.h */; };
 		590A3DCD12A92920004581C2 /* WebPortalDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 590A3DCB12A92920004581C2 /* WebPortalDatabase.h */; };
 		590A3DCE12A92920004581C2 /* WebPortalDatabase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 590A3DCC12A92920004581C2 /* WebPortalDatabase.mm */; };
 		590BB22012A002FA009E9758 /* WebPortalStudy.h in Headers */ = {isa = PBXBuildFile; fileRef = 590BB21E12A002FA009E9758 /* WebPortalStudy.h */; };
@@ -318,6 +289,10 @@
 		59E8352812F9ABAC006B930A /* N2ManagedDatabase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E8352612F9ABAC006B930A /* N2ManagedDatabase.mm */; };
 		59E8352912F9ABAC006B930A /* N2ManagedDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E8352512F9ABAC006B930A /* N2ManagedDatabase.h */; };
 		59E8352A12F9ABAC006B930A /* N2ManagedDatabase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E8352612F9ABAC006B930A /* N2ManagedDatabase.mm */; };
+		59E83A1312FC6556006B930A /* NSManagedObject+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E83A1112FC6556006B930A /* NSManagedObject+N2.h */; };
+		59E83A1412FC6556006B930A /* NSManagedObject+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E83A1212FC6556006B930A /* NSManagedObject+N2.mm */; };
+		59E83A1512FC6556006B930A /* NSManagedObject+N2.h in Headers */ = {isa = PBXBuildFile; fileRef = 59E83A1112FC6556006B930A /* NSManagedObject+N2.h */; };
+		59E83A1612FC6556006B930A /* NSManagedObject+N2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59E83A1212FC6556006B930A /* NSManagedObject+N2.mm */; };
 		59EBF40B12B8B90100809C61 /* WebPortal+Databases.h in Headers */ = {isa = PBXBuildFile; fileRef = 59EBF40912B8B90100809C61 /* WebPortal+Databases.h */; };
 		59EBF40C12B8B90100809C61 /* WebPortal+Databases.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59EBF40A12B8B90100809C61 /* WebPortal+Databases.mm */; };
 		59EBFDDC12BA5A1B00809C61 /* WebPortal+Email+Log.h in Headers */ = {isa = PBXBuildFile; fileRef = 59EBFDDA12BA5A1A00809C61 /* WebPortal+Email+Log.h */; };
@@ -8330,35 +8305,6 @@
 		4A16D0970965E15300F82EC4 /* Unit Testing (Cocoa)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit Testing (Cocoa)-Info.plist"; path = "UnitTesting/Unit Testing (Cocoa)-Info.plist"; sourceTree = "<group>"; };
 		4A16D0A20965E21800F82EC4 /* UnitTestingBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnitTestingBase.h; path = UnitTesting/UnitTestingBase.h; sourceTree = "<group>"; };
 		4A16D0A30965E21800F82EC4 /* UnitTestingBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnitTestingBase.m; path = UnitTesting/UnitTestingBase.m; sourceTree = "<group>"; };
-		4F7E3EB612FC443F007B0B3F /* pluginSDKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pluginSDKAdditions.h; sourceTree = "<group>"; };
-		4F7E3EB712FC443F007B0B3F /* pluginSDKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginSDKAdditions.m; sourceTree = "<group>"; };
-		4FEBAADA12FC37A0009C577E /* OSICoalescedROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSICoalescedROI.h; sourceTree = "<group>"; };
-		4FEBAADB12FC37A0009C577E /* OSICoalescedROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSICoalescedROI.m; sourceTree = "<group>"; };
-		4FEBAADC12FC37A0009C577E /* OSIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIEnvironment.h; sourceTree = "<group>"; };
-		4FEBAADD12FC37A0009C577E /* OSIEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIEnvironment.m; sourceTree = "<group>"; };
-		4FEBAADE12FC37A0009C577E /* OSIEnvironment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIEnvironment+Private.h"; sourceTree = "<group>"; };
-		4FEBAADF12FC37A0009C577E /* OSIFloatVolumeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIFloatVolumeData.h; sourceTree = "<group>"; };
-		4FEBAAE012FC37A0009C577E /* OSIFloatVolumeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIFloatVolumeData.m; sourceTree = "<group>"; };
-		4FEBAAE112FC37A0009C577E /* OSIGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIGeometry.h; sourceTree = "<group>"; };
-		4FEBAAE212FC37A0009C577E /* OSIGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIGeometry.m; sourceTree = "<group>"; };
-		4FEBAAE312FC37A0009C577E /* OSIPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIPathROI.h; sourceTree = "<group>"; };
-		4FEBAAE412FC37A0009C577E /* OSIPathROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIPathROI.m; sourceTree = "<group>"; };
-		4FEBAAE512FC37A0009C577E /* OSIPlanarPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIPlanarPathROI.h; sourceTree = "<group>"; };
-		4FEBAAE612FC37A0009C577E /* OSIPlanarPathROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIPlanarPathROI.m; sourceTree = "<group>"; };
-		4FEBAAE712FC37A0009C577E /* OSIROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROI.h; sourceTree = "<group>"; };
-		4FEBAAE812FC37A0009C577E /* OSIROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROI.m; sourceTree = "<group>"; };
-		4FEBAAE912FC37A0009C577E /* OSIROI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIROI+Private.h"; sourceTree = "<group>"; };
-		4FEBAAEA12FC37A0009C577E /* OSIROIFloatPixelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIFloatPixelData.h; sourceTree = "<group>"; };
-		4FEBAAEB12FC37A0009C577E /* OSIROIFloatPixelData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIFloatPixelData.m; sourceTree = "<group>"; };
-		4FEBAAEC12FC37A0009C577E /* OSIROIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIManager.h; sourceTree = "<group>"; };
-		4FEBAAED12FC37A0009C577E /* OSIROIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIManager.m; sourceTree = "<group>"; };
-		4FEBAAEE12FC37A0009C577E /* OSIROIMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIROIMask.h; sourceTree = "<group>"; };
-		4FEBAAEF12FC37A0009C577E /* OSIROIMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIROIMask.m; sourceTree = "<group>"; };
-		4FEBAAF012FC37A0009C577E /* OSIStudy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIStudy.h; sourceTree = "<group>"; };
-		4FEBAAF112FC37A0009C577E /* OSIStudy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIStudy.m; sourceTree = "<group>"; };
-		4FEBAAF212FC37A0009C577E /* OSIVolumeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIVolumeWindow.h; sourceTree = "<group>"; };
-		4FEBAAF312FC37A0009C577E /* OSIVolumeWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIVolumeWindow.m; sourceTree = "<group>"; };
-		4FEBAAF412FC37A0009C577E /* OSIVolumeWindow+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OSIVolumeWindow+Private.h"; sourceTree = "<group>"; };
 		590A3DCB12A92920004581C2 /* WebPortalDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPortalDatabase.h; sourceTree = "<group>"; };
 		590A3DCC12A92920004581C2 /* WebPortalDatabase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebPortalDatabase.mm; sourceTree = "<group>"; };
 		590BB21E12A002FA009E9758 /* WebPortalStudy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPortalStudy.h; sourceTree = "<group>"; };
@@ -8495,6 +8441,8 @@
 		59E52B3612C109B80094E668 /* DicomDatabase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DicomDatabase.mm; sourceTree = "<group>"; };
 		59E8352512F9ABAC006B930A /* N2ManagedDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = N2ManagedDatabase.h; path = nitrogen/Sources/N2ManagedDatabase.h; sourceTree = "<group>"; };
 		59E8352612F9ABAC006B930A /* N2ManagedDatabase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = N2ManagedDatabase.mm; path = nitrogen/Sources/N2ManagedDatabase.mm; sourceTree = "<group>"; };
+		59E83A1112FC6556006B930A /* NSManagedObject+N2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+N2.h"; path = "nitrogen/Sources/NSManagedObject+N2.h"; sourceTree = "<group>"; };
+		59E83A1212FC6556006B930A /* NSManagedObject+N2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSManagedObject+N2.mm"; path = "nitrogen/Sources/NSManagedObject+N2.mm"; sourceTree = "<group>"; };
 		59EBF40912B8B90100809C61 /* WebPortal+Databases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebPortal+Databases.h"; sourceTree = "<group>"; };
 		59EBF40A12B8B90100809C61 /* WebPortal+Databases.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "WebPortal+Databases.mm"; sourceTree = "<group>"; };
 		59EBFDDA12BA5A1A00809C61 /* WebPortal+Email+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebPortal+Email+Log.h"; sourceTree = "<group>"; };
@@ -12413,7 +12361,6 @@
 				A93CFF6E0A5169FE00078038 /* LL */,
 				A9333D280F56E68B0097DAB7 /* MPR */,
 				CE90547412F5B5D700263AB6 /* CPR */,
-				4FEBAAD612FC375A009C577E /* PluginSDK */,
 				AB3F4A1D0672674000E61A6C /* Window3DController.h */,
 				AB3F4A1E0672674000E61A6C /* Window3DController.m */,
 				A9F2E557092227A400055899 /* DarkWindow.h */,
@@ -12724,58 +12671,6 @@
 				AB381B020ABE9F9A00239326 /* OSIAutoroutingPreferencePane.xcodeproj */,
 			);
 			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		4FEBAAD612FC375A009C577E /* PluginSDK */ = {
-			isa = PBXGroup;
-			children = (
-				4FEBAB1212FC37AC009C577E /* Private */,
-				4FEBAB1512FC37C6009C577E /* ROIs */,
-				4FEBAAE712FC37A0009C577E /* OSIROI.h */,
-				4FEBAAE812FC37A0009C577E /* OSIROI.m */,
-				4FEBAADC12FC37A0009C577E /* OSIEnvironment.h */,
-				4FEBAADD12FC37A0009C577E /* OSIEnvironment.m */,
-				4FEBAADF12FC37A0009C577E /* OSIFloatVolumeData.h */,
-				4FEBAAE012FC37A0009C577E /* OSIFloatVolumeData.m */,
-				4FEBAAE112FC37A0009C577E /* OSIGeometry.h */,
-				4FEBAAE212FC37A0009C577E /* OSIGeometry.m */,
-				4FEBAAEA12FC37A0009C577E /* OSIROIFloatPixelData.h */,
-				4FEBAAEB12FC37A0009C577E /* OSIROIFloatPixelData.m */,
-				4FEBAAEC12FC37A0009C577E /* OSIROIManager.h */,
-				4FEBAAED12FC37A0009C577E /* OSIROIManager.m */,
-				4FEBAAEE12FC37A0009C577E /* OSIROIMask.h */,
-				4FEBAAEF12FC37A0009C577E /* OSIROIMask.m */,
-				4FEBAAF012FC37A0009C577E /* OSIStudy.h */,
-				4FEBAAF112FC37A0009C577E /* OSIStudy.m */,
-				4FEBAAF212FC37A0009C577E /* OSIVolumeWindow.h */,
-				4FEBAAF312FC37A0009C577E /* OSIVolumeWindow.m */,
-				4F7E3EB612FC443F007B0B3F /* pluginSDKAdditions.h */,
-				4F7E3EB712FC443F007B0B3F /* pluginSDKAdditions.m */,
-			);
-			name = PluginSDK;
-			sourceTree = "<group>";
-		};
-		4FEBAB1212FC37AC009C577E /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				4FEBAADE12FC37A0009C577E /* OSIEnvironment+Private.h */,
-				4FEBAAE912FC37A0009C577E /* OSIROI+Private.h */,
-				4FEBAAF412FC37A0009C577E /* OSIVolumeWindow+Private.h */,
-			);
-			name = Private;
-			sourceTree = "<group>";
-		};
-		4FEBAB1512FC37C6009C577E /* ROIs */ = {
-			isa = PBXGroup;
-			children = (
-				4FEBAADA12FC37A0009C577E /* OSICoalescedROI.h */,
-				4FEBAADB12FC37A0009C577E /* OSICoalescedROI.m */,
-				4FEBAAE312FC37A0009C577E /* OSIPathROI.h */,
-				4FEBAAE412FC37A0009C577E /* OSIPathROI.m */,
-				4FEBAAE512FC37A0009C577E /* OSIPlanarPathROI.h */,
-				4FEBAAE612FC37A0009C577E /* OSIPlanarPathROI.m */,
-			);
-			name = ROIs;
 			sourceTree = "<group>";
 		};
 		590A3DCF12A9293C004581C2 /* Web Portal */ = {
@@ -13484,6 +13379,8 @@
 		AB10FAFD1129338A009EB238 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				59E83A1112FC6556006B930A /* NSManagedObject+N2.h */,
+				59E83A1212FC6556006B930A /* NSManagedObject+N2.mm */,
 				59DC28B411C6126B00DAD5B4 /* NSAppleEventDescriptor+N2.h */,
 				59DC28B511C6126B00DAD5B4 /* NSAppleEventDescriptor+N2.mm */,
 				592D333512F2C71A00C7C002 /* NSException+N2.h */,
@@ -19816,22 +19713,7 @@
 				CE90551312F5B64300263AB6 /* CPRVolumeData.h in Headers */,
 				84A9D49612F7F90700DA1F99 /* kdu_OsiriXSupport.h in Headers */,
 				59E8352712F9ABAC006B930A /* N2ManagedDatabase.h in Headers */,
-				4FEBAAF512FC37A0009C577E /* OSICoalescedROI.h in Headers */,
-				4FEBAAF712FC37A0009C577E /* OSIEnvironment.h in Headers */,
-				4FEBAAF912FC37A0009C577E /* OSIEnvironment+Private.h in Headers */,
-				4FEBAAFA12FC37A0009C577E /* OSIFloatVolumeData.h in Headers */,
-				4FEBAAFC12FC37A0009C577E /* OSIGeometry.h in Headers */,
-				4FEBAAFE12FC37A0009C577E /* OSIPathROI.h in Headers */,
-				4FEBAB0012FC37A0009C577E /* OSIPlanarPathROI.h in Headers */,
-				4FEBAB0212FC37A0009C577E /* OSIROI.h in Headers */,
-				4FEBAB0412FC37A0009C577E /* OSIROI+Private.h in Headers */,
-				4FEBAB0512FC37A0009C577E /* OSIROIFloatPixelData.h in Headers */,
-				4FEBAB0712FC37A0009C577E /* OSIROIManager.h in Headers */,
-				4FEBAB0912FC37A0009C577E /* OSIROIMask.h in Headers */,
-				4FEBAB0B12FC37A0009C577E /* OSIStudy.h in Headers */,
-				4FEBAB0D12FC37A0009C577E /* OSIVolumeWindow.h in Headers */,
-				4FEBAB0F12FC37A0009C577E /* OSIVolumeWindow+Private.h in Headers */,
-				4F7E3EB812FC443F007B0B3F /* pluginSDKAdditions.h in Headers */,
+				59E83A1312FC6556006B930A /* NSManagedObject+N2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -22026,6 +21908,7 @@
 				592D333912F2C71A00C7C002 /* NSException+N2.h in Headers */,
 				84A9D49912F7F90700DA1F99 /* kdu_OsiriXSupport.h in Headers */,
 				59E8352912F9ABAC006B930A /* N2ManagedDatabase.h in Headers */,
+				59E83A1512FC6556006B930A /* NSManagedObject+N2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -22213,7 +22096,6 @@
 			};
 			buildConfigurationList = 7E76BED8085757B70073649A /* Build configuration list for PBXProject "OsiriX" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -24492,19 +24374,7 @@
 				CE90551212F5B64300263AB6 /* CPRView.m in Sources */,
 				CE90551412F5B64300263AB6 /* CPRVolumeData.m in Sources */,
 				59E8352812F9ABAC006B930A /* N2ManagedDatabase.mm in Sources */,
-				4FEBAAF612FC37A0009C577E /* OSICoalescedROI.m in Sources */,
-				4FEBAAF812FC37A0009C577E /* OSIEnvironment.m in Sources */,
-				4FEBAAFB12FC37A0009C577E /* OSIFloatVolumeData.m in Sources */,
-				4FEBAAFD12FC37A0009C577E /* OSIGeometry.m in Sources */,
-				4FEBAAFF12FC37A0009C577E /* OSIPathROI.m in Sources */,
-				4FEBAB0112FC37A0009C577E /* OSIPlanarPathROI.m in Sources */,
-				4FEBAB0312FC37A0009C577E /* OSIROI.m in Sources */,
-				4FEBAB0612FC37A0009C577E /* OSIROIFloatPixelData.m in Sources */,
-				4FEBAB0812FC37A0009C577E /* OSIROIManager.m in Sources */,
-				4FEBAB0A12FC37A0009C577E /* OSIROIMask.m in Sources */,
-				4FEBAB0C12FC37A0009C577E /* OSIStudy.m in Sources */,
-				4FEBAB0E12FC37A0009C577E /* OSIVolumeWindow.m in Sources */,
-				4F7E3EB912FC443F007B0B3F /* pluginSDKAdditions.m in Sources */,
+				59E83A1412FC6556006B930A /* NSManagedObject+N2.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -25733,6 +25603,7 @@
 				599115F112D7224A00924B5C /* browserController.m in Sources */,
 				592D333A12F2C71A00C7C002 /* NSException+N2.mm in Sources */,
 				59E8352A12F9ABAC006B930A /* N2ManagedDatabase.mm in Sources */,
+				59E83A1612FC6556006B930A /* NSManagedObject+N2.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

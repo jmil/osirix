@@ -24,6 +24,8 @@
 #import "DicomSeries.h"
 #import "BrowserController.h"
 #import "DCMAbstractSyntaxUID.h"
+#import "NSManagedObject+N2.h"
+#import "N2Operators.h"
 
 
 @implementation WebPortalResponse
@@ -316,7 +318,8 @@
 	
 	if ([part0 isEqual:@"URLENC"] || [part0 isEqual:@"U"]) {
 		token = [[parts subarrayWithRange:NSMakeRange(1,parts.count-1)] componentsJoinedByString:@":"];
-		return [[self evaluateToken:token withDictionary:dict context:context mustReevaluate:mustReevaluate] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		NSString* str = [self evaluateToken:token withDictionary:dict context:context mustReevaluate:mustReevaluate];
+		return [(NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)[[str mutableCopy] autorelease], NULL, CFSTR("￼=,!$&'()*+;@?\n\"<>#\t :/"), kCFStringEncodingUTF8) autorelease];
 	}
 	
 	if ([part0 isEqual:@"XMLENC"] || [part0 isEqual:@"X"]) {
@@ -448,18 +451,11 @@
 }
 
 -(id)valueForKey:(NSString*)key object:(NSObject*)o context:(WebPortalConnection*)wpc {
-	if ([key isEqual:@"webUID"])
-		@try {
-			if ([o isKindOfClass:NSManagedObject.class])
-				return [[[(NSManagedObject*)o objectID] URIRepresentation] absoluteString];
-		} @catch (NSException* e) {
-			return NULL;
-		}
-	
-	if ([key isEqual:@"isSelected"]) {
-		NSString* myId = [self valueForKey:@"webUID" object:o context:wpc];
+
+	if ([o isKindOfClass:NSManagedObject.class] && [key isEqual:@"isSelected"]) {
+		NSString* xid = ((NSManagedObject*)o).XID;
 		for (NSString* selectedID in [WebPortalConnection MakeArray:[wpc.parameters objectForKey:@"selected"]])
-			if ([selectedID isEqualToString:myId])
+			if ([selectedID isEqualToString:xid])
 				return [NSNumber numberWithBool:YES];
 		return [NSNumber numberWithBool:NO];
 	}
@@ -481,7 +477,7 @@
 	if ([key isEqual:@"isIOS"])
 		return [NSNumber numberWithBool:wpc.requestIsIOS];
 	if ([key isEqual:@"isMacOS"])
-		return [NSNumber numberWithBool:wpc.requestIsIOS];
+		return [NSNumber numberWithBool:wpc.requestIsMacOS];
 	if ([key isEqual:@"proposeWeasis"])
 		return [NSNumber numberWithBool: wpc.portal.weasisEnabled && !wpc.requestIsIOS ];
 	if ([key isEqual:@"proposeFlash"])
@@ -515,11 +511,15 @@
 		} else
 			return [NSNumber numberWithBool:NO];
 	
-	if ([key hasPrefix:@"getParameters"]) {
+	if ([key hasPrefix:@"getParameters"] || [key hasPrefix:@"allParameters"]) {
 		NSString* rest = [key substringFromIndex:13];
 		if (rest.length && [rest characterAtIndex:0] == '(' && [rest characterAtIndex:rest.length-1] == ')') {
-			NSMutableDictionary* vars = [[[WebPortalConnection ExtractParams:wpc.GETParams] mutableCopy] autorelease];
 			rest = [rest substringWithRange:NSMakeRange(1,rest.length-2)];
+			NSMutableDictionary* vars = NULL;
+			if ([key hasPrefix:@"getParameters"])
+				vars = [[[WebPortalConnection ExtractParams:wpc.GETParams] mutableCopy] autorelease];
+			if ([key hasPrefix:@"allParameters"])
+				vars = [[wpc.parameters mutableCopy] autorelease];
 			
 			for (rest in [rest componentsSeparatedByString:@","]) {
 				NSArray* set = [rest componentsSeparatedByString:@"="];
@@ -533,7 +533,10 @@
 			return [WebPortalConnection FormatParams:vars];
 		}
 		
-		return wpc.GETParams;
+		if ([key hasPrefix:@"getParameters"])
+			return wpc.GETParams;
+		if ([key hasPrefix:@"allParameters"])
+			return [WebPortalConnection FormatParams:wpc.parameters];
 	}
 	
 	return [super valueForKey:key object:wpc context:wpcagain];
@@ -739,9 +742,19 @@ NSString* iPhoneCompatibleNumericalFormat(NSString* aString) { // this is to avo
 	if ([key isEqual:@"width"] || [key isEqual:@"height"]) {
 		if (size.height == -1) {
 			NSArray* images = [series.images allObjects];
-			[wpc getWidth:&size.width height:&size.height fromImagesArray:images isiPhone:wpc.requestIsIOS];
-			if (images.count > 1)
-				size.height += 15; // controller height
+			
+			if (images.count > 1) {
+				if (wpc.requestIsIPhone)
+					[wpc getWidth:&size.width height:&size.height fromImagesArray:images minSize:NSMakeSize(256) maxSize:NSMakeSize(290)];
+				else {
+					[wpc getWidth:&size.width height:&size.height fromImagesArray:images];
+					if (!wpc.requestIsIOS)
+						size.height += 15; // controller height (quicktime, flash)
+				}
+			} else {
+				[wpc getWidth:&size.width height:&size.height fromImagesArray:images];
+			}
+
 		}
 		if ([key isEqual:@"width"])
 			return [NSNumber numberWithInt:size.width];

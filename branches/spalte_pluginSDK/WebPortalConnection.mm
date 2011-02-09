@@ -74,7 +74,7 @@ static NSString* NotNil(NSString *s) {
 	return s? s : @"";
 }
 
-@interface HTTPConnection () // make compiler aware of these hidden methods' existance
+@interface HTTPConnection (Private) // make compiler aware of these hidden methods' existance
 
 -(BOOL)isAuthenticated;
 -(void)replyToHTTPRequest;
@@ -97,14 +97,29 @@ static NSString* NotNil(NSString *s) {
 @synthesize user;
 @synthesize parameters, GETParams;
 
+-(BOOL)requestIsIPhone {
+	NSString* userAgent = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"User-Agent") autorelease];
+	return [userAgent contains:@"iPhone"];
+}
+
+-(BOOL)requestIsIPad {
+	NSString* userAgent = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"User-Agent") autorelease];
+	return [userAgent contains:@"iPad"];	
+}
+
+-(BOOL)requestIsIPod {
+	NSString* userAgent = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"User-Agent") autorelease];
+	return [userAgent contains:@"iPod"];	
+}
+
 -(BOOL)requestIsIOS {
 	NSString* userAgent = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"User-Agent") autorelease];
-	return [userAgent contains:@"iPhone"] || [userAgent contains:@"iPad"];	
+	return [userAgent contains:@"like Mac OS X"];	
 }
 
 -(BOOL)requestIsMacOS {
 	NSString* userAgent = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"User-Agent") autorelease];
-	return [userAgent contains:@"Mac OS"];	
+	return [userAgent contains:@"Mac OS X"];	
 }
 
 -(id)initWithAsyncSocket:(AsyncSocket*)newSocket forServer:(HTTPServer*)myServer {
@@ -146,15 +161,12 @@ static NSString* NotNil(NSString *s) {
 }
 
 -(NSString*)portalAddress {
-	NSString* webPortalAddress = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"Host") autorelease];
-	if (webPortalAddress)
-		webPortalAddress = [[webPortalAddress componentsSeparatedByString:@":"] objectAtIndex:0];
-	else webPortalAddress = self.portal.address;
-	return webPortalAddress;
+	NSString* requestedHost = [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"Host") autorelease];
+	return requestedHost? requestedHost : self.portal.addressWithPortUnlessDefault;
 }
 
 -(NSString*)portalURL {
-	return [self.portal URLForAddress:self.portalAddress];
+	return [NSString stringWithFormat:@"%@://%@", self.portal.usesSSL? @"https" : @"http", self.portalAddress];
 }
 
 NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int)
@@ -408,9 +420,13 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 
 +(NSString*)FormatParams:(NSDictionary*)dict {
 	NSMutableString* str = [NSMutableString string];
-	for (NSString* key in dict)
-		[str appendFormat:@"%@%@=%@", str.length?@"&":@"", [key urlEncodedString], [[dict objectForKey:key] urlEncodedString]];
-	return str;
+	for (NSString* key in dict) {
+		NSString* value = [dict objectForKey:key];
+		if ([value isKindOfClass:NSArray.class])
+			for (NSString* v2 in (NSArray*)value)
+				[str appendFormat:@"%@%@=%@", str.length?@"&":@"", [key urlEncodedString], [v2 urlEncodedString]];
+		else [str appendFormat:@"%@%@=%@", str.length?@"&":@"", [key urlEncodedString], [value urlEncodedString]];
+	} return str;
 }
 
 +(NSDictionary*)ExtractParams:(NSString*)paramsString {
@@ -425,6 +441,9 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 		NSArray* paramArray = [param componentsSeparatedByString:@"="];
 		
 		NSString* paramName = [[[paramArray objectAtIndex:0] stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		if (!paramName.length)
+			continue;
+		
 		NSString* paramValue = paramArray.count > 1? [[[paramArray objectAtIndex:1] stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] : (NSString*)[NSNull null];
 		
 		NSMutableArray* prevVal = [params objectForKey:paramName];
@@ -905,6 +924,9 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 -(void)replyToHTTPRequest {
 	self.response = [[[WebPortalResponse alloc] initWithWebPortalConnection:self] autorelease];
 	
+//	NSDictionary* headers = [(id)CFHTTPMessageCopyAllHeaderFields(request) autorelease];
+//	NSLog(@"HEADERS: %@", headers);
+	
 	NSString* method = [NSMakeCollectable(CFHTTPMessageCopyRequestMethod(request)) autorelease];
 
 //	NSLog(@"--- Cookies: %@", [(id)CFHTTPMessageCopyHeaderFieldValue(request, (CFStringRef)@"Cookie") autorelease]);
@@ -935,6 +957,9 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 		self.session = [self.portal newSession];
 	[response setSessionId:session.sid];
 	
+	if ([session objectForKey:SessionUsernameKey])
+		self.user = [self.portal.database userWithName:[session objectForKey:SessionUsernameKey]];
+	
 	if ([method isEqualToString:@"POST"] && multipartData.count == 1) // POST auth ?
 	{
 		NSData* data = multipartData.lastObject;
@@ -958,7 +983,7 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 		
 		if ([params objectForKey:@"logout"]) {
 			[session setObject:NULL forKey:SessionUsernameKey];
-			[user release]; user = NULL;
+			self.user = NULL;
 		}
 	}
 	
@@ -967,9 +992,12 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 	if (user) [response.tokens setObject:[WebPortalProxy createWithObject:user transformer:[WebPortalUserTransformer create]] forKey:@"User"];	
 	[response.tokens setObject:session forKey:@"Session"];
 	
+	NSLog(@"User: %X (Cookies: %@)", user, cookies);
+	
 	[super replyToHTTPRequest];
 	
 	self.response = NULL;
+	self.user = NULL;
 	self.session = NULL;
 }
 

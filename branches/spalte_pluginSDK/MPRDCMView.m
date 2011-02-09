@@ -1070,7 +1070,7 @@ static BOOL frameZoomed = NO;
 		mouseLocation.x *= curDCM.pixelSpacingX;
 		mouseLocation.y *= curDCM.pixelSpacingY;
 		
-		float f = scaleValue * curDCM.pixelSpacingX / LOD;
+		float f = curDCM.pixelSpacingX / LOD; //scaleValue * 
 		
 		if( mouseLocation.x > r.x - BS * f && mouseLocation.x < r.x + BS* f && mouseLocation.y > r.y - BS* f && mouseLocation.y < r.y + BS* f)
 		{
@@ -1362,11 +1362,7 @@ static BOOL frameZoomed = NO;
 	[NSObject cancelPreviousPerformRequestsWithTarget: windowController selector:@selector( delayedFullLODRendering:) object: nil];
 	
 	windowController.lowLOD = NO;
-	
-	windowController.mprView1.LOD *= 0.9;
-	windowController.mprView2.LOD *= 0.9;
-	windowController.mprView3.LOD *= 0.9;
-	
+		
 	[self restoreCamera];
 	
 	if( rotateLines || moveCenter)
@@ -1387,6 +1383,10 @@ static BOOL frameZoomed = NO;
 		
 		rotateLines = NO;
 		moveCenter = NO;
+
+		windowController.mprView1.LOD *= 0.9;
+		windowController.mprView2.LOD *= 0.9;
+		windowController.mprView3.LOD *= 0.9;
 
 		[self restoreCamera];
 		[self updateViewMPR];
@@ -1427,6 +1427,10 @@ static BOOL frameZoomed = NO;
 				windowController.mprView2.camera.forceUpdate = YES;
 				windowController.mprView3.camera.forceUpdate = YES;
 			}
+			
+			windowController.mprView1.LOD *= 0.9;
+			windowController.mprView2.LOD *= 0.9;
+			windowController.mprView3.LOD *= 0.9;
 			
 			if( [vrView _tool] == tRotate)
 				[self updateViewMPR: NO];

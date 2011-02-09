@@ -595,7 +595,7 @@ static OFBool compressFile(DcmFileFormat fileformat, const char *fname, char *ou
 	#endif
 	{
 		#ifndef OSIRIX_LIGHT
-		NSLog(@"SEND - Compress JPEG: %s - ");
+		NSLog(@"SEND - Compress DCMTK JPEG: %s", fname);
 		
 		DcmDataset *dataset = fileformat.getDataset();
 		DcmItem *metaInfo = fileformat.getMetaInfo();
@@ -1084,6 +1084,7 @@ cstore(T_ASC_Association * assoc, const OFString& fname)
 	
 	switch (_transferSyntax)
 	{
+		default:
 		case SendExplicitLittleEndian:
 			opt_networkTransferSyntax = EXS_LittleEndianExplicit;
 			break;

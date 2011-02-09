@@ -218,7 +218,7 @@ static volatile BOOL waitForRunningProcess = NO;
 
 @class DCMTKStudyQueryNode;
 
-@synthesize checkIncomingLock, CDpassword, DateTimeFormat, passwordForExportEncryption;
+@synthesize checkIncomingLock, CDpassword, passwordForExportEncryption;
 @synthesize DateOfBirthFormat,TimeFormat, TimeWithSecondsFormat, temporaryNotificationEmail, customTextNotificationEmail;
 @synthesize DateTimeWithSecondsFormat, matrixViewArray, oMatrix, testPredicate;
 @synthesize COLUMN, databaseOutline, albumTable, currentDatabasePath;
@@ -5598,13 +5598,13 @@ static NSConditionLock *threadLock = nil;
 		{
 			subPredicate = [NSPredicate predicateWithFormat: @"date >= CAST(%lf, \"NSDate\") AND date <= CAST(%lf, \"NSDate\")", [timeIntervalStart timeIntervalSinceReferenceDate], [timeIntervalEnd timeIntervalSinceReferenceDate]];
 			
-			description = [description stringByAppendingFormat: NSLocalizedString(@" / Time Interval: from: %@ to: %@", nil),[DateTimeFormat stringFromDate: timeIntervalStart],  [DateTimeFormat stringFromDate: timeIntervalEnd] ];
+			description = [description stringByAppendingFormat: NSLocalizedString(@" / Time Interval: from: %@ to: %@", nil),[[NSUserDefaults dateTimeFormatter] stringFromDate: timeIntervalStart],  [[NSUserDefaults dateTimeFormatter] stringFromDate: timeIntervalEnd] ];
 		}
 		else
 		{
 			subPredicate = [NSPredicate predicateWithFormat: @"date >= CAST(%lf, \"NSDate\")", [timeIntervalStart timeIntervalSinceReferenceDate]];
 			
-			description = [description stringByAppendingFormat:NSLocalizedString(@" / Time Interval: since: %@", nil), [DateTimeFormat stringFromDate: timeIntervalStart]];
+			description = [description stringByAppendingFormat:NSLocalizedString(@" / Time Interval: since: %@", nil), [[NSUserDefaults dateTimeFormatter] stringFromDate: timeIntervalStart]];
 		}
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: predicate, subPredicate, nil]];
 		filtered = YES;
@@ -7279,6 +7279,11 @@ static NSConditionLock *threadLock = nil;
 	databaseLastModification = [NSDate timeIntervalSinceReferenceDate];
 	
 	[self refreshMatrix: self];
+	
+#ifndef OSIRIX_LIGHT
+	[[QueryController currentQueryController] executeRefresh: self];
+	[[QueryController currentAutoQueryController] executeRefresh: self];
+#endif
 }
 
 - (void)buildColumnsMenu
@@ -9099,16 +9104,23 @@ static BOOL withReset = NO;
 
 - (DCMPix*) getDCMPixFromViewerIfAvailable: (NSString*) pathToFind
 {
+	DCMPix *returnPix = nil;
+	
 	//Is this image already displayed on the front most 2D viewers? -> take the dcmpix from there
 	for( ViewerController *v in [ViewerController get2DViewers])
 	{
-		for( int i = 0 ; i < [[v fileList] count]; i++)
+		// We need to temporarly retain all these objects, because this function is called on a separated thread (matrixLoadIcons)
+		NSArray *vFileList = [[v fileList] retain];
+		NSArray *vPixList = [[v pixList] retain];
+		NSData *volumeData = [[v volumeData] retain];
+		
+		for( int i = 0 ; i < [vFileList count]; i++)
 		{
-			NSString *path = [[[v fileList] objectAtIndex: i] valueForKey:@"completePath"];
+			NSString *path = [[vFileList objectAtIndex: i] valueForKey:@"completePath"];
 			
 			if( [path isEqualToString: pathToFind])
 			{
-				DCMPix *dcmPix = [[[v pixList] objectAtIndex: i] copy];
+				DCMPix *dcmPix = [[vPixList objectAtIndex: i] copy];
 				if( dcmPix)
 				{
 					float *fImage = (float*) malloc( dcmPix.pheight*dcmPix.pwidth*sizeof( float));
@@ -9118,15 +9130,20 @@ static BOOL withReset = NO;
 						[dcmPix setfImage: fImage];
 						[dcmPix freefImageWhenDone: YES];
 						
-						return [dcmPix autorelease];
+						returnPix = [dcmPix autorelease];
 					}
 					else
 						[dcmPix release];
 				}
 			}
 		}
+		
+		[volumeData retain];
+		[vFileList retain];
+		[vPixList retain];
 	}
-	return nil;
+	
+	return returnPix;
 }
 
 - (void) previewSliderAction:(id) sender
@@ -13768,17 +13785,17 @@ static NSArray*	openSubSeriesArray = nil;
 	[DateTimeWithSecondsFormat setDateStyle: NSDateFormatterShortStyle];
 	[DateTimeWithSecondsFormat setTimeStyle: NSDateFormatterMediumStyle];
 	
-	[DateTimeFormat release];
-	DateTimeFormat = [[NSDateFormatter alloc] init];
-	[DateTimeFormat setDateFormat: [[NSUserDefaults standardUserDefaults] stringForKey: @"DBDateFormat2"]];
+//	[DateTimeFormat release];
+//	DateTimeFormat = [[NSDateFormatter alloc] init];
+//	[DateTimeFormat setDateFormat: [[NSUserDefaults standardUserDefaults] stringForKey: @"DBDateFormat2"]];
 	
 	[DateOfBirthFormat release];
 	DateOfBirthFormat = [[NSDateFormatter alloc] init];
 	[DateOfBirthFormat setDateFormat: [[NSUserDefaults standardUserDefaults] stringForKey: @"DBDateOfBirthFormat2"]];
 	
-	[[[databaseOutline tableColumnWithIdentifier: @"dateOpened"] dataCell] setFormatter: DateTimeFormat];
-	[[[databaseOutline tableColumnWithIdentifier: @"date"] dataCell] setFormatter: DateTimeFormat];
-	[[[databaseOutline tableColumnWithIdentifier: @"dateAdded"] dataCell] setFormatter: DateTimeFormat];
+	[[[databaseOutline tableColumnWithIdentifier: @"dateOpened"] dataCell] setFormatter:[NSUserDefaults dateTimeFormatter]];
+	[[[databaseOutline tableColumnWithIdentifier: @"date"] dataCell] setFormatter: [NSUserDefaults dateTimeFormatter]];
+	[[[databaseOutline tableColumnWithIdentifier: @"dateAdded"] dataCell] setFormatter: [NSUserDefaults dateTimeFormatter]];
 	
 	[[[databaseOutline tableColumnWithIdentifier: @"dateOfBirth"] dataCell] setFormatter: DateOfBirthFormat];
 	[[[databaseOutline tableColumnWithIdentifier: @"reportURL"] dataCell] setFormatter: DateOfBirthFormat];
@@ -13830,13 +13847,19 @@ static NSArray*	openSubSeriesArray = nil;
 	return s;
 }
 
+#pragma deprecated
+-(NSDateFormatter*)DateTimeFormat {
+	return [NSUserDefaults dateTimeFormatter];
+}
+
+#pragma deprecated
 + (NSString*) DateTimeFormat:(NSDate*) d
 {
 	NSString *s = nil;
 	
-	@synchronized( [[BrowserController currentBrowser] DateTimeFormat])
+	@synchronized([NSUserDefaults dateTimeFormatter])
 	{
-		s = [[[BrowserController currentBrowser] DateTimeFormat] stringFromDate: d];
+		s = [[NSUserDefaults dateTimeFormatter] stringFromDate: d];
 	}
 	return s;
 }
@@ -14251,11 +14274,6 @@ static NSArray*	openSubSeriesArray = nil;
 		for( NSInteger x = 0, row; x < [[ThreadsManager defaultManager] threadsCount]; x++)  
 			[[[ThreadsManager defaultManager] objectInThreadsAtIndex: x] cancel];
 		
-		unlink( "/tmp/kill_all_storescu");
-		[[NSUserDefaults standardUserDefaults] setBool: hideListenerError_copy forKey: @"hideListenerError"];
-		
-		// ----------
-		
 		NSTimeInterval ti = [NSDate timeIntervalSinceReferenceDate] + 240;
 		while( ti - [NSDate timeIntervalSinceReferenceDate] > 0 && [[ThreadsManager defaultManager] threadsCount] > 0)
 		{
@@ -14264,6 +14282,12 @@ static NSArray*	openSubSeriesArray = nil;
 			if( wait && [[wait window] isVisible] == NO)
 				[wait showWindow:self];
 		}
+		
+		unlink( "/tmp/kill_all_storescu");
+		[[NSUserDefaults standardUserDefaults] setBool: hideListenerError_copy forKey: @"hideListenerError"];
+		
+		// ----------
+		
 		
 		[BrowserController tryLock: checkIncomingLock during: 120];
 		[BrowserController tryLock: managedObjectContext during: 120];
@@ -14754,10 +14778,16 @@ static NSArray*	openSubSeriesArray = nil;
 		NSLog(@"delete Queue start: %d objects", [copyArray count]);
 		
 		int f = 0;
+		NSString *lastFolder = nil;
 		for( NSString *file in copyArray)
 		{
 			unlink( [file UTF8String]);		// <- this is faster
-			[folders addObject: [file stringByDeletingLastPathComponent]];
+			
+			if( [lastFolder isEqualToString: [file stringByDeletingLastPathComponent]] == NO)
+			{
+				[folders addObject: [file stringByDeletingLastPathComponent]];
+				lastFolder = [file stringByDeletingLastPathComponent];
+			}
 			
 			[NSThread currentThread].progress = (float) f++ / (float) [copyArray count];
 			[NSThread currentThread].status = [NSString stringWithFormat: NSLocalizedString( @"%d file(s)", nil), [copyArray count]-f];

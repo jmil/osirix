@@ -97,6 +97,7 @@
 int delayedTileWindows = NO;
 
 extern  ToolbarPanelController  *toolbarPanel[ 10];
+extern BOOL FULL32BITPIPELINE;
 
 static	BOOL SYNCSERIES = NO, ViewBoundsDidChangeProtect = NO, recursiveCloseWindowsProtected = NO;
 
@@ -15848,6 +15849,8 @@ int i,j,l;
 		if( previousRows != 1 || previousColumns != 1)
 			[self setImageRows: 1 columns: 1];
 		
+		BOOL copyFULL32BITPIPELINE = FULL32BITPIPELINE;
+		
 		int i;
 		for( i = from; i < to; i += interval)
 		{
@@ -15931,6 +15934,8 @@ int i,j,l;
 			if( [splash aborted])
 				break;
 		}
+		
+		FULL32BITPIPELINE = copyFULL32BITPIPELINE;
 		
 		/////// ****************
 		
