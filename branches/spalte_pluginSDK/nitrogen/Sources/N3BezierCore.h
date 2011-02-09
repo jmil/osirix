@@ -1,11 +1,16 @@
-/*
- *  N3BezierCore.h
- *  OsiriX
- *
- *  Created by Joël Spaltenstein on 9/26/10.
- *  Copyright 2010 OsiriX Team. All rights reserved.
- *
- */
+/*=========================================================================
+ Program:   OsiriX
+ 
+ Copyright (c) OsiriX Team
+ All rights reserved.
+ Distributed under GNU - LGPL
+ 
+ See http://www.osirix-viewer.com/copyright.html for details.
+ 
+ This software is distributed WITHOUT ANY WARRANTY; without even
+ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.
+ =========================================================================*/
 
 #ifndef _N3BEZIERCORE_H_
 #define _N3BEZIERCORE_H_
@@ -16,7 +21,7 @@
 
 /* look in N3BezierCoreAdditions.h for additional functions that could be of interest */
 
-CG_EXTERN_C_BEGIN
+CF_EXTERN_C_BEGIN
 
 enum N3BezierCoreSegmentType {
     N3MoveToBezierCoreSegmentType,
@@ -95,6 +100,6 @@ N3BezierCoreSegmentType N3BezierCoreRandomAccessorGetSegmentAtIndex(N3BezierCore
 void N3BezierCoreRandomAccessorSetVectorsForSegementAtIndex(N3BezierCoreRandomAccessorRef bezierCoreRandomAccessor, CFIndex index, N3Vector control1, N3Vector control2, N3Vector endpoint); // the random accessor must have been created with the mutable beziercore
 CFIndex N3BezierCoreRandomAccessorSegmentCount(N3BezierCoreRandomAccessorRef bezierCoreRandomAccessor);
 
-CG_EXTERN_C_END
+CF_EXTERN_C_END
 
 #endif	/* _N3BEZIERCORE_H_ */
