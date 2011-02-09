@@ -21,7 +21,11 @@
 - CPR: creationPath : mouseOver node -> Hand
 - CPR: toolbar item slider for transverse spacing
 - CPR: CPRView : origin, scale, ...
+- CPR: CPRView : double-click fullscreen
+- CPR: transverse : resolution?
+- CPR: CPRView : measurements
 
+- Web Server SSL
 - Web Server bug no users
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
