@@ -17,8 +17,9 @@
 
 - CPR: Test 4D, Blending
 - CPR: toolbar item slider for transverse spacing
-- CPR: CPRView : measurements
 - CPR: Don't export pixelSpacing
+
+- CPR: Keep ROI in CPRView, and transverse views
 
 - Web Server SSL
 - Web Server bug no users
