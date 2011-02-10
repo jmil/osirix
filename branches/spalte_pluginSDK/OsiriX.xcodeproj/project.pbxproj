@@ -90,6 +90,7 @@
 		4F8A1A8A1302C72300A022D9 /* N3BezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8A1A821302C72300A022D9 /* N3BezierPath.m */; };
 		4F8A1A8B1302C72300A022D9 /* N3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8A1A831302C72300A022D9 /* N3Geometry.h */; };
 		4F8A1A8C1302C72300A022D9 /* N3Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8A1A841302C72300A022D9 /* N3Geometry.m */; };
+		4F8C4FAE1304106000B20709 /* OSIDemo.osirixplugin in Copy OSIDemo */ = {isa = PBXBuildFile; fileRef = 4F8C4F3B1303F68D00B20709 /* OSIDemo.osirixplugin */; };
 		4FF3BA521302D22000415C43 /* OSICoalescedROI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF3BA351302D22000415C43 /* OSICoalescedROI.h */; };
 		4FF3BA531302D22000415C43 /* OSICoalescedROI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF3BA361302D22000415C43 /* OSICoalescedROI.m */; };
 		4FF3BA541302D22000415C43 /* OSIEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF3BA371302D22000415C43 /* OSIEnvironment.h */; };
@@ -8005,6 +8006,20 @@
 			remoteGlobalIDString = 7E0B3A3E067526CD00908593;
 			remoteInfo = "DCM Framework";
 		};
+		4F8C4F3A1303F68D00B20709 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F8C4F361303F68D00B20709 /* OSIDemo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4FE8943712F8575000B78E25 /* OSIDemo.osirixplugin */;
+			remoteInfo = OSIDemo;
+		};
+		4F8C4F3E1303F69E00B20709 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F8C4F361303F68D00B20709 /* OSIDemo.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FE8943612F8575000B78E25 /* OSIDemo */;
+			remoteInfo = OSIDemo;
+		};
 		59BDEDB7117CA8E5007F1F2C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -8267,6 +8282,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4F8C4F481303F6D700B20709 /* Copy OSIDemo */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4F8C4FAE1304106000B20709 /* OSIDemo.osirixplugin in Copy OSIDemo */,
+			);
+			name = "Copy OSIDemo";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE9B516D0CA8F42E00C6C982 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8342,6 +8368,7 @@
 		4F8A1A821302C72300A022D9 /* N3BezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = N3BezierPath.m; path = nitrogen/Sources/N3BezierPath.m; sourceTree = "<group>"; };
 		4F8A1A831302C72300A022D9 /* N3Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = N3Geometry.h; path = nitrogen/Sources/N3Geometry.h; sourceTree = "<group>"; };
 		4F8A1A841302C72300A022D9 /* N3Geometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = N3Geometry.m; path = nitrogen/Sources/N3Geometry.m; sourceTree = "<group>"; };
+		4F8C4F361303F68D00B20709 /* OSIDemo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OSIDemo.xcodeproj; path = OSIDemoPlugin/OSIDemo.xcodeproj; sourceTree = "<group>"; };
 		4FF3BA351302D22000415C43 /* OSICoalescedROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSICoalescedROI.h; sourceTree = "<group>"; };
 		4FF3BA361302D22000415C43 /* OSICoalescedROI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSICoalescedROI.m; sourceTree = "<group>"; };
 		4FF3BA371302D22000415C43 /* OSIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIEnvironment.h; sourceTree = "<group>"; };
@@ -12528,6 +12555,7 @@
 		29B97314FDCFA39411CA2CEA /* OsiriX */ = {
 			isa = PBXGroup;
 			children = (
+				4F8C4F361303F68D00B20709 /* OSIDemo.xcodeproj */,
 				84A9D44712F7F8BE00DA1F99 /* KDU SDK */,
 				59BDEC17117C927D007F1F2C /* OsiriX Launcher */,
 				AB10FA9611293361009EB238 /* Nitrogen */,
@@ -12745,6 +12773,14 @@
 				4F8A1A841302C72300A022D9 /* N3Geometry.m */,
 			);
 			name = 3DGeometry;
+			sourceTree = "<group>";
+		};
+		4F8C4F371303F68D00B20709 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F8C4F3B1303F68D00B20709 /* OSIDemo.osirixplugin */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		4FF3BA311302D1D700415C43 /* Plugin SDK */ = {
@@ -22119,12 +22155,14 @@
 				CEED244F0C71EEDC00E3BEC5 /* SVN Revision number */,
 				59F69A4E1056328D008585F5 /* Clean frameworks */,
 				CED88262125064F70085A861 /* CodeSigning */,
+				4F8C4F481303F6D700B20709 /* Copy OSIDemo */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				4A2ADDFD078D3C6200416F53 /* PBXTargetDependency */,
 				59BDEE6B117CB393007F1F2C /* PBXTargetDependency */,
+				4F8C4F3F1303F69E00B20709 /* PBXTargetDependency */,
 			);
 			name = OsiriX;
 			productName = Deployment;
@@ -22282,6 +22320,10 @@
 					ProjectRef = CE4E42E408758A1700D0AFDB /* OSIDatabasePreferencePane.xcodeproj */;
 				},
 				{
+					ProductGroup = 4F8C4F371303F68D00B20709 /* Products */;
+					ProjectRef = 4F8C4F361303F68D00B20709 /* OSIDemo.xcodeproj */;
+				},
+				{
 					ProductGroup = CE4E42EE08758A1700D0AFDB /* Products */;
 					ProjectRef = CE4E42ED08758A1700D0AFDB /* OSIGeneralPreferencePane.xcodeproj */;
 				},
@@ -22333,6 +22375,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4F8C4F3B1303F68D00B20709 /* OSIDemo.osirixplugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OSIDemo.osirixplugin;
+			remoteRef = 4F8C4F3A1303F68D00B20709 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A9FF84A00C5F187800D50C95 /* OSICustomImageAnnotations.prefPane */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -25789,6 +25838,11 @@
 			isa = PBXTargetDependency;
 			target = 7E0B3A3E067526CD00908593 /* DCM Framework */;
 			targetProxy = 4A2F590C078D124B00C514A2 /* PBXContainerItemProxy */;
+		};
+		4F8C4F3F1303F69E00B20709 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OSIDemo;
+			targetProxy = 4F8C4F3E1303F69E00B20709 /* PBXContainerItemProxy */;
 		};
 		59BDEDB8117CA8E5007F1F2C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

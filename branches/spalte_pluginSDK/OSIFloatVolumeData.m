@@ -17,4 +17,33 @@
 
 @implementation OSIFloatVolumeData
 
+@dynamic pixelsWide;
+@dynamic pixelsHigh;
+@dynamic pixelsDeep;
+@dynamic minPixelSpacing;
+@dynamic pixelSpacingX;
+@dynamic pixelSpacingY;
+@dynamic pixelSpacingZ;
+@dynamic volumeTransform;
+
+- (const float *)floatBytes
+{
+	return [super floatBytes];
+}
+
+- (void)getFloatData:(void *)buffer range:(NSRange)range
+{
+	[super getFloatData:buffer range:range];
+}
+
+- (float)floatAtPixelCoordinateX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z
+{
+	return [super floatAtPixelCoordinateX:x y:y z:z];
+}
+
+- (float)linearInterpolatedFloatAtDicomVector:(N3Vector)vector
+{
+	return [super linearInterpolatedFloatAtDicomVector:vector];
+}
+
 @end
