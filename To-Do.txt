@@ -18,6 +18,7 @@
 - CPR: Test 4D, Blending, Non-Square
 - CPR: toolbar item slider for transverse spacing
 - CPR: Don't export pixelSpacing
+- CPR: export image, NSimage, ...
 
 - Brush ROIs: load/save
 - Sub Series open: don't display preview
