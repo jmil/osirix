@@ -17,12 +17,11 @@
 
 - CPR: Test 4D, Blending, Non-Square
 - CPR: toolbar item slider for transverse spacing
-- CPR: Don't export pixelSpacing
-- CPR: export image, NSimage, ...
+- CPR: Export
 
 - Brush ROIs: load/save
 
-- Web Server SSL
+- Web Server SSL, including in 64-bit
 - Web Server bug no users
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
@@ -30,6 +29,8 @@
 - Web Server: Include previous study for specific patients
 - Web Server: Burn option if the CD/DVD is installed
 
+- Two Steps DICOM Editing
+- Order option in subseries pane
 - Dont rotate tText
 - Tool to create a new series from key images of a study
 - Tomographie rotational angio
