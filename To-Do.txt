@@ -21,7 +21,6 @@
 - CPR: export image, NSimage, ...
 
 - Brush ROIs: load/save
-- Sub Series open: don't display preview
 
 - Web Server SSL
 - Web Server bug no users
