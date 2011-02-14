@@ -15,6 +15,7 @@
 - Zoom centered around mouse position (2D Viewer Preferences)
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and space bandwidth)
 
+- CPR Manual
 - CPR: Test 4D, Blending, Non-Square
 - CPR: toolbar item slider for transverse spacing
 - CPR: Reset button
