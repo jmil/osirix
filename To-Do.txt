@@ -17,9 +17,8 @@
 
 - CPR: Test 4D, Blending, Non-Square
 - CPR: toolbar item slider for transverse spacing
-- CPR: Export
-
-- TEST Series level performances
+- CPR: Reset button
+- CPR: Manual
 
 - Brush ROIs: load/save
 
