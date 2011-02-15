@@ -17,9 +17,8 @@
 
 - CPR Manual
 - CPR: Test 4D, Blending, Non-Square
-- CPR: toolbar item slider for transverse spacing
-- CPR: Reset button
-- CPR: Manual
+- CPR: preview lines for batch export
+- CPR: turn off matrix size if screen capture
 
 - Brush ROIs: load/save
 
