@@ -19,6 +19,9 @@
 #import "OSIROI+Private.h"
 #import "Notifications.h"
 #import "pluginSDKAdditions.h"
+#import "DCMView.h"
+#import "CPRMPRDCMView.h"
+
 
 NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidUpdateNotification"; 
 
@@ -28,6 +31,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (void)_ROIChangeNotification:(NSNotification *)notification;
 - (void)_removeROINotification:(NSNotification *)notification;
 - (void)_addROINotification:(NSNotification *)notification;
+- (void)_drawObjectsNotification:(NSNotification *)notification;
 - (NSArray *)_ROIList;
 - (NSArray *)_coalescedROIList;
 
@@ -61,6 +65,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_ROIChangeNotification:) name:OsirixROIChangeNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_removeROINotification:) name:OsirixRemoveROINotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_addROINotification:) name:OsirixAddROINotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_drawObjectsNotification:) name:OsirixDrawObjectsNotification object:nil];
 		
 	}
 	return self;
@@ -155,6 +160,39 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (void)_addROINotification:(NSNotification *)notification
 {
 	[self _rebuildOSIROIs];
+}
+
+- (void)_drawObjectsNotification:(NSNotification *)notification
+{
+    DCMView *dcmView;
+    OSIROI *roi;
+    CGLPixelFormatObj pixelFormatObj;
+    N3AffineTransform dicomToPixTransform;
+    double pixToSubdrawRectOpenGLTransform[16];
+    CGLContextObj cgl_ctx;
+    
+    cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];    
+    
+    if ([[notification object] isKindOfClass:[DCMView class]] == NO) {
+        return;
+    }
+    
+    dcmView = (DCMView *)[notification object];
+    N3AffineTransformGetOpenGLMatrixd(([dcmView pixToSubDrawRectTransform]), pixToSubdrawRectOpenGLTransform);
+    pixelFormatObj = (CGLPixelFormatObj)[[dcmView pixelFormat] CGLPixelFormatObj];
+    dicomToPixTransform = N3AffineTransformInvert([[dcmView curDCM] pixToDicomTransform]);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMultMatrixd(pixToSubdrawRectOpenGLTransform);
+    
+    for (roi in [self ROIs]) {
+        if ([roi respondsToSelector:@selector(drawInCGLContext:pixelFormat:dicomToPixTransform:)]) {
+            [roi drawInCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
+        }
+    }
+    
+    glPopMatrix();
 }
 
 - (BOOL)_isROIManaged:(ROI *)roi

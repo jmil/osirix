@@ -113,6 +113,10 @@
 	return nil;
 }
 
+- (void)drawInCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
+{
+}
+
 @end
 
 @implementation OSIROI (Private)

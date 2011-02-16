@@ -139,6 +139,9 @@
     }
     
     for (operation in finishedOperations) {
+		// DEBUG
+		NSLog(@"processing operation %f seconds after it was finished", [[operation operationFinishedDate] timeIntervalSinceNow]);
+
         [operation removeObserver:self forKeyPath:@"isFinished"];
         [self autorelease]; // to match the retain in -[CPRGenerator requestVolume:]
         

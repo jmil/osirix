@@ -272,7 +272,6 @@
 								<string>4F8C4CDF1303F62300B20709</string>
 								<string>4F0CD2F012F96518001AD5CF</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>4F8C4FC9130411A000B20709</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -283,7 +282,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 188}, {274, 560}}</string>
+							<string>{{0, 0}, {274, 560}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -330,7 +329,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F8C4FCA130411A000B20709</string>
+										<string>4F60E3AB130954A600D48EE0</string>
 										<key>history</key>
 										<array>
 											<string>4F8C4CC11303F53100B20709</string>
@@ -346,7 +345,7 @@
 											<string>4F8C4F631303F7B100B20709</string>
 											<string>4F8C4F641303F7B100B20709</string>
 											<string>4F8C4F8B1303F9EB00B20709</string>
-											<string>4F8C4F9513040DFA00B20709</string>
+											<string>4F8C4FD613041A3D00B20709</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -358,14 +357,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {647, 371}}</string>
+								<string>{{0, 0}, {647, 364}}</string>
 								<key>RubberWindowFrame</key>
 								<string>1903 336 943 619 1680 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>371pt</string>
+							<string>364pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -378,14 +377,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 376}, {647, 202}}</string>
+								<string>{{0, 369}, {647, 209}}</string>
 								<key>RubberWindowFrame</key>
 								<string>1903 336 943 619 1680 0 1680 1050 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>202pt</string>
+							<string>209pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -404,9 +403,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>4F8C4FCB130411A000B20709</string>
+				<string>4F60E17B130952DA00D48EE0</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>4F8C4FCC130411A000B20709</string>
+				<string>4F60E17C130952DA00D48EE0</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -586,8 +585,6 @@
 							<string>226pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -627,7 +624,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>4F8C4CAA1303F4BD00B20709</string>
-				<string>4F8C4FA313040F5C00B20709</string>
+				<string>4F60E17D130952DA00D48EE0</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

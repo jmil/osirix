@@ -14,6 +14,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "OSIGeometry.h"
+#import <OpenGL/CGLTypes.h>
 
 // abstract 
 
@@ -199,10 +200,21 @@
  @return An array of points that represent the outside bounds of the ROI.
  */
 - (NSArray *)convexHull; // OSIVectors stored in NSValue objects. The ROI promises to live inside of these points
-// all concrete implementation MUST implement this!
 
-// to get down and dirty
+///-----------------------------------
+/// @name Drawing
+///-----------------------------------
 
+/** Overridden by subclasses to draw the receiver’s image within the passed-in rectangle..
+ 
+ The receiver is expected to draw into OpenGL. The current OpenGL model matrix is set up so that rendering is in pix space.
+  
+ @param dirtyRect A rectangle defining the dirty area of the view that requires redrawing.
+ @param dicomToPixTransform A matrix that converts points in Patient Space (Dicom space in mm) into pix space.
+ 
+ @return An array of points that represent the outside bounds of the ROI.
+ */
+- (void)drawInCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform;
 
 ///-----------------------------------
 /// @name Breaking out of the SDK

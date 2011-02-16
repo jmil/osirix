@@ -155,6 +155,10 @@ CFIndex findRealQuadraticRoots(CGFloat a, CGFloat b, CGFloat c, CGFloat *root1, 
  // returns the real numbered roots of ax^3+bx^2+cx+d
 CFIndex findRealCubicRoots(CGFloat a, CGFloat b, CGFloat c, CGFloat d, CGFloat *root1, CGFloat *root2, CGFloat *root3); // returns the number of roots set 
 
+// For OpenGL, should this be moved to a different header?
+void N3AffineTransformGetOpenGLMatrixd(N3AffineTransform transform, double *d); // d better be 16 elements long
+void N3AffineTransformGetOpenGLMatrixf(N3AffineTransform transform, float *f); // f better be 16 elements long
+
 CF_EXTERN_C_END
 
 /** NSValue support. **/

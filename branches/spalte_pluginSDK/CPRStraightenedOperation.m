@@ -39,6 +39,10 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
 
 @dynamic request;
 
+// DEBUG
+
+@synthesize operationFinishedDate = _operationFinishedDate;
+
 - (id)initWithRequest:(CPRStraightenedGeneratorRequest *)request volumeData:(CPRVolumeData *)volumeData
 {
     if ( (self = [super initWithRequest:request volumeData:volumeData]) ) {
@@ -53,6 +57,11 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
     _fillOperations = nil;
 	[_projectionOperation release];
 	_projectionOperation = nil;
+	
+	// DEBUG
+	[_operationFinishedDate release];
+	_operationFinishedDate = nil;
+	
     [super dealloc];
 }
 
@@ -310,6 +319,10 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
                     [self willChangeValueForKey:@"isExecuting"];
                     _operationExecuting = NO;
                     _operationFinished = YES;
+					
+					// DEBUG
+					_operationFinishedDate = [[NSDate date] retain];
+					
                     [self didChangeValueForKey:@"isExecuting"];
                     [self didChangeValueForKey:@"isFinished"];
                 }
