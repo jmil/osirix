@@ -9114,33 +9114,40 @@ static BOOL withReset = NO;
 		NSArray *vPixList = [[v pixList] retain];
 		NSData *volumeData = [[v volumeData] retain];
 		
-		for( int i = 0 ; i < [vFileList count]; i++)
+		@try
 		{
-			NSString *path = [[vFileList objectAtIndex: i] valueForKey:@"completePath"];
-			
-			if( [path isEqualToString: pathToFind])
+			for( int i = 0 ; i < [vFileList count]; i++)
 			{
-				DCMPix *dcmPix = [[vPixList objectAtIndex: i] copy];
-				if( dcmPix)
+				NSString *path = [[vFileList objectAtIndex: i] valueForKey:@"completePath"];
+				
+				if( [path isEqualToString: pathToFind])
 				{
-					float *fImage = (float*) malloc( dcmPix.pheight*dcmPix.pwidth*sizeof( float));
-					if( fImage)
+					DCMPix *dcmPix = [[vPixList objectAtIndex: i] copy];
+					if( dcmPix)
 					{
-						memcpy( fImage, dcmPix.fImage, dcmPix.pheight*dcmPix.pwidth*sizeof( float));
-						[dcmPix setfImage: fImage];
-						[dcmPix freefImageWhenDone: YES];
-						
-						returnPix = [dcmPix autorelease];
+						float *fImage = (float*) malloc( dcmPix.pheight*dcmPix.pwidth*sizeof( float));
+						if( fImage)
+						{
+							memcpy( fImage, dcmPix.fImage, dcmPix.pheight*dcmPix.pwidth*sizeof( float));
+							[dcmPix setfImage: fImage];
+							[dcmPix freefImageWhenDone: YES];
+							
+							returnPix = [dcmPix autorelease];
+						}
+						else
+							[dcmPix release];
 					}
-					else
-						[dcmPix release];
 				}
 			}
 		}
-		
-		[volumeData retain];
-		[vFileList retain];
-		[vPixList retain];
+		@catch (NSException * e) 
+		{
+			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+			[AppController printStackTrace: e];
+		}
+		[volumeData release];
+		[vFileList release];
+		[vPixList release];
 	}
 	
 	return returnPix;
@@ -13355,7 +13362,12 @@ static NSArray*	openSubSeriesArray = nil;
 	if( bonjourDownloading) return;
 	
 	[animationSlider setIntValue: subFrom-1];
+	
+	BOOL copyDontUpdatePreviewPane = dontUpdatePreviewPane;
+	
+	dontUpdatePreviewPane = NO;
 	[self previewSliderAction: nil];
+	dontUpdatePreviewPane = copyDontUpdatePreviewPane;
 	
 	[self checkMemory: self];
 }
@@ -13368,7 +13380,13 @@ static NSArray*	openSubSeriesArray = nil;
 	if( bonjourDownloading) return;
 	
 	[animationSlider setIntValue: subTo-1];
+	
+	
+	BOOL copyDontUpdatePreviewPane = dontUpdatePreviewPane;
+	
+	dontUpdatePreviewPane = NO;
 	[self previewSliderAction: nil];
+	dontUpdatePreviewPane = copyDontUpdatePreviewPane;
 	
 	[self checkMemory: self];
 }
@@ -13386,7 +13404,11 @@ static NSArray*	openSubSeriesArray = nil;
 	[self setValue:[NSNumber numberWithInt:[[toOpenArray objectAtIndex:0] count]] forKey:@"subMax"];
 	
 	[self setValue:[NSNumber numberWithInt:1] forKey:@"subFrom"];
-	[self setValue:[NSNumber numberWithInt:2] forKey:@"subInterval"];
+	
+	if([[[NSApplication sharedApplication] currentEvent] modifierFlags]  & NSAlternateKeyMask)
+		[self setValue:[NSNumber numberWithInt:1] forKey:@"subInterval"];
+	else
+		[self setValue:[NSNumber numberWithInt:2] forKey:@"subInterval"];
 	
 	[NSApp beginSheet: subSeriesWindow
 	   modalForWindow: [NSApp mainWindow]
@@ -17247,7 +17269,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 							}
 						}
 						
-						[[WebPortal defaultWebPortal] sendNotificationsEmailsTo: destinationUsers aboutStudies: [self databaseSelection] predicate: nil message: nil replyTo: nil customText: self.customTextNotificationEmail];
+						[[WebPortal defaultWebPortal] sendNotificationsEmailsTo: destinationUsers aboutStudies: [self databaseSelection] predicate: nil replyTo: nil customText: self.customTextNotificationEmail];
 					}
 				}
 				@catch( NSException *e)

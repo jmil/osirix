@@ -25,17 +25,13 @@
     BOOL _operationExecuting;
     BOOL _operationFinished;
     BOOL _operationFailed;
-	
-	// DEBUG
-	NSDate *_operationFinishedDate;
+    
+    CGFloat _sampleSpacing; // renerated and cached by the operation based on the width and the length of the bezier
 }
 
 - (id)initWithRequest:(CPRStraightenedGeneratorRequest *)request volumeData:(CPRVolumeData *)volumeData;
 
 @property (readonly) CPRStraightenedGeneratorRequest *request;
-
-// DEBUG
-@property (readonly, retain) NSDate *operationFinishedDate;
 
 @end
 

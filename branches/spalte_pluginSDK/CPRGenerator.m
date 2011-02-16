@@ -18,8 +18,11 @@
 #import "CPRGeneratorOperation.h"
 #import "DCMPix.h"
 
+static NSOperationQueue *_synchronousRequestQueue = nil;
+
 @interface CPRGenerator ()
 
++ (NSOperationQueue *)_synchronousRequestQueue;
 - (void)_didFinishOperation;
 - (void)_cullGeneratedFrameTimes;
 - (void)_logFrameRate:(NSTimer *)timer;
@@ -32,6 +35,20 @@
 @synthesize delegate = _delegate;
 @synthesize volumeData = _volumeData;
 
++ (NSOperationQueue *)_synchronousRequestQueue
+{
+    @synchronized (self) {
+        if (_synchronousRequestQueue == nil) {
+            _synchronousRequestQueue = [[NSOperationQueue alloc] init];
+			[_synchronousRequestQueue setMaxConcurrentOperationCount:1];
+        }
+    }
+    
+    return _synchronousRequestQueue;
+}
+
+
+
 + (CPRVolumeData *)synchronousRequestVolume:(CPRGeneratorRequest *)request volumeData:(CPRVolumeData *)volumeData
 {
     CPRGeneratorOperation *operation;
@@ -39,18 +56,19 @@
     CPRVolumeData *generatedVolume;
     
     operation = [[[request operationClass] alloc] initWithRequest:request volumeData:volumeData];
-    operationQueue = [[NSOperationQueue alloc] init];
+    operationQueue = [self _synchronousRequestQueue];
     [operationQueue addOperation:operation];
     [operationQueue waitUntilAllOperationsAreFinished];
     generatedVolume = [[operation.generatedVolume retain] autorelease];
     [operation release];
-    [operationQueue release];
     
     return generatedVolume;
 }
 
 - (id)initWithVolumeData:(CPRVolumeData *)volumeData
 {
+	assert([NSThread isMainThread]);
+
     if ( (self = [super init]) ) {
         _volumeData = [volumeData retain];
         _generatorQueue = [[NSOperationQueue alloc] init];
@@ -79,12 +97,23 @@
     [super dealloc];
 }
 
+- (void)runMainRunLoopUntilAllRequestsAreFinished
+{
+	assert([NSThread isMainThread]);
+
+	while( [_observedOperations count] > 0) {
+		[[NSRunLoop mainRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+	}
+}
+
 - (void)requestVolume:(CPRGeneratorRequest *)request
 {
     CPRGeneratorOperation *operation;
-    
+ 
+	assert([NSThread isMainThread]);
+
     for (operation in _observedOperations) {
-        if ([operation isExecuting] == NO) {
+        if ([operation isExecuting] == NO && [operation isFinished] == NO) {
             [operation cancel];
         }
     }
@@ -100,6 +129,8 @@
 
 - (CGFloat)frameRate
 {
+	assert([NSThread isMainThread]);
+
     [self _cullGeneratedFrameTimes];
     return (CGFloat)[_generatedFrameTimes count] / 4.0;
 }
@@ -129,8 +160,11 @@
     CPRVolumeData *volumeData;
     CPRGeneratorOperation *operation;
     NSArray *finishedOperations;
+	NSInteger i;
     BOOL sentGeneratedVolume;
     
+	assert([NSThread isMainThread]);
+
     sentGeneratedVolume = NO;
     
     @synchronized (_finishedOperations) {
@@ -138,10 +172,8 @@
         [_finishedOperations removeAllObjects];
     }
     
-    for (operation in finishedOperations) {
-		// DEBUG
-		NSLog(@"processing operation %f seconds after it was finished", [[operation operationFinishedDate] timeIntervalSinceNow]);
-
+	for (i = [finishedOperations count] - 1; i >= 0; i--) {
+		operation = [finishedOperations objectAtIndex:i];
         [operation removeObserver:self forKeyPath:@"isFinished"];
         [self autorelease]; // to match the retain in -[CPRGenerator requestVolume:]
         
@@ -168,6 +200,8 @@
 {
     BOOL done;
     
+	assert([NSThread isMainThread]);
+
     // remove times that are older than 4 seconds
     done = NO;
     while (!done) {

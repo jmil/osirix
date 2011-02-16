@@ -27,7 +27,10 @@
 }
 
 -(NSMutableDictionary*)persistentStoreCoordinatorsDictionary {
-	return NULL;
+	static NSMutableDictionary* dict = NULL;
+	if (!dict)
+		dict = [[NSMutableDictionary alloc] initWithCapacity:4];
+	return dict;
 }
 
 -(NSManagedObjectContext*)contextAtPath:(NSString*)sqlFilePath {

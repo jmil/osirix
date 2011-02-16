@@ -47,6 +47,7 @@ typedef NSInteger CPRExportRotationSpan;
 @class CPRCurvedPath;
 @class CPRDisplayInfo;
 @class CPRTransverseView;
+@class CPRVolumeData;
 
 @interface CPRController : Window3DController <CPRViewDelegate>
 {
@@ -68,6 +69,7 @@ typedef NSInteger CPRExportRotationSpan;
     IBOutlet NSView *tbStraightenedCPRAngle;
     double straightenedCPRAngle; // this is in degrees, the CPRView uses radians
     
+    CPRVolumeData *cprVolumeData;
     CPRCurvedPath *curvedPath;
     CPRDisplayInfo *displayInfo;
     N3Vector baseNormal; // this value will depend on which view gets clicked first, it will be used as the basis for deciding what normal to use for what angle
@@ -108,13 +110,7 @@ typedef NSInteger CPRExportRotationSpan;
 	IBOutlet NSWindow *dcmWindow;
 	IBOutlet NSWindow *quicktimeWindow;
 	IBOutlet NSView *dcmSeriesView;
-	int dcmFrom, dcmTo, dcmMode, dcmSeriesMode, dcmRotation, dcmRotationDirection, dcmNumberOfFrames, dcmQuality, dcmFormat;
-    int dcmNumberOfRotationFrames;
-	float dcmInterval, previousDcmInterval;
-	BOOL dcmSameIntervalAndThickness, dcmBatchReverse;
-    float dcmExportSlabThickness;
-    BOOL dcmSameExportSlabThinknessAsThickSlab;
-	NSString *dcmSeriesName;
+	
 	CPRMPRDCMView *curExportView;
 	BOOL quicktimeExportMode;
 	NSMutableArray *qtFileArray;
@@ -126,7 +122,7 @@ typedef NSInteger CPRExportRotationSpan;
     NSInteger exportNumberOfRotationFrames;
     CPRExportRotationSpan exportRotationSpan;
     BOOL exportReverseSliceOrder;
-    BOOL exportSlabThinknessSameAsSlabThickness;
+//    BOOL exportSlabThinknessSameAsSlabThickness;
     CGFloat exportSlabThickness;
     BOOL exportSliceIntervalSameAsVolumeSliceInterval;
     CGFloat exportSliceInterval;
@@ -155,19 +151,14 @@ typedef NSInteger CPRExportRotationSpan;
 	NSMutableArray *_delegateDisplayInfoDebugging;
 }
 
-@property float clippingRangeThickness, dcmInterval, blendingPercentage;
-@property int dcmmN, clippingRangeMode, mouseViewID, dcmFrom, dcmTo, dcmMode, dcmSeriesMode, dcmRotation, dcmRotationDirection, dcmQuality;
-@property (readonly) int dcmNumberOfFrames;
-@property (readonly) int dcmNumberOfRotationFrames;
-@property int dcmFormat, curMovieIndex, maxMovieIndex, blendingMode;
+@property float clippingRangeThickness, blendingPercentage;
+@property int clippingRangeMode, mouseViewID;
+@property int curMovieIndex, maxMovieIndex, blendingMode;
 @property (retain) Point3D *mousePosition;
 @property (retain) NSArray *wlwwMenuItems;
-@property (retain) NSString *dcmSeriesName;
 @property (readonly) DCMPix *originalPix;
 @property float LOD, movieRate;
-@property BOOL lowLOD, dcmSameIntervalAndThickness, displayMousePosition, blendingModeAvailable, dcmBatchReverse;
-@property float dcmExportSlabThickness;
-@property BOOL dcmSameExportSlabThinknessAsThickSlab;
+@property BOOL lowLOD, displayMousePosition, blendingModeAvailable;
 @property (retain) NSColor *colorAxis1, *colorAxis2, *colorAxis3;
 @property (readonly) CPRMPRDCMView *mprView1, *mprView2, *mprView3;
 @property (readonly) NSSplitView *horizontalSplit1, *horizontalSplit2, *verticalSplit;
@@ -185,7 +176,7 @@ typedef NSInteger CPRExportRotationSpan;
 @property (nonatomic) NSInteger exportNumberOfRotationFrames;
 @property (nonatomic) CPRExportRotationSpan exportRotationSpan;
 @property (nonatomic) BOOL exportReverseSliceOrder;
-@property (nonatomic) BOOL exportSlabThinknessSameAsSlabThickness;
+//@property (nonatomic) BOOL exportSlabThinknessSameAsSlabThickness;
 @property (nonatomic) CGFloat exportSlabThickness;
 @property (nonatomic) BOOL exportSliceIntervalSameAsVolumeSliceInterval;
 @property (nonatomic) CGFloat exportSliceInterval;
@@ -196,12 +187,13 @@ typedef NSInteger CPRExportRotationSpan;
 - (id)initWithDCMPixList:(NSMutableArray*)pix filesList:(NSMutableArray*)files volumeData:(NSData*)volume viewerController:(ViewerController*)viewer fusedViewerController:(ViewerController*)fusedViewer;
 - (DCMPix*) emptyPix: (DCMPix*) originalPix width: (long) w height: (long) h;
 - (CPRMPRDCMView*) selectedView;
+- (id) selectedViewOnlyMPRView: (BOOL) onlyMPRView;
 - (void) computeCrossReferenceLines:(CPRMPRDCMView*) sender;
 - (IBAction)setTool:(id)sender;
 - (void) setToolIndex: (int) toolIndex;
 - (float) getClippingRangeThicknessInMm;
 - (void) propagateWLWW:(DCMView*) sender;
-- (void) propagateOriginRotationAndZoomToTransverseViews: (DCMView*) sender;
+- (void) propagateOriginRotationAndZoomToTransverseViews: (CPRTransverseView*) sender;
 - (void)bringToFrontROI:(ROI*) roi;
 - (id) prepareObjectForUndo:(NSString*) string;
 - (void)createWLWWMenuItems;

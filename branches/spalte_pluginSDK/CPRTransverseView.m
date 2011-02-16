@@ -24,6 +24,8 @@
 #import "DCMPix.h"
 #import "CPRMPRDCMView.h"
 #import "CPRController.h"
+#import "ROI.h"
+#import "Notifications.h"
 
 extern int CLUTBARS, ANNOTATIONS;
 
@@ -45,6 +47,7 @@ extern int CLUTBARS, ANNOTATIONS;
 
 @implementation CPRTransverseView
 
+@synthesize renderingScale = _renderingScale;
 @synthesize delegate = _delegate;
 @synthesize curvedPath = _curvedPath;
 @synthesize sectionType = _sectionType;
@@ -52,12 +55,21 @@ extern int CLUTBARS, ANNOTATIONS;
 @synthesize volumeData = _volumeData;
 @synthesize lastRequest = _lastRequest;
 @synthesize generatedVolumeData = _generatedVolumeData;
+@synthesize displayCrossLines;
 
+- (void) setDisplayCrossLines: (BOOL) b
+{
+	displayCrossLines = b;
+	[[self windowController] updateToolbarItems];
+}
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+		_renderingScale = 1;
+		displayCrossLines = YES;
     }
+	
     return self;
 }
 
@@ -80,8 +92,52 @@ extern int CLUTBARS, ANNOTATIONS;
 
 - (void)mouseDraggedZoom:(NSEvent *)event
 {
+	BOOL copyMouseClickZoomCentered = [[NSUserDefaults standardUserDefaults] boolForKey: @"MouseClickZoomCentered"];
+	
+	[[NSUserDefaults standardUserDefaults] setBool: NO forKey: @"MouseClickZoomCentered"];
+	
 	[super mouseDraggedZoom: event];
+	
+	[[NSUserDefaults standardUserDefaults] setBool: copyMouseClickZoomCentered forKey: @"MouseClickZoomCentered"];
+	
 	[[self windowController] propagateOriginRotationAndZoomToTransverseViews: self];
+}
+
+- (void) rightMouseDown:(NSEvent *)event
+{
+	previousScale = [self scaleValue];
+	[super rightMouseDown: event];
+}
+
+- (void) mouseDown:(NSEvent *)event
+{
+	previousScale = [self scaleValue];
+	[super mouseDown: event];
+}
+
+- (void) applyNewScaleValue
+{
+	if( [self scaleValue] != previousScale)
+	{
+		self.renderingScale /= previousScale / [self scaleValue];
+		
+		if ([_delegate respondsToSelector:@selector(CPRTransverseViewDidChangeRenderingScale:)])
+			[_delegate CPRTransverseViewDidChangeRenderingScale:self];
+		
+		[self _setNeedsNewRequest];
+	}
+}
+
+- (void) rightMouseUp:(NSEvent *)event
+{
+	[super rightMouseUp: event];
+	[self applyNewScaleValue];
+}
+
+- (void)mouseUp:(NSEvent *)event
+{
+	[super mouseUp: event];
+	[self applyNewScaleValue];
 }
 
 - (void)mouseDraggedTranslate:(NSEvent *)event
@@ -129,9 +185,22 @@ extern int CLUTBARS, ANNOTATIONS;
 }
 
 
+- (void) setRenderingScale:(CGFloat)renderingScale
+{
+    if (_renderingScale != renderingScale)
+	{
+//		_sectionWidth = _sectionWidth; / (renderingScale/_renderingScale);
+		
+		_renderingScale = renderingScale;
+		
+		[self _setNeedsNewRequest];
+    }
+}
+
 - (void)setSectionWidth:(CGFloat)sectionWidth
 {
-    if (_sectionWidth != sectionWidth) {
+    if (_sectionWidth != sectionWidth)
+	{
         _sectionWidth = sectionWidth;
         [self _setNeedsNewRequest];
     }
@@ -165,7 +234,7 @@ extern int CLUTBARS, ANNOTATIONS;
 {
 	if( [theEvent modifierFlags] & NSCommandKeyMask)
 	{
-		CGFloat transverseSectionSpacing = MIN(MAX(_curvedPath.transverseSectionSpacing + [theEvent deltaY] * .004, 0.0), 300); 
+		CGFloat transverseSectionSpacing = MIN(MAX(_curvedPath.transverseSectionSpacing + [theEvent deltaY] * .4, 0.0), 300); 
 		
 		if ([_delegate respondsToSelector:@selector(CPRViewWillEditCurvedPath:)])
 			[_delegate CPRViewWillEditCurvedPath:self];
@@ -181,7 +250,7 @@ extern int CLUTBARS, ANNOTATIONS;
 	{
 		CGFloat transverseSectionPosition;
 		
-		transverseSectionPosition = MIN(MAX(_curvedPath.transverseSectionPosition + [theEvent deltaY], 0.0), 1.0); 
+		transverseSectionPosition = MIN(MAX(_curvedPath.transverseSectionPosition + [theEvent deltaY] * .002, 0.0), 1.0); 
 		
 		if ([_delegate respondsToSelector:@selector(CPRViewWillEditCurvedPath:)]) {
 			[_delegate CPRViewWillEditCurvedPath:self];
@@ -199,7 +268,22 @@ extern int CLUTBARS, ANNOTATIONS;
 	long clutBars = CLUTBARS, annotations = ANNOTATIONS;
 	
 	CLUTBARS = barHide;
-	ANNOTATIONS = annotNone;
+	
+	if( ANNOTATIONS > annotGraphics)
+		ANNOTATIONS = annotGraphics;
+	
+	for( int i = 0; i < curRoiList.count; i++ )
+	{
+		ROI *r = [curRoiList objectAtIndex:i];
+		if( r.type != tMesure)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName: OsirixRemoveROINotification object:r userInfo: nil];
+			[curRoiList removeObjectAtIndex:i];
+			i--;
+		}
+		else
+			r.displayCMOrPixels = YES; // We don't want the value in pixels
+	}
 	
 	[super drawRect: aRect withContext: ctx];
 	
@@ -214,72 +298,111 @@ extern int CLUTBARS, ANNOTATIONS;
     N3Vector cursorVector;
     N3AffineTransform pixToSubDrawRectTransform;
     CGFloat pixelsPerMm;
-    CGLContextObj cgl_ctx;
+    CGLContextObj cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
     
-    cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];    
-    
-    pixToSubDrawRectTransform = [self pixToSubDrawRectTransform];
-    pixelsPerMm = (CGFloat)curDCM.pwidth/_sectionWidth;
-    
-    glColor4d(0.0, 1.0, 0.0, 1.0);
-    lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth/2.0, 0, 0), pixToSubDrawRectTransform);
-    lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
-    glLineWidth(1.0);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(lineStart.x, lineStart.y);
-    glVertex2f(lineEnd.x, lineEnd.y);
-    glEnd();
-    
-    if (_curvedPath.thickness > 2.0) {
-        glLineWidth(1.0);
-        glBegin(GL_LINES);
-        lineStart = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth+_curvedPath.thickness*pixelsPerMm)/2.0, 0, 0), pixToSubDrawRectTransform);
-        lineEnd = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth+_curvedPath.thickness*pixelsPerMm)/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
-        glVertex2f(lineStart.x, lineStart.y);
-        glVertex2f(lineEnd.x, lineEnd.y);
-        lineStart = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth-_curvedPath.thickness*pixelsPerMm)/2.0, 0, 0), pixToSubDrawRectTransform);
-        lineEnd = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth-_curvedPath.thickness*pixelsPerMm)/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
-        glVertex2f(lineStart.x, lineStart.y);
-        glVertex2f(lineEnd.x, lineEnd.y);
-        glEnd();
-    }
+	if( displayCrossLines)
+	{
+		pixToSubDrawRectTransform = [self pixToSubDrawRectTransform];
+		pixelsPerMm = (CGFloat)curDCM.pwidth/(_sectionWidth / _renderingScale);
+		
+		glColor4d(0.0, 1.0, 0.0, 1.0);
+		lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth/2.0, 0, 0), pixToSubDrawRectTransform);
+		lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
+		glLineWidth(1.0);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lineStart.x, lineStart.y);
+		glVertex2f(lineEnd.x, lineEnd.y);
+		glEnd();
+		
+		if (_curvedPath.thickness > 2.0)
+		{
+			glLineWidth(1.0);
+			glBegin(GL_LINES);
+			lineStart = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth+_curvedPath.thickness*pixelsPerMm)/2.0, 0, 0), pixToSubDrawRectTransform);
+			lineEnd = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth+_curvedPath.thickness*pixelsPerMm)/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
+			glVertex2f(lineStart.x, lineStart.y);
+			glVertex2f(lineEnd.x, lineEnd.y);
+			lineStart = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth-_curvedPath.thickness*pixelsPerMm)/2.0, 0, 0), pixToSubDrawRectTransform);
+			lineEnd = N3VectorApplyTransform(N3VectorMake(((CGFloat)curDCM.pwidth-_curvedPath.thickness*pixelsPerMm)/2.0, curDCM.pheight, 0), pixToSubDrawRectTransform);
+			glVertex2f(lineStart.x, lineStart.y);
+			glVertex2f(lineEnd.x, lineEnd.y);
+			glEnd();
+		}
+	}
+	
+	// Red Square
+	if( [[self window] firstResponder] == self && stringID == nil)
+	{
+		glLoadIdentity (); // reset model view matrix to identity (eliminates rotation basically)
+		glScalef (2.0f /(xFlipped ? -(drawingFrameRect.size.width) : drawingFrameRect.size.width), -2.0f / (yFlipped ? -(drawingFrameRect.size.height) : drawingFrameRect.size.height), 1.0f); // scale to port per pixel scale
+		
+		glColor4d(1.0, 0, 0.0, 1.0);
+		
+		float heighthalf = drawingFrameRect.size.height/2;
+		float widthhalf = drawingFrameRect.size.width/2;
+		
+		glLineWidth(8.0);
+		glBegin(GL_LINE_LOOP);
+        glVertex2f(  -widthhalf, -heighthalf);
+        glVertex2f(  -widthhalf, heighthalf);
+        glVertex2f(  widthhalf, heighthalf);
+        glVertex2f(  widthhalf, -heighthalf);
+		glEnd();
+	}
 }
 
 
 - (void)generator:(CPRGenerator *)generator didGenerateVolume:(CPRVolumeData *)volume request:(CPRGeneratorRequest *)request
 {
-    NSLog(@"didGenerateVolume");
-    float wl;
-    float ww;
-    NSUInteger i;
-    NSMutableArray *pixArray;
-    DCMPix *newPix;
-        
-    [self getWLWW:&wl :&ww];
+	NSData *previousROIs = [NSArchiver archivedDataWithRootObject: [self curRoiList]];
+	
     [[self.generatedVolumeData retain] autorelease]; // make sure this is around long enough so that it doesn't disapear under the old DCMPix
     self.generatedVolumeData = volume;
     
-    pixArray = [[NSMutableArray alloc] init];
+    NSMutableArray *pixArray = [[NSMutableArray alloc] init];
     
-    for (i = 0; i < self.generatedVolumeData.pixelsDeep; i++) {
-        newPix = [[DCMPix alloc] initWithData:(float *)[self.generatedVolumeData floatBytes] + (i*self.generatedVolumeData.pixelsWide*self.generatedVolumeData.pixelsHigh) :32 
+    for( int i = 0; i < self.generatedVolumeData.pixelsDeep; i++)
+	{
+        DCMPix *newPix = [[DCMPix alloc] initWithData:(float *)[self.generatedVolumeData floatBytes] + (i*self.generatedVolumeData.pixelsWide*self.generatedVolumeData.pixelsHigh) :32 
                                              :self.generatedVolumeData.pixelsWide :self.generatedVolumeData.pixelsHigh :self.generatedVolumeData.pixelSpacingX :self.generatedVolumeData.pixelSpacingY
-                                             :0.0 :0.0 :0.0 :NO];
+                                             :-self.generatedVolumeData.pixelSpacingX*self.generatedVolumeData.pixelsWide/2.
+											 :-self.generatedVolumeData.pixelSpacingY*self.generatedVolumeData.pixelsHigh/2.
+											 :0
+											 :NO];
+		float c[ 6] = {1, 0, 0, 0, 1, 0};
+		[newPix setOrientation: c];
+		
         [pixArray addObject:newPix];
         [newPix release];
     }
     
-    for( i = 0; i < [pixArray count]; i++)
+    for( int i = 0; i < [pixArray count]; i++)
     {
         [[pixArray objectAtIndex: i] setArrayPix:pixArray :i];
     }
     
     [self setPixels:pixArray files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
     
-    [self setWLWW:wl :ww];
+    [[self windowController] propagateWLWW: [[self windowController] mprView1]];
     
+	NSArray *roiArray = [NSUnarchiver unarchiveObjectWithData: previousROIs];
+	for( ROI *r in roiArray)
+	{
+		r.pix = curDCM;
+		[r setOriginAndSpacing :curDCM.pixelSpacingX : curDCM.pixelSpacingY :NSMakePoint( curDCM.originX, curDCM.originY) :NO :NO];
+		[r setRoiFont: labelFontListGL :labelFontListGLSize :self];
+	}
+	
+	[[self curRoiList] addObjectsFromArray: roiArray];
+	
     [pixArray release];
     [self setNeedsDisplay:YES];
+}
+
+- (void)runMainRunLoopUntilAllRequestsAreFinished
+{
+	[self _sendNewRequestIfNeeded];
+	[_generator runMainRunLoopUntilAllRequestsAreFinished];
 }
 
 - (void)_sendNewRequest
@@ -287,7 +410,8 @@ extern int CLUTBARS, ANNOTATIONS;
     CPRStraightenedGeneratorRequest *request;
     N3Vector initialNormal;
     
-    if ([_curvedPath.bezierPath elementCount] >= 2) {
+    if ([_curvedPath.bezierPath elementCount] >= 3)
+	{
         request = [[CPRStraightenedGeneratorRequest alloc] init];
         
         request.pixelsWide = [self bounds].size.width;
@@ -302,12 +426,25 @@ extern int CLUTBARS, ANNOTATIONS;
         request.middlePosition = 0;
         
         if ([_lastRequest isEqual:request] == NO) {
-            [_generator requestVolume:request];
-            self.lastRequest = request;
+			if (_curvedPath.thickness < 2) { // check the curved path thickness because if the curvedPath thickness is large there are probably large async requests  going on, and the synchronous request will probably take a long time
+				CPRVolumeData *curvedVolume;
+				curvedVolume = [CPRGenerator synchronousRequestVolume:request volumeData:_generator.volumeData];
+				
+				[_generator runMainRunLoopUntilAllRequestsAreFinished];
+				[self generator:nil didGenerateVolume:curvedVolume request:request];
+			} else {
+				[_generator requestVolume:request];
+			}
+			self.lastRequest = request;
         }
         
         [request release];
     }
+	else
+	{
+		[self setPixels: nil files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
+	}
+	
     _needsNewRequest = NO;
 }
 
@@ -345,8 +482,8 @@ extern int CLUTBARS, ANNOTATIONS;
     cross = N3VectorNormalize(N3VectorCrossProduct(normal, tangent));
     
     bezierPath = [N3MutableBezierPath bezierPath];
-    [bezierPath moveToVector:N3VectorAdd(vector, N3VectorScalarMultiply(cross, _sectionWidth / 2))]; 
-    [bezierPath lineToVector:N3VectorAdd(vector, N3VectorScalarMultiply(cross, -_sectionWidth / 2))]; 
+    [bezierPath moveToVector:N3VectorAdd(vector, N3VectorScalarMultiply(cross, _sectionWidth / _renderingScale / 2))]; 
+    [bezierPath lineToVector:N3VectorAdd(vector, N3VectorScalarMultiply(cross, -_sectionWidth / _renderingScale / 2))]; 
     
     if (initialNormal) {
         *initialNormal = normal;
@@ -356,8 +493,13 @@ extern int CLUTBARS, ANNOTATIONS;
             
 - (void)_setNeedsNewRequest
 {
-    _needsNewRequest = YES;
-    [self performSelector:@selector(_sendNewRequestIfNeeded) withObject:nil afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+	_needsNewRequest = YES;
+	[self _sendNewRequestIfNeeded];
+
+//	if (_needsNewRequest == NO) {
+//		[self performSelector:@selector(_sendNewRequestIfNeeded) withObject:nil afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+//	}
+//    _needsNewRequest = YES;
 }
 
 - (void)_sendNewRequestIfNeeded

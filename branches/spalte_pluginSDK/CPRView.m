@@ -24,6 +24,11 @@
 #import "N3Geometry.h"
 #import "N3BezierCoreAdditions.h"
 #import "CPRController.h"
+#import "ROI.h"
+#import "Notifications.h"
+
+extern BOOL frameZoomed;
+extern int splitPosition[ 2];
 
 @interface _CPRViewPlaneRun : NSObject
 {
@@ -381,6 +386,13 @@
     return _generatedHeight;
 }
 
+- (void) drawRect:(NSRect)rect
+{
+	[self adjustROIsForCPRView];
+	
+	[super drawRect: rect];
+}
+
 - (void)subDrawRect:(NSRect)rect
 {
     N3Vector lineStart;
@@ -455,10 +467,12 @@
     
 	glLineWidth(2.0);
     glBegin(GL_LINES);
-    glColor4d(0.0, 1.0, 0.0, 1.0);
+    glColor4d(0.0, 1.0, 0.0, 0.2);
     glVertex2d(lineStart.x, lineStart.y);
     glVertex2d(lineEnd.x, lineEnd.y);
     glEnd();
+	
+	glColor4d(0.0, 1.0, 0.0, 0.8);
     
     if (_displayInfo.mouseCursorHidden == NO) {
         cursorVector = N3VectorMake(curDCM.pwidth * _displayInfo.mouseCursorPosition, (CGFloat)curDCM.pheight/2.0, 0);
@@ -550,6 +564,26 @@
     }
     
 	glLineWidth(1.0);
+	
+	// Red Square
+	if( [[self window] firstResponder] == self && stringID == nil)
+	{
+		glLoadIdentity (); // reset model view matrix to identity (eliminates rotation basically)
+		glScalef (2.0f /(xFlipped ? -(drawingFrameRect.size.width) : drawingFrameRect.size.width), -2.0f / (yFlipped ? -(drawingFrameRect.size.height) : drawingFrameRect.size.height), 1.0f); // scale to port per pixel scale
+		
+		glColor4d(1.0, 0, 0.0, 1.0);
+		
+		float heighthalf = drawingFrameRect.size.height/2;
+		float widthhalf = drawingFrameRect.size.width/2;
+		
+		glLineWidth(8.0);
+		glBegin(GL_LINE_LOOP);
+        glVertex2f(  -widthhalf, -heighthalf);
+        glVertex2f(  -widthhalf, heighthalf);
+        glVertex2f(  widthhalf, heighthalf);
+        glVertex2f(  widthhalf, -heighthalf);
+		glEnd();
+	}
 	
 	glDisable(GL_LINE_SMOOTH);
 	glDisable(GL_POLYGON_SMOOTH);
@@ -646,6 +680,58 @@
     [super mouseMoved:theEvent];
 }
 
+- (void) adjustROIsForCPRView
+{
+	for( int i = 0; i < curRoiList.count; i++ )
+	{
+		ROI *r = [curRoiList objectAtIndex:i];
+		if( r.type != tMesure)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName: OsirixRemoveROINotification object:r userInfo: nil];
+			[curRoiList removeObjectAtIndex:i];
+			i--;
+		}
+		else
+			r.displayCMOrPixels = YES; // We don't want the value in pixels
+	}
+	
+	for( ROI *c in curRoiList)
+	{
+		if( c.type == tMesure)
+		{
+			NSMutableArray *points = c.points;
+			
+			NSPoint A = [[points objectAtIndex: 0] point];
+			NSPoint B = [[points objectAtIndex: 1] point];
+			
+			if( fabs( A.x - B.x) > 4 || fabs( A.y - B.y) > 4)
+			{
+				if( fabs( A.x - B.x) > fabs( A.y - B.y) || A.y == [curDCM pheight] / 2)
+				{
+					// Horizontal length -> centered in y, and horizontal
+					
+					A.y = [curDCM pheight] / 2;
+					B.y = [curDCM pheight] / 2;
+					
+					[[points objectAtIndex: 0] setPoint: A];
+					[[points objectAtIndex: 1] setPoint: B];
+				}
+				else
+				{
+					// Vectical length -> vertical
+					
+					A.x = B.x;
+					
+					[[points objectAtIndex: 0] setPoint: A];
+					[[points objectAtIndex: 1] setPoint: B];
+				}
+			}
+		}
+	}
+	
+	[self setNeedsDisplay: YES];
+}
+
 - (void)mouseDown:(NSEvent *)event
 {
     NSPoint viewPoint;
@@ -686,8 +772,51 @@
                 break;
             }
         }
-        if (_clickedNode == NO) {
-            [super mouseDown:event];
+        if (_clickedNode == NO)
+		{
+			int clickCount = 1;
+			
+			@try
+			{
+				if( [event type] ==	NSLeftMouseDown || [event type] ==	NSRightMouseDown || [event type] ==	NSLeftMouseUp || [event type] == NSRightMouseUp)
+					clickCount = [event clickCount];
+			}
+			@catch (NSException * e)
+			{
+				clickCount = 1;
+			}
+			
+			if( clickCount == 2)
+			{
+				CPRController *windowController = [self windowController];
+				
+				if( frameZoomed == NO)
+				{
+					splitPosition[0] = [[windowController mprView1] frame].origin.x + [[windowController mprView1] frame].size.width;	// vert
+					splitPosition[1] = [[windowController mprView1] frame].origin.y + [[windowController mprView1] frame].size.height;	// hori12
+					splitPosition[2] = [[windowController mprView3] frame].origin.y + [[windowController mprView3] frame].size.height;	// horiz2
+					
+					frameZoomed = YES;
+					
+					[windowController.verticalSplit setPosition: [windowController.verticalSplit minPossiblePositionOfDividerAtIndex: 0] ofDividerAtIndex: 0];
+					[windowController.horizontalSplit1 setPosition: [windowController.horizontalSplit1 minPossiblePositionOfDividerAtIndex: 0] ofDividerAtIndex: 0];
+					[windowController.horizontalSplit2 setPosition: [windowController.horizontalSplit2 minPossiblePositionOfDividerAtIndex: 0] ofDividerAtIndex: 0];
+				}
+				else
+				{
+					frameZoomed = NO;
+					[windowController.verticalSplit setPosition: splitPosition[ 0] ofDividerAtIndex: 0];
+					[windowController.horizontalSplit1 setPosition: splitPosition[ 1] ofDividerAtIndex: 0];
+					[windowController.horizontalSplit2 setPosition: splitPosition[ 2] ofDividerAtIndex: 0];
+				}
+			}
+			else
+			{
+				if( [self roiTool: currentTool])
+					currentTool = tMesure;
+				
+				[super mouseDown:event];
+			}
         }
     }
 }
@@ -736,7 +865,6 @@
 
         [super mouseDragged:event];
     }
-
 }
 
 - (void)mouseUp:(NSEvent *)event
@@ -757,7 +885,7 @@
 	// Scroll/Move transverse lines
 	if( [theEvent modifierFlags] & NSAlternateKeyMask)
 	{
-		CGFloat transverseSectionPosition = MIN(MAX(_curvedPath.transverseSectionPosition + [theEvent deltaY], 0.0), 1.0); 
+		CGFloat transverseSectionPosition = MIN(MAX(_curvedPath.transverseSectionPosition + [theEvent deltaY] * .002, 0.0), 1.0); 
 		
 		[self _sendWillEditCurvedPath];
 		_curvedPath.transverseSectionPosition = transverseSectionPosition;
@@ -770,7 +898,7 @@
 	// Scroll/Move transverse lines
 	else if( [theEvent modifierFlags] & NSCommandKeyMask)
 	{
-		CGFloat transverseSectionSpacing = MIN(MAX(_curvedPath.transverseSectionSpacing + [theEvent deltaY] * .004, 0.0), 300); 
+		CGFloat transverseSectionSpacing = MIN(MAX(_curvedPath.transverseSectionSpacing + [theEvent deltaY] * .4, 0.0), 300); 
 		
 		[self _sendWillEditCurvedPath];
 		_curvedPath.transverseSectionSpacing = transverseSectionSpacing;
@@ -803,50 +931,85 @@
         lastDate = [[NSDate date] retain];
     }
     
-    NSLog(@"didGenerateVolume time sinc last date %f", -[lastDate timeIntervalSinceNow]);
+//    NSLog(@"didGenerateVolume time sinc last date %f", -[lastDate timeIntervalSinceNow]);
     [lastDate release];
     lastDate = [[NSDate date] retain];
     
-    
-    float wl;
-    float ww;
     NSUInteger i;
     NSMutableArray *pixArray;
     DCMPix *newPix;
-    
+	
     [self _updateGeneratedHeight];
-        
-    [self getWLWW:&wl :&ww];
-    [[self.curvedVolumeData retain] autorelease]; // make sure this is around long enough so that it doesn't disapear under the old DCMPix
+	
+	NSPoint previousOrigin = [self origin];
+	float previousScale = [self scaleValue];
+	float previousRotation = [self rotation];
+	int previousHeight = [curDCM pheight], previousWidth = [curDCM pwidth];
+	NSData *previousROIs = [NSArchiver archivedDataWithRootObject: [self curRoiList]];
+	
+	[[self.curvedVolumeData retain] autorelease]; // make sure this is around long enough so that it doesn't disapear under the old DCMPix
     self.curvedVolumeData = volume;
     
     pixArray = [[NSMutableArray alloc] init];
     
-    for (i = 0; i < self.curvedVolumeData.pixelsDeep; i++) {
+    for (i = 0; i < self.curvedVolumeData.pixelsDeep; i++)
+	{
         newPix = [[DCMPix alloc] initWithData:(float *)[self.curvedVolumeData floatBytes] + (i*self.curvedVolumeData.pixelsWide*self.curvedVolumeData.pixelsHigh) :32 
                                              :self.curvedVolumeData.pixelsWide :self.curvedVolumeData.pixelsHigh :self.curvedVolumeData.pixelSpacingX :self.curvedVolumeData.pixelSpacingY
                                              :0.0 :0.0 :0.0 :NO];
-        [pixArray addObject:newPix];
+        
+		[newPix setImageObj: [[[self windowController] originalPix] imageObj]];
+		[newPix setSrcFile: [[[self windowController] originalPix] srcFile]];
+		[newPix setAnnotationsDictionary: [[[self windowController] originalPix] annotationsDictionary]];
+		
+		
+		[pixArray addObject:newPix];
         [newPix release];
     }
-
+	
     for( i = 0; i < [pixArray count]; i++)
     {
         [[pixArray objectAtIndex: i] setArrayPix:pixArray :i];
-    }
+	}
     
     [self setPixels:pixArray files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
     
-    [self setWLWW:wl :ww];
+    //[self setWLWW:wl :ww];
+	[[self windowController] propagateWLWW: [[self windowController] mprView1]];
+	
     [self setFusion:[[self class] _fusionModeForCPRViewClippingRangeMode:_clippingRangeMode] :self.curvedVolumeData.pixelsDeep];
     
     [pixArray release];
+	
+	if( previousWidth == [curDCM pwidth] && previousHeight == [curDCM pheight])
+	{
+		[self setOrigin:previousOrigin];
+		[self setScaleValue: previousScale];
+		[self setRotation: previousRotation];
+	}
+	
+	NSArray *roiArray = [NSUnarchiver unarchiveObjectWithData: previousROIs];
+	for( ROI *r in roiArray)
+	{
+		r.pix = curDCM;
+		[r setOriginAndSpacing :curDCM.pixelSpacingX : curDCM.pixelSpacingY :NSMakePoint( curDCM.originX, curDCM.originY) :NO :NO];
+		[r setRoiFont: labelFontListGL :labelFontListGLSize :self];
+	}
+	
+	[[self curRoiList] addObjectsFromArray: roiArray];
+	
 	[self _clearAllPlanes];
     [self setNeedsDisplay:YES];
 }
 
 - (void)generator:(CPRGenerator *)generator didAbandonRequest:(CPRGeneratorRequest *)request
 {
+}
+
+- (void) runMainRunLoopUntilAllRequestsAreFinished
+{
+	[self _sendNewRequestIfNeeded];
+	[_generator runMainRunLoopUntilAllRequestsAreFinished];
 }
 
 + (NSInteger)_fusionModeForCPRViewClippingRangeMode:(CPRViewClippingRangeMode)clippingRangeMode
@@ -916,7 +1079,8 @@
 {
     CPRStraightenedGeneratorRequest *request;
     
-    if ([_curvedPath.bezierPath elementCount] >= 2) {
+    if ([_curvedPath.bezierPath elementCount] >= 3)
+	{
         request = [[CPRStraightenedGeneratorRequest alloc] init];
         
         request.pixelsWide = [self bounds].size.width;
@@ -933,19 +1097,36 @@
         request.middlePosition = 0;
         
         if ([_lastRequest isEqual:request] == NO) {
-            [_generator requestVolume:request];
-            self.lastRequest = request;
+			if (request.slabWidth < 2) {
+				CPRVolumeData *curvedVolume;
+				curvedVolume = [CPRGenerator synchronousRequestVolume:request volumeData:_generator.volumeData];
+				
+				[_generator runMainRunLoopUntilAllRequestsAreFinished];
+				[self generator:nil didGenerateVolume:curvedVolume request:request];
+			} else {
+				[_generator requestVolume:request];
+			}
+			self.lastRequest = request;
         }
         
         [request release];
     }
+	else
+	{
+		[self setPixels: nil files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
+	}
+	
     _needsNewRequest = NO;
 }
 
 - (void)_setNeedsNewRequest
 {
     _needsNewRequest = YES;
-    [self performSelector:@selector(_sendNewRequestIfNeeded) withObject:nil afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+	[self _sendNewRequestIfNeeded];
+//	if (_needsNewRequest == NO) {
+//		[self performSelector:@selector(_sendNewRequestIfNeeded) withObject:nil afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+//	}
+//    _needsNewRequest = YES;
 }
 
 - (void)_sendNewRequestIfNeeded
