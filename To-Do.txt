@@ -2,6 +2,7 @@
 - JPEG2000 supported in DCMTK
 - New Web Server engine: faster, more robust, and cleaner
 - Kakadu SDK for JPEG2000 : Up to 6 times faster than OpenJPEG
+- Many multi-threading optimizations, for better GUI interactions
 - OpenJPEG library updated to 1.4
 - Flash support, instead of Quicktime, for the built-in Web Server
 - Web Server: Administer Users from the Web
@@ -19,6 +20,7 @@
 
 - Brush ROIs: load/save
 - DICOM Listener TLS?
+- New CPR curved icon
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
