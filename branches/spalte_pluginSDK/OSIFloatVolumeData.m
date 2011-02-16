@@ -26,24 +26,19 @@
 @dynamic pixelSpacingZ;
 @dynamic volumeTransform;
 
-- (const float *)floatBytes
+- (BOOL)getFloatData:(void *)buffer range:(NSRange)range;
 {
-	return [super floatBytes];
+	return [super getFloatData:buffer range:range];
 }
 
-- (void)getFloatData:(void *)buffer range:(NSRange)range
+- (BOOL)getFloat:(float *)floatPtr atPixelCoordinateX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z; // returns YES if the float was sucessfully gotten
 {
-	[super getFloatData:buffer range:range];
+	return [super getFloat:floatPtr atPixelCoordinateX:x y:y z:z];
 }
 
-- (float)floatAtPixelCoordinateX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z
+- (BOOL)getLinearInterpolatedFloat:(float *)floatPtr atDicomVector:(N3Vector)vector
 {
-	return [super floatAtPixelCoordinateX:x y:y z:z];
-}
-
-- (float)linearInterpolatedFloatAtDicomVector:(N3Vector)vector
-{
-	return [super linearInterpolatedFloatAtDicomVector:vector];
+	return [super getLinearInterpolatedFloat:floatPtr atDicomVector:vector];
 }
 
 @end

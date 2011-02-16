@@ -107,16 +107,6 @@
 /// @name Accessing Volume Pixel Data
 ///-----------------------------------
 
-
-/** Returns a pointer to the receiver’s raw float data.
- @return A read-only pointer to the receiver’s raw float data.
- 
- @see getFloatData:range:
- @see floatAtPixelCoordinateX:y:z:
- @see linearInterpolatedFloatAtDicomVector:
- */
-- (const float *)floatBytes;
-
 /** Copies a range of floats from the receiver’s data into a given buffer.
  
  This will copy `range.length * sizeof(float)` bytes into the given buffer.
@@ -124,34 +114,41 @@
  @param buffer The memory buffer to fill.
  @param range The range of floats in the receiver's data to copy to buffer. The range must lie within the receiver's data.
  
- @see floatBytes
+ @return YES if the data was available and the buffer was filled.
+ 
  @see floatAtPixelCoordinateX:y:z:
  @see linearInterpolatedFloatAtDicomVector:
  */
-- (void)getFloatData:(void *)buffer range:(NSRange)range;
+- (BOOL)getFloatData:(void *)buffer range:(NSRange)range;
 
-/** Returns the value of the float at the given pixel coordinates.
+/** Returns by indirection the value of the float at the given pixel coordinates.
 
  @return The value of the float at the given pixel coordinates.
+ @param floatPtr Provide a location where to put the requested float
  @param x X Coordinate
  @param y Y Coordinate
  @param z Z Coordinate
  
+ @return YES if the data was available and the buffer was filled.
+
  @see floatBytes
  @see getFloatData:range:
  @see linearInterpolatedFloatAtDicomVector:
  */
-- (float)floatAtPixelCoordinateX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+- (BOOL)getFloat:(float *)floatPtr atPixelCoordinateX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z; // returns YES if the float was sucessfully gotten
 
-/** Returns the linearly interpolated value of the pixel at the given coordinate in Patient Space (aka Dicom Space in mm).
+/** Returns by indirection the linearly interpolated value of the pixel at the given coordinate in Patient Space (aka Dicom Space in mm).
  
  @return The value of the float at the given Dicom coordinates.
+ @param floatPtr Provide a location where to put the requested float
  @param vector The requested coordinates in Patient Space (aka Dicom Space in mm).
  
+ @return YES if the data was available and the buffer was filled.
+
  @see floatBytes
  @see getFloatData:range:
  @see floatAtPixelCoordinateX:y:z:
  */
-- (float)linearInterpolatedFloatAtDicomVector:(N3Vector)vector; // these are slower, use the inline buffer if you care about speed
+- (BOOL)getLinearInterpolatedFloat:(float *)floatPtr atDicomVector:(N3Vector)vector; // these are slower, use the inline buffer if you care about speed
 
 @end
