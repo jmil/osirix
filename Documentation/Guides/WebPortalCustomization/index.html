@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title>OsiriX Web Portal Customization Guide</title>
+	<link rel="stylesheet" href="../guides.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link REL="SHORTCUT ICON" HREF="../favicon.ico">
+</head>
+
+<body>
+	<ul id="table_of_content">
+		<a href="../index.html"><li id="table_of_content_back">OsiriX Technical Guides</li></a>
+		<li id="table_of_content_embellishment_start"></li>
+		<li id="table_of_content_title">Table of Contents</li>
+		<li id="table_of_content_embellishment_end"></li>
+	</ul>
+		
+	<div id="content">
+		<a name="top"><h1>OsiriX Web Portal Customization Guide</h1></a>
+		<div>A template's text is scanned for tokens, which are replaced with the corresponding values. A token dictionary is provided for every page. Some tokens are common to all pages, while some others are specialized and only available to certain pages.</div>
+		<div>A token's beginning and ending are marked with a the character '%'. Tokens can't contain white space, tab and newline characters.</div>
+		<pre>Patient's name: %Study.name%.</pre>
+		<div>Tokens beginning with a '[' character define the beginning of a block. Every block must me terminated by repeating with the opening token, but with a ']' character.</div>
+		<pre>%[token%
+    Patient's name: %Study.name%.
+%]token%</pre>
+		<div>Two blocks with identical tokens can be differentiated with a '#' character:</div>
+		<pre>%[example%
+    %[example#again%
+    %]example#again%
+%]example%</pre>
+		<div>If you don't differentiate enclosed identical tokens, you will end up with the first token (on 1st line) matching the first closing token (on 3rd line instead of 4th)</div>
+		<div>Tokens are split into ports delimited by ':' characters. The first part is matched to a list of available functions and flow control related keywords.</div>
+		<div>String transformation functions, available to avoid invalid URLs and HTML:
+			<ul>
+				<li><code>URLENC</code> or <code>U</code><div>
+					Quotes URL breaking characters.
+					<pre>&lt;a href="/study?name=%U:Study.name%"&gt;...&lt;/a&gt;</pre>
+				</div></li>
+				<li><code>XMLENC</code> or <code>X</code><div>
+					Quotes XML breaking characters.
+					<pre>&lt;a href="..."&gt;%X:Study.name%&lt;/a&gt;</pre>
+				</div></li>
+				<li><code>XMLENC:ZWS</code> or <code>X:ZWS</code><div>
+					Inserts ZERO-WIDTH-SPACE (U+200B) characters between every letter and then quotes XML breaking characters.
+					<pre>&lt;a href="..."&gt;%X:ZWS:Study.name%&lt;/a&gt;</pre>
+				</div></li>
+			</ul>
+		</div>
+		<div>Flow control keywords:
+			<ul>
+				<li><code>FOREACH:A:I</code><div>
+					Allows iteration on an array's (A) items (I). Also inserts I_Index (index of I in A) and I_Index2 (index mod 2) into the tokens dictionary. 
+					<pre>%[FOREACH:Studies:Study%
+    &lt;li class="item%Study_Index2%"&gt;%Study_Index%: %Study.name%&lt;/li&gt;
+%]FOREACH:Studies:Study%</pre>
+				</div></li>
+				<li><code>IF:C B1 (ELSE:C B2)</code><div>
+					Evaluates condition C and renders B1 if C is satisfied; otherwise, renders B2, if available.
+					<pre>%[IF:Study.name.length%
+    Patient's name: %Study.name%.
+%ELSE:Study.name.length%
+	Undefined patient's name.
+%]IF:Study.name.length%</pre>
+				</div></li>
+			</ul>
+		</div>
+		
+		<div>A token (or part of it) is otherwise transformed into the corresponding value by using Obj-C's valueForKey mechanism (with some additions):</div>
+			<ul>
+				<li>String objects have an extra <code>Spanned</code> member, that transforms the string so that iOS won't parse it as a phone number.</li>
+				<li>Date objects have extra <code>Time</code> and <code>DateTime</code> members, that transform the date into strings by using the formats specified by the user in the Database preferences.<br/>
+					Also, <code>Months</code>, <code>Days</code> and <code>NextYears</code>, arrays, are available to allow date selection in forms.
+				</li>
+				<li>Managed Objects (Albums, Studies, Series, Images) have an extra <code>isSelected</code> member that checks if the object's ID is in the HTTP request's <code>selection</code> parameter.</li>
+			</ul>
+		</div>
+		
+		<a><h2>General keys</h2></a>
+			<ul>
+				<li><code>Info</code>
+					<div>
+						An object that allows access to many portal-oriented values:
+						<ul>
+							<li><code>isIOS</code></li>
+							<li><code>isMacOS</code></li>
+							<li><code>authenticationRequired</code></li>
+							<li><code>newToken</code></li>
+							<li><code>newChallenge</code></li>
+							<li><code>passwordRestoreAllowed</code></li>
+							<li><code>dicomCStorePort</code></li>
+							<li><code>proposeWeasis</code></li>
+							<li><code>proposeFlash</code></li>
+							<li><code>proposeDicomUpload</code></li>
+							<li><code>proposeDicomSend</code></li>
+							<li><code>proposeZipDownload</code></li>
+							<li><code>proposeShare</code></li>
+							<li><code>baseUrl</code></li>
+							<li><code>getParameters</code></li>
+							<li><code>allParameters</code></li>
+						</ul>
+					</div>
+				</li>
+				<li><code>User: WUser</code>
+					<div>
+						The logged in user, if there is any.</div>
+					</div>
+				</li>
+				<li><code>PageTitle</code></li>
+			</ul>
+			
+		<a><h2>main</h2></a>
+			<ul>
+				<li><code>Albums: Array of DAlbum</code></li>
+				<li><code>Studies: Array of DStudy</code></li>
+			</ul>
+			
+		<a><h2>studyList</h2></a>
+			<ul>
+				<li><code>Studies: Array of DStudy</code></li>
+			</ul>
+			
+		<a><h2>study</h2></a>
+			<ul>
+				<li><code>BackLinkLabel: String</code></li>
+				<li><code>Study: DStudy</code></li>
+				<li><code>Series: Array of DSeries</code></li>
+				<li><code>DicomDestinations: Array of Dictionaries (keys: Address, Port, AETitle, TransferSyntax, Description)</code></li>
+				<li><code>ShareDestinations: Array of WUser</code></li>
+			</ul>
+			
+		<a><h2>series</h2></a>
+			<ul>
+				<li><code>BackLinkLabel: String</code></li>
+				<li><code>Series: DSeries</code></li>
+			</ul>
+			
+		<a><h2>admin/index</h2></a>
+			<ul>
+				<li><code>Users: Array of WUser</code></li>
+			</ul>
+			
+		<a><h2>admin/user</h2></a>
+			<ul>
+				<li><code>EditedUser: WUser (or Dictionary)</code></li>
+			</ul>
+		
+		<a><h2>Entities</h2></a>
+		<div>In the Web Portal domain: WUser</div>
+		<div style="text-align:center"><img src="WEntities.png"></div>
+		
+		<div>In the DICOM domain: WAlbum, WStudy, WSeries, WImage</div>
+		<div style="text-align:center"><img src="DEntities.png"></div>
+		
+		These are defined in the database models. There are, just like with Dates and Strings, extra properties:
+		
+		<ul>
+			<li><code>WUser</code><div>
+				<ul>
+					<li><code>originalName</code> is available for usage in index/user</li>
+				</ul>
+			</div></li>
+			<li><code>DStudy</code><div>
+				<ul>
+					<li><code>noFiles</code></li>
+					<li><code>paths</code></li>
+					<li><code>keyImages</code></li>
+					<li><code>imageSeries</code></li>
+					<li><code>keyObjectSeries</code></li>
+					<li><code>keyObjects</code></li>
+					<li><code>presentationStateSeries</code></li>
+					<li><code>waveFormSeries</code></li>
+					<li><code>roiSRSeries</code></li>
+					<li><code>reportSRSeries</code></li>
+					<li><code>reportImage</code></li>
+					<li><code>annotationsSRImage</code></li>
+					<li><code>isHidden</code></li>
+					<li><code>noFilesExcludingMultiFrames</code></li>
+					<li><code>annotationsAsDictionary</code></li>
+					<li><code>reportIsLink: Number (bool)</code></li>
+					<li><code>reportExtension: String</code></li>
+					<li><code>stateText: String</code></li>
+				</ul>
+			</div></li>
+			<li><code>DSeries</code><div>
+				<ul>
+					<li><code>paths</code></li>
+					<li><code>keyImages</code></li>
+					<li><code>sortedImages</code></li>
+					<li><code>noFilesExcludingMultiFrames</code></li>
+					<li><code>seriesExtension: String</code></li>
+					<li><code>stateText: String</code></li>
+					<li><code>width: Number</code></li>
+					<li><code>height: Number</code></li>
+				</ul>
+			</div></li>
+		</ul>
+		
+		
+		<a><h2>Transition</h2></a>
+		<a href="transition.html">Here.</a>
+		
+		
+	</div>				
+	<div id="footer">&copy;2011 The OsiriX Development Team - <i>Developing Swiss Quality DICOM Viewer since 2003</i></div>
+</body>
+</html>

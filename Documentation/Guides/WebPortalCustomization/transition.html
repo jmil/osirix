@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title>OsiriX Web Portal Templates Transition Guide</title>
+	<link rel="stylesheet" href="../guides.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link REL="SHORTCUT ICON" HREF="../favicon.ico">
+</head>
+
+<body>
+	<ul id="table_of_content">
+		<a href="../index.html"><li id="table_of_content_back">OsiriX Technical Guides</li></a>
+		<li id="table_of_content_embellishment_start"></li>
+		<li id="table_of_content_title">Table of Contents</li>
+		<li id="table_of_content_embellishment_end"></li>
+	</ul>
+		
+	<div id="content">
+		<a name="top"><h1>OsiriX Web Portal Templates transition Guide</h1></a>
+		<a><h2>3.8.1 -> 3.9</h2></a>
+		At version 3.9 the syntax to be used in the templates changed. We highly suggest that the customization is done from scratch. If you need to save your previous templates, this transition table should help.
+		<table><tr><td>3.8.1</td><td>3.9</td></tr>
+
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">Global</td></tr>
+		<tr><td>%DicomCStorePort%</td><td>Must disappear: moved to session</td></tr>
+		<tr><td>BEFORE</td><td>AFTER</td></tr>
+		<tr><td>BEFORE</td><td>AFTER</td></tr>
+
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">index.html</td></tr>
+		<tr><td>%AuthorizedRestorePasswordWebServer%</td><td>%Info.passwordRestoreAllowed%</td></tr>
+
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">account.html</td></tr>
+		<tr><td>%ErrorToWrite%</td><td>Errors: Array</td></tr>
+		<tr><td>%MessageToWrite%</td><td>Messages: Array</td></tr>
+		<tr><td>%LocalizedLabel_MessageAccount%</td><td>In Messages and Errors</td></tr>
+		<tr><td>%name%</td><td>%X:User.name%</td></tr>
+		<tr><td>%email%</td><td>%X:User.email%</td></tr>
+		<tr><td>%address%</td><td>%X:User.address%</td></tr>
+		<tr><td>%phone%</td><td>%X:User.phone%</td></tr>
+		<tr><td>%emailNotification%</td><td>%[IF:User.emailNotification%checked="checked"%]IF:User.emailNotification%</td></tr>
+		
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">password_forgotten.html</td></tr>
+		<tr><td>%MessageToWrite%</td><td>Messages: Array</td></tr>
+		<tr><td>%Localized_Message%</td><td>In Messages</td></tr>
+
+		<tr><td colspan="2"> </td></tr>
+		<tr><td>emailTemplate.txt</td><td>emailTemplate.html, content must change to HTML</td></tr>
+		<tr><td>%Username%</td><td>%X:Destination.name%</td></tr>
+		<tr><td>%WebServerAddress%</td><td>%WebServerURL%</td></tr>
+		<tr><td>%customText%</td><td>%[IF:customText.length%
+%X:customText%&lt;br/&gt;&lt;br/&gt;
+%]IF:customText.length%</td></tr>
+		
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">main.html</td></tr>
+		<tr><td>%userAccount%</td><td>%[IF:User%</td></tr>
+		<tr><td>%/userAccount%</td><td>%]IF:User%</td></tr>
+		<tr><td>%UserNameLabel%</td><td>%X:User.name%</td></tr>
+		<tr><td>%UserEmailLabel%</td><td>%X:User.email%</td></tr>
+		<tr><td>%UserPhoneLabel%</td><td>%X:User.phone%</td></tr>
+		<tr><td>%accessStudies%</td><td>%[IF:Studies.count%</td></tr>
+		<tr><td>%/accessStudies%</td><td>%]IF:Studies.count%</td></tr>
+		<tr><td>%Albums%</td><td>%[IF:Albums.count%</td></tr>
+		<tr><td>%/Albums%</td><td>%]IF:Albums.count%</td></tr>
+		<tr><td>%AlbumListItem%</td><td>%[FOREACH:Albums:Album%</td></tr>
+		<tr><td>%/AlbumListItem%</td><td>%]FOREACH:Albums:Album%</td></tr>
+		<tr><td>%AlbumType%</td><td>%[IF:Album.smartAlbum%SmartAlbum%ELSE:Album.smartAlbum%Album%]IF:Album.smartAlbum%</td></tr>
+		<tr><td>%AlbumNameURL%</td><td>%U:Album.name%</td></tr>
+		<tr><td>%AlbumName%</td><td>%X:Album.name%</td></tr>
+		<tr><td>%AuthorizedUploadDICOMFiles%</td><td>%[IF:Info.proposeDicomUpload%</td></tr>
+		<tr><td>%/AuthorizedUploadDICOMFiles%</td><td>%]IF:Info.proposeDicomUpload%</td></tr>
+		
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">studyList.html, you should add Flash support</td></tr>
+		<tr><td>class='%orderByName%'</td><td>%[IF:Session.StudiesSortKey=="name"%class="CurrentSortKey"%]IF:Session.StudiesSortKey=="name"%</td></tr>
+		<tr><td>class='%orderByDate%'</td><td>%[IF:Session.StudiesSortKey=="date"%class="CurrentSortKey"%]IF:Session.StudiesSortKey=="date"%</td></tr>
+		<tr><td>%StudyListItem%</td><td>%[FOREACH:Studies:Study%</td></tr>
+		<tr><td>%/StudyListItem%</td><td>%]FOREACH:Studies:Study%</td></tr>
+		<tr><td>%StudyListItemName%</td><td>%X:ZWS:Study.name%</td></tr>
+		<tr><td>studyListItem%lineParity%</td><td>studyListItem%Study_Index2%</td></tr>
+		<tr><td>study?dicomcstoreport=%DicomCStorePort%&id=%StudyListItemID%%browse%%browseParameter%%search%%album%</td><td>study?%Info.getParameters(sortKey=)%&xid=%Study.XID%</td></tr>
+		<tr><td>%StudyModalityBlock%</td><td>removed</td></tr>
+		<tr><td>%/StudyModalityBlock%</td><td>removed</td></tr>
+		<tr><td>%StudyModality%</td>%X:Study.modality%</tr>
+		<tr><td>%SeriesCountBlock%</td><td>removed</td></tr>
+		<tr><td>%/SeriesCountBlock%</td><td>removed</td></tr>
+		<tr><td>%SeriesCount%</td><td>%X:Study.imageSeries.count% series</td></tr>
+		<tr><td>%StudyDescriptionBlock%</td><td>%[IF:Study.studyName%</td></tr>
+		<tr><td>%/StudyDescriptionBlock%</td><td>%]IF:Study.studyName%</td></tr>
+		<tr><td>%StudyDescription%</td><td>%X:ZWS:Study.studyName%</td></tr>
+		<tr><td>%StudyCommentBlock%</td><td>%[IF:Study.comment%</td></tr>
+		<tr><td>%/StudyCommentBlock%</td><td>%]IF:Study.comment%</td></tr>
+		<tr><td>%StudyComment%</td><td>%X::Study.comment%</td></tr>
+		<tr><td>%StudyDateBlock%</td><td>%[IF:Study.date%</td></tr>
+		<tr><td>%/StudyDateBlock%</td><td>%]IF:Study.date%</td></tr>
+		<tr><td>%StudyDate%</td><td>%X::Study.date%</td></tr>
+		<tr><td>%StudyStateBlock%</td><td>%[IF:Study.stateText%</td></tr>
+		<tr><td>%/StudyStateBlock%</td><td>%]IF:Study.stateText%</td></tr>
+		<tr><td>%StudyState%</td><td>%X::Study.stateText%</td></tr>
+		<tr><td>%ZIPFunctions%</td><td>%[IF:Info.proposeZipDownload%</td></tr>
+		<tr><td>%/ZIPFunctions%</td><td>%]IF:Info.proposeZipDownload%</td></tr>
+		<tr><td>%StudyListItemName%.%zipextension%?dicomcstoreport=%DicomCStorePort%&id=%StudyListItemID%%browse%%browseParameter%%search%%album%</td><td>%U:Study.name% - %U:Study.studyName%.%[IF:Info.isMacOS%osirixzip%ELSE:Info.isMacOS%zip%]IF:Info.isMacOS%?xid=%Study.XID%</td></tr>
+		
+		<tr><td colspan="2"> </td></tr>
+		<tr><td colspan="2">studyList.html and series.html did really change a lot.. please, check out the new ones</td></tr>
+		
+		
+	</table>
+		
+		
+	</div>				
+	<div id="footer">&copy;2011 The OsiriX Development Team - <i>Developing Swiss Quality DICOM Viewer since 2003</i></div>
+</body>
+</html>
