@@ -1,5 +1,6 @@
 - 3D Curved MPR viewer
 - JPEG2000 supported in DCMTK
+- New Web Server engine: faster, more robust, and cleaner
 - Kakadu SDK for JPEG2000 : Up to 6 times faster than OpenJPEG
 - OpenJPEG library updated to 1.4
 - Flash support, instead of Quicktime, for the built-in Web Server
