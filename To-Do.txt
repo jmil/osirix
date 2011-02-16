@@ -1,3 +1,4 @@
+- 3D Curved MPR viewer
 - JPEG2000 supported in DCMTK
 - Kakadu SDK for JPEG2000 : Up to 6 times faster than OpenJPEG
 - OpenJPEG library updated to 1.4
@@ -17,9 +18,7 @@
 
 - Brush ROIs: load/save
 - DICOM Listener TLS?
-- Web Server SSL, including in 64-bit
 
-- Web Server bug no users
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
 - Web Server: Edit report
