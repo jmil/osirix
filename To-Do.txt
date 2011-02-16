@@ -16,10 +16,10 @@
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and space bandwidth)
 
 - CPR Manual
-- CPR: Test 4D, Blending, Non-Square
 
 - Brush ROIs: load/save
 
+- DICOM Listener TLS?
 - Web Server SSL, including in 64-bit
 - Web Server bug no users
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
