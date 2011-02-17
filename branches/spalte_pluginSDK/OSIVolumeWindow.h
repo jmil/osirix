@@ -39,7 +39,7 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 
 @interface OSIVolumeWindow : NSObject <OSIROIManagerDelegate>  {
 	ViewerController *_viewerController; // this is retained
-	OSIROIManager *_ROIManager;
+	OSIROIManager *_ROIManager; // should this really be an ROI manager? or is that another beast altogether?
 }
 
 ///-----------------------------------

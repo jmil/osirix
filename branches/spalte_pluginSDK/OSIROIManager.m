@@ -167,11 +167,17 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
     DCMView *dcmView;
     OSIROI *roi;
     CGLPixelFormatObj pixelFormatObj;
+    N3AffineTransform pixToDicomTransform;
     N3AffineTransform dicomToPixTransform;
     double pixToSubdrawRectOpenGLTransform[16];
+	N3Plane plane;
     CGLContextObj cgl_ctx;
     
-    cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];    
+    cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
+	
+	if ([self.delegate isKindOfClass:[OSIVolumeWindow class]] == NO) { // only draw ROIs for the ROIs in an ROI manager that is owned by the VolumeWindow 
+		return;
+	}
     
     if ([[notification object] isKindOfClass:[DCMView class]] == NO) {
         return;
@@ -180,19 +186,32 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
     dcmView = (DCMView *)[notification object];
     N3AffineTransformGetOpenGLMatrixd(([dcmView pixToSubDrawRectTransform]), pixToSubdrawRectOpenGLTransform);
     pixelFormatObj = (CGLPixelFormatObj)[[dcmView pixelFormat] CGLPixelFormatObj];
-    dicomToPixTransform = N3AffineTransformInvert([[dcmView curDCM] pixToDicomTransform]);
-    
+	pixToDicomTransform = [[dcmView curDCM] pixToDicomTransform];
+	if (N3AffineTransformDeterminant(pixToDicomTransform) != 0) {
+		dicomToPixTransform = N3AffineTransformInvert(pixToDicomTransform);
+		plane = N3PlaneApplyTransform(N3PlaneZZero, pixToDicomTransform);
+	} else {
+		dicomToPixTransform = N3AffineTransformIdentity;
+		plane = N3PlaneZZero;
+	}
+	
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glMultMatrixd(pixToSubdrawRectOpenGLTransform);
     
     for (roi in [self ROIs]) {
-        if ([roi respondsToSelector:@selector(drawInCGLContext:pixelFormat:dicomToPixTransform:)]) {
-            [roi drawInCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
+        if ([roi respondsToSelector:@selector(drawPlane:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
+			glMultMatrixd(pixToSubdrawRectOpenGLTransform);
+            
+			[roi drawPlane:plane inCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
+			
+			glMatrixMode(GL_MODELVIEW);
+			glPopMatrix();
         }
     }
     
-    glPopMatrix();
 }
 
 - (BOOL)_isROIManaged:(ROI *)roi

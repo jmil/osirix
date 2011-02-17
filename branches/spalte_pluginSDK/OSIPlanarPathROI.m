@@ -34,7 +34,7 @@
 	if ( (self = [super init]) ) {
 		_osiriXROI = [roi retain];
 		
-		_plane = N3PlaneApplyTransform(N3PlaneMake(N3VectorZero, N3VectorMake(0, 0, 1)), pixToDICOMTransfrom);
+		_plane = N3PlaneApplyTransform(N3PlaneZZero, pixToDICOMTransfrom);
 		_homeFloatVolumeData = [floatVolumeData retain];
 		
 		if ([roi type] == tMesure && [[roi points] count] > 1) {
@@ -214,6 +214,12 @@
 {
 	return _homeFloatVolumeData;
 }
+
+- (void)drawPlane:(N3Plane)plane inCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
+{
+	NSLog(@"OSIROI asked to draw");
+}
+
 
 @end
 

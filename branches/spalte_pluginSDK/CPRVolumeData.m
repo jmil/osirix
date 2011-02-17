@@ -136,10 +136,10 @@
     OSAtomicIncrement32Barrier(&_readerCount);
     if (_isValid) {
         memcpy(buffer, _floatBytes + range.location, range.length * sizeof(float));
-        OSAtomicDecrement32(&_readerCount);
+        OSAtomicDecrement32Barrier(&_readerCount);
         return YES;
     } else {
-        OSAtomicDecrement32(&_readerCount);
+        OSAtomicDecrement32Barrier(&_readerCount);
         return NO;
     }
 }
@@ -174,10 +174,10 @@
         imageRep.slope = 1;
         imageRep.offset = -1024;
         
-        OSAtomicDecrement32(&_readerCount);
+        OSAtomicDecrement32Barrier(&_readerCount);
         return [imageRep autorelease];
     } else {
-        OSAtomicDecrement32(&_readerCount);
+        OSAtomicDecrement32Barrier(&_readerCount);
         return nil;
     }    
 }
@@ -358,7 +358,7 @@
 
 - (void)releaseInlineBuffer:(CPRVolumeDataInlineBuffer *)inlineBuffer
 {
-    OSAtomicDecrement32(&_readerCount);
+    OSAtomicDecrement32Barrier(&_readerCount);
 }
 
 
