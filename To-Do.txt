@@ -21,6 +21,7 @@
 - Brush ROIs: load/save
 - DICOM Listener TLS?
 - New CPR curved icon
+- CPR: Fullscreen wl ww
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
