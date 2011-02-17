@@ -18,7 +18,6 @@
 - Zoom centered around mouse position (2D Viewer Preferences)
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and spare bandwidth)
 
-- Brush ROIs: load/save
 - DICOM Listener TLS?
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
@@ -27,7 +26,6 @@
 - Web Server: Burn option if the CD/DVD is installed
 
 - Two Steps DICOM Editing
-- Order option in subseries pane
 - Dont rotate tText
 - Tool to create a new series from key images of a study
 - Tomographie rotational angio
