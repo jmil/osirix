@@ -31,7 +31,7 @@
     %]example#again%
 %]example%</pre>
 		<div>If you don't differentiate enclosed identical tokens, you will end up with the first token (on 1st line) matching the first closing token (on 3rd line instead of 4th)</div>
-		<div>Tokens are split into ports delimited by ':' characters. The first part is matched to a list of available functions and flow control related keywords.</div>
+		<div>Tokens are split into parts delimited by ':' characters. The first part is matched to a list of available functions and flow control related keywords.</div>
 		<div>String transformation functions, available to avoid invalid URLs and HTML:
 			<ul>
 				<li><code>URLENC</code> or <code>U</code><div>
@@ -150,7 +150,7 @@
 		<div>In the Web Portal domain: WUser</div>
 		<div style="text-align:center"><img src="WEntities.png"></div>
 		
-		<div>In the DICOM domain: WAlbum, WStudy, WSeries, WImage</div>
+		<div>In the DICOM domain: DAlbum, DStudy, DSeries, DImage</div>
 		<div style="text-align:center"><img src="DEntities.png"></div>
 		
 		These are defined in the database models. There are, just like with Dates and Strings, extra properties:
