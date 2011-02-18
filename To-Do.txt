@@ -18,6 +18,8 @@
 - Zoom centered around mouse position (2D Viewer Preferences)
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and spare bandwidth)
 
+- Abort Bonjour DB loading bug
+- QR : birthday
 - DICOM Listener TLS?
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
