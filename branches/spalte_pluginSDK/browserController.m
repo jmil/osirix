@@ -207,6 +207,7 @@ static NSArray*	statesArray = nil;
 
 static NSNumberFormatter* decimalNumberFormatter = NULL;
 static volatile BOOL waitForRunningProcess = NO;
+static volatile BOOL computeNumberOfStudiesForAlbums = NO;
 
 +(void)initialize {
 	decimalNumberFormatter = [[NSNumberFormatter alloc] init];
@@ -439,7 +440,7 @@ static NSConditionLock *threadLock = nil;
 			
 			fileExist = [[NSFileManager defaultManager] fileExistsAtPath: dstPath];
 			
-			if( fileExist == YES && firstExist == YES)
+			if( fileExist == YES && firstExist == YES && DATABASEINDEX == 0)
 			{
 				firstExist = NO;
 				[BrowserController computeDATABASEINDEXforDatabase: OUTpath];
@@ -3598,6 +3599,7 @@ static NSConditionLock *threadLock = nil;
 	[managedObjectContext reset];
 	[managedObjectContext release];
 	managedObjectContext = nil;
+	DATABASEINDEX = 0;
 	
 	[self setFixedDocumentsDirectory];
 	[self managedObjectContext];
@@ -5914,13 +5916,23 @@ static NSConditionLock *threadLock = nil;
 	[self checkBonjourUpToDate: sender];
 }
 
-- (void) computeNumberOfStudiesForAlbums
+- (void) reloadAlbumTableData
 {
+	[albumTable reloadData];
+}
+
+- (void) computeNumberOfStudiesForAlbums
+{	
+	if( computeNumberOfStudiesForAlbums)
+		return;
+	
+	computeNumberOfStudiesForAlbums = YES;
+	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	if( displayEmptyDatabase == NO && [[self window] isVisible] == YES)
+	@try
 	{
-		@try
+		if( displayEmptyDatabase == NO)
 		{
 			NSMutableArray *NoOfStudies = [NSMutableArray array];
 			
@@ -5973,27 +5985,25 @@ static NSConditionLock *threadLock = nil;
 					[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[[object valueForKey:@"studies"] count]]]]];
 			}
 			
-			if( albumNoOfStudiesCache == nil)
-				albumNoOfStudiesCache = [[NSMutableArray array] retain];
-			
 			@synchronized( albumNoOfStudiesCache)
 			{
 				[albumNoOfStudiesCache removeAllObjects];
 				[albumNoOfStudiesCache addObjectsFromArray: NoOfStudies];
 			}
 			
-			[albumTable performSelectorOnMainThread: @selector( reloadData) withObject: nil waitUntilDone: NO];
+			[self performSelectorOnMainThread: @selector( reloadAlbumTableData) withObject: nil waitUntilDone: YES];
 		}
-		@catch (NSException * e)
-		{
-			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-		}
+		else
+			[self performSelectorOnMainThread: @selector( delayedRefreshAlbums) withObject: nil waitUntilDone: YES];
 	}
-	else
+	@catch (NSException * e)
 	{
-		[self performSelectorOnMainThread: @selector( delayedRefreshAlbums) withObject: nil waitUntilDone: NO];
+		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
+	
 	[pool release];
+	
+	computeNumberOfStudiesForAlbums = NO;
 }
 
 - (void)delayedRefreshAlbums
@@ -6004,7 +6014,11 @@ static NSConditionLock *threadLock = nil;
 
 - (void)refreshAlbums
 {
-	[NSThread detachNewThreadSelector: @selector( computeNumberOfStudiesForAlbums) toTarget:self withObject:nil];
+	if( computeNumberOfStudiesForAlbums == NO && displayEmptyDatabase == NO && [[self window] isVisible] == YES)
+	{
+		[NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector( computeNumberOfStudiesForAlbums) object: nil];
+		[NSThread detachNewThreadSelector: @selector( computeNumberOfStudiesForAlbums) toTarget:self withObject:nil];
+	}
 }
 
 - (void)refreshDatabase: (id)sender
@@ -6048,7 +6062,32 @@ static NSConditionLock *threadLock = nil;
 	#endif
 }
 
-- (NSArray*)childrenArray: (NSManagedObject*)item onlyImages: (BOOL)onlyImages
+- (NSArray*) sortDescriptorsForImages
+{
+	int sortSeriesBySliceLocation = [[NSUserDefaults standardUserDefaults] integerForKey: @"sortSeriesBySliceLocation"];
+
+	NSSortDescriptor *sortInstance = nil, *sortLocation = nil, *sortDate = nil;
+
+	sortDate = [[[NSSortDescriptor alloc] initWithKey: @"date" ascending: (sortSeriesBySliceLocation > 0) ? YES : NO] autorelease];
+	sortInstance = [[[NSSortDescriptor alloc] initWithKey: @"instanceNumber" ascending: YES] autorelease];
+	sortLocation = [[[NSSortDescriptor alloc] initWithKey: @"sliceLocation" ascending: (sortSeriesBySliceLocation > 0) ? YES : NO] autorelease];
+
+	NSArray *sortDescriptors = nil;
+
+	if( sortSeriesBySliceLocation == 0)
+		sortDescriptors = [NSArray arrayWithObjects: sortInstance, sortLocation, nil];
+	else
+	{
+		if( sortSeriesBySliceLocation == 2 || sortSeriesBySliceLocation == -2)
+			sortDescriptors = [NSArray arrayWithObjects: sortDate, sortLocation, sortInstance, nil];
+		else
+			sortDescriptors = [NSArray arrayWithObjects: sortLocation, sortInstance, nil];
+	}
+	
+	return sortDescriptors;
+}
+
+- (NSArray*) childrenArray: (NSManagedObject*)item onlyImages: (BOOL)onlyImages
 {
 	if( [item isFault] || [item isDeleted])
 	{
@@ -6064,21 +6103,7 @@ static NSConditionLock *threadLock = nil;
 		
 		@try
 		{
-			int sortSeriesBySliceLocation = [[NSUserDefaults standardUserDefaults] integerForKey: @"sortSeriesBySliceLocation"];
-			
-			NSSortDescriptor *sortInstance = nil, *sortLocation = nil;
-			
-			sortInstance = [[[NSSortDescriptor alloc] initWithKey: @"instanceNumber" ascending: YES] autorelease];
-			sortLocation = [[[NSSortDescriptor alloc] initWithKey: @"sliceLocation" ascending: (sortSeriesBySliceLocation > 0) ? YES : NO] autorelease];
-			
-			NSArray *sortDescriptors = nil;
-			
-			if( sortSeriesBySliceLocation == 0)
-				sortDescriptors = [NSArray arrayWithObjects: sortInstance, sortLocation, nil];
-			else
-				sortDescriptors = [NSArray arrayWithObjects: sortLocation, sortInstance, nil];
-			
-			sortedArray = [[[item valueForKey:@"images"] allObjects] sortedArrayUsingDescriptors: sortDescriptors];
+			sortedArray = [[[item valueForKey:@"images"] allObjects] sortedArrayUsingDescriptors: [self sortDescriptorsForImages]];
 		}
 		
 		@catch (NSException * e)
@@ -11078,8 +11103,10 @@ static BOOL needToRezoom;
 		[aCell setLineBreakMode: NSLineBreakByTruncatingMiddle];
 		
 		if( [[aTableColumn identifier] isEqualToString:@"Source"])
-		{ 
-			if ([[[self.albumArray objectAtIndex:rowIndex] valueForKey:@"smartAlbum"] boolValue])
+		{
+			NSArray *albumArray = self.albumArray;
+			
+			if ( albumArray.count > rowIndex && [[[albumArray objectAtIndex: rowIndex] valueForKey:@"smartAlbum"] boolValue])
 			{
 				if (isCurrentDatabaseBonjour)
 				{
@@ -12163,23 +12190,10 @@ static BOOL needToRezoom;
 					
 						if( p1 && p2 && [ViewerController computeIntervalForDCMPix: p1 And: p2] < 0)
 						{
-							int sortSeriesBySliceLocation = [[NSUserDefaults standardUserDefaults] integerForKey: @"sortSeriesBySliceLocation"];
+							a = [a sortedArrayUsingDescriptors: [self sortDescriptorsForImages]];
 							
-							NSSortDescriptor *sortInstance, *sortLocation;
-							
-							sortInstance = [[[NSSortDescriptor alloc] initWithKey: @"instanceNumber" ascending: NO] autorelease];
-							sortLocation = [[[NSSortDescriptor alloc] initWithKey: @"sliceLocation" ascending: (sortSeriesBySliceLocation > 0) ? NO : YES] autorelease];
-							
-							if( sortInstance && sortLocation)
-							{
-								if( sortSeriesBySliceLocation == 0)
-									a = [a sortedArrayUsingDescriptors: [NSArray arrayWithObjects: sortInstance, sortLocation, nil]];
-								else
-									a = [a sortedArrayUsingDescriptors: [NSArray arrayWithObjects: sortLocation, sortInstance, nil]];
-								
-								preFlippedData = YES;
-								flipped = YES;
-							}
+							preFlippedData = YES;
+							flipped = YES;
 						}
 						
 						[p1 release];
@@ -13318,6 +13332,8 @@ static NSArray*	openSubSeriesArray = nil;
 			if( i % interval == 0) [imagesArray addObject: image];
 		}
 		
+		[imagesArray sortUsingDescriptors: [self sortDescriptorsForImages]];
+		
 		if( [imagesArray count] > 0)
 			[newArray addObject: imagesArray];
 	}
@@ -13395,6 +13411,8 @@ static NSArray*	openSubSeriesArray = nil;
 {
 	[[waitOpeningWindow window] orderOut: self];
 	
+	int copySortSeriesBySliceLocation = [[NSUserDefaults standardUserDefaults] integerForKey: @"sortSeriesBySliceLocation"];
+	
 	openSubSeriesArray = [toOpenArray retain];
 	
 	if( [[NSApp mainWindow] level] > NSModalPanelWindowLevel){ NSBeep(); return nil;}		// To avoid the problem of displaying this sheet when the user is in fullscreen mode
@@ -13426,16 +13444,16 @@ static NSArray*	openSubSeriesArray = nil;
 	
 	[[waitOpeningWindow window] orderBack: self];
 	
+	NSArray *returnedArray = nil;
+	
 	if( result == NSRunStoppedResponse)
-	{
-		[openSubSeriesArray release];
-		
-		return [self produceNewArray: toOpenArray];
-	}
+		returnedArray = [self produceNewArray: toOpenArray];
 	
 	[openSubSeriesArray release];
 	
-	return nil;
+	[[NSUserDefaults standardUserDefaults] setInteger: copySortSeriesBySliceLocation forKey: @"sortSeriesBySliceLocation"];
+	
+	return returnedArray;
 }
 
 
@@ -13503,6 +13521,10 @@ static NSArray*	openSubSeriesArray = nil;
 
 + (void) computeDATABASEINDEXforDatabase:(NSString*) path
 {
+	#ifndef NDEBUG
+	NSLog( @"----- computeDATABASEINDEXforDatabase");
+	#endif
+	
 	@try
 	{
 		long v = 0;
@@ -13614,6 +13636,7 @@ static NSArray*	openSubSeriesArray = nil;
 			NSRunCriticalAlertPanel(NSLocalizedString(@"Protected Mode", nil), NSLocalizedString(@"OsiriX is now running in Protected Mode (shift + option keys at startup): no images are displayed, allowing you to delete crashing or corrupted images/studies.", nil), NSLocalizedString(@"OK", nil), nil, nil);
 		}
 		
+		albumNoOfStudiesCache = [[NSMutableArray alloc] init];
 		newFilesConditionLock = [[NSConditionLock alloc] initWithCondition: 0];
 		viewersListToRebuild = [[NSMutableArray alloc] initWithCapacity: 0];
 		viewersListToReload = [[NSMutableArray alloc] initWithCapacity: 0];
@@ -13634,8 +13657,6 @@ static NSArray*	openSubSeriesArray = nil;
 		decompressThreadRunning = [[NSRecursiveLock alloc] init];
 		processorsLock = [[NSConditionLock alloc] initWithCondition: 1];
 		decompressArray = [[NSMutableArray alloc] initWithCapacity: 0];
-		
-		DATABASEINDEX = 0;
 		
 		DatabaseIsEdited = NO;
 		
@@ -13744,7 +13765,7 @@ static NSArray*	openSubSeriesArray = nil;
 		[[NSRunLoop currentRunLoop] addTimer: IncomingTimer forMode: NSDefaultRunLoopMode];
 		
 		if( [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"] == NO)
-			refreshTimer = [[NSTimer scheduledTimerWithTimeInterval: 5*60 target:self selector:@selector(refreshDatabase:) userInfo:self repeats:YES] retain];
+			refreshTimer = [[NSTimer scheduledTimerWithTimeInterval: 5*60 target:self selector:@selector(refreshDatabase:) userInfo:self repeats:YES] retain]; //
 		
 		bonjourTimer = [[NSTimer scheduledTimerWithTimeInterval: 120 target:self selector:@selector(checkBonjourUpToDate:) userInfo:self repeats:YES] retain];	//120
 		databaseCleanerTimer = [[NSTimer scheduledTimerWithTimeInterval: 3*60 + 2.5 target:self selector:@selector(autoCleanDatabaseDate:) userInfo:self repeats:YES] retain]; // 20*60 + 2.5
@@ -13781,8 +13802,6 @@ static NSArray*	openSubSeriesArray = nil;
 //		[[NSTimer scheduledTimerWithTimeInterval: 5 target:self selector:@selector(autoTest:) userInfo:self repeats:NO] retain];
 		
 		displayEmptyDatabase = NO;
-		
-		[self refreshAlbums];
 	}
 	return self;
 }
@@ -19566,6 +19585,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
 	[self flagsChanged: 0L];
+	
+	if( albumNoOfStudiesCache.count == 0)
+		[self refreshAlbums];
 }
 
 - (void) flagsChanged:(NSEvent *)event
