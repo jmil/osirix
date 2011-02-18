@@ -50,7 +50,7 @@
 			for (myPoint in pointArray) {
 				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes style:N3BezierNodeEndsMeetStyle];
 			[nodes release];
 		} else if ([roi type] == tCPolygon) {
 			pointArray = [roi points];
@@ -59,7 +59,10 @@
 			for (myPoint in pointArray) {
 				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
+            if ([pointArray count] > 1) {
+                [nodes addObject:[nodes objectAtIndex:0]];
+            }
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes style:N3BezierNodeEndsMeetStyle];
 			if ([_bezierPath elementCount]) {
 				[_bezierPath close];
 			}
@@ -215,9 +218,66 @@
 	return _homeFloatVolumeData;
 }
 
-- (void)drawPlane:(N3Plane)plane inCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
+- (void)drawPlane:(N3Plane)plane inCGLContext:(CGLContextObj)cgl_ctx pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
 {
-	NSLog(@"OSIROI asked to draw");
+	double dicomToPixGLTransform[16];
+	NSInteger i;
+    NSValue *endpointValue;
+	N3Vector endpoint;
+    N3BezierPath *flattenedPath;
+	
+	if (N3PlaneIsCoincidentToPlane(plane, _plane) == NO) {
+		return; // this ROI does not live on this slice
+	}
+
+    N3AffineTransformGetOpenGLMatrixd(dicomToPixTransform, dicomToPixGLTransform);
+	
+    flattenedPath = [_bezierPath bezierPathByFlattening:N3BezierDefaultFlatness/5.0];
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMultMatrixd(dicomToPixGLTransform);
+    
+    glLineWidth(3.0);
+    glColor3f(1, 0, 0);
+    glBegin(GL_LINE_STRIP);
+    for (i = 0; i < [flattenedPath elementCount]; i++) {
+        [flattenedPath elementAtIndex:i control1:NULL control2:NULL endpoint:&endpoint];
+        glVertex3d(endpoint.x, endpoint.y, endpoint.z);
+    }   
+    glEnd();
+    
+    
+    // let's try drawing some the mask
+    OSIROIMask *mask;
+    NSArray *maskRuns;
+    OSIROIMaskRun maskRun;
+    NSValue *maskRunValue;
+    N3AffineTransform inverseVolumeTransform;
+    N3Vector lineStart;
+    N3Vector lineEnd;
+    
+    inverseVolumeTransform = N3AffineTransformInvert([[self homeFloatVolumeData] volumeTransform]);
+    mask = [self ROIMaskForFloatVolumeData:[self homeFloatVolumeData]];
+    maskRuns = [mask maskRuns];
+
+    glColor3f(1, 0, 1);
+    glBegin(GL_LINES);
+    for (maskRunValue in maskRuns) {
+        maskRun = [maskRunValue OSIROIMaskRunValue];
+        
+        lineStart = N3VectorMake(maskRun.widthRange.location, maskRun.heightIndex, maskRun.depthIndex);
+        lineEnd = N3VectorMake(NSMaxRange(maskRun.widthRange), maskRun.heightIndex, maskRun.depthIndex);
+        
+        lineStart = N3VectorApplyTransform(lineStart, inverseVolumeTransform);
+        lineEnd = N3VectorApplyTransform(lineEnd, inverseVolumeTransform);
+        
+        glVertex3d(lineStart.x, lineStart.y, lineStart.z);
+        glVertex3d(lineEnd.x, lineEnd.y, lineEnd.z);
+    }
+    glEnd();
+    
+    glPopMatrix();
 }
 
 

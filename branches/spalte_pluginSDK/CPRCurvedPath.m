@@ -191,7 +191,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     [_nodes addObject:[NSValue valueWithN3Vector:node]];
     
     if ([_nodes count] >= 2) {
-        self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes] autorelease];
+        self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes style:N3BezierNodeOpenEndsStyle] autorelease];
     } else {
         self.bezierPath = [[[N3MutableBezierPath alloc] init] autorelease];
     }
@@ -230,7 +230,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
             
     [_nodes insertObject:[NSValue valueWithN3Vector:vectorAtRelativePosition] atIndex:insertIndex];
     
-    self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes] autorelease];
+    self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes style:N3BezierNodeOpenEndsStyle] autorelease];
 }
 
 - (void)removeNodeAtIndex:(NSInteger)index
@@ -240,7 +240,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 	[_nodes removeObjectAtIndex:index];
 	
     if ([_nodes count] >= 2) {
-        self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes] autorelease];
+        self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes style:N3BezierNodeOpenEndsStyle] autorelease];
     } else {
         self.bezierPath = [[[N3MutableBezierPath alloc] init] autorelease];
     }
@@ -269,7 +269,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
         [_nodes replaceObjectAtIndex:element withObject:[NSValue valueWithN3Vector:node]];
         
         if ([_nodes count] >= 2) {
-            self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes] autorelease];
+            self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes style:N3BezierNodeOpenEndsStyle] autorelease];
         } else {
             self.bezierPath = [[[N3MutableBezierPath alloc] init] autorelease];
         }

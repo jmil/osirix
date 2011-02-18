@@ -926,14 +926,16 @@ extern int splitPosition[ 2];
 
 - (void)generator:(CPRGenerator *)generator didGenerateVolume:(CPRVolumeData *)volume request:(CPRGeneratorRequest *)request
 {
-    static NSDate *lastDate = nil;
-    if (lastDate == nil) {
-        lastDate = [[NSDate date] retain];
-    }
-    
-//    NSLog(@"didGenerateVolume time sinc last date %f", -[lastDate timeIntervalSinceNow]);
-    [lastDate release];
-    lastDate = [[NSDate date] retain];
+	if( [self windowController] == nil)
+		return;
+		
+//    static NSDate *lastDate = nil;
+//    if (lastDate == nil) {
+//        lastDate = [[NSDate date] retain];
+//    }
+//    
+//    [lastDate release];
+//    lastDate = [[NSDate date] retain];
     
     NSUInteger i;
     NSMutableArray *pixArray;
@@ -974,39 +976,39 @@ extern int splitPosition[ 2];
         [newPix release];
     }
 	
-    for( i = 0; i < [pixArray count]; i++)
-    {
-        [[pixArray objectAtIndex: i] setArrayPix:pixArray :i];
-	}
-    
-    [self setPixels:pixArray files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
-    
-    //[self setWLWW:wl :ww];
-	[[self windowController] propagateWLWW: [[self windowController] mprView1]];
-	
-    [self setFusion:[[self class] _fusionModeForCPRViewClippingRangeMode:_clippingRangeMode] :self.curvedVolumeData.pixelsDeep];
-    
-    [pixArray release];
-	
-	if( previousWidth == [curDCM pwidth] && previousHeight == [curDCM pheight])
+	if( [pixArray count])
 	{
-		[self setOrigin:previousOrigin];
-		[self setScaleValue: previousScale];
-		[self setRotation: previousRotation];
+		for( i = 0; i < [pixArray count]; i++)
+			[[pixArray objectAtIndex: i] setArrayPix:pixArray :i];
+		
+		[self setPixels:pixArray files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
+		
+		//[self setWLWW:wl :ww];
+		[[self windowController] propagateWLWW: [[self windowController] mprView1]];
+		
+		[self setFusion:[[self class] _fusionModeForCPRViewClippingRangeMode:_clippingRangeMode] :self.curvedVolumeData.pixelsDeep];
+		
+		if( previousWidth == [curDCM pwidth] && previousHeight == [curDCM pheight])
+		{
+			[self setOrigin:previousOrigin];
+			[self setScaleValue: previousScale];
+			[self setRotation: previousRotation];
+		}
+		
+		NSArray *roiArray = [NSUnarchiver unarchiveObjectWithData: previousROIs];
+		for( ROI *r in roiArray)
+		{
+			r.pix = curDCM;
+			[r setOriginAndSpacing :curDCM.pixelSpacingX : curDCM.pixelSpacingY :NSMakePoint( curDCM.originX, curDCM.originY) :NO :NO];
+			[r setRoiFont: labelFontListGL :labelFontListGLSize :self];
+		}
+		
+		[[self curRoiList] addObjectsFromArray: roiArray];
+		
+		[self _clearAllPlanes];
+		[self setNeedsDisplay:YES];
 	}
-	
-	NSArray *roiArray = [NSUnarchiver unarchiveObjectWithData: previousROIs];
-	for( ROI *r in roiArray)
-	{
-		r.pix = curDCM;
-		[r setOriginAndSpacing :curDCM.pixelSpacingX : curDCM.pixelSpacingY :NSMakePoint( curDCM.originX, curDCM.originY) :NO :NO];
-		[r setRoiFont: labelFontListGL :labelFontListGLSize :self];
-	}
-	
-	[[self curRoiList] addObjectsFromArray: roiArray];
-	
-	[self _clearAllPlanes];
-    [self setNeedsDisplay:YES];
+	[pixArray release];
 }
 
 - (void)generator:(CPRGenerator *)generator didAbandonRequest:(CPRGeneratorRequest *)request

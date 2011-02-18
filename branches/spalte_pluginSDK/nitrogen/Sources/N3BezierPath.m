@@ -92,7 +92,7 @@
     return self;
 }
 
-- (id)initWithNodeArray:(NSArray *)nodes // array of N3Vectors in NSValues;
+- (id)initWithNodeArray:(NSArray *)nodes style:(N3BezierNodeStyle)style // array of N3Vectors in NSValues;
 {
     N3VectorArray vectorArray;
     NSInteger i;
@@ -105,7 +105,7 @@
 				vectorArray[i] = [[nodes objectAtIndex:i] N3VectorValue];
 			}
 			
-			_bezierCore = N3BezierCoreCreateMutableCurveWithNodes(vectorArray, [nodes count]);
+			_bezierCore = N3BezierCoreCreateMutableCurveWithNodes(vectorArray, [nodes count], style);
 			
 			free(vectorArray);
 		} else if ([nodes count] == 0) {
@@ -204,6 +204,26 @@
 - (NSString *)description
 {
 	return [(NSString *)N3BezierCoreCopyDescription(_bezierCore) autorelease];
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len
+{
+	N3Vector endpoint;
+    NSValue *endpointValue;
+	
+    if(state->state == 0) {
+        state->mutationsPtr = (unsigned long *)self;
+    }
+    
+    if (state->state >= [self elementCount]) {
+        return 0;
+    }
+    
+    [self elementAtIndex:state->state control1:NULL control2:NULL endpoint:&endpoint];
+    endpointValue = [NSValue valueWithN3Vector:endpoint];
+    state->itemsPtr = &endpointValue;
+    state->state++;
+    return 1;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder

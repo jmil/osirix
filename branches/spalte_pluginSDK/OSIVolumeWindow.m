@@ -137,8 +137,8 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 
 - (void)viewerControllerDidClose
 {
-	[_viewerController release];
 	[self willChangeValueForKey:@"open"];
+	[_viewerController release];
 	_viewerController = nil;
 	[self didChangeValueForKey:@"open"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:OSIVolumeWindowDidCloseNotification object:self];

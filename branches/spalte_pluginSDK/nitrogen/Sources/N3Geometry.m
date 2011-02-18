@@ -318,7 +318,7 @@ bool N3VectorIsOnPlane(N3Vector vector, N3Plane plane)
 {
     N3Vector planeNormal;
     planeNormal = N3VectorNormalize(plane.normal);
-    return N3VectorDotProduct(planeNormal, N3VectorSubtract(vector, plane.point)) < _N3GeometrySmallNumber;
+    return ABS(N3VectorDotProduct(planeNormal, N3VectorSubtract(vector, plane.point))) < _N3GeometrySmallNumber;
 }
 
 CGFloat N3VectorDistanceToLine(N3Vector vector, N3Line line)
@@ -365,7 +365,7 @@ bool N3LineIsOnPlane(N3Line line, N3Plane plane)
     if (N3VectorIsOnPlane(line.point, plane) == false) {
         return false;
     }
-    return N3VectorDotProduct(line.vector, plane.normal) < _N3GeometrySmallNumber;
+    return ABS(N3VectorDotProduct(line.vector, plane.normal)) < _N3GeometrySmallNumber;
 }
 
 bool N3LineIsParallelToLine(N3Line line1, N3Line line2)
@@ -383,7 +383,7 @@ bool N3LineIsValid(N3Line line)
 
 bool N3LineIntersectsPlane(N3Line line, N3Plane plane)
 {
-    if (N3VectorDotProduct(plane.normal, line.vector) < _N3GeometrySmallNumber) {
+    if (ABS(N3VectorDotProduct(plane.normal, line.vector)) < _N3GeometrySmallNumber) {
         if (N3VectorIsOnPlane(line.point, plane) == false) {
             return false;
         }
@@ -501,7 +501,7 @@ bool N3PlaneEqualToPlane(N3Plane plane1, N3Plane plane2)
 
 bool N3PlaneIsCoincidentToPlane(N3Plane plane1, N3Plane plane2)
 {
-    if (N3VectorLength(N3VectorCrossProduct(plane1.normal, plane2.normal)) < _N3GeometrySmallNumber) {
+    if (N3VectorLength(N3VectorCrossProduct(plane1.normal, plane2.normal)) > _N3GeometrySmallNumber) {
         return false;
     }
     return N3VectorIsOnPlane(plane1.point, plane2);

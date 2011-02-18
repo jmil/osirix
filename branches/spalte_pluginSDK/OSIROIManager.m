@@ -184,10 +184,10 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
     }
     
     dcmView = (DCMView *)[notification object];
-    N3AffineTransformGetOpenGLMatrixd(([dcmView pixToSubDrawRectTransform]), pixToSubdrawRectOpenGLTransform);
+    N3AffineTransformGetOpenGLMatrixd([dcmView pixToSubDrawRectTransform], pixToSubdrawRectOpenGLTransform);
     pixelFormatObj = (CGLPixelFormatObj)[[dcmView pixelFormat] CGLPixelFormatObj];
 	pixToDicomTransform = [[dcmView curDCM] pixToDicomTransform];
-	if (N3AffineTransformDeterminant(pixToDicomTransform) != 0) {
+	if (N3AffineTransformDeterminant(pixToDicomTransform) != 0.0) {
 		dicomToPixTransform = N3AffineTransformInvert(pixToDicomTransform);
 		plane = N3PlaneApplyTransform(N3PlaneZZero, pixToDicomTransform);
 	} else {
@@ -195,10 +195,6 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 		plane = N3PlaneZZero;
 	}
 	
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glMultMatrixd(pixToSubdrawRectOpenGLTransform);
-    
     for (roi in [self ROIs]) {
         if ([roi respondsToSelector:@selector(drawPlane:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
 			glMatrixMode(GL_MODELVIEW);
@@ -257,13 +253,15 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (NSArray *)_ROIList;
 {
 	ViewerController *viewController;
-	NSArray *movieFrameROIs;
+	NSArray *movieFrameROIList;
+	NSArray *movieFramePixList;
 	NSInteger i;
+	NSInteger j;
 	long maxMovieIndex;
 	OSIROI *roi;
 	ROI *osirixROI;
 	NSMutableArray *newROIs;
-	NSArray *pixROIArray;
+	NSArray *pixROIList;
 	DCMPix *pix;
 	N3AffineTransform pixToDicomTransform;
 	
@@ -274,25 +272,24 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 		maxMovieIndex = [viewController maxMovieIndex];
 		
 		for (i = 0; i < maxMovieIndex; i++) {
-			movieFrameROIs = [viewController roiList:i];
-			pix = nil;
+			movieFrameROIList = [viewController roiList:i];
+			movieFramePixList = [viewController pixList:i];
 			
-			if ([[viewController pixList:i] count] > 0) {
-				pix = [[viewController pixList:i] objectAtIndex:0];
-			}
-			if (pix != nil) {
+			for (j = 0; j < [movieFramePixList count]; j++) {
+				pix = [movieFramePixList objectAtIndex:j];
+				pixROIList = [movieFrameROIList objectAtIndex:j];
+				
 				pixToDicomTransform = [pix pixToDicomTransform];
-			} else {
-				continue; // if there is something weird going on and there is no pix to look at, just go on to the next one
-			}
-			
-			for (pixROIArray in movieFrameROIs) {
-				for (osirixROI in pixROIArray) {
+				if (N3AffineTransformDeterminant(pixToDicomTransform) == 0.0) {
+					pixToDicomTransform = N3AffineTransformIdentity;
+				}
+				
+				for (osirixROI in pixROIList) {
 					roi = [OSIROI ROIWithOsiriXROI:osirixROI pixToDICOMTransfrom:pixToDicomTransform homeFloatVolumeData:[viewController floatVolumeDataForMovieIndex:i]];
 					if (roi) {
 						[newROIs addObject:roi];
 					}
-				}
+				}				
 			}
 		}
 	}

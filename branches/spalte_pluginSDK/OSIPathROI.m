@@ -44,7 +44,7 @@
 			for (myPoint in pointArray) {
 				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes style:N3BezierNodeOpenEndsStyle];
 			[nodes release];
 		} else if ([roi type] == tCPolygon) {
 			pointArray = [roi points];
@@ -53,7 +53,7 @@
 			for (myPoint in pointArray) {
 				[nodes addObject:[NSValue valueWithN3Vector:N3VectorApplyTransform(N3VectorMakeFromNSPoint([myPoint point]), pixToDICOMTransfrom)]];
 			}
-			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes];
+			_bezierPath = [[N3MutableBezierPath alloc] initWithNodeArray:nodes style:N3BezierNodeOpenEndsStyle];
 			[_bezierPath close];
 			[nodes release];
 		} else {

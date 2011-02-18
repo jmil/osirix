@@ -136,7 +136,14 @@ static OSIEnvironment *sharedEnvironment = nil;
 
 - (void)removeViewerController:(ViewerController *)viewerController
 {
+	OSIVolumeWindow *volumeWindow;
+	
 	assert([_volumeWindows objectForKey:[NSValue valueWithPointer:viewerController]]); // make sure this one was added!
+	
+	volumeWindow = [_volumeWindows objectForKey:[NSValue valueWithPointer:viewerController]];
+	assert([volumeWindow isKindOfClass:[OSIVolumeWindow class]]);
+	
+	[volumeWindow viewerControllerDidClose];
 	
 	[self willChangeValueForKey:@"openVolumeWindows"];
 	[_volumeWindows removeObjectForKey:[NSValue valueWithPointer:viewerController]];
