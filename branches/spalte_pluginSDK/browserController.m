@@ -118,7 +118,6 @@ static NSMenu *contextualRT = nil;  // Alternate menus for RT objects (which oft
 static int DicomDirScanDepth = 0;
 static int DefaultFolderSizeForDB = 0;
 static NSTimeInterval lastHardDiskCheck = 0;
-static long DATABASEINDEX = 0;
 static unsigned long long lastFreeSpace = 0;
 static NSTimeInterval lastFreeSpaceLogTime = 0;
 
@@ -219,7 +218,7 @@ static volatile BOOL computeNumberOfStudiesForAlbums = NO;
 
 @class DCMTKStudyQueryNode;
 
-@synthesize checkIncomingLock, CDpassword, passwordForExportEncryption;
+@synthesize checkIncomingLock, CDpassword, passwordForExportEncryption, databaseIndexDictionary;
 @synthesize TimeFormat, TimeWithSecondsFormat, temporaryNotificationEmail, customTextNotificationEmail;
 @synthesize DateTimeWithSecondsFormat, matrixViewArray, oMatrix, testPredicate;
 @synthesize COLUMN, databaseOutline, albumTable, currentDatabasePath;
@@ -427,28 +426,32 @@ static NSConditionLock *threadLock = nil;
 		}
 		
 		BOOL fileExist = NO, firstExist = YES;
+		long long databaseIndex = [[databaseIndexDictionary objectForKey: [dbFolder stringByAppendingPathComponent: DATABASEPATH]] longLongValue] + 1;
+		long long defaultFolderSizeDB = [BrowserController DefaultFolderSizeForDB];
 		
 		do
 		{
-			long subFolderInt = [BrowserController DefaultFolderSizeForDB] * ((DATABASEINDEX / [BrowserController DefaultFolderSizeForDB]) +1);
-			subFolder = [OUTpath stringByAppendingPathComponent: [NSString stringWithFormat:@"%d", subFolderInt]];
+			long long subFolderInt = [BrowserController DefaultFolderSizeForDB] * ((databaseIndex / defaultFolderSizeDB) +1);
+			subFolder = [OUTpath stringByAppendingPathComponent: [NSString stringWithFormat:@"%lld", subFolderInt]];
 			
 			if( ![[NSFileManager defaultManager] fileExistsAtPath:subFolder])
 				[[NSFileManager defaultManager] createDirectoryAtPath:subFolder attributes:nil];
 			
-			dstPath = [subFolder stringByAppendingPathComponent: [NSString stringWithFormat:@"%d.%@", DATABASEINDEX, extension]];
+			dstPath = [subFolder stringByAppendingPathComponent: [NSString stringWithFormat:@"%lld.%@", databaseIndex, extension]];
 			
 			fileExist = [[NSFileManager defaultManager] fileExistsAtPath: dstPath];
 			
-			if( fileExist == YES && firstExist == YES && DATABASEINDEX == 0)
+			if( fileExist == YES && firstExist == YES)
 			{
 				firstExist = NO;
-				[BrowserController computeDATABASEINDEXforDatabase: OUTpath];
+				databaseIndex = [BrowserController computeDATABASEINDEXforDatabase: OUTpath] + 1;
 			}
 			else
-				DATABASEINDEX++;
+				databaseIndex++;
 		}
 		while( fileExist == YES);
+		
+		[databaseIndexDictionary setObject: [NSNumber numberWithLongLong: databaseIndex] forKey: [dbFolder stringByAppendingPathComponent: DATABASEPATH]];
 	}
 	
 	return dstPath;
@@ -2578,6 +2581,8 @@ static NSConditionLock *threadLock = nil;
 		{
 			psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: self.managedObjectModel] autorelease];
 			[persistentStoreCoordinatorDictionary setObject: psc forKey: path];
+			
+			[databaseIndexDictionary setObject: [NSNumber numberWithLongLong: 0] forKey: path];
 		}
 		
 		moc = [[[NSManagedObjectContext alloc] init] autorelease];
@@ -2781,9 +2786,15 @@ static NSConditionLock *threadLock = nil;
 		
 		if( isCurrentDatabaseBonjour)
 		{
-			// Remove the file from persistent store if needed -> we artifically modified the file (download)
-			if( [persistentStoreCoordinatorDictionary objectForKey: currentDatabasePath])
-				[persistentStoreCoordinatorDictionary removeObjectForKey: currentDatabasePath];
+			@synchronized( self)
+			{
+				// Remove the file from persistent store if needed -> we artifically modified the file (download)
+				if( [persistentStoreCoordinatorDictionary objectForKey: currentDatabasePath])
+				{
+					[persistentStoreCoordinatorDictionary removeObjectForKey: currentDatabasePath];
+					[databaseIndexDictionary removeObjectForKey: currentDatabasePath];
+				}
+			}
 		}
 		
 		[self loadDatabase: currentDatabasePath];
@@ -3599,7 +3610,13 @@ static NSConditionLock *threadLock = nil;
 	[managedObjectContext reset];
 	[managedObjectContext release];
 	managedObjectContext = nil;
-	DATABASEINDEX = 0;
+	
+	while( computeNumberOfStudiesForAlbums)
+		[NSThread sleepForTimeInterval: 0.1];
+	@synchronized( albumNoOfStudiesCache)
+	{
+		[albumNoOfStudiesCache removeAllObjects];
+	}
 	
 	[self setFixedDocumentsDirectory];
 	[self managedObjectContext];
@@ -3645,9 +3662,6 @@ static NSConditionLock *threadLock = nil;
 	
 	[AppController createNoIndexDirectoryIfNecessary: [[self documentsDirectory] stringByAppendingPathComponent: DATABASEPATH]];
 	[AppController createNoIndexDirectoryIfNecessary: [[self documentsDirectory] stringByAppendingPathComponent: INCOMINGPATH]];
-	
-	if (!isCurrentDatabaseBonjour)
-		[BrowserController computeDATABASEINDEXforDatabase: [[self documentsDirectory] stringByAppendingPathComponent: DATABASEPATH]];
 	
 	[self setDBWindowTitle];
 	
@@ -5922,22 +5936,18 @@ static NSConditionLock *threadLock = nil;
 }
 
 - (void) computeNumberOfStudiesForAlbums
-{	
-	if( computeNumberOfStudiesForAlbums)
-		return;
-	
-	computeNumberOfStudiesForAlbums = YES;
-	
+{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	@try
 	{
-		if( displayEmptyDatabase == NO)
+		if( displayEmptyDatabase == NO && computeNumberOfStudiesForAlbums == NO)
 		{
-			NSMutableArray *NoOfStudies = [NSMutableArray array];
+			computeNumberOfStudiesForAlbums = YES;
 			
 			NSManagedObjectContext *context = [self managedObjectContextIndependentContext: YES];
-
+			NSMutableArray *NoOfStudies = [NSMutableArray array];
+			
 			// Find all studies
 			NSFetchRequest	*dbRequest = [[[NSFetchRequest alloc] init] autorelease];
 			[dbRequest setEntity: [[context.persistentStoreCoordinator.managedObjectModel entitiesByName] objectForKey:@"Study"]];
@@ -5992,6 +6002,8 @@ static NSConditionLock *threadLock = nil;
 			}
 			
 			[self performSelectorOnMainThread: @selector( reloadAlbumTableData) withObject: nil waitUntilDone: YES];
+			
+			computeNumberOfStudiesForAlbums = NO;
 		}
 		else
 			[self performSelectorOnMainThread: @selector( delayedRefreshAlbums) withObject: nil waitUntilDone: YES];
@@ -6002,22 +6014,19 @@ static NSConditionLock *threadLock = nil;
 	}
 	
 	[pool release];
-	
-	computeNumberOfStudiesForAlbums = NO;
 }
 
 - (void)delayedRefreshAlbums
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector( computeNumberOfStudiesForAlbums) object: nil];
-	[self performSelector: @selector( computeNumberOfStudiesForAlbums) withObject: nil afterDelay: 3];
+	[self performSelector: @selector( computeNumberOfStudiesForAlbums) withObject: nil afterDelay: 5];
 }
 
 - (void)refreshAlbums
 {
-	if( computeNumberOfStudiesForAlbums == NO && displayEmptyDatabase == NO && [[self window] isVisible] == YES)
+	if( displayEmptyDatabase == NO && [[self window] isVisible] == YES)
 	{
-		[NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector( computeNumberOfStudiesForAlbums) object: nil];
-		[NSThread detachNewThreadSelector: @selector( computeNumberOfStudiesForAlbums) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector: @selector( computeNumberOfStudiesForAlbums) toTarget:self withObject: nil];
 	}
 }
 
@@ -7244,7 +7253,9 @@ static NSConditionLock *threadLock = nil;
 		@try
 		{
 			[self saveDatabase: currentDatabasePath];
-			[self refreshDatabase: self];
+			
+			[self outlineViewRefresh];
+			[self refreshAlbums];
 		}
 		@catch( NSException *ne)
 		{
@@ -11043,7 +11054,7 @@ static BOOL needToRezoom;
 					return @"#";
 				}
 				else
-					return [albumNoOfStudiesCache objectAtIndex: rowIndex];
+					return [[[albumNoOfStudiesCache objectAtIndex: rowIndex] copy] autorelease];
 			}
 		}
 		else
@@ -13519,72 +13530,82 @@ static NSArray*	openSubSeriesArray = nil;
 //	}
 //}
 
-+ (void) computeDATABASEINDEXforDatabase:(NSString*) path
++ (long) computeDATABASEINDEXforDatabase:(NSString*) path
 {
 	#ifndef NDEBUG
 	NSLog( @"----- computeDATABASEINDEXforDatabase");
 	#endif
 	
-	@try
+	NSString *sqlPath = [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent: DATAFILEPATH];
+	
+	long long v = 0;
+	
+	@synchronized( [BrowserController currentBrowser])
 	{
-		long v = 0;
-		
-		if( [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath: path error: nil])
-			path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath: path error: nil];
-		
-		// Delete empty directory <- This is too slow for NAS systems
-		for( NSString *f in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error: nil])
+		@try
 		{
-			NSDictionary *fileAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: [path stringByAppendingPathComponent: f] traverseLink:YES];
+			if( [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath: path error: nil])
+				path = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath: path error: nil];
 			
-			if ( [[fileAttributes objectForKey: NSFileType] isEqualToString: NSFileTypeDirectory]) 
+			if( [[[BrowserController currentBrowser].databaseIndexDictionary objectForKey: sqlPath] longLongValue] == 0)
 			{
-				if( [[fileAttributes objectForKey: NSFileReferenceCount] intValue] < 4)	// check if this folder is empty, and delete it if necessary
+				// Delete empty directory <- This is too slow for NAS systems
+				for( NSString *f in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error: nil])
 				{
-					int numberOfValidFiles = 0;
-					for( NSString *s in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [path stringByAppendingPathComponent: f] error: nil])
-					{
-						if( [[s stringByDeletingPathExtension] integerValue] > 0)
-							numberOfValidFiles++;
-					}
+					NSDictionary *fileAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: [path stringByAppendingPathComponent: f] traverseLink:YES];
 					
-					if( numberOfValidFiles == 0)
-						[[NSFileManager defaultManager] removeFileAtPath: [path stringByAppendingPathComponent: f] handler: nil];
+					if ( [[fileAttributes objectForKey: NSFileType] isEqualToString: NSFileTypeDirectory]) 
+					{
+						if( [[fileAttributes objectForKey: NSFileReferenceCount] intValue] < 4)	// check if this folder is empty, and delete it if necessary
+						{
+							int numberOfValidFiles = 0;
+							for( NSString *s in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [path stringByAppendingPathComponent: f] error: nil])
+							{
+								if( [[s stringByDeletingPathExtension] integerValue] > 0)
+									numberOfValidFiles++;
+							}
+							
+							if( numberOfValidFiles == 0)
+								[[NSFileManager defaultManager] removeFileAtPath: [path stringByAppendingPathComponent: f] handler: nil];
+						}
+					}
 				}
 			}
-		}
-		
-		/// SCAN
-		for( NSString *f in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error: nil])
-		{
-			long c = [f integerValue];
-			if( c > v)
-				v = c;
-		}
-		
-		if( v > 0)
-		{
-			NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [path stringByAppendingPathComponent: [NSString stringWithFormat: @"%d", v]] error: nil];
 			
-			v -= [BrowserController DefaultFolderSizeForDB];
-			if( v < 0) v = 0;
-			
-			for( NSString *s in paths)
+			/// SCAN
+			for( NSString *f in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error: nil])
 			{
-				long c = [[s stringByDeletingPathExtension] integerValue];
+				long c = [f integerValue];
 				if( c > v)
 					v = c;
 			}
+			
+			if( v > 0)
+			{
+				NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: [path stringByAppendingPathComponent: [NSString stringWithFormat: @"%d", v]] error: nil];
+				
+				v -= [BrowserController DefaultFolderSizeForDB];
+				if( v < 0) v = 0;
+				
+				for( NSString *s in paths)
+				{
+					long c = [[s stringByDeletingPathExtension] integerValue];
+					if( c > v)
+						v = c;
+				}
+			}
+			
+			[[BrowserController currentBrowser].databaseIndexDictionary setObject: [NSNumber numberWithLongLong: v] forKey: sqlPath];
+			
+			NSLog( @"DATABASEINDEX: %lld for %@", v, sqlPath);
 		}
-		
-		DATABASEINDEX = v;
-		NSLog( @"DATABASEINDEX: %d", DATABASEINDEX);
+		@catch (NSException * e)
+		{
+			NSLog( @"**** computeDATABASEINDEXforDatabase: %@", e);
+			[AppController printStackTrace: e];
+		}
 	}
-	@catch (NSException * e)
-	{
-		NSLog( @"**** computeDATABASEINDEXforDatabase: %@", e);
-		[AppController printStackTrace: e];
-	}
+	return v;
 }
 
 - (id)initWithWindow: (NSWindow *)window
@@ -13641,6 +13662,7 @@ static NSArray*	openSubSeriesArray = nil;
 		viewersListToRebuild = [[NSMutableArray alloc] initWithCapacity: 0];
 		viewersListToReload = [[NSMutableArray alloc] initWithCapacity: 0];
 		persistentStoreCoordinatorDictionary = [[NSMutableDictionary alloc] initWithCapacity: 0];
+		databaseIndexDictionary = [[NSMutableDictionary alloc] initWithCapacity: 0];
 		
 		downloadingOsiriXIcon = [[NSImage imageNamed:@"OsirixDownload.icns"] retain];
 		standardOsiriXIcon = [[NSImage imageNamed:@"Osirix.icns"] retain];
@@ -20584,6 +20606,10 @@ static volatile int numberOfThreadsForJPEG = 0;
 						
 			if( path == nil || [path isEqualToString: @"aborted"])
 			{
+				displayEmptyDatabase = NO;
+				[self outlineViewRefresh];
+				[self refreshMatrix: self];
+				
 				if( [path isEqualToString: @"aborted"]) NSLog( @"Transfer aborted");
 				else NSRunAlertPanel( NSLocalizedString(@"OsiriX Database", nil), NSLocalizedString(@"OsiriX cannot connect to the database.", nil), nil, nil, nil);
 				
@@ -20596,9 +20622,8 @@ static volatile int numberOfThreadsForJPEG = 0;
 				[segmentedAlbumButton setEnabled: NO];
 				
 				[self openDatabaseIn: path Bonjour: YES];
+				displayEmptyDatabase = NO;
 			}
-			
-			displayEmptyDatabase = NO;
 		}
 	}
 	else // LOCAL DEFAULT DATABASE
