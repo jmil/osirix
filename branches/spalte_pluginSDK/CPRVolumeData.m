@@ -420,6 +420,7 @@
         inlineBuffer->volumeTransform = _volumeTransform;
         return YES;
     } else {
+        OSAtomicDecrement32Barrier(&_readerCount);
         return NO;
     }
 }
@@ -429,6 +430,7 @@
     if (inlineBuffer->floatBytes != NULL) {
         OSAtomicDecrement32Barrier(&_readerCount);
     }
+    memset(inlineBuffer, 0, sizeof(CPRVolumeDataInlineBuffer));
 }
 
 
