@@ -171,6 +171,9 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
     N3AffineTransform dicomToPixTransform;
     double pixToSubdrawRectOpenGLTransform[16];
 	N3Plane plane;
+    OSISlab slab;
+//    float thickness;
+//    float location;
     CGLContextObj cgl_ctx;
     
     cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
@@ -194,14 +197,20 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 		dicomToPixTransform = N3AffineTransformIdentity;
 		plane = N3PlaneZZero;
 	}
+
+//    [dcmView getThickSlabThickness:&thickness location:&location];
+//    slab.thickness = thickness;
+    slab.thickness = 0;
+    slab.plane = plane;
+//    slab.plane.point = N3VectorAdd(slab.plane.point, N3VectorScalarMultiply(N3VectorNormalize(slab.plane.normal), thickness/2.0));
 	
     for (roi in [self ROIs]) {
-        if ([roi respondsToSelector:@selector(drawPlane:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
+        if ([roi respondsToSelector:@selector(drawSlab:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultMatrixd(pixToSubdrawRectOpenGLTransform);
             
-			[roi drawPlane:plane inCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
+			[roi drawSlab:slab inCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
 			
 			glMatrixMode(GL_MODELVIEW);
 			glPopMatrix();
@@ -306,6 +315,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 	NSString *name;
 	NSMutableDictionary *groupedNamesDict;
 	OSIROI *roi;
+    OSIFloatVolumeData *homeVolumeData;
 	
 	roiList = [self _ROIList];
 	roiNames = [[NSMutableSet alloc] init];
@@ -327,7 +337,8 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 	}
 	
 	for (roisToCoalesce in [groupedNamesDict allValues]) {
-		roi = [OSIROI ROICoalescedWithOSIROIs:roisToCoalesce];
+        homeVolumeData = [[roisToCoalesce objectAtIndex:0] homeFloatVolumeData];
+		roi = [OSIROI ROICoalescedWithSourceROIs:roisToCoalesce homeFloatVolumeData:homeVolumeData];
 		if (roi) {
 			[coalescedROIs addObject:roi];
 		}

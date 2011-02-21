@@ -16,9 +16,12 @@
 #import "OSIROI.h"
 
 @interface OSICoalescedROI : OSIROI {
-
+    NSArray *_sourceROIs;
+    OSIFloatVolumeData *_homeFloatVolumeData;
 }
 
-- (id)initWithOSIROIs:(NSArray *)rois;
+- (id)initWithSourceROIs:(NSArray *)rois homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
+
+@property (readonly, copy) NSArray *sourceROIs;
 
 @end

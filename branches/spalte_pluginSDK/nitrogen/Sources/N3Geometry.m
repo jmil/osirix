@@ -17,7 +17,7 @@
 #include <math.h>
 #include <Accelerate/Accelerate.h>
 
-#define _N3GeometrySmallNumber (CGFLOAT_MIN * 1E5)
+static const CGFloat _N3GeometrySmallNumber = (CGFLOAT_MIN * 1E5);
 
 const N3Vector N3VectorZero = {0.0, 0.0, 0.0};
 const N3AffineTransform N3AffineTransformIdentity = {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
@@ -329,6 +329,11 @@ CGFloat N3VectorDistanceToLine(N3Vector vector, N3Line line)
     return N3VectorLength(N3VectorSubtract(translatedPoint, N3VectorProject(translatedPoint, line.vector)));
 }
 
+CGFloat N3VectorDistanceToPlane(N3Vector vector, N3Plane plane)
+{
+    return ABS(N3VectorDotProduct(N3VectorSubtract(vector, plane.point), N3VectorNormalize(plane.normal)));
+}
+
 N3Line N3LineMake(N3Vector point, N3Vector vector)
 {
     N3Line line;
@@ -533,9 +538,9 @@ N3Vector N3PlanePointClosestToVector(N3Plane plane, N3Vector vector)
     return N3VectorAdd(vector, N3VectorScalarMultiply(planeNormal, N3VectorDotProduct(planeNormal, N3VectorSubtract(plane.point, vector))));
 }
 
-bool N3PlaneInterectsPlane(N3Plane plane1, N3Plane plane2)
+bool N3PlaneIsParallelToPlane(N3Plane plane1, N3Plane plane2)
 {
-    return N3VectorLength(N3VectorCrossProduct(plane1.normal, plane2.normal)) >= _N3GeometrySmallNumber;
+    return N3VectorLength(N3VectorCrossProduct(plane1.normal, plane2.normal)) <= _N3GeometrySmallNumber;
 }
 
 bool N3PlaneIsBetweenVectors(N3Plane plane, N3Vector vector1, N3Vector vector2)
@@ -677,7 +682,6 @@ bool N3VectorMakeWithDictionaryRepresentation(CFDictionaryRef dict, N3Vector *ve
 	CFNumberRef x;
 	CFNumberRef y;
 	CFNumberRef z;
-	CFNumberType numberType;
 	N3Vector tempVector;
 	
 	if (dict == NULL) {
@@ -694,19 +698,13 @@ bool N3VectorMakeWithDictionaryRepresentation(CFDictionaryRef dict, N3Vector *ve
 		return false;
 	}
 	
-#if CGFLOAT_IS_DOUBLE
-	numberType = kCFNumberDoubleType;
-#else
-	numberType = kCFNumberFloatType;
-#endif
-	
-	if (CFNumberGetValue(x, numberType, &(tempVector.x)) == false) {
+	if (CFNumberGetValue(x, kCFNumberCGFloatType, &(tempVector.x)) == false) {
 		return false;
 	}
-	if (CFNumberGetValue(y, numberType, &(tempVector.y)) == false) {
+	if (CFNumberGetValue(y, kCFNumberCGFloatType, &(tempVector.y)) == false) {
 		return false;
 	}
-	if (CFNumberGetValue(z, numberType, &(tempVector.z)) == false) {
+	if (CFNumberGetValue(z, kCFNumberCGFloatType, &(tempVector.z)) == false) {
 		return false;
 	}
 	

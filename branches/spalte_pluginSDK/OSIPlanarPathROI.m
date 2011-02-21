@@ -151,15 +151,16 @@
 	NSUInteger runStart;
 	NSUInteger runEnd;
 	
-	volumeBezierPath = [[_bezierPath bezierPathByApplyingTransform:floatVolume.volumeTransform] mutableCopy];
+	volumeBezierPath = [[[_bezierPath bezierPathByApplyingTransform:floatVolume.volumeTransform] mutableCopy] autorelease];
 	[volumeBezierPath flatten:N3BezierDefaultFlatness];
 	zSet = NO;
 	ROIRuns = [NSMutableArray array];
 	minY = CGFLOAT_MAX;
 	maxY = -CGFLOAT_MAX;
+    z = 0;
 	
 	for (i = 0; i < [volumeBezierPath elementCount]; i++) {
-		segmentType = [volumeBezierPath elementAtIndex:i control1:NULL control2:NULL endpoint:&endpoint];
+		[volumeBezierPath elementAtIndex:i control1:NULL control2:NULL endpoint:&endpoint];
 #if CGFLOAT_IS_DOUBLE
 		endpoint.z = round(endpoint.z);
 #else
@@ -218,7 +219,7 @@
 	return _homeFloatVolumeData;
 }
 
-- (void)drawPlane:(N3Plane)plane inCGLContext:(CGLContextObj)cgl_ctx pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
+- (void)drawSlab:(OSISlab)slab inCGLContext:(CGLContextObj)cgl_ctx pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform
 {
 	double dicomToPixGLTransform[16];
 	NSInteger i;
@@ -226,7 +227,7 @@
 	N3Vector endpoint;
     N3BezierPath *flattenedPath;
 	
-	if (N3PlaneIsCoincidentToPlane(plane, _plane) == NO) {
+	if (OSISlabContainsPlane(slab, _plane) == NO) {
 		return; // this ROI does not live on this slice
 	}
 

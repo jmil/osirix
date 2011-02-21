@@ -113,7 +113,7 @@
 	return nil;
 }
 
-- (void)drawPlane:(N3Plane)plane inCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform;
+- (void)drawSlab:(OSISlab)slab inCGLContext:(CGLContextObj)glContext pixelFormat:(CGLPixelFormatObj)pixelFormat dicomToPixTransform:(N3AffineTransform)dicomToPixTransform;
 {
 }
 
@@ -135,9 +135,9 @@
 }
 
 
-+ (id)ROICoalescedWithOSIROIs:(NSArray *)rois
++ (id)ROICoalescedWithSourceROIs:(NSArray *)rois homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData
 {
-	return [[[OSICoalescedROI alloc] initWithOSIROIs:rois] autorelease];
+	return [[[OSICoalescedROI alloc] initWithSourceROIs:rois homeFloatVolumeData:floatVolumeData] autorelease];
 }
 
 

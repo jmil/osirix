@@ -19,6 +19,8 @@
 
 #ifdef __OBJC__
 #import <Foundation/NSValue.h>
+@class NSString;
+#import "Point3D.h"
 #endif
 
 CF_EXTERN_C_BEGIN
@@ -90,6 +92,7 @@ N3Vector N3VectorBend(N3Vector vectorToBend, N3Vector originalDirection, N3Vecto
 bool N3VectorIsOnLine(N3Vector vector, N3Line line);
 bool N3VectorIsOnPlane(N3Vector vector, N3Plane plane);
 CGFloat N3VectorDistanceToLine(N3Vector vector, N3Line line);
+CGFloat N3VectorDistanceToPlane(N3Vector vector, N3Plane plane);
 
 N3Line N3LineMake(N3Vector point, N3Vector vector);
 N3Line N3LineMakeFromPoints(N3Vector point1, N3Vector point2);
@@ -109,7 +112,7 @@ bool N3PlaneEqualToPlane(N3Plane plane1, N3Plane plane2);
 bool N3PlaneIsCoincidentToPlane(N3Plane plane1, N3Plane plane2);
 bool N3PlaneIsValid(N3Plane plane);
 N3Vector N3PlanePointClosestToVector(N3Plane plane, N3Vector vector);
-bool N3PlaneInterectsPlane(N3Plane plane1, N3Plane plane2);
+bool N3PlaneIsParallelToPlane(N3Plane plane1, N3Plane plane2);
 bool N3PlaneIsBetweenVectors(N3Plane plane, N3Vector vector1, N3Vector vector2);
 N3Line N3PlaneIntersectionWithPlane(N3Plane plane1, N3Plane plane2);
 N3Plane N3PlaneApplyTransform(N3Plane plane, N3AffineTransform transform);
@@ -163,15 +166,15 @@ CFIndex findRealCubicRoots(CGFloat a, CGFloat b, CGFloat c, CGFloat d, CGFloat *
 
 CF_EXTERN_C_END
 
-/** NSValue support. **/
  
 #ifdef __OBJC__
 
-@class NSString;
 NSString *NSStringFromN3AffineTransform(N3AffineTransform transform);
 NSString *NSStringFromN3Vector(N3Vector vector);
 NSString *NSStringFromN3Line(N3Line line);
 NSString *NSStringFromN3Plane(N3Plane plane);
+
+/** NSValue support. **/
 
 @interface NSValue (N3GeometryAdditions)
 
@@ -188,8 +191,6 @@ NSString *NSStringFromN3Plane(N3Plane plane);
 - (N3AffineTransform)N3AffineTransformValue;
 
 @end
-
-#import "Point3D.h"
 
 @interface Point3D (N3GeometryAdditions)
 

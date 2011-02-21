@@ -22,7 +22,7 @@
 @interface OSIROI (Private)
 
 + (id)ROIWithOsiriXROI:(ROI *)roi pixToDICOMTransfrom:(N3AffineTransform)pixToDICOMTransfrom homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
-+ (id)ROICoalescedWithOSIROIs:(NSArray *)rois;
++ (id)ROICoalescedWithSourceROIs:(NSArray *)rois homeFloatVolumeData:(OSIFloatVolumeData *)floatVolumeData;
 
 @end
 

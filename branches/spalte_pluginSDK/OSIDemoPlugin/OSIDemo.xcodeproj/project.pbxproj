@@ -12,6 +12,8 @@
 		4F0CD30F12F97A6C001AD5CF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F0CD30E12F97A6C001AD5CF /* AppKit.framework */; };
 		4F0CD4B312F97E2E001AD5CF /* OSIDemoWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0CD4B212F97E2E001AD5CF /* OSIDemoWindowController.m */; };
 		4F0CD4BD12F97EB1001AD5CF /* OSIDemoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F0CD4BC12F97EB1001AD5CF /* OSIDemoWindowController.xib */; };
+		4F1E9B491312C7DE00C59592 /* OSIDemoCoalescedWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E9B481312C7DD00C59592 /* OSIDemoCoalescedWindowController.xib */; };
+		4F1E9B501312C80B00C59592 /* OSIDemoCoalescedWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E9B4F1312C80B00C59592 /* OSIDemoCoalescedWindowController.m */; };
 		4FE8944312F8578900B78E25 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE8944212F8578900B78E25 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +27,9 @@
 		4F0CD4BC12F97EB1001AD5CF /* OSIDemoWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OSIDemoWindowController.xib; sourceTree = "<group>"; };
 		4F0CD55612F98BBC001AD5CF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		4F0CD59912F98F46001AD5CF /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
+		4F1E9B481312C7DD00C59592 /* OSIDemoCoalescedWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OSIDemoCoalescedWindowController.xib; sourceTree = "<group>"; };
+		4F1E9B4E1312C80B00C59592 /* OSIDemoCoalescedWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSIDemoCoalescedWindowController.h; sourceTree = "<group>"; };
+		4F1E9B4F1312C80B00C59592 /* OSIDemoCoalescedWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSIDemoCoalescedWindowController.m; sourceTree = "<group>"; };
 		4F8C4CCB1303F5A100B20709 /* OSIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSIEnvironment.h; path = ../OSIEnvironment.h; sourceTree = SOURCE_ROOT; };
 		4F8C4CCC1303F5A100B20709 /* OSIFloatVolumeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSIFloatVolumeData.h; path = ../OSIFloatVolumeData.h; sourceTree = SOURCE_ROOT; };
 		4F8C4CCD1303F5A100B20709 /* OSIPathROI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OSIPathROI.h; path = ../OSIPathROI.h; sourceTree = SOURCE_ROOT; };
@@ -68,6 +73,9 @@
 		4F0CD2E412F964A3001AD5CF /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E9B481312C7DD00C59592 /* OSIDemoCoalescedWindowController.xib */,
+				4F1E9B4E1312C80B00C59592 /* OSIDemoCoalescedWindowController.h */,
+				4F1E9B4F1312C80B00C59592 /* OSIDemoCoalescedWindowController.m */,
 				4F0CD2E712F964B8001AD5CF /* OSIDemoPlugin.h */,
 				4F0CD2E812F964B8001AD5CF /* OSIDemoPlugin.m */,
 				4F0CD4B112F97E2E001AD5CF /* OSIDemoWindowController.h */,
@@ -211,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F0CD4BD12F97EB1001AD5CF /* OSIDemoWindowController.xib in Resources */,
+				4F1E9B491312C7DE00C59592 /* OSIDemoCoalescedWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +232,7 @@
 			files = (
 				4F0CD2E912F964B8001AD5CF /* OSIDemoPlugin.m in Sources */,
 				4F0CD4B312F97E2E001AD5CF /* OSIDemoWindowController.m in Sources */,
+				4F1E9B501312C80B00C59592 /* OSIDemoCoalescedWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

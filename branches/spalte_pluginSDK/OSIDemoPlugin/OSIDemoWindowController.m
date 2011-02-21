@@ -10,11 +10,13 @@
 #import "OSIEnvironment.h"
 #import "OSIVolumeWindow.h"
 #import "OSIROI.h"
+#import "OSIDemoCoalescedWindowController.h"
 
 @interface OSIDemoWindowController ()
 
 - (void)_openVolumeWindowsDidUpdateNotification:(NSNotification *)notification;
 - (void)_roisDidUpdateNotification:(NSNotification *)notification;
+- (IBAction)_openCoalescedWindow:(id)sender;
 
 @end
 
@@ -30,6 +32,12 @@
 		[self retain]; // matched in - (void)windowWillClose:(NSNotification *)notification
 	}
 	return self;
+}
+
+- (void)awakeFromNib
+{
+    [_outlineView setTarget:self];
+    [_outlineView setDoubleAction:@selector(_openCoalescedWindow:)];
 }
 
 - (void)dealloc
@@ -115,5 +123,26 @@
 	[_outlineView reloadItem:nil];
 }
 
+- (IBAction)_openCoalescedWindow:(id)sender
+{
+    OSIDemoCoalescedWindowController *newWindow;
+    OSIVolumeWindow *volumeWindow;
+    id item;
+    NSInteger clickedRow;
+    
+    clickedRow = [_outlineView clickedRow];
+    if (clickedRow < 0) {
+        return;
+    }
+    item = [_outlineView itemAtRow:clickedRow];
+    if ([item isKindOfClass:[OSIVolumeWindow class]] == NO) {
+        return;
+    }
+    
+    volumeWindow = (OSIVolumeWindow*)item;
+    newWindow = [[OSIDemoCoalescedWindowController alloc] initWithVolumeWindow:volumeWindow];
+    [newWindow showWindow:self];
+    [newWindow release];
+}
 
 @end
