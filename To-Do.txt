@@ -19,11 +19,10 @@
 - WADO Retrieve: OsiriX will only download the UID that are not available locally (faster, and spare bandwidth)
 
 - DICOM Listener TLS? -> different syntax transfer settings
+- Test sync
 - Printing (not DICOM) with format "As displayed, screen capture" is ignoring the image Tiling
 - "Export to Dicom" changed its behavior: with opening two series as "merged selection" , for example base and brain series of the head, the "Export to Dicom" will save two different series instead of one merged. Bug or feature ?
 - When I«m trying to merge two series, (let us use the same example : base and brain) in the Database-Window using "Merge selected Series", the result isn«t sorted by Slice location but - i don«t  know, the obsolete old picture number? 
-- Web Server:  Notification Emails are ignoring the user defined public address.
-
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
