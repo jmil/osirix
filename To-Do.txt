@@ -26,6 +26,7 @@
 - Web Server: Include previous study for specific patients
 - Web Server: Burn option if the CD/DVD is installed
 
+- CPR: export transverse series, at fixed interval
 - MagnifyWithEvent, rotateWithEvent for SR, VR, MPR
 - Two Steps DICOM Editing
 - Dont rotate tText
