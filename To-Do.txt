@@ -21,7 +21,7 @@
 - DICOM Listener TLS? -> different syntax transfer settings
 - Test sync
 - Web Server: Log in problems
-- Web Server: Flash (libfreetype.6.dylib?) Does it work on a 'standard' MacOS 10.6? MacOS 10.5?
+- Bonjour background DB bug
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
