@@ -22,7 +22,6 @@
 - Test sync
 - Web Server: Log in problems
 - Bonjour background DB bug
-- PDF SR from DB
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
