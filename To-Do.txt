@@ -20,7 +20,6 @@
 
 - DICOM Listener TLS? -> different syntax transfer settings
 - Web Server: Log in problems? Not reproducible…
-- Non-adequate windows settings at dicom-header Tags 0028,1050 and 1051 in 8-bit exported DICOM files. Viewing them in some other Viewers (in my case Vepro workstations) results in "black pictures"
 
 - Web Server: A list of JPEG, instead of a quicktime movie, if number of images < 20
 - Web Server: A link for keyimages: jpeg or movie, depending on number of images < 20
