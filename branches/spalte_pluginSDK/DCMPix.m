@@ -5235,29 +5235,32 @@ END_CREATE_ROIS:
 		fPlanarConf = [[dcmObject attributeValueWithName:@"PlanarConfiguration"] intValue]; 
 	
 	//pixel Spacing
-	NSArray *pixelSpacing = [dcmObject attributeArrayWithName:@"PixelSpacing"];
-	if(pixelSpacing.count >= 2)
+	if( pixelSpacingFromUltrasoundRegions == NO)
 	{
-		pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
-		pixelSpacingX = [[pixelSpacing objectAtIndex:1] floatValue];
-	}
-	else if(pixelSpacing.count >= 1)
-	{ 
-		pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
-		pixelSpacingX = [[pixelSpacing objectAtIndex:0] floatValue];
-	}
-	else
-	{
-		NSArray *pixelSpacing = [dcmObject attributeArrayWithName:@"ImagerPixelSpacing"];
+		NSArray *pixelSpacing = [dcmObject attributeArrayWithName:@"PixelSpacing"];
 		if(pixelSpacing.count >= 2)
 		{
 			pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
 			pixelSpacingX = [[pixelSpacing objectAtIndex:1] floatValue];
 		}
 		else if(pixelSpacing.count >= 1)
-		{
+		{ 
 			pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
 			pixelSpacingX = [[pixelSpacing objectAtIndex:0] floatValue];
+		}
+		else
+		{
+			NSArray *pixelSpacing = [dcmObject attributeArrayWithName:@"ImagerPixelSpacing"];
+			if(pixelSpacing.count >= 2)
+			{
+				pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
+				pixelSpacingX = [[pixelSpacing objectAtIndex:1] floatValue];
+			}
+			else if(pixelSpacing.count >= 1)
+			{
+				pixelSpacingY = [[pixelSpacing objectAtIndex:0] floatValue];
+				pixelSpacingX = [[pixelSpacing objectAtIndex:0] floatValue];
+			}
 		}
 	}
 	
@@ -5273,11 +5276,13 @@ END_CREATE_ROIS:
 			{
 				int physicalUnitsX = 0;
 				int physicalUnitsY = 0;
+				int spatialFormat = 0;
 				
 				physicalUnitsX = [[sequenceItem attributeValueWithName:@"PhysicalUnitsXDirection"] intValue];
 				physicalUnitsY = [[sequenceItem attributeValueWithName:@"PhysicalUnitsYDirection"] intValue];
+				spatialFormat = [[sequenceItem attributeValueWithName:@"RegionSpatialFormat"] intValue];
 				
-				if( physicalUnitsX == 3 && physicalUnitsY == 3)	// We want only cm !
+				if( physicalUnitsX == 3 && physicalUnitsY == 3 && spatialFormat == 1)	// We want only cm !
 				{
 					double xxx = 0, yyy = 0;
 					
@@ -5289,6 +5294,8 @@ END_CREATE_ROIS:
 						pixelSpacingX = fabs( xxx) * 10.;	// These are in cm !
 						pixelSpacingY = fabs( yyy) * 10.;
 						spacingFound = YES;
+						
+						pixelSpacingFromUltrasoundRegions = YES;
 					}
 				}
 			}
@@ -5296,21 +5303,24 @@ END_CREATE_ROIS:
 	}
 	
 	//PixelAspectRatio
-	NSArray *par = [dcmObject attributeArrayWithName:@"PixelAspectRatio"];
-	if ( par.count >= 2)
+	if( pixelSpacingFromUltrasoundRegions == NO)
 	{
-		float ratiox = 1, ratioy = 1;
-		ratiox = [[par objectAtIndex:0] floatValue];
-		ratioy = [[par objectAtIndex:1] floatValue];
-		
-		if( ratioy != 0)
+		NSArray *par = [dcmObject attributeArrayWithName:@"PixelAspectRatio"];
+		if ( par.count >= 2)
 		{
-			pixelRatio = ratiox / ratioy;
+			float ratiox = 1, ratioy = 1;
+			ratiox = [[par objectAtIndex:0] floatValue];
+			ratioy = [[par objectAtIndex:1] floatValue];
+			
+			if( ratioy != 0)
+			{
+				pixelRatio = ratiox / ratioy;
+			}
 		}
-	}
-	else if( pixelSpacingX != pixelSpacingY)
-	{
-		if( pixelSpacingY != 0 && pixelSpacingX != 0) pixelRatio = pixelSpacingY / pixelSpacingX;
+		else if( pixelSpacingX != pixelSpacingY)
+		{
+			if( pixelSpacingY != 0 && pixelSpacingX != 0) pixelRatio = pixelSpacingY / pixelSpacingX;
+		}
 	}
 	
 	//PhotoInterpret
@@ -5803,14 +5813,17 @@ END_CREATE_ROIS:
 		orientation[7] = orientation[2]*orientation[3] - orientation[0]*orientation[5];
 		orientation[8] = orientation[0]*orientation[4] - orientation[1]*orientation[3];
 		
+		float centerPix[ 3];
+		[self convertPixX: width/2 pixY: height/2 toDICOMCoords: centerPix];
+		
 		if( fabs( orientation[6]) > fabs(orientation[7]) && fabs( orientation[6]) > fabs(orientation[8]))
-			sliceLocation = originX;
+			sliceLocation = centerPix[ 0];
 		
 		if( fabs( orientation[7]) > fabs(orientation[6]) && fabs( orientation[7]) > fabs(orientation[8]))
-			sliceLocation = originY;
+			sliceLocation = centerPix[ 1];
 		
 		if( fabs( orientation[8]) > fabs(orientation[6]) && fabs( orientation[8]) > fabs(orientation[7]))
-			sliceLocation = originZ;
+			sliceLocation = centerPix[ 2];
 		
 		
 	#pragma mark READ PIXEL DATA		
@@ -6500,13 +6513,16 @@ END_CREATE_ROIS:
 						{
 							int physicalUnitsX = 0;
 							int physicalUnitsY = 0;
+							int spatialFormat = 0;
 							
 							val = Papy3GetElement (gr, papPhysicalUnitsXDirectionGr, &nbVal, &elemType);
 							if ( val) physicalUnitsX = val->us;
 							val = Papy3GetElement (gr, papPhysicalUnitsYDirectionGr, &nbVal, &elemType);
 							if ( val) physicalUnitsY = val->us;
+							val = Papy3GetElement (gr, papRegionSpatialFormatGr, &nbVal, &elemType);
+							if ( val) spatialFormat = val->us;
 							
-							if( physicalUnitsX == 3 && physicalUnitsY == 3)	// We want only cm !
+							if( physicalUnitsX == 3 && physicalUnitsY == 3 && spatialFormat == 1)	// We want only cm, for 2D images
 							{
 								double xxx = 0, yyy = 0;
 								
@@ -6520,6 +6536,8 @@ END_CREATE_ROIS:
 									pixelSpacingX = fabs( xxx) * 10.;	// These are in cm !
 									pixelSpacingY = fabs( yyy) * 10.;
 									spacingFound = YES;
+									
+									pixelSpacingFromUltrasoundRegions = YES;
 								}
 							}
 						}
@@ -6530,16 +6548,19 @@ END_CREATE_ROIS:
 		}
 	}
 	
-	val = Papy3GetElement (theGroupP, papImagerPixelSpacingGr, &nbVal, &elemType);
-	if ( val)
+	if( pixelSpacingFromUltrasoundRegions == NO)
 	{
-		tmp = val;
-		pixelSpacingY = atof( tmp->a);
-		
-		if( nbVal > 1)
+		val = Papy3GetElement (theGroupP, papImagerPixelSpacingGr, &nbVal, &elemType);
+		if ( val)
 		{
-			tmp++;
-			pixelSpacingX = atof( tmp->a);
+			tmp = val;
+			pixelSpacingY = atof( tmp->a);
+			
+			if( nbVal > 1)
+			{
+				tmp++;
+				pixelSpacingX = atof( tmp->a);
+			}
 		}
 	}
 	
@@ -6784,18 +6805,21 @@ END_CREATE_ROIS:
 	if ( val)
 		fPlanarConf = (int) val->us;
 	
-	val = Papy3GetElement (theGroupP, papPixelSpacingGr, &nbVal, &elemType);
-	if ( val)
+	if( pixelSpacingFromUltrasoundRegions == NO)
 	{
-		tmp = val;
-		
-		pixelSpacingY = atof( tmp->a);
-		
-		if( nbVal > 1)
+		val = Papy3GetElement (theGroupP, papPixelSpacingGr, &nbVal, &elemType);
+		if ( val)
 		{
-			tmp++;
+			tmp = val;
 			
-			pixelSpacingX = atof( tmp->a);
+			pixelSpacingY = atof( tmp->a);
+			
+			if( nbVal > 1)
+			{
+				tmp++;
+				
+				pixelSpacingX = atof( tmp->a);
+			}
 		}
 	}
 	
@@ -7912,14 +7936,17 @@ END_CREATE_ROIS:
 				orientation[7] = orientation[2]*orientation[3] - orientation[0]*orientation[5];
 				orientation[8] = orientation[0]*orientation[4] - orientation[1]*orientation[3];
 				
+				float centerPix[ 3];
+				[self convertPixX: width/2 pixY: height/2 toDICOMCoords: centerPix];
+				
 				if( fabs( orientation[6]) > fabs(orientation[7]) && fabs( orientation[6]) > fabs(orientation[8]))
-					sliceLocation = originX;
+					sliceLocation = centerPix[ 0];
 				
 				if( fabs( orientation[7]) > fabs(orientation[6]) && fabs( orientation[7]) > fabs(orientation[8]))
-					sliceLocation = originY;
+					sliceLocation = centerPix[ 1];
 				
 				if( fabs( orientation[8]) > fabs(orientation[6]) && fabs( orientation[8]) > fabs(orientation[7]))
-					sliceLocation = originZ;
+					sliceLocation = centerPix[ 2];
 				
 		#pragma mark read pixel data
 				
@@ -7976,21 +8003,6 @@ END_CREATE_ROIS:
 							}
 						}
 					}
-					else if( SOPClassUID != nil && [DCMAbstractSyntaxUID isNonImageStorage: SOPClassUID]) // non-image
-					{
-						if( fExternalOwnedImage)
-							fImage = fExternalOwnedImage;
-						else
-							fImage = malloc( 128 * 128 * 4);
-						
-						height = 128;
-						width = 128;
-						oImage = nil;
-						isRGB = NO;
-						
-						for( int i = 0; i < 128*128; i++)
-							fImage[ i ] = i%2;
-					} 
 					else if( SOPClassUID != nil && [SOPClassUID hasPrefix: @"1.2.840.10008.5.1.4.1.1.88"]) // DICOM SR
 					{
 #ifdef OSIRIX_VIEWER
@@ -8056,6 +8068,21 @@ END_CREATE_ROIS:
 		returnValue = YES;
 	#endif
 
+					}
+					else if( SOPClassUID != nil && [DCMAbstractSyntaxUID isNonImageStorage: SOPClassUID]) // non-image
+					{
+						if( fExternalOwnedImage)
+							fImage = fExternalOwnedImage;
+						else
+							fImage = malloc( 128 * 128 * 4);
+						
+						height = 128;
+						width = 128;
+						oImage = nil;
+						isRGB = NO;
+						
+						for( int i = 0; i < 128*128; i++)
+							fImage[ i ] = i%2;
 					}
 					else
 					{

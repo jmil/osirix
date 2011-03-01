@@ -143,12 +143,20 @@ extern int splitPosition[ 2];
 @synthesize purplePlaneColor = _purplePlaneColor;
 @synthesize bluePlaneColor = _bluePlaneColor;
 @synthesize mousePlanePointsInPix = _mousePlanePointsInPix;
-@synthesize displayCrossLines;
+@synthesize displayTransverseLines;
+@synthesize displayCrossLines = _displayCrossLines;
 
-- (void) setDisplayCrossLines: (BOOL) b
+- (void)setDisplayCrossLines:(BOOL)displayCrossLines
 {
-	displayCrossLines = b;
-	[[self windowController] updateToolbarItems];
+	if (displayCrossLines != _displayCrossLines) {
+        _displayCrossLines = displayCrossLines;
+        if (_displayCrossLines == NO) {
+            [self _clearAllPlanes];
+        }
+        
+        [self setNeedsDisplay:YES];
+        [[self windowController] updateToolbarItems];
+    }
 }
 
 - (id)initWithFrame:(NSRect)frame {
@@ -158,7 +166,8 @@ extern int splitPosition[ 2];
 		_purplePlaneColor = [[NSColor purpleColor] retain];
 		_bluePlaneColor = [[NSColor blueColor] retain];
 		_mousePlanePointsInPix = [[NSMutableDictionary alloc] init];
-		displayCrossLines = YES;
+		_displayCrossLines = YES;
+		displayTransverseLines = YES;
     }
     return self;
 }
@@ -388,9 +397,20 @@ extern int splitPosition[ 2];
 
 - (void) drawRect:(NSRect)rect
 {
+    _processingRequest = YES;
+	[self _sendNewRequestIfNeeded];
+    _processingRequest = NO;    
+    
 	[self adjustROIsForCPRView];
 	
 	[super drawRect: rect];
+}
+
+- (void)setNeedsDisplay:(BOOL)flag
+{
+    if (_processingRequest == NO) {
+        [super setNeedsDisplay:flag];
+    }
 }
 
 - (void)subDrawRect:(NSRect)rect
@@ -423,41 +443,38 @@ extern int splitPosition[ 2];
 	
     pixToSubDrawRectTransform = [self pixToSubDrawRectTransform];
     
-	if( displayCrossLines)
-	{
-		glLineWidth(2.0);
-		// draw planes
-		glColor4f ([_orangePlaneColor redComponent], [_orangePlaneColor greenComponent], [_orangePlaneColor blueComponent], [_orangePlaneColor alphaComponent]);
-		[self _drawPlaneRuns:[self _orangePlaneRuns]];
-		[self _drawVerticalLines:[self _orangeVerticalLines]];
-		glLineWidth(1.0);
-		[self _drawPlaneRuns:[self _orangeTopPlaneRuns]];
-		[self _drawPlaneRuns:[self _orangeBottomPlaneRuns]];
-		[self _drawVerticalLines:[self _orangeTopVerticalLines]];
-		[self _drawVerticalLines:[self _orangeBottomVerticalLines]];
-		
-		glLineWidth(2.0);
-		// draw planes
-		glColor4f ([_purplePlaneColor redComponent], [_purplePlaneColor greenComponent], [_purplePlaneColor blueComponent], [_purplePlaneColor alphaComponent]);
-		[self _drawPlaneRuns:[self _purplePlaneRuns]];
-		[self _drawVerticalLines:[self _purpleVerticalLines]];
-		glLineWidth(1.0);
-		[self _drawPlaneRuns:[self _purpleTopPlaneRuns]];
-		[self _drawPlaneRuns:[self _purpleBottomPlaneRuns]];
-		[self _drawVerticalLines:[self _purpleTopVerticalLines]];
-		[self _drawVerticalLines:[self _purpleBottomVerticalLines]];
-		
-		glLineWidth(2.0);
-		// draw planes
-		glColor4f ([_bluePlaneColor redComponent], [_bluePlaneColor greenComponent], [_bluePlaneColor blueComponent], [_bluePlaneColor alphaComponent]);
-		[self _drawPlaneRuns:[self _bluePlaneRuns]];
-		[self _drawVerticalLines:[self _blueVerticalLines]];
-		glLineWidth(1.0);
-		[self _drawPlaneRuns:[self _blueTopPlaneRuns]];
-		[self _drawPlaneRuns:[self _blueBottomPlaneRuns]];
-		[self _drawVerticalLines:[self _blueTopVerticalLines]];
-		[self _drawVerticalLines:[self _blueBottomVerticalLines]];
-	}
+    glLineWidth(2.0);
+    // draw planes
+    glColor4f ([_orangePlaneColor redComponent], [_orangePlaneColor greenComponent], [_orangePlaneColor blueComponent], [_orangePlaneColor alphaComponent]);
+    [self _drawPlaneRuns:[self _orangePlaneRuns]];
+    [self _drawVerticalLines:[self _orangeVerticalLines]];
+    glLineWidth(1.0);
+    [self _drawPlaneRuns:[self _orangeTopPlaneRuns]];
+    [self _drawPlaneRuns:[self _orangeBottomPlaneRuns]];
+    [self _drawVerticalLines:[self _orangeTopVerticalLines]];
+    [self _drawVerticalLines:[self _orangeBottomVerticalLines]];
+    
+    glLineWidth(2.0);
+    // draw planes
+    glColor4f ([_purplePlaneColor redComponent], [_purplePlaneColor greenComponent], [_purplePlaneColor blueComponent], [_purplePlaneColor alphaComponent]);
+    [self _drawPlaneRuns:[self _purplePlaneRuns]];
+    [self _drawVerticalLines:[self _purpleVerticalLines]];
+    glLineWidth(1.0);
+    [self _drawPlaneRuns:[self _purpleTopPlaneRuns]];
+    [self _drawPlaneRuns:[self _purpleBottomPlaneRuns]];
+    [self _drawVerticalLines:[self _purpleTopVerticalLines]];
+    [self _drawVerticalLines:[self _purpleBottomVerticalLines]];
+    
+    glLineWidth(2.0);
+    // draw planes
+    glColor4f ([_bluePlaneColor redComponent], [_bluePlaneColor greenComponent], [_bluePlaneColor blueComponent], [_bluePlaneColor alphaComponent]);
+    [self _drawPlaneRuns:[self _bluePlaneRuns]];
+    [self _drawVerticalLines:[self _blueVerticalLines]];
+    glLineWidth(1.0);
+    [self _drawPlaneRuns:[self _blueTopPlaneRuns]];
+    [self _drawPlaneRuns:[self _blueBottomPlaneRuns]];
+    [self _drawVerticalLines:[self _blueTopVerticalLines]];
+    [self _drawVerticalLines:[self _blueBottomVerticalLines]];
 	
 	lineStart = N3VectorMake(0, (CGFloat)curDCM.pheight/2.0, 0);
     lineEnd = N3VectorMake(curDCM.pwidth, (CGFloat)curDCM.pheight/2.0, 0);
@@ -474,7 +491,8 @@ extern int splitPosition[ 2];
 	
 	glColor4d(0.0, 1.0, 0.0, 0.8);
     
-    if (_displayInfo.mouseCursorHidden == NO) {
+    if (_displayInfo.mouseCursorHidden == NO)
+	{
         cursorVector = N3VectorMake(curDCM.pwidth * _displayInfo.mouseCursorPosition, (CGFloat)curDCM.pheight/2.0, 0);
         cursorVector = N3VectorApplyTransform(cursorVector, pixToSubDrawRectTransform);
         
@@ -486,7 +504,8 @@ extern int splitPosition[ 2];
         glEnd();
     }
     
-    if (_displayInfo.draggedPositionHidden == NO) {
+    if (_displayInfo.draggedPositionHidden == NO)
+	{
         glColor4d(1.0, 0.0, 0.0, 1.0);
         draggedPosition = _displayInfo.draggedPosition;
         lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*draggedPosition, 0, 0), pixToSubDrawRectTransform);
@@ -498,38 +517,42 @@ extern int splitPosition[ 2];
         glEnd();
 	}
     
-    // draw the transverse section lines
-    glColor4d(1.0, 1.0, 0.0, 1.0);
-    transverseSectionPosition = _curvedPath.transverseSectionPosition;
-    lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*transverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
-    lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*transverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
-    glLineWidth(2.0);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(lineStart.x, lineStart.y);
-    glVertex2f(lineEnd.x, lineEnd.y);
-    glEnd();
-    
-    leftTransverseSectionPosition = _curvedPath.leftTransverseSectionPosition;
-    lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*leftTransverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
-    lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*leftTransverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
-    glLineWidth(1.0);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(lineStart.x, lineStart.y);
-    glVertex2f(lineEnd.x, lineEnd.y);
-    glEnd();
-    
-    rightTransverseSectionPosition = _curvedPath.rightTransverseSectionPosition;
-    lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*rightTransverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
-    lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*rightTransverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(lineStart.x, lineStart.y);
-    glVertex2f(lineEnd.x, lineEnd.y);
-    glEnd();
+	if( displayTransverseLines)
+	{
+		// draw the transverse section lines
+		glColor4d(1.0, 1.0, 0.0, 1.0);
+		transverseSectionPosition = _curvedPath.transverseSectionPosition;
+		lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*transverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
+		lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*transverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
+		glLineWidth(2.0);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lineStart.x, lineStart.y);
+		glVertex2f(lineEnd.x, lineEnd.y);
+		glEnd();
+		
+		leftTransverseSectionPosition = _curvedPath.leftTransverseSectionPosition;
+		lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*leftTransverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
+		lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*leftTransverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
+		glLineWidth(1.0);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lineStart.x, lineStart.y);
+		glVertex2f(lineEnd.x, lineEnd.y);
+		glEnd();
+		
+		rightTransverseSectionPosition = _curvedPath.rightTransverseSectionPosition;
+		lineStart = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*rightTransverseSectionPosition, 0, 0), pixToSubDrawRectTransform);
+		lineEnd = N3VectorApplyTransform(N3VectorMake((CGFloat)curDCM.pwidth*rightTransverseSectionPosition, curDCM.pheight, 0), pixToSubDrawRectTransform);
+		glBegin(GL_LINE_STRIP);
+		glVertex2f(lineStart.x, lineStart.y);
+		glVertex2f(lineEnd.x, lineEnd.y);
+		glEnd();
+	}
 	
 	if( [[self windowController] displayMousePosition] == YES)
 	{
 		// draw the point on the plane lines
-		for (planeName in _mousePlanePointsInPix) {
+		for (planeName in _mousePlanePointsInPix) 
+		{
 			planeColor = [self valueForKey:[NSString stringWithFormat:@"%@PlaneColor", planeName]];
 			glColor4f ([planeColor redComponent], [planeColor greenComponent], [planeColor blueComponent], [planeColor alphaComponent]);
 			glEnable(GL_POINT_SMOOTH);
@@ -541,13 +564,16 @@ extern int splitPosition[ 2];
 		}
 	}
 	
-    if (_drawAllNodes) {
-        for (i = 0; i < [_curvedPath.nodes count]; i++) {
+    if (_drawAllNodes)
+	{
+        for (i = 0; i < [_curvedPath.nodes count]; i++)
+		{
             relativePosition = [_curvedPath relativePositionForNodeAtIndex:i];
             cursorVector = N3VectorMake(curDCM.pwidth * relativePosition, (CGFloat)curDCM.pheight/2.0, 0);
             cursorVector = N3VectorApplyTransform(cursorVector, pixToSubDrawRectTransform);
             
-            if (_displayInfo.hoverNodeHidden == NO && _displayInfo.hoverNodeIndex == i) {
+            if (_displayInfo.hoverNodeHidden == NO && _displayInfo.hoverNodeIndex == i)
+			{
                 glColor4d(1.0, 0.5, 0.0, 1.0);
             } else {
                 glColor4d(1.0, 0.0, 0.0, 1.0);
@@ -982,6 +1008,7 @@ extern int splitPosition[ 2];
 			[[pixArray objectAtIndex: i] setArrayPix:pixArray :i];
 		
 		[self setPixels:pixArray files:NULL rois:NULL firstImage:0 level:'i' reset:YES];
+		[self setScaleValueCentered: 1];
 		
 		//[self setWLWW:wl :ww];
 		[[self windowController] propagateWLWW: [[self windowController] mprView1]];
@@ -1092,8 +1119,8 @@ extern int splitPosition[ 2];
 	{
         request = [[CPRStraightenedGeneratorRequest alloc] init];
         
-        request.pixelsWide = [self bounds].size.width;
-        request.pixelsHigh = [self bounds].size.height;
+        request.pixelsWide = [self bounds].size.width*1.2;
+        request.pixelsHigh = [self bounds].size.height*1.2;
 		request.slabWidth = _curvedPath.thickness;
 
         request.slabSampleDistance = 0;
@@ -1131,7 +1158,7 @@ extern int splitPosition[ 2];
 - (void)_setNeedsNewRequest
 {
     _needsNewRequest = YES;
-	[self _sendNewRequestIfNeeded];
+    [self setNeedsDisplay:YES];
 //	if (_needsNewRequest == NO) {
 //		[self performSelector:@selector(_sendNewRequestIfNeeded) withObject:nil afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 //	}
@@ -1161,47 +1188,56 @@ extern int splitPosition[ 2];
 
 - (void)_drawVerticalLines:(NSArray *)verticalLines
 {
-	N3AffineTransform pixToSubDrawRectTransform;
 	NSNumber *indexNumber;
 	N3Vector lineStart;
 	N3Vector lineEnd;
+    double pixToSubdrawRectOpenGLTransform[16];
 	CGLContextObj cgl_ctx;
     
     cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];    	
-	pixToSubDrawRectTransform = [self pixToSubDrawRectTransform];
     
+    N3AffineTransformGetOpenGLMatrixd([self pixToSubDrawRectTransform], pixToSubdrawRectOpenGLTransform);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMultMatrixd(pixToSubdrawRectOpenGLTransform);    
 	for (indexNumber in verticalLines) {
-		lineStart = N3VectorApplyTransform(N3VectorMake([indexNumber doubleValue], 0, 0), pixToSubDrawRectTransform);
-        lineEnd = N3VectorApplyTransform(N3VectorMake([indexNumber doubleValue], curDCM.pheight, 0), pixToSubDrawRectTransform);
+		lineStart = N3VectorMake([indexNumber doubleValue], 0, 0);
+        lineEnd = N3VectorMake([indexNumber doubleValue], curDCM.pheight, 0);
         glBegin(GL_LINE_STRIP);
-        glVertex2f(lineStart.x, lineStart.y);
-        glVertex2f(lineEnd.x, lineEnd.y);
+        glVertex2d(lineStart.x, lineStart.y);
+        glVertex2d(lineEnd.x, lineEnd.y);
         glEnd();
-		
 	}
+    glPopMatrix();
 }
+
 - (void)_drawPlaneRuns:(NSArray*)planeRuns
 {
-	N3AffineTransform pixToSubDrawRectTransform;
 	CGFloat pixelsPerMm;
 	NSInteger i;
 	N3Vector planePointVector;
 	_CPRViewPlaneRun *planeRun;
+    double pixToSubdrawRectOpenGLTransform[16];
 	CGLContextObj cgl_ctx;
+    CGFloat pheight_2;
     
     cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];    	
-	pixToSubDrawRectTransform = [self pixToSubDrawRectTransform];
 	pixelsPerMm = (CGFloat)curDCM.pwidth/[_curvedPath.bezierPath length];
+    pheight_2 = (CGFloat)curDCM.pheight/2.0;
     
+    N3AffineTransformGetOpenGLMatrixd([self pixToSubDrawRectTransform], pixToSubdrawRectOpenGLTransform);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMultMatrixd(pixToSubdrawRectOpenGLTransform);    
 	for (planeRun in planeRuns) {
 		glBegin(GL_LINE_STRIP);
 		for (i = 0; i < planeRun.range.length; i++) {
-			planePointVector = N3VectorMake(planeRun.range.location + i, ([[planeRun.distances objectAtIndex:i] doubleValue] * pixelsPerMm) + (CGFloat)curDCM.pheight/2.0, 0);
-			planePointVector = N3VectorApplyTransform(planePointVector, pixToSubDrawRectTransform);
-			glVertex2f(planePointVector.x, planePointVector.y);
+			planePointVector = N3VectorMake(planeRun.range.location + i, ([[planeRun.distances objectAtIndex:i] doubleValue] * pixelsPerMm) + pheight_2, 0);
+			glVertex2d(planePointVector.x, planePointVector.y);
 		}
 		glEnd();
-	}	
+	}
+    glPopMatrix();
 }
 
 - (NSArray *)_runsForPlane:(N3Plane)plane verticalLineIndexes:(NSArray **)verticalLinesHandle
@@ -1459,7 +1495,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_orangePlaneRuns
 {
-	if (_orangePlaneRuns == nil && N3PlaneIsValid(_orangePlane)) {
+	if (_orangePlaneRuns == nil && N3PlaneIsValid(_orangePlane) && _displayCrossLines) {
 		[_orangeVericalLines release];
 		_orangePlaneRuns = [self _runsForPlane:_orangePlane verticalLineIndexes:&_orangeVericalLines];
 		[_orangeVericalLines retain];
@@ -1470,7 +1506,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_purplePlaneRuns
 {
-	if (_purplePlaneRuns == nil && N3PlaneIsValid(_purplePlane)) {
+	if (_purplePlaneRuns == nil && N3PlaneIsValid(_purplePlane) && _displayCrossLines) {
 		[_purpleVericalLines release];
 		_purplePlaneRuns = [self _runsForPlane:_purplePlane verticalLineIndexes:&_purpleVericalLines];
 		[_purpleVericalLines retain];
@@ -1481,7 +1517,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_bluePlaneRuns
 {
-	if (_bluePlaneRuns == nil && N3PlaneIsValid(_bluePlane)) {
+	if (_bluePlaneRuns == nil && N3PlaneIsValid(_bluePlane) && _displayCrossLines) {
 		[_blueVericalLines release];
 		_bluePlaneRuns = [self _runsForPlane:_bluePlane verticalLineIndexes:&_blueVericalLines];
 		[_blueVericalLines retain];
@@ -1493,7 +1529,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_orangeTopPlaneRuns
 {
 	N3Plane plane;
-	if (_orangeTopPlaneRuns == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0) {
+	if (_orangeTopPlaneRuns == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0 && _displayCrossLines) {
 		[_orangeTopVericalLines release];
 		plane.normal = N3VectorNormalize(_orangePlane.normal);
 		plane.point = N3VectorAdd(_orangePlane.point, N3VectorScalarMultiply(plane.normal, _orangeSlabThickness/2.0));
@@ -1507,7 +1543,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_purpleTopPlaneRuns
 {
 	N3Plane plane;
-	if (_purpleTopPlaneRuns == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0) {
+	if (_purpleTopPlaneRuns == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0 && _displayCrossLines) {
 		[_purpleTopVericalLines release];
 		plane.normal = N3VectorNormalize(_purplePlane.normal);
 		plane.point = N3VectorAdd(_purplePlane.point, N3VectorScalarMultiply(plane.normal, _purpleSlabThickness/2.0));
@@ -1521,7 +1557,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_blueTopPlaneRuns
 {
 	N3Plane plane;
-	if (_blueTopPlaneRuns == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0) {
+	if (_blueTopPlaneRuns == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0 && _displayCrossLines) {
 		[_blueTopVericalLines release];
 		plane.normal = N3VectorNormalize(_bluePlane.normal);
 		plane.point = N3VectorAdd(_bluePlane.point, N3VectorScalarMultiply(plane.normal, _blueSlabThickness/2.0));
@@ -1535,7 +1571,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_orangeBottomPlaneRuns
 {
 	N3Plane plane;
-	if (_orangeBottomPlaneRuns == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0) {
+	if (_orangeBottomPlaneRuns == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0 && _displayCrossLines) {
 		[_orangeBottomVericalLines release];
 		plane.normal = N3VectorNormalize(_orangePlane.normal);
 		plane.point = N3VectorAdd(_orangePlane.point, N3VectorScalarMultiply(plane.normal, -_orangeSlabThickness/2.0));
@@ -1549,7 +1585,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_purpleBottomPlaneRuns
 {
 	N3Plane plane;
-	if (_purpleBottomPlaneRuns == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0) {
+	if (_purpleBottomPlaneRuns == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0 && _displayCrossLines) {
 		[_purpleBottomVericalLines release];
 		plane.normal = N3VectorNormalize(_purplePlane.normal);
 		plane.point = N3VectorAdd(_purplePlane.point, N3VectorScalarMultiply(plane.normal, -_purpleSlabThickness/2.0));
@@ -1563,7 +1599,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_blueBottomPlaneRuns
 {
 	N3Plane plane;
-	if (_blueBottomPlaneRuns == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0) {
+	if (_blueBottomPlaneRuns == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0 && _displayCrossLines) {
 		[_blueBottomVericalLines release];
 		plane.normal = N3VectorNormalize(_bluePlane.normal);
 		plane.point = N3VectorAdd(_bluePlane.point, N3VectorScalarMultiply(plane.normal, -_blueSlabThickness/2.0));
@@ -1576,7 +1612,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_orangeVerticalLines
 {
-	if (_orangeVericalLines == nil && N3PlaneIsValid(_orangePlane)) {
+	if (_orangeVericalLines == nil && N3PlaneIsValid(_orangePlane) && _displayCrossLines) {
 		[_orangePlaneRuns release];
 		_orangePlaneRuns = [self _runsForPlane:_orangePlane verticalLineIndexes:&_orangeVericalLines];
 		[_orangeVericalLines retain];
@@ -1587,7 +1623,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_purpleVerticalLines
 {
-	if (_purpleVericalLines == nil && N3PlaneIsValid(_purplePlane)) {
+	if (_purpleVericalLines == nil && N3PlaneIsValid(_purplePlane) && _displayCrossLines) {
 		[_purplePlaneRuns release];
 		_purplePlaneRuns = [self _runsForPlane:_purplePlane verticalLineIndexes:&_purpleVericalLines];
 		[_purpleVericalLines retain];
@@ -1598,7 +1634,7 @@ extern int splitPosition[ 2];
 
 - (NSArray *)_blueVerticalLines
 {
-	if (_blueVericalLines == nil && N3PlaneIsValid(_bluePlane)) {
+	if (_blueVericalLines == nil && N3PlaneIsValid(_bluePlane) && _displayCrossLines) {
 		[_bluePlaneRuns release];
 		_bluePlaneRuns = [self _runsForPlane:_bluePlane verticalLineIndexes:&_blueVericalLines];
 		[_blueVericalLines retain];
@@ -1610,7 +1646,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_orangeTopVerticalLines
 {
 	N3Plane plane;
-	if (_orangeTopVericalLines == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0) {
+	if (_orangeTopVericalLines == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0 && _displayCrossLines) {
 		[_orangeTopPlaneRuns release];
 		plane.normal = N3VectorNormalize(_orangePlane.normal);
 		plane.point = N3VectorAdd(_orangePlane.point, N3VectorScalarMultiply(plane.normal, _orangeSlabThickness/2.0));
@@ -1624,7 +1660,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_purpleTopVerticalLines
 {
 	N3Plane plane;
-	if (_purpleTopVericalLines == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0) {
+	if (_purpleTopVericalLines == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0 && _displayCrossLines) {
 		[_purpleTopPlaneRuns release];
 		plane.normal = N3VectorNormalize(_purplePlane.normal);
 		plane.point = N3VectorAdd(_purplePlane.point, N3VectorScalarMultiply(plane.normal, _purpleSlabThickness/2.0));
@@ -1638,7 +1674,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_blueTopVerticalLines
 {
 	N3Plane plane;
-	if (_blueTopVericalLines == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0) {
+	if (_blueTopVericalLines == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0 && _displayCrossLines) {
 		[_blueTopPlaneRuns release];
 		plane.normal = N3VectorNormalize(_bluePlane.normal);
 		plane.point = N3VectorAdd(_bluePlane.point, N3VectorScalarMultiply(plane.normal, _blueSlabThickness/2.0));
@@ -1652,7 +1688,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_orangeBottomVerticalLines
 {
 	N3Plane plane;
-	if (_orangeBottomVericalLines == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0) {
+	if (_orangeBottomVericalLines == nil && N3PlaneIsValid(_orangePlane) && _orangeSlabThickness != 0.0 && _displayCrossLines) {
 		[_orangeBottomPlaneRuns release];
 		plane.normal = N3VectorNormalize(_orangePlane.normal);
 		plane.point = N3VectorAdd(_orangePlane.point, N3VectorScalarMultiply(plane.normal, _orangeSlabThickness/2.0));
@@ -1666,7 +1702,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_purpleBottomVerticalLines
 {
 	N3Plane plane;
-	if (_purpleBottomVericalLines == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0) {
+	if (_purpleBottomVericalLines == nil && N3PlaneIsValid(_purplePlane) && _purpleSlabThickness != 0.0 && _displayCrossLines) {
 		[_purpleBottomPlaneRuns release];
 		plane.normal = N3VectorNormalize(_purplePlane.normal);
 		plane.point = N3VectorAdd(_purplePlane.point, N3VectorScalarMultiply(plane.normal, _purpleSlabThickness/2.0));
@@ -1680,7 +1716,7 @@ extern int splitPosition[ 2];
 - (NSArray *)_blueBottomVerticalLines
 {
 	N3Plane plane;
-	if (_blueBottomVericalLines == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0) {
+	if (_blueBottomVericalLines == nil && N3PlaneIsValid(_bluePlane) && _blueSlabThickness != 0.0 && _displayCrossLines) {
 		[_blueBottomPlaneRuns release];
 		plane.normal = N3VectorNormalize(_bluePlane.normal);
 		plane.point = N3VectorAdd(_bluePlane.point, N3VectorScalarMultiply(plane.normal, _blueSlabThickness/2.0));

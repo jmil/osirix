@@ -211,7 +211,10 @@
 		
 		NSMutableDictionary* idict = [[dict mutableCopy] autorelease];
 		NSInteger c = 0;
-		for (id i in [self object:dict valueForKeyPath:arrayName context:context]) {
+		id array = [self object:dict valueForKeyPath:arrayName context:context];
+		if ([array isKindOfClass:NSSet.class])
+			array = [array allObjects];
+		for (id i in array) {
 			[idict setObject:i forKey:iName];
 			[idict setObject:[NSNumber numberWithInteger:c] forKey:[NSString stringWithFormat:@"%@_Index", iName]];
 			[idict setObject:[NSNumber numberWithInteger:c%2] forKey:[NSString stringWithFormat:@"%@_Index2", iName]];
@@ -511,7 +514,7 @@
 	if ([key isEqual:@"proposeDicomUpload"])
 		return [NSNumber numberWithBool: (!wpc.user || wpc.user.uploadDICOM.boolValue) && !wpc.requestIsIOS ];
 	if ([key isEqual:@"proposeDicomSend"]) {
-		return [NSNumber numberWithBool: ((!wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue) && !wpc.requestIsIOS) || (wpc.user.sendDICOMtoAnyNodes.boolValue /* TODO: && destinations.count */)]; 
+		return [NSNumber numberWithBool: !wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue || (wpc.user.sendDICOMtoAnyNodes.boolValue /* TODO: && destinations.count */)]; 
 	}
 	if ([key isEqual:@"proposeZipDownload"])
 		return [NSNumber numberWithBool: (!wpc.user || wpc.user.downloadZIP.boolValue) && !wpc.requestIsIOS ];

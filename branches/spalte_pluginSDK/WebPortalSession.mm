@@ -17,17 +17,16 @@
 #import "NSData+N2.h"
 
 
-NSString* const SessionCookieName = @"SID";
+NSString* const SessionCookieName = @"OSID";
 
 @implementation WebPortalSession
 
-@synthesize sid, sendLock, dict;
+@synthesize sid, dict;
 
 -(id)initWithId:(NSString*)isid {
 	self = [super init];
 	sid = [isid retain];
 	dictLock = [[NSLock alloc] init];
-	sendLock = [[NSLock alloc] init];
 	dict = [[NSMutableDictionary alloc] initWithCapacity:8];
 	return self;
 }
@@ -36,7 +35,6 @@ NSString* const SessionCookieName = @"SID";
 	[dict release];
 	[sid release];
 	[dictLock release];
-	[sendLock release];
 	[super dealloc];
 }
 

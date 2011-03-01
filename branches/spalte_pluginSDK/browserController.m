@@ -3681,8 +3681,6 @@ static NSConditionLock *threadLock = nil;
 	
 	[[LogManager currentLogManager] resetLogs];
 	
-	[AppController createDBFoldersIfNecessary];
-	
 	[managedObjectContext unlock];
 	
 	[[LogManager currentLogManager] resetLogs];
@@ -3786,6 +3784,8 @@ static NSConditionLock *threadLock = nil;
 	
 	for( int i = 0; i < [filesInput count];)
 	{
+		NSAutoreleasePool *pool2 = [[NSAutoreleasePool alloc] init];
+		
 		@try
 		{
 			NSMutableArray *copiedFiles = [NSMutableArray array];
@@ -3959,6 +3959,8 @@ static NSConditionLock *threadLock = nil;
 			NSLog( @"copyFilesThread exception: %@", e);
 			[AppController printStackTrace: e];
 		}
+		
+		[pool2 release];
 	}
 	
 	[autoroutingInProgress unlock];
@@ -11044,6 +11046,8 @@ static BOOL needToRezoom;
 		
 		if([[aTableColumn identifier] isEqualToString:@"no"])
 		{
+			NSString *noOfStudies = nil;
+			
 			@synchronized( albumNoOfStudiesCache)
 			{
 				if( albumNoOfStudiesCache == nil || rowIndex >= [albumNoOfStudiesCache count] || [[albumNoOfStudiesCache objectAtIndex: rowIndex] isEqualToString:@""] == YES)
@@ -11051,11 +11055,13 @@ static BOOL needToRezoom;
 					[self refreshAlbums];
 					
 					// It will be computed in a separate thread, and then displayed later.
-					return @"#";
+					noOfStudies = @"#";
 				}
 				else
-					return [[[albumNoOfStudiesCache objectAtIndex: rowIndex] copy] autorelease];
+					noOfStudies = [[[albumNoOfStudiesCache objectAtIndex: rowIndex] copy] autorelease];
 			}
+			
+			return noOfStudies;
 		}
 		else
 		{
@@ -12201,7 +12207,8 @@ static BOOL needToRezoom;
 					
 						if( p1 && p2 && [ViewerController computeIntervalForDCMPix: p1 And: p2] < 0)
 						{
-							a = [a sortedArrayUsingDescriptors: [self sortDescriptorsForImages]];
+							//Inverse the array
+							a = [[a reverseObjectEnumerator] allObjects];	//[a sortedArrayUsingDescriptors: [self sortDescriptorsForImages]];
 							
 							preFlippedData = YES;
 							flipped = YES;
@@ -14048,6 +14055,9 @@ static NSArray*	openSubSeriesArray = nil;
 		// thumbnails : no background color
 		[thumbnailsScrollView setDrawsBackground:NO];
 		[[thumbnailsScrollView contentView] setDrawsBackground:NO];
+		
+		if( [[NSUserDefaults standardUserDefaults] objectForKey: @"NSWindow Frame DBWindow"] == nil) // No position for the window -> fullscreen
+			[[self window] zoom: self];
 		
 		//	[self splitViewDidResizeSubviews:nil];
 		[self.window setFrameAutosaveName:@"DBWindow"];
@@ -20916,9 +20926,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 				s = [NSString stringWithFormat:@"%@", _searchString];
 				
 				if( [[NSUserDefaults standardUserDefaults] boolForKey: @"useSoundexForName"] && [s length] > 0) 
-					predicate = [NSPredicate predicateWithFormat: @"(soundex CONTAINS[cd] %@) OR (name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", [DicomStudy soundex: s], s, s, s, s, s, s, s];
+					predicate = [NSPredicate predicateWithFormat: @"(soundex CONTAINS[cd] %@) OR (name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", [DicomStudy soundex: s], s, s, s, s, s, s, s, s, s, s];
 				else
-					predicate = [NSPredicate predicateWithFormat: @"(name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", s, s, s, s, s, s, s];
+					predicate = [NSPredicate predicateWithFormat: @"(name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", s, s, s, s, s, s, s, s, s, s];
 			break;
 			
 			case 0:			// Patient Name

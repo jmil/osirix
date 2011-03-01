@@ -4124,28 +4124,52 @@ void gl_round_box(int mode, float minx, float miny, float maxx, float maxy, floa
 			
 			case tText:
 			{
+				glPushMatrix();
+				
+				float ratio = 1;
+				
+				if( pixelSpacingX != 0 && pixelSpacingY != 0)
+					ratio = pixelSpacingX / pixelSpacingY;
+				
+				glLoadIdentity (); // reset model view matrix to identity (eliminates rotation basically)
+				glScalef (2.0f /([curView xFlipped] ? -([curView drawingFrameRect].size.width) : [curView drawingFrameRect].size.width), -2.0f / ([curView yFlipped] ? -([curView drawingFrameRect].size.height) : [curView drawingFrameRect].size.height), 1.0f); // scale to port per pixel scale
+				glTranslatef( [curView origin].x, -[curView origin].y, 0.0f);
+
+				NSRect centeredRect = rect;
+				NSRect unrotatedRect = rect;
+				
+				centeredRect.origin.y -= offsety + [curView origin].y*ratio/scaleValue;
+				centeredRect.origin.x -= offsetx - [curView origin].x/scaleValue;
+				
+				unrotatedRect.origin.x = centeredRect.origin.x*cos( -curView.rotation*deg2rad) + centeredRect.origin.y*sin( -curView.rotation*deg2rad)/ratio;
+				unrotatedRect.origin.y = -centeredRect.origin.x*sin( -curView.rotation*deg2rad) + centeredRect.origin.y*cos( -curView.rotation*deg2rad)/ratio;
+				
+				unrotatedRect.origin.y *= ratio;
+				
+				unrotatedRect.origin.y += offsety + [curView origin].y*ratio/scaleValue;
+				unrotatedRect.origin.x += offsetx - [curView origin].x/scaleValue;
+				
 				if((mode == ROI_selected || mode == ROI_selectedModify || mode == ROI_drawing) && highlightIfSelected)
 				{
 					glColor3f (0.5f, 0.5f, 1.0f);
 					glPointSize( 2.0 * 3);
 					glBegin( GL_POINTS);
-					glVertex2f(  (rect.origin.x - offsetx)*scaleValue - rect.size.width/2, (rect.origin.y - offsety)*scaleValue - rect.size.height/2);
-					glVertex2f(  (rect.origin.x - offsetx)*scaleValue - rect.size.width/2, (rect.origin.y - offsety)*scaleValue + rect.size.height/2);
-					glVertex2f(  (rect.origin.x- offsetx)*scaleValue + rect.size.width/2, (rect.origin.y - offsety)*scaleValue + rect.size.height/2);
-					glVertex2f(  (rect.origin.x - offsetx)*scaleValue + rect.size.width/2, (rect.origin.y - offsety)*scaleValue - rect.size.height/2);
+					glVertex2f(  (unrotatedRect.origin.x - offsetx)*scaleValue - unrotatedRect.size.width/2, (unrotatedRect.origin.y - offsety)/ratio*scaleValue - unrotatedRect.size.height/2/ratio);
+					glVertex2f(  (unrotatedRect.origin.x - offsetx)*scaleValue - unrotatedRect.size.width/2, (unrotatedRect.origin.y - offsety)/ratio*scaleValue + unrotatedRect.size.height/2/ratio);
+					glVertex2f(  (unrotatedRect.origin.x- offsetx)*scaleValue + unrotatedRect.size.width/2, (unrotatedRect.origin.y - offsety)/ratio*scaleValue + unrotatedRect.size.height/2/ratio);
+					glVertex2f(  (unrotatedRect.origin.x - offsetx)*scaleValue + unrotatedRect.size.width/2, (unrotatedRect.origin.y - offsety)/ratio*scaleValue - unrotatedRect.size.height/2/ratio);
 					glEnd();
 				}
 				
 				glLineWidth(1.0);
 				
-				NSPoint tPt = self.lowerRightPoint;
-				tPt.x = (tPt.x - offsetx)*scaleValue  - rect.size.width/2;		tPt.y = (tPt.y - offsety)*scaleValue - rect.size.height/2;
-				
+				NSPoint tPt = NSMakePoint( unrotatedRect.origin.x, unrotatedRect.origin.y);
+				tPt.x = (tPt.x - offsetx)*scaleValue - unrotatedRect.size.width/2;
+				tPt.y = (tPt.y - offsety)/ratio*scaleValue - unrotatedRect.size.height/2/ratio;
 				
 				glEnable (GL_TEXTURE_RECTANGLE_EXT);
 				
 				glEnable(GL_BLEND);
-	//			if( opacity > 0.5) opacity = 1.0;
 				if( opacity == 1.0) glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 				else glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				
@@ -4154,21 +4178,17 @@ void gl_round_box(int mode, float minx, float miny, float maxx, float maxy, floa
 				[stringTex setFlippedX: [curView xFlipped] Y:[curView yFlipped]];
 				
 				glColor4f (0, 0, 0, opacity);
-				if( pixelSpacingX != 0 && pixelSpacingY != 0 )
-					[stringTex drawAtPoint:NSMakePoint(tPt.x+1, tPt.y+ (1.0*pixelSpacingX / pixelSpacingY)) ratio: pixelSpacingX / pixelSpacingY];
-				else
-					[stringTex drawAtPoint:NSMakePoint(tPt.x+1, tPt.y+ 1.0) ratio: 1.0];
+				[stringTex drawAtPoint:NSMakePoint(tPt.x+1, tPt.y+ 1.0) ratio: 1];
 					
 				glColor4f (color.red / 65535., color.green / 65535., color.blue / 65535., opacity);
 				
-				if( pixelSpacingX != 0 && pixelSpacingY != 0 )
-					[stringTex drawAtPoint:tPt ratio: pixelSpacingX / pixelSpacingY];
-				else
-					[stringTex drawAtPoint:tPt ratio: 1.0];
+				[stringTex drawAtPoint:tPt ratio: 1];
 					
 				glDisable (GL_TEXTURE_RECTANGLE_EXT);
 				
 				glColor3f (1.0f, 1.0f, 1.0f);
+				
+				glPopMatrix();
 			}
 			break;
 			
