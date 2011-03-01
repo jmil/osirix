@@ -37,6 +37,8 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 	_ROIManager.delegate = nil;
 	[_ROIManager release];
 	_ROIManager = nil;
+    [_OSIROIs release];
+    _OSIROIs = nil;
 	[super dealloc];
 }
 
@@ -121,6 +123,25 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 	}
 }
 
+- (void)addOSIROI:(OSIROI *)roi
+{
+    NSMutableArray *rois;
+    rois = [self mutableArrayValueForKey:@"OSIROIs"];
+    [rois addObject:roi];
+}
+
+- (void)removeOSIROI:(OSIROI *)roi
+{
+    NSMutableArray *rois;
+    rois = [self mutableArrayValueForKey:@"OSIROIs"];
+    [rois removeObject:roi];
+}
+
+- (NSArray *)OSIROIs // observable
+{
+    return _OSIROIs;
+}
+
 @end
 
 @implementation OSIVolumeWindow (Private)
@@ -131,6 +152,7 @@ NSString* const OSIVolumeWindowDidCloseNotification = @"OSIVolumeWindowDidCloseN
 		_viewerController = [viewerController retain];
 		_ROIManager = [[OSIROIManager alloc] initWithVolumeWindow:self];
 		_ROIManager.delegate = self;
+        _OSIROIs = [[NSMutableArray alloc] init];
 	}
 	return self;
 }

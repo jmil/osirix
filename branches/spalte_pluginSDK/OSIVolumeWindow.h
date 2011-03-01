@@ -39,6 +39,7 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 
 @interface OSIVolumeWindow : NSObject <OSIROIManagerDelegate>  {
 	ViewerController *_viewerController; // this is retained
+    NSMutableArray *_OSIROIs; // additional ROIs that have been added to the VolumeWindow 
 	OSIROIManager *_ROIManager; // should this really be an ROI manager? or is that another beast altogether?
 }
 
@@ -113,6 +114,14 @@ extern NSString* const OSIVolumeWindowDidCloseNotification;
 - (OSIFloatVolumeData *)floatVolumeDataForDimensionsAndIndexes:(NSString *)firstDimension, ... NS_REQUIRES_NIL_TERMINATION;
 //
 //- (OSIFloatVolumeData *)displayedFloatVolumeData;
+
+///-----------------------------------
+/// @name Dealing with ROIs that are not backed by OsiriX ROIs
+///-----------------------------------
+
+- (void)addOSIROI:(OSIROI *)roi;
+- (void)removeOSIROI:(OSIROI *)roi;
+- (NSArray *)OSIROIs; // observable
 
 ///-----------------------------------
 /// @name Breaking out of the SDK

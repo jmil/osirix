@@ -21,6 +21,7 @@
 #import "pluginSDKAdditions.h"
 #import "DCMView.h"
 #import "CPRMPRDCMView.h"
+#import "ViewerController.h"
 
 
 NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidUpdateNotification"; 
@@ -30,6 +31,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (void)_volumeWindowDidCloseNotification:(NSNotification *)notification;
 - (void)_ROIChangeNotification:(NSNotification *)notification;
 - (void)_removeROINotification:(NSNotification *)notification;
+- (void)_removeROICallbackHack:(ROI *)roi;
 - (void)_addROINotification:(NSNotification *)notification;
 - (void)_drawObjectsNotification:(NSNotification *)notification;
 - (NSArray *)_ROIList;
@@ -66,7 +68,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_removeROINotification:) name:OsirixRemoveROINotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_addROINotification:) name:OsirixAddROINotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_drawObjectsNotification:) name:OsirixDrawObjectsNotification object:nil];
-		
+		[_volumeWindow addObserver:self forKeyPath:@"OSIROIs" options:NSKeyValueObservingOptionInitial context:self];
 	}
 	return self;
 }
@@ -74,6 +76,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_volumeWindow removeObserver:self forKeyPath:@"OSIROIs"];
 	
 	_delegate = nil;
 	
@@ -133,6 +136,15 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 	return [roiNames allObjects];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"OSIROIs"] && object == _volumeWindow) {
+        [self _rebuildOSIROIs];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 - (void)_volumeWindowDidCloseNotification:(NSNotification *)notification
 {
 	[_volumeWindow release];
@@ -152,9 +164,19 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 {
 	if ([self _isROIManaged:[notification object]]) {
 		assert([NSThread isMainThread]);
-		[self performSelector:@selector(_rebuildOSIROIs) withObject:nil afterDelay:0]; // OsiriX manages to send this notification before the ROI is
+		[self performSelector:@selector(_removeROICallbackHack:) withObject:[notification object] afterDelay:0]; // OsiriX manages to send this notification before the ROI is
 												// actually removed. This super ultra sketchy bit of code copies the stratagy used by ROIManagerController
 	}
+}
+
+- (void)_removeROICallbackHack:(ROI *)roi;
+{
+    OSIVolumeWindow *volumeWindow;
+    [self _rebuildOSIROIs];
+    if ([_delegate isKindOfClass:[OSIVolumeWindow class]]) { // This is the a OSIROIManager owned by a volume window
+        volumeWindow = (OSIVolumeWindow *)_delegate;
+        [[[volumeWindow viewerController] window] setViewsNeedDisplay:YES];
+    }
 }
 
 - (void)_addROINotification:(NSNotification *)notification
@@ -165,6 +187,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 - (void)_drawObjectsNotification:(NSNotification *)notification
 {
     DCMView *dcmView;
+    ViewerController *viewerController;
     OSIROI *roi;
     CGLPixelFormatObj pixelFormatObj;
     N3AffineTransform pixToDicomTransform;
@@ -175,7 +198,7 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 //    float thickness;
 //    float location;
     CGLContextObj cgl_ctx;
-    
+        
     cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
 	
 	if ([self.delegate isKindOfClass:[OSIVolumeWindow class]] == NO) { // only draw ROIs for the ROIs in an ROI manager that is owned by the VolumeWindow 
@@ -186,7 +209,14 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
         return;
     }
     
+    viewerController = (ViewerController *)self.delegate;
     dcmView = (DCMView *)[notification object];
+    
+//    if ([dcmView windowController] != viewerController) { // only draw the ROIs in the DCM view that belongs to the ViewerController that is owned by the VolumeWindow
+//        return; 
+//    }
+    
+    
     N3AffineTransformGetOpenGLMatrixd([dcmView pixToSubDrawRectTransform], pixToSubdrawRectOpenGLTransform);
     pixelFormatObj = (CGLPixelFormatObj)[[dcmView pixelFormat] CGLPixelFormatObj];
 	pixToDicomTransform = [[dcmView curDCM] pixToDicomTransform];
@@ -301,6 +331,10 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 				}				
 			}
 		}
+        
+        for (roi in [_volumeWindow OSIROIs]) {
+            [newROIs addObject:roi];
+        }
 	}
 	
 	return newROIs;
