@@ -23,8 +23,9 @@
 		<a href="#Same_Plugins_and_Sample_Code"><li class="table_of_content_item0">Sample Code</li></a>
 		<a href="#Distributing_and_Installing_your_Plugin"><li class="table_of_content_item1">Distribution &amp; Installion</li></a>
 		<a href="#XML_RPC_support"><li class="table_of_content_item0">XML-RPC support</li></a>
-        <a href="#ITKPlugin"><li class="table_of_content_item1">Build your own ITK library for your plugin</li></a>
-		<a href="#More_Help"><li class="table_of_content_item0">More Help?</li></a>
+        <a href="#osirix_URL"><li class="table_of_content_item1">URL protocol : osirix</li></a>
+        <a href="#ITKPlugin"><li class="table_of_content_item0">Build your own ITK library for your plugin</li></a>
+		<a href="#More_Help"><li class="table_of_content_item1">More Help?</li></a>
 		<li id="table_of_content_embellishment_end"></li>
 	</ul>
 	
@@ -184,6 +185,26 @@
 			<p>With OsiriX 3.0, we introduced a very easy and powerful protocol for such control. OsiriX integrates now an HTTP server with an XML-RPC protocol. It means that any software/computer that knows your network address can execute methods in OsiriX. These methods can be built-in in OsiriX or added in plugins. To turn the XML-RPC HTTP server, go to the Listener Preferences window in OsiriX. </p>
 			<p>The documentation is available here: <a href="http://osirixplugins.svn.sourceforge.net/viewvc/*checkout*/osirixplugins/XML-RPC-Plugin/XML-RPC ReadMe.pdf">XML-RPC ReadMe</a></p>
 			<p>A sample plugin is available in the Plugins folder in the SVN repository: XML-RPC-Plugin</p>
+			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
+
+<a name="osirix_URL"><h2>URL protocol : osirix</h2></a>
+			<img class="icon" src="images/safari.png" />
+			<p>OsiriX is a DICOM Viewer, aka PACS Workstation, but it is not a HIS or a RIS software. If you have such software installed, it can be useful to 'control' OsiriX from another application on the same computer: for example a Java application or a Web based software.</p>
+			<p>This technique uses an URL protocol : osirix. This method is simpler than the XML-RPC messages: the syntax is shorter, and you simply 'open' an URL to execute it. The disadvantages compared to the XML-RPC messages : the other application needs to run on the same computer and in the same environment (MacOS). This technique can only send an order to OsiriX, it cannot retrieve informations.</p>
+			<p>The other application can, for example:</p>
+			<ul>
+				<li>Open a specific study, and display the images</li>
+				<li>Delete a study</li>
+				<li>...</li>
+			</ul>
+			<p>This URL protocol supports has been introduced with OsiriX 3.9 and higher.</p>
+            <p>This protocol supports the built-in XML-RPC protocols (not the XML-RPC protocols supported through plug-ins).</p>
+			<p>For example, you can post these messages from another application:</p>
+			<ul>
+				<li>osirix://?methodName=KillOsiriX</li>
+                <li>osirix://?methodName=DisplayStudy&amp;PatientID=107166&amp;StudyInstanceUID=73738.7361</li>
+                <li>osirix://?methodName=DBWindowFind&amp;request=(name CONTAINS[cd] 'HelmutLaMoumoute')&amp;table=Study&amp;execute=Open</li>
+			</ul>
 			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
 
 <a name="ITKPlugin"><h2>Build your own ITK library for your plugin</h2></a>
