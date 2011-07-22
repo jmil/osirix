@@ -15,6 +15,9 @@
 #import <Cocoa/Cocoa.h>
 #import "OSIROIManager.h"
 
+// there is something fundamentally wrong with this. A lot of viewers display multiple images, and that MUST be handled correctly. This is particularly important for the plugin API
+// because lots of plugins are used to perform specific tasks and that ofter requires windows with multiple view. It would be really nice if we could 
+
 /**  
  
  Each instance of a OSIVolumeWindow is paired was an OsiriX `ViewerController`. The goal of the Volume Window is to provide a simplified interface to common tasks that are inherently difficult to do directly with a `ViewerController`. 
