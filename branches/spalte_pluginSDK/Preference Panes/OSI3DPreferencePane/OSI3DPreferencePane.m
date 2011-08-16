@@ -16,6 +16,20 @@
 
 @implementation OSI3DPreferencePanePref
 
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSI3DPreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
+
 - (void) dealloc
 {
 	NSLog(@"dealloc OSI3DPreferencePanePref");
@@ -48,10 +62,17 @@
 		long vramStorage = 0;
 		// Convert this to a useable number
 		CFNumberGetValue(typeCode, kCFNumberSInt32Type, &vramStorage);
+		
+		CFRelease( typeCode);
+		typeCode = nil;
+		
 		// If we get something other than 0, we'll use it
 		if(vramStorage > 0)
 			return vramStorage;
 	}
+	
+	if( typeCode)
+		CFRelease( typeCode);
 	
 	return 0;
 }

@@ -18,6 +18,7 @@
 #import "WebPortalSession.h"
 #import "WebPortalDatabase.h"
 #import "WebPortal.h"
+#import "WebPortal+Databases.h"
 #import "NSString+N2.h"
 #import "AppController.h"
 #import "DicomStudy.h"
@@ -514,7 +515,22 @@
 	if ([key isEqual:@"proposeDicomUpload"])
 		return [NSNumber numberWithBool: (!wpc.user || wpc.user.uploadDICOM.boolValue) && !wpc.requestIsIOS ];
 	if ([key isEqual:@"proposeDicomSend"]) {
-		return [NSNumber numberWithBool: !wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue || (wpc.user.sendDICOMtoAnyNodes.boolValue /* TODO: && destinations.count */)]; 
+		return [NSNumber numberWithBool: !wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue || (wpc.user.sendDICOMtoAnyNodes.boolValue)]; 
+	}
+	if ([key isEqual:@"proposeWADORetrieve"]) {
+		return [NSNumber numberWithBool: [[NSUserDefaults standardUserDefaults] boolForKey:@"wadoServer"] && (!wpc.user || wpc.user.sendDICOMtoSelfIP.boolValue || (wpc.user.sendDICOMtoAnyNodes.boolValue))]; 
+	}
+	if ([key isEqual:@"WADOBaseURL"])
+	{
+		NSString *protocol = [[NSUserDefaults standardUserDefaults] boolForKey:@"encryptedWebServer"] ? @"https" : @"http";
+		NSString *wadoSubUrl = @"wado"; // See Web Server Preferences
+		
+		if( [wadoSubUrl hasPrefix: @"/"])
+			wadoSubUrl = [wadoSubUrl substringFromIndex: 1];
+		
+		NSString *baseURL = [NSString stringWithFormat: @"%@/%@", wpc.portalURL, wadoSubUrl];
+		
+		return baseURL; 
 	}
 	if ([key isEqual:@"proposeZipDownload"])
 		return [NSNumber numberWithBool: (!wpc.user || wpc.user.downloadZIP.boolValue) && !wpc.requestIsIOS ];
@@ -703,6 +719,32 @@ NSString* iPhoneCompatibleNumericalFormat(NSString* aString) { // this is to avo
 	
 	if ([key isEqual:@"reportIsLink"]) {
 		return [NSNumber numberWithBool: [study.reportURL hasPrefix:@"http://"] || [study.reportURL hasPrefix:@"https://"] ];
+	}
+	
+	if ([key isEqual:@"otherStudiesForThisPatient"])
+	{
+		NSMutableArray *otherStudies = nil;
+		
+		@try
+		{
+			otherStudies = [[[wpc.portal studiesForUser: wpc.user predicate: [NSPredicate predicateWithFormat: @"(patientID == %@)", study.patientID] sortBy: @"date"] mutableCopy] autorelease];
+			
+			// Important> keep these two separates steps !
+			for( DicomStudy *s in otherStudies)
+			{
+				if( [s.studyInstanceUID isEqualToString: study.studyInstanceUID])
+				{
+					[otherStudies removeObject: s];
+					break;
+				}
+			}
+		}
+		@catch (NSException * e)
+		{
+			NSLog(@"[WebPortalRosponse object:valueForKeyPath:context] %@", e);
+		}
+		
+		return otherStudies;
 	}
 	
 	if ([key isEqual:@"reportExtension"]) {

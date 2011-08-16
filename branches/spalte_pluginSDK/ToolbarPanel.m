@@ -16,43 +16,41 @@
 #import "ToolBarNSWindow.h"
 #import "ViewerController.h"
 #import "AppController.h"
+#import "NSWindow+N2.h"
 
 extern BOOL USETOOLBARPANEL;
 
 static 	NSMutableDictionary *associatedScreen = nil;
-static int increment = 0;
+static int increment = 0, previousNumberOfScreens = 0;
 
 @implementation ToolbarPanelController
 
 @synthesize viewer;
 
-+ (long) fixedHeight
-{
++ (long) fixedHeight {
 	return 90;
 }
 
-+ (long) hiddenHeight
-{
++ (long) hiddenHeight {
 	return 16;
 }
 
-+ (long) exposedHeight
-{
++ (long) exposedHeight {
 	return [self fixedHeight] - [self hiddenHeight];
 }
 
-- (void) checkPosition
+/*- (void) checkPosition
 {
 	if( [[NSScreen screens] count] > screen)
 	{
 		NSPoint o = NSMakePoint([[[NSScreen screens] objectAtIndex: screen] visibleFrame].origin.x, [[[NSScreen screens] objectAtIndex: screen] visibleFrame].origin.y+[[[NSScreen screens] objectAtIndex: screen] visibleFrame].size.height);
 	
 //		[[self window] setFrameTopLeftPoint: o];		// fixSize will be called by this function
-		[self fixSize];
+//		[self fixSize];
 	}
-}
+}*/
 
-- (void) fixSize
+/*- (void) fixSize
 {
 	NSRect  dstframe;
 	NSArray *screens = [NSScreen screens];
@@ -68,6 +66,32 @@ static int increment = 0;
 		
 		[[self window] setFrame: dstframe display: NO];
 	}
+}*/
+
+-(void)applicationDidChangeScreenParameters:(NSNotification*)aNotification
+{
+    if( previousNumberOfScreens == 0)
+        previousNumberOfScreens = [[NSScreen screens] count];
+    
+    if( [[NSScreen screens] count] != previousNumberOfScreens)
+    {
+        previousNumberOfScreens = [[NSScreen screens] count];
+        [[AppController sharedAppController] closeAllViewers: self];
+        return;
+    }
+        
+	if ([[NSScreen screens] count] <= screen)
+		return;
+	
+	NSRect screenRect = [[[NSScreen screens] objectAtIndex:screen] visibleFrame];
+	
+	NSRect dstframe;
+	dstframe.size.height = [ToolbarPanelController fixedHeight];
+	dstframe.size.width = screenRect.size.width;
+	dstframe.origin.x = screenRect.origin.x;
+	dstframe.origin.y = screenRect.origin.y + screenRect.size.height - dstframe.size.height + [ToolbarPanelController hiddenHeight];
+	
+	[[self window] setFrame:dstframe display:YES];
 }
 
 - (id)initForScreen: (long) s
@@ -78,10 +102,13 @@ static int increment = 0;
 	{
 		toolbar = nil;
 		
-		firstTime = YES;
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidChangeScreenParameters:) name:NSApplicationDidChangeScreenParametersNotification object:NSApp];
 		
 		if( [AppController hasMacOSXSnowLeopard])
 			[[self window] setCollectionBehavior: 1 << 6]; //NSWindowCollectionBehaviorIgnoresCycle
+		
+		[self applicationDidChangeScreenParameters:nil];
+		
 	}
 	
 	return self;
@@ -89,18 +116,9 @@ static int increment = 0;
 
 - (void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationDidChangeScreenParametersNotification object:NSApp];
 	[emptyToolbar release];
 	[super dealloc];
-}
-
-- (void) WindowDidMoveNotification:(NSNotification *)aNotification
-{
-	if( [aNotification object] == [self window] && dontReenter == NO)
-	{
-		dontReenter = YES;
-		[self checkPosition];
-		dontReenter = NO;
-	}
 }
 
 - (void)windowDidResignKey:(NSNotification *)aNotification
@@ -149,7 +167,7 @@ static int increment = 0;
 		return;
 	}
 	
-	[self checkPosition];
+	//[self checkPosition];
 	
 	if( [[[aNotification object] windowController] isKindOfClass:[ViewerController class]])
 	{
@@ -188,10 +206,9 @@ static int increment = 0;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignMain:) name:NSWindowDidResignMainNotification object:0];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification object:0];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignKey:) name:NSWindowDidResignKeyNotification object:0];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(WindowDidMoveNotification:) name:NSWindowDidMoveNotification object:0];
 	
 	[super windowDidLoad];
+	[self.window safelySetMovable:NO];
 	
 	emptyToolbar = [[NSToolbar alloc] initWithIdentifier: [NSString stringWithFormat:@"nstoolbar osirix %d", increment++]];
 	[emptyToolbar setDelegate: self];
@@ -201,7 +218,7 @@ static int increment = 0;
 	
 	[[self window] setLevel: NSNormalWindowLevel];
 	
-	[self checkPosition];
+//	[self checkPosition];
 }
 
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar
@@ -242,7 +259,7 @@ static int increment = 0;
 {
 	if( toolbar == tb)
 	{
-		((ToolBarNSWindow*) [self window]).willClose = YES;
+//		((ToolBarNSWindow*) [self window]).willClose = YES;
 		
 		[[self window] orderOut: self];
 		
@@ -261,7 +278,7 @@ static int increment = 0;
 		
 		viewer = 0;
 		
-		((ToolBarNSWindow*) [self window]).willClose = NO;
+//		((ToolBarNSWindow*) [self window]).willClose = NO;
 	}
 }
 
@@ -333,22 +350,10 @@ static int increment = 0;
 	
 	if( toolbar)
 	{
-		[self checkPosition];
+		[self applicationDidChangeScreenParameters:nil];
 		
 		if( [[viewer window] isKeyWindow])
 			[[self window] orderWindow: NSWindowBelow relativeTo: [[viewer window] windowNumber]];
-	}
-	
-	if( firstTime)
-	{
-		firstTime = NO;
-		
-		NSLog( @"----- first time toolbar : %d", screen);
-		
-		[[self window] setToolbar: emptyToolbar];
-		[[self window] toggleToolbarShown: self];
-		[[self window] toggleToolbarShown: self];
-		[[self window] setToolbar: toolbar];
 	}
 }
 

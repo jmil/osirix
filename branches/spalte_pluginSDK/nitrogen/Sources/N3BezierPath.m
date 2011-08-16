@@ -67,7 +67,9 @@
 {
     if ( (self = [super init]) ) {
         _bezierCore = N3BezierCoreCreateMutableCopy([bezierPath N3BezierCore]);
-		_length = bezierPath->_length;
+        @synchronized (bezierPath) {
+            _length = bezierPath->_length;
+        }
     }
     return self;
 }
@@ -255,11 +257,27 @@
     return newBezierPath;
 }
 
+- (N3BezierPath *)bezierPathByAddingEndpointsAtIntersectionsWithPlane:(N3Plane)plane // will flatten the path if it is not already flattened
+{
+    N3MutableBezierPath *newBezierPath;
+    newBezierPath = [[self mutableCopy] autorelease];
+    [newBezierPath addEndpointsAtIntersectionsWithPlane:plane];
+    return newBezierPath;
+}    
+
 - (N3BezierPath *)bezierPathByAppendingBezierPath:(N3BezierPath *)bezierPath connectPaths:(BOOL)connectPaths;
 {
     N3MutableBezierPath *newBezierPath;
     newBezierPath = [[self mutableCopy] autorelease];
     [newBezierPath appendBezierPath:bezierPath connectPaths:connectPaths];
+    return newBezierPath;
+}
+
+- (N3BezierPath *)bezierPathByProjectingToPlane:(N3Plane)plane;
+{
+    N3MutableBezierPath *newBezierPath;
+    newBezierPath = [[self mutableCopy] autorelease];
+    [newBezierPath projectToPlane:plane];
     return newBezierPath;
 }
 
@@ -277,6 +295,22 @@
     N3BezierCoreRelease(outlineCore);
     return [outlinePath autorelease];
 }
+
+- (N3BezierPath *)outlineBezierPathAtDistance:(CGFloat)distance projectionNormal:(N3Vector)projectionNormal spacing:(CGFloat)spacing
+{
+    N3BezierPath *outlinePath;
+    N3BezierCoreRef outlineCore;
+    
+	if (N3BezierCoreSubpathCount(_bezierCore) != 1) {
+		return nil;
+	}
+	
+    outlineCore = N3BezierCoreCreateOutlineWithNormal(_bezierCore, distance, spacing, projectionNormal);
+    outlinePath = [[N3BezierPath alloc] initWithN3BezierCore:outlineCore];
+    N3BezierCoreRelease(outlineCore);
+    return [outlinePath autorelease];
+}
+
 
 - (NSInteger)elementCount
 {
@@ -343,6 +377,32 @@
     return N3BezierCoreNormalAtEndWithInitialNormal(_bezierCore, initialNormal);
 }
 
+- (BOOL)isPlanar
+{
+    return N3BezierCoreIsPlanar(_bezierCore, NULL);
+}
+
+- (N3Plane)leastSquaresPlane
+{
+	return N3BezierCoreLeastSquaresPlane(_bezierCore);
+}
+
+- (N3Plane)topBoundingPlaneForNormal:(N3Vector)normal
+{
+    N3Plane plane;
+    
+    N3BezierCoreGetBoundingPlanesForNormal(_bezierCore, normal, &plane, NULL);
+    return plane;
+}
+
+- (N3Plane)bottomBoundingPlaneForNormal:(N3Vector)normal
+{
+    N3Plane plane;
+    
+    N3BezierCoreGetBoundingPlanesForNormal(_bezierCore, normal, NULL, &plane);
+    return plane;
+}
+
 - (N3BezierPathElement)elementAtIndex:(NSInteger)index
 {
     return [self elementAtIndex:index control1:NULL control2:NULL endpoint:NULL];
@@ -390,9 +450,10 @@
                 *endpoint = endpointVector;
             }            
             return N3CloseBezierPathElement;
+        default:
+            assert(0);
+            return 0;
     }
-    assert(0);
-    return 0;
 }
 
 - (N3Vector)vectorAtRelativePosition:(CGFloat)relativePosition // RelativePosition is in [0, 1]
@@ -432,17 +493,17 @@
     }    
 }
 
-- (CGFloat)relalativePositionClosestToVector:(N3Vector)vector
+- (CGFloat)relativePositionClosestToVector:(N3Vector)vector
 {
     return N3BezierCoreRelativePositionClosestToVector(_bezierCore, vector, NULL, NULL);
 }
 
-- (CGFloat)relalativePositionClosestToLine:(N3Line)line;
+- (CGFloat)relativePositionClosestToLine:(N3Line)line;
 {
     return N3BezierCoreRelativePositionClosestToLine(_bezierCore, line, NULL, NULL);
 }
 
-- (CGFloat)relalativePositionClosestToLine:(N3Line)line closestVector:(N3VectorPointer)vectorPointer;
+- (CGFloat)relativePositionClosestToLine:(N3Line)line closestVector:(N3VectorPointer)vectorPointer;
 {
     return N3BezierCoreRelativePositionClosestToLine(_bezierCore, line, vectorPointer, NULL);
 }
@@ -460,6 +521,17 @@
     [collapsedBezierPath applyAffineTransform:collapseTransform];
     
     return [collapsedBezierPath autorelease];
+}
+
+- (N3BezierPath *)bezierPathByReversing
+{
+    N3BezierCoreRef reversedBezierCore;
+    N3MutableBezierPath *reversedBezierPath;
+    
+    reversedBezierCore = N3BezierCoreCreateCopyByReversing(_bezierCore);
+    reversedBezierPath = [N3MutableBezierPath bezierPathN3BezierCore:reversedBezierCore];
+    N3BezierCoreRelease(reversedBezierCore);
+    return reversedBezierPath;
 }
 
 - (NSArray*)intersectionsWithPlane:(N3Plane)plane; // returns NSValues containing N3Vectors of the intersections.
@@ -526,25 +598,25 @@
 - (void)moveToVector:(N3Vector)vector
 {
     [self _clearRandomAccessor];
-    N3BezierCoreAddSegment(_bezierCore, N3MoveToBezierPathElement, N3VectorZero, N3VectorZero, vector);
+    N3BezierCoreAddSegment(_bezierCore, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, vector);
 }
 
 - (void)lineToVector:(N3Vector)vector
 {
     [self _clearRandomAccessor];
-    N3BezierCoreAddSegment(_bezierCore, N3LineToBezierPathElement, N3VectorZero, N3VectorZero, vector);
+    N3BezierCoreAddSegment(_bezierCore, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, vector);
 }
 
 - (void)curveToVector:(N3Vector)vector controlVector1:(N3Vector)controlVector1 controlVector2:(N3Vector)controlVector2
 {
     [self _clearRandomAccessor];
-    N3BezierCoreAddSegment(_bezierCore, N3CurveToBezierPathElement, controlVector1, controlVector2, vector);
+    N3BezierCoreAddSegment(_bezierCore, N3CurveToBezierCoreSegmentType, controlVector1, controlVector2, vector);
 }
 
 - (void)close
 {
 	[self _clearRandomAccessor];
-    N3BezierCoreAddSegment(_bezierCore, N3CloseBezierPathElement, N3VectorZero, N3VectorZero, N3VectorZero);
+    N3BezierCoreAddSegment(_bezierCore, N3CloseBezierCoreSegmentType, N3VectorZero, N3VectorZero, N3VectorZero);
 }
 
 - (void)flatten:(CGFloat)flatness
@@ -565,10 +637,30 @@
     N3BezierCoreApplyTransform(_bezierCore, transform);
 }
 
+- (void)projectToPlane:(N3Plane)plane
+{
+    N3MutableBezierCoreRef newBezierCore;
+    
+    [self _clearRandomAccessor];
+    newBezierCore = N3BezierCoreCreateMutableCopyProjectedToPlane(_bezierCore, plane);
+    N3BezierCoreRelease(_bezierCore);
+    _bezierCore = newBezierCore;
+}
+
 - (void)appendBezierPath:(N3BezierPath *)bezierPath connectPaths:(BOOL)connectPaths
 {
     [self _clearRandomAccessor];
     N3BezierCoreAppendBezierCore(_bezierCore, [bezierPath N3BezierCore], connectPaths);
+}
+
+- (void)addEndpointsAtIntersectionsWithPlane:(N3Plane)plane // will  flatten the path if it is not already flattened
+{
+    N3MutableBezierCoreRef newBezierCore;
+    
+    [self _clearRandomAccessor];
+    newBezierCore = N3BezierCoreCreateMutableCopyWithEndpointsAtPlaneIntersections(_bezierCore, plane);
+    N3BezierCoreRelease(_bezierCore);
+    _bezierCore = newBezierCore;
 }
 
 - (void)_clearRandomAccessor

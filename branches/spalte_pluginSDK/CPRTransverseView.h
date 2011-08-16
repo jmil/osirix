@@ -14,51 +14,65 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DCMView.h"
-#import "CPRGenerator.h"
 #import "CPRMPRDCMView.h"
- 
+
+enum _CPRTransverseViewReformationDisplayStyle { 
+    CPRTransverseViewStraightenedReformationDisplayStyle = 0,
+    CPRTransverseViewStretchedReformationDisplayStyle = 1,
+};
+typedef NSInteger CPRTransverseViewReformationDisplayStyle;
+
 // horrible name! rename me!
 enum _CPRTransverseViewSectionType { 
-    CPRTransverseViewCenterSectionType,
+    CPRTransverseViewNoneSectionType = -1,
+    CPRTransverseViewCenterSectionType = 0,
     CPRTransverseViewLeftSectionType,
     CPRTransverseViewRightSectionType
 };
 typedef NSInteger CPRTransverseViewSection;
 
 @class CPRCurvedPath;
+@class CPRDisplayInfo;
 @class CPRVolumeData;
-@class CPRStraightenedGeneratorRequest;
+@class CPRObliqueSliceGeneratorRequest;
+@class StringTexture;
 
-@interface CPRTransverseView : DCMView <CPRGeneratorDelegate> {
+@interface CPRTransverseView : DCMView {
     id<CPRViewDelegate> _delegate;
 
     CPRCurvedPath *_curvedPath;
+    CPRDisplayInfo *_displayInfo;
     CPRTransverseViewSection _sectionType;
     CGFloat _sectionWidth;
     
     CPRVolumeData *_volumeData;
     CPRVolumeData *_generatedVolumeData;
     
-    CPRGenerator *_generator;
-    CPRStraightenedGeneratorRequest *_lastRequest;
+    CPRObliqueSliceGeneratorRequest *_lastRequest;
     BOOL _processingRequest;
     BOOL _needsNewRequest;
 	
 	BOOL displayCrossLines;
-	
+	CPRTransverseViewReformationDisplayStyle _reformationDisplayStyle;
+    
 	CGFloat _renderingScale;
 	
 	float previousScale;
+	
+	NSMutableDictionary *stanStringAttrib;
+	StringTexture *stringTex;
 }
 
 @property (nonatomic, readwrite, assign) id<CPRViewDelegate> delegate;
 @property (nonatomic, readwrite, copy) CPRCurvedPath* curvedPath;
+@property (nonatomic, readwrite, copy) CPRDisplayInfo *displayInfo;
 @property (nonatomic, readwrite, assign) CPRTransverseViewSection sectionType;
 @property (nonatomic, readwrite, assign) CGFloat sectionWidth; // the width to be displayed in mm
 @property (nonatomic, readwrite, retain) CPRVolumeData *volumeData;
 @property (nonatomic, readwrite, assign) CGFloat renderingScale;
 @property (nonatomic, readwrite, assign) BOOL displayCrossLines;
 
-- (void)runMainRunLoopUntilAllRequestsAreFinished;
+@property (nonatomic, readwrite, assign) CPRTransverseViewReformationDisplayStyle reformationDisplayStyle;
+
 
 @end

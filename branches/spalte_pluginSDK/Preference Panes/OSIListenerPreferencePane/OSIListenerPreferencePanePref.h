@@ -14,9 +14,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-#if defined(OSIRIX)
-#import <OsiriX Headers/DICOMTLS.h>
-#endif
+#import <OsiriXAPI/DICOMTLS.h>
 
 @interface OSIListenerPreferencePanePref : NSPreferencePane 
 {
@@ -25,6 +23,8 @@
 	
 	IBOutlet NSTextField* sharingNameField;	
 	
+	IBOutlet NSPopUpButton *preferredSyntaxPopUpButton;	
+	
 	IBOutlet NSWindow *TLSSettingsWindow;
 	NSString *TLSAuthenticationCertificate;
 	IBOutlet NSButton *TLSChooseCertificateButton, *TLSCertificateButton;
@@ -32,21 +32,25 @@
 	BOOL TLSUseDHParameterFileURL;
 	NSURL *TLSDHParameterFileURL;
 	
-	#if defined(OSIRIX)
 	TLSCertificateVerificationType	TLSCertificateVerification;
-	#endif
 	
 	BOOL TLSUseSameAETITLE;
 	NSString *TLSStoreSCPAETITLE;
+	IBOutlet NSButton *TLSStoreSCPAETITLEIsDefaultAETButton;
+	BOOL TLSStoreSCPAETITLEIsDefaultAET;
+	
+	IBOutlet NSTextField *TLSAETitleTextField;
+	IBOutlet NSTextField *TLSPortTextField;
+	IBOutlet NSTextField *TLSPreferredSyntaxTextField;
+	
+	IBOutlet NSWindow *mainWindow;
 }
 
 @property (retain) NSString *TLSAuthenticationCertificate, *TLSStoreSCPAETITLE;
 @property (retain) NSArray *TLSSupportedCipherSuite;
-@property BOOL TLSUseDHParameterFileURL, TLSUseSameAETITLE;
+@property BOOL TLSUseDHParameterFileURL, TLSUseSameAETITLE, TLSStoreSCPAETITLEIsDefaultAET;
 @property (retain) NSURL *TLSDHParameterFileURL;
-#if defined(OSIRIX)
 @property TLSCertificateVerificationType TLSCertificateVerification;
-#endif
 
 - (void) mainViewDidLoad;
 
@@ -61,6 +65,8 @@
 - (IBAction)viewTLSCertificate:(id)sender;
 - (void)getTLSCertificate;
 - (IBAction)useSameAETitleForTLSListener:(id)sender;
+- (IBAction)activateDICOMTLSListenerAction:(id)sender;
+- (void)updateTLSStoreSCPAETITLEIsDefaultAETButton;
 - (IBAction)selectAllSuites:(id)sender;
 - (IBAction)deselectAllSuites:(id)sender;
 

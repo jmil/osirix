@@ -616,6 +616,9 @@ static NSRecursiveLock *dbModifyLock = nil;
 
 - (NSString*) modalities
 {
+	if( cachedModalites)
+		return cachedModalites;
+	
 	NSString *m = nil;
 	
 	[[self managedObjectContext] lock];
@@ -661,7 +664,10 @@ static NSRecursiveLock *dbModifyLock = nil;
 	{
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
-		
+	
+	[cachedModalites release];
+	cachedModalites = [m retain];
+	
 	[[self managedObjectContext] unlock];
 	
 	return m;
@@ -671,6 +677,7 @@ static NSRecursiveLock *dbModifyLock = nil;
 {
 	[dicomTime release];
 	[cachedRawNoFiles release];
+	[cachedModalites release];
 	
 	[super dealloc];
 }
@@ -976,6 +983,19 @@ static NSRecursiveLock *dbModifyLock = nil;
 	return dicomTime;
 }
 
+- (id) valueForUndefinedKey:(NSString *)key
+{
+	NSSet *paths = [self paths];
+	
+	if( [paths count])
+	{
+		id value = [DicomFile getDicomField: key forFile: [[paths anyObject] completePath]];
+		if (value)
+			return value;
+	}
+	
+	return [super valueForUndefinedKey: key];
+}
 
 //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
 
@@ -1040,10 +1060,31 @@ static NSRecursiveLock *dbModifyLock = nil;
 
 //ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ
 
+- (void) setModality:(NSString *) s
+{
+	if( [s isEqualToString:@"SC"] ||
+		[s isEqualToString:@"PR"] ||
+		[s isEqualToString:@"SR"] ||
+		[s isEqualToString:@"RTSTRUCT"] ||
+		[s isEqualToString:@"RT"] ||
+		[s isEqualToString:@"KO"])
+	{
+		if( self.modality.length > 0)
+			return; //We are not insterested in these 'technical' modalities, we prefer true modalities like CT, MR, ...
+	}
+		   
+	[self willChangeValueForKey: @"modality"];
+	[self setPrimitiveValue: s forKey:@"modality"];
+	[self didChangeValueForKey: @"modality"];
+}
+
 - (void) setNumberOfImages:(NSNumber *) n
 {
 	[cachedRawNoFiles release];
 	cachedRawNoFiles = nil;
+	
+	[cachedModalites release];
+	cachedModalites = nil;
 	
 	[self willChangeValueForKey: @"numberOfImages"];
 	[self setPrimitiveValue: n forKey:@"numberOfImages"];
@@ -1212,7 +1253,7 @@ static NSRecursiveLock *dbModifyLock = nil;
 
 + (BOOL) displaySeriesWithSOPClassUID: (NSString*) uid andSeriesDescription: (NSString*) description
 {
-	if( uid == nil || [DCMAbstractSyntaxUID isImageStorage: uid] || [DCMAbstractSyntaxUID isRadiotherapy:uid])
+	if( uid == nil || [DCMAbstractSyntaxUID isImageStorage: uid] || [DCMAbstractSyntaxUID isRadiotherapy:uid] || [DCMAbstractSyntaxUID isWaveform:uid])
 		return YES;
 	else if( [DCMAbstractSyntaxUID isStructuredReport:uid] && [description hasPrefix: @"OsiriX ROI SR"] == NO && [description hasPrefix: @"OsiriX Annotations SR"] == NO && [description hasPrefix: @"OsiriX Report SR"] == NO)
 		return YES;

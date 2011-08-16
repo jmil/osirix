@@ -27,7 +27,9 @@
 
 #ifdef OSIRIX_VIEWER
 #ifndef OSIRIX_LIGHT
+#ifndef MACAPPSTORE
 #import <Growl/Growl.h>
+#endif
 #endif
 #endif
 
@@ -84,13 +86,13 @@ extern "C"
 *
 */
 
-#if defined(OSIRIX_VIEWER) && !defined(OSIRIX_LIGHT)
+#if defined(OSIRIX_VIEWER) && !defined(OSIRIX_LIGHT) && !defined(MACAPPSTORE)
 #else
 @protocol GrowlApplicationBridgeDelegate
 @end
 #endif
 
-@interface AppController : NSObject	<GrowlApplicationBridgeDelegate>
+@interface AppController : NSObject	<NSNetServiceBrowserDelegate, NSNetServiceDelegate, GrowlApplicationBridgeDelegate>
 {
 	IBOutlet BrowserController		*browserController;
 
@@ -127,9 +129,11 @@ extern "C"
 
 @property BOOL checkAllWindowsAreVisibleIsOff, isSessionInactive;
 @property (readonly) NSMenu *filtersMenu, *windowsTilingMenuRows, *windowsTilingMenuColumns;
+@property (readonly) XMLRPCMethods *XMLRPCServer;
 
 + (BOOL) isFDACleared;
 + (BOOL) willExecutePlugin;
++ (BOOL) hasMacOSXLion;
 + (BOOL) hasMacOSXSnowLeopard;
 + (BOOL) hasMacOSXLeopard;
 
@@ -168,7 +172,9 @@ extern "C"
 - (IBAction) about:(id)sender; /**< Display the about window */
 - (IBAction) showPreferencePanel:(id)sender; /**< Show Preferences window */
 #ifndef OSIRIX_LIGHT
+#ifndef MACAPPSTORE
 - (IBAction) checkForUpdates:(id) sender;  /**< Check for update */
+#endif
 - (IBAction) autoQueryRefresh:(id)sender;
 #endif
 //===============WINDOW========================
@@ -191,7 +197,6 @@ extern "C"
 //=============================================
 
 - (IBAction) killAllStoreSCU:(id) sender;
-- (void) waitUnlockFileWithPID: (NSNumber*) nspid;
 
 - (id) splashScreen;
 
@@ -242,5 +247,8 @@ extern "C"
 #pragma mark -
 -(WebPortal*)defaultWebPortal;
 
+#ifndef OSIRIX_LIGHT
+-(NSString*)weasisBasePath;
+#endif
 @end
 

@@ -61,7 +61,8 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 @synthesize bezierPath = _bezierPath;
 @synthesize nodes = _nodes;
 @synthesize nodeRelativePositions = _nodeRelativePositions;
-@synthesize initialNormal = _initialNormal;
+@synthesize angle = _angle;
+@synthesize baseDirection = _baseDirection;
 @synthesize thickness = _thickness;
 @synthesize transverseSectionSpacing = _transverseSectionSpacing;
 @synthesize transverseSectionPosition = _transverseSectionPosition;
@@ -74,6 +75,11 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 + (NSInteger)nodeIndexForToken:(CPRCurvedPathControlToken)token
 {
     return _elementForControlToken(token);
+}
+
++ (CPRCurvedPathControlToken)controlTokenForNodeIndex:(NSInteger)nodeIndex
+{
+    return _controlTokenForElement(nodeIndex);
 }
 
 - (id)init
@@ -94,6 +100,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 	NSDictionary *nodeDictionary;
 	NSMutableArray *nodes;
 	N3Vector node;
+    N3Vector initialNormal;
 	
 	if ( (self = [super init]) ) {
 		nodes = [[NSMutableArray alloc] init];
@@ -108,8 +115,21 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 		_nodes = nodes;
 		_nodeRelativePositions = [[decoder decodeObjectForKey:@"nodeRelativePositions"] retain];
 		
-		_initialNormal = N3VectorZero;
-		N3VectorMakeWithDictionaryRepresentation((CFDictionaryRef)[decoder decodeObjectForKey:@"initialNormalDictionary"], &_initialNormal);
+        if ([decoder containsValueForKey:@"initialNormalDictionary"]) { // older versions saved this out
+            initialNormal = N3VectorZero;
+            N3VectorMakeWithDictionaryRepresentation((CFDictionaryRef)[decoder decodeObjectForKey:@"initialNormalDictionary"], &initialNormal);
+            [self setInitialNormal:initialNormal];
+        }
+        
+        if ([decoder containsValueForKey:@"baseDirectionDictionary"]) {
+            _baseDirection = N3VectorZero;
+            N3VectorMakeWithDictionaryRepresentation((CFDictionaryRef)[decoder decodeObjectForKey:@"baseDirectionDictionary"], &initialNormal);
+        }
+        
+        if ([decoder containsValueForKey:@"angle"]) {
+            _angle = [decoder decodeDoubleForKey:@"angle"];
+        }
+        
 		_thickness = [decoder decodeDoubleForKey:@"thickness"];
 		_transverseSectionSpacing = [decoder decodeDoubleForKey:@"transverseSectionSpacing"];
 		_transverseSectionPosition = [decoder decodeDoubleForKey:@"transverseSectionPosition"];
@@ -123,7 +143,8 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
         _bezierPath = [curvedPath.bezierPath mutableCopy];
         _nodes = [curvedPath.nodes mutableCopy];
         _nodeRelativePositions = [curvedPath.nodeRelativePositions mutableCopy];
-        _initialNormal = curvedPath.initialNormal;
+        _baseDirection = curvedPath.baseDirection;
+        _angle = curvedPath.angle;
         _thickness = curvedPath.thickness;
         _transverseSectionSpacing = curvedPath.transverseSectionSpacing;
         _transverseSectionPosition = curvedPath.transverseSectionPosition;
@@ -171,10 +192,39 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 	[encoder encodeObject:nodeVectorsAsDictionaries forKey:@"nodesAsDictionaries"];
 	[encoder encodeObject:_nodeRelativePositions forKey:@"nodeRelativePositions"];
 	
-	[encoder encodeObject:[(NSDictionary *)N3VectorCreateDictionaryRepresentation(_initialNormal) autorelease] forKey:@"initialNormalDictionary"];
+	[encoder encodeObject:[(NSDictionary *)N3VectorCreateDictionaryRepresentation(_baseDirection) autorelease] forKey:@"baseDirectionDictionary"];
+	[encoder encodeDouble:_angle forKey:@"angle"];
 	[encoder encodeDouble:_thickness forKey:@"thickness"];
 	[encoder encodeDouble:_transverseSectionSpacing forKey:@"transverseSectionSpacing"];
 	[encoder encodeDouble:_transverseSectionPosition forKey:@"transverseSectionPosition"];
+}
+
+- (void)setInitialNormal:(N3Vector)initialNormal
+{
+    N3Vector baseNormal;
+    N3Vector tangentAtStart;
+
+    // set the angle if it is possible, set it to 0 if not;
+    if (N3VectorIsZero(_baseDirection)) {
+        _baseDirection = N3VectorANormalVector([_bezierPath tangentAtStart]);
+    }
+    
+    tangentAtStart = [_bezierPath tangentAtStart];
+    baseNormal = N3VectorNormalize(N3VectorCrossProduct(_baseDirection, tangentAtStart));
+    _angle = N3VectorAngleBetweenVectorsAroundVector(baseNormal, initialNormal, tangentAtStart);
+}
+
+- (N3Vector)initialNormal
+{
+    N3Vector initialNormal;
+    N3Vector baseNormal;
+    N3Vector tangentAtStart;
+    
+    tangentAtStart = [_bezierPath tangentAtStart];
+    baseNormal = N3VectorNormalize(N3VectorCrossProduct(_baseDirection, tangentAtStart));
+    initialNormal = N3VectorApplyTransform(baseNormal, N3AffineTransformMakeRotationAroundVector(_angle, tangentAtStart));
+    
+    return initialNormal;
 }
 
 - (void)addNode:(NSPoint)point transform:(N3AffineTransform)transform // adds the point to z = 0 in the arbitrary coordinate space
@@ -198,14 +248,14 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     }
 }
 
-- (void)insertNodeAtRelativePosition:(CGFloat)relativePosition
+- (NSInteger)insertNodeAtRelativePosition:(CGFloat)relativePosition
 {
     N3Vector vectorAtRelativePosition;
     NSInteger insertIndex;
     
     if ([_nodes count] < 2) {
         NSLog(@"Warning, CPRCurvedPath trying to insert a node into a path that on has %d nodes", [_nodes count]);
-        return;
+        return -1;
     }
     
     for (insertIndex = 0; insertIndex < [_nodes count]; insertIndex++) {
@@ -222,16 +272,17 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     
     if (insertIndex > 0 && N3VectorDistance([[_nodes objectAtIndex:insertIndex-1] N3VectorValue], vectorAtRelativePosition) < _CPRCurvedPathNodeSpacingThreshold) {
         NSLog(@"Warning, CPRCurvedPath trying to insert a node too close the the previous node");
-        return;
+        return -1;
     }
     if (insertIndex <= [_nodes count]-1 && N3VectorDistance([[_nodes objectAtIndex:insertIndex] N3VectorValue], vectorAtRelativePosition) < _CPRCurvedPathNodeSpacingThreshold) {
         NSLog(@"Warning, CPRCurvedPath trying to insert a node too close the the next node");
-        return;
+        return -1;
     }
             
     [_nodes insertObject:[NSValue valueWithN3Vector:vectorAtRelativePosition] atIndex:insertIndex];
     
     self.bezierPath = [[[N3MutableBezierPath alloc] initWithNodeArray:_nodes style:N3BezierNodeOpenEndsStyle] autorelease];
+    return insertIndex;
 }
 
 - (void)removeNodeAtIndex:(NSInteger)index
@@ -282,6 +333,12 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     }
 }
 
+- (void)moveNodeAtIndex:(NSInteger)index toVector:(N3Vector)vector // for this exceptional method, the vector is given in patient space
+{
+    // hacky implementation, but why not....
+    [self moveControlToken:[[self class] controlTokenForNodeIndex:index] toPoint:NSPointFromN3Vector(vector) transform:N3AffineTransformMakeTranslation(0, 0, vector.z)];
+}
+
 - (CPRCurvedPathControlToken)controlTokenNearPoint:(NSPoint)point transform:(N3AffineTransform)transform;
 {
     NSValue *value;
@@ -290,29 +347,6 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     N3Vector nodeVector;
     N3Vector transverseSectionVector;
     N3BezierPath *flattenedBezierPath;
-    
-
-//    flattenedBezierPath = [_bezierPath bezierPathByFlattening:N3BezierDefaultFlatness];
-//    
-//    // center
-//    transverseSectionVector = N3VectorApplyTransform([flattenedBezierPath vectorAtRelativePosition:_transverseSectionPosition], N3AffineTransformInvert(transform));
-//    transverseSectionVector.z = 0;
-//    if (N3VectorDistance(N3VectorMakeFromNSPoint(point), transverseSectionVector) <= 4.0) {
-//        return CPRCurvedPathControlTokenTransverseSection;
-//    }
-//
-//    // left
-//    transverseSectionVector = N3VectorApplyTransform([flattenedBezierPath vectorAtRelativePosition:self.leftTransverseSectionPosition], N3AffineTransformInvert(transform));
-//    transverseSectionVector.z = 0;
-//    if (N3VectorDistance(N3VectorMakeFromNSPoint(point), transverseSectionVector) <= 8.0) {
-//        return CPRCurvedPathControlTokenTransverseSpacing;
-//    }
-//    //right
-//    transverseSectionVector = N3VectorApplyTransform([flattenedBezierPath vectorAtRelativePosition:self.rightTransverseSectionPosition], N3AffineTransformInvert(transform));
-//    transverseSectionVector.z = 0;
-//    if (N3VectorDistance(N3VectorMakeFromNSPoint(point), transverseSectionVector) <= 8.0) {
-//        return CPRCurvedPathControlTokenTransverseSpacing;
-//    }
     
     for (i = 0; i < [_nodes count]; i++) {
         nodeVector = [[_nodes objectAtIndex:i] N3VectorValue];
@@ -330,7 +364,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 {
     N3Line clickRay;
     clickRay = N3LineApplyTransform(N3LineMake(N3VectorMakeFromNSPoint(point), N3VectorMake(0, 0, 1)), transform);
-    return [_bezierPath relalativePositionClosestToLine:clickRay];                        
+    return [_bezierPath relativePositionClosestToLine:clickRay];                        
 }
 
 - (CGFloat)relativePositionForPoint:(NSPoint)point transform:(N3AffineTransform)transform distanceToPoint:(CGFloat *)distance // returns the distance the coordinate space of point (screen coordinates)
@@ -347,7 +381,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     clickRay = N3LineApplyTransform(N3LineMake(N3VectorMakeFromNSPoint(point), N3VectorMake(0, 0, 1)), transform);
     inverseTransform = N3AffineTransformInvert(transform);
     
-    relativePosition = [_bezierPath relalativePositionClosestToLine:clickRay closestVector:&closestVector];
+    relativePosition = [_bezierPath relativePositionClosestToLine:clickRay closestVector:&closestVector];
     closestLineVector = N3LinePointClosestToVector(clickRay, closestVector);
     
     closestVector = N3VectorApplyTransform(closestVector, inverseTransform);
@@ -388,6 +422,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
 {
     NSMutableArray *requests;
     CGFloat curveLength;
+    CGFloat mmPerPixel;
     NSInteger requestCount;
     NSInteger i;
     N3Vector cross;
@@ -395,8 +430,7 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     N3VectorArray vectors;
     N3VectorArray tangents;
     N3MutableBezierPath *flattenedPath;
-    N3MutableBezierPath *bezierPath;
-    CPRStraightenedGeneratorRequest *request;
+    CPRObliqueSliceGeneratorRequest *request;
     
     requests = [NSMutableArray array];
     
@@ -406,9 +440,12 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     
     curveLength = [flattenedPath length];
     requestCount = curveLength/spacing;
-    
-    if (requestCount < 2) {
-        return requests;
+    requestCount++;
+	
+    if (requestCount < 2)
+	{
+		[flattenedPath release];
+		return requests;
     }
     
     normals = malloc(requestCount * sizeof(N3Vector));
@@ -420,23 +457,19 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     tangents = malloc(requestCount * sizeof(N3Vector));
     memset(tangents, 0, requestCount * sizeof(N3Vector));
     
-    requestCount = N3BezierCoreGetVectorInfo([flattenedPath N3BezierCore], spacing, 0, _initialNormal, vectors, tangents, normals, requestCount);
+	float startingDistance = curveLength - (requestCount-1) * spacing;
+	startingDistance /= 2;
+	
+    requestCount = N3BezierCoreGetVectorInfo([flattenedPath N3BezierCore], spacing, startingDistance, self.initialNormal, vectors, tangents, normals, requestCount);
+    
+    mmPerPixel = mmWide / (CGFloat)width;
     
     for (i = 0; i < requestCount; i++) {
-        request = [[CPRStraightenedGeneratorRequest alloc] init];
-        request.pixelsWide = width;
-		request.pixelsHigh = height;
-		request.slabWidth = 0;
-        request.slabSampleDistance = 0;
-        request.initialNormal = normals[i];
+        cross = N3VectorNormalize(N3VectorCrossProduct(tangents[i], normals[i]));
         
-        cross = N3VectorNormalize(N3VectorCrossProduct(normals[i], tangents[i]));
-        
-        bezierPath = [[N3MutableBezierPath alloc] init];
-        [bezierPath moveToVector:N3VectorAdd(vectors[i], N3VectorScalarMultiply(cross, (CGFloat)mmWide / 2.0))]; 
-        [bezierPath lineToVector:N3VectorAdd(vectors[i], N3VectorScalarMultiply(cross, (CGFloat)mmWide / -2.0))]; 
-        request.bezierPath = bezierPath;
-        [bezierPath release];
+        request = [[CPRObliqueSliceGeneratorRequest alloc] initWithCenter:vectors[i] pixelsWide:width pixelsHigh:height
+                                                                   xBasis:N3VectorScalarMultiply(cross, mmPerPixel)
+                                                                   yBasis:N3VectorScalarMultiply(normals[i], mmPerPixel)];
         
         [requests addObject:request];
         [request release];
@@ -448,6 +481,19 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
     [flattenedPath release];
     
     return requests;
+}
+
+- (BOOL)isPlaneMeasurable
+{
+	N3Plane plane;
+	
+	if( [self.bezierPath isPlanar]) {
+		plane = [self.bezierPath leastSquaresPlane];
+		if (ABS(N3VectorDotProduct(N3VectorNormalize(self.initialNormal), N3VectorNormalize(plane.normal))) > 0.9999 /*~cos(1deg)*/) {
+			return YES;
+		}
+	}
+	return NO;
 }
 
 - (CGFloat)leftTransverseSectionPosition
@@ -481,6 +527,16 @@ static CPRCurvedPathControlToken _controlTokenForElement(NSInteger element)
         }
     }
     self.nodeRelativePositions = nodeRelativePositions;
+}
+
+- (N3Vector)stretchedProjectionNormal
+{
+    N3Vector curveDirection;
+    N3Vector baseNormal;
+    
+    curveDirection = N3VectorSubtract([_bezierPath vectorAtEnd], [_bezierPath vectorAtStart]);
+    baseNormal = N3VectorNormalize(N3VectorCrossProduct(_baseDirection, curveDirection));
+    return N3VectorApplyTransform(baseNormal, N3AffineTransformMakeRotationAroundVector(_angle, curveDirection));
 }
 
 @end

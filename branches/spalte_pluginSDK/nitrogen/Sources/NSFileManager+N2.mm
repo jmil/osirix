@@ -179,10 +179,10 @@
 		srcPath = [pair objectAtIndex:0];
 		dstPath = [pair objectAtIndex:1];
 		
-		NSString* srcPathRes = [srcPath resolvedPathString];
-		NSString* dstPathRes = [dstPath resolvedPathString];
+		NSString* srcPathRes = [srcPath stringByExpandingTildeInPath];	//[srcPath resolvedPathString];
+		NSString* dstPathRes = [dstPath stringByExpandingTildeInPath];	//[dstPath resolvedPathString];
 		if (!dstPathRes)
-			dstPathRes = [[[dstPath stringByDeletingLastPathComponent] resolvedPathString] stringByAppendingPathComponent:[dstPath lastPathComponent]];
+			dstPathRes = [[dstPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:[dstPath lastPathComponent]];
 		
 		/*BOOL srcPathIsDir, srcPathExists = [self fileExistsAtPath:srcPathRes isDirectory:&srcPathIsDir]*/;
 		BOOL dstPathIsDir, dstPathExists = [self fileExistsAtPath:dstPathRes isDirectory:&dstPathIsDir];
@@ -203,6 +203,9 @@
 	return success;
 }
 
+-(NSDirectoryEnumerator*)enumeratorAtPath:(NSString*)path limitTo:(NSInteger)maxNumberOfFiles {
+	return [[[N2DirectoryEnumerator alloc] initWithPath:path maxNumberOfFiles:maxNumberOfFiles] autorelease];
+}
 
 
 

@@ -136,12 +136,12 @@
 	return nil;
 }
 
-- (void)deleteReportForStudy: (NSManagedObject*)study {
-	return;
+- (BOOL)deleteReportForStudy: (NSManagedObject*)study {
+	return NO;
 }
 
-- (void)createReportForStudy: (NSManagedObject*)study {
-	return;
+- (BOOL)createReportForStudy: (NSManagedObject*)study {
+	return NO;
 }
 
 @end

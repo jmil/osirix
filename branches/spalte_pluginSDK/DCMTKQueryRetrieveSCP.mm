@@ -82,6 +82,9 @@ END_EXTERN_C
 #define OPENSSL_DISABLE_OLD_DES_SUPPORT // joris
 
 #ifdef WITH_OPENSSL // joris
+#ifdef UI
+#undef UI // For MacOS 10.7 compilation
+#endif
 #include "tlstrans.h"
 #include "tlslayer.h"
 #endif
@@ -553,9 +556,6 @@ DcmQueryRetrieveConfig config;
 				{
 					if( _abort == NO)
 						cond = localSCP->waitForAssociation(options.net_);
-					
-					if( _abort == NO)
-						localSCP->cleanChildren(OFTrue);  /* clean up any child processes  This needs to be here*/
 				}
 				catch(...)
 				{
@@ -572,7 +572,7 @@ DcmQueryRetrieveConfig config;
 	if( _abort)
 		NSLog( @"---- store-SCP aborted");
 	
-	if( tLayer)
+	if( localSCP)
 		delete localSCP;
 	
 	localSCP = NULL;

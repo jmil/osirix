@@ -390,7 +390,13 @@ extern const char *GetPrivateIP();
 		{
 			currentDataPtr = malloc( BonjourDatabaseIndexFileSize);
 			if( currentDataPtr == nil)
+			{
 				NSLog( @"******** BonjourBrowser incomingConnectionProcess - not enough memory");
+				NSRunAlertPanel( NSLocalizedString( @"Bonjour Database", nil), NSLocalizedString( @"Not enough memory to open this database. Upgrade to OsiriX 64-bit to resolve this issue.", nil), nil, nil, nil);
+				[currentConnection closeFile];
+				[currentConnection release];
+				currentConnection = nil;
+			}
 			
 			currentDataPos = 0;
 		}
@@ -1489,6 +1495,18 @@ extern const char *GetPrivateIP();
 					password = nil;
 					
 					password = [[interfaceOsiriX askPassword] retain];
+					
+					if( password == nil)
+					{
+						[[[BrowserController currentBrowser] managedObjectContext] unlock];
+						[waitWindow end];
+						[waitWindow release];
+						waitWindow = nil;
+						
+						serviceBeingResolvedIndex = -1;
+						
+						return nil;
+					}
 					
 					wrongPassword = YES;
 					[self connectToServer: index message:@"PASWD"];

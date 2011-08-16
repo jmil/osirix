@@ -116,9 +116,10 @@
 
 @implementation WebPortal
 
-static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Application Support/OsiriX/WebUsers.sql";
+static const NSString* DefaultWebPortalDatabasePath = nil;
 
 +(void)initialize {
+	DefaultWebPortalDatabasePath = [[NSString alloc] initWithString: [@"~/Library/Application Support/OsiriX/WebUsers.sql" stringByExpandingTildeInPath]];
 	[NSUserDefaultsController.sharedUserDefaultsController addObserver:self forValuesKey:OsirixWadoServiceEnabledDefaultsKey options:NSKeyValueObservingOptionInitial context:NULL];
 }
 
@@ -167,7 +168,7 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 			
 		if ([keyPath isEqual:valuesKeyPath(OsirixWebPortalPrefersCustomWebPagesKey)]) {
 			NSMutableArray* dirsToScanForFiles = [NSMutableArray arrayWithCapacity:2];
-			if (NSUserDefaults.webPortalPrefersCustomWebPages) [dirsToScanForFiles addObject:@"~/Library/Application Support/OsiriX/WebServicesHTML"];
+			if (NSUserDefaults.webPortalPrefersCustomWebPages) [dirsToScanForFiles addObject: [@"~/Library/Application Support/OsiriX/WebServicesHTML" stringByExpandingTildeInPath]];
 			[dirsToScanForFiles addObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"WebServicesHTML"]];
 			webPortal.dirsToScanForFiles = dirsToScanForFiles;
 		} else
@@ -247,6 +248,8 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 	
 	self.notificationsInterval = 60;
 	
+	preferredLocalizations = [[[NSBundle mainBundle] preferredLocalizations] copy];
+	
 	return self;
 }
 
@@ -301,6 +304,8 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 	
 	self.address = NULL;
 	self.dirsToScanForFiles = NULL;
+	
+	[preferredLocalizations release];
 	
 	[super dealloc];
 }
@@ -433,8 +438,8 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 }
 
 -(void)stopAcceptingConnections {
-//	if (isAcceptingConnections) {
-//		isAcceptingConnections = NO;
+	if (isAcceptingConnections) {
+		isAcceptingConnections = NO;
 //		@try 
 //		{
 //			[serverThread cancel];
@@ -446,8 +451,9 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 //		} @catch (NSException* e) {
 //			NSLog(@"Exception: [WebPortal stopAcceptingConnections] %@", e);
 //		}
-//	}
-	NSLog( @"----- cannot stop web server -> you have to restart OsiriX");
+		NSLog( @"----- cannot stop web server -> you have to restart OsiriX");
+	}
+	
 }
 
 -(NSData*)dataForPath:(NSString*)file {
@@ -460,16 +466,16 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 		NSString* path = [dirsToScanForFile objectAtIndex:i];
 		
 		// path not on disk, ignore
-		if (![[NSFileManager defaultManager] fileExistsAtPath:[path resolvedPathString] isDirectory:&isDirectory] || !isDirectory) {
+		if (![[NSFileManager defaultManager] fileExistsAtPath: path isDirectory:&isDirectory] || !isDirectory) {
 			[dirsToScanForFile removeObjectAtIndex:i];
 			--i; continue;
 		}
 		
 		// path exists, look for a localized subdir first, otherwise in the dir itself
 		
-		for (NSString* lang in [[[NSBundle mainBundle] preferredLocalizations] arrayByAddingObject:DefaultLanguage]) {
+		for (NSString* lang in [preferredLocalizations arrayByAddingObject:DefaultLanguage]) {
 			NSString* langPath = [path stringByAppendingPathComponent:lang];
-			if ([[NSFileManager defaultManager] fileExistsAtPath:[langPath resolvedPathString] isDirectory:&isDirectory] && isDirectory) {
+			if ([[NSFileManager defaultManager] fileExistsAtPath: langPath isDirectory:&isDirectory] && isDirectory) {
 				[dirsToScanForFile insertObject:langPath atIndex:i];
 				++i; break;
 			}
@@ -479,7 +485,7 @@ static const NSString* const DefaultWebPortalDatabasePath = @"~/Library/Applicat
 	for (NSString* dirToScanForFile in dirsToScanForFile) {
 		NSString* path = [dirToScanForFile stringByAppendingPathComponent:file];
 		@try {
-			NSData* data = [NSData dataWithContentsOfFile:[path resolvedPathString]];
+			NSData* data = [NSData dataWithContentsOfFile: path];
 			if (data) return data;
 		} @catch (NSException* e) {
 			// do nothing, just try next

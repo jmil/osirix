@@ -19,14 +19,13 @@
 #import "ViewerController.h"
 
 /** Window Controller for Toolbar */
-@interface ToolbarPanelController : NSWindowController {
-	
+@interface ToolbarPanelController : NSWindowController <NSToolbarDelegate>
+{	
 	NSToolbar               *toolbar;
 	long					screen;
 	NSToolbar				*emptyToolbar;
 	ViewerController		*viewer;
 	BOOL					dontReenter;
-	BOOL					firstTime;
 }
 
 @property (readonly) ViewerController *viewer;
@@ -35,7 +34,7 @@
 + (long) hiddenHeight;
 + (long) exposedHeight;
 - (void) setToolbar :(NSToolbar*) tb viewer:(ViewerController*) v;
-- (void) fixSize;
+//- (void) fixSize;
 - (void) toolbarWillClose :(NSToolbar*) tb;
 - (id)initForScreen: (long) s;
 - (NSToolbar*) toolbar;

@@ -24,6 +24,29 @@ NSString* N2NonNullString(NSString* s) {
 
 @implementation NSString (N2)
 
+- (NSString *)stringByTruncatingToLength:(NSInteger)theWidth
+{
+	NSInteger stringLength = [self length];
+	NSInteger stringMiddle = (theWidth - 3) / 2;
+	
+	NSMutableString *retString = [NSMutableString string];
+
+	if (stringLength > theWidth) 
+	{
+		for (NSInteger i = 0; i <= stringMiddle; i++) 
+			[retString appendString:[self substringWithRange:NSMakeRange(i, 1)]];
+		
+		[retString appendString:@"..."];
+
+		for (NSInteger i = (stringLength - stringMiddle); i < stringLength; i++) 
+			[retString appendString:[self substringWithRange:NSMakeRange(i, 1)]];
+
+		return retString;
+	}
+
+	else return self;
+}
+
 -(NSString*)markedString {
 	NSString* str = [self stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
@@ -93,7 +116,7 @@ NSString* N2NonNullString(NSString* s) {
 											@"%2A", @"*",
 										NULL] retain];
 	
-	NSMutableString* temp = [self mutableCopy];
+	NSMutableString* temp = [[self mutableCopy] autorelease];
 	for (NSString* k in chars)
 		[temp replaceOccurrencesOfString:k withString:[chars objectForKey:k] options:NSLiteralSearch range:temp.range];
 	return [NSString stringWithString: temp];
@@ -108,8 +131,8 @@ NSString* N2NonNullString(NSString* s) {
 										 @"&quot;", @"\"",
 										 NULL] retain];
 	
-	NSMutableString* temp = self.mutableCopy;
-	// apmp first!!
+	NSMutableString* temp = [self.mutableCopy autorelease];
+	// amp first!!
 	if (!unescape)
 		[temp replaceOccurrencesOfString:@"&" withString:@"&amp;"];
 	else [temp replaceOccurrencesOfString:@"&amp;" withString:@"&"];
@@ -223,80 +246,82 @@ NSString* N2NonNullString(NSString* s) {
 	return resolvedPath;
 }
 
-- (NSString *)stringByIterativelyResolvingSymlinkOrAlias
-{
-    NSString *path = self;
-    NSString *aliasTarget = nil;
-    struct stat fileInfo;
-    
-    // Use lstat to determine if the file is a directory or symlink
-    if (lstat([[NSFileManager defaultManager]
-			   fileSystemRepresentationWithPath:path], &fileInfo) < 0)
-    {
-        // doesn't exist, just return it
-		return self;
-    }
-    
-    // While the file is a symlink or resolves as an alias, keep iterating.
-    while (S_ISLNK(fileInfo.st_mode) ||
-		   (!S_ISDIR(fileInfo.st_mode) &&
-            (aliasTarget = [path stringByConditionallyResolvingAlias]) != nil))
-    {
-        if (S_ISLNK(fileInfo.st_mode))
-        {
-            // Resolve the symlink component in the path
-            NSString *symlinkPath = [path stringByConditionallyResolvingSymlink];
-            if (!symlinkPath)
-            {
-                return nil;
-            }
-            path = symlinkPath;
-        }
-        else
-        {
-            // Or use the resolved alias result
-            path = aliasTarget;
-        }
-		
-        // Use lstat again to prepare for the next iteration
-        if (lstat([[NSFileManager defaultManager]
-				   fileSystemRepresentationWithPath:path], &fileInfo) < 0)
-        {
-            path = nil;
-            continue;
-        }
-    }
-    
-    return path;
-}
+//- (NSString *)stringByIterativelyResolvingSymlinkOrAlias BUG this creates an infinite loop..... Finding source code on the internet is not always a good solution...
+// http://cocoawithlove.com/2010/02/resolving-path-containing-mixture-of.html
+// -stringByIterativelyResolvingSymlinkOrAlias method will fall into endless loop if a symbolic link points to a (grand)parent folder...
+//{
+//    NSString *path = self;
+//    NSString *aliasTarget = nil;
+//    struct stat fileInfo;
+//    
+//    // Use lstat to determine if the file is a directory or symlink
+//    if (lstat([[NSFileManager defaultManager]
+//			   fileSystemRepresentationWithPath:path], &fileInfo) < 0)
+//    {
+//        // doesn't exist, just return it
+//		return self;
+//    }
+//    
+//    // While the file is a symlink or resolves as an alias, keep iterating.
+//    while (S_ISLNK(fileInfo.st_mode) ||
+//		   (!S_ISDIR(fileInfo.st_mode) &&
+//            (aliasTarget = [path stringByConditionallyResolvingAlias]) != nil))
+//    {
+//        if (S_ISLNK(fileInfo.st_mode))
+//        {
+//            // Resolve the symlink component in the path
+//            NSString *symlinkPath = [path stringByConditionallyResolvingSymlink];
+//            if (!symlinkPath)
+//            {
+//                return nil;
+//            }
+//            path = symlinkPath;
+//        }
+//        else
+//        {
+//            // Or use the resolved alias result
+//            path = aliasTarget;
+//        }
+//		
+//        // Use lstat again to prepare for the next iteration
+//        if (lstat([[NSFileManager defaultManager]
+//				   fileSystemRepresentationWithPath:path], &fileInfo) < 0)
+//        {
+//            path = nil;
+//            continue;
+//        }
+//    }
+//    
+//    return path;
+//}
 
--(NSString*)resolvedPathString {
-	NSString* path = [self stringByExpandingTildeInPath];
-	
-	// Break into components.
-	NSArray *pathComponents = [path pathComponents];
-	
-	// First component ("/") needs no resolution; we only need to handle subsequent components.
-	NSString *resolvedPath = [pathComponents objectAtIndex:0];
-	pathComponents = [pathComponents subarrayWithRange:NSMakeRange(1, [pathComponents count] - 1)];
-	
-	// Process all remaining components.
-	for (NSString *component in pathComponents)
-	{
-		if ([component isEqual:@".."])
-			resolvedPath = [resolvedPath stringByDeletingLastPathComponent];
-		else {
-			resolvedPath = [resolvedPath stringByAppendingPathComponent:component];
-			resolvedPath = [resolvedPath stringByIterativelyResolvingSymlinkOrAlias];
-		}
-		
-		if (!resolvedPath) {
-			return nil;
-		}
-	}
-	
-	return resolvedPath;
-}
+//-(NSString*)resolvedPathString {
+//	NSString* path = [self stringByExpandingTildeInPath];
+//	
+//	// Break into components.
+//	NSArray *pathComponents = [path pathComponents];
+//	
+//	// First component ("/") needs no resolution; we only need to handle subsequent components.
+//	NSString *resolvedPath = [pathComponents objectAtIndex:0];
+//	pathComponents = [pathComponents subarrayWithRange:NSMakeRange(1, [pathComponents count] - 1)];
+//	
+//	// Process all remaining components.
+//	for (NSString *component in pathComponents)
+//	{
+//		if ([component isEqual:@".."])
+//			resolvedPath = [resolvedPath stringByDeletingLastPathComponent];
+//		else {
+//			resolvedPath = [resolvedPath stringByAppendingPathComponent:component];
+////			resolvedPath = [resolvedPath stringByIterativelyResolvingSymlinkOrAlias];
+//		}
+//		
+//		if (!resolvedPath) {
+//			return nil;
+//		}
+//	}
+//	
+//	return resolvedPath;
+//}
 
 -(NSString*)stringByComposingPathWithString:(NSString*)rel {
 	NSURL* baseurl = [NSURL URLWithString: [self characterAtIndex:0] == '/' ? self : [NSString stringWithFormat:@"/%@", self] ];
@@ -312,6 +337,10 @@ NSString* N2NonNullString(NSString* s) {
 	for (NSUInteger i = 0; i < n; ++i)
 		[r addObject:[self substringWithRange:NSMakeRange(i*len, i!=n-1? len : self.length-i*len)]];
 	return r;
+}
+
+-(BOOL)isEmail { // from DHValidation
+    return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"] evaluateWithObject:self];
 }
 
 @end

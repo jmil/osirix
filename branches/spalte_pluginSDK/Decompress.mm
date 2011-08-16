@@ -95,7 +95,14 @@ void createSwfMovie(NSArray* inputFiles, NSString* path);
 
 int main(int argc, const char *argv[])
 {
-	NSAutoreleasePool	*pool	= [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	// To avoid:
+	// http://lists.apple.com/archives/quicktime-api/2007/Aug/msg00008.html
+	// _NXCreateWindow: error setting window property (1002)
+	// _NXTermWindow: error releasing window (1002)
+	[NSApplication sharedApplication];
+	
 	
 	//	argv[ 1] : in path
 	//	argv[ 2] : what
@@ -235,13 +242,15 @@ int main(int argc, const char *argv[])
 						{
 							if( destDirec)
 							{
-								[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler: nil];
-								[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
-								[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFileDest error: nil];
+								[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 							}
 						}
 						else
 						{
+                            delete dataset->remove( DcmTagKey( 0x0009, 0x1110)); // "GEIIS" The problematic private group, containing a *always* JPEG compressed PixelData
+                            
 							NSString *modality;
 							if (dataset->findAndGetString(DCM_Modality, string, OFFalse).good() && string != NULL)
 								modality = [NSString stringWithCString:string encoding: NSASCIIStringEncoding];
@@ -292,21 +301,21 @@ int main(int argc, const char *argv[])
 								
 								if( succeed)
 								{
-									[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 									if( destDirec == nil)
-										[[NSFileManager defaultManager] movePath: curFileDest toPath: curFile handler: nil];
+										[[NSFileManager defaultManager] moveItemAtPath: curFileDest toPath: curFile error: nil];
 								}
 								else
 								{
-									[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 									
 									if ([[dict objectForKey: @"DecompressMoveIfFail"] boolValue])
 									{
-										[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
+										[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
 									}
 									else if( destDirec)
 									{
-										[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+										[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 										NSLog( @"failed to compress file: %@, the file is deleted", curFile);
 									}
 									else
@@ -364,19 +373,19 @@ int main(int argc, const char *argv[])
 									// store in lossless JPEG format
 									fileformat.loadAllDataIntoMemory();
 									
-									[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 									cond = fileformat.saveFile( [curFileDest UTF8String], tSyntax);
 									status =  (cond.good()) ? YES : NO;
 									
 									if( status == NO)
 									{
-										[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+										[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 										if ([[dict objectForKey: @"DecompressMoveIfFail"] boolValue]) {
-											[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
+											[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
 										} else
 											if( destDirec)
 											{
-												[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+												[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 												NSLog( @"failed to compress file: %@, the file is deleted", curFile);
 											}
 											else
@@ -384,9 +393,9 @@ int main(int argc, const char *argv[])
 									}
 									else
 									{
-										[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+										[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 										if( destDirec == nil)
-											[[NSFileManager defaultManager] movePath: curFileDest toPath: curFile handler: nil];
+											[[NSFileManager defaultManager] moveItemAtPath: curFileDest toPath: curFile error: nil];
 									}
 								}
 							}
@@ -394,17 +403,17 @@ int main(int argc, const char *argv[])
 							{
 								if( destDirec)
 								{
-									[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler: nil];
-									[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
-									[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFileDest error: nil];
+									[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 								}
 							}
 						}
 					}
 					else
 						if ([[dict objectForKey: @"DecompressMoveIfFail"] boolValue]) {
-							[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler: nil];
-							[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
+							[[NSFileManager defaultManager] removeItemAtPath: curFileDest error: nil];
+							[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
 						} else NSLog( @"compress : cannot read file: %@", curFile);
 				}
 			}
@@ -520,11 +529,11 @@ int main(int argc, const char *argv[])
 							
 							if( status == NO)
 							{
-								[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 								
 								if( destDirec)
 								{
-									[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 									NSLog( @"failed to decompress file: %@, the file is deleted", curFile);
 								}
 								else
@@ -535,6 +544,8 @@ int main(int argc, const char *argv[])
 						{
 							DcmDataset *dataset = fileformat.getDataset();
 							
+                            delete dataset->remove( DcmTagKey( 0x0009, 0x1110)); // "GEIIS" The problematic private group, containing a *always* JPEG compressed PixelData
+                            
 							// decompress data set if compressed
 							dataset->chooseRepresentation(EXS_LittleEndianExplicit, NULL);
 							
@@ -549,7 +560,7 @@ int main(int argc, const char *argv[])
 							
 							if( status == NO) // Try DCM Framework...
 							{
-								[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 								
 								DCMObject *dcmObject = [[DCMObject alloc] initWithContentsOfFile: curFile decodingPixelData: NO];
 								@try
@@ -565,11 +576,11 @@ int main(int argc, const char *argv[])
 							
 							if( status == NO)
 							{
-								[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler:nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFileDest error:nil];
 								
 								if( destDirec)
 								{
-									[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+									[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 									NSLog( @"failed to decompress file: %@, the file is deleted", curFile);
 								}
 								else
@@ -580,9 +591,9 @@ int main(int argc, const char *argv[])
 						{
 							if( destDirec)
 							{
-								[[NSFileManager defaultManager] removeFileAtPath: curFileDest handler: nil];
-								[[NSFileManager defaultManager] movePath: curFile toPath: curFileDest handler: nil];
-								[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFileDest error: nil];
+								[[NSFileManager defaultManager] moveItemAtPath: curFile toPath: curFileDest error: nil];
+								[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 							}
 							status = NO;
 						}
@@ -591,9 +602,9 @@ int main(int argc, const char *argv[])
 				
 				if( status)
 				{
-					[[NSFileManager defaultManager] removeFileAtPath: curFile handler: nil];
+					[[NSFileManager defaultManager] removeItemAtPath: curFile error: nil];
 					if( destDirec == nil)
-						[[NSFileManager defaultManager] movePath: curFileDest toPath: curFile handler: nil];
+						[[NSFileManager defaultManager] moveItemAtPath: curFileDest toPath: curFile error: nil];
 				}
 			}
 		}
@@ -603,6 +614,20 @@ int main(int argc, const char *argv[])
 		{
 			if( ![path hasSuffix:@".swf"])
 			{
+				NSString *root = [NSString stringWithUTF8String: argv[fileListFirstItemIndex++]];
+				
+				long rateValue = 10;
+				
+				if( fileListFirstItemIndex <= argc)
+				{
+					rateValue = [[NSString stringWithUTF8String:argv[ fileListFirstItemIndex]] integerValue];
+					
+					if( rateValue <= 0)
+						rateValue = 10;
+					
+					fileListFirstItemIndex++;
+				}
+				
 				QTMovie *mMovie = nil;
 				
 				[[QTMovie movie] writeToFile: [path stringByAppendingString:@"temp"] withAttributes: nil];
@@ -610,14 +635,12 @@ int main(int argc, const char *argv[])
 				
 				[mMovie setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
 				
-				long long timeValue = 60;
+				long long timeValue = 600 / rateValue;
 				long timeScale = 600;
 				
 				QTTime curTime = QTMakeTime(timeValue, timeScale);
 				
 				NSMutableDictionary *myDict = [NSMutableDictionary dictionaryWithObjectsAndKeys: @"jpeg", QTAddImageCodecType, [NSNumber numberWithInt: codecNormalQuality], QTAddImageCodecQuality, nil];
-				
-				NSString *root = [NSString stringWithUTF8String: argv[fileListFirstItemIndex]];
 				
 				for( NSString *img in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: root error: nil])
 				{
@@ -629,14 +652,14 @@ int main(int argc, const char *argv[])
 				}
 				
 				[mMovie writeToFile: path withAttributes: [NSDictionary dictionaryWithObject: [NSNumber numberWithBool: YES] forKey: QTMovieFlatten]];
-				[[NSFileManager defaultManager] removeFileAtPath:[path stringByAppendingString:@"temp"] handler: nil];
+				[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingString:@"temp"] error: nil];
 				
 				if( root)
 					[[NSFileManager defaultManager] removeItemAtPath: root error: nil];
 			}
 			else
 			{ // SWF!!
-				NSString* inputDir = [NSString stringWithUTF8String:argv[fileListFirstItemIndex]];
+				NSString* inputDir = [NSString stringWithUTF8String:argv[fileListFirstItemIndex++]];
 				NSArray* inputFiles = [inputDir stringsByAppendingPaths:[[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputDir error:NULL]];
 				createSwfMovie(inputFiles, path);
 			}
@@ -652,8 +675,6 @@ int main(int argc, const char *argv[])
 			
 			QTMovie *aMovie = [QTMovie movieWithFile: inFile error:&error];
 			
-			NSValue* v = [aMovie attributeForKey:QTMovieCurrentSizeAttribute];
-			
 			if (aMovie && error == nil)
 			{
 				if (NO == [aMovie attributeForKey:QTMovieHasApertureModeDimensionsAttribute])
@@ -664,16 +685,20 @@ int main(int argc, const char *argv[])
 				[aMovie setAttribute:QTMovieApertureModeClean forKey:QTMovieApertureModeAttribute];
 				
 				long exportType = 'M4VP';
-				if (argc >= fileListFirstItemIndex) {
+				if (fileListFirstItemIndex <= argc)
+				{
 					if (!strcmp(argv[fileListFirstItemIndex], "iPad"))
 						exportType = 'M4VH';
 					if (!strcmp(argv[fileListFirstItemIndex], "iPod"))
 						exportType = 'M4V ';
+					
+					fileListFirstItemIndex++;
 				}
 				
 				NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												   [NSNumber numberWithBool:YES], QTMovieExport,
-												   [NSNumber numberWithLong:exportType], QTMovieExportType, nil]; // 'M4VP'
+												   [NSNumber numberWithBool: YES], QTMovieExport,
+												   [NSNumber numberWithBool: YES] ,QTMovieFlatten,
+												   [NSNumber numberWithLong: exportType], QTMovieExportType, nil]; // 'M4VP'
 				
 				BOOL status = [aMovie writeToFile:outFile withAttributes:dictionary];
 				
@@ -696,6 +721,9 @@ int main(int argc, const char *argv[])
 			@try
 			{
 				WebView *webView = [[[WebView alloc] initWithFrame: NSMakeRect(0,0,1,1) frameName: @"myFrame" groupName: @"myGroup"] autorelease];
+				NSWindow *w = [[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,1,1) styleMask:NSBorderlessWindowMask backing:NSBackingStoreNonretained defer:NO] autorelease];
+				[w setContentView:webView];
+				
 				WebPreferences *webPrefs = [WebPreferences standardPreferences];
 				
 				[webPrefs setLoadsImagesAutomatically: YES];
@@ -745,7 +773,8 @@ int main(int argc, const char *argv[])
 					
 					NSView *viewToPrint = [[[webView mainFrame] frameView] documentView];
 					NSPrintOperation *printOp = [NSPrintOperation printOperationWithView: viewToPrint printInfo: printInfo];
-					[printOp setShowPanels: NO];
+					[printOp setShowsPrintPanel: NO];
+					[printOp setShowsProgressPanel: NO];
 					[printOp runOperation];
 				}
 			}
@@ -866,6 +895,7 @@ void createSwfMovie(NSArray* inputFiles, NSString* path) {
 		
 		displayItem[i] = swf->add(shape);
 		displayItem[i]->moveTo(0,0);
+		displayItem[i]->scaleTo(0);
 	}
 	
 	// controller
@@ -898,8 +928,7 @@ void createSwfMovie(NSArray* inputFiles, NSString* path) {
 		rightBarDI->scaleTo(ControllerNavigationRect.size.width/(inputFiles.count-1)*(inputFiles.count-1-i),1);
 		rightBarDI->moveTo(ControllerNavigationRect.origin.x+ControllerNavigationRect.size.width, ControllerNavigationRect.origin.y);
 		
-		
-		for (int d = 0; d < inputFiles.count; ++d)
+		for (int d = MAX(0,i-1); d < MIN(inputFiles.count,i+1); ++d)
 			if (d == i)
 				displayItem[d]->scaleTo(1);
 			else displayItem[d]->scaleTo(0);

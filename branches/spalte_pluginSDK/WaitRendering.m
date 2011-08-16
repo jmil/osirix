@@ -43,14 +43,12 @@
 	[[self window] flushWindow];
 	[[self window] makeKeyAndOrderFront: sender];
 	
-	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 0.2]];
-	
 	displayedTime = [NSDate timeIntervalSinceReferenceDate];
 }
 
 - (void) setCancel:(BOOL) c
 {
-	cancel = c;
+	supportCancel = c;
 	
 	[abort setHidden: !c];					[abort display];
 	[currentTimeText setHidden: !c];		[currentTimeText display];
@@ -81,8 +79,8 @@
 
 - (void) close
 {
-	while( [NSDate timeIntervalSinceReferenceDate] - displayedTime < 0.05)
-		[NSThread sleepForTimeInterval: 0.05];
+	while( [NSDate timeIntervalSinceReferenceDate] - displayedTime < 0.5)
+		[NSThread sleepForTimeInterval: 0.5];
 	
 	[super close];
 }
@@ -103,7 +101,7 @@
 		session = nil;
 	}
 	
-	if( aborted == NO && cancel == YES)
+	if( aborted == NO && supportCancel == YES)
 	{
 		lastDuration = -[startTime timeIntervalSinceNow];
 	}
@@ -160,7 +158,7 @@
 	if( stop) return NO;
 	if( startTime == nil) return YES;
 	
-	if( cancel)
+	if( supportCancel)
 	{
 		NSTimeInterval  thisTime = [NSDate timeIntervalSinceReferenceDate];
 		
@@ -241,7 +239,7 @@
 	self = [super initWithWindowNibName:@"WaitRendering"];
 	string = [str retain];
 	session = nil;
-	cancel = NO;
+	supportCancel = NO;
 	lastDuration = 0;
 	startTime = nil;
 	displayedTime = [NSDate timeIntervalSinceReferenceDate];

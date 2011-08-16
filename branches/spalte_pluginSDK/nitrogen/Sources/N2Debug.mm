@@ -1,19 +1,20 @@
 /*=========================================================================
-  Program:   OsiriX
+ Program:   OsiriX
+ 
+ Copyright (c) OsiriX Team
+ All rights reserved.
+ Distributed under GNU - LGPL
+ 
+ See http://www.osirix-viewer.com/copyright.html for details.
+ 
+ This software is distributed WITHOUT ANY WARRANTY; without even
+ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.
+ =========================================================================*/
 
-  Copyright (c) OsiriX Team
-  All rights reserved.
-  Distributed under GNU - LGPL
-  
-  See http://www.osirix-viewer.com/copyright.html for details.
 
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.
-=========================================================================*/
-
-
-#import <N2Debug.h>
+#import "N2Debug.h"
+#import "NSException+N2.h"
 
 @implementation N2Debug
 
@@ -32,3 +33,41 @@ NSString* RectString(NSRect r) {
 }
 
 @end
+
+extern "C" {
+
+void _N2LogErrorImpl(const char* pf, const char* fileName, int lineNumber, NSString* format, ...) {
+	va_list args;
+	va_start(args, format);
+	NSString* message = [[[NSString alloc] initWithFormat:format arguments:args] autorelease];
+	va_end(args);
+	NSLog(@"Error (in %s): %@ (%s:%d)", pf, message, fileName, lineNumber);
+}
+
+void _N2LogExceptionVImpl(NSException* e, BOOL logStack, const char* pf, NSString* format, va_list args) {
+	NSString* message = format? [[[NSString alloc] initWithFormat:format arguments:args] autorelease] : e.name;
+	@synchronized(NSApp) {
+		NSLog(@"%@ (in %s): %@", message, pf, e);
+		if (logStack)
+			[e printStackTrace];
+	}
+}
+
+void _N2LogExceptionImpl(NSException* e, BOOL logStack, const char* pf) {
+	_N2LogExceptionVImpl(e, logStack, pf, nil, nil);
+}
+
+extern void N2LogStackTrace(NSString* format, ...) {
+	va_list args;
+	va_start(args, format);
+	
+	@try {
+		[NSException raise:NSGenericException format:@""];
+	} @catch (NSException* e) {
+		_N2LogExceptionVImpl(e, YES, "", format, args);
+	}
+	
+	va_end(args);
+}
+
+}

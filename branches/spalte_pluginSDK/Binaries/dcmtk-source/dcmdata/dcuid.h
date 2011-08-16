@@ -352,6 +352,7 @@ unsigned int dcmGuessModalityBytes(const char *sopClassUID);
 #define UID_OphthalmicPhotography8BitImageStorage                  "1.2.840.10008.5.1.4.1.1.77.1.5.1"
 #define UID_OphthalmicPhotography16BitImageStorage                 "1.2.840.10008.5.1.4.1.1.77.1.5.2"
 #define UID_StereometricRelationshipStorage                        "1.2.840.10008.5.1.4.1.1.77.1.5.3"
+#define UID_OphthalmicTomographyImageStorage                       "1.2.840.10008.5.1.4.1.1.77.1.5.4"
 #define UID_RETIRED_VLMultiFrameImageStorage                       "1.2.840.10008.5.1.4.1.1.77.2"
 #define UID_StandaloneOverlayStorage                               "1.2.840.10008.5.1.4.1.1.8"
 #define UID_BasicTextSR                                            "1.2.840.10008.5.1.4.1.1.88.11"
@@ -371,6 +372,9 @@ unsigned int dcmGuessModalityBytes(const char *sopClassUID);
 
 #define UID_EnhancedXAImageStorage                                 "1.2.840.10008.5.1.4.1.1.12.1.1"
 #define UID_EnhancedXRFImageStorage                                "1.2.840.10008.5.1.4.1.1.12.2.1"
+#define XRay3DAngiographicImageStorage                             "1.2.840.10008.5.1.4.1.1.13.1.1"
+#define XRay3DCraniofacialImageStorage                             "1.2.840.10008.5.1.4.1.1.13.1.2"
+
 #define UID_ColorSoftcopyPresentationStateStorage                  "1.2.840.10008.5.1.4.1.1.11.2"
 #define UID_PseudoColorSoftcopyPresentationStateStorage            "1.2.840.10008.5.1.4.1.1.11.3"
 #define UID_BlendingSoftcopyPresentationStateStorage               "1.2.840.10008.5.1.4.1.1.11.4"

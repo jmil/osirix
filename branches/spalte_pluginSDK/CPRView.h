@@ -1,106 +1,57 @@
-/*=========================================================================
-  Program:   OsiriX
-
-  Copyright (c) OsiriX Team
-  All rights reserved.
-  Distributed under GNU - LGPL
-  
-  See http://www.osirix-viewer.com/copyright.html for details.
-
-     This software is distributed WITHOUT ANY WARRANTY; without even
-     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-     PURPOSE.
-=========================================================================*/
+//
+//  CPRView.h
+//  OsiriX
+//
+//  Created by Joël Spaltenstein on 6/5/11.
+//  Copyright 2011 OsiriX Team. All rights reserved.
+//
 
 #import <Cocoa/Cocoa.h>
-#import "DCMView.h"
+#import "N3Geometry.h"
 #import "CPRMPRDCMView.h"
-#import "CPRGenerator.h"
-#import "CPRProjectionOperation.h"
 
-enum _CPRViewClippingRangeMode {
-    CPRViewClippingRangeVRMode = CPRProjectionModeVR, // don't use this, it is not implemented
-    CPRViewClippingRangeMIPMode = CPRProjectionModeMIP,
-    CPRViewClippingRangeMinIPMode = CPRProjectionModeMinIP,
-    CPRViewClippingRangeMeanMode = CPRProjectionModeMean
-};
-typedef CPRProjectionMode CPRViewClippingRangeMode;
-
+@class CPRStraightenedView;
+@class CPRStretchedView;
 @class CPRVolumeData;
 @class CPRCurvedPath;
 @class CPRDisplayInfo;
-@class CPRStraightenedGeneratorRequest;
+@class DCMPix;
 
-@interface CPRView : DCMView <CPRGeneratorDelegate>
+@protocol CPRViewDelegate;
+
+enum _CPRViewReformationType { 
+    CPRViewStraightenedReformationType = 0,
+    CPRViewStretchedReformationType = 1,
+};
+typedef NSInteger CPRViewReformationType;
+
+
+@interface CPRView : NSView
 {
-    id<CPRViewDelegate> _delegate;
-    
-    CPRVolumeData *_volumeData;
-    CPRGenerator *_generator;
-    
-    CPRCurvedPath *_curvedPath;
-    CPRDisplayInfo *_displayInfo;
-    N3Plane _orangePlane;
-    N3Plane _purplePlane;
-    N3Plane _bluePlane;
-	
-	CGFloat _orangeSlabThickness;
-	CGFloat _purpleSlabThickness;
-	CGFloat _blueSlabThickness;
-	
-	NSColor *_orangePlaneColor;
-	NSColor *_purplePlaneColor;
-	NSColor *_bluePlaneColor;
-    
-	// these are for the center lines - I'm considering throwing all these into a dictionary and using KVC
-    NSArray *_orangeVericalLines; // array of indexes where vertical lines need to be drawn
-    NSArray *_orangePlaneRuns; // array of plane runs;
-	NSArray *_purpleVericalLines;
-    NSArray *_purplePlaneRuns;
-    NSArray *_blueVericalLines;
-    NSArray *_bluePlaneRuns;
-	
-	// top lines
-	NSArray *_orangeTopVericalLines; // array of indexes where vertical lines need to be drawn
-    NSArray *_orangeTopPlaneRuns; // array of plane runs;
-	NSArray *_purpleTopVericalLines;
-    NSArray *_purpleTopPlaneRuns;
-    NSArray *_blueTopVericalLines;
-    NSArray *_blueTopPlaneRuns;
-	
-	// bottom lines
-	NSArray *_orangeBottomVericalLines; // array of indexes where vertical lines need to be drawn
-    NSArray *_orangeBottomPlaneRuns; // array of plane runs;
-	NSArray *_purpleBottomVericalLines;
-    NSArray *_purpleBottomPlaneRuns;
-    NSArray *_blueBottomVericalLines;
-    NSArray *_blueBottomPlaneRuns;
-	
-    CPRViewClippingRangeMode _clippingRangeMode;
-    
-    CPRVolumeData *_curvedVolumeData;
-    
-    CPRStraightenedGeneratorRequest *_lastRequest;
-    CGFloat _generatedHeight;
-    
-    BOOL _draggingTransverse;
-    BOOL _draggingTransverseSpacing;
-	BOOL _clickedNode;
-	NSMutableDictionary *_mousePlanePointsInPix; // Stored as an NSValue so we can invalidate it and nill it out. The display info stores on what
-	//	plane and where in 3D the mouse position green dot is, but we want to cache where whis gree dot should be drawn in this view.
-	
-	NSInteger _editingCurvedPathCount;
-    
-    BOOL _drawAllNodes;
-    
-    BOOL _processingRequest;
-    BOOL _needsNewRequest;
-	
-	BOOL _displayCrossLines;
-	BOOL displayTransverseLines;
+    CPRViewReformationType _reformationType;
+        
+    CPRStraightenedView *_straightenedView;
+    CPRStretchedView *_stretchedView;
 }
 
-@property (nonatomic, readwrite, assign) id<CPRViewDelegate> delegate;
+@property (nonatomic, readwrite, assign) CPRViewReformationType reformationType;
+
+- (id)reformationView; // returns the actual view that does the reformation. I expect hacky calls that do and do screen grabs and such will need this
+- (void)waitUntilPixUpdate; // returns once the refomration view's DCM pix object has been updated to reflect any changes made to the view. 
+
+
+// DCMView-like methods
+- (void)setWLWW:(float)wl :(float) ww;
+- (void)getWLWW:(float*)wl :(float*)ww;
+- (void)setCLUT:(unsigned char*)r :(unsigned char*)g :(unsigned char*)b;
+@property(readonly) DCMPix *curDCM;
+@property(readonly) short curImage;
+- (void)setIndex:(short)index;
+- (void)setCurrentTool:(short)i;
+
+// methods 
+
+@property (nonatomic, readwrite, assign) id<CPRViewDelegate> delegate; // as an implementation detail, the sender that will call the delegate will actually be the reformation view
 
 @property (nonatomic, readwrite, retain) CPRVolumeData *volumeData; // the volume data of the original data
 @property (nonatomic, readwrite, copy) CPRCurvedPath *curvedPath;
@@ -125,7 +76,7 @@ typedef CPRProjectionMode CPRViewClippingRangeMode;
 @property (nonatomic) BOOL displayTransverseLines;
 @property (nonatomic, readwrite, assign) BOOL displayCrossLines;
 
-- (void) adjustROIsForCPRView;
-- (void) runMainRunLoopUntilAllRequestsAreFinished;
+@property (nonatomic, readwrite, assign) float rotation, scaleValue;
+
 
 @end

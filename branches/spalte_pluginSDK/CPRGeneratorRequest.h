@@ -53,12 +53,7 @@
     N3Vector _initialNormal;
     
     CPRProjectionMode _projectionMode;
-    BOOL _vertical;
-    
-    CGFloat _bezierStartPosition;
-    CGFloat _bezierEndPosition;
-    
-    CGFloat _middlePosition;
+//    BOOL _vertical; // it would be cool to implement this one day
 }
 
 @property (nonatomic, readwrite, retain) N3BezierPath *bezierPath;
@@ -66,16 +61,77 @@
 
 @property (nonatomic, readwrite, assign) CPRProjectionMode projectionMode;
 
-// these are not yet implemented, depending on how we want to implement panning and zooming of the curved MPR, they could be useful 
-@property (nonatomic, readwrite, assign) BOOL vertical; // the straightened bezier is horizantal across the screen, or vertical
-
-@property (nonatomic, readwrite, assign) CGFloat bezierStartPosition; // these values are in [0, 1] they correspond to where on the bezier the image starts
-@property (nonatomic, readwrite, assign) CGFloat bezierEndPosition;
-
-@property (nonatomic, readwrite, assign) CGFloat middlePosition; // horrible name, change me later... value corresponding to where the middle of the straighten segment will be on the generated image [-1, -1] corresond to values that are on the image 
+// @property (nonatomic, readwrite, assign) BOOL vertical; // the straightened bezier is horizantal across the screen, or vertical it would be cool to implement this one day
 
 - (BOOL)isEqual:(id)object;
 
 @end
+
+@interface CPRStretchedGeneratorRequest : CPRGeneratorRequest
+{
+    N3BezierPath *_bezierPath;
+    
+    N3Vector _projectionNormal; 
+    N3Vector _midHeightPoint; // this point in the volume will be half way up the volume
+    
+    CPRProjectionMode _projectionMode;
+}
+
+@property (nonatomic, readwrite, retain) N3BezierPath *bezierPath;
+@property (nonatomic, readwrite, assign) N3Vector projectionNormal;
+@property (nonatomic, readwrite, assign) N3Vector midHeightPoint;
+@property (nonatomic, readwrite, assign) CPRProjectionMode projectionMode;
+
+- (BOOL)isEqual:(id)object;
+
+@end
+
+
+@interface CPRObliqueSliceGeneratorRequest : CPRGeneratorRequest
+{
+    N3Vector _origin;
+    N3Vector _directionX;
+    N3Vector _directionY;
+    
+    CGFloat _pixelSpacingX;
+    CGFloat _pixelSpacingY;
+    
+    CPRProjectionMode _projectionMode;
+}
+
+- (id)init;
+- (id)initWithCenter:(N3Vector)center pixelsWide:(NSUInteger)pixelsWide pixelsHigh:(NSUInteger)pixelsHigh xBasis:(N3Vector)xBasis yBasis:(N3Vector)yBasis; // the length of the vectors will be considered to be the pixel spacing
+
+@property (nonatomic, readwrite, assign) N3Vector origin;
+@property (nonatomic, readwrite, assign) N3Vector directionX;
+@property (nonatomic, readwrite, assign) N3Vector directionY;
+@property (nonatomic, readwrite, assign) CGFloat pixelSpacingX; // mm/pixel
+@property (nonatomic, readwrite, assign) CGFloat pixelSpacingY;
+
+@property (nonatomic, readwrite, assign) CPRProjectionMode projectionMode;
+
+@property (nonatomic, readwrite, assign) N3AffineTransform sliceToDicomTransform;
+
+@end
+
+@interface CPRObliqueSliceGeneratorRequest (DCMPixAndVolume) // KVO code is not yet implemented for this category
+
+- (void)setOrientation:(float[6])orientation;
+- (void)setOrientationDouble:(double[6])orientation;
+- (void)getOrientation:(float[6])orientation;
+- (void)getOrientationDouble:(double[6])orientation;
+
+@property (nonatomic, readwrite, assign) double originX;
+@property (nonatomic, readwrite, assign) double originY;
+@property (nonatomic, readwrite, assign) double originZ;
+
+@property (nonatomic, readwrite, assign) double spacingX;
+@property (nonatomic, readwrite, assign) double spacingY;
+
+@end
+
+
+
+
 
 

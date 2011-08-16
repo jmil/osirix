@@ -22,4 +22,6 @@
 
 -(CGFloat)toolbarHeight;
 
+-(void)safelySetMovable:(BOOL)flag;
+
 @end

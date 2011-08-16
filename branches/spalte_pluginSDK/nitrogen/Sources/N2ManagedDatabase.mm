@@ -7,6 +7,7 @@
 //
 
 #import "N2ManagedDatabase.h"
+#import "N2Debug.h"
 
 
 @interface N2ManagedDatabase ()
@@ -130,6 +131,27 @@
 
 -(NSManagedObject*)objectWithID:(NSString*)theId {
 	return [self.managedObjectContext objectWithID:[self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:theId]]];
+}
+
+-(NSArray*)objectsForEntity:(NSEntityDescription*)e predicate:(NSPredicate*)p {
+	NSFetchRequest* req = [[[NSFetchRequest alloc] init] autorelease];
+	req.entity = e;
+	req.predicate = p;
+    
+    
+    NSArray* objects = nil;
+    
+    [managedObjectContext lock];
+    
+    @try {
+        objects = [managedObjectContext executeFetchRequest:req error:NULL];
+    } @catch (NSException* e) {
+        N2LogException(e);
+    }
+    
+    [managedObjectContext unlock];
+    
+    return objects;
 }
 
 -(void)save:(NSError**)err {

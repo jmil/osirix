@@ -337,7 +337,7 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 	{
 		// Set DefaultROINames *before* initializing plugins (which may change these)
 		
-		NSMutableArray *defaultROINames = [[NSMutableArray alloc] initWithCapacity:0];
+		NSMutableArray *defaultROINames = [NSMutableArray array];
 		
 		[defaultROINames addObject:@"ROI 1"];
 		[defaultROINames addObject:@"ROI 2"];
@@ -387,19 +387,23 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		NSString	*userPath = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
 		NSString	*sysPath = [@"/" stringByAppendingPathComponent:appSupport];
 		
+		#ifndef MACAPPSTORE
 		if ([[NSFileManager defaultManager] fileExistsAtPath:appPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:appPath attributes:nil];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:userPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:userPath attributes:nil];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:sysPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:sysPath attributes:nil];
+		#endif
 		
 		appSupport = [appSupport stringByAppendingPathComponent :@"Plugins/"];
 		
 		userPath = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
 		sysPath = [@"/" stringByAppendingPathComponent:appSupport];
 		
+		#ifndef MACAPPSTORE
 		if ([[NSFileManager defaultManager] fileExistsAtPath:userPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:userPath attributes:nil];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:sysPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:sysPath attributes:nil];
+		#endif
 		
-		NSArray* paths = [NSArray arrayWithObjects:appPath, userPath, sysPath, nil];
+		NSArray* paths = [NSArray arrayWithObjects:appPath, userPath, sysPath, [NSNull null], nil]; // [NSNull null] is a placeholder for launch parameters load commands
 		
 		[plugins release];
 		[pluginsDict release];
@@ -423,19 +427,35 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		
 		NSLog( @"|||||||||||||||||| Plugins loading START ||||||||||||||||||");
 		#ifndef OSIRIX_LIGHT
-		for (NSString* path in paths)
+		for (id path in paths)
 		{
-			NSEnumerator *e = [[[NSFileManager defaultManager] directoryContentsAtPath:path] objectEnumerator];
-			NSString *name;
-			
-			while ( name = [e nextObject] )
+            NSEnumerator* e = nil;
+            if ([path isKindOfClass:[NSString class]])
+                e = [[[NSFileManager defaultManager] directoryContentsAtPath:path] objectEnumerator];
+            else if (path == [NSNull null]) {
+                path = @"/";
+                NSMutableArray* cl = [NSMutableArray array];
+                NSArray* args = [[NSProcessInfo processInfo] arguments];
+                for (NSInteger i = 0; i < [args count]; ++i)
+                    if ([[args objectAtIndex:i] isEqualToString:@"--LoadPlugin"] && [args count] > i+1)
+                        [cl addObject:[args objectAtIndex:++i]];
+                e = [cl objectEnumerator];
+            }
+            
+			NSString* name;
+			while (name = [e nextObject])
 			{
 				if ( [[name pathExtension] isEqualToString:@"plugin"] || [[name pathExtension] isEqualToString:@"osirixplugin"])
 				{
 					if( [pluginsNames valueForKey: [[name lastPathComponent] stringByDeletingPathExtension]])
 					{
 						NSLog( @"***** Multiple plugins: %@", [name lastPathComponent]);
-						NSRunAlertPanel( NSLocalizedString(@"Plugins", nil),  NSLocalizedString(@"Warning! Multiple instances of the same plugin have been found. Only one instance will be loaded. Check the Plugin Manager (Plugins menu) for multiple identical plugins.", nil), nil, nil, nil);
+						
+						NSString *message = NSLocalizedString(@"Warning! Multiple instances of the same plugin have been found. Only one instance will be loaded. Check the Plugin Manager (Plugins menu) for multiple identical plugins.", nil);
+						
+						message = [message stringByAppendingFormat:@"\r\r%@", [name lastPathComponent]];
+						
+						NSRunAlertPanel( NSLocalizedString(@"Plugins", nil), message , nil, nil, nil);
 					}
 					else
 					{
@@ -854,7 +874,7 @@ NSInteger sortPluginArray(id plugin1, id plugin2, void *context)
 	NSMutableArray *paths = [NSMutableArray array];
 	[paths addObjectsFromArray:[PluginManager activeDirectories]];
 	[paths addObjectsFromArray:[PluginManager inactiveDirectories]];
-	
+    
     NSString *path;
 	
     NSMutableArray *plugins = [NSMutableArray array];
@@ -899,7 +919,12 @@ NSInteger sortPluginArray(id plugin1, id plugin2, void *context)
 								
 					CFStringRef versionString = nil;
 					if(bundleInfoDict != NULL)
+					{
 						versionString = CFDictionaryGetValue(bundleInfoDict, CFSTR("CFBundleVersion"));
+					
+						if(versionString == nil)
+							versionString = CFDictionaryGetValue(bundleInfoDict, CFSTR("CFBundleShortVersionString"));
+					}
 					
 					NSString *pluginVersion;
 					if(versionString != NULL)
@@ -970,7 +995,7 @@ NSInteger sortPluginArray(id plugin1, id plugin2, void *context)
 				NSString *currVersion = [installedPlugin objectForKey:@"version"];
 				NSString *onlineVersion = [onlinePlugin objectForKey:@"version"];
 				
-				if(currVersion && onlineVersion)
+				if(currVersion && onlineVersion && [currVersion length] > 0 && [currVersion length] > 0)
 				{
 					if( [currVersion isEqualToString:onlineVersion] == NO && [PluginManager compareVersion: currVersion withVersion: onlineVersion] < 0)
 					{

@@ -12,7 +12,7 @@
      PURPOSE.
 =========================================================================*/
 
-
+#import "AppController.h"
 #import "WaitRendering.h"
 #import "BurnerWindowController.h"
 #import <OsiriX/DCM.h>
@@ -90,6 +90,7 @@
 	burnSuppFolder = [[NSUserDefaults standardUserDefaults] boolForKey: @"BurnSupplementaryFolder"];
 	burnOsiriX = [[NSUserDefaults standardUserDefaults] boolForKey: @"BurnOsirixApplication"];
 	burnHtml = [[NSUserDefaults standardUserDefaults] boolForKey: @"BurnHtml"];
+	burnWeasis = [[NSUserDefaults standardUserDefaults] boolForKey: @"BurnWeasis"];;
 }
 
 - (void) restoreDefaultsSettings
@@ -97,6 +98,7 @@
 	[[NSUserDefaults standardUserDefaults] setBool: burnSuppFolder forKey:@"BurnSupplementaryFolder"];
 	[[NSUserDefaults standardUserDefaults] setBool: burnOsiriX forKey:@"BurnOsirixApplication"];
 	[[NSUserDefaults standardUserDefaults] setBool: burnHtml forKey:@"BurnHtml"];
+	[[NSUserDefaults standardUserDefaults] setBool: burnWeasis forKey:@"BurnWeasis"];
 }
 
 -(id) initWithFiles:(NSArray *)theFiles
@@ -177,8 +179,6 @@
 	windowWillClose = YES;
 	
 	runBurnAnimation = NO;
-
-	[[BrowserController currentBrowser] setBurnerWindowControllerToNIL];
 		
 	[anonymizedFiles release];
 	[filesToBurn release];
@@ -672,21 +672,28 @@
 
 - (void)addDICOMDIRUsingDCMTK
 {
-	NSString *burnFolder = [self folderToBurn];
-	
-	NSTask              *theTask;
-	//NSMutableArray *theArguments = [NSMutableArray arrayWithObjects:@"+r", @"-W", @"-Nxc", @"*", nil];
-	NSMutableArray *theArguments = [NSMutableArray arrayWithObjects:@"+r", @"-Pfl", @"-W", @"-Nxc",@"+I",@"+id", burnFolder,  nil];
-	
-	theTask = [[NSTask alloc] init];
-	[theTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];	// DO NOT REMOVE !
-	[theTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dcmmkdir"]];
-	[theTask setCurrentDirectoryPath:[self folderToBurn]];
-	[theTask setArguments:theArguments];		
-
-	[theTask launch];
-	[theTask waitUntilExit];
-	[theTask release];
+	if( [AppController hasMacOSXSnowLeopard] == NO)
+	{
+		NSRunCriticalAlertPanel( NSLocalizedString( @"DICOMDIR", nil), NSLocalizedString( @"DICOMDIR creation requires MacOS 10.6 or higher. DICOMDIR file will NOT be generated.", nil), NSLocalizedString( @"OK", nil), nil, nil);
+	}
+	else
+	{
+		NSString *burnFolder = [self folderToBurn];
+		
+		NSTask              *theTask;
+		//NSMutableArray *theArguments = [NSMutableArray arrayWithObjects:@"+r", @"-W", @"-Nxc", @"*", nil];
+		NSMutableArray *theArguments = [NSMutableArray arrayWithObjects:@"+r", @"-Pfl", @"-W", @"-Nxc",@"+I",@"+id", burnFolder,  nil];
+		
+		theTask = [[NSTask alloc] init];
+		[theTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];	// DO NOT REMOVE !
+		[theTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dcmmkdir"]];
+		[theTask setCurrentDirectoryPath:[self folderToBurn]];
+		[theTask setArguments:theArguments];		
+		
+		[theTask launch];
+		[theTask waitUntilExit];
+		[theTask release];
+	}
 }
 
 - (void) produceHtml:(NSString*) burnFolder
@@ -773,7 +780,7 @@
 	NSString *file;
 	NSString *burnFolder = [self folderToBurn];
 	NSString *dicomdirPath = [NSString stringWithFormat:@"%@/DICOMDIR",burnFolder];
-	NSString *subFolder = [NSString stringWithFormat:@"%@/IMAGES",burnFolder];
+	NSString *subFolder = [NSString stringWithFormat:@"%@/DICOM",burnFolder];
 	NSFileManager *manager = [NSFileManager defaultManager];
 	int i = 0;
 
@@ -862,6 +869,16 @@
 		[self addDICOMDIRUsingDCMTK];
 		
 		// Both these supplementary burn data are optional and controlled from a preference panel [DDP]
+		
+		
+		if ([[NSUserDefaults standardUserDefaults] boolForKey: @"BurnWeasis"])
+		{
+			NSString* weasisPath = [[AppController sharedAppController] weasisBasePath];
+			for (NSString* subpath in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:weasisPath error:NULL])
+				[[NSFileManager defaultManager] copyItemAtPath:[weasisPath stringByAppendingPathComponent:subpath] toPath:[burnFolder stringByAppendingPathComponent:subpath] error:NULL];
+		}
+			
+		
 		
 		if ([[NSUserDefaults standardUserDefaults] boolForKey: @"BurnOsirixApplication"])
 		{
@@ -1049,9 +1066,14 @@
 		size += [fattrs fileSize]/1024;
 	}
 	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"BurnWeasis"])
+	{
+		size += 17 * 1024; // About 17MB
+	}
+	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"BurnOsirixApplication"])
 	{
-		size += 15 * 1024; // About 15MB
+		size += 8 * 1024; // About 8MB
 	}
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey: @"BurnSupplementaryFolder"])

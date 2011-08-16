@@ -14,7 +14,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-@interface OSIAutoroutingPreferencePanePref : NSPreferencePane 
+@interface OSIAutoroutingPreferencePanePref : NSPreferencePane <NSTableViewDelegate>
 {
 	IBOutlet NSButton					*autoroutingActivated;
 	IBOutlet NSWindow					*newRoute;
@@ -33,6 +33,8 @@
 	NSMutableArray						*routesArray;
 	NSArray								*serversArray;
 	int filterType;
+	
+	IBOutlet NSWindow *mainWindow;
 }
 
 @property int filterType;

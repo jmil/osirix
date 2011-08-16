@@ -21,6 +21,8 @@
 
 
 #ifdef __cplusplus
+
+#ifdef OSIRIX_VIEWER
 #include "osconfig.h"
 #include "dcfilefo.h"
 #include "dcdeftag.h"
@@ -31,6 +33,9 @@
 #include "cmdlnarg.h"
 #include "ofconapp.h"
 #include "dcuid.h"       /* for dcmtk version name */
+#else
+typedef char* DcmFileFormat;
+#endif
 
 #else
 typedef char* DcmFileFormat;
@@ -47,7 +52,7 @@ typedef char* DcmFileFormat;
 		// Raw data support
 		unsigned char		*data, *localData;
 		long				width, height, spp, bps;
-		BOOL				isSigned, modalityAsSource;
+		BOOL				isSigned, modalityAsSource, rotateRawDataBy90degrees;
 		int					offset;
 		
 		// NSImage support
@@ -68,6 +73,8 @@ typedef char* DcmFileFormat;
 		float				position[ 3];
 		float				slicePosition;
 }
+
+@property BOOL rotateRawDataBy90degrees;
 
 // Is this DCM file based on another DCM file?
 - (void) setSourceFile:(NSString*) isource;

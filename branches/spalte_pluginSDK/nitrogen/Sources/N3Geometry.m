@@ -233,6 +233,15 @@ void N3VectorScalarMultiplyVectors(CGFloat scalar, N3VectorArray vectors, CFInde
 #endif
 }
 
+void N3VectorCrossProductVectors(N3Vector vector, N3VectorArray vectors, CFIndex numVectors)
+{
+    CFIndex i;
+    
+    for (i = 0; i < numVectors; i++) {
+        vectors[i] = N3VectorCrossProduct(vector, vectors[i]);
+    }
+}
+
 void N3VectorAddVectors(N3VectorArray vectors1, const N3VectorArray vectors2, CFIndex numVectors)
 {
 #if CGFLOAT_IS_DOUBLE
@@ -282,6 +291,20 @@ void N3VectorCrossProductWithVectors(N3VectorArray vectors1, const N3VectorArray
     for (i = 0; i < numVectors; i++) {
         vectors1[i] = N3VectorCrossProduct(vectors1[i], vectors2[i]);
     }
+}
+
+void N3VectorNormalizeVectors(N3VectorArray vectors, CFIndex numVectors)
+{
+    CFIndex i;
+    
+    for (i = 0; i < numVectors; i++) {
+        vectors[i] = N3VectorNormalize(vectors[i]);
+    }
+}
+
+N3Vector N3VectorLerp(N3Vector vector1, N3Vector vector2, CGFloat t)
+{
+    return N3VectorAdd(N3VectorScalarMultiply(vector1, 1.0 - t), N3VectorScalarMultiply(vector2, t));
 }
 
 N3Vector N3VectorBend(N3Vector vectorToBend, N3Vector originalDirection, N3Vector newDirection) // this aught to be re-written to be more numerically stable!
@@ -398,7 +421,6 @@ bool N3LineIntersectsPlane(N3Line line, N3Plane plane)
 
 N3Vector N3LineIntersectionWithPlane(N3Line line, N3Plane plane)
 {
-	CGFloat u;
 	CGFloat numerator;
 	CGFloat denominator;
     N3Vector planeNormal;
@@ -517,6 +539,25 @@ bool N3PlaneIsValid(N3Plane plane)
     return N3VectorLength(plane.normal) > _N3GeometrySmallNumber;
 }
 
+N3Plane N3PlaneLeastSquaresPlaneFromPoints(N3VectorArray vectors, CFIndex numVectors) // BOGUS TODO not written yet, will give a plane, but it won't be the least squares plane
+{
+    N3Plane plane;
+    
+    if (numVectors <= 3) {
+        return N3PlaneInvalid;
+    }
+    
+    plane.point = vectors[0];
+    plane.normal = N3VectorNormalize(N3VectorCrossProduct(N3VectorSubtract(vectors[1], vectors[0]), N3VectorSubtract(vectors[2], vectors[0])));
+    
+    if (N3VectorIsZero(plane.normal)) {
+        return N3PlaneInvalid;
+    } else {
+        return plane;
+    }
+}
+
+
 N3Plane N3PlaneApplyTransform(N3Plane plane, N3AffineTransform transform)
 {
     N3Plane newPlane;
@@ -595,6 +636,40 @@ CGFloat N3AffineTransformDeterminant(N3AffineTransform t)
 	assert(N3AffineTransformIsAffine(t));
 	
 	return t.m11*t.m22*t.m33 + t.m21*t.m32*t.m13 + t.m31*t.m12*t.m23 - t.m11*t.m32*t.m23 - t.m21*t.m12*t.m33 - t.m31*t.m22*t.m13;
+}
+
+N3AffineTransform N3AffineTransformInvert(N3AffineTransform t)
+{
+    BOOL isAffine;
+    N3AffineTransform inverse;
+    
+    isAffine = N3AffineTransformIsAffine(t);
+    inverse = CATransform3DInvert(t);
+    
+    if (isAffine) { // in some cases CATransform3DInvert returns a matrix that does not have exactly these values even if the input matrix did have these values
+        inverse.m14 = 0.0;
+        inverse.m24 = 0.0;
+        inverse.m34 = 0.0;
+        inverse.m44 = 1.0;
+    }
+    return inverse;
+}
+
+N3AffineTransform N3AffineTransformConcat(N3AffineTransform a, N3AffineTransform b)
+{
+    BOOL affine;
+    N3AffineTransform concat;
+    
+    affine = N3AffineTransformIsAffine(a) && N3AffineTransformIsAffine(b);
+    concat = CATransform3DConcat(a, b);
+    
+    if (affine) { // in some cases CATransform3DConcat returns a matrix that does not have exactly these values even if the input matrix did have these values
+        concat.m14 = 0.0;
+        concat.m24 = 0.0;
+        concat.m34 = 0.0;
+        concat.m44 = 1.0;
+    }
+    return concat;
 }
 
 NSString *NSStringFromN3AffineTransform(N3AffineTransform transform)
@@ -971,33 +1046,6 @@ void N3AffineTransformGetOpenGLMatrixf(N3AffineTransform transform, float *f) //
 
 @end
 
-@implementation Point3D (N3GeometryAdditions)
-
-+ (id)pointWithN3Vector:(N3Vector)vector
-{
-	return [[[Point3D alloc] initWithN3Vector:vector] autorelease];
-}
-
-- (id)initWithN3Vector:(N3Vector)vector
-{
-	if ( (self = [super init]) ) {
-		self.x = vector.x;
-		self.y = vector.y;
-		self.z = vector.z;
-	}
-	return self;
-}
-
-- (N3Vector)N3VectorValue
-{
-	N3Vector vector;
-	vector.x = self.x;
-	vector.y = self.y;
-	vector.z = self.z;
-	return vector;
-}
-
-@end
 
 
 

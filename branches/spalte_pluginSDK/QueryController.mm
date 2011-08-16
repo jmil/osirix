@@ -72,7 +72,7 @@ extern "C"
 	@try
 	{
 		// aServer = [[QueryController currentQueryController] TLSAskPrivateKeyPasswordForServer:aServer];
-		qm = [[[QueryArrayController alloc] initWithCallingAET: [[NSUserDefaults standardUserDefaults] objectForKey:@"AETITLE"] distantServer: aServer] autorelease];
+		qm = [[[QueryArrayController alloc] initWithCallingAET:[NSUserDefaults defaultAETitle] distantServer:aServer] autorelease];
 		
 		NSString *filterValue = [an stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		
@@ -110,7 +110,7 @@ extern "C"
 	@try
 	{
 		// aServer = [[QueryController currentQueryController] TLSAskPrivateKeyPasswordForServer:aServer];
-		qm = [[QueryArrayController alloc] initWithCallingAET: [[NSUserDefaults standardUserDefaults] objectForKey:@"AETITLE"] distantServer: aServer];
+		qm = [[QueryArrayController alloc] initWithCallingAET:[NSUserDefaults defaultAETitle] distantServer:aServer];
 		
 		NSString *filterValue = [an stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		
@@ -197,7 +197,7 @@ extern "C"
 		[args addObject: address];
 		[args addObject: [NSString stringWithFormat:@"%d", [port intValue]]];
 		[args addObject: @"-aet"]; // set my calling AE title
-		[args addObject: [[NSUserDefaults standardUserDefaults] stringForKey: @"AETITLE"]];
+		[args addObject: [NSUserDefaults defaultAETitle]]; 
 		[args addObject: @"-aec"]; // set called AE title of peer
 		[args addObject: aet];
 		[args addObject: @"-to"]; // timeout for connection requests
@@ -894,13 +894,18 @@ extern "C"
 		{
 			if (![(DCMTKQueryNode *)item children])
 			{
-				performingCFind = YES; // to avoid re-entries during WaitRendering window, and separate thread for cFind
-				
-				[progressIndicator startAnimation:nil];
-				[item queryWithValues:nil];
-				[progressIndicator stopAnimation:nil];
-				
-				performingCFind = NO;
+				@synchronized( self)
+				{
+					if( performingCFind == NO)
+					{
+						performingCFind = YES; // to avoid re-entries during WaitRendering window, and separate thread for cFind
+						
+						[progressIndicator startAnimation:nil];
+						[item queryWithValues:nil];
+						[progressIndicator stopAnimation:nil];
+						performingCFind = NO;
+					}
+				}
 			}
 		}
 		return  (item == nil) ? [resultArray count] : [[(DCMTKQueryNode *) item children] count];
@@ -1448,7 +1453,7 @@ extern "C"
 				
 				hostname = [aServer objectForKey:@"Address"];
 				
-				QueryArrayController *qm = [[QueryArrayController alloc] initWithCallingAET: [[NSUserDefaults standardUserDefaults] objectForKey:@"AETITLE"] distantServer: aServer];
+				QueryArrayController *qm = [[QueryArrayController alloc] initWithCallingAET:[NSUserDefaults defaultAETitle] distantServer:aServer];
 				
 				[qm addFilter:filterValue forDescription: PatientID];
 				
@@ -1517,7 +1522,7 @@ extern "C"
 					[queryManager release];
 					queryManager = nil;
 
-					queryManager = [[QueryArrayController alloc] initWithCallingAET: [[NSUserDefaults standardUserDefaults] objectForKey: @"AETITLE"] distantServer: aServer];
+					queryManager = [[QueryArrayController alloc] initWithCallingAET:[NSUserDefaults defaultAETitle] distantServer:aServer];
 					// add filters as needed
 					
 					if( [[[NSUserDefaults standardUserDefaults] stringForKey: @"STRINGENCODING"] isEqualToString:@"ISO_IR 100"] == NO)
@@ -1548,6 +1553,9 @@ extern "C"
 								[queryManager addFilter: [[NSUserDefaults standardUserDefaults] stringForKey: @"STRINGENCODING"] forDescription:@"SpecificCharacterSet"];
 							}
 						}
+						
+						if( [[searchFieldName stringValue] length] >= 64)
+							[searchFieldName setStringValue: [[searchFieldName stringValue] substringToIndex: 64]];
 						
 						NSString *filterValue = [[searchFieldName stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 						
@@ -1921,19 +1929,37 @@ extern "C"
 		[sender selectText: self];
 }
 
-// This function calls many GUI function, it has to be called from the main thread
 - (void) performQuery:(NSNumber*) showErrors
 {
 	checkAndViewTry = -1;
 	
+    if( [NSThread isMainThread] == NO)
+        showErrors = [NSNumber numberWithBool: NO];
+    
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[progressIndicator startAnimation:nil];
-	performingCFind = YES;
-	[queryManager performQuery: [showErrors boolValue]];
-	performingCFind = NO;
-	[progressIndicator stopAnimation:nil];
-	[resultArray sortUsingDescriptors: [self sortArray]];
-	[outlineView reloadData];
+    
+    @synchronized( self)
+    {
+        if( performingCFind == NO)
+        {
+            performingCFind = YES;
+            
+            if( [NSThread isMainThread] == NO)
+                [progressIndicator performSelectorOnMainThread: @selector( startAnimation:) withObject:nil waitUntilDone: NO];
+            else
+                [progressIndicator startAnimation:nil];
+            
+            [queryManager performQuery: [showErrors boolValue]];
+            
+            if( [NSThread isMainThread] == NO)
+                [progressIndicator performSelectorOnMainThread: @selector( stopAnimation:) withObject:nil waitUntilDone: NO];
+            else
+                [progressIndicator stopAnimation:nil];
+            
+            performingCFind = NO;
+        }
+    }
+    
 	[pool release];
 }
 
@@ -1991,6 +2017,12 @@ extern "C"
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"dontAuthorizeAutoRetrieve"])
 	{
 		[[NSUserDefaults standardUserDefaults] setBool: NO forKey: @"autoRetrieving"];
+		goto returnFromThread;
+	}
+	
+	if( numberOfRunningRetrieve > 5)
+	{
+		NSLog( @"**** numberOfRunningRetrieve > 5... wait for next autoretrieve.");
 		goto returnFromThread;
 	}
 	
@@ -2496,6 +2528,11 @@ extern "C"
 	
 	NSMutableArray *moveArray = [NSMutableArray array];
 	
+	@synchronized( self)
+	{
+		numberOfRunningRetrieve++;
+	}
+	
 	[array retain];
 	
 	@try
@@ -2653,6 +2690,11 @@ extern "C"
 	}
 	
 	[array release];
+	
+	@synchronized( self)
+	{
+		numberOfRunningRetrieve--;
+	}
 	
 	[pool release];
 }
@@ -3147,7 +3189,7 @@ extern "C"
 		serversArray = [[[DCMNetServiceDelegate DICOMServersList] mutableCopy] autorelease];
 		
 		NSString *ip = [NSString stringWithCString:GetPrivateIP()];
-		[sendToPopup addItemWithTitle: [NSString stringWithFormat: NSLocalizedString( @"This Computer - %@/%@:%@", nil), [[NSUserDefaults standardUserDefaults] stringForKey: @"AETITLE"], ip, [[NSUserDefaults standardUserDefaults] stringForKey: @"AEPORT"]]];
+		[sendToPopup addItemWithTitle: [NSString stringWithFormat: NSLocalizedString( @"This Computer - %@/%@:%d", nil), [NSUserDefaults defaultAETitle], ip, [NSUserDefaults defaultAEPort]]];
 
 		[[sendToPopup menu] addItem: [NSMenuItem separatorItem]];
 		
@@ -3233,15 +3275,20 @@ extern "C"
 
 - (void)dealloc
 {
+	if( avoidQueryControllerDeallocReentry) // This can happen with the cancelPreviousPerformRequestsWithTarget calls
+		return;
+	
+	avoidQueryControllerDeallocReentry = YES;
+	
+	NSLog( @"dealloc QueryController");
+	
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector( executeRefresh:) object:nil];
+	[NSObject cancelPreviousPerformRequestsWithTarget: pressedKeys];
 	
 	[autoQueryLock lock];
 	[autoQueryLock unlock];
 	
 	[[NSUserDefaults standardUserDefaults] setObject:sourcesArray forKey: queryArrayPrefs];
-
-	NSLog( @"dealloc QueryController");
-	[NSObject cancelPreviousPerformRequestsWithTarget: pressedKeys];
 	[pressedKeys release];
 	[fromDate setDateValue: [NSCalendarDate dateWithYear:[[NSCalendarDate date] yearOfCommonEra] month:[[NSCalendarDate date] monthOfYear] day:[[NSCalendarDate date] dayOfMonth] hour:0 minute:0 second:0 timeZone: nil]];
 	[queryManager release];
@@ -3258,10 +3305,13 @@ extern "C"
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[queryArrayPrefs release];
-		
-	[super dealloc];
 	
 	[autoQueryLock release];
+	
+	avoidQueryControllerDeallocReentry = NO;
+	
+	[super dealloc];
+	
 	currentQueryController = nil;
 }
 

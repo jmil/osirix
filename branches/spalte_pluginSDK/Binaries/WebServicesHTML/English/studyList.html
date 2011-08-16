@@ -8,8 +8,12 @@
 	%INCLUDE:/messages.pvt.html%
 
 	<div>
-		%[IF:Studies.count%
+		%[IF:Studies.count>=500%
+		<div class="title">Studies (Fetch limit reached : only the first 500 studies are displayed)</div>
+		%ELSE:Studies.count>=500%
 		<div class="title">Studies</div>
+		%]IF:Studies.count>=500%
+		%[IF:Studies.count%
 		<div>
 			<div class="smaller right gray">
 				Sorted by:
@@ -35,10 +39,18 @@
 							%]IF:Study.date%
 				
 							%[IF:Study.stateText%
-							<div>%X:Study.stateText%</span>
-							%]IF:Study.stateText%						
+							<div>%X:Study.stateText%</div>
+							%]IF:Study.stateText%
 						</td>
-					
+						
+						%[IF:Info.isMacOS%
+						%[IF:Info.proposeWADORetrieve%
+						<td class="narrow middle">
+							<a href="osirix://?methodName=DownloadURL&Display=YES&URL='%Info.WADOBaseURL%?requestType=WADO&studyUID=%U:Study.studyInstanceUID%'"><img src="images/osirix.png"/></a>
+						</td>
+						%]IF:Info.proposeWADORetrieve%
+						%]IF:Info.isMacOS%
+						
 						%[IF:Info.proposeZipDownload%
 						<td class="narrow middle">
 							<a href="%U:Study.name% - %U:Study.studyName%.%[IF:Info.isMacOS%osirixzip%ELSE:Info.isMacOS%zip%]IF:Info.isMacOS%?xid=%Study.XID%"><img src="images/download.png"/></a>

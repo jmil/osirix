@@ -20,7 +20,6 @@
 #ifdef __OBJC__
 #import <Foundation/NSValue.h>
 @class NSString;
-#import "Point3D.h"
 #endif
 
 CF_EXTERN_C_BEGIN
@@ -58,7 +57,16 @@ extern const N3Plane N3PlaneInvalid;
 typedef N3Vector *N3VectorPointer;
 typedef N3Vector *N3VectorArray;
 
+typedef N3Line *N3LinePointer;
+typedef N3Line *N3LineArray;
+
+typedef N3Plane *N3PlanePointer;
+typedef N3Plane *N3PlaneArray;
+
 typedef CATransform3D N3AffineTransform;
+
+typedef N3AffineTransform *N3AffineTransformPointer;
+typedef N3AffineTransform *N3AffineTransformArray;
 
 extern const N3Vector N3VectorZero;
 
@@ -78,6 +86,7 @@ CGFloat N3VectorDistance(N3Vector vector1, N3Vector vector2);
 
 CGFloat N3VectorDotProduct(N3Vector vector1, N3Vector vector2);
 N3Vector N3VectorCrossProduct(N3Vector vector1, N3Vector vector2);
+N3Vector N3VectorLerp(N3Vector vector1, N3Vector vector2, CGFloat t); // when t == 0.0 the result is vector 1, when t == 1.0 the result is vector2
 CGFloat N3VectorAngleBetweenVectorsAroundVector(N3Vector vector1, N3Vector vector2, N3Vector aroundVector); // returns [0, 2*M_PI)
 
 CGFloat N3VectorLength(N3Vector vector);
@@ -115,12 +124,15 @@ N3Vector N3PlanePointClosestToVector(N3Plane plane, N3Vector vector);
 bool N3PlaneIsParallelToPlane(N3Plane plane1, N3Plane plane2);
 bool N3PlaneIsBetweenVectors(N3Plane plane, N3Vector vector1, N3Vector vector2);
 N3Line N3PlaneIntersectionWithPlane(N3Plane plane1, N3Plane plane2);
+N3Plane N3PlaneLeastSquaresPlaneFromPoints(N3VectorArray vectors, CFIndex numVectors); // BOGUS TODO not written yet, will give a plane, but it won't be the least squares plane
 N3Plane N3PlaneApplyTransform(N3Plane plane, N3AffineTransform transform);
 
 void N3VectorScalarMultiplyVectors(CGFloat scalar, N3VectorArray vectors, CFIndex numVectors);
+void N3VectorCrossProductVectors(N3Vector vector, N3VectorArray vectors, CFIndex numVectors);
 void N3VectorAddVectors(N3VectorArray vectors1, const N3VectorArray vectors2, CFIndex numVectors);
 void N3VectorApplyTransformToVectors(N3AffineTransform transform, N3VectorArray vectors, CFIndex numVectors);
 void N3VectorCrossProductWithVectors(N3VectorArray vectors1, const N3VectorArray vectors2, CFIndex numVectors);
+void N3VectorNormalizeVectors(N3VectorArray vectors, CFIndex numVectors);
 
 CG_INLINE NSPoint NSPointFromN3Vector(N3Vector vector) {return NSMakePoint(vector.x, vector.y);}
 CG_INLINE N3Vector N3VectorMakeFromNSPoint(NSPoint point) {return N3VectorMake(point.x, point.y, 0);}
@@ -130,6 +142,8 @@ extern const N3AffineTransform N3AffineTransformIdentity;
 bool N3AffineTransformIsRectilinear(N3AffineTransform t); // this is not the right term, but what is a transform that only includes scale and translation called?
 N3AffineTransform N3AffineTransformTranspose(N3AffineTransform t);
 CGFloat N3AffineTransformDeterminant(N3AffineTransform t);
+N3AffineTransform N3AffineTransformInvert (N3AffineTransform t);
+N3AffineTransform N3AffineTransformConcat (N3AffineTransform a, N3AffineTransform b);
 
 CG_INLINE bool N3AffineTransformIsIdentity(N3AffineTransform t) {return CATransform3DIsIdentity(t);}
 CG_INLINE bool N3AffineTransformIsAffine(N3AffineTransform t) {return (t.m14 == 0.0 && t.m24 == 0.0 && t.m34 == 0.0 && t.m44 == 1.0);}
@@ -143,8 +157,6 @@ CG_INLINE N3AffineTransform N3AffineTransformTranslate (N3AffineTransform t, CGF
 CG_INLINE N3AffineTransform N3AffineTransformScale (N3AffineTransform t, CGFloat sx, CGFloat sy, CGFloat sz) {return CATransform3DScale(t, sx, sy, sz);}
 CG_INLINE N3AffineTransform N3AffineTransformRotate (N3AffineTransform t, CGFloat angle, CGFloat x, CGFloat y, CGFloat z) {return CATransform3DRotate(t, angle, x, y, z);}
 CG_INLINE N3AffineTransform N3AffineTransformRotateAroundVector (N3AffineTransform t, CGFloat angle, N3Vector vector) {return CATransform3DRotate(t, angle, vector.x, vector.y, vector.z);}
-CG_INLINE N3AffineTransform N3AffineTransformConcat (N3AffineTransform a, CATransform3D b) {return CATransform3DConcat(a, b);}
-CG_INLINE N3AffineTransform N3AffineTransformInvert (N3AffineTransform t) {return CATransform3DInvert(t);}
 
 CFDictionaryRef N3VectorCreateDictionaryRepresentation(N3Vector vector);
 CFDictionaryRef N3LineCreateDictionaryRepresentation(N3Line line);
@@ -192,23 +204,9 @@ NSString *NSStringFromN3Plane(N3Plane plane);
 
 @end
 
-@interface Point3D (N3GeometryAdditions)
-
-+ (id)pointWithN3Vector:(N3Vector)vector;
-- (id)initWithN3Vector:(N3Vector)vector;
-- (N3Vector)N3VectorValue;
-
-@end
 
 
 #endif /* __OBJC__ */
-
-#if defined(__cplusplus)
-
-class vtkMatrix4x4;
-N3AffineTransform N3AffineTransformMakeFromVTKMatrix4x4(vtkMatrix4x4 *matrix);
-
-#endif /* __cplusplus */
 
 #endif	/* _N3GEOMETRY_H_ */
 

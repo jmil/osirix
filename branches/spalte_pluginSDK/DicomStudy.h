@@ -23,6 +23,7 @@
 	BOOL isHidden;
 	NSNumber *dicomTime;
 	NSNumber *cachedRawNoFiles;
+	NSString *cachedModalites;
 }
 
 @property(nonatomic, retain) NSString* accessionNumber;
@@ -59,6 +60,7 @@
 - (NSNumber *) noFiles;
 - (NSSet *) paths;
 - (NSSet *) keyImages;
+- (NSString*) modalities;
 - (NSArray *)imageSeries;
 - (NSArray *)keyObjectSeries;
 - (NSArray *)keyObjects;

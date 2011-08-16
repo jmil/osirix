@@ -32,7 +32,7 @@ typedef NSInteger N3BezierPathElement;
 @interface N3BezierPath : NSObject <NSCopying, NSMutableCopying, NSCoding, NSFastEnumeration> // fast enumeration returns NSValues of the endpoints
 {
     N3MutableBezierCoreRef _bezierCore;
-	CGFloat _length;
+    CGFloat _length;
     N3BezierCoreRandomAccessorRef _bezierCoreRandomAccessor;
 }
 
@@ -52,7 +52,10 @@ typedef NSInteger N3BezierPathElement;
 - (N3BezierPath *)bezierPathBySubdividing:(CGFloat)maxSegmentLength;
 - (N3BezierPath *)bezierPathByApplyingTransform:(N3AffineTransform)transform;
 - (N3BezierPath *)bezierPathByAppendingBezierPath:(N3BezierPath *)bezierPath connectPaths:(BOOL)connectPaths;
+- (N3BezierPath *)bezierPathByAddingEndpointsAtIntersectionsWithPlane:(N3Plane)plane; // will  flatten the path if it is not already flattened
+- (N3BezierPath *)bezierPathByProjectingToPlane:(N3Plane)plane;
 - (N3BezierPath *)outlineBezierPathAtDistance:(CGFloat)distance initialNormal:(N3Vector)initalNormal spacing:(CGFloat)spacing;
+- (N3BezierPath *)outlineBezierPathAtDistance:(CGFloat)distance projectionNormal:(N3Vector)projectionNormal spacing:(CGFloat)spacing;
 
 - (NSInteger)elementCount;
 - (CGFloat)length;
@@ -64,6 +67,10 @@ typedef NSInteger N3BezierPathElement;
 - (N3Vector)tangentAtStart;
 - (N3Vector)tangentAtEnd;
 - (N3Vector)normalAtEndWithInitialNormal:(N3Vector)initialNormal;
+- (BOOL)isPlanar;
+- (N3Plane)leastSquaresPlane;
+- (N3Plane)topBoundingPlaneForNormal:(N3Vector)normal;
+- (N3Plane)bottomBoundingPlaneForNormal:(N3Vector)normal;
 - (N3BezierPathElement)elementAtIndex:(NSInteger)index;
 - (N3BezierPathElement)elementAtIndex:(NSInteger)index control1:(N3VectorPointer)control1 control2:(N3VectorPointer)control2 endpoint:(N3VectorPointer)endpoint; // Warning: differs from NSBezierPath in that controlVector2 is is not always the end
 
@@ -72,10 +79,11 @@ typedef NSInteger N3BezierPathElement;
 - (N3Vector)tangentAtRelativePosition:(CGFloat)relativePosition;
 - (N3Vector)normalAtRelativePosition:(CGFloat)relativePosition initialNormal:(N3Vector)initialNormal;
 
-- (CGFloat)relalativePositionClosestToVector:(N3Vector)vector;
-- (CGFloat)relalativePositionClosestToLine:(N3Line)line;
-- (CGFloat)relalativePositionClosestToLine:(N3Line)line closestVector:(N3VectorPointer)vectorPointer;
+- (CGFloat)relativePositionClosestToVector:(N3Vector)vector;
+- (CGFloat)relativePositionClosestToLine:(N3Line)line;
+- (CGFloat)relativePositionClosestToLine:(N3Line)line closestVector:(N3VectorPointer)vectorPointer;
 - (N3BezierPath *)bezierPathByCollapsingZ;
+- (N3BezierPath *)bezierPathByReversing;
 
 - (NSArray*)intersectionsWithPlane:(N3Plane)plane; // returns NSValues containing N3Vectors of the intersections.
 - (NSArray*)intersectionsWithPlane:(N3Plane)plane relativePositions:(NSArray **)returnedRelativePositions;
@@ -91,10 +99,13 @@ typedef NSInteger N3BezierPathElement;
 - (void)lineToVector:(N3Vector)vector;
 - (void)curveToVector:(N3Vector)vector controlVector1:(N3Vector)controlVector1 controlVector2:(N3Vector)controlVector2;
 - (void)close;
+
 - (void)flatten:(CGFloat)flatness;
 - (void)subdivide:(CGFloat)maxSegmentLength;
 - (void)applyAffineTransform:(N3AffineTransform)transform;
+- (void)projectToPlane:(N3Plane)plane;
 - (void)appendBezierPath:(N3BezierPath *)bezierPath connectPaths:(BOOL)connectPaths;
+- (void)addEndpointsAtIntersectionsWithPlane:(N3Plane)plane; // will  flatten the path if it is not already flattened
 - (void)setVectorsForElementAtIndex:(NSInteger)index control1:(N3Vector)control1 control2:(N3Vector)control2 endpoint:(N3Vector)endpoint;
 
 @end

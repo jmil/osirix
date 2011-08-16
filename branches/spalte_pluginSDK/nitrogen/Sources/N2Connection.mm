@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <iostream>
 
-const NSString* N2ConnectionStatusDidChangeNotification = @"N2ConnectionStatusDidChangeNotification";
+NSString* N2ConnectionStatusDidChangeNotification = @"N2ConnectionStatusDidChangeNotification";
 
 @implementation N2Connection
 @synthesize address = _address, status = _status;
@@ -99,7 +99,7 @@ const NSString* N2ConnectionStatusDidChangeNotification = @"N2ConnectionStatusDi
 	NSLog(@"%@ Setting Status: %@", self, N2ConnectionStatusName[status]);
 #endif	
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:N2ConnectionStatusDidChangeNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName: N2ConnectionStatusDidChangeNotification object:self];
 }
 
 -(void)close {

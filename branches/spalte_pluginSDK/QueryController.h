@@ -21,7 +21,7 @@
 @class QueryFilter;
 
 /** \brief Window Controller for Q/R */
-@interface QueryController : NSWindowController
+@interface QueryController : NSWindowController <NSWindowDelegate, NSOutlineViewDelegate>
 {
     IBOutlet    QueryOutlineView			*outlineView;
 	IBOutlet	NSProgressIndicator			*progressIndicator;
@@ -66,10 +66,12 @@
 	
 	QueryArrayController					*queryManager;
 	
-	BOOL									autoQuery, queryButtonPressed, performingCFind;
+	BOOL									autoQuery, queryButtonPressed, performingCFind, avoidQueryControllerDeallocReentry;
 	
 	NSInteger								autoRefreshQueryResults;
 	NSRecursiveLock							*autoQueryLock;
+	
+	NSInteger								numberOfRunningRetrieve;
 }
 
 @property (readonly) NSRecursiveLock *autoQueryLock;

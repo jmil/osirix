@@ -21,6 +21,7 @@
 #import "VRController.h"
 #import "Notifications.h"
 #import "NSUserDefaultsController+OsiriX.h"
+#import "N2OpenGLViewWithSplitsWindow.h"
 
 static NSString* 	PETCTToolbarIdentifier						= @"PETCT Viewer Toolbar Identifier";
 static NSString*	SameHeightSplitViewToolbarItemIdentifier	= @"sameHeightSplitView";
@@ -355,6 +356,8 @@ static NSString*	ThreeDPositionToolbarItemIdentifier			= @"3DPosition";
 {
 	if ([sender isEqual: CTController])
 	{
+		[viewer setWL: iwl WW: iww];
+		
 		[CTController superSetWLWW: iwl : iww];
 		[PETCTController superSetWLWW: iwl : iww];
 
@@ -363,6 +366,8 @@ static NSString*	ThreeDPositionToolbarItemIdentifier			= @"3DPosition";
 	}
 	else if ([sender isEqual: PETController])
 	{
+		[blendingViewerController setWL: iwl WW: iww];
+		
 		[PETController superSetWLWW: iwl : iww];
 		
 		[[PETCTController originalView] loadTextures];
@@ -1258,6 +1263,8 @@ return YES;
 
 - (void) adjustHeightSplitView
 {
+	NSDisableScreenUpdates();
+	
 	NSSize splitViewSize = [modalitySplitView frame].size;
 	NSSize newSubViewSize;
 	float w,h;
@@ -1300,10 +1307,14 @@ return YES;
 		[modalitySplitView kfRecalculateDividerRects];
 		[modalitySplitView setNeedsDisplay:YES];
 	}
+	
+	NSEnableScreenUpdates();
 }
 
 - (void) adjustWidthSplitView
 {
+	NSDisableScreenUpdates();
+	
 	NSSize splitViewSize = [modalitySplitView frame].size;
 	NSSize newSubViewSize;
 	float w,h;
@@ -1347,6 +1358,8 @@ return YES;
 		[modalitySplitView kfRecalculateDividerRects];
 		[modalitySplitView setNeedsDisplay:YES];
 	}
+	
+	NSEnableScreenUpdates();
 }
 
 //- (void) turnModalitySplitView
@@ -1706,6 +1719,14 @@ return YES;
 #pragma mark-
 #pragma mark NSSplitview's delegate methods
 
+-(void)splitViewWillResizeSubviews:(NSNotification *)notification
+{
+	N2OpenGLViewWithSplitsWindow *window = (N2OpenGLViewWithSplitsWindow*)self.window;
+	
+	if( [window respondsToSelector:@selector( disableUpdatesUntilFlush)])
+		[window disableUpdatesUntilFlush];
+}
+
 - (BOOL)splitView:(NSSplitView *)sender canCollapseSubview:(NSView *)subview
 {
 	return YES;
@@ -1819,6 +1840,8 @@ return YES;
 
 - (void)splitViewDidResizeSubviews:(NSNotification *)aNotification
 {
+	NSDisableScreenUpdates();
+	
 	NSSplitView	*currentSplitView = [aNotification object];
 	if(![currentSplitView isEqual:modalitySplitView])
 	{
@@ -1921,10 +1944,14 @@ return YES;
 		[yReslicedSplitView kfRecalculateDividerRects];
 		[yReslicedSplitView setNeedsDisplay:YES];
 	}
+	
+	NSEnableScreenUpdates();
 }
 
 - (void)splitViewDidCollapseSubview:(NSNotification *)notification
 {
+	NSDisableScreenUpdates();
+	
 	NSSplitView	*currentSplitView = [notification object];
 	if(![currentSplitView isEqual:modalitySplitView])
 	{
@@ -1948,11 +1975,15 @@ return YES;
 			[xReslicedSplitView setSubview:[[xReslicedSplitView subviews] objectAtIndex:2] isCollapsed:YES];
 			[yReslicedSplitView setSubview:[[yReslicedSplitView subviews] objectAtIndex:2] isCollapsed:YES];
 		}
-	}		
+	}
+	
+	NSEnableScreenUpdates();
 }
 
 - (void)splitViewDidExpandSubview:(NSNotification *)notification;
 {
+	NSDisableScreenUpdates();
+	
 	NSSplitView	*currentSplitView = [notification object];
 	if(![currentSplitView isEqual:modalitySplitView])
 	{	
@@ -1976,7 +2007,9 @@ return YES;
 			[xReslicedSplitView setSubview:[[xReslicedSplitView subviews] objectAtIndex:2] isCollapsed:NO];
 			[yReslicedSplitView setSubview:[[yReslicedSplitView subviews] objectAtIndex:2] isCollapsed:NO];
 		}
-	}		
+	}
+	
+	NSEnableScreenUpdates();
 }
 
 #pragma mark-
@@ -2151,6 +2184,12 @@ return YES;
 		[views addObject: [[self PETCTController] yReslicedView]];
 		[views addObject: [[self PETController] yReslicedView]];
 		
+		for( int i = views.count-1; i >= 0; i--)
+		{
+			if( NSEqualRects( [[views objectAtIndex: i] visibleRect], NSZeroRect))
+				[views removeObjectAtIndex: i];
+		}
+		
 		for( id v in views)
 		{
 			NSRect bounds = [v bounds];
@@ -2165,7 +2204,7 @@ return YES;
 												 bpp: &bpp
 									   screenCapture: YES
 										  force8bits: YES
-									 removeGraphical: NO
+									 removeGraphical: YES
 										squarePixels: YES
 											allTiles: NO
 								  allowSmartCropping: YES
@@ -2363,6 +2402,7 @@ return YES;
 			}
 			
 			Wait *splash = [[Wait alloc] initWithString:NSLocalizedString(@"Creating a DICOM series", nil)];
+			[splash setCancel: YES];
 			[splash showWindow:self];
 			
 			@try
@@ -2377,6 +2417,8 @@ return YES;
 					
 					for( i = from; i < to; i+=interval)
 					{
+						NSDisableScreenUpdates();
+						
 						[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 						[modalitySplitView display];
 						
@@ -2391,7 +2433,12 @@ return YES;
 						}
 						[pool release];
 						
+						NSEnableScreenUpdates();
+						
 						[splash incrementBy: 1];
+						
+						if( [splash aborted])
+							break;
 					}
 				}
 				else
@@ -2406,6 +2453,8 @@ return YES;
 					[exportDCM setSeriesNumber:nCT];
 					for( i = from; i < to; i+=interval)
 					{
+						NSDisableScreenUpdates();
+						
 						[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 						[modalitySplitView display];
 						
@@ -2422,12 +2471,19 @@ return YES;
 						
 						[pool release];
 						
+						NSEnableScreenUpdates();
+						
 						[splash incrementBy: 1];
+						
+						if( [splash aborted])
+							break;
 					}
 					
 					[exportDCM setSeriesNumber:nPETCT];
 					for( i = from; i < to; i+=interval)
 					{
+						NSDisableScreenUpdates();
+						
 						[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 						[modalitySplitView display];
 						
@@ -2444,12 +2500,19 @@ return YES;
 						
 						[pool release];
 						
+						NSEnableScreenUpdates();
+						
 						[splash incrementBy: 1];
+						
+						if( [splash aborted])
+							break;
 					}
 					
 					[exportDCM setSeriesNumber:nPET];
 					for( i = from; i < to; i+=interval)
 					{
+						NSDisableScreenUpdates();
+						
 						[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 						[modalitySplitView display];
 						
@@ -2466,7 +2529,12 @@ return YES;
 						
 						[pool release];
 						
+						NSEnableScreenUpdates();
+						
 						[splash incrementBy: 1];
+						
+						if( [splash aborted])
+							break;
 					}
 				}
 				

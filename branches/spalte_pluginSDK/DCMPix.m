@@ -54,7 +54,7 @@
 #ifdef STATIC_DICOM_LIB
 #define PREVIEWSIZE 512
 #else
-#define PREVIEWSIZE 70.0
+#define PREVIEWSIZE 68
 #endif
 
 BOOL gUserDefaultsSet = NO;
@@ -64,8 +64,8 @@ BOOL gUseVOILUT = NO;
 BOOL gUseJPEGColorSpace = NO;
 BOOL gUSEPAPYRUSDCMPIX = YES;
 BOOL gFULL32BITPIPELINE = NO;
-
-BOOL	anonymizedAnnotations = NO;
+int gSUVAcquisitionTimeField = 0;
+NSDictionary *gCUSTOM_IMAGE_ANNOTATIONS = nil;
 BOOL	runOsiriXInProtectedMode = NO;
 BOOL	quicktimeRunning = NO;
 NSLock	*quicktimeThreadLock = nil;
@@ -76,7 +76,7 @@ static NSMutableArray *nonLinearWLWWThreads = nil;
 static NSMutableArray *minmaxThreads = nil;
 static NSConditionLock *processorsLock = nil;
 static NSConditionLock *purgeCacheLock = nil;
-static float deg2rad = 3.14159265358979/180.0; 
+static float deg2rad = M_PI / 180.0; 
 
 struct NSPointInt
 {
@@ -1178,9 +1178,9 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 @implementation DCMPix
 
 @synthesize countstackMean, stackDirection, full32bitPipeline, needToCompute8bitRepresentation, subtractedfImage;
-@synthesize frameNo, notAbleToLoadImage, shutterPolygonal, SOPClassUID;
+@synthesize frameNo, notAbleToLoadImage, shutterPolygonal, SOPClassUID, frameofReferenceUID;
 @synthesize minValueOfSeries, maxValueOfSeries, factorPET2SUV, slope, offset;
-@synthesize isRGB, pwidth = width, pheight = height;
+@synthesize isRGB, pwidth = width, pheight = height, checking;
 @synthesize pixelRatio, transferFunction, subPixOffset, isOriginDefined;
 
 @synthesize DCMPixShutterRectWidth = shutterRect_w;
@@ -1188,7 +1188,7 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 @synthesize DCMPixShutterRectOriginX = shutterRect_x;
 @synthesize DCMPixShutterRectOriginY = shutterRect_y;
 
-@synthesize frameOfReferenceUID, repetitiontime, echotime;
+@synthesize repetitiontime, echotime;
 @synthesize flipAngle, laterality, viewPosition, patientPosition;
 
 @synthesize serieNo, pixArray, pixPos, transferFunctionPtr;
@@ -1235,6 +1235,10 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 		gUSEPAPYRUSDCMPIX = [[NSUserDefaults standardUserDefaults] boolForKey:@"USEPAPYRUSDCMPIX3"];
 		gUseJPEGColorSpace = [[NSUserDefaults standardUserDefaults] boolForKey:@"UseJPEGColorSpace"];
 		gFULL32BITPIPELINE = [[NSUserDefaults standardUserDefaults] boolForKey:@"FULL32BITPIPELINE"];
+		gSUVAcquisitionTimeField = [[NSUserDefaults standardUserDefaults] integerForKey:@"SUVAcquisitionTimeField"];
+		
+		[gCUSTOM_IMAGE_ANNOTATIONS release];
+		gCUSTOM_IMAGE_ANNOTATIONS = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"CUSTOM_IMAGE_ANNOTATIONS"] copy];
 		
 #ifdef OSIRIX_LIGHT
 		gUSEPAPYRUSDCMPIX = YES;
@@ -1250,6 +1254,7 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 		gDisplayDICOMOverlays = NO;
 		gUseJPEGColorSpace = NO;
 		gFULL32BITPIPELINE = NO;
+		gSUVAcquisitionTimeField = 0;
 #endif
 		
 		if( gUseVOILUT == YES && gUSEPAPYRUSDCMPIX == NO)
@@ -2963,14 +2968,20 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 
 - (void) freefImageWhenDone:(BOOL) b
 {
+	[checking lock];
+	
 	if( b)
 		fExternalOwnedImage = nil;
 	else
 		fExternalOwnedImage = fImage;
+	
+	[checking unlock];
 }
 
 -(void) setfImage:(float*) ptr
 {
+	[checking lock];
+	
 	if( fExternalOwnedImage == nil)
 	{
 		if( fImage != nil)
@@ -2986,15 +2997,23 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 	
 	if( fExternalOwnedImage)
 		fExternalOwnedImage = fImage;
+	
+	[checking unlock];
 }
 
 - (BOOL) isLoaded
 {
-	BOOL f;
-	if( fImage) f = YES;
-	else f = NO;
+	BOOL isLoaded = NO;
 	
-	return f;
+	if( [checking tryLock])
+	{
+		if( fImage)
+			isLoaded = YES;
+	
+		[checking unlock];
+	}
+	
+	return isLoaded;
 }
 
 - (float*) fImage
@@ -3394,7 +3413,7 @@ void erase_outside_circle(char *buf, int width, int height, int cx, int cy, int 
 	
 	memcpy( copy->orientation, self->orientation, sizeof orientation);
 	
-	copy->frameOfReferenceUID = [self->frameOfReferenceUID retain];
+	copy.frameofReferenceUID = self.frameofReferenceUID;
 	
 	copy->isRGB = self->isRGB;
 	copy->cineRate = self->cineRate;
@@ -5003,7 +5022,13 @@ END_CREATE_ROIS:
 				NSMutableDictionary *dic = [cachedDCMFrameworkFiles objectForKey: srcFile];
 				
 				dcmObject = [dic objectForKey: @"dcmObject"];
-				[dic setValue: [NSNumber numberWithInt: [[dic objectForKey: @"count"] intValue]+1] forKey: @"count"];
+				
+				if( retainedCacheGroup == nil)
+				{
+					[dic setValue: [NSNumber numberWithInt: [[dic objectForKey: @"count"] intValue]+1] forKey: @"count"];
+					retainedCacheGroup = dic;
+				}
+				else NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
 			}
 			else
 			{
@@ -5015,6 +5040,11 @@ END_CREATE_ROIS:
 				
 					[dic setValue: dcmObject forKey: @"dcmObject"];
 					[dic setValue: [NSNumber numberWithInt: 1] forKey: @"count"];
+					
+					if( retainedCacheGroup != nil)
+						NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
+					
+					retainedCacheGroup = dic;
 					
 					[cachedDCMFrameworkFiles setObject: dic forKey: srcFile];
 				}
@@ -5036,11 +5066,6 @@ END_CREATE_ROIS:
 
 - (void) dcmFrameworkLoad0x0018: (DCMObject*) dcmObject
 {
-	if( [dcmObject attributeValueWithName:@"FrameofReferenceUID"])
-	{
-		[frameOfReferenceUID release];
-		frameOfReferenceUID = [[dcmObject attributeValueWithName:@"FrameofReferenceUID"] retain];
-	}
 	if( [dcmObject attributeValueWithName:@"PatientsWeight"]) patientsWeight = [[dcmObject attributeValueWithName:@"PatientsWeight"] floatValue];
 	
 	if( [dcmObject attributeValueWithName:@"SliceThickness"]) sliceThickness = [[dcmObject attributeValueWithName:@"SliceThickness"] floatValue];
@@ -5179,6 +5204,8 @@ END_CREATE_ROIS:
 		[laterality release];
 		laterality = [[dcmObject attributeValueWithName:@"Laterality"] retain];	
 	}
+		
+	self.frameofReferenceUID = [dcmObject attributeValueWithName: @"FrameofReferenceUID"];
 }
 
 - (void) dcmFrameworkLoad0x0028: (DCMObject*) dcmObject
@@ -5193,7 +5220,11 @@ END_CREATE_ROIS:
 		bitsAllocated = 8;
 	
 	if ([dcmObject attributeValueWithName:@"RescaleIntercept"]) offset = [[dcmObject attributeValueWithName:@"RescaleIntercept"] floatValue];
-	if ([dcmObject attributeValueWithName:@"RescaleSlope"]) slope = [[dcmObject attributeValueWithName:@"RescaleSlope"] floatValue]; 
+	if ([dcmObject attributeValueWithName:@"RescaleSlope"])
+	{
+		slope = [[dcmObject attributeValueWithName:@"RescaleSlope"] floatValue]; 
+		if( slope == 0) slope = 1.0;
+	}
 	
 	// image size
 	if( [dcmObject attributeValueWithName:@"Rows"])
@@ -5353,7 +5384,13 @@ END_CREATE_ROIS:
 			NSMutableDictionary *dic = [cachedDCMFrameworkFiles objectForKey: srcFile];
 			
 			dcmObject = [dic objectForKey: @"dcmObject"];
-			[dic setValue: [NSNumber numberWithInt: [[dic objectForKey: @"count"] intValue]+1] forKey: @"count"];
+			
+			if( retainedCacheGroup == nil)
+			{
+				[dic setValue: [NSNumber numberWithInt: [[dic objectForKey: @"count"] intValue]+1] forKey: @"count"];
+				retainedCacheGroup = dic;
+			}
+			else NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
 		}
 		else
 		{
@@ -5364,7 +5401,12 @@ END_CREATE_ROIS:
 				NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 				
 				[dic setValue: dcmObject forKey: @"dcmObject"];
-				[dic setValue: [NSNumber numberWithInt: 1] forKey: @"count"];
+				if( retainedCacheGroup == nil)
+				{
+					[dic setValue: [NSNumber numberWithInt: 1] forKey: @"count"];
+					retainedCacheGroup = dic;
+				}
+				else NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
 				
 				[cachedDCMFrameworkFiles setObject: dic forKey: srcFile];
 			}
@@ -5434,14 +5476,14 @@ END_CREATE_ROIS:
 			if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/dicomsr_osirix/"] == NO)
 				[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/dicomsr_osirix/" attributes: nil];
 			
-			NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [srcFile lastPathComponent]] stringByAppendingPathExtension: @"html"];
+			NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [srcFile lastPathComponent]] stringByAppendingPathExtension: @"xml"];
 			
 			if( [[NSFileManager defaultManager] fileExistsAtPath: htmlpath] == NO)
 			{
 				NSTask *aTask = [[[NSTask alloc] init] autorelease];		
 				[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
 				[aTask setLaunchPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
-				[aTask setArguments: [NSArray arrayWithObjects: srcFile, htmlpath, nil]];		
+				[aTask setArguments: [NSArray arrayWithObjects: @"+X1", srcFile, htmlpath, nil]];		
 				[aTask launch];
 				[aTask waitUntilExit];		
 				[aTask interrupt];
@@ -5699,40 +5741,48 @@ END_CREATE_ROIS:
 			radionuclideTotalDose = [[radionuclideTotalDoseObject attributeValueWithName:@"RadionuclideTotalDose"] floatValue];
 			halflife = [[radionuclideTotalDoseObject attributeValueWithName:@"RadionuclideHalfLife"] floatValue];
 			
-			NSString *seriesDate = [[dcmObject attributeValueWithName:@"SeriesDate"] dateString];
-			NSString *seriesTime = [[dcmObject attributeValueWithName:@"SeriesTime"] timeString];
-			NSString *acqDate = [[dcmObject attributeValueWithName:@"AcquisitionDate"] dateString];
-			NSString *acqTime = [[dcmObject attributeValueWithName:@"AcquisitionTime"] timeString];
+			NSArray *priority = nil;
+			
+			if( gSUVAcquisitionTimeField == 0) // Prefer SeriesTime
+				priority = [NSArray arrayWithObjects: @"SeriesDate", @"SeriesTime", @"AcquisitionDate", @"AcquisitionTime", @"ContentDate", @"ContentTime", @"StudyDate", @"StudyTime", nil];
+			
+			if( gSUVAcquisitionTimeField == 1) // Prefer AcquisitionTime
+				priority = [NSArray arrayWithObjects: @"AcquisitionDate", @"AcquisitionTime", @"SeriesDate", @"SeriesTime", @"ContentDate", @"ContentTime", @"StudyDate", @"StudyTime", nil];
+			
+			if( gSUVAcquisitionTimeField == 2) // Prefer ContentTime
+				priority = [NSArray arrayWithObjects: @"ContentDate", @"ContentTime", @"SeriesDate", @"SeriesTime", @"AcquisitionDate", @"AcquisitionTime", @"StudyDate", @"StudyTime", nil];
+			
+			if( gSUVAcquisitionTimeField == 3) // Prefer StudyTime
+				priority = [NSArray arrayWithObjects: @"StudyDate", @"StudyTime", @"SeriesDate", @"SeriesTime", @"AcquisitionDate", @"AcquisitionTime", @"ContentDate", @"ContentTime", nil];
+			
+			NSString *preferredTime = nil;
+			NSString *preferredDate = nil;
+			
+			for( int v = 0; v < priority.count;)
+			{
+				NSString *value;
+				
+				if( preferredDate == nil && (value = [[dcmObject attributeValueWithName: [priority objectAtIndex: v]] dateString])) preferredDate = value;
+				v++;
+				
+				if( preferredTime == nil && (value = [[dcmObject attributeValueWithName: [priority objectAtIndex: v]] timeString])) preferredTime = value;
+				v++;
+			}
+			
 			NSString *radioTime = [[radionuclideTotalDoseObject attributeValueWithName:@"RadiopharmaceuticalStartTime"] timeString];
 			
-			if( seriesDate)
+			if( preferredDate && preferredTime)
 			{
-				if( [seriesTime length] >= 6)
-					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[seriesDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M%S"];
+				if( [preferredTime length] >= 6)
+				{
+					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[preferredDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M%S"];
+					acquisitionTime = [[NSCalendarDate alloc] initWithString:[preferredDate stringByAppendingString:preferredTime] calendarFormat:@"%Y%m%d%H%M%S"];
+				}
 				else
-					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[seriesDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M"];
-			}
-			else if (acqDate)
-			{
-				if( [radioTime length] >= 6)
-					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[acqDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M%S"];
-				else
-					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[acqDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M"];
-			}
-			
-			if (seriesDate && seriesTime)
-			{
-				if( [seriesTime length] >= 6)
-					acquisitionTime = [[NSCalendarDate alloc] initWithString:[seriesDate stringByAppendingString:seriesTime] calendarFormat:@"%Y%m%d%H%M%S"];
-				else
-					acquisitionTime = [[NSCalendarDate alloc] initWithString:[seriesDate stringByAppendingString:seriesTime] calendarFormat:@"%Y%m%d%H%M"];
-			}
-			else if (acqDate && acqTime)
-			{
-				if( [acqTime length] >= 6)
-					acquisitionTime = [[NSCalendarDate alloc] initWithString:[acqDate stringByAppendingString:acqTime] calendarFormat:@"%Y%m%d%H%M%S"];
-				else
-					acquisitionTime = [[NSCalendarDate alloc] initWithString:[acqDate stringByAppendingString:acqTime] calendarFormat:@"%Y%m%d%H%M"];
+				{
+					radiopharmaceuticalStartTime = [[NSCalendarDate alloc] initWithString:[preferredDate stringByAppendingString:radioTime] calendarFormat:@"%Y%m%d%H%M"];
+					acquisitionTime = [[NSCalendarDate alloc] initWithString:[preferredDate stringByAppendingString:preferredTime] calendarFormat:@"%Y%m%d%H%M"];
+				}
 			}
 
 			[self computeTotalDoseCorrected];
@@ -5887,7 +5937,8 @@ END_CREATE_ROIS:
 			if( [pixData length] > 0)
 			{
 				oImage =  malloc([pixData length]);	//pointer to a memory zone where each pixel of the data has a short value reserved
-				[pixData getBytes:oImage];
+				if( oImage)
+					[pixData getBytes:oImage];
 			}
 			
 			if( oImage == nil) //there was no data for this frame -> create empty image
@@ -6101,10 +6152,30 @@ END_CREATE_ROIS:
 					
 					if( dstf.data)
 					{
-						if( fIsSigned > 0)
-							vImageConvert_16SToF( &src16, &dstf, offset, slope, 0);
+						if( bitsAllocated == 16 && [pixData length] < height*width*2)
+						{
+							NSLog( @"************* [pixData length] < height * width");
+							
+							if( [pixData length] == height*width) // 8 bits??
+							{
+								NSLog( @"************* [[pixData length] == height*width : 8 bits? but declared as 16 bits...");
+								
+								unsigned long x = height * width;
+								float *tDestF = (float*) dstf.data;
+								unsigned char *oChar = (unsigned char*) oImage;
+								while( x-- > 0)
+									*tDestF++ = *oChar++;
+							}
+							else
+								memset( dstf.data, 0, width*height*sizeof(float));
+						}
 						else
-							vImageConvert_16UToF( &src16, &dstf, offset, slope, 0);
+						{
+							if( fIsSigned > 0)
+								vImageConvert_16SToF( &src16, &dstf, offset, slope, 0);
+							else
+								vImageConvert_16UToF( &src16, &dstf, offset, slope, 0);
+						}
 						
 						if( inverseVal)
 						{
@@ -6229,6 +6300,11 @@ END_CREATE_ROIS:
 				[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: fileNb]  forKey: @"fileNb"];
 				[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: 1] forKey: @"count"];
 				
+				if( retainedCacheGroup != nil)
+					NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
+				
+				retainedCacheGroup = cachedGroupsForThisFile;
+				
 				if( [cachedPapyGroups count] >= kMax_file_open)
 					NSLog( @"******* WARNING: Too much files opened for Papyrus Toolkit");
 					
@@ -6244,7 +6320,12 @@ END_CREATE_ROIS:
 			
 			if( group == 0L)
 			{
-				[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: [[cachedGroupsForThisFile valueForKey: @"count"] intValue] +1] forKey: @"count"];
+				if( retainedCacheGroup == nil)
+				{
+					[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: [[cachedGroupsForThisFile valueForKey: @"count"] intValue] +1] forKey: @"count"];
+					retainedCacheGroup = cachedGroupsForThisFile;
+				}
+				else NSLog( @"******** DCMPix : retainedCacheGroup != nil !");
 			}
 		}
 		
@@ -6306,6 +6387,9 @@ END_CREATE_ROIS:
 
 + (void) purgeCachedDictionaries
 {
+	if( [NSThread isMainThread] == NO)
+		NSLog( @"--- purgeCachedDictionaries [NSThread isMainThread] == NO");
+	
 	if( purgeCacheLock == nil)
 		purgeCacheLock = [[NSConditionLock alloc] initWithCondition: 0];
 	
@@ -6357,13 +6441,14 @@ END_CREATE_ROIS:
 	{
 		if( fImage)
 		{
-			NSMutableDictionary *o = [cachedDCMFrameworkFiles valueForKey: srcFile];
+			NSMutableDictionary *cachedGroupsForThisFile = [cachedDCMFrameworkFiles valueForKey: srcFile];
 			
-			if( o)
+			if( cachedGroupsForThisFile && retainedCacheGroup == cachedGroupsForThisFile)
 			{
-				[o setValue: [NSNumber numberWithInt: [[o objectForKey: @"count"] intValue]-1] forKey: @"count"];
+				[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: [[cachedGroupsForThisFile objectForKey: @"count"] intValue]-1] forKey: @"count"];
+				retainedCacheGroup = nil;
 				
-				if( [[o objectForKey: @"count"] intValue] <= 0)
+				if( [[cachedGroupsForThisFile objectForKey: @"count"] intValue] <= 0)
 					[cachedDCMFrameworkFiles removeObjectForKey: srcFile];
 			}
 		}
@@ -6384,9 +6469,10 @@ END_CREATE_ROIS:
 	{
 		NSMutableDictionary *cachedGroupsForThisFile = [cachedPapyGroups valueForKey: srcFile];
 	
-		if( cachedGroupsForThisFile)
+		if( cachedGroupsForThisFile && retainedCacheGroup == cachedGroupsForThisFile)
 		{
 			[cachedGroupsForThisFile setValue: [NSNumber numberWithInt: [[cachedGroupsForThisFile objectForKey: @"count"] intValue]-1] forKey: @"count"];
+			retainedCacheGroup = nil;
 			
 			if( [[cachedGroupsForThisFile objectForKey: @"count"] intValue] <= 0)
 			{
@@ -6419,30 +6505,23 @@ END_CREATE_ROIS:
 	PapyULong nbVal;
 	int elemType, i;
 	
-	val = Papy3GetElement (theGroupP, papFrameofReferenceUIDGr, &nbVal, &elemType);
-	if ( val)
-	{
-		[frameOfReferenceUID release];
-		frameOfReferenceUID = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
-	}
-	
 	val = Papy3GetElement (theGroupP, papSliceThicknessGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 		sliceThickness = atof( val->a);
 	
 	val = Papy3GetElement (theGroupP, papSpacingBetweenSlicesGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 		spacingBetweenSlices = atof( val->a);
 	
 	val = Papy3GetElement (theGroupP, papRepetitionTimeGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[repetitiontime release];
 		repetitiontime = [[NSString stringWithFormat:@"%0.1f", atof( val->a)] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papEchoTimeGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[echotime release];
 		echotime = [[NSString stringWithFormat:@"%0.1f", atof( val->a)] retain];
@@ -6456,42 +6535,42 @@ END_CREATE_ROIS:
 	}
 	
 	val = Papy3GetElement (theGroupP, papFlipAngleGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[flipAngle release];
 		flipAngle = [[NSString stringWithFormat:@"%0.1f", atof( val->a)] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papViewPositionGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[viewPosition release];
 		viewPosition = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papPositionerPrimaryAngleGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[positionerPrimaryAngle release];
 		positionerPrimaryAngle = [[NSNumber numberWithDouble: atof( val->a)] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papPositionerSecondaryAngleGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[positionerSecondaryAngle release];
 		positionerSecondaryAngle = [[NSNumber numberWithDouble: atof( val->a)] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papPatientPositionGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[patientPosition release];
 		patientPosition = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
 	}
 	
 	val = Papy3GetElement (theGroupP, papCineRateGr, &nbVal, &elemType);
-	if (!cineRate && val != NULL) cineRate = atof( val->a);	//[[NSString stringWithFormat:@"%0.1f", ] floatValue];
+	if (!cineRate && val && val->a && validAPointer( elemType)) cineRate = atof( val->a);	//[[NSString stringWithFormat:@"%0.1f", ] floatValue];
 	
 	// Ultrasounds pixel spacing
 	if( [modalityString isEqualToString:@"US"])
@@ -6567,7 +6646,7 @@ END_CREATE_ROIS:
 	if(!cineRate)
 	{
 		val = Papy3GetElement (theGroupP, papFrameDelayGr, &nbVal, &elemType);
-		if ( val)
+		if ( val && val->a && validAPointer( elemType))
 		{
 			if( atof( val->a) > 0)
 				cineRate = 1000./atof( val->a);
@@ -6577,7 +6656,7 @@ END_CREATE_ROIS:
 	if(!cineRate)
 	{
 		val = Papy3GetElement (theGroupP, papFrameTimeVectorGr, &nbVal, &elemType);
-		if ( val)
+		if ( val && val->a && validAPointer( elemType))
 		{
 			if( atof( val->a) > 0)
 				cineRate = 1000./atof( val->a);
@@ -6587,7 +6666,7 @@ END_CREATE_ROIS:
 	if( gUseShutter)
 	{
 		val = Papy3GetElement (theGroupP, papShutterShapeGr, &nbVal, &elemType);
-		if ( val)
+		if ( val && val->a && validAPointer( elemType))
 		{
 			PapyULong nbtmp;
 			
@@ -6700,16 +6779,20 @@ END_CREATE_ROIS:
 	}
 	
 	val = Papy3GetElement (theGroupP, papImageLateralityGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		[laterality release];
 		laterality = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
 	}
 	
+	val = Papy3GetElement (theGroupP, papFrameofReferenceUIDGr, &nbVal, &elemType);
+	if ( val && val->a && validAPointer( elemType))
+		self.frameofReferenceUID = [NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding];
+	
 	if( laterality == nil)
 	{
 		val = Papy3GetElement (theGroupP, papLateralityGr, &nbVal, &elemType);
-		if ( val)
+		if ( val && val->a && validAPointer( elemType))
 		{
 			[laterality release];
 			laterality = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
@@ -6737,6 +6820,9 @@ END_CREATE_ROIS:
 		// get the last slope
 		for ( int j = 1; j < pos; j++) tmpVal3++;
 		slope = atof( tmpVal3->a);
+		
+		if( slope == 0)
+			slope = 1.0;
 	}
 	
 	val = Papy3GetElement (theGroupP, papBitsAllocatedGr, &nbVal, &elemType);
@@ -6790,11 +6876,11 @@ END_CREATE_ROIS:
 	}
 	
 	val = Papy3GetElement (theGroupP, papWindowCenterGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 		savedWL = atof( val->a);
 	
 	val = Papy3GetElement (theGroupP, papWindowWidthGr, &nbVal, &elemType);
-	if ( val)
+	if ( val && val->a && validAPointer( elemType))
 	{
 		savedWW = atof( val->a);
 		if(  savedWW < 0) savedWW =-savedWW;
@@ -6929,7 +7015,7 @@ END_CREATE_ROIS:
 					
 					// extract the RED palette clut data
 					val = Papy3GetElement (theGroupP, papSegmentedRedPaletteColorLookupTableDataGr, &nbVal, &elemType);
-					if ( val)
+					if ( val && val->a && validAPointer( elemType))
 					{
 						unsigned short  *ptrs =  (unsigned short*) val->a;
 						nbVal = theGroupP[ papSegmentedRedPaletteColorLookupTableDataGr].length / 2;
@@ -6984,7 +7070,7 @@ END_CREATE_ROIS:
 					
 					// extract the GREEN palette clut data
 					val = Papy3GetElement (theGroupP, papSegmentedGreenPaletteColorLookupTableDataGr, &nbVal, &elemType);
-					if ( val)
+					if ( val && val->a && validAPointer( elemType))
 					{
 						unsigned short  *ptrs =  (unsigned short*) val->a;
 						nbVal = theGroupP[ papSegmentedGreenPaletteColorLookupTableDataGr].length / 2;
@@ -7033,12 +7119,12 @@ END_CREATE_ROIS:
 							}
 						}
 						found16 = YES; 	// this is used to let us know we have to look for the other element */
-						NSLog(@"%d", xxindex);
+//						NSLog(@"%d", xxindex);
 					}//endif
 					
 					// extract the BLUE palette clut data
 					val = Papy3GetElement (theGroupP, papSegmentedBluePaletteColorLookupTableDataGr, &nbVal, &elemType);
-					if ( val)
+					if ( val && val->a && validAPointer( elemType))
 					{
 						unsigned short  *ptrs =  (unsigned short*) val->a;
 						nbVal = theGroupP[ papSegmentedBluePaletteColorLookupTableDataGr].length / 2;
@@ -7119,7 +7205,7 @@ END_CREATE_ROIS:
 				
 				// extract the RED palette clut data
 				val = Papy3GetElement (theGroupP, papRedPaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs =  (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryR; j++, ptrs++) clutRed [j] = (int) (*ptrs/256);
@@ -7129,14 +7215,14 @@ END_CREATE_ROIS:
 				
 				// extract the GREEN palette clut data
 				val = Papy3GetElement (theGroupP, papGreenPaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs = (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryG; j++, ptrs++) clutGreen [j] = (int) (*ptrs/256);
 				}
 				// extract the BLUE palette clut data
 				val = Papy3GetElement (theGroupP, papBluePaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs =  (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryB; j++, ptrs++) clutBlue [j] = (int) (*ptrs/256);
@@ -7146,7 +7232,7 @@ END_CREATE_ROIS:
 			{
 				// extract the RED palette clut data
 				val = Papy3GetElement (theGroupP, papRedPaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs =  (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryR; j++, ptrs++) clutRed [j] = (int) (*ptrs);
@@ -7155,14 +7241,14 @@ END_CREATE_ROIS:
 				
 				// extract the GREEN palette clut data
 				val = Papy3GetElement (theGroupP, papGreenPaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs =  (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryG; j++, ptrs++) clutGreen [j] = (int) (*ptrs);
 				}
 				// extract the BLUE palette clut data
 				val = Papy3GetElement (theGroupP, papBluePaletteCLUTDataGr, &nbVal, &elemType);
-				if ( val)
+				if ( val && val->a && validAPointer( elemType))
 				{
 					unsigned short  *ptrs =  (unsigned short*) val->a;
 					for ( int j = 0; j < clutEntryB; j++, ptrs++) clutBlue [j] = (int) (*ptrs);
@@ -7178,8 +7264,6 @@ END_CREATE_ROIS:
 			if (found16) fSetClut16 = YES;
 		} // endif ...extraction of the color palette
 	}
-	
-	[PapyrusLock unlock];
 	
 	if( gUseVOILUT)
 	{
@@ -7223,6 +7307,8 @@ END_CREATE_ROIS:
 			}
 		}
 	}
+	
+	[PapyrusLock unlock];
 }
 
 - (BOOL) loadDICOMPapyrus
@@ -7247,7 +7333,6 @@ END_CREATE_ROIS:
 	orientation[ 0] = 0;	orientation[ 1] = 0;	orientation[ 2] = 0;
 	orientation[ 3] = 0;	orientation[ 4] = 0;	orientation[ 5] = 0;
 	
-	frameOfReferenceUID = 0;
 	sliceThickness = 0;
 	spacingBetweenSlices = 0;
 	repetitiontime = 0;
@@ -7287,76 +7372,90 @@ END_CREATE_ROIS:
 			if( theGroupP)
 			{
 				val = Papy3GetElement (theGroupP, papRecommendedDisplayFrameRateGr, &nbVal, &elemType);
-				if ( val) cineRate = atof( val->a);	//[[NSString stringWithFormat:@"%0.1f", ] floatValue];
+				if ( val && val->a && validAPointer( elemType)) cineRate = atof( val->a);	//[[NSString stringWithFormat:@"%0.1f", ] floatValue];
 				
-				acquisitionTime = nil;
-				
-				if( acquisitionTime == nil)
+				int priority[ 8];
+
+				if( gSUVAcquisitionTimeField == 0) // Prefer SeriesTime
 				{
-					val = Papy3GetElement (theGroupP, papSeriesDateGr, &nbVal, &elemType);
-					if (val != NULL)
-					{
-						NSString	*studyDate = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
-						if( [studyDate length] != 6) studyDate = [studyDate stringByReplacingOccurrencesOfString:@"." withString:@""];
-						
-						val = Papy3GetElement (theGroupP, papSeriesTimeGr, &nbVal, &elemType);
-						if (val != NULL)
-						{
-							NSString*   completeDate;
-							NSString*   studyTime = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
-							
-							completeDate = [studyDate stringByAppendingString:studyTime];
-							
-							if( [studyTime length] >= 6)
-								acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M%S"];
-							else
-								acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M"];
-								
-							if( acquisitionTime)
-								acquisitionDate = [studyDate copy];
-						}
-					}
+					priority[ 0] = papSeriesDateGr;			priority[ 1] = papSeriesTimeGr;
+					priority[ 2] = papAcquisitionDateGr;	priority[ 3] = papAcquisitionTimeGr;
+					priority[ 4] = papImageDateGr;			priority[ 5] = papImageTimeGr;
+					priority[ 6] = papStudyDateGr;			priority[ 7] = papStudyTimeGr;
 				}
 				
-				if( acquisitionTime == nil)
+				if( gSUVAcquisitionTimeField == 1) // Prefer AcquisitionTime
 				{
-					val = Papy3GetElement (theGroupP, papAcquisitionDateGr, &nbVal, &elemType);	
-					if (val != NULL)
+					priority[ 0] = papAcquisitionDateGr;	priority[ 1] = papAcquisitionTimeGr;
+					priority[ 2] = papSeriesDateGr;			priority[ 3] = papSeriesTimeGr;
+					priority[ 4] = papImageDateGr;			priority[ 5] = papImageTimeGr;
+					priority[ 6] = papStudyDateGr;			priority[ 7] = papStudyTimeGr;
+				}
+				
+				if( gSUVAcquisitionTimeField == 2) // Prefer ContentTime
+				{
+					priority[ 0] = papImageDateGr;			priority[ 1] = papImageTimeGr;
+					priority[ 2] = papSeriesDateGr;			priority[ 3] = papSeriesTimeGr;
+					priority[ 4] = papAcquisitionDateGr;	priority[ 5] = papAcquisitionTimeGr;
+					priority[ 6] = papStudyDateGr;			priority[ 7] = papStudyTimeGr;
+				}
+				
+				if( gSUVAcquisitionTimeField == 3) // Prefer StudyTime
+				{
+					priority[ 0] = papStudyDateGr;			priority[ 1] = papStudyTimeGr;
+					priority[ 2] = papSeriesDateGr;			priority[ 3] = papSeriesTimeGr;
+					priority[ 4] = papAcquisitionDateGr;	priority[ 5] = papAcquisitionTimeGr;
+					priority[ 6] = papImageDateGr;			priority[ 7] = papImageTimeGr;
+				}
+				
+				NSString *preferredTime = nil, *preferredDate = nil;
+				
+				for( int v = 0; v < 8;)
+				{
+					NSString *value;
+					
+					if( preferredDate == nil && (val = Papy3GetElement (theGroupP, priority[ v], &nbVal, &elemType)))
 					{
-						NSString	*studyDate = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
-						if( [studyDate length] != 6) studyDate = [studyDate stringByReplacingOccurrencesOfString:@"." withString:@""];
-						
-						val = Papy3GetElement (theGroupP, papAcquisitionTimeGr, &nbVal, &elemType);
-						if (val != NULL)
+						if ( val && val->a && validAPointer( elemType))
 						{
-							NSString*   completeDate;
-							NSString*   studyTime = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
-							
-							completeDate = [studyDate stringByAppendingString:studyTime];
-							
-							if( [studyTime length] >= 6)
-								acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M%S"];
-							else
-								acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M"];
-							
-							if( acquisitionTime)
-								acquisitionDate = [studyDate copy];
+							preferredDate = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
+							if( [preferredDate length] != 6) preferredDate = [preferredDate stringByReplacingOccurrencesOfString:@"." withString:@""];
 						}
 					}
+					v++;
+					
+					if( preferredTime == nil && (val = Papy3GetElement (theGroupP, priority[ v], &nbVal, &elemType)))
+					{
+						if ( val && val->a && validAPointer( elemType))
+							preferredTime = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
+					}
+					v++;
+				}
+				
+				if( preferredTime && preferredDate)
+				{
+					NSString *completeDate = [preferredDate stringByAppendingString: preferredTime];
+					
+					if( [preferredTime length] >= 6)
+						acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M%S"];
+					else
+						acquisitionTime = [[NSCalendarDate alloc] initWithString:completeDate calendarFormat:@"%Y%m%d%H%M"];
+				
+					acquisitionDate = [preferredDate copy];
 				}
 				
 				val = Papy3GetElement (theGroupP, papModalityGr, &nbVal, &elemType);
-				if (val != NULL) modalityString = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
+				if ( val && val->a && validAPointer( elemType)) modalityString = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
 				
 				val = Papy3GetElement (theGroupP, papSOPClassUIDGr, &nbVal, &elemType);
-				if (val != NULL) self.SOPClassUID = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
+				if ( val && val->a && validAPointer( elemType)) self.SOPClassUID = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
 			}
 			
 			theGroupP = (SElement*) [self getPapyGroup: 0x0010];
 			if( theGroupP)
 			{
 				val = Papy3GetElement (theGroupP, papPatientsWeightGr, &nbVal, &elemType);
-				if ( val) patientsWeight = atof( val->a);
+				if ( val && val->a && validAPointer( elemType)) patientsWeight = atof( val->a);
 				else patientsWeight = 0;
 			}
 			
@@ -7381,11 +7480,11 @@ END_CREATE_ROIS:
 				if( theGroupP)
 				{
 					val = Papy3GetElement (theGroupP, papUnitsGr, &pos, &elemType);
-					if( val) units = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
+					if( val && val->a && validAPointer( elemType)) units = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
 					else units = nil;
 					
 					val = Papy3GetElement (theGroupP, papDecayCorrectionGr, &pos, &elemType);
-					if( val) decayCorrection = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
+					if( val && val->a && validAPointer( elemType)) decayCorrection = [[NSString stringWithCString:val->a encoding: NSISOLatin1StringEncoding] retain];
 					else decayCorrection = nil;
 					
 	//				val = Papy3GetElement (theGroupP, papDecayFactorGr, &pos, &elemType);
@@ -7394,7 +7493,7 @@ END_CREATE_ROIS:
 					decayFactor = 1.0;
 					
 					val = Papy3GetElement (theGroupP, papFrameReferenceTimeGr, &pos, &elemType);
-					if( val) frameReferenceTime = atof( val->a);
+					if( val && val->a && validAPointer( elemType)) frameReferenceTime = atof( val->a);
 					else frameReferenceTime = 0.0;
 					
 					val = Papy3GetElement (theGroupP, papRadiopharmaceuticalInformationSequenceGr, &pos, &elemType);
@@ -7414,10 +7513,13 @@ END_CREATE_ROIS:
 									if ( gr->group == 0x0018)
 									{
 										val = Papy3GetElement (gr, papRadionuclideTotalDoseGr, &pos, &elemType);
-										radionuclideTotalDose = val? atof( val->a) : 0.0;
+										if( val && val->a && validAPointer( elemType))
+											radionuclideTotalDose = atof( val->a);
+										else
+											radionuclideTotalDose = 0.0;
 										
 										val = Papy3GetElement (gr, papRadiopharmaceuticalStartTimeGr, &pos, &elemType);
-										if( val && acquisitionDate)
+										if( val && val->a && validAPointer( elemType) && acquisitionDate)
 										{
 											NSString *pharmaTime = [NSString stringWithCString:val->a encoding: NSASCIIStringEncoding];
 											NSString *completeDate = [acquisitionDate stringByAppendingString: pharmaTime];
@@ -7429,8 +7531,11 @@ END_CREATE_ROIS:
 										}
 										
 										val = Papy3GetElement (gr, papRadionuclideHalfLifeGr, &pos, &elemType);
-										halflife = val? atof( val->a) : 0.0;
-										
+										if( val && val->a && validAPointer( elemType))
+											halflife = atof( val->a);
+										else
+											halflife = 0;
+											
 										break;
 									}
 								}
@@ -7870,7 +7975,7 @@ END_CREATE_ROIS:
 					//			if ( val) oRows	= val->us;
 					
 					val = Papy3GetElement (theGroupP, papOverlayTypeGr, &nbVal, &elemType);
-					if ( val) oType	= val->a[ 0];
+					if ( val && val->a && validAPointer( elemType)) oType = val->a[ 0];
 					
 					val = Papy3GetElement (theGroupP, papOriginGr, &nbVal, &elemType);
 					if ( val)
@@ -7925,7 +8030,7 @@ END_CREATE_ROIS:
 					
 					if( nbVal > 0)
 					{
-						if( val->a)
+						if( val && val->a && validAPointer( elemType))
 							philipsFactor = atof( val->a);
 					}
 				}
@@ -8013,14 +8118,14 @@ END_CREATE_ROIS:
 							if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/dicomsr_osirix/"] == NO)
 								[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/dicomsr_osirix/" attributes: nil];
 							
-							NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [srcFile lastPathComponent]] stringByAppendingPathExtension: @"html"];
+							NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [srcFile lastPathComponent]] stringByAppendingPathExtension: @"xml"];
 							
 							if( [[NSFileManager defaultManager] fileExistsAtPath: htmlpath] == NO)
 							{
 								NSTask *aTask = [[[NSTask alloc] init] autorelease];		
 								[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
 								[aTask setLaunchPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
-								[aTask setArguments: [NSArray arrayWithObjects: srcFile, htmlpath, nil]];		
+								[aTask setArguments: [NSArray arrayWithObjects: @"+X1", srcFile, htmlpath, nil]];		
 								[aTask launch];
 								[aTask waitUntilExit];		
 								[aTask interrupt];
@@ -8105,12 +8210,14 @@ END_CREATE_ROIS:
 									NSLog(@"This is really bad..... Please send this file to rossetantoine@bluewin.ch");
 									goImageSize[ fileNb] = height * width * 8; // *8 in case of a 16-bit RGB encoding....
 									oImage = malloc( goImageSize[ fileNb]);
-									
-									long yo = 0;
-									for( i = 0 ; i < height * width * 4; i++)
+									if( oImage)
 									{
-										oImage[ i] = yo++;
-										if( yo>= width) yo = 0;
+										int yo = 0;
+										for( i = 0 ; i < height * width * 4; i++)
+										{
+											oImage[ i] = yo++;
+											if( yo>= width) yo = 0;
+										}
 									}
 								}
 								
@@ -8250,14 +8357,17 @@ END_CREATE_ROIS:
 									}
 				#endif
 									
-									for( y = 0; y < height; y++)
+									if( shortRed && shortGreen && shortBlue)
 									{
-										for( x = 0; x < width; x++)
+										for( y = 0; y < height; y++)
 										{
-											pixel = bufPtr[y*width + x];
-											tmpImage[y*width*3 + x*3 + 0] = shortRed[ pixel];
-											tmpImage[y*width*3 + x*3 + 1] = shortGreen[ pixel];
-											tmpImage[y*width*3 + x*3 + 2] = shortBlue[ pixel];
+											for( x = 0; x < width; x++)
+											{
+												pixel = bufPtr[y*width + x];
+												tmpImage[y*width*3 + x*3 + 0] = shortRed[ pixel];
+												tmpImage[y*width*3 + x*3 + 1] = shortGreen[ pixel];
+												tmpImage[y*width*3 + x*3 + 2] = shortBlue[ pixel];
+											}
 										}
 									}
 									
@@ -8268,9 +8378,13 @@ END_CREATE_ROIS:
 									oImage = (short*) tmpImage;
 									goImageSize[ fileNb] = width * height * 3;
 									
-									free( shortRed);
-									free( shortGreen);
-									free( shortBlue);
+									if( shortRed) free( shortRed);
+									if( shortGreen) free( shortGreen);
+									if( shortBlue) free( shortBlue);
+									
+									shortRed = nil;
+									shortGreen = nil;
+									shortBlue = nil;
 								}
 								
 								// we need to know how the pixels are stored
@@ -8410,10 +8524,14 @@ END_CREATE_ROIS:
 							if( fExternalOwnedImage)
 							{
 								fImage = fExternalOwnedImage;
-								memcpy( fImage, oImage, width*height*sizeof(float));
-								free(oImage);
+								if( oImage)
+								{
+									memcpy( fImage, oImage, width*height*sizeof(float));
+									free(oImage);
+								}
 							}
 							else fImage = (float*) oImage;
+							
 							oImage = nil;
 							
 							if( oData && gDisplayDICOMOverlays)
@@ -8525,7 +8643,6 @@ END_CREATE_ROIS:
 							
 							if( oData && gDisplayDICOMOverlays && fImage)
 							{
-								int y, x;
 								float maxValue = 0;
 								
 								if( inverseVal)
@@ -9069,9 +9186,9 @@ END_CREATE_ROIS:
 						{
 							case 2:
 							{
-								unsigned char   *bufPtr;
-								short			*ptr;
-								long			loop;
+								unsigned char *bufPtr;
+								short *ptr;
+								long loop;
 								
 								bufPtr = (unsigned char*) [fileData bytes]+ frameNo*(height * width);
 								ptr = oImage;
@@ -9089,8 +9206,8 @@ END_CREATE_ROIS:
 								memcpy( oImage, [fileData bytes] + frameNo*(height * width * 2), height * width * 2);
 								if( swapByteOrder)
 								{
-									long			loop;
-									short			*ptr = oImage;
+									long loop;
+									short *ptr = oImage;
 									
 									loop = height * width;
 									while( loop-- > 0)
@@ -9103,9 +9220,9 @@ END_CREATE_ROIS:
 								
 							case 8:
 								{
-									unsigned int   *bufPtr;
-									short			*ptr;
-									long			loop;
+									unsigned int *bufPtr;
+									short *ptr;
+									long loop;
 									
 									bufPtr = (unsigned int*) [fileData bytes];
 									bufPtr += frameNo * (height * width);
@@ -9119,7 +9236,7 @@ END_CREATE_ROIS:
 										else *ptr++ = *bufPtr++;
 									}
 								}
-							break; 
+							break;
 								
 							case 16:
 								if( fExternalOwnedImage)
@@ -9139,20 +9256,76 @@ END_CREATE_ROIS:
 								
 								free(oImage);
 								oImage = nil;
-							break; 
+							break;
+							
+							case 64: // double
+								if( fExternalOwnedImage)
+									fImage = fExternalOwnedImage;
+								else
+									fImage = malloc( (width+1) * (height+1) * sizeof(float) + 100);
 								
-							case 128:
-								//								fi.fileType = FileInfo.RGB_PLANAR; 		// DT_RGB
-								//								bitsallocated = 24;
+								if( [fileData length] < height * width * sizeof(float))
+									NSLog( @"****** [fileData length] < height * width * sizeof(float)");
+								
+								if( fImage)
+								{
+									double *bufPtr = (double*) [fileData bytes];
+									bufPtr += frameNo * (height * width);
+									float *ptr = fImage;
+									
+									long loop = height * width;
+									while( loop-- > 0)
+									{
+										if( swapByteOrder)  *ptr++ = Endian64_Swap( *bufPtr++);
+										else *ptr++ = *bufPtr++;
+										
+									}
+								}
+								else NSLog( @"*** Not enough memory - malloc failed");
+								
+								free(oImage);
+								oImage = nil;
+							break;
+							
+							case 128: //128 - RGB24
 								NSLog(@"unsupported... please send me this file");
-							break; 
+							break;
+							
+							case 256: //256 - int8
+							{
+								char *bufPtr;
+								short *ptr;
+								long loop;
+								
+								bufPtr = (char*) [fileData bytes]+ frameNo*(height * width);
+								ptr = oImage;
+								
+								loop = height * width;
+								while( loop-- > 0)
+								{
+									*ptr++ = *bufPtr++;
+								}
+							}
+							break;
+							
+							case 512: //512 - uint16
+								NSLog(@"unsupported... please send me this file");
+							break;
+							
+							case 768: //768 - uint32
+								NSLog(@"unsupported... please send me this file");
+							break;
+							
+							case 1792: //1792 - complex128
+								NSLog(@"unsupported... please send me this file");
+							break;
 						}
 						
 						[fileData release];
 						
 						// CONVERSION TO FLOAT
 						
-						if( datatype != 16)
+						if( oImage != nil && datatype != 16 && datatype != 64)
 						{
 							vImage_Buffer src16, dstf;
 							
@@ -10597,41 +10770,45 @@ END_CREATE_ROIS:
 	
 	long			i;
 	float			*dstPtr = malloc( height * width * 4);
-	unsigned char   *srcPtr = (unsigned char*) [self fImage];
 	
-	// Set this image as the Red Composant
-	switch( mode)
+	if( dstPtr)
 	{
-		case 0: // RED
-			i = height * width;
-			while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 1];
-			break;
-			
-			case 1: // GREEN
-			i = height * width;
-			while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 2];
-			break;
-			
-			case 2: // BLUE
-			i = height * width;
-			while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 3];
-			break;
-			
-			case 3: // RGB
-			i = height * width;
-			while( i-- > 0) dstPtr[ i] = ((float) srcPtr[ i*4 + 1] + (float) srcPtr[ i*4 + 2] + (float) srcPtr[ i*4 + 3]) / 3.;
-			break;
+		unsigned char   *srcPtr = (unsigned char*) [self fImage];
+		
+		// Set this image as the Red Composant
+		switch( mode)
+		{
+			case 0: // RED
+				i = height * width;
+				while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 1];
+				break;
+				
+				case 1: // GREEN
+				i = height * width;
+				while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 2];
+				break;
+				
+				case 2: // BLUE
+				i = height * width;
+				while( i-- > 0) dstPtr[ i] = srcPtr[ i*4 + 3];
+				break;
+				
+				case 3: // RGB
+				i = height * width;
+				while( i-- > 0) dstPtr[ i] = ((float) srcPtr[ i*4 + 1] + (float) srcPtr[ i*4 + 2] + (float) srcPtr[ i*4 + 3]) / 3.;
+				break;
+		}
+		
+		[self setBaseAddr: malloc( [self pwidth] * [self pheight])];
+		
+		[self setRGB: NO];
+		
+		memcpy( fImage, dstPtr, height * width * 4);
+		
+		[self changeWLWW:wl :ww];
+		
+		free( dstPtr);
 	}
-	
-	[self setBaseAddr: malloc( [self pwidth] * [self pheight])];
-	
-	[self setRGB: NO];
-	
-	memcpy( fImage, dstPtr, height * width * 4);
-	
-	[self changeWLWW:wl :ww];
-	
-	free( dstPtr);
 }
 
 
@@ -11882,8 +12059,7 @@ END_CREATE_ROIS:
 		fullwl = 0;
 		
 		[self kill8bitsImage];
-
-		[frameOfReferenceUID release];				frameOfReferenceUID = nil;
+		
 		[acquisitionTime release];					acquisitionTime = nil;
 		[acquisitionDate release];					acquisitionDate = nil;
 		[radiopharmaceuticalStartTime release];		radiopharmaceuticalStartTime = nil;
@@ -11928,7 +12104,6 @@ END_CREATE_ROIS:
 	
 	if( shutterPolygonal) free( shutterPolygonal);
 	
-	[frameOfReferenceUID release];
 	[transferFunction release];
 	[positionerPrimaryAngle release];
 	[positionerSecondaryAngle release];
@@ -11945,6 +12120,7 @@ END_CREATE_ROIS:
 	[decayCorrection release];
 	[generatedName release];
 	[SOPClassUID release];
+	[frameofReferenceUID release];
 	
 	if( fExternalOwnedImage == nil)
 	{
@@ -11979,6 +12155,10 @@ END_CREATE_ROIS:
 	[checking unlock];
 	[checking release];
 	checking = nil;
+
+	if( shortRed) free( shortRed);
+	if( shortGreen) free( shortGreen);
+	if( shortBlue) free( shortBlue);
 	
     [super dealloc];
 }
@@ -12040,6 +12220,8 @@ END_CREATE_ROIS:
 	
 	if ( acquisitionTime == nil || radiopharmaceuticalStartTime == nil) return;
 	
+	if( isRGB) return;
+	
 	hasSUV = YES;
 }
 
@@ -12068,16 +12250,6 @@ END_CREATE_ROIS:
 
 
 #ifdef OSIRIX_VIEWER
-
-+ (BOOL) setAnonymizedAnnotations: (BOOL) v
-{
-	if( anonymizedAnnotations != v)
-	{
-		anonymizedAnnotations = v;
-		return YES;
-	}
-	else return NO;
-}
 
 - (NSString*)getDICOMFieldValueForGroup:(int)group element:(int)element papyLink:(PapyShort)fileNb;
 {
@@ -12294,13 +12466,18 @@ END_CREATE_ROIS:
 {
 	@try 
 	{
-		NSDictionary *annotationsDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"CUSTOM_IMAGE_ANNOTATIONS"];
-		
 		NSString *modality = [imageObj valueForKeyPath:@"series.modality"]; // imageObj = link to database
-		NSDictionary *annotationsForModality = [annotationsDict objectForKey:modality];
 		
-		if(!annotationsForModality) annotationsForModality = [annotationsDict objectForKey:@"Default"];
-		if([[annotationsForModality objectForKey:@"sameAsDefault"] intValue]==1) annotationsForModality = [annotationsDict objectForKey:@"Default"];
+		NSDictionary *annotationsForModality = nil;
+		@synchronized( gCUSTOM_IMAGE_ANNOTATIONS)
+		{
+			annotationsForModality = [gCUSTOM_IMAGE_ANNOTATIONS objectForKey:modality];
+			
+			if(!annotationsForModality) annotationsForModality = [gCUSTOM_IMAGE_ANNOTATIONS objectForKey:@"Default"];
+			if([[annotationsForModality objectForKey:@"sameAsDefault"] intValue]==1) annotationsForModality = [gCUSTOM_IMAGE_ANNOTATIONS objectForKey:@"Default"];
+			
+			annotationsForModality = [[annotationsForModality copy] autorelease];
+		}
 		
 		// image sides (LowerLeft, LowerMiddle, LowerRight, MiddleLeft, MiddleRight, TopLeft, TopMiddle, TopRight) & sameAsDefault
 		NSArray *keys = [annotationsForModality allKeys];
@@ -12344,11 +12521,8 @@ END_CREATE_ROIS:
 								#endif
 								else
 									value = nil;
-									
-								if( anonymizedAnnotations)
-								{
-									if( [[field objectForKey:@"group"] intValue] == 0x0010 && [[field objectForKey:@"element"] intValue] == 0x0010) value = @" ";
-								}
+								
+								if( [[field objectForKey:@"group"] intValue] == 0x0010 && [[field objectForKey:@"element"] intValue] == 0x0010) value = @"PatientName";
 								
 								if( [[field objectForKey:@"group"] intValue] == 0x0002 && [[field objectForKey:@"element"] intValue] == 0x0010)
 								{
@@ -12374,10 +12548,7 @@ END_CREATE_ROIS:
 								{
 									value = [imageObj valueForKeyPath:[NSString stringWithFormat:@"series.study.%@", fieldName]];
 									
-									if( anonymizedAnnotations)
-									{
-										if( [fieldName isEqualToString:@"name"]) value = @" ";
-									}
+									if( [fieldName isEqualToString:@"name"]) value = @"PatientName";
 								}
 								
 								if(value==nil) value = @"-";
@@ -12446,7 +12617,12 @@ END_CREATE_ROIS:
 					}
 				}
 				if( annotationsOUT)
-					[annotationsDictionary setObject:annotationsOUT forKey: key];
+				{
+					@synchronized( annotationsDictionary)
+					{
+						[annotationsDictionary setObject:annotationsOUT forKey: key];
+					}
+				}
 			}
 		}
 	}
@@ -12455,6 +12631,33 @@ END_CREATE_ROIS:
 		NSLog(@"CustomImageAnnotations Exception: %@", e);
 	}
 }
+
+- (NSMutableDictionary*) annotationsDictionary
+{
+	NSMutableDictionary *d = nil;
+	
+	@synchronized( annotationsDictionary)
+	{
+		d = [[annotationsDictionary copy] autorelease];
+	}
+
+	return d;
+}
+
+- (void) setAnnotationsDictionary: (NSMutableDictionary*) d
+{
+	if( d != annotationsDictionary)
+	{
+		@synchronized( annotationsDictionary)
+		{
+			[annotationsDictionary release];
+			annotationsDictionary = nil;
+		}
+		
+		annotationsDictionary = [d retain];
+	}
+}
+
 #endif
 
 @end

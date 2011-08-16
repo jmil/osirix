@@ -19,7 +19,7 @@
 @class DICOMExport;
 
 // all points in the CurvedPath live in patient space
-// in order to avoid confusion about what coordinate space things are in all methods take points in an arbitrary coordinate
+// in order to avoid confusion about what coordinate space things are in, all methods take points in an arbitrary coordinate
 // space and take the transform from that space to the patient space
 
 typedef uint32_t CPRCurvedPathControlToken;
@@ -34,7 +34,8 @@ extern const int32_t CPRCurvedPathControlTokenNone;
     NSMutableArray *_nodes;
     NSMutableArray *_nodeRelativePositions; // NSNumbers with a cache of the nodes' relative positions;
     
-    N3Vector _initialNormal;
+    N3Vector _baseDirection;
+    CGFloat _angle;
     CGFloat _thickness;
     CGFloat _transverseSectionSpacing;
     CGFloat _transverseSectionPosition;
@@ -42,14 +43,16 @@ extern const int32_t CPRCurvedPathControlTokenNone;
 
 + (BOOL)controlTokenIsNode:(CPRCurvedPathControlToken)token;
 + (NSInteger)nodeIndexForToken:(CPRCurvedPathControlToken)token;
++ (CPRCurvedPathControlToken)controlTokenForNodeIndex:(NSInteger)nodeIndex;
 
 - (id)init;
 
 - (void)addNode:(NSPoint)point transform:(N3AffineTransform)transform; // adds the point to z = 0 in the arbitrary coordinate space
-- (void)insertNodeAtRelativePosition:(CGFloat)relativePosition;
+- (NSInteger)insertNodeAtRelativePosition:(CGFloat)relativePosition; // returns the node index of the inserted node
 - (void)removeNodeAtIndex:(NSInteger)index;
 
 - (void)moveControlToken:(CPRCurvedPathControlToken)token toPoint:(NSPoint)point transform:(N3AffineTransform)transform; // resets Z by default
+- (void)moveNodeAtIndex:(NSInteger)index toVector:(N3Vector)vector; // for this exceptional method, the vector is given in patient space
 
 - (CPRCurvedPathControlToken)controlTokenNearPoint:(NSPoint)point transform:(N3AffineTransform)transform;
 
@@ -60,8 +63,12 @@ extern const int32_t CPRCurvedPathControlTokenNone;
 
 - (NSArray *)transverseSliceRequestsForSpacing:(CGFloat)spacing outputWidth:(NSUInteger)width outputHeight:(NSUInteger)height mmWide:(CGFloat)mmWide; // mmWide is the how wide in patient coordinates the transverse slice should be
 
+- (BOOL)isPlaneMeasurable; // bad name, but if this is true, we will let folks make measurements on the generated plane
+
 @property (nonatomic, readonly, retain) N3MutableBezierPath *bezierPath;
 @property (nonatomic, readwrite, assign) CGFloat thickness;
+@property (nonatomic, readwrite, assign) N3Vector baseDirection; // a base direction from which to define things such as the initial normal
+@property (nonatomic, readwrite, assign) CGFloat angle;
 @property (nonatomic, readwrite, assign) N3Vector initialNormal;
 @property (nonatomic, readwrite, assign) CGFloat transverseSectionSpacing; // in mm
 @property (nonatomic, readwrite, assign) CGFloat transverseSectionPosition; // as a relative position [0, 1] pass -1 if you don't want the trasvers section to appear
@@ -69,5 +76,6 @@ extern const int32_t CPRCurvedPathControlTokenNone;
 @property (nonatomic, readonly, assign) CGFloat rightTransverseSectionPosition;
 @property (readonly, copy) NSArray* nodes; // N3Vectors stored in NSValues
 
+- (N3Vector)stretchedProjectionNormal;
 
 @end

@@ -14,8 +14,8 @@
 
 
 #import "OSIGeneralPreferencePanePref.h"
-#import <OsiriX Headers/NSPreferencePane+OsiriX.h>
-#import <OsiriX Headers/AppController.h>
+#import <OsiriXAPI/NSPreferencePane+OsiriX.h>
+#import <OsiriXAPI/AppController.h>
 
 @interface IsQualityEnabled: NSValueTransformer {}
 @end
@@ -31,6 +31,20 @@
 @end
 
 @implementation OSIGeneralPreferencePanePref
+
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSIGeneralPreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
 
 - (NSUInteger) kakaduAvailable
 {

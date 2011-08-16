@@ -18,6 +18,22 @@
 #import "VRController.h"
 #import "N3Geometry.h"
 #import "CPRCurvedPath.h"
+#import "CPRProjectionOperation.h"
+
+enum _CPRViewClippingRangeMode {
+    CPRViewClippingRangeVRMode = CPRProjectionModeVR, // don't use this, it is not implemented
+    CPRViewClippingRangeMIPMode = CPRProjectionModeMIP,
+    CPRViewClippingRangeMinIPMode = CPRProjectionModeMinIP,
+    CPRViewClippingRangeMeanMode = CPRProjectionModeMean
+};
+typedef CPRProjectionMode CPRViewClippingRangeMode;
+
+enum _CPRMPRDCMViewCPRType { // more than kinda ridiculous, move this and the equivalent CPRType constants to a single consts file..... 
+    CPRMPRDCMViewCPRStraightenedType = 0,
+    CPRMPRDCMViewCPRStretchedType = 1
+};
+typedef NSInteger CPRMPRDCMViewCPRType;
+
 
 @class CPRController;
 @class CPRDisplayInfo;
@@ -38,6 +54,7 @@
 	NSInteger editingCurvedPathCount;
     CPRCurvedPathControlToken draggedToken;
 	float angleMPR;
+    CPRMPRDCMViewCPRType _CPRType;
 	BOOL dontUseAutoLOD;
 	
 	float crossLinesA[2][3];
@@ -62,13 +79,14 @@
 @property (assign) id <CPRViewDelegate> delegate;
 @property (readonly) DCMPix *pix;
 @property (retain) Camera *camera;
-@property (copy) CPRCurvedPath *curvedPath;
-@property (copy) CPRDisplayInfo *displayInfo;
-@property float angleMPR, fromIntervalExport, toIntervalExport, LOD;
+@property (nonatomic, copy) CPRCurvedPath *curvedPath;
+@property (nonatomic, copy) CPRDisplayInfo *displayInfo;
+@property (nonatomic) float angleMPR, fromIntervalExport, toIntervalExport, LOD;
 @property int viewExport;
-@property BOOL displayCrossLines, dontUseAutoLOD;
+@property (nonatomic) BOOL displayCrossLines, dontUseAutoLOD;
 @property (readonly) VRView *vrView;
 @property (readonly) BOOL rotateLines, moveCenter;
+@property (nonatomic, assign) CPRMPRDCMViewCPRType CPRType;
 
 - (BOOL)is2DTool:(short)tool;
 - (void) setDCMPixList:(NSMutableArray*)pix filesList:(NSArray*)files roiList:(NSMutableArray*)rois firstImage:(short)firstImage type:(char)type reset:(BOOL)reset;

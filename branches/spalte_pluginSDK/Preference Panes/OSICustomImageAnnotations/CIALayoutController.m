@@ -746,7 +746,7 @@
 
 - (void)prepareDatabaseFields;
 {
-	NSManagedObjectModel *currentModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OsiriXDB_DataModel.mom"]]];
+	NSManagedObjectModel *currentModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OsiriXDB_DataModel.mom"]]] autorelease];
 	
 	NSMutableDictionary *studyAttributes = [NSMutableDictionary dictionaryWithDictionary:[[[currentModel entitiesByName] objectForKey:@"Study"] attributesByName]];
 	[studyAttributes removeObjectForKey:@"windowsState"];	
@@ -1347,8 +1347,6 @@
 	}
 	
 	[[prefPane sameAsDefaultButton] setState:NSOffState];
-//	[layoutView setEnabled:YES];
-//	[[prefPane orientationWidgetButton] setEnabled:YES];
 	
 	if(n==0 && ![modality isEqualTo:@"Default"])
 	{
@@ -1357,7 +1355,12 @@
 		[layoutView setEnabled:NO];
 		[[prefPane orientationWidgetButton] setEnabled:NO];
 	}
-
+	else
+	{
+		[layoutView setEnabled:YES];
+		[[prefPane orientationWidgetButton] setEnabled:YES];
+	}
+	
 	[layoutView setNeedsDisplay:YES];
 }
 

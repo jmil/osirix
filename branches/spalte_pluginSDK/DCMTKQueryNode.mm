@@ -28,6 +28,9 @@
 #import "DCMTKQueryRetrieveSCP.h"
 #import "DicomSeries.h"
 #import "MutableArrayCategory.h"
+#import "WADODownload.h"
+
+#include <libkern/OSAtomic.h>
 
 #undef verify
 #include "osconfig.h" /* make sure OS specific configuration is included first */
@@ -71,7 +74,6 @@ static OFString    opt_ciphersuites(SSL3_TXT_RSA_DES_192_CBC3_SHA);
 #endif
 
 static int inc = 0;
-static BOOL firstWadoErrorDisplayed = NO;
 static NSException* queryException = nil;
 static int debugLevel = 0;
 static int wadoUnique = 0;	//wadoUniqueThreadID = 0;
@@ -432,7 +434,6 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	[_numberImages release];
 	[_specificCharacterSet release];
 	[_logEntry release];
-	[WADODownloadLock release];
 	
 	[super dealloc];
 }
@@ -538,119 +539,122 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 
 - (void) queryWithValues:(NSArray *)values dataset:(DcmDataset*) dataset
 {
-	[self purgeChildren];
-	
-	//add query keys
-	
-	if( dataset == nil)
-		dataset = [self queryPrototype];
-	
-	NSString *stringEncoding = [[NSUserDefaults standardUserDefaults] stringForKey: @"STRINGENCODING"];
-	
-	NSStringEncoding encoding = [NSString encodingForDICOMCharacterSet:stringEncoding];
-	
-	dataset->putAndInsertString(DCM_SpecificCharacterSet, [stringEncoding UTF8String]);
-	
-//	const char *queryLevel;
-//	if (dataset->findAndGetString(DCM_QueryRetrieveLevel, queryLevel).good())
-//	{
-//		const char *string = [[NSString stringWithCString: queryLevel] cStringUsingEncoding: encoding];
-//		dataset->putAndInsertString(DCM_QueryRetrieveLevel, string);
-//	}
-	
-	if( values)
+	@synchronized( self)
 	{
-		NSEnumerator *enumerator = [values objectEnumerator];
-		NSDictionary *dictionary;
+		[self purgeChildren];
 		
-		while (dictionary = [enumerator nextObject])
+		//add query keys
+		
+		if( dataset == nil)
+			dataset = [self queryPrototype];
+		
+		NSString *stringEncoding = [[NSUserDefaults standardUserDefaults] stringForKey: @"STRINGENCODING"];
+		
+		NSStringEncoding encoding = [NSString encodingForDICOMCharacterSet:stringEncoding];
+		
+		dataset->putAndInsertString(DCM_SpecificCharacterSet, [stringEncoding UTF8String]);
+		
+	//	const char *queryLevel;
+	//	if (dataset->findAndGetString(DCM_QueryRetrieveLevel, queryLevel).good())
+	//	{
+	//		const char *string = [[NSString stringWithCString: queryLevel] cStringUsingEncoding: encoding];
+	//		dataset->putAndInsertString(DCM_QueryRetrieveLevel, string);
+	//	}
+		
+		if( values)
 		{
-			const char *string;
-			NSString *key = [dictionary objectForKey:@"name"];
-			id value  = [dictionary objectForKey:@"value"];
-			if ([key isEqualToString:@"PatientsName"])
-			{	
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_PatientsName, string);
-			}
-			else if ([key isEqualToString:@"ReferringPhysiciansName"])
+			NSEnumerator *enumerator = [values objectEnumerator];
+			NSDictionary *dictionary;
+			
+			while (dictionary = [enumerator nextObject])
 			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_ReferringPhysiciansName, string);
-			}
-			else if ([key isEqualToString:@"InstitutionName"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_InstitutionName, string);
-			}
-			else if ([key isEqualToString:@"Comments"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_ImageComments, string);
-			}
-			else if ([key isEqualToString:@"AccessionNumber"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_AccessionNumber, string);
-			}
-			else if ([key isEqualToString:@"PatientID"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_PatientID, string);
-			}
-			else if ([key isEqualToString:@"StudyDescription"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_StudyDescription, string);
-			}
-			else if ([key isEqualToString:@"Comments"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_ImageComments, string);
-			}
-			else if ([key isEqualToString:@"StudyDate"])
-			{
-				NSString *date = [(DCMCalendarDate *)value queryString];
-				string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
-				dataset->putAndInsertString(DCM_StudyDate, string);
-			}
-			else if ([key isEqualToString:@"PatientBirthDate"])
-			{
-				NSString *date = [(DCMCalendarDate *)value queryString];
-				string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
-				dataset->putAndInsertString(DCM_PatientsBirthDate, string);
-			}
-			else if ([key isEqualToString:@"StudyTime"])
-			{
-				NSString *date = [(DCMCalendarDate *)value queryString];
-				string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
-				dataset->putAndInsertString(DCM_StudyTime, string);
-			}
-			else if ([key isEqualToString:@"StudyInstanceUID"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_StudyInstanceUID, string);
-			}
-			else if ([key isEqualToString:@"StudyID"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_StudyID, string);
-			}
-			else if ([key isEqualToString:@"ModalitiesinStudy"])
-			{
-				string = [(NSString*)value cStringUsingEncoding:encoding];
-				dataset->putAndInsertString(DCM_ModalitiesInStudy, string);
+				const char *string;
+				NSString *key = [dictionary objectForKey:@"name"];
+				id value  = [dictionary objectForKey:@"value"];
+				if ([key isEqualToString:@"PatientsName"])
+				{	
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_PatientsName, string);
+				}
+				else if ([key isEqualToString:@"ReferringPhysiciansName"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_ReferringPhysiciansName, string);
+				}
+				else if ([key isEqualToString:@"InstitutionName"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_InstitutionName, string);
+				}
+				else if ([key isEqualToString:@"Comments"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_ImageComments, string);
+				}
+				else if ([key isEqualToString:@"AccessionNumber"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_AccessionNumber, string);
+				}
+				else if ([key isEqualToString:@"PatientID"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_PatientID, string);
+				}
+				else if ([key isEqualToString:@"StudyDescription"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_StudyDescription, string);
+				}
+				else if ([key isEqualToString:@"Comments"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_ImageComments, string);
+				}
+				else if ([key isEqualToString:@"StudyDate"])
+				{
+					NSString *date = [(DCMCalendarDate *)value queryString];
+					string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
+					dataset->putAndInsertString(DCM_StudyDate, string);
+				}
+				else if ([key isEqualToString:@"PatientBirthDate"])
+				{
+					NSString *date = [(DCMCalendarDate *)value queryString];
+					string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
+					dataset->putAndInsertString(DCM_PatientsBirthDate, string);
+				}
+				else if ([key isEqualToString:@"StudyTime"])
+				{
+					NSString *date = [(DCMCalendarDate *)value queryString];
+					string = [(NSString*)date cStringUsingEncoding:NSISOLatin1StringEncoding];
+					dataset->putAndInsertString(DCM_StudyTime, string);
+				}
+				else if ([key isEqualToString:@"StudyInstanceUID"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_StudyInstanceUID, string);
+				}
+				else if ([key isEqualToString:@"StudyID"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_StudyID, string);
+				}
+				else if ([key isEqualToString:@"ModalitiesinStudy"])
+				{
+					string = [(NSString*)value cStringUsingEncoding:encoding];
+					dataset->putAndInsertString(DCM_ModalitiesInStudy, string);
+				}
 			}
 		}
+		
+		if ([self setupNetworkWithSyntax:UID_FINDStudyRootQueryRetrieveInformationModel dataset:dataset])
+		{
+		
+		}
+		else NSLog( @"setupNetworkWithSyntax error : queryWithValues DCMTKQueryNode");
+		
+		if (dataset != NULL) delete dataset;
 	}
-	
-	if ([self setupNetworkWithSyntax:UID_FINDStudyRootQueryRetrieveInformationModel dataset:dataset])
-	{
-	
-	}
-	else NSLog( @"setupNetworkWithSyntax error : queryWithValues DCMTKQueryNode");
-	 
-	if (dataset != NULL) delete dataset;
 }
 
 - (void) move:(NSDictionary*) dict
@@ -741,7 +745,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 //				}
 //			}
 //			
-//			NSString *path = [NSString stringWithFormat:@"%s/INCOMING.noindex/", [[BrowserController currentBrowser] cfixedIncomingDirectory]];
+//			NSString *path = [[BrowserController currentBrowser] INCOMINGPATH];
 //			
 //			@synchronized( self)
 //			{
@@ -773,54 +777,14 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 //	}
 //}
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-	if( connection)
-	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		NSMutableData *d = [WADODownloadDictionary objectForKey: [NSString stringWithFormat:@"%ld", connection]];
-		[d appendData: data];
-		
-		[pool release];
-	}
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	if( connection)
-	{
-		[WADODownloadDictionary removeObjectForKey: [NSString stringWithFormat:@"%ld", connection]];
-		[connection release];
-		@synchronized( self) { WADOThreads--; }
-	}
-}
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	if( connection)
-	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		NSString *path = [NSString stringWithFormat:@"%s/INCOMING.noindex/", [[BrowserController currentBrowser] cfixedIncomingDirectory]];
-		
-		NSString *key = [NSString stringWithFormat:@"%ld", connection];
-		NSMutableData *d = [WADODownloadDictionary objectForKey: key];
-		[d writeToFile: [path stringByAppendingFormat: @"WADO-%d-%ld.dcm", WADOThreads, self] atomically: YES];
-		[d setLength: 0]; // Free the memory immediately
-		[WADODownloadDictionary removeObjectForKey: key];
-		
-		[connection release];
-		
-		@synchronized( self) { WADOThreads--; }
-		
-		[pool release];
-	}
-}
 
 - (void) WADORetrieve: (DCMTKStudyQueryNode*) study // requestService: WFIND?
 {
+	if( [self isMemberOfClass:[DCMTKSeriesQueryNode class]])
+		NSLog( @"------ WADO download : starting... %@ %@", [study name], [study patientID]);
+	else
+		NSLog( @"------ WADO download : starting... %@ %@", [self name], [self patientID]);
+	
 	NSString *protocol = [[_extraParameters valueForKey: @"WADOhttps"] intValue] ? @"https" : @"http";
 	
 	NSString *wadoSubUrl = [_extraParameters valueForKey: @"WADOUrl"];
@@ -864,7 +828,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 		DicomStudy *localStudy = [[context executeFetchRequest: request error: &error] lastObject];
 		
 		for( DicomSeries *s in [localStudy valueForKey: @"series"])
-			[localObjectUIDs addObjectsFromArray: [[s images] valueForKey: @"sopInstanceUID"]];
+			[localObjectUIDs addObjectsFromArray: [[[s images] valueForKey: @"sopInstanceUID"] allObjects]];
 	}
 	@catch (NSException * e) { NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e); }
 	
@@ -922,84 +886,13 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 		[self purgeChildren];
 	}
 	
-	if( [urlToDownload count])
-	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		NSLog( @"------ WADO downloading : %d files", [urlToDownload count]);
-		
-		firstWadoErrorDisplayed = NO;
-		
-		if( showErrorMessage == NO)
-			firstWadoErrorDisplayed = YES; // dont show errors
-		
-		WADODownloadDictionary = [NSMutableDictionary dictionary];
-		
-		WADOThreads = [urlToDownload count];
-		for( NSURL *url in urlToDownload)
-		{
-			NSURLConnection *downloadConnection = [[NSURLConnection connectionWithRequest: [NSURLRequest requestWithURL: url] delegate: self] retain];
-			
-			[WADODownloadDictionary setObject: [NSMutableData data] forKey: [NSString stringWithFormat:@"%ld", downloadConnection]];
-			
-			[downloadConnection start];
-			
-			if( downloadConnection == nil)
-				@synchronized( self) {WADOThreads--;}
-		}
-		
-		while( WADOThreads > 0)
-			[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 0.5]];
-		
-		
-		if( [[WADODownloadDictionary allKeys] count] > 0)
-			NSLog( @"**** [[WADODownloadDictionary allKeys] count] > 0");
-		
-		[WADODownloadDictionary removeAllObjects];
-		WADODownloadDictionary = nil;
-		
-		[pool release];
-		
-//		#define NumberOfWADOThreads 2
-//		NSRange range = NSMakeRange( 0, 1+ ([urlToDownload count] / NumberOfWADOThreads));
-//		
-//		if( WADODownloadLock == nil)
-//			WADODownloadLock = [[NSRecursiveLock alloc] init];
-//		
-//		[WADODownloadLock lock];
-//		
-//		
-//		@try 
-//		{
-//			WADOThreads = 0;
-//			for( int i = 0 ; i < NumberOfWADOThreads; i++)
-//			{
-//				if( range.length > 0)
-//				{
-//					@synchronized( self)
-//					{
-//						WADOThreads++;
-//					}
-//					[NSThread detachNewThreadSelector: @selector( WADODownload:) toTarget: self withObject: [NSDictionary dictionaryWithObjectsAndKeys: [urlToDownload subarrayWithRange: range], @"URLs", [NSThread currentThread], @"mainThread", nil]];
-//				}
-//				
-//				range.location += range.length;
-//				if( range.location + range.length > [urlToDownload count])
-//					range.length = [urlToDownload count] - range.location;
-//			}
-//			
-//			while( WADOThreads > 0)
-//				[NSThread sleepForTimeInterval: 0.1];
-//		}
-//		@catch (NSException * e) 
-//		{
-//			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-//			[AppController printStackTrace: e];
-//		}
-//		
-//		[WADODownloadLock unlock];
-		
-		NSLog( @"------ WADO downloading : %d files - finished", [urlToDownload count]);
-	}
+	WADODownload *downloader = [[WADODownload alloc] init];
+	
+	downloader.showErrorMessage = showErrorMessage;
+	
+	[downloader WADODownload: urlToDownload];
+	
+	[downloader release];
 }
 
 - (void) move:(NSDictionary*) dict retrieveMode: (int) retrieveMode
@@ -1008,7 +901,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	{
 		if( [DCMTKQueryRetrieveSCP storeSCP] == NO)
 		{
-			NSException *queryException = [NSException exceptionWithName: @"DICOM Network Failure" reason: [NSString stringWithFormat: NSLocalizedString( @"DICOM Listener is not activated", nil)] userInfo:nil];
+			NSException *queryException = [NSException exceptionWithName: @"DICOM Network Failure" reason: NSLocalizedString( @"DICOM Listener is not activated", nil) userInfo:nil];
 			[queryException raise];
 		}
 		else
@@ -1031,7 +924,7 @@ subOpCallback(void * /*subOpCallbackData*/ ,
 	{
 		if( [DCMTKQueryRetrieveSCP storeSCP] == NO && [dict objectForKey: @"moveDestination"] == nil)
 		{
-			NSException *queryException = [NSException exceptionWithName: @"DICOM Network Failure" reason: [NSString stringWithFormat: NSLocalizedString( @"DICOM Listener is not activated", nil)] userInfo:nil];
+			NSException *queryException = [NSException exceptionWithName: @"DICOM Network Failure" reason: NSLocalizedString( @"DICOM Listener is not activated", nil) userInfo:nil];
 			[queryException raise];
 		}
 		else

@@ -17,7 +17,7 @@
 #include <Accelerate/Accelerate.h>
 
 @class MPR2DController,NSCFDate, DicomStudy;
-@class BurnerWindowController,ViewerController;
+@class ViewerController;
 @class BonjourPublisher,BonjourBrowser;
 @class AnonymizerWindowController,QueryController;
 @class LogWindowController,PreviewView;
@@ -42,7 +42,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 *	and manges the database
 */
 
-@interface BrowserController : NSWindowController   //NSObject
+@interface BrowserController : NSWindowController <NSTableViewDelegate, NSDrawerDelegate, NSMatrixDelegate, NSToolbarDelegate>   //NSObject
 {
 	NSManagedObjectModel			*managedObjectModel;//, *userManagedObjectModel;
     NSManagedObjectContext			*managedObjectContext;//, *userManagedObjectContext;
@@ -72,7 +72,6 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 	NSMutableDictionary		*activeReceives;
 	NSMutableArray			*receiveLog;
 	
-	BurnerWindowController		*burnerWindowController;
 	LogWindowController			*logWindowController;
 	
     DCMPix                  *curPreviewPix;
@@ -273,7 +272,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 
 @property BOOL rtstructProgressBar;
 @property float rtstructProgressPercent;
-@property NSTimeInterval databaseLastModification;
+@property (nonatomic) NSTimeInterval databaseLastModification;
 @property(readonly) NSMutableArray *viewersListToReload, *viewersListToRebuild;
 @property(readonly) NSConditionLock* newFilesConditionLock;
 @property(readonly) NSMutableDictionary *databaseIndexDictionary;
@@ -294,7 +293,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 + (void) encryptFiles: (NSArray*) srcFiles inZIPFile: (NSString*) destFile password: (NSString*) password;
 - (IBAction) createDatabaseFolder:(id) sender;
 - (void) openDatabasePath: (NSString*) path;
-- (NSArray*)albums;
+- (NSArray*) albums;
 + (NSArray*) albumsInContext:(NSManagedObjectContext*)context;
 - (BOOL) shouldTerminate: (id) sender;
 - (void) databaseOpenStudy: (NSManagedObject*) item;
@@ -336,10 +335,11 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) setNetworkLogs;
 - (BOOL) isNetworkLogsActive;
 - (void) ReadDicomCDRom:(id) sender;
+- (NSString*) INCOMINGPATH;
 - (IBAction) matrixDoublePressed:(id)sender;
 - (void) addURLToDatabaseEnd:(id) sender;
 - (void) addURLToDatabase:(id) sender;
-- (NSArray*) addURLToDatabaseFiles:(NSArray*) URLs;
+- (BOOL) addURLToDatabaseFiles:(NSArray*) URLs;
 - (BOOL) findAndSelectFile: (NSString*) path image: (NSManagedObject*) curImage shouldExpand: (BOOL) expand;
 - (BOOL) findAndSelectFile: (NSString*) path image: (NSManagedObject*) curImage shouldExpand: (BOOL) expand extendingSelection: (BOOL) extendingSelection;
 - (void) selectServer: (NSArray*) files;
@@ -383,7 +383,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (NSString*) getDatabaseFolderFor: (NSString*) path;
 - (NSString*) getDatabaseIndexFileFor: (NSString*) path;
 - (IBAction) copyToDBFolder: (id) sender;
-- (void) setCurrentBonjourService:(int) index;
+- (void) setCurrentBonjourService:(long) index;
 - (IBAction)customize:(id)sender;
 - (IBAction)showhide:(id)sender;
 - (IBAction) selectAll3DSeries:(id) sender;
@@ -445,6 +445,7 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (int) askForZIPPassword: (NSString*) file destination: (NSString*) destination;
 - (IBAction) reparseIn3D:(id) sender;
 - (IBAction) reparseIn4D:(id) sender;
+- (void) selectThisStudy: (id)study;
 
 //- (short) createAnonymizedFile:(NSString*) srcFile :(NSString*) dstFile;
 
@@ -454,10 +455,6 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 -(void) previewPerformAnimation:(id) sender;
 -(void) matrixDisplayIcons:(id) sender;
 //- (void)reloadSendLog:(id)sender;
-
-
-- (void) setBurnerWindowControllerToNIL;
-- (BOOL) checkBurner;
 
 - (NSArray*) KeyImages: (id) sender;
 - (NSArray*) ROIImages: (id) sender;
@@ -500,7 +497,6 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void) createContextualMenu;
 - (void) checkIncomingThread:(id) sender;
 - (void) checkIncoming:(id) sender;
-- (void) checkIncomingNow:(id) sender;
 - (NSArray*) openSubSeries: (NSArray*) toOpenArray;
 - (IBAction) checkMemory:(id) sender;
 - (IBAction) buildAllThumbnails:(id) sender;
@@ -541,6 +537,8 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (void)updateReportToolbarIcon:(NSNotification *)note;
 
 #ifndef OSIRIX_LIGHT
+- (IBAction) paste: (id)sender;
+- (IBAction) pasteImageForSourceFile: (NSString*) sourceFile;
 - (void) decompressDICOMJPEG: (NSArray*) array;
 //- (void) decompressWaitIncrementation: (NSNumber*) n;
 - (void) compressDICOMJPEG:(NSArray*) array;

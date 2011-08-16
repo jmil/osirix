@@ -31,11 +31,21 @@
 
 @implementation WebPortal (EmailLog)
 
+- (void) sendEmailOnMainThread: (NSDictionary*) dict
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString *ts = [dict objectForKey: @"template"];
+	NSDictionary *messageHeaders = [dict objectForKey: @"headers"];
+	
+	NSAttributedString* m = [[[NSAttributedString alloc] initWithHTML:[ts dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:NULL] autorelease]; // This function is NOT thread safe !
+	[[CSMailMailClient mailClient] deliverMessage:m headers:messageHeaders];
+
+	[pool release];
+}
+
 -(BOOL)sendNotificationsEmailsTo:(NSArray*)users aboutStudies:(NSArray*)filteredStudies predicate:(NSString*)predicate replyTo:(NSString*)replyto customText:(NSString*)customText
 {
-	if (!self.notificationsEnabled)
-		return NO;
-	
 	NSString *fromEmailAddress = [[NSUserDefaults standardUserDefaults] valueForKey: @"notificationsEmailsSender"];
 	if (fromEmailAddress == nil)
 		fromEmailAddress = @"";
@@ -61,8 +71,9 @@
 		[messageHeaders setObject:fromEmailAddress forKey:@"Sender"];
 		[messageHeaders setObject:emailSubject forKey:@"Subject"];
 		if (replyto) [messageHeaders setObject:replyto forKey:@"ReplyTo"];
-		NSAttributedString* m = [[[NSAttributedString alloc] initWithHTML:[ts dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:NULL] autorelease];
-		[[CSMailMailClient mailClient] deliverMessage:m headers:messageHeaders];
+		
+		// NSAttributedString initWithHTML is NOT thread-safe
+		[self performSelectorOnMainThread: @selector( sendEmailOnMainThread:) withObject: [NSDictionary dictionaryWithObjectsAndKeys: ts, @"template", messageHeaders, @"headers", nil] waitUntilDone: NO];
 		
 		for (NSManagedObject* s in filteredStudies)
 			[self updateLogEntryForStudy:s withMessage: @"notification email" forUser:user.name ip:nil];
@@ -78,6 +89,9 @@
 		NSLog( @"********* applescript needs to be in the main thread");
 		return;
 	}
+	
+	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"passwordWebServer"] == NO)
+		return;
 	
 	// Lets check if new studies are available for each users! and if temporary users reached the end of their life.....
 	
@@ -236,6 +250,47 @@
 	} @finally {
 		[self.dicomDatabase.managedObjectContext unlock];
 	}
+}
+
+-(WebPortalUser*)newUserWithEmail:(NSString*)email {
+	// create user
+	
+	//NSArray* users = [self usersWithPredicate:[NSPredicate predicateWithFormat:@"email ==[cd] %@", email]];
+	//if (users.count)
+	//	[NSException raise:NSGenericException format:NSLocalizedString(@"A user with email %@ already exists.", NULL), email];
+	
+	if (![email isEmail])
+		[NSException raise:NSGenericException format:NSLocalizedString(@"%@ is not an email address.", NULL), email];
+	
+	WebPortalUser* user = [self.database newUser];
+	user.email = email;
+	
+	user.name = [email substringToIndex:[email rangeOfString:@"@"].location];
+	for (int i = 1; ![user validateForInsert:nil]; ++i)
+		user.name = [[email substringToIndex:[email rangeOfString:@"@"].location] stringByAppendingFormat:@"-%d", i];
+	
+	user.autoDelete = [NSNumber numberWithBool:YES];
+	
+	// send message
+	
+	NSMutableDictionary* tokens = [NSMutableDictionary dictionary];
+	
+	[tokens setObject:user forKey:@"User"];
+	[tokens setObject:self.URL forKey:@"WebServerURL"];
+	
+	NSMutableString* ts = [[[self stringForPath:@"tempUserEmail.html"] mutableCopy] autorelease];
+	[WebPortalResponse mutableString:ts evaluateTokensWithDictionary:tokens context:NULL];
+	
+	NSString* emailSubject = [NSString stringWithFormat:NSLocalizedString(@"Temporary account on %@", nil), self.URL];
+	
+	NSMutableDictionary* messageHeaders = [NSMutableDictionary dictionary];
+	[messageHeaders setObject:user.email forKey:@"To"];
+	[messageHeaders setObject:[[NSUserDefaults standardUserDefaults] valueForKey: @"notificationsEmailsSender"] forKey:@"Sender"];
+	[messageHeaders setObject:emailSubject forKey:@"Subject"];
+	NSAttributedString* m = [[[NSAttributedString alloc] initWithHTML:[ts dataUsingEncoding:NSUTF8StringEncoding] documentAttributes:NULL] autorelease];
+	[[CSMailMailClient mailClient] deliverMessage:m headers:messageHeaders];
+	
+	return user;
 }
 
 @end

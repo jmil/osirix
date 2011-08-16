@@ -61,7 +61,7 @@ enum
 
 /** \brief Window Controller for 2D Viewer*/
 
-@interface ViewerController : OSIWindowController  <Schedulable>
+@interface ViewerController : OSIWindowController  <Schedulable, NSWindowDelegate, NSSplitViewDelegate, NSToolbarDelegate>
 {
 	NSLock	*ThreadLoadImageLock;
 	NSLock	*roiLock;
@@ -216,6 +216,9 @@ enum
 	IBOutlet NSForm			*suvForm;
 	IBOutlet NSMatrix		*suvConversion;
 	
+	NSCalendarDate			*editedRadiopharmaceuticalStartTime, *editedAcquisitionTime;
+	NSCalendarDate			*injectionDateTime;
+	
 	IBOutlet NSWindow       *addOpacityWindow;
 	IBOutlet NSTextField    *OpacityName;
 	IBOutlet OpacityTransferView  *OpacityView;
@@ -333,8 +336,10 @@ enum
 	IBOutlet NSMatrix		*display12bitToolbarItemMatrix;
 	NSTimer					*t12BitTimer;
 	
-	NSCalendarDate			*injectionDateTime;
 	IBOutlet NSWindow		*injectionTimeWindow;
+	
+	int						isDataVolumicIn4DLevel;
+	int						previousFullscreenColumns, previousFullscreenRows, previousFullscreenCurImage, previousFullscreenViewIndex;
 }
 @property(retain) NSCalendarDate *injectionDateTime;
 @property(readonly) short currentOrientationTool;
@@ -608,12 +613,13 @@ enum
 - (void) loadSeries:(NSNumber*) t;
 - (void) offFullScreen;
 - (float) frame4DRate;
-- (long) maxMovieIndex;
+- (short) maxMovieIndex;
 - (NSSlider*) moviePosSlider;
 - (NSSlider*) sliderFusion;
 - (IBAction) convMatrixAction:(id)sender;
 - (IBAction) changeMatrixSize:(id) sender;
 - (IBAction) computeSum:(id) sender;
+- (void) recomputePixMinMax;
 - (IBAction) endNameWLWW:(id) sender;
 - (IBAction) endSetWLWW:(id) sender;
 - (IBAction) updateSetWLWW:(id) sender;
@@ -754,6 +760,7 @@ enum
 + (void) setDefaultROINames: (NSArray*) names;
 #ifndef OSIRIX_LIGHT
 - (IBAction) endExportDICOMFileSettings:(id) sender;
+- (IBAction) exportAllImages:(NSString*) seriesName;
 - (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts error:(NSString**) error;
 - (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts generateMissingROIs:(BOOL) generateMissingROIs error:(NSString**) error;
 - (float) computeVolume:(ROI*) selectedRoi points:(NSMutableArray**) pts generateMissingROIs:(BOOL) generateMissingROIs generatedROIs:(NSMutableArray*) generatedROIs computeData:(NSMutableDictionary*) data error:(NSString**) error;
@@ -841,7 +848,6 @@ enum
 - (void)deselectAllROIs;
 - (void) refreshToolbar;
 - (void) redrawToolbar;
-- (void) reloadAnnotations;
 - (NSScrollView*) previewMatrixScrollView;
 
 #pragma mark-

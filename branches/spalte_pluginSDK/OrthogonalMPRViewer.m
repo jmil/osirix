@@ -1294,20 +1294,22 @@ return YES;
 			
 			for( i = 0; i < max; i++)
 			{
+				NSDisableScreenUpdates();
 				[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 				[splitView display];
 				
 				NSImage *im = [[self keyView] nsimage:NO];
+				NSEnableScreenUpdates();
 				
 				//[[im TIFFRepresentation] writeToFile:[[[panel filename] stringByDeletingPathExtension] stringByAppendingPathExtension:[NSString stringWithFormat:@"%d.tif", i+1]] atomically:NO];
 				
 				NSArray *representations;
 				NSData *bitmapData;
-
+				
 				representations = [im representations];
-
+				
 				bitmapData = [NSBitmapImageRep representationOfImageRepsInArray:representations usingType:NSJPEGFileType properties:[NSDictionary dictionaryWithObject:[NSDecimalNumber numberWithFloat:0.9] forKey:NSImageCompressionFactor]];
-
+				
 				[bitmapData writeToFile:[[[panel filename] stringByDeletingPathExtension] stringByAppendingPathExtension:[NSString stringWithFormat:@"%d.jpg", i+1]] atomically:YES];
 			}
 			[view setCrossPosition:oldX+0.5 :oldY+0.5];
@@ -1374,6 +1376,12 @@ return YES;
 		[views addObject: [controller xReslicedView]];
 		[views addObject: [controller yReslicedView]];
 		
+		for( int i = views.count-1; i >= 0; i--)
+		{
+			if( NSEqualRects( [[views objectAtIndex: i] visibleRect], NSZeroRect))
+				[views removeObjectAtIndex: i];
+		}
+		
 		for( id v in views)
 		{
 			NSRect bounds = [v bounds];
@@ -1388,7 +1396,7 @@ return YES;
 												 bpp: &bpp
 									   screenCapture: YES
 										  force8bits: YES
-									 removeGraphical: NO
+									 removeGraphical: YES
 										squarePixels: YES
 											allTiles: NO
 								  allowSmartCropping: YES
@@ -1554,7 +1562,8 @@ return YES;
 			}
 
 			Wait *splash = [[Wait alloc] initWithString:NSLocalizedString(@"Creating a DICOM series", nil)];
-			[splash showWindow:self];
+			[splash setCancel: YES];
+			[splash showWindow: self];
 			[[splash progress] setMaxValue:(int)((to-from)/interval)];
 			
 			@try
@@ -1564,24 +1573,31 @@ return YES;
 				
 				for( i = from; i < to; i+=interval)
 				{
-					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					
 					@try 
 					{
+						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+						
+						NSDisableScreenUpdates();
 						[view setCrossPosition:x+i*deltaX+0.5 :y+i*deltaY+0.5];
 						[splitView display];
 						[view display];
 						
 						[producedFiles addObject: [self exportDICOMFileInt:[[dcmFormat selectedCell] tag]]];
+						NSEnableScreenUpdates();
+						
+						NSEnableScreenUpdates();
 						
 						[splash incrementBy: 1];
+						
+						[pool release];
+						
+						if( [splash aborted])
+							break;
 					}
 					@catch (NSException * e) 
 					{
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 					}
-					
-					[pool release];
 				}
 				
 				[view setCrossPosition:oldX+0.5 :oldY+0.5];

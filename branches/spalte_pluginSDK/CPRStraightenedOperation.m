@@ -208,8 +208,8 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
             
             for (z = 0; z < pixelsDeep; z++) {
                 for (y = 0; y < pixelsHigh; y += FILL_HEIGHT) {
-                    fillDistance = (CGFloat)y - (CGFloat)pixelsHigh/2.0; // the distance to go out from the centerline
-                    slabDistance = (CGFloat)z - (CGFloat)pixelsDeep/2.0; // the distance to go out from the centerline
+                    fillDistance = (CGFloat)y - (CGFloat)(pixelsHigh - 1)/2.0; // the distance to go out from the centerline
+                    slabDistance = (CGFloat)z - (CGFloat)(pixelsDeep - 1)/2.0; // the distance to go out from the centerline
                     for (i = 0; i < pixelsWide; i++) {
                         fillVectors[i] = N3VectorAdd(N3VectorAdd(vectors[i], N3VectorScalarMultiply(fillNormals[i], fillDistance)), N3VectorScalarMultiply(inSlabNormals[i], slabDistance));
                     }
@@ -234,7 +234,7 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
                 }                
             }
             
-            _oustandingFillOperationCount = [fillOperations count];
+            _outstandingFillOperationCount = [fillOperations count];
             			
 			fillQueue = [[self class] _fillQueue];
 			for (horizontalFillOperation in fillOperations) {
@@ -287,7 +287,7 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
             if ([operation isFinished]) {
                 [operation removeObserver:self forKeyPath:@"isFinished"];
                 [self autorelease]; // to balance the retain when we observe operations
-                oustandingFillOperationCount = OSAtomicDecrement32Barrier(&_oustandingFillOperationCount);
+                oustandingFillOperationCount = OSAtomicDecrement32Barrier(&_outstandingFillOperationCount);
                 if (oustandingFillOperationCount == 0) { // done with the fill operations, now do the projection
                     volumeTransform = N3AffineTransformMakeScale(1.0/_sampleSpacing, 1.0/_sampleSpacing, 1.0/[self _slabSampleDistance]);
                     generatedVolume = [[CPRVolumeData alloc] initWithFloatBytesNoCopy:_floatBytes pixelsWide:self.request.pixelsWide pixelsHigh:self.request.pixelsHigh pixelsDeep:[self _pixelsDeep]
@@ -328,7 +328,7 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
     }
 }
 
-+ (NSOperationQueue *) _fillQueue
++ (NSOperationQueue *)_fillQueue
 {
     @synchronized (self) {
         if (_straightenedOperationFillQueue == nil) {
@@ -345,7 +345,7 @@ static NSOperationQueue *_straightenedOperationFillQueue = nil;
     if (self.request.slabSampleDistance != 0.0) {
         return self.request.slabSampleDistance;
     } else {
-        return self.volumeData.minPixelSpacing;
+        return self.volumeData.minPixelSpacing; // this should be /2.0 to hit nyquist spacing, but it is too slow, and with this implementation to memory intensive
     }
 }
 

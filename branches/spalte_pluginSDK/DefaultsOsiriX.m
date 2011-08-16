@@ -766,6 +766,7 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject:@"1.2" forKey:@"BESTRENDERING"];
 	#endif
 
+	[defaultValues setObject:@"0" forKey:@"UseFrameofReferenceUID"];
 	[defaultValues setObject:@"1" forKey:@"savedCommentsAndStatusInDICOMFiles"];
 	[defaultValues setObject:@"1" forKey:@"CommentsFromDICOMFiles"];
 	[defaultValues setObject:@"1" forKey:@"OPENVIEWER"];
@@ -785,8 +786,8 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject: @"1" forKey: @"AutoPlayAnimation"];
 	[defaultValues setObject: @"1" forKey: @"KeepStudiesOfSamePatientTogether"];
 	[defaultValues setObject: @"1" forKey: @"KeepStudiesOfSamePatientTogetherAndGrouped"];
-	[defaultValues setObject: @"1" forKey: @"USEPAPYRUSDCMPIX3"];
-	[defaultValues setObject: @"2" forKey: @"TOOLKITPARSER3"];	// 0:DCM Framework 1:Papyrus 2:DCMTK
+	[defaultValues setObject: @"1" forKey: @"USEPAPYRUSDCMPIX4"];
+	[defaultValues setObject: @"2" forKey: @"TOOLKITPARSER4"];	// 0:DCM Framework 1:Papyrus 2:DCMTK
 	[defaultValues setObject: @"1" forKey: @"PREFERPAPYRUSFORCD"];
 	[defaultValues setObject: @"0" forKey: @"SINGLEPROCESS"];
 	[defaultValues setObject: @"0" forKey: @"AUTHENTICATION"];
@@ -805,7 +806,7 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject: @"1" forKey: @"ShowErrorMessagesForAutorouting"];
 	[defaultValues setObject: @"0" forKey: @"STILLMOVIEMODE"];
 	[defaultValues setObject: @"1" forKey: @"SAMESTUDY"];
-	[defaultValues setObject: @"1" forKey: @"recomputePatientUID"];
+	[defaultValues setObject: @"0" forKey: @"recomputePatientUID"];
 	[defaultValues setObject: @"1" forKey: @"ReserveScreenForDB"];
 	[defaultValues setObject: @"1" forKey: @"notificationsEmailsInterval"];
 	NSDateFormatter	*dateFormat = [[[NSDateFormatter alloc] init] autorelease];
@@ -822,8 +823,13 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject:@"40" forKey:@"DICOMTimeout"];
 	[defaultValues setObject:@"1" forKey:@"NSWindowsSetFrameAnimate"];
 	[defaultValues setObject: @"0" forKey: @"TRANSITIONTYPE"];
+	#ifndef OSIRIX_LIGHT
 	[defaultValues setObject: @"1" forKey: @"COPYDATABASE"];
+	#else
+	[defaultValues setObject: @"0" forKey: @"COPYDATABASE"];
+	#endif
 	[defaultValues setObject: @"0" forKey: @"SUVCONVERSION"];
+	[defaultValues setObject: @"1" forKey: @"NoImageTilingInFullscreen"];
 	[defaultValues setObject: @"0" forKey: @"AUTOCLEANINGCOMMENTS"];
 	[defaultValues setObject: @"" forKey: @"AUTOCLEANINGCOMMENTSTEXT"];
 	[defaultValues setObject: @"0" forKey: @"AUTOCLEANINGDONTCONTAIN"];
@@ -842,7 +848,7 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject:@"1" forKey:@"SOFTWAREINTERPOLATION"];
 	[defaultValues setObject:@"0" forKey:@"DATABASEINDEX"];
 	[defaultValues setObject: @"2" forKey: @"ANNOTATIONS"];
-	[defaultValues setObject: @"3" forKey :@"CLUTBARS"];
+	[defaultValues setObject: @"0" forKey :@"CLUTBARS"];
 	[defaultValues setObject: @"60" forKey: @"temporaryUserDuration"];
 	[defaultValues setObject:@"3" forKey:@"COPYDATABASEMODE"];
 	[defaultValues setObject:@"7" forKey:@"LOGCLEANINGDAYS"];
@@ -895,6 +901,15 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject:@"1" forKey:@"SelectWindowScrollWheel"];
 	[defaultValues setObject:@"1" forKey:@"useDCMTKForJP2K"];
 	[defaultValues setObject:@"1" forKey:@"MouseClickZoomCentered"];
+	[defaultValues setObject:@"1" forKey:@"exportOrientationIn3DExport"];
+	[defaultValues setObject:@"240" forKey:@"WADOTimeout"];
+	[defaultValues setObject:@"50" forKey:@"WADOMaximumConcurrentDownloads"];
+
+	#ifdef MACAPPSTORE
+	[defaultValues setObject:@"1" forKey:@"MACAPPSTORE"];
+	#else
+	[defaultValues setObject:@"0" forKey:@"MACAPPSTORE"];
+	#endif
 	
 	[defaultValues setObject: [NSArray arrayWithObjects: [DCMAbstractSyntaxUID MRSpectroscopyStorage], nil] forKey:@"additionalDisplayedStorageSOPClassUIDArray"];
 	
@@ -939,7 +954,7 @@ static NSHost *currentHost = nil;
 	[defaultValues setObject: @"0" forKey: @"useSeriesDescription"];
 	[defaultValues setObject: @"1" forKey: @"combineProjectionSeries"];
 	[defaultValues setObject: @"0" forKey: @"combineProjectionSeriesMode"];
-	[defaultValues setObject: @"1" forKey: @"ListenerCompressionSettings"];
+	[defaultValues setObject: @"0" forKey: @"ListenerCompressionSettings"];
 	[defaultValues setObject: @"localizer,scout" forKey: @"NOLOCALIZER_Strings"];
 	
 	//hot key prefs

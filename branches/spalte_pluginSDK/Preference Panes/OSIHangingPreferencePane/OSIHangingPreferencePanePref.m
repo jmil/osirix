@@ -14,10 +14,24 @@
 
 
 #import "OSIHangingPreferencePanePref.h"
-#import <OsiriX Headers/NSPreferencePane+OsiriX.h>
+#import <OsiriXAPI/NSPreferencePane+OsiriX.h>
 
 
 @implementation OSIHangingPreferencePanePref
+
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSIHangingPreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
 
 - (void) mainViewDidLoad
 {

@@ -64,4 +64,7 @@
 -(NSString*)portalURL;
 -(NSString*)dicomCStorePortString;
 
+- (void) fillSessionAndUserVariables;
+
 @end
+

@@ -19,7 +19,7 @@
 #import "ROI.h"
 #import "Notifications.h"
 
-static float deg2rad = 3.14159265358979/180.0; 
+static float deg2rad = M_PI/180.0; 
 
 #define CROSS(dest,v1,v2) \
           dest[0]=v1[1]*v2[2]-v1[2]*v2[1]; \
@@ -629,7 +629,7 @@ static	BOOL frameZoomed = NO;
 	glEnable(GL_LINE_SMOOTH);
 	glPointSize( 12);
 	
-	if( displayCrossLines)
+	if( displayCrossLines && frameZoomed == NO)
 	{
 		// All pix have the same thickness
 		float thickness = [pix sliceThickness];
@@ -724,7 +724,7 @@ static	BOOL frameZoomed = NO;
 	[self colorForView: viewID];
 	
 	// Red Square
-	if( [[self window] firstResponder] == self)
+	if( [[self window] firstResponder] == self && frameZoomed == NO)
 	{
 		glLineWidth(8.0);
 		glBegin(GL_LINE_LOOP);
@@ -744,7 +744,7 @@ static	BOOL frameZoomed = NO;
 	glEnd();
 	glLineWidth(1.0);
 	
-	if( displayCrossLines && windowController.displayMousePosition && !windowController.mprView1.rotateLines && !windowController.mprView2.rotateLines && !windowController.mprView3.rotateLines
+	if( displayCrossLines && frameZoomed == NO && windowController.displayMousePosition && !windowController.mprView1.rotateLines && !windowController.mprView2.rotateLines && !windowController.mprView3.rotateLines
 																					&& !windowController.mprView1.moveCenter && !windowController.mprView2.moveCenter && !windowController.mprView3.moveCenter)
 	{
 		// Mouse Position
@@ -1041,13 +1041,37 @@ static	BOOL frameZoomed = NO;
 
 - (NSPoint) centerLines
 {
+    NSPoint r = NSMakePoint( 0, 0);
+    
+    // One line or no lines : find the middle of the line
+    if( crossLinesB[ 0][ 0] == HUGE_VALF)
+    {
+        NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
+        NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
+        
+        r.x = a2.x + (a1.x - a2.x) / 2.;
+        r.y = a2.y + (a1.y - a2.y) / 2.;
+        
+        return r;
+    }
+    
+    // One line or no lines : find the middle of the line
+    if( crossLinesA[ 0][ 0] == HUGE_VALF)
+    {
+        NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
+        NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);
+        
+        r.x = b2.x + (b1.x - b2.x) / 2.;
+        r.y = b2.y + (b1.y - b2.y) / 2.;
+        
+        return r;
+    }
+    
 	NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
 	NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
 	
 	NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
 	NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);
-	
-	NSPoint r = NSMakePoint( 0, 0);
 	
 	[DCMView intersectionBetweenTwoLinesA1: a1 A2: a2 B1: b1 B2: b2 result: &r];
 	
@@ -1059,7 +1083,7 @@ static	BOOL frameZoomed = NO;
 	if( [[NSUserDefaults standardUserDefaults] integerForKey: @"ANNOTATIONS"] == annotNone)
 		return 0;
 	
-	if( displayCrossLines == NO)
+	if( displayCrossLines == NO || frameZoomed)
 		return 0;
 	
 	if( LOD == 0)
@@ -1086,20 +1110,25 @@ static	BOOL frameZoomed = NO;
 		}
 		else
 		{
-			float distance1, distance2;
+			float distance1 = 1000, distance2 = 1000;
 			
-			NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
-			NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
-			
-			NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
-			NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);			
-			
-			[DCMView DistancePointLine:mouseLocation :a1 :a2 :&distance1];
-			[DCMView DistancePointLine:mouseLocation :b1 :b2 :&distance2];
-			
-			distance1 /= curDCM.pixelSpacingX;
-			distance2 /= curDCM.pixelSpacingX;
-			
+            if( crossLinesA[ 0][ 0] != HUGE_VALF)
+            {
+                NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
+                NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
+                [DCMView DistancePointLine:mouseLocation :a1 :a2 :&distance1];
+                distance1 /= curDCM.pixelSpacingX;
+            }
+            
+            if( crossLinesB[ 0][ 0] != HUGE_VALF)
+            {
+                NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
+                NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);			
+                
+                [DCMView DistancePointLine:mouseLocation :b1 :b2 :&distance2];
+                distance2 /= curDCM.pixelSpacingX;
+			}
+            
 			if( distance1 * scaleValue < 10 || distance2 * scaleValue < 10)
 			{
 				return 1;
@@ -1233,7 +1262,12 @@ static	BOOL frameZoomed = NO;
 	{
 		mouseDownTool = [self getTool: theEvent];
 		
-		if( mouseDownTool == tText)
+		NSPoint tempPt = [self convertPoint: [theEvent locationInWindow] fromView: nil];
+		tempPt = [self ConvertFromNSView2GL:tempPt];
+		
+		long tool = [self getTool: theEvent];
+		
+		if( [self roiTool: mouseDownTool] && [self clickInROI: tempPt])
 		{
 			[[self windowController] roiGetInfo: self];
 		}
@@ -1582,9 +1616,12 @@ static	BOOL frameZoomed = NO;
 	
 	if( view == self)
 	{
+		if( NSPointInRect( [self convertPoint: [theEvent locationInWindow] fromView: nil], [self bounds]) == NO)
+			return;
+		
 		[super mouseMoved: theEvent];
 		
-		int mouseOnLines = [self mouseOnLines: [self convertPoint:[theEvent locationInWindow] fromView:nil]];
+		int mouseOnLines = [self mouseOnLines: [self convertPoint: [theEvent locationInWindow] fromView:nil]];
 		if( mouseOnLines==2)
 		{
 			if( [theEvent type] == NSLeftMouseDragged) [[NSCursor closedHandCursor] set];

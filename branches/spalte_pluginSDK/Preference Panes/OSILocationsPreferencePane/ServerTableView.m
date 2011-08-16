@@ -13,23 +13,10 @@
 =========================================================================*/
 
 #import "ServerTableView.h"
-#import <OsiriX Headers/DNDArrayController.h>
+#import <OsiriXAPI/DNDArrayController.h>
 #import "OSILocationsPreferencePanePref.h"
 
 @implementation ServerTableView
-
-- (void) keyDown: (NSEvent *) event
-{
-	unichar c = [[event characters] characterAtIndex:0];
-	
-	if (( c == NSDeleteFunctionKey || c == NSDeleteCharacter || c == NSBackspaceCharacter || c == NSDeleteCharFunctionKey) && [self selectedRow] >= 0 && [self numberOfRows] > 0)
-	{
-		[[self delegate] deleteSelectedRow:self];
-	}
-	else
-		[super keyDown:event];
-}
-
 - (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)flag
 {
 	if( !flag)
@@ -39,4 +26,17 @@
 	}
 	return [super draggingSourceOperationMaskForLocal:flag];
 }
+
+- (void) keyDown: (NSEvent *) event
+{
+	unichar c = [[event characters] characterAtIndex:0];
+	
+	if (( c == NSDeleteFunctionKey || c == NSDeleteCharacter || c == NSBackspaceCharacter || c == NSDeleteCharFunctionKey) && [self selectedRow] >= 0 && [self numberOfRows] > 0)
+	{
+		[(DNDArrayController*)[self delegate] deleteSelectedRow:self];
+	}
+	else
+		[super keyDown:event];
+}
+
 @end

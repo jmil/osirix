@@ -69,6 +69,21 @@
 	[defaults setInitialValues:[NSDictionary dictionaryWithDictionary:initialValues]];
 }*/
 
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSILocationsPreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
+
+
 - (void) checkUniqueAETitle
 {
 	int i, x;
@@ -836,7 +851,7 @@
 		
 		if(clickedButton==NSOKButton)
 		{
-			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://osirix.svn.sourceforge.net/viewvc/osirix/Documentation/Security/index.html"]];
+			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://osirix.svn.sourceforge.net/viewvc/osirix/Documentation/Guides/Security/index.html"]];
 		}
 		
 		return;

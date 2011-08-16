@@ -142,7 +142,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 	BOOL			mouseDragging;
 	BOOL			suppress_labels; // keep from drawing the labels when command+shift is pressed
 
-    NSPoint         start, originStart, originOffsetStart, previous;
+    NSPoint         start, originStart, previous;
 	
     float			startWW, curWW, startMin, startMax;
     float			startWL, curWL;
@@ -158,7 +158,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 	double			resizeTotal;
     float           scaleValue, startScaleValue;
     float           rotation, rotationStart;
-    NSPoint			origin, originOffset;
+    NSPoint			origin;
 	short			crossMove;
     
     NSMatrix        *matrix;
@@ -281,6 +281,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 	float LENSRATIO;
 	BOOL cursorhidden;
 	int avoidRecursiveSync;
+	BOOL avoidMouseMovedRecursive;
 	BOOL avoidChangeWLWWRecursive;
 	BOOL TextureComputed32bitPipeline;
 	
@@ -299,19 +300,19 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 @property(readonly) NSMutableArray *dcmPixList,  *dcmRoiList;
 @property(readonly) NSArray *dcmFilesList;
 @property long syncSeriesIndex;
-@property float syncRelativeDiff, studyColorR, studyColorG, studyColorB;
-@property long blendingMode;
+@property(nonatomic)float syncRelativeDiff, studyColorR, studyColorG, studyColorB;
+@property(nonatomic) long blendingMode;
 @property(retain,setter=setBlending:) DCMView *blendingView;
 @property(readonly) float blendingFactor;
-@property BOOL xFlipped, yFlipped;
+@property(nonatomic) BOOL xFlipped, yFlipped;
 @property(retain) NSString *stringID;
-@property short currentTool;
+@property(nonatomic) short currentTool;
 @property(setter=setRightTool:) short currentToolRight;
 @property(readonly) short curImage;
 @property(retain) NSMatrix *theMatrix;
 @property(readonly) BOOL suppressLabels;
-@property float scaleValue, rotation;
-@property NSPoint origin, originOffset;
+@property(nonatomic) float scaleValue, rotation;
+@property(nonatomic) NSPoint origin;
 @property(readonly) double pixelSpacing, pixelSpacingX, pixelSpacingY;
 @property(readonly) DCMPix *curDCM;
 @property(retain) DCMExportPlugin *dcmExportPlugin;
@@ -345,7 +346,6 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 + (void)setSyncro:(short) s;
 - (BOOL) softwareInterpolation;
 - (void) applyImageTransformation;
-- (void) initFont;
 - (void) gClickCountSetReset;
 - (int) findPlaneAndPoint:(float*) pt :(float*) location;
 - (int) findPlaneForPoint:(float*) pt localPoint:(float*) location distanceWithPlane: (float*) distanceResult;
@@ -388,6 +388,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 - (NSImage*) nsimage:(BOOL) originalSize allViewers:(BOOL) allViewers;
 - (NSDictionary*) exportDCMCurrentImage: (DICOMExport*) exportDCM size:(int) size;
 - (NSDictionary*) exportDCMCurrentImage: (DICOMExport*) exportDCM size:(int) size  views: (NSArray*) views viewsRect: (NSArray*) viewsRect;
+- (NSDictionary*) exportDCMCurrentImage: (DICOMExport*) exportDCM size:(int) size  views: (NSArray*) views viewsRect: (NSArray*) viewsRect exportSpacingAndOrigin: (BOOL) exportSpacingAndOrigin;
 - (NSImage*) exportNSImageCurrentImageWithSize:(int) size;
 - (void) setIndex:(short) index;
 - (void) setIndexWithReset:(short) index :(BOOL)sizeToFit;
@@ -429,6 +430,7 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 - (void) DrawCStringGL: ( char *) cstrOut :(GLuint) fontL :(long) x :(long) y rightAlignment: (BOOL) right useStringTexture: (BOOL) stringTex;
 - (void)DrawCStringGL:(char*)cstrOut :(GLuint)fontL :(long)x :(long)y align:(DCMViewTextAlign)align useStringTexture:(BOOL)stringTex;
 - (void) drawTextualData:(NSRect) size :(long) annotations;
+- (void) drawTextualData:(NSRect) size annotationsLevel:(long) annotations fullText: (BOOL) fullText onlyOrientation: (BOOL) onlyOrientation;
 - (void) draw2DPointMarker;
 - (void) drawImage:(NSImage *)image inBounds:(NSRect)rect;
 - (void) setScaleValueCentered:(float) x;
@@ -484,6 +486,9 @@ typedef enum {DCMViewTextAlignLeft, DCMViewTextAlignCenter, DCMViewTextAlignRigh
 - (void) roiLoadFromFilesArray: (NSArray*) filenames;
 - (id)windowController;
 - (BOOL)is2DViewer;
+- (IBAction)scaleToFit:(id)sender;
+- (IBAction)actualSize:(id)sender;
+- (void) drawOrientation:(NSRect) size;
 - (void) setCOPYSETTINGSINSERIESdirectly: (BOOL) b;
 -(BOOL)actionForHotKey:(NSString *)hotKey;
 +(NSDictionary*) hotKeyDictionary;

@@ -11,8 +11,9 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>dcm</string>
 				<string>osirixzip</string>
+				<string>dcm</string>
+				<string>dcmURLs</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>dcm.icns</string>
@@ -21,6 +22,7 @@
 				<string>application/dicom</string>
 				<string>application/zip</string>
 				<string>application/osirixzip</string>
+				<string>application/dcmURLs</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>DICOM Image</string>
@@ -32,6 +34,7 @@
 				<string>disk</string>
 				<string>zip</string>
 				<string>osirixzip</string>
+				<string>dcmURLs</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
@@ -158,7 +161,7 @@
 	<key>CFBundleName</key>
 	<string>OsiriX</string>
 	<key>CFBundleGetInfoString</key>
-	<string>OsiriX v.3.9b4</string>
+	<string>OsiriX v.3.9.4</string>
 	<key>CFBundleIconFile</key>
 	<string>Osirix.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -168,7 +171,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.9b4</string>
+	<string>3.9.4</string>
 	<key>CFBundleSignature</key>
 	<string>OsiX</string>
 	<key>CFBundleURLTypes</key>
@@ -187,7 +190,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7759M</string>
+	<string>8796M</string>
 	<key>LSCanProvideIMVideoDataSource</key>
 	<string>Yes</string>
 	<key>LSRequiresNativeExecution</key>
@@ -228,5 +231,7 @@
 			</dict>
 		</dict>
 	</array>
+	<key>OSAScriptingDefinition</key>
+	<string>OsiriX.sdef</string>
 </dict>
 </plist>

@@ -45,7 +45,9 @@
 #import <N2Debug.h>
 #import "NSFileManager+N2.h"
 #ifndef OSIRIX_LIGHT
+#ifndef MACAPPSTORE
 #import <ILCrashReporter/ILCrashReporter.h>
+#endif
 #endif
 #import "PluginManagerController.h"
 #import "OSIWindowController.h"
@@ -372,30 +374,44 @@ NSString * documentsDirectoryFor( int mode, NSString *url)
 	char s[ 4096];
 	FSRef ref;
 	NSString *path = nil;
+	BOOL isDirectory = NO;
 	
 	switch( mode)
 	{
 		case 0:
+			#ifdef MACAPPSTORE
 			if( FSFindFolder (kOnAppropriateDisk, kDocumentsFolderType, kCreateFolder, &ref) == noErr )
 			{
-				BOOL		isDir = YES;
-				
 				FSRefMakePath(&ref, (UInt8 *)s, sizeof(s));
 				
 				path = [[NSString stringWithUTF8String:s] stringByAppendingPathComponent:@"/OsiriX Data"];
 				
-				if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir)
-					[[NSFileManager defaultManager] createDirectoryAtPath:path attributes:nil];
+				if (![[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory] || isDirectory == NO)
+				{
+					path = [@"~/Library/Application Support/OsiriX/OsiriX Data/" stringByExpandingTildeInPath];
+				
+					if( [[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory] == NO || isDirectory == NO)
+						[[NSFileManager defaultManager] createDirectoryAtPath: path withIntermediateDirectories: YES attributes: nil error: nil];
+				}
 			}
+			#else
+			if( FSFindFolder (kOnAppropriateDisk, kDocumentsFolderType, kCreateFolder, &ref) == noErr )
+			{
+				FSRefMakePath(&ref, (UInt8 *)s, sizeof(s));
+				
+				path = [[NSString stringWithUTF8String:s] stringByAppendingPathComponent:@"/OsiriX Data"];
+				
+				if (![[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory] || isDirectory == NO)
+					[[NSFileManager defaultManager] createDirectoryAtPath: path attributes:nil];
+			}
+			#endif
 		break;
 			
 		case 1:
 		{
-			BOOL		isDir = YES;
-			
 			path = [url stringByAppendingPathComponent:@"/OsiriX Data"];
 			
-			if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir]) [[NSFileManager defaultManager] createDirectoryAtPath:path attributes:nil];
+			if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDirectory]) [[NSFileManager defaultManager] createDirectoryAtPath:path attributes:nil];
 		}
 		break;
 	}
@@ -607,7 +623,7 @@ NSRect screenFrame()
 				{
 					frame = [[[NSScreen screens] objectAtIndex:i] frame];
 					if (frame.size.height == height && frame.size.width == singleWidth)
-						width =+ frame.size.width;
+						width = frame.size.width;
 				}	
 				screenRect = NSMakeRect([[[NSScreen screens] objectAtIndex:1] frame].origin.x, 
 										[[[NSScreen screens] objectAtIndex:1] frame].origin.y,
@@ -627,7 +643,7 @@ NSRect screenFrame()
 			{
 				frame = [[[NSScreen screens] objectAtIndex:i] frame];
 				if (frame.size.height == height && frame.size.width == singleWidth)
-					width =+ frame.size.width;
+					width = frame.size.width;
 			}
 			screenRect = NSMakeRect([[[NSScreen screens] objectAtIndex:0] frame].origin.x, 
 										[[[NSScreen screens] objectAtIndex:0] frame].origin.y,
@@ -771,7 +787,7 @@ static NSDate *lastWarningDate = nil;
 
 @implementation AppController
 
-@synthesize checkAllWindowsAreVisibleIsOff, filtersMenu, windowsTilingMenuRows, windowsTilingMenuColumns, isSessionInactive;
+@synthesize checkAllWindowsAreVisibleIsOff, filtersMenu, windowsTilingMenuRows, windowsTilingMenuColumns, isSessionInactive, XMLRPCServer;
 
 - (void) pause
 {
@@ -957,6 +973,22 @@ static NSDate *lastWarningDate = nil;
 	}
 }
 
++(BOOL) hasMacOSXLion
+{
+	OSErr						err;       
+	SInt32						osVersion;
+	
+	err = Gestalt ( gestaltSystemVersion, &osVersion );       
+	if ( err == noErr)       
+	{
+		if ( osVersion < 0x1070UL )
+		{
+			return NO;
+		}
+	}
+	return YES;                   
+}
+
 
 +(BOOL) hasMacOSXSnowLeopard
 {
@@ -1010,18 +1042,18 @@ static NSDate *lastWarningDate = nil;
 	if( [[NSFileManager defaultManager] fileExistsAtPath: [path stringByDeletingPathExtension]])
 		[[NSFileManager defaultManager] removeFileAtPath: [path stringByDeletingPathExtension] handler: nil];
 	
-	if( newFolder)
-	{
-		NSDictionary *d = [[NSFileManager defaultManager] attributesOfItemAtPath:path error: nil];
-	
-		if( d && [[d objectForKey: NSFileExtensionHidden] boolValue] == NO)
-		{
-			NSMutableDictionary *m = [NSMutableDictionary dictionaryWithDictionary: d];
-		
-			[m setObject: [NSNumber numberWithBool: YES] forKey:NSFileExtensionHidden];
-			[[NSFileManager defaultManager] changeFileAttributes: m atPath: path];
-		}
-	}
+//	if( newFolder)
+//	{
+//		NSDictionary *d = [[NSFileManager defaultManager] attributesOfItemAtPath:path error: nil];
+//	
+//		if( d && [[d objectForKey: NSFileExtensionHidden] boolValue] == NO)
+//		{
+//			NSMutableDictionary *m = [NSMutableDictionary dictionaryWithDictionary: d];
+//		
+//			[m setObject: [NSNumber numberWithBool: YES] forKey:NSFileExtensionHidden];
+//			[[NSFileManager defaultManager] changeFileAttributes: m atPath: path];
+//		}
+//	}
 }
 
 + (void) pause
@@ -1041,8 +1073,8 @@ static NSDate *lastWarningDate = nil;
 	for( int i = 0; i < numberOfScreens; i++)
 		toolbarPanel[ i] = [[ToolbarPanelController alloc] initForScreen: i];
 	
-	for( int i = 0; i < numberOfScreens; i++)
-		[toolbarPanel[ i] fixSize];
+/*	for( int i = 0; i < numberOfScreens; i++)
+		[toolbarPanel[ i] fixSize];*/
 }
 
 + (void) resizeWindowWithAnimation:(NSWindow*) window newSize: (NSRect) newWindowFrame
@@ -1576,7 +1608,21 @@ static NSDate *lastWarningDate = nil;
 	{
 		mainMenu = [NSApp mainMenu];
 		viewerMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"2D Viewer", nil)] submenu];
-		mainOpacityMenu = [[viewerMenu itemWithTitle:NSLocalizedString(@"Opacity", nil)] submenu];
+		if( viewerMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... viewerMenu == nil -> viewerMenu == itemAtIndex == 5");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"2D Viewer", nil));
+			viewerMenu = [[mainMenu itemAtIndex: 5]  submenu];
+			NSLog( @"***** Selected item: %@", [viewerMenu title]);
+		}
+		mainOpacityMenu = [[viewerMenu itemWithTitle: NSLocalizedString(@"Opacity", nil)] submenu];
+		if( mainOpacityMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... mainOpacityMenu == nil -> mainOpacityMenu == itemAtIndex == 38");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"Opacity", nil));
+			mainOpacityMenu = [[viewerMenu itemAtIndex: 38]  submenu];
+			NSLog( @"***** Selected item: %@", [mainOpacityMenu title]);
+		}
 	}
 	
 	if( [[NSUserDefaults standardUserDefaults] dictionaryForKey: @"OPACITY"] != previousOpacityKeys)
@@ -1613,8 +1659,23 @@ static NSDate *lastWarningDate = nil;
 	if( mainMenuWLWWMenu == nil)
 	{
 		mainMenu = [NSApp mainMenu];
-		viewerMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"2D Viewer", nil)] submenu];
+		viewerMenu = [[mainMenu itemWithTitle: NSLocalizedString(@"2D Viewer", nil)] submenu];
+		if( viewerMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... viewerMenu == nil -> viewerMenu == itemAtIndex == 5");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"2D Viewer", nil));
+			viewerMenu = [[mainMenu itemAtIndex: 5]  submenu];
+			NSLog( @"***** Selected item: %@", [viewerMenu title]);
+		}
+		
 		mainMenuWLWWMenu = [[viewerMenu itemWithTitle:NSLocalizedString(@"Window Width & Level", nil)] submenu];
+		if( mainMenuWLWWMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... mainMenuWLWWMenu == nil -> mainMenuWLWWMenu == itemAtIndex == 35");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"Window Width & Level", nil));
+			mainMenuWLWWMenu = [[viewerMenu itemAtIndex: 35]  submenu];
+			NSLog( @"***** Selected item: %@", [mainMenuWLWWMenu title]);
+		}
 	}
 	
 	if( [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"WLWW3"] != previousWLWWKeys)
@@ -1659,7 +1720,21 @@ static NSDate *lastWarningDate = nil;
 	{
 		mainMenu = [NSApp mainMenu];
 		viewerMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"2D Viewer", nil)] submenu];
-		mainMenuConvMenu = [[viewerMenu itemWithTitle:NSLocalizedString(@"Convolution Filters", nil)] submenu];
+		if( viewerMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... viewerMenu == nil -> viewerMenu == itemAtIndex == 5");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"2D Viewer", nil));
+			viewerMenu = [[mainMenu itemAtIndex: 5]  submenu];
+			NSLog( @"***** Selected item: %@", [viewerMenu title]);
+		}
+		mainMenuConvMenu = [[viewerMenu itemWithTitle: NSLocalizedString(@"Convolution Filters", nil)] submenu];
+		if( mainMenuConvMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... mainMenuConvMenu == nil -> mainMenuConvMenu == itemAtIndex == 39");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"Convolution Filters", nil));
+			mainMenuConvMenu = [[viewerMenu itemAtIndex: 39]  submenu];
+			NSLog( @"***** Selected item: %@", [mainMenuConvMenu title]);
+		}
 	}
 	
 	if( [[NSUserDefaults standardUserDefaults] dictionaryForKey: @"Convolution"] != previousConvKeys)
@@ -1698,7 +1773,21 @@ static NSDate *lastWarningDate = nil;
 	{
 		mainMenu = [NSApp mainMenu];
 		viewerMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"2D Viewer", nil)] submenu];
+		if( viewerMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... viewerMenu == nil -> viewerMenu == itemAtIndex == 5");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"2D Viewer", nil));
+			viewerMenu = [[mainMenu itemAtIndex: 5]  submenu];
+			NSLog( @"***** Selected item: %@", [viewerMenu title]);
+		}
 		mainMenuCLUTMenu = [[[viewerMenu itemWithTitle:NSLocalizedString(@"Color Look Up Table", nil)] submenu] retain];
+		if( mainMenuCLUTMenu == nil)
+		{
+			NSLog( @"***** NSLocalization bug.... mainMenuCLUTMenu == nil -> mainMenuCLUTMenu == itemAtIndex == 36");
+			NSLog( @"Not found item: %@", NSLocalizedString(@"Color Look Up Table", nil));
+			mainMenuCLUTMenu = [[viewerMenu itemAtIndex: 36]  submenu];
+			NSLog( @"***** Selected item: %@", [mainMenuCLUTMenu title]);
+		}
     }
 
 	if( [[NSUserDefaults standardUserDefaults] dictionaryForKey: @"CLUT"] != previousCLUTKeys)
@@ -1762,8 +1851,6 @@ static NSDate *lastWarningDate = nil;
 	}
 }
 #endif
-
-#define INCOMINGPATH @"/INCOMING.noindex/"
 
 - (void) startDICOMBonjour:(NSTimer*) t
 {
@@ -1871,7 +1958,7 @@ static NSDate *lastWarningDate = nil;
 		}
 		
 		//make sure that there exist a receiver folder at @"folder" path
-		NSString *path = [documentsDirectory() stringByAppendingPathComponent:INCOMINGPATH];
+		NSString *path = [[BrowserController currentBrowser] INCOMINGPATH];
 		
 		[AppController createNoIndexDirectoryIfNecessary: path];
 		
@@ -1893,7 +1980,7 @@ static NSDate *lastWarningDate = nil;
 		dcmtkQRSCPTLS = nil;
 		
 		//make sure that there exist a receiver folder at @"folder" path
-		NSString *path = [documentsDirectory() stringByAppendingPathComponent:INCOMINGPATH];
+		NSString *path = [[BrowserController currentBrowser] INCOMINGPATH];
 		[AppController createNoIndexDirectoryIfNecessary: path];	
 		
 		if( [STORESCPTLS tryLock])
@@ -2124,6 +2211,8 @@ static NSDate *lastWarningDate = nil;
 	return;
 }
 
+// Manage osirix URL : osirix://
+
 - (void)getUrl:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
 {
 	NSString *str = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
@@ -2133,125 +2222,176 @@ static NSDate *lastWarningDate = nil;
 	{
 		NSString *content = [url resourceSpecifier];
 		
-		// parse the URL to find the parameters (if any)
-		NSArray *urlComponents = [content componentsSeparatedByString: @"?"];
-		NSString *parameterString = @"";
-		if([urlComponents count] == 2) parameterString = [urlComponents lastObject];
+		BOOL betweenQuotation = NO;
 		
-		NSMutableDictionary *urlParameters = [NSMutableDictionary dictionary];
-		if(![parameterString isEqualToString: @""])
+		NSMutableString *parsedContent = [NSMutableString string];
+		for( int i = 0 ; i < content.length; i++)
 		{
-			NSArray *paramArray = [parameterString componentsSeparatedByString: @"&"];
-			NSMutableArray *selected = [NSMutableArray array];
-			for(NSString *param in paramArray)
-			{
-				NSArray *p = [param componentsSeparatedByString: @"="];
-				if([[p objectAtIndex:0] isEqualToString: @"selected"])
-				{
-					[selected addObject:[p lastObject]];
-				}
-				else if([p count]==2)
-					[urlParameters setObject:[p lastObject] forKey:[p objectAtIndex:0]];
-			}
-			
-			if([selected count])
-				[urlParameters setObject:selected forKey: @"selected"];
+			if( [content characterAtIndex: i] == '\'')
+				betweenQuotation = !betweenQuotation;
+				
+			if( [content characterAtIndex: i] == '?' && betweenQuotation)
+				[parsedContent appendString: @"__question__"];
+			else
+				[parsedContent appendFormat: @"%c", [content characterAtIndex: i]];
 		}
 		
-		if( [urlParameters objectForKey: @"image"])
+		// parse the URL to find the parameters (if any)
+		
+		NSArray *urlComponents = [NSArray array];
+		for( NSString *s in [parsedContent componentsSeparatedByString: @"?"])
 		{
-			NSArray *components = [[urlParameters objectForKey: @"image"] componentsSeparatedByString:@"+"];
-			
-			if( [components count] == 2)
+			urlComponents = [urlComponents arrayByAddingObject: [s stringByReplacingOccurrencesOfString:@"__question__" withString:@"?"]];
+		}
+		
+		NSString *parameterString = @"";
+		if([urlComponents count] == 2)
+		{
+			parameterString = [[urlComponents lastObject] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+		
+			NSMutableDictionary *urlParameters = [NSMutableDictionary dictionary];
+			if(![parameterString isEqualToString: @""])
 			{
-				NSString *sopclassuid = [components objectAtIndex: 0];
-				NSString *sopinstanceuid = [components objectAtIndex: 1];
-				int frame = [[urlParameters objectForKey: @"frames"] intValue];
-				
-				BOOL succeeded = NO;
-				
-				//First try to find it in the selected study
-				if( succeeded == NO)
+				NSMutableString *parsedParameterString = [NSMutableString string];
+				for( int i = 0 ; i < parameterString.length; i++)
 				{
-					NSMutableArray *allImages = [NSMutableArray array];
-					[[BrowserController currentBrowser] filesForDatabaseOutlineSelection: allImages];
-					
-					NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
-					
-					[context lock];
-					
-					@try
-					{
-						NSPredicate	*request = [NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: @"compressedSopInstanceUID"] rightExpression: [NSExpression expressionForConstantValue: [DicomImage sopInstanceUIDEncodeString: sopinstanceuid]] customSelector: @selector( isEqualToSopInstanceUID:)];
+					if( [parameterString characterAtIndex: i] == '\'')
+						betweenQuotation = !betweenQuotation;
 						
-						NSArray *imagesArray = [allImages filteredArrayUsingPredicate: request];
-						
-						if( [imagesArray count])
-						{
-							[[BrowserController currentBrowser] displayStudy: [[imagesArray lastObject] valueForKeyPath: @"series.study"] object: [imagesArray lastObject] command: @"Open"];
-							succeeded = YES;
-						}
-					}
-					@catch (NSException * e)
-					{
-						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					}
-					
-					[context unlock];
+					if( [parameterString characterAtIndex: i] == '&' && betweenQuotation)
+						[parsedParameterString appendString: @"__and__"];
+					else
+						[parsedParameterString appendFormat: @"%c", [parameterString characterAtIndex: i]];
 				}
-				//Second option, try to find the uid in the ENTIRE db....
 				
-				if( succeeded == NO)
+				NSArray *paramArray = [NSArray array];
+				for( NSString *s in [parsedParameterString componentsSeparatedByString: @"&"])
 				{
-					NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
-					[dbRequest setEntity: [[[[BrowserController currentBrowser] managedObjectModel] entitiesByName] objectForKey: @"Series"]];
-					[dbRequest setPredicate: [NSPredicate predicateWithFormat: @"seriesSOPClassUID == %@", sopclassuid]];
+					paramArray = [paramArray arrayByAddingObject: [s stringByReplacingOccurrencesOfString:@"__and__" withString:@"&"]];
+				}
+				
+				for(NSString *param in paramArray)
+				{
+					NSRange separatorRange = [param rangeOfString: @"="];
 					
-					NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
-					
-					[context lock];
-					
-					WaitRendering *wait = [[WaitRendering alloc] init: NSLocalizedString( @"Locating the image in the database...", nil)];
-					[wait showWindow: self];
-					[wait setCancel: YES];
-					[wait start];
-					
-					@try
+					if( separatorRange.location != NSNotFound)
 					{
-						NSError	*error = nil;
-						NSArray *allSeries = [[context executeFetchRequest: dbRequest error: &error] valueForKey: @"images"];
-						
-						NSMutableArray *allImages = [NSMutableArray array];
-						for( NSSet *s in allSeries)
-							[allImages addObjectsFromArray: [s allObjects]];
-						
-						NSData *searchedUID = [DicomImage sopInstanceUIDEncodeString: sopinstanceuid];
-						DicomImage *searchUIDImage = nil;
-						
-						for( DicomImage *i in allImages)
+						@try
 						{
-							if( [[i valueForKey: @"compressedSopInstanceUID"] isEqualToSopInstanceUID: searchedUID])
-								searchUIDImage = i;
-							
-							if( searchUIDImage)
-								break;
-							
-							if( [wait run] == NO)
-								break;
+							[urlParameters setObject: [[param substringFromIndex: separatorRange.location+1] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"'\""]] forKey: [param substringToIndex: separatorRange.location]];
 						}
-						
-						if( searchUIDImage)
-							[[BrowserController currentBrowser] displayStudy: [searchUIDImage valueForKeyPath: @"series.study"] object: searchUIDImage command: @"Open"];
+						@catch (NSException * e)
+						{
+							NSLog( @"**** exception in getUrl: %@", param);
+						}
 					}
-					@catch (NSException * e)
-					{
-						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-					}
-					[wait end];
-					[wait close];
-					[wait release];
+				}
+				
+				if( [urlParameters objectForKey: @"methodName"]) // XML-RPC message
+				{
+					NSMutableDictionary *paramDict = [NSMutableDictionary dictionaryWithDictionary: urlParameters];
 					
-					[context unlock];
+					[paramDict removeObjectForKey: @"methodName"];
+					
+					[XMLRPCServer processXMLRPCMessage: [urlParameters objectForKey: @"methodName"] httpServerMessage: nil HTTPServerRequest: nil version: (NSString*) kCFHTTPVersion1_0 paramDict: paramDict encoding: @"UTF-8"];
+				}
+				
+				if( [urlParameters objectForKey: @"image"])
+				{
+					NSArray *components = [[urlParameters objectForKey: @"image"] componentsSeparatedByString:@"+"];
+					
+					if( [components count] == 2)
+					{
+						NSString *sopclassuid = [components objectAtIndex: 0];
+						NSString *sopinstanceuid = [components objectAtIndex: 1];
+						int frame = [[urlParameters objectForKey: @"frames"] intValue];
+						
+						BOOL succeeded = NO;
+						
+						//First try to find it in the selected study
+						if( succeeded == NO)
+						{
+							NSMutableArray *allImages = [NSMutableArray array];
+							[[BrowserController currentBrowser] filesForDatabaseOutlineSelection: allImages];
+							
+							NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
+							
+							[context lock];
+							
+							@try
+							{
+								NSPredicate	*request = [NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: @"compressedSopInstanceUID"] rightExpression: [NSExpression expressionForConstantValue: [DicomImage sopInstanceUIDEncodeString: sopinstanceuid]] customSelector: @selector( isEqualToSopInstanceUID:)];
+								
+								NSArray *imagesArray = [allImages filteredArrayUsingPredicate: request];
+								
+								if( [imagesArray count])
+								{
+									[[BrowserController currentBrowser] displayStudy: [[imagesArray lastObject] valueForKeyPath: @"series.study"] object: [imagesArray lastObject] command: @"Open"];
+									succeeded = YES;
+								}
+							}
+							@catch (NSException * e)
+							{
+								NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+							}
+							
+							[context unlock];
+						}
+						//Second option, try to find the uid in the ENTIRE db....
+						
+						if( succeeded == NO)
+						{
+							NSFetchRequest *dbRequest = [[[NSFetchRequest alloc] init] autorelease];
+							[dbRequest setEntity: [[[[BrowserController currentBrowser] managedObjectModel] entitiesByName] objectForKey: @"Series"]];
+							[dbRequest setPredicate: [NSPredicate predicateWithFormat: @"seriesSOPClassUID == %@", sopclassuid]];
+							
+							NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
+							
+							[context lock];
+							
+							WaitRendering *wait = [[WaitRendering alloc] init: NSLocalizedString( @"Locating the image in the database...", nil)];
+							[wait showWindow: self];
+							[wait setCancel: YES];
+							[wait start];
+							
+							@try
+							{
+								NSError	*error = nil;
+								NSArray *allSeries = [[context executeFetchRequest: dbRequest error: &error] valueForKey: @"images"];
+								
+								NSMutableArray *allImages = [NSMutableArray array];
+								for( NSSet *s in allSeries)
+									[allImages addObjectsFromArray: [s allObjects]];
+								
+								NSData *searchedUID = [DicomImage sopInstanceUIDEncodeString: sopinstanceuid];
+								DicomImage *searchUIDImage = nil;
+								
+								for( DicomImage *i in allImages)
+								{
+									if( [[i valueForKey: @"compressedSopInstanceUID"] isEqualToSopInstanceUID: searchedUID])
+										searchUIDImage = i;
+									
+									if( searchUIDImage)
+										break;
+									
+									if( [wait run] == NO)
+										break;
+								}
+								
+								if( searchUIDImage)
+									[[BrowserController currentBrowser] displayStudy: [searchUIDImage valueForKeyPath: @"series.study"] object: searchUIDImage command: @"Open"];
+							}
+							@catch (NSException * e)
+							{
+								NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+							}
+							[wait end];
+							[wait close];
+							[wait release];
+							
+							[context unlock];
+						}
+					}
 				}
 			}
 		}
@@ -2261,9 +2401,6 @@ static NSDate *lastWarningDate = nil;
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
 {
 	long				i;
-	NSMutableArray		*filesArray = [NSMutableArray array];
-	NSMutableArray		*pluginsArray = [NSMutableArray array];
-	NSFileManager       *defaultManager = [NSFileManager defaultManager];
 	BOOL                isDirectory;
 
 	if([filenames count] == 1) // for iChat Theatre... (drag & drop a DICOM file on the video chat window)
@@ -2302,11 +2439,6 @@ static NSDate *lastWarningDate = nil;
 	}
 }
 
-- (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
-{
-	return [[BrowserController currentBrowser] checkBurner];
-}
-
 - (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
 {
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"]) // Server mode
@@ -2325,7 +2457,9 @@ static NSDate *lastWarningDate = nil;
 	
 	BOOL hideListenerError_copy = [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"];
 	
+	[[NSUserDefaults standardUserDefaults] setBool: hideListenerError_copy forKey: @"copyHideListenerError"];
 	[[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"hideListenerError"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	[[NSFileManager defaultManager] createFileAtPath: @"/tmp/kill_all_storescu" contents: [NSData data] attributes: nil];
 	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 3]];
@@ -2336,60 +2470,9 @@ static NSDate *lastWarningDate = nil;
 	unlink( "/tmp/kill_all_storescu");
 	
 	[[NSUserDefaults standardUserDefaults] setBool: hideListenerError_copy forKey: @"hideListenerError"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey: @"copyHideListenerError"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
-
-- (void) waitUnlockFileWithPID: (NSNumber*) nspid
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	BOOL fileExist = YES;
-	int pid = [nspid intValue], inc = 0, rc = pid, state;
-	char dir[ 1024];
-	sprintf( dir, "%s-%d", "/tmp/lock_process", pid);
-	
-	do
-	{
-		FILE * pFile = fopen (dir,"r");
-		if( pFile)
-		{
-			rc = waitpid( pid, &state, WNOHANG);	// Check to see if this pid is still alive?
-			fclose (pFile);
-		}
-		else
-			fileExist = NO;
-		
-		usleep( 100000);
-		inc++;
-	}
-#define TIMEOUT 1200 // 1200*100000 = 120 secs
-	while( fileExist == YES && inc < TIMEOUT && rc >= 0);
-	
-	if( inc >= TIMEOUT)
-	{
-		kill( pid, 15);
-		NSLog( @"******* waitUnlockFile for %d sec", inc/10);
-	}
-	
-	if( rc < 0)
-	{
-		kill( pid, 15);
-		NSLog( @"******* waitUnlockFile : child process died...");
-	}
-	
-	unlink( dir);
-	
-	if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/kill_all_storescu"] == NO)
-	{
-		NSString *str = [NSString stringWithContentsOfFile: @"/tmp/error_message"];
-		[[NSFileManager defaultManager] removeFileAtPath: @"/tmp/error_message" handler: nil];
-		
-		if( str && [str length] > 0)
-			[[AppController sharedAppController] performSelectorOnMainThread: @selector( displayListenerError:) withObject: str waitUntilDone: NO];
-	}
-	
-	[pool release];
-}
-
 
 - (void) applicationWillTerminate: (NSNotification*) aNotification
 {
@@ -2436,11 +2519,17 @@ static NSDate *lastWarningDate = nil;
 	
 	[AppController cleanOsiriXSubProcesses];
 	
-	// DELETE THE TEMP.noindex DIRECTORY...
+	// DELETE the content of TEMP.noindex directory...
 	NSString *tempDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/TEMP.noindex/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory]) [[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
+	if ([[NSFileManager defaultManager] fileExistsAtPath: tempDirectory])
+	{
+		for( NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: tempDirectory error: nil])
+			[[NSFileManager defaultManager] removeFileAtPath: [tempDirectory stringByAppendingPathComponent: file] handler: nil];
+	}
+	
 	tempDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/TEMP/"];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory]) [[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:tempDirectory])
+		[[NSFileManager defaultManager] removeFileAtPath:tempDirectory handler: nil];
 	
 	// DELETE THE DUMP DIRECTORY...
 	NSString *dumpDirectory = [documentsDirectory() stringByAppendingPathComponent:@"/DUMP/"];
@@ -2471,8 +2560,10 @@ static NSDate *lastWarningDate = nil;
 {
 	if( [[BrowserController currentBrowser] shouldTerminate: sender] == NO) return;
 	
+	#ifndef OSIRIX_LIGHT
 	[dcmtkQRSCP abort];
 	[dcmtkQRSCPTLS abort];
+	#endif
 	
 	[NSThread sleepForTimeInterval: 1];
 	
@@ -2701,7 +2792,7 @@ static BOOL initialized = NO;
 					exit(0);
 				}
 				
-				NSLog(@"Number of processors: %d", MPProcessors ());
+				NSLog(@"Number of processors: %lu", MPProcessors ());
 				
 				#ifdef NDEBUG
 				#else
@@ -2744,8 +2835,20 @@ static BOOL initialized = NO;
 //				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"DONTCOPYWLWWSETTINGS"];
 				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"ROITEXTNAMEONLY"];
 				
+				if( [[NSUserDefaults standardUserDefaults] objectForKey: @"copyHideListenerError"])
+					[[NSUserDefaults standardUserDefaults] setBool: [[NSUserDefaults standardUserDefaults] boolForKey: @"copyHideListenerError"] forKey: @"hideListenerError"];
+				
 				pluginManager = [[PluginManager alloc] init];
 				
+				
+				#ifdef MACAPPSTORE
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MACAPPSTORE"]; // Also modify in DefaultsOsiriX.m
+				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"AUTHENTICATION"];
+				[[NSUserDefaults standardUserDefaults] setObject:@"(~/Library/Application Support/OsiriX/)" forKey:@"DefaultDatabasePath"];
+				#else
+				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"MACAPPSTORE"]; // Also modify in DefaultsOsiriX.m
+				[[NSUserDefaults standardUserDefaults] setObject:@"(Current User Documents folder)" forKey:@"DefaultDatabasePath"];
+				#endif
 				
 				//Add Endoscopy LUT, WL/WW, shading to existing prefs
 				// Shading Preset
@@ -2952,7 +3055,7 @@ static BOOL initialized = NO;
 - (void) growlTitle:(NSString*) title description:(NSString*) description name:(NSString*) name
 {
 #ifndef OSIRIX_LIGHT
-	
+#ifndef MACAPPSTORE
 	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"doNotUseGrowl"]) return;
 	
 	[GrowlApplicationBridge notifyWithTitle: title
@@ -2963,6 +3066,7 @@ static BOOL initialized = NO;
 							isSticky: NO
 							clickContext: nil];
 #endif
+#endif
 }
 
 - (NSDictionary *) registrationDictionaryForGrowl
@@ -2970,16 +3074,17 @@ static BOOL initialized = NO;
 	if( [[NSUserDefaults standardUserDefaults] boolForKey:@"doNotUseGrowl"]) return nil;
 	
     NSArray *notifications;
-    notifications = [NSArray arrayWithObjects: @"newfiles", @"delete", @"result", @"autorouting", @"autoquery", @"send", nil];
+    notifications = [NSArray arrayWithObjects: @"newstudy", @"newfiles", @"delete", @"result", @"autorouting", @"autoquery", @"send", nil];
 
     NSDictionary *dict = nil;
 	
 #ifndef OSIRIX_LIGHT
+#ifndef MACAPPSTORE
     dict = [NSDictionary dictionaryWithObjectsAndKeys:
                              notifications, GROWL_NOTIFICATIONS_ALL,
                          notifications, GROWL_NOTIFICATIONS_DEFAULT, nil];
 #endif
-	
+#endif
     return (dict);
 }
 
@@ -3097,7 +3202,7 @@ static BOOL initialized = NO;
 
 //	[AppController displayImportantNotice: self];
 
-	if( [[NSUserDefaults standardUserDefaults] integerForKey: @"TOOLKITPARSER3"] == 0 || [[NSUserDefaults standardUserDefaults] boolForKey:@"USEPAPYRUSDCMPIX3"] == NO)
+	if( [[NSUserDefaults standardUserDefaults] integerForKey: @"TOOLKITPARSER4"] == 0 || [[NSUserDefaults standardUserDefaults] boolForKey:@"USEPAPYRUSDCMPIX4"] == NO)
 	{
 		[self growlTitle: NSLocalizedString( @"Warning!", nil) description: NSLocalizedString( @"DCM Framework is selected as the DICOM reader/parser. The performances of this toolkit are slower.", nil)  name:@"result"];
 		NSLog( @"******** %@", NSLocalizedString( @"DCM Framework is selected as the DICOM reader/parser. The performances of this toolkit are slower.", nil));
@@ -3126,11 +3231,13 @@ static BOOL initialized = NO;
 		[[NSUserDefaults standardUserDefaults] setBool: NO forKey: @"checkForUpdatesPlugins"];
 	}
 	
+	#ifndef MACAPPSTORE
 	#ifndef OSIRIX_LIGHT
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"checkForUpdatesPlugins"])
 		[NSThread detachNewThreadSelector:@selector(checkForUpdates:) toTarget:pluginManager withObject:pluginManager];
 	
 	[NSThread detachNewThreadSelector: @selector(checkForUpdates:) toTarget:self withObject: self];
+	#endif
 	#endif
 	
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"]) // Server mode
@@ -3212,6 +3319,28 @@ static BOOL initialized = NO;
 //	[rep getPixel: &pix atX: 2 y: 2];
 //	
 //	NSLog( @"%@", rep);
+
+	#ifdef NDEBUG
+	#else
+	NSLog( @"Testing localization for menus");
+	NSMenu *mainMenu = [NSApp mainMenu];
+	
+	if( [[[mainMenu itemAtIndex: 5] title] isEqualToString: NSLocalizedString(@"2D Viewer", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[mainMenu itemAtIndex: 1] title] isEqualToString: NSLocalizedString(@"File", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	
+	NSMenu *viewerMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"2D Viewer", nil)] submenu];
+	
+	if( [[[viewerMenu itemAtIndex: 35] title] isEqualToString: NSLocalizedString(@"Window Width & Level", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[viewerMenu itemAtIndex: 42] title] isEqualToString: NSLocalizedString(@"Image Tiling", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[viewerMenu itemAtIndex: 8] title] isEqualToString: NSLocalizedString(@"Orientation", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[viewerMenu itemAtIndex: 38] title] isEqualToString: NSLocalizedString(@"Opacity", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[viewerMenu itemAtIndex: 39] title] isEqualToString: NSLocalizedString(@"Convolution Filters", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	if( [[[viewerMenu itemAtIndex: 36] title] isEqualToString: NSLocalizedString(@"Color Look Up Table", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	
+	NSMenu *fileMenu = [[mainMenu itemWithTitle:NSLocalizedString(@"File", nil)] submenu];
+	
+	if( [[[fileMenu itemAtIndex: 8] title] isEqualToString: NSLocalizedString(@"Export", nil)] == NO) NSLog( @"******* WARNING MENU MOVED / RENAMED ! LOCALIZATION PROBLEMS");
+	#endif
 }
 
 - (void) checkForOsirixMimeType
@@ -3240,7 +3369,7 @@ static BOOL initialized = NO;
 
 - (void) applicationWillFinishLaunching: (NSNotification *) aNotification
 {
-	if( [NSDate timeIntervalSinceReferenceDate] - [[NSUserDefaults standardUserDefaults] doubleForKey: @"lastDate32bitPipelineCheck"] > 60L*60L*24L*30L) // 30 days
+	if( [NSDate timeIntervalSinceReferenceDate] - [[NSUserDefaults standardUserDefaults] doubleForKey: @"lastDate32bitPipelineCheck"] > 60L*60L*24L*150L) // 150 days
 	{
 		[[NSUserDefaults standardUserDefaults] setDouble: [NSDate timeIntervalSinceReferenceDate] forKey: @"lastDate32bitPipelineCheck"];
 		[self verifyHardwareInterpolation];
@@ -3269,7 +3398,7 @@ static BOOL initialized = NO;
 	}
 	
 	#ifndef OSIRIX_LIGHT
-	
+	#ifndef MACAPPSTORE
 	@try
 	{
 		[[ILCrashReporter defaultReporter] launchReporterForCompany:@"OsiriX Developers" reportAddr:@"crash@osirix-viewer.com"];
@@ -3278,6 +3407,7 @@ static BOOL initialized = NO;
 	{
 		NSLog( @"**** Exception ILCrashReporter: %@", e);
 	}
+	#endif
 	#endif
 	
 	[PluginManager setMenus: filtersMenu :roisMenu :othersMenu :dbMenu];
@@ -3303,7 +3433,9 @@ static BOOL initialized = NO;
 	#if __LP64__
 	appStartingDate = [[[NSDate date] description] retain];
 	checkSN64Service = [[NSNetService alloc] initWithDomain:@"" type:@"_snosirix._tcp." name: [self privateIP] port: 8486];
-	checkSN64String = [[NSString stringWithContentsOfFile: [[[NSBundle mainBundle] builtInPlugInsPath] stringByAppendingPathComponent: @"sn64"]] retain];
+	checkSN64String = [[NSString stringWithContentsOfFile: [[[NSBundle mainBundle] builtInPlugInsPath] stringByAppendingPathComponent: @".sn64"]] retain];
+	if( checkSN64String == nil)
+		checkSN64String = [[NSString stringWithContentsOfFile: [[[NSBundle mainBundle] builtInPlugInsPath] stringByAppendingPathComponent: @"sn64"]] retain];
 	
 	NSNetServiceBrowser *checkSN64Browser = [[NSNetServiceBrowser alloc] init];
 	[checkSN64Browser setDelegate:self];
@@ -3313,6 +3445,7 @@ static BOOL initialized = NO;
 	#endif
 	
 	#ifndef OSIRIX_LIGHT
+	#ifndef MACAPPSTORE
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"doNotUseGrowl"] == NO)
 	{
 		[GrowlApplicationBridge setGrowlDelegate:self];
@@ -3343,6 +3476,7 @@ static BOOL initialized = NO;
 			}
 		}
 	}
+	#endif
 	#endif
 	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -3643,6 +3777,7 @@ static BOOL initialized = NO;
 }
 
 #ifndef OSIRIX_LIGHT
+#ifndef MACAPPSTORE
 - (IBAction) checkForUpdates: (id) sender
 {
 	NSURL *url;
@@ -3690,6 +3825,7 @@ static BOOL initialized = NO;
 	
 	[pool release];
 }
+#endif
 #endif
 
 - (void) URL: (NSURL*) sender resourceDidFailLoadingWithReason: (NSString*) reason
@@ -4675,6 +4811,8 @@ static BOOL initialized = NO;
 		[[[viewersList objectAtIndex: keyWindow] window] makeKeyAndOrderFront:self];
 		[[viewersList objectAtIndex: keyWindow] propagateSettings];
 		
+		NSDisableScreenUpdates();
+		
 		for( id v in viewersList)
 		{
 			if( [v isKindOfClass:[ViewerController class]])
@@ -4695,6 +4833,8 @@ static BOOL initialized = NO;
 		
 		if( [[NSUserDefaults standardUserDefaults] boolForKey:@"syncPreviewList"])
 			[[viewersList objectAtIndex: keyWindow] syncThumbnails];
+			
+		NSEnableScreenUpdates();
 	}
 	
 	for( id obj in winList)
@@ -4760,6 +4900,7 @@ static BOOL initialized = NO;
 
 + (void)checkForPagesTemplate;
 {
+	#ifndef MACAPPSTORE
 	// Pages template directory
 	NSArray *templateDirectoryPathArray = [NSArray arrayWithObjects:NSHomeDirectory(), @"Library", @"Application Support", @"iWork", @"Pages", @"Templates", @"OsiriX", nil];
 	int i;
@@ -4797,6 +4938,7 @@ static BOOL initialized = NO;
 	NSString *templateDirectoryInOsiriXData = [NSString pathWithComponents:templateDirectoryInOsiriXDataPathArray];
 	if(![[NSFileManager defaultManager] fileExistsAtPath:templateDirectoryInOsiriXData])
 		[[NSFileManager defaultManager] createSymbolicLinkAtPath:templateDirectoryInOsiriXData pathContent:templateDirectory];
+	#endif
 }
 
 #pragma mark-
@@ -4846,7 +4988,6 @@ static BOOL initialized = NO;
 	long clutBarsCopy = [[NSUserDefaults standardUserDefaults] integerForKey:@"CLUTBARS"];
 	BOOL noInterpolationCopy = [[NSUserDefaults standardUserDefaults] boolForKey:@"NOINTERPOLATION"];
 	BOOL highQInterpolationCopy = [[NSUserDefaults standardUserDefaults] boolForKey:@"SOFTWAREINTERPOLATION"];
-	BOOL full32bitPipeCopy = [[NSUserDefaults standardUserDefaults] boolForKey:@"FULL32BITPIPELINE"];
 	
 	float pixData[] = {0,1,1,0};
 	DCMPix* dcmPix = [[DCMPix alloc] initWithData:pixData :32 :2 :2 :1 :1 :0 :0 :0];
@@ -4957,8 +5098,37 @@ static BOOL initialized = NO;
 
 #pragma mark -
 
--(WebPortal*)defaultWebPortal {
-	return [WebPortal defaultWebPortal];
+- (NSManagedObjectContext*) defaultWebPortalManagedObjectContext
+{
+	#ifndef OSIRIX_LIGHT
+	return [[[WebPortal defaultWebPortal] database] managedObjectContext];
+	#else
+	static NSManagedObjectContext *fakeContext = nil;
+	if( fakeContext == nil)
+	{
+		fakeContext  = [[NSManagedObjectContext alloc] init];
+		NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL: [NSURL fileURLWithPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/WebPortalDB.momd"]]];
+		NSPersistentStoreCoordinator *psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model] autorelease];
+		[fakeContext setPersistentStoreCoordinator: psc];
+	}
+	return fakeContext;
+	#endif
 }
+
+-(WebPortal*)defaultWebPortal {
+	#ifndef OSIRIX_LIGHT
+	return [WebPortal defaultWebPortal];
+	#else
+	return nil;
+	#endif
+}
+
+#ifndef OSIRIX_LIGHT
+
+-(NSString*)weasisBasePath {
+	return [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"weasis"];
+}
+
+#endif
 
 @end

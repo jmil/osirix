@@ -48,11 +48,8 @@
 	NSNumber *_numberImages;
 	NSString *_specificCharacterSet;
 	NSManagedObject *_logEntry;
-	BOOL showErrorMessage;
-	volatile int WADOThreads;
-	NSRecursiveLock *WADODownloadLock;
+	BOOL showErrorMessage, firstWadoErrorDisplayed;
 	OFCondition globalCondition;
-	NSMutableDictionary *WADODownloadDictionary;
 }
 
 + (id)queryNodeWithDataset:(DcmDataset *)dataset

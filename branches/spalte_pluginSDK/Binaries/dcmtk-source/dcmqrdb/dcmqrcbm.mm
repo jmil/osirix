@@ -32,12 +32,12 @@
  */
 
 #include <Cocoa/Cocoa.h>
-#include"DCMNetServiceDelegate.h"
+#include"OsiriX/DCMNetServiceDelegate.h"
 #import "SendController.h"
 #import "browserController.h"
-#import "DCMObject.h"
-#import "DCM.h"
-#import "DCMTransferSyntax.h"
+#import "OsiriX/DCMObject.h"
+#import "OsiriX/DCM.h"
+#import "OsiriX/DCMTransferSyntax.h"
 
 #include "osconfig.h"    /* make sure OS specific configuration is included first */
 #include "dcmqrcbm.h"
@@ -481,7 +481,7 @@ void DcmQueryRetrieveMoveContext::callbackHandler(
         printf("Move SCP Response %d [status: %s]\n", responseCount,
 	    DU_cmoveStatusString(dbStatus.status()));
     }
-    if (options_.verbose_ > 1) {
+    if (options_.verbose_) {
         DIMSE_printCMoveRSP(stdout, response);
         if (DICOM_PENDING_STATUS(dbStatus.status()) && (*responseIdentifiers != NULL)) {
             printf("Move SCP Response Identifiers:\n");
@@ -789,7 +789,7 @@ void DcmQueryRetrieveMoveContext::moveNextImage(DcmQueryRetrieveDatabaseStatus *
 		DcmXfer preferredXfer( xferSyntax);
 		OFBool status = YES;
 		
-		sprintf( outfname, "%s/%s/QR-CMOVE-%d-%d.dcm", [[BrowserController currentBrowser] cfixedDocumentsDirectory], "TEMP.noindex", seed++, getpid());
+		sprintf( outfname, "%s/QR-CMOVE-%d-%d.dcm", [[BrowserController currentBrowser] cfixedTempNoIndexDirectory], seed++, getpid());
 		unlink( outfname);
 		
 		if (filexfer.isNotEncapsulated() && preferredXfer.isNotEncapsulated())

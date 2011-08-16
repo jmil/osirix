@@ -22,6 +22,8 @@
 	basicHTTPServer	*httpServ;
 }
 
-- (void)HTTPConnectionProtected:(basicHTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess;
+- (void) processXMLRPCMessage: (NSString*) selName httpServerMessage: (NSMutableDictionary*) httpServerMessage HTTPServerRequest: (HTTPServerRequest*) mess version:(NSString*) vers paramDict: (NSDictionary*) paramDict encoding: (NSString*) encoding;
+- (void) HTTPConnectionProtected:(basicHTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess;
+- (void) postError: (NSInteger) err version: (NSString*) vers message: (HTTPServerRequest *)mess;
 
 @end

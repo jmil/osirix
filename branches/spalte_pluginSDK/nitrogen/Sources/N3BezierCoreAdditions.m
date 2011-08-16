@@ -556,7 +556,7 @@ CGFloat N3BezierCoreRelativePositionClosestToLine(N3BezierCoreRef bezierCore, N3
 }
 
 CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, CGFloat startingDistance, N3Vector initialNormal,
-                                               N3VectorArray vectors, N3VectorArray tangents, N3VectorArray normals, CFIndex numVectors)
+                                  N3VectorArray vectors, N3VectorArray tangents, N3VectorArray normals, CFIndex numVectors)
 {
     N3BezierCoreRef flattenedBezierCore;
     N3BezierCoreIteratorRef bezierCoreIterator;
@@ -577,7 +577,6 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
     N3Vector nextSegmentDirection;
     CGFloat segmentLength;
     CGFloat distanceTraveled;
-    CGFloat totalDistanceTraveled;
     CGFloat extraDistance;
     CFIndex i;
     bool done;
@@ -588,7 +587,7 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
     
 	assert(normals == NULL || N3BezierCoreSubpathCount(bezierCore) == 1); // this only works when there is a single subpath
 	assert(N3BezierCoreSubpathCount(bezierCore) == 1); // TODO! I should fix this to be able to handle moveTo as long as normals don't matter
-
+    
     if (N3BezierCoreHasCurve(bezierCore)) {
         flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
         N3BezierCoreSubdivide((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultSubdivideSegmentLength);
@@ -602,7 +601,6 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
     flattenedBezierCore = NULL;
     
     extraDistance = startingDistance; // distance that was traveled past the last point
-    totalDistanceTraveled = 0.0;
     done = false;
 	i = 0;
     startVector = N3VectorZero;
@@ -639,14 +637,14 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
             nextNormalVector = N3VectorBend(normalVector, segmentDirection, nextSegmentDirection);
             nextNormalVector = N3VectorSubtract(nextNormalVector, N3VectorProject(nextNormalVector, nextSegmentDirection)); // make sure the new vector is really normal
             nextNormalVector = N3VectorNormalize(nextNormalVector);
-
+            
             nextTangentVector = nextSegmentDirection;
         }
-        startNormalVector = N3VectorNormalize(N3VectorScalarMultiply(N3VectorAdd(previousNormalVector, normalVector), 0.5)); 
-        endNormalVector = N3VectorNormalize(N3VectorScalarMultiply(N3VectorAdd(nextNormalVector, normalVector), 0.5)); 
+        startNormalVector = N3VectorNormalize(N3VectorLerp(previousNormalVector, normalVector, 0.5)); 
+        endNormalVector = N3VectorNormalize(N3VectorLerp(nextNormalVector, normalVector, 0.5)); 
         
-        startTangentVector = N3VectorNormalize(N3VectorScalarMultiply(N3VectorAdd(previousTangentVector, tangentVector), 0.5)); 
-        endTangentVector = N3VectorNormalize(N3VectorScalarMultiply(N3VectorAdd(nextTangentVector, tangentVector), 0.5)); 
+        startTangentVector = N3VectorNormalize(N3VectorLerp(previousTangentVector, tangentVector, 0.5)); 
+        endTangentVector = N3VectorNormalize(N3VectorLerp(nextTangentVector, tangentVector, 0.5)); 
         
 		while(distanceTraveled < segmentLength)
 		{
@@ -654,12 +652,11 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
                 vectors[i] = N3VectorAdd(startVector, N3VectorScalarMultiply(segmentDirection, distanceTraveled));
             }
             if (tangents) {
-                tangents[i] = segmentDirection;
-                tangents[i] = N3VectorNormalize(N3VectorAdd(N3VectorScalarMultiply(startTangentVector, 1.0-distanceTraveled/segmentLength), N3VectorScalarMultiply(endTangentVector, distanceTraveled/segmentLength)));
+                tangents[i] = N3VectorNormalize(N3VectorLerp(startTangentVector, endTangentVector, distanceTraveled/segmentLength));
                 
             }
             if (normals) {
-                normals[i] = N3VectorNormalize(N3VectorAdd(N3VectorScalarMultiply(startNormalVector, 1.0-distanceTraveled/segmentLength), N3VectorScalarMultiply(endNormalVector, distanceTraveled/segmentLength)));
+                normals[i] = N3VectorNormalize(N3VectorLerp(startNormalVector, endNormalVector, distanceTraveled/segmentLength));
             }
             i++;
             if (i >= numVectors) {
@@ -668,7 +665,6 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
             }
             
             distanceTraveled += spacing;
-            totalDistanceTraveled += spacing;
 		}
 		
 		extraDistance = distanceTraveled - segmentLength;
@@ -687,6 +683,261 @@ CFIndex N3BezierCoreGetVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, C
     N3BezierCoreIteratorRelease(bezierCoreIterator);
 	return i;
 }
+
+CFIndex N3BezierCoreGetProjectedVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, CGFloat startingDistance, N3Vector projectionDirection,
+                                  N3VectorArray vectors, N3VectorArray tangents, N3VectorArray normals, CGFloat *relativePositions, CFIndex numVectors)
+{
+    N3BezierCoreRef flattenedBezierCore;
+    N3BezierCoreIteratorRef bezierCoreIterator;
+    N3BezierCoreRef projectedBezierCore;
+    N3BezierCoreIteratorRef projectedBezierCoreIterator;
+    N3Vector nextVector;
+    N3Vector startVector;
+    N3Vector endVector;
+    N3Vector nextProjectedVector;
+    N3Vector startProjectedVector;
+    N3Vector endProjectedVector;
+    N3Vector previousTangentVector;
+    N3Vector nextTangentVector;
+    N3Vector tangentVector;
+    N3Vector startTangentVector;
+    N3Vector endTangentVector;
+    N3Vector previousNormalVector;
+    N3Vector nextNormalVector;
+    N3Vector normalVector;
+    N3Vector startNormalVector;
+    N3Vector endNormalVector;
+    N3Vector segmentDirection;
+    N3Vector projectedSegmentDirection;
+    N3Vector nextSegmentDirection;
+    N3Vector nextProjectedSegmentDirection;
+    CGFloat segmentLength;
+    CGFloat projectedSegmentLength;
+    CGFloat distanceTraveled;
+    CGFloat totalDistanceTraveled;
+    CGFloat extraDistance;
+    CGFloat bezierLength;
+    CFIndex i;
+    bool done;
+	
+    if (numVectors == 0 || N3BezierCoreSegmentCount(bezierCore) < 2) {
+        return 0;
+    }
+    
+	assert(normals == NULL || N3BezierCoreSubpathCount(bezierCore) == 1); // this only works when there is a single subpath
+	assert(N3BezierCoreSubpathCount(bezierCore) == 1); // TODO! I should fix this to be able to handle moveTo as long as normals don't matter
+    
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreSubdivide((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultSubdivideSegmentLength);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore);
+    }    
+    
+    bezierLength = N3BezierCoreLength(flattenedBezierCore);
+    projectedBezierCore = N3BezierCoreCreateCopyProjectedToPlane(flattenedBezierCore, N3PlaneMake(N3VectorZero, projectionDirection));
+    
+    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+    projectedBezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(projectedBezierCore);
+    N3BezierCoreRelease(flattenedBezierCore);
+    flattenedBezierCore = NULL;
+    N3BezierCoreRelease(projectedBezierCore);
+    projectedBezierCore = NULL;
+    
+    extraDistance = startingDistance; // distance that was traveled past the last point
+    totalDistanceTraveled = startingDistance;
+    done = false;
+	i = 0;
+    startVector = N3VectorZero;
+    endVector = N3VectorZero;
+    startProjectedVector = N3VectorZero;
+    endProjectedVector = N3VectorZero;
+    
+    N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &startVector);
+    N3BezierCoreIteratorGetNextSegment(projectedBezierCoreIterator, NULL, NULL, &startProjectedVector);
+	N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &endVector);
+	N3BezierCoreIteratorGetNextSegment(projectedBezierCoreIterator, NULL, NULL, &endProjectedVector);
+    segmentDirection = N3VectorNormalize(N3VectorSubtract(endVector, startVector));
+    projectedSegmentDirection = N3VectorNormalize(N3VectorSubtract(endProjectedVector, startProjectedVector));
+    segmentLength = N3VectorDistance(endVector, startVector);
+    projectedSegmentLength = N3VectorDistance(endProjectedVector, startProjectedVector);
+    
+    normalVector = N3VectorNormalize(N3VectorCrossProduct(projectedSegmentDirection, projectionDirection));
+    if (N3VectorIsZero(normalVector)) {
+        normalVector = N3VectorANormalVector(projectionDirection);
+    }
+                      
+    previousNormalVector = normalVector;
+    tangentVector = segmentDirection;
+    previousTangentVector = tangentVector;
+    
+	while (done == false) {
+		distanceTraveled = extraDistance;
+        
+        if (N3BezierCoreIteratorIsAtEnd(bezierCoreIterator)) {
+            nextNormalVector = normalVector;
+            nextTangentVector = tangentVector;
+            nextVector = endVector;
+            done = true;
+        } else {
+            N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &nextVector);
+            N3BezierCoreIteratorGetNextSegment(projectedBezierCoreIterator, NULL, NULL, &nextProjectedVector);
+            nextSegmentDirection = N3VectorNormalize(N3VectorSubtract(nextVector, endVector));
+            nextProjectedSegmentDirection = N3VectorNormalize(N3VectorSubtract(nextProjectedVector, endProjectedVector));
+            nextNormalVector = N3VectorNormalize(N3VectorCrossProduct(nextProjectedSegmentDirection, projectionDirection));
+            if (N3VectorIsZero(nextNormalVector)) {
+                nextNormalVector = N3VectorANormalVector(projectionDirection);
+            }
+            
+            nextTangentVector = nextSegmentDirection;
+        }
+        startNormalVector = N3VectorNormalize(N3VectorLerp(previousNormalVector, normalVector, 0.5)); 
+        endNormalVector = N3VectorNormalize(N3VectorLerp(nextNormalVector, normalVector, 0.5)); 
+        
+        startTangentVector = N3VectorNormalize(N3VectorLerp(previousTangentVector, tangentVector, 0.5)); 
+        endTangentVector = N3VectorNormalize(N3VectorLerp(nextTangentVector, tangentVector, 0.5)); 
+        
+		while(distanceTraveled < projectedSegmentLength)
+		{
+            CGFloat segmentDistanceTraveled;
+            segmentDistanceTraveled = distanceTraveled * (segmentLength/projectedSegmentLength);
+            
+            if (vectors) {
+                vectors[i] = N3VectorAdd(startVector, N3VectorScalarMultiply(segmentDirection, segmentDistanceTraveled));
+            }
+            if (tangents) {
+                tangents[i] = N3VectorNormalize(N3VectorLerp(startTangentVector, endTangentVector, distanceTraveled/projectedSegmentLength));
+            }
+            if (normals) {
+                normals[i] = N3VectorNormalize(N3VectorLerp(startNormalVector, endNormalVector, distanceTraveled/projectedSegmentLength));
+            }
+            if (relativePositions) {
+                relativePositions[i] = (totalDistanceTraveled + segmentDistanceTraveled) / bezierLength;
+            }
+            i++;
+            if (i >= numVectors) {
+                N3BezierCoreIteratorRelease(bezierCoreIterator);
+                return i;
+            }
+            
+            distanceTraveled += spacing;
+		}
+		
+		extraDistance = distanceTraveled - projectedSegmentLength;
+        
+        totalDistanceTraveled += segmentLength;
+
+        previousNormalVector = normalVector;
+        normalVector = nextNormalVector;
+        previousTangentVector = tangentVector;
+        tangentVector = nextTangentVector;
+        segmentDirection = nextSegmentDirection;
+        projectedSegmentDirection = nextProjectedSegmentDirection;
+        startVector = endVector;
+        endVector = nextVector;
+        startProjectedVector = endProjectedVector;
+        endProjectedVector = nextProjectedVector;
+        segmentLength = N3VectorDistance(endVector, startVector);
+        projectedSegmentLength = N3VectorDistance(endProjectedVector, startProjectedVector);
+	}
+	
+    N3BezierCoreIteratorRelease(bezierCoreIterator);
+	return i;
+}
+
+//CFIndex N3BezierCoreGetCollapsedVectorInfo(N3BezierCoreRef bezierCore, CGFloat spacing, CGFloat startingPoint, N3Vector collapsingDirection, // returns points that are spacing away from each other after the collapsing has occured, the returned points are not collapsed
+//                                           N3VectorArray vectors, N3VectorArray tangents, N3VectorArray normals, CGFloat *relativePositions, CFIndex numVectors) // fills numVectors in the vector arrays, returns the actual number of vectors that were set in the arrays
+//{
+//    N3BezierCoreRef flattenedBezierCore;
+//    N3BezierCoreRef projectedBezierCore;
+//    N3BezierCoreIteratorRef bezierCoreIterator;
+//    N3BezierCoreIteratorRef projectedBezierCoreIterator;
+//    N3Vector start;
+//    N3Vector end;
+//    N3Vector projectedStart;
+//    N3Vector projectedEnd;
+//    N3Vector segmentDirection;
+//    N3Vector projectedSegmentDirection;
+//    CGFloat length;
+//    CGFloat distanceTraveled;
+//    CGFloat totalDistanceTraveled;
+//    CGFloat extraDistance;
+//    CGFloat segmentLength;
+//    CGFloat projectedSegmentLength;
+//    CFIndex i;
+//    
+//    if (N3BezierCoreHasCurve(bezierCore)) {
+//        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+//        N3BezierCoreSubdivide((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultSubdivideSegmentLength);
+//        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+//    } else {
+//        flattenedBezierCore = N3BezierCoreRetain(bezierCore);
+//    }
+//
+//    projectedBezierCore = N3BezierCoreCreateCopyProjectedToPlane(flattenedBezierCore, N3PlaneMake(N3VectorZero, collapsingDirection));
+//    
+//    length = N3BezierCoreLength(flattenedBezierCore);
+//    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+//    projectedBezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(projectedBezierCore);
+//    N3BezierCoreRelease(flattenedBezierCore);
+//    flattenedBezierCore = NULL;
+//    N3BezierCoreRelease(projectedBezierCore);
+//    projectedBezierCore = NULL;
+//    
+//    distanceTraveled = 0;
+//    totalDistanceTraveled = 0;
+//    extraDistance = 0;
+//    i = 0;
+//    N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &end);
+//    N3BezierCoreIteratorGetNextSegment(projectedBezierCoreIterator, NULL, NULL, &projectedEnd);
+//    
+//    while (!N3BezierCoreIteratorIsAtEnd(bezierIterator)) {
+//        start = end;
+//        projectedStart = projectedEnd;
+//        N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &end);
+//        N3BezierCoreIteratorGetNextSegment(projectedBezierCoreIterator, NULL, NULL, &projectedEnd);
+//
+//        segmentDirection = N3VectorNormalize(N3VectorSubtract(end, start));
+//        projectedSegmentDirection = N3VectorNormalize(N3VectorSubtract(projectedEnd, projectedStart));
+//        projectedSegmentLength = N3VectorDistance(projectedStart, projectedEnd);
+//        segmentLength = N3VectorDistance(start, end);
+//        distanceTraveled = extraDistance;
+//        
+//		while(distanceTraveled < segmentLength)
+//		{
+//            if (vectors) {
+//                vectors[i] = N3VectorAdd(start, N3VectorScalarMultiply(segmentDirection, distanceTraveled * (segmentLength / projectedSegmentLength)));
+//            }
+//            if (tangents) {
+//                tangents[i] = segmentDirection;
+//                tangents[i] = N3VectorNormalize(N3VectorAdd(N3VectorScalarMultiply(startTangentVector, 1.0-distanceTraveled/segmentLength), N3VectorScalarMultiply(endTangentVector, distanceTraveled/segmentLength)));
+//                
+//            }
+//            if (normals) {
+//                normals[i] = N3VectorNormalize(N3VectorAdd(N3VectorScalarMultiply(startNormalVector, 1.0-distanceTraveled/segmentLength), N3VectorScalarMultiply(endNormalVector, distanceTraveled/segmentLength)));
+//            }
+//            i++;
+//            if (i >= numVectors) {
+//                N3BezierCoreIteratorRelease(bezierCoreIterator);
+//                N3BezierCoreIteratorRelease(projectedBezierCoreIterator);
+//                return i;
+//            }
+//            
+//            distanceTraveled += spacing;
+//            totalDistanceTraveled += spacing;
+//		}
+//        
+//
+//		extraDistance = distanceTraveled - segmentLength;
+//        
+//    }
+//        
+//    // iterate over each segment. Collapse the segment by subtracting the projection of the segment onto the collapsing direction.
+//    // do the w
+//    N3BezierCoreIteratorRelease(bezierCoreIterator);
+//    N3BezierCoreIteratorRelease(projectedBezierCoreIterator);
+//}
 
 N3Vector N3BezierCoreNormalAtEndWithInitialNormal(N3BezierCoreRef bezierCore, N3Vector initialNormal)
 {
@@ -763,7 +1014,7 @@ N3MutableBezierCoreRef N3BezierCoreCreateMutableOutline(N3BezierCoreRef bezierCo
     N3VectorArray side;
     
 	assert(N3BezierCoreSubpathCount(bezierCore) == 1); // this only works when there is a single subpath
-
+    
     if (N3BezierCoreSegmentCount(bezierCore) < 2) {
         return NULL;
     }
@@ -775,7 +1026,7 @@ N3MutableBezierCoreRef N3BezierCoreCreateMutableOutline(N3BezierCoreRef bezierCo
     } else {
         flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
     }
-        
+    
     length = N3BezierCoreLength(flattenedBezierCore);
     
     if (spacing * 2 >= length) {
@@ -798,7 +1049,7 @@ N3MutableBezierCoreRef N3BezierCoreCreateMutableOutline(N3BezierCoreRef bezierCo
     
     memcpy(scaledNormals, normals, numVectors * sizeof(N3Vector));
     N3VectorScalarMultiplyVectors(distance, scaledNormals, numVectors);
-
+    
     memcpy(side, vectors, numVectors * sizeof(N3Vector));
     N3VectorAddVectors(side, scaledNormals, numVectors);
     
@@ -807,13 +1058,13 @@ N3MutableBezierCoreRef N3BezierCoreCreateMutableOutline(N3BezierCoreRef bezierCo
         N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[i]);
     }
     N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, N3VectorAdd(endpoint, endpointNormal));
-                                                
+    
     memcpy(scaledNormals, normals, numVectors * sizeof(N3Vector));
     N3VectorScalarMultiplyVectors(-distance, scaledNormals, numVectors);
-
+    
     memcpy(side, vectors, numVectors * sizeof(N3Vector));
     N3VectorAddVectors(side, scaledNormals, numVectors);
-
+    
     N3BezierCoreAddSegment(outlineBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[0]);
     for (i = 1; i < numVectors; i++) {
         N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[i]);
@@ -823,6 +1074,93 @@ N3MutableBezierCoreRef N3BezierCoreCreateMutableOutline(N3BezierCoreRef bezierCo
     free(vectors);
     free(normals);
     free(scaledNormals);
+    free(side);
+    
+    N3BezierCoreRelease(flattenedBezierCore);
+    
+    return outlineBezier;
+}
+
+N3BezierCoreRef N3BezierCoreCreateOutlineWithNormal(N3BezierCoreRef bezierCore, CGFloat distance, CGFloat spacing, N3Vector projectionNormal)
+{
+    return N3BezierCoreCreateMutableOutlineWithNormal(bezierCore, distance, spacing, projectionNormal);
+}
+
+N3MutableBezierCoreRef N3BezierCoreCreateMutableOutlineWithNormal(N3BezierCoreRef bezierCore, CGFloat distance, CGFloat spacing, N3Vector projectionNormal)
+{
+    N3BezierCoreRef flattenedBezierCore;
+    N3MutableBezierCoreRef outlineBezier;
+    N3Vector endpoint;
+    N3Vector endpointNormal;
+    CGFloat length;
+    NSInteger i;
+    NSUInteger numVectors;
+    N3VectorArray vectors;
+    N3VectorArray tangents;
+    N3VectorArray normals;
+    N3VectorArray side;
+    
+	assert(N3BezierCoreSubpathCount(bezierCore) == 1); // this only works when there is a single subpath
+    
+    if (N3BezierCoreSegmentCount(bezierCore) < 2) {
+        return NULL;
+    }
+    
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreSubdivide((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultSubdivideSegmentLength);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
+    }
+    
+    length = N3BezierCoreLength(flattenedBezierCore);
+    
+    if (spacing * 2 >= length) {
+        N3BezierCoreRelease(flattenedBezierCore);
+        return NULL;
+    }
+    
+    numVectors = length/spacing + 1.0;
+    
+    vectors = malloc(numVectors * sizeof(N3Vector));
+    tangents = malloc(numVectors * sizeof(N3Vector));
+    normals = malloc(numVectors * sizeof(N3Vector));
+    side = malloc(numVectors * sizeof(N3Vector));
+    outlineBezier = N3BezierCoreCreateMutable();
+    
+    numVectors = N3BezierCoreGetVectorInfo(flattenedBezierCore, spacing, 0, N3VectorZero, vectors, tangents, NULL, numVectors);
+    endpoint = N3BezierCoreVectorAtEnd(flattenedBezierCore);
+    endpointNormal = N3VectorScalarMultiply(N3VectorNormalize(N3VectorCrossProduct(projectionNormal, N3BezierCoreTangentAtEnd(flattenedBezierCore))), distance);
+    
+    memcpy(normals, tangents, numVectors * sizeof(N3Vector));
+    N3VectorCrossProductVectors(projectionNormal, normals, numVectors);
+    N3VectorNormalizeVectors(normals, numVectors);
+    N3VectorScalarMultiplyVectors(distance, normals, numVectors);
+    
+    memcpy(side, vectors, numVectors * sizeof(N3Vector));
+    N3VectorAddVectors(side, normals, numVectors);
+    
+    N3BezierCoreAddSegment(outlineBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[0]);
+    for (i = 1; i < numVectors; i++) {
+        N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[i]);
+    }
+    N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, N3VectorAdd(endpoint, endpointNormal));
+    
+    N3VectorScalarMultiplyVectors(-1.0, normals, numVectors);
+    
+    memcpy(side, vectors, numVectors * sizeof(N3Vector));
+    N3VectorAddVectors(side, normals, numVectors);
+    
+    N3BezierCoreAddSegment(outlineBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[0]);
+    for (i = 1; i < numVectors; i++) {
+        N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, side[i]);
+    }
+    N3BezierCoreAddSegment(outlineBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, N3VectorAdd(endpoint, N3VectorInvert(endpointNormal)));
+    
+    free(vectors);
+    free(normals);
+    free(tangents);
     free(side);
     
     N3BezierCoreRelease(flattenedBezierCore);
@@ -999,9 +1337,313 @@ CFIndex N3BezierCoreIntersectionsWithPlane(N3BezierCoreRef bezierCore, N3Plane p
 }
 
 
+N3MutableBezierCoreRef N3BezierCoreCreateMutableCopyWithEndpointsAtPlaneIntersections(N3BezierCoreRef bezierCore, N3Plane plane)
+{
+    N3BezierCoreRef flattenedBezierCore;
+	N3BezierCoreIteratorRef bezierCoreIterator;
+    N3MutableBezierCoreRef newBezierCore;
+	N3BezierCoreSegmentType segmentType;
+    N3Vector endpoint;
+    N3Vector prevEndpoint;
+	N3Vector segment;
+	N3Vector intersection;
+    
+    if (N3BezierCoreSegmentCount(bezierCore) < 2) {
+        return N3BezierCoreCreateMutableCopy(bezierCore);
+    }
+    
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
+    }
+    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+    N3BezierCoreRelease(flattenedBezierCore);
+    flattenedBezierCore = NULL;
+    newBezierCore = N3BezierCoreCreateMutable();
+    
+    N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &prevEndpoint);
+    N3BezierCoreAddSegment(newBezierCore, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, prevEndpoint);
+
+    while (!N3BezierCoreIteratorIsAtEnd(bezierCoreIterator)) {
+		segmentType = N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &endpoint);
+		if (segmentType != N3MoveToBezierCoreSegmentType && N3PlaneIsBetweenVectors(plane, endpoint, prevEndpoint)) {
+            intersection = N3LineIntersectionWithPlane(N3LineMakeFromPoints(prevEndpoint, endpoint), plane);
+            N3BezierCoreAddSegment(newBezierCore, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, intersection);
+		}
+        
+        N3BezierCoreAddSegment(newBezierCore, segmentType, N3VectorZero, N3VectorZero, endpoint);
+		prevEndpoint = endpoint;
+	}
+    
+    N3BezierCoreIteratorRelease(bezierCoreIterator);
+    return newBezierCore;
+}
+
+N3BezierCoreRef N3BezierCoreCreateCopyProjectedToPlane(N3BezierCoreRef bezierCore, N3Plane plane)
+{
+    return N3BezierCoreCreateMutableCopyProjectedToPlane(bezierCore, plane);
+}
+
+N3MutableBezierCoreRef N3BezierCoreCreateMutableCopyProjectedToPlane(N3BezierCoreRef bezierCore, N3Plane plane)
+{
+    N3BezierCoreIteratorRef bezierIterator;
+    N3MutableBezierCoreRef projectedBezier;
+    N3Vector control1;
+    N3Vector control2;
+    N3Vector endpoint;
+    N3BezierCoreSegmentType segmentType;
+    
+    projectedBezier = N3BezierCoreCreateMutable();
+    
+    bezierIterator = N3BezierCoreIteratorCreateWithBezierCore(bezierCore);
+    
+    while (!N3BezierCoreIteratorIsAtEnd(bezierIterator)) {
+        segmentType = N3BezierCoreIteratorGetNextSegment(bezierIterator, &control1, &control2, &endpoint);
+        
+        control1 = N3LineIntersectionWithPlane(N3LineMake(control1, plane.normal), plane);
+        control2 = N3LineIntersectionWithPlane(N3LineMake(control2, plane.normal), plane);
+        endpoint = N3LineIntersectionWithPlane(N3LineMake(endpoint, plane.normal), plane);
+        
+        N3BezierCoreAddSegment(projectedBezier, segmentType, control1, control2, endpoint);
+    }
+    N3BezierCoreIteratorRelease(bezierIterator);
+    return projectedBezier;
+}
+
+N3Plane N3BezierCoreLeastSquaresPlane(N3BezierCoreRef bezierCore)
+{
+    N3BezierCoreRef flattenedBezierCore;
+	N3BezierCoreIteratorRef bezierCoreIterator;
+    N3VectorArray endpoints;
+    N3Plane plane;
+    CFIndex segmentCount;
+    CFIndex i;
+
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
+    }
+    
+    segmentCount = N3BezierCoreSegmentCount(flattenedBezierCore);
+    endpoints = malloc(segmentCount * sizeof(N3Vector));
+    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+    N3BezierCoreRelease(flattenedBezierCore);
+    flattenedBezierCore = NULL;
+    
+    for (i = 0; !N3BezierCoreIteratorIsAtEnd(bezierCoreIterator); i++) {
+        N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &endpoints[i]);
+    }
+    
+    N3BezierCoreIteratorRelease(bezierCoreIterator);
+    
+    plane = N3PlaneLeastSquaresPlaneFromPoints(endpoints, segmentCount);
+    
+    free(endpoints);
+    return plane;
+}
+
+CGFloat N3BezierCoreMeanDistanceToPlane(N3BezierCoreRef bezierCore, N3Plane plane)
+{
+    N3BezierCoreRef flattenedBezierCore;
+	N3BezierCoreIteratorRef bezierCoreIterator;
+    N3Vector endpoint;
+    CGFloat totalDistance;
+    CFIndex segmentCount;
+    
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
+    }
+    
+    endpoint = N3VectorZero;
+    segmentCount = N3BezierCoreSegmentCount(flattenedBezierCore);
+    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+    N3BezierCoreRelease(flattenedBezierCore);
+    flattenedBezierCore = NULL;
+    totalDistance = 0;
+    
+    while (!N3BezierCoreIteratorIsAtEnd(bezierCoreIterator)) {
+        N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &endpoint);
+        totalDistance += N3VectorDistanceToPlane(endpoint, plane);
+    }
+    
+    N3BezierCoreIteratorRelease(bezierCoreIterator);
+    
+    return totalDistance / (CGFloat)segmentCount;
+}
+
+bool N3BezierCoreIsPlanar(N3BezierCoreRef bezierCore, N3PlanePointer bezierCorePlane)
+{
+    N3Plane plane;
+    CGFloat meanDistance;
+	bool isPlanar;
+    
+    plane = N3BezierCoreLeastSquaresPlane(bezierCore);
+    meanDistance = N3BezierCoreMeanDistanceToPlane(bezierCore, plane);
+    
+    isPlanar = meanDistance < 1.0;
+	
+	if (isPlanar && bezierCorePlane) {
+		*bezierCorePlane = plane;
+	}
+	
+	return isPlanar;
+}
+
+bool N3BezierCoreGetBoundingPlanesForNormal(N3BezierCoreRef bezierCore, N3Vector normal, N3PlanePointer topPlanePtr, N3PlanePointer bottomPlanePtr)
+{
+    N3BezierCoreRef flattenedBezierCore;
+	N3BezierCoreIteratorRef bezierCoreIterator;
+    N3Vector endpoint;
+    CGFloat z;
+    CGFloat minZ;
+    CGFloat maxZ;
+    N3Plane topPlane;
+    N3Plane bottomPlane;
+    
+    assert(N3VectorIsZero(normal) == false);
+    
+    minZ = CGFLOAT_MAX;
+    maxZ = -CGFLOAT_MAX;
+    
+    topPlane.normal = N3VectorNormalize(normal);
+    topPlane.point = N3VectorZero;
+    bottomPlane.normal = topPlane.normal;
+    bottomPlane.point = N3VectorZero;
+
+    if (N3BezierCoreHasCurve(bezierCore)) {
+        flattenedBezierCore = N3BezierCoreCreateMutableCopy(bezierCore);
+        N3BezierCoreFlatten((N3MutableBezierCoreRef)flattenedBezierCore, N3BezierDefaultFlatness);
+    } else {
+        flattenedBezierCore = N3BezierCoreRetain(bezierCore); 
+    }
+    
+    bezierCoreIterator = N3BezierCoreIteratorCreateWithBezierCore(flattenedBezierCore);
+    N3BezierCoreRelease(flattenedBezierCore);
+    flattenedBezierCore = NULL;
+
+    while (!N3BezierCoreIteratorIsAtEnd(bezierCoreIterator)) {
+        N3BezierCoreIteratorGetNextSegment(bezierCoreIterator, NULL, NULL, &endpoint);
+        
+        z = N3VectorDotProduct(endpoint, normal);
+        
+        if (z < minZ) {
+            minZ = z;
+            bottomPlane.point = endpoint;
+        }
+        
+        if (z > maxZ) {
+            maxZ = z;
+            topPlane.point = endpoint;
+        }
+    }
+    
+    N3BezierCoreIteratorRelease(bezierCoreIterator);
+    
+    if (topPlanePtr) {
+        *topPlanePtr = topPlane;
+    }
+    
+    if (bottomPlanePtr) {
+        *bottomPlanePtr = bottomPlane;
+    }
+    
+    return true;
+}
 
 
+N3BezierCoreRef N3BezierCoreCreateCopyByReversing(N3BezierCoreRef bezierCore)
+{
+    return N3BezierCoreCreateMutableCopyByReversing(bezierCore);
+}
 
+N3MutableBezierCoreRef N3BezierCoreCreateMutableCopyByReversing(N3BezierCoreRef bezierCore)
+{
+    N3BezierCoreRandomAccessorRef bezierAccessor;
+    N3MutableBezierCoreRef reversedBezier;
+    bool needsClose;
+    bool needsMove;
+    long i;
+    N3BezierCoreSegmentType segmentType;
+    N3Vector control1;
+    N3Vector control2;
+    N3Vector endpoint;
+    N3BezierCoreSegmentType prevSegmentType;
+    N3Vector prevControl1;
+    N3Vector prevControl2;
+    N3Vector prevEndpoint;
+    
+    bezierAccessor = N3BezierCoreRandomAccessorCreateWithBezierCore(bezierCore);
+    reversedBezier = N3BezierCoreCreateMutable();
+    
+    // check empty bezierPath special case
+    if (N3BezierCoreRandomAccessorSegmentCount(bezierAccessor) == 0) {
+        N3BezierCoreRandomAccessorRelease(bezierAccessor);
+        return reversedBezier;
+    }
+    
+    // check for the special case of a bezier with just a moveto
+    if (N3BezierCoreRandomAccessorSegmentCount(bezierAccessor) == 1) {
+        segmentType = N3BezierCoreRandomAccessorGetSegmentAtIndex(bezierAccessor, i, &control1, &control2, &endpoint);
+        assert(segmentType == N3MoveToBezierCoreSegmentType);
+        N3BezierCoreAddSegment(reversedBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, endpoint);
+        N3BezierCoreRandomAccessorRelease(bezierAccessor);
+        return reversedBezier;
+    }
+    
+    needsClose = false;
+    needsMove = true;
+    
+    prevSegmentType = N3BezierCoreRandomAccessorGetSegmentAtIndex(bezierAccessor, i, &prevControl1, &prevControl2, &prevEndpoint);
+    
+    for (i = N3BezierCoreRandomAccessorSegmentCount(bezierAccessor) - 2; i >= 0; i--) {
+        segmentType = N3BezierCoreRandomAccessorGetSegmentAtIndex(bezierAccessor, N3BezierCoreRandomAccessorSegmentCount(bezierAccessor) - 1, &control1, &control2, &endpoint);
+        
+        if (needsMove && prevSegmentType != N3CloseBezierCoreSegmentType) {
+            N3BezierCoreAddSegment(reversedBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, prevEndpoint);
+            needsMove = false;
+        }
+        
+        switch (prevSegmentType) {
+            case N3CloseBezierCoreSegmentType:
+                needsClose = true;
+                break;
+            case N3LineToBezierCoreSegmentType:
+                N3BezierCoreAddSegment(reversedBezier, N3LineToBezierCoreSegmentType, N3VectorZero, N3VectorZero, endpoint);
+                break;
+            case N3CurveToBezierCoreSegmentType:
+                N3BezierCoreAddSegment(reversedBezier, N3CurveToBezierCoreSegmentType, prevControl2, prevControl1, endpoint);
+                break;
+            case N3MoveToBezierCoreSegmentType:
+                if (needsClose) {
+                    N3BezierCoreAddSegment(reversedBezier, N3CloseBezierCoreSegmentType, N3VectorZero, N3VectorZero, N3VectorZero);
+                }
+                N3BezierCoreAddSegment(reversedBezier, N3MoveToBezierCoreSegmentType, N3VectorZero, N3VectorZero, endpoint);
+                needsClose = false;
+                needsMove = true;
+                break;
+            default:
+                break;
+        }
+        
+        prevSegmentType = segmentType;
+        prevControl1 = control1;
+        prevControl2 = control2;
+        prevEndpoint = endpoint;
+    }
+    
+    assert(prevSegmentType == N3MoveToBezierCoreSegmentType);
+    
+    N3BezierCoreRandomAccessorRelease(bezierAccessor);
+        
+    return reversedBezier;
+}
 
 
 

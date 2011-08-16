@@ -15,9 +15,9 @@
 #import "ThreadCell.h"
 #import "ThreadsManager.h"
 #import "BrowserController.h"
-#import <OsiriX Headers/NSString+N2.h>
-#import <OsiriX Headers/NSThread+N2.h>
-
+#import "NSString+N2.h"
+#import "NSThread+N2.h"
+#import "AppController.h"
 
 @implementation ThreadCell
 
@@ -93,7 +93,7 @@
 -(void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)obj change:(NSDictionary*)change context:(void*)context {
 	if (obj == self.thread)
 		if ([keyPath isEqual:NSThreadStatusKey]) {
-			[self.view setNeedsDisplayInRect:[self statusFrame]];
+			[self.view setNeedsDisplayInRect: [self.view rectOfRow:[self.manager.threads indexOfObject:self.thread]]];
 			return;
 		} else if ([keyPath isEqual:NSThreadProgressKey]) {
 			[self.progressIndicator setDoubleValue:self.thread.subthreadsAwareProgress];
@@ -127,7 +127,7 @@
 	NSRect nameFrame = NSMakeRect(frame.origin.x+3, frame.origin.y-1, frame.size.width-23, frame.size.height);
 	NSString* name = self.thread.name;
 	if (!name) name = NSLocalizedString( @"Untitled Thread", nil);
-	[name drawWithRect:nameFrame options:NSStringDrawingUsesLineFragmentOrigin attributes:textAttributes];
+	[name drawWithRect:nameFrame options:NSStringDrawingUsesLineFragmentOrigin+NSStringDrawingTruncatesLastVisibleLine attributes:textAttributes];
 	
 	NSRect statusFrame = [self statusFrame];
 	[textAttributes setObject:[NSFont labelFontOfSize:[NSFont systemFontSizeForControlSize:NSMiniControlSize]] forKey:NSFontAttributeName];
@@ -138,12 +138,19 @@
 		[view addSubview:self.cancelButton];
 	if (!NSEqualRects(self.cancelButton.frame, cancelFrame)) [self.cancelButton setFrame:cancelFrame];
 	
-	NSRect progressFrame = NSMakeRect(frame.origin.x+1, frame.origin.y+26, frame.size.width-2, frame.size.height-28);
 	if (![self.progressIndicator superview]) {
 		[view addSubview:self.progressIndicator];
 //		[self.progressIndicator startAnimation:self];
 	}
-	if (!NSEqualRects(self.progressIndicator.frame, progressFrame)) [self.progressIndicator setFrame:progressFrame];
+    
+    NSRect progressFrame;
+    if ([AppController hasMacOSXLion])
+        progressFrame = NSMakeRect(frame.origin.x+3, frame.origin.y+27, frame.size.width-6, frame.size.height-32);
+    else progressFrame = NSMakeRect(frame.origin.x+1, frame.origin.y+26, frame.size.width-2, frame.size.height-28);
+
+    
+	if (!NSEqualRects(self.progressIndicator.frame, progressFrame))
+        [self.progressIndicator setFrame:progressFrame];
 	
 	[NSGraphicsContext restoreGraphicsState];
 }

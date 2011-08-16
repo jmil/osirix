@@ -19,8 +19,13 @@
 #import "DCMView.h"
 #import "DCMPix.h"
 #import "altivecFunctions.h"
+#import "DICOMToNSString.h"
+
+static float deg2rad = M_PI / 180.0f; 
 
 @implementation DICOMExport
+
+@synthesize rotateRawDataBy90degrees;
 
 - (NSString*) seriesDescription
 {
@@ -341,11 +346,31 @@
 	return [self writeDCMFile: dstPath withExportDCM: nil];
 }
 
+- (void) removeAllFieldsOfGroup: (Uint16) groupNumber dataset: (DcmItem *) dset
+{
+	DcmStack stack;
+	DcmObject *dobj = NULL;
+	DcmTagKey tag;
+	OFCondition status = dset->nextObject(stack, OFTrue);
+	
+	while (status.good())
+	{
+		dobj = stack.top();
+		tag = dobj->getTag();
+		if (tag.getGroup() == groupNumber)
+		{
+			stack.pop();
+			delete ((DcmItem *)(stack.top()))->remove(dobj);
+		}
+		status = dset->nextObject(stack, OFTrue);
+	}
+}
+
 - (NSString*) writeDCMFile: (NSString*) dstPath withExportDCM:(DCMExportPlugin*) dcmExport
 {
 	if( spp != 1 && spp != 3)
 	{
-		NSLog( @"**** DICOM Export: sample per pixel not supported: %d", spp);
+		NSLog( @"**** DICOM Export: sample per pixel not supported: %ld", spp);
 		return nil;
 	}
 	
@@ -353,14 +378,14 @@
 	{
 		if( bps != 8)
 		{
-			NSLog( @"**** DICOM Export: for RGB images, only 8 bits per sample is supported: %d", bps);
+			NSLog( @"**** DICOM Export: for RGB images, only 8 bits per sample is supported: %ld", bps);
 			return nil;
 		}
 	}
 	
 	if( bps != 8 && bps != 16 && bps != 32)
 	{
-		NSLog( @"**** DICOM Export: unknown bits per sample: %d", bps);
+		NSLog( @"**** DICOM Export: unknown bits per sample: %ld", bps);
 		return nil;
 	}
 	
@@ -451,7 +476,154 @@
 						}
 					}
 				}
-				
+                
+                if( rotateRawDataBy90degrees)
+				{
+                    float copySpacingX = spacingX;
+                    spacingX = spacingY;
+                    spacingY = copySpacingX;
+                    
+                    long copyWidth = width;
+                    width = height;
+                    height = copyWidth;
+                    
+                    //Origin and vector
+                    if( orientation[ 0] != 0 || orientation[ 1] != 0 || orientation[ 2] != 0)
+                    {
+                        float x = 0, y = width;
+                        float newOrigin[ 3];
+                        
+                        if( spacingX != 0 && spacingY != 0)
+                        {
+                            newOrigin[0] = position[0] + y*orientation[3]*spacingY + x*orientation[0]*spacingX;
+                            newOrigin[1] = position[1] + y*orientation[4]*spacingY + x*orientation[1]*spacingX;
+                            newOrigin[2] = position[2] + y*orientation[5]*spacingY + x*orientation[2]*spacingX;
+                        }
+                        else
+                        {
+                            newOrigin[0] = position[0] + y*orientation[3] + x*orientation[0];
+                            newOrigin[1] = position[1] + y*orientation[4] + x*orientation[1];
+                            newOrigin[2] = position[2] + y*orientation[5] + x*orientation[2];
+                        }
+                        
+                        position[0] = newOrigin[0];
+                        position[1] = newOrigin[1];
+                        position[2] = newOrigin[2];
+                        
+                        float newOrientation[ 3];
+                        float o[ 9];
+                        
+                        o[0] = orientation[0];  o[1] = orientation[1];  o[2] = orientation[2];
+                        o[3] = orientation[3];  o[4] = orientation[4];  o[5] = orientation[5];
+                        
+                        // Compute normal vector
+                        o[6] = o[1]*o[5] - o[2]*o[4];
+                        o[7] = o[2]*o[3] - o[0]*o[5];
+                        o[8] = o[0]*o[4] - o[1]*o[3];
+                        
+                        XYZ vector, rotationVector; 
+                        
+                        rotationVector.x = o[ 6];	rotationVector.y = o[ 7];	rotationVector.z = o[ 8];
+                        
+                        vector.x = o[ 0];	vector.y = o[ 1];	vector.z = o[ 2];
+                        vector =  ArbitraryRotate(vector, -90*deg2rad, rotationVector);
+                        o[ 0] = vector.x;	o[ 1] = vector.y;	o[ 2] = vector.z;
+                        
+                        vector.x = o[ 3];	vector.y = o[ 4];	vector.z = o[ 5];
+                        vector =  ArbitraryRotate(vector, -90*deg2rad, rotationVector);
+                        o[ 3] = vector.x;	o[ 4] = vector.y;	o[ 5] = vector.z;
+                        
+                        // Compute normal vector
+                        o[6] = o[1]*o[5] - o[2]*o[4];
+                        o[7] = o[2]*o[3] - o[0]*o[5];
+                        o[8] = o[0]*o[4] - o[1]*o[3];
+                        
+                        orientation[0] = o[0];  orientation[1] = o[1];  orientation[2] = o[2];
+                        orientation[3] = o[3];  orientation[4] = o[4];  orientation[5] = o[5];
+                    }
+                    
+                    //Pixels data
+                    switch( bps)
+                    {
+                        case 8:
+                            if (spp == 3)
+                            {
+                                unsigned char *olddata = (unsigned char*) data;
+                                unsigned char *newdata = (unsigned char*) malloc( height * width * bps*spp / 8);
+                                
+                                for( long x = 0 ; x < width; x++)
+                                {
+                                    for( long y = 0 ; y < height; y++)
+                                    {
+                                        *(newdata+y*width*3+x +0) = *(olddata+(width-x-1)*height*3+y +0);
+                                        *(newdata+y*width*3+x +1) = *(olddata+(width-x-1)*height*3+y +1);
+                                        *(newdata+y*width*3+x +2) = *(olddata+(width-x-1)*height*3+y +2);
+                                    }
+                                }
+                                
+                                memcpy( olddata, newdata, height * width * bps*spp / 8);
+                                free( newdata);
+                            }
+                            else
+                            {
+                                unsigned char *olddata = (unsigned char*) data;
+                                unsigned char *newdata = (unsigned char*) malloc( height * width * bps / 8);
+                                
+                                for( long x = 0 ; x < width; x++)
+                                {
+                                    for( long y = 0 ; y < height; y++)
+                                    {
+                                        *(newdata+y*width+x) = *(olddata+(width-x-1)*height+y);
+                                    }
+                                }
+                                
+                                memcpy( olddata, newdata, height * width * bps / 8);
+                                free( newdata);
+                            }
+                        break;
+                        
+                        case 16:
+                        {
+                            unsigned short *olddata = (unsigned short*) data;
+                            unsigned short *newdata = (unsigned short*) malloc( height * width * bps / 8);
+                            
+                            for( long x = 0 ; x < width; x++)
+                            {
+                                for( long y = 0 ; y < height; y++)
+                                {
+                                    *(newdata+y*width+x) = *(olddata+(width-x-1)*height+y);
+                                }
+                            }
+                            
+                            memcpy( olddata, newdata, height * width * bps / 8);
+                            free( newdata);
+                        }
+                        break;
+                        
+                        case 32:
+                        {
+                            float *olddata = (float*) data;
+                            float *newdata = (float*) malloc( height * width * bps / 8);
+                            
+                            for( long x = 0 ; x < width; x++)
+                            {
+                                for( long y = 0 ; y < height; y++)
+                                {
+                                    *(newdata+y*width+x) = *(olddata+(width-x-1)*height+y);
+                                }
+                            }
+                            
+                            memcpy( olddata, newdata, height * width * bps / 8);
+                            free( newdata);
+                        }
+                        break;
+                            
+                        default:
+                            NSLog( @"**** unknown bps during rotate90 DICOMExport");
+                        break;
+                    }
+                }
+                
 				#if __BIG_ENDIAN__
 				if( bps == 16)
 				{
@@ -495,7 +667,7 @@
 					break;
 					
 					default:
-						NSLog(@"Unsupported bps: %d", bps);
+						NSLog(@"Unsupported bps: %ld", bps);
 						return nil;
 					break;
 				}
@@ -548,21 +720,41 @@
 				
 				if( succeed)
 				{
+					NSStringEncoding encoding[ 10];
+					for( int i = 0; i < 10; i++) encoding[ i] = 0;
+					encoding[ 0] = NSISOLatin1StringEncoding;
+					
 					dcmtkFileFormat->loadAllDataIntoMemory();
 					
 					DcmItem *dataset = dcmtkFileFormat->getDataset();
 					DcmMetaInfo *metaInfo = dcmtkFileFormat->getMetaInfo();
 					
+					[self removeAllFieldsOfGroup: 0x0028 dataset: dataset];
+					
+					if (dataset->findAndGetString(DCM_SpecificCharacterSet, string, OFFalse).good() && string != NULL)
+					{
+						NSArray	*c = [[NSString stringWithCString:string encoding: NSISOLatin1StringEncoding] componentsSeparatedByString:@"\\"];
+						
+						if( [c count] >= 10) NSLog( @"Encoding number >= 10 ???");
+						
+						if( [c count] < 10)
+						{
+							for( int i = 0; i < [c count]; i++) encoding[ i] = [NSString encodingForDICOMCharacterSet: [c objectAtIndex: i]];
+							for( int i = [c count]; i < 10; i++) encoding[ i] = [NSString encodingForDICOMCharacterSet: [c lastObject]];
+						}
+					}
+					
 					if( exportSeriesUID)
 						dataset->putAndInsertString( DCM_SeriesInstanceUID, [exportSeriesUID UTF8String]);
 					
 					if( exportSeriesDescription)
-						dataset->putAndInsertString( DCM_SeriesDescription, [exportSeriesDescription UTF8String]);
+						dataset->putAndInsertString( DCM_SeriesDescription, [exportSeriesDescription cStringUsingEncoding: encoding[ 0]]);
 					
 					if( exportSeriesNumber != -1)
 						dataset->putAndInsertString( DCM_SeriesNumber, [[NSString stringWithFormat: @"%d", exportSeriesNumber] UTF8String]);
 					
-					if( modalityAsSource == NO) dataset->putAndInsertString( DCM_Modality, "SC");
+					if( modalityAsSource == NO || spp == 3)
+						dataset->putAndInsertString( DCM_Modality, "SC");
 					
 					dataset->putAndInsertString( DCM_ManufacturersModelName, "OsiriX");
 					dataset->putAndInsertString( DCM_InstanceNumber, [[NSString stringWithFormat: @"%d", exportInstanceNumber++] UTF8String]);
@@ -579,7 +771,6 @@
 					dataset->putAndInsertString( DCM_BitsStored, [[NSString stringWithFormat: @"%d", bitsAllocated] UTF8String]);
 					
 					delete dataset->remove( DCM_ImagerPixelSpacing);
-					delete dataset->remove( DCM_PixelSpacing);
 					
 					if( spacingX != 0 && spacingY != 0)
 						dataset->putAndInsertString( DCM_PixelSpacing, [[NSString stringWithFormat: @"%f\\%f", spacingY, spacingX] UTF8String]);
@@ -610,13 +801,14 @@
 						modality = string;
 					
 					delete dataset->remove( DCM_PixelData);
-					
+                    delete dataset->remove( DcmTagKey( 0x0009, 0x1110)); // "GEIIS" The problematic private group, containing a *always* JPEG compressed PixelData
+                    
 					if( bps == 32) // float support
 					{
 						dataset->putAndInsertString( DCM_RescaleIntercept, "0");
 						dataset->putAndInsertString( DCM_RescaleSlope, "1");
 						
-						if( strcmp( modality, "CT") == 0)
+						if( modality && strcmp( modality, "CT") == 0)
 							dataset->putAndInsertString( DCM_RescaleType, "HU");
 						else
 							dataset->putAndInsertString( DCM_RescaleType, "US");
@@ -638,7 +830,7 @@
 						
 						dataset->putAndInsertString( DCM_RescaleSlope, [[NSString stringWithFormat: @"%f", slope] UTF8String]);
 						
-						if( strcmp( modality, "CT") == 0)
+						if( modality && strcmp( modality, "CT") == 0)
 							dataset->putAndInsertString( DCM_RescaleType, "HU");
 						else
 							dataset->putAndInsertString( DCM_RescaleType, "US");
@@ -684,7 +876,7 @@
 					dataset->putAndInsertString( DCM_SOPInstanceUID, buf);
 					metaInfo->putAndInsertString( DCM_MediaStorageSOPInstanceUID, buf);
 					
-					dcmtkFileFormat->chooseRepresentation( EXS_LittleEndianExplicit, NULL);
+                    dcmtkFileFormat->chooseRepresentation( EXS_LittleEndianExplicit, NULL);
 					if( dcmtkFileFormat->canWriteXfer( EXS_LittleEndianExplicit))
 					{
 						// Add to the current DB
@@ -693,7 +885,12 @@
 						
 						OFCondition cond = dcmtkFileFormat->saveFile( [dstPath UTF8String], EXS_LittleEndianExplicit, EET_ExplicitLength, EGL_recalcGL, EPD_withoutPadding);
 						OFBool fileWriteSucceeded =  (cond.good()) ? YES : NO;
+                        
+                        if( fileWriteSucceeded == NO)
+                            NSLog( @"******* dcmtkFileFormat->saveFile failed");
 					}
+                    else
+                        NSLog( @"******* dcmtkFileFormat->canWriteXfer( EXS_LittleEndianExplicit) failed");
 					
 					if( squaredata)
 						free( squaredata);

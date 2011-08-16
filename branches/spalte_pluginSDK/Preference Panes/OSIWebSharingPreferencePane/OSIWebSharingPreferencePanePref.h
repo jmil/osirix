@@ -23,6 +23,12 @@
 	
 	IBOutlet NSTextField* addressTextField;
 	IBOutlet NSTextField* portTextField;
+	
+	IBOutlet NSPanel* usersPanel;
+	
+	IBOutlet NSWindow* mainWindow;
+	
+	IBOutlet NSTableView* usersTable;
 }
 @property (retain) NSString *TLSAuthenticationCertificate;
 
@@ -32,5 +38,8 @@
 - (IBAction) chooseTLSCertificate: (id) sender;
 - (IBAction) viewTLSCertificate: (id) sender;
 - (IBAction) copyMissingCustomizedFiles: (id) sender;
+
+- (IBAction) editUsers: (id) sender;
+- (IBAction) exitEditUsers: (id) sender;
 
 @end

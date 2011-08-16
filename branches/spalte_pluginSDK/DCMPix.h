@@ -20,7 +20,16 @@ typedef struct {
    double x,y,z;
 } XYZ;
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif /*cplusplus*/
 extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
+#ifdef __cplusplus
+}
+#endif /*cplusplus*/
+
 
 @class ROI;
 @class ThickSlabController;
@@ -40,7 +49,6 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	NSArray				*pixArray;
     NSManagedObject		*imageObj;	/**< Core data object for image */
 	float				*fImage /**< float buffer of image Data */, *fExternalOwnedImage;  /**< float buffer of image Data - provided by another source, not owned by this object, not release by this object */
-    char                *wImage; /**< ? */
 	
 //DICOM TAGS
 
@@ -49,7 +57,6 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	BOOL				isOriginDefined;
 	double				originX /**< x position of image origin */ , originY /**< y Position of image origin */ , originZ /**< Z position of image origin*/;
 	double				orientation[ 9];  /**< pointer to orientation vectors  */
-	NSString			*frameOfReferenceUID;
 
 //	pixel representation
 	BOOL				fIsSigned;
@@ -76,7 +83,7 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 // DICOM params needed for SUV calculations
 	float				patientsWeight;
 	NSString			*repetitiontime, *echotime, *flipAngle, *laterality;
-	NSString			*viewPosition, *patientPosition, *acquisitionDate, *SOPClassUID;
+	NSString			*viewPosition, *patientPosition, *acquisitionDate, *SOPClassUID, *frameofReferenceUID;
 	BOOL				hasSUV, SUVConverted;
 	NSString			*units, *decayCorrection;
 	float				decayFactor, factorPET2SUV;
@@ -188,11 +195,13 @@ extern XYZ ArbitraryRotate(XYZ p,double theta,XYZ r);
 	BOOL				fSetClut, fSetClut16;
 	
 	int					savedHeightInDB, savedWidthInDB;
+	
+	id					retainedCacheGroup;
 }
 
 @property long frameNo;
 @property(setter=setID:) long ID;
-
+@property (readonly) NSRecursiveLock *checking;
 @property float minValueOfSeries, maxValueOfSeries, factorPET2SUV;
 
 // Dimensions in pixels
@@ -229,9 +238,7 @@ Note setter is different to not break existing usage. :-( */
 /** Slice location */
 @property(readonly) double originX, originY, originZ;
 @property(readonly) BOOL isOriginDefined;
-
-/** Frame Of Reference UID */
-@property(copy) NSString *frameOfReferenceUID;
+@property(retain) NSString *frameofReferenceUID;
 
 - (void)setOrigin :(float*) o;
 - (void)setOriginDouble :(double*) o;
@@ -458,7 +465,6 @@ Note setter is different to not break existing usage. :-( */
 - (NSPoint) subMinMax:(float*)input :(float*)subfImage;
 - (void) setSubtractedfImage:(float*)mask :(NSPoint)smm;
 - (float*) subtractImages:(float*)input :(float*)subfImage;
-- (BOOL) isLoaded;
 - (void) fImageTime:(float)newTime;
 - (float) fImageTime;
 - (void) freefImageWhenDone:(BOOL) b;
@@ -599,6 +605,7 @@ Note setter is different to not break existing usage. :-( */
 
 /** Calls CheckLoadIn when needed */
 - (void) CheckLoad;
+- (BOOL) isLoaded;
 
 /** Compute the float pointer for the image data */
 - (float*) computefImage;
@@ -670,8 +677,6 @@ Note setter is different to not break existing usage. :-( */
 - (NSString*) getDICOMFieldValueForGroup:(int)group element:(int)element DCMLink:(DCMObject*)dcmObject;
 #endif
 
-/** Set flag to anonymize the annotations */
-+ (BOOL) setAnonymizedAnnotations: (BOOL) v;
 #endif
 
 @end

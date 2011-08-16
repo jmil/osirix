@@ -34,8 +34,8 @@ NSString* const OsirixDateTimeFormatDefaultsKey = @"DBDateFormat2";
 	if (!formatter)
 		formatter = [[NSDateFormatter alloc] init];
 	
-	if (![formatter.dateFormat isEqual:self.dateTimeFormat])
-		formatter.dateFormat = self.dateTimeFormat;
+	if (![formatter.dateFormat isEqual:[self dateTimeFormat]])
+		formatter.dateFormat = [self dateTimeFormat];
 	
 	return formatter;
 }
@@ -53,8 +53,8 @@ NSString* const OsirixDateFormatDefaultsKey = @"DBDateOfBirthFormat2";
 	if (!formatter)
 		formatter = [[NSDateFormatter alloc] init];
 	
-	if (![formatter.dateFormat isEqual:self.dateFormat])
-		formatter.dateFormat = self.dateFormat;
+	if (![formatter.dateFormat isEqual: [self dateFormat]])
+		formatter.dateFormat = [self dateFormat];
 	
 	return formatter;
 }
@@ -173,6 +173,34 @@ NSString* const OsirixWebPortalUsersCanRestorePasswordDefaultsKey = @"restorePas
 	return [NSUserDefaultsController.sharedUserDefaultsController boolForKey:OsirixWebPortalUsersCanRestorePasswordDefaultsKey];
 }
 
+// MARK: DICOM Communications
 
++ (NSString*)defaultAETitle;
+{
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"STORESCPTLS"])
+	{
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"STORESCP"]
+			&& ![[NSUserDefaults standardUserDefaults] boolForKey:@"TLSStoreSCPAETITLEIsDefaultAET"])
+		{
+			return [[NSUserDefaults standardUserDefaults] stringForKey:@"AETITLE"];
+		}
+		return [[NSUserDefaults standardUserDefaults] stringForKey:@"TLSStoreSCPAETITLE"];
+	}
+	return [[NSUserDefaults standardUserDefaults] stringForKey:@"AETITLE"];
+}
+
++ (int)defaultAEPort;
+{
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"STORESCPTLS"])
+	{
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"STORESCP"]
+			&& ![[NSUserDefaults standardUserDefaults] boolForKey:@"TLSStoreSCPAETITLEIsDefaultAET"])
+		{
+			return [[[NSUserDefaults standardUserDefaults] stringForKey:@"AEPORT"] intValue];
+		}
+		return [[[NSUserDefaults standardUserDefaults] stringForKey:@"TLSStoreSCPAEPORT"] intValue];
+	}
+	return [[[NSUserDefaults standardUserDefaults] stringForKey:@"AEPORT"] intValue];
+}
 
 @end

@@ -27,7 +27,7 @@
 #include <OpenGL/CGLMacro.h>
 
 
-static float deg2rad = 3.14159265358979/180.0; 
+static float deg2rad = M_PI / 180.0; 
 
 #define CROSS(dest,v1,v2) \
 dest[0]=v1[1]*v2[2]-v1[2]*v2[1]; \
@@ -75,6 +75,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 @synthesize curvedPath;
 @synthesize displayInfo;
 @synthesize dontUseAutoLOD, pix, camera, angleMPR, vrView, viewExport, toIntervalExport, fromIntervalExport, rotateLines, moveCenter, displayCrossLines, LOD;
+@synthesize CPRType = _CPRType;
 
 - (BOOL)becomeFirstResponder
 {
@@ -161,6 +162,14 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	camera = [[vrView cameraWithThumbnail: NO] retain];
 }
 
+- (void) drawRect:(NSRect)rect
+{
+	if( rect.size.width > 10)
+	{
+		[super drawRect: rect];
+	}
+}
+
 - (void) setFrame:(NSRect)frameRect
 {
 	if( NSEqualRects( frameRect, [self frame]) == NO)
@@ -192,6 +201,14 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
     if (displayInfo != newDisplayInfo) {
         [displayInfo release];
         displayInfo = [newDisplayInfo copy];
+        [self setNeedsDisplay:YES];
+    }
+}
+
+ -(void)setCPRType:(CPRMPRDCMViewCPRType)type
+{
+    if (type != _CPRType) {
+        _CPRType = type;
         [self setNeedsDisplay:YES];
     }
 }
@@ -296,6 +313,15 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 - (void) setLOD: (float) l
 {
 	LOD = l;
+}
+
+- (void) reshape
+{
+    // To display or hide the resulting plane on the CPR view
+    [self willChangeValueForKey:@"plane"];
+    [self didChangeValueForKey:@"plane"];
+    
+    [super reshape];
 }
 
 - (void) updateViewMPR:(BOOL) computeCrossReferenceLines
@@ -686,7 +712,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	glEnable(GL_LINE_SMOOTH);
 	glPointSize( 12);
 	
-	if( displayCrossLines)
+	if( displayCrossLines && frameZoomed == NO)
 	{
 		// All pix have the same thickness
 		float thickness = [pix sliceThickness];
@@ -742,7 +768,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	[self colorForView: viewID];
 	
 	// Red Square
-	if( [[self window] firstResponder] == self && stringID == nil)
+	if( [[self window] firstResponder] == self && stringID == nil && frameZoomed == NO)
 	{
 		glLineWidth(8.0);
 		glBegin(GL_LINE_LOOP);
@@ -762,7 +788,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	glEnd();
 	glLineWidth(1.0);
 	
-	if( displayCrossLines && windowController.displayMousePosition && !windowController.mprView1.rotateLines && !windowController.mprView2.rotateLines && !windowController.mprView3.rotateLines
+	if( displayCrossLines && frameZoomed == NO && windowController.displayMousePosition && !windowController.mprView1.rotateLines && !windowController.mprView2.rotateLines && !windowController.mprView3.rotateLines
        && !windowController.mprView1.moveCenter && !windowController.mprView2.moveCenter && !windowController.mprView3.moveCenter)
 	{
 		// Mouse Position
@@ -1155,13 +1181,37 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 
 - (NSPoint) centerLines
 {
+    NSPoint r = NSMakePoint( 0, 0);
+    
+    // One line or no lines : find the middle of the line
+    if( crossLinesB[ 0][ 0] == HUGE_VALF)
+    {
+        NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
+        NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
+            
+        r.x = a2.x + (a1.x - a2.x) / 2.;
+        r.y = a2.y + (a1.y - a2.y) / 2.;
+        
+        return r;
+    }
+    
+    // One line or no lines : find the middle of the line
+    if( crossLinesA[ 0][ 0] == HUGE_VALF)
+    {
+        NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
+        NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);
+        
+        r.x = b2.x + (b1.x - b2.x) / 2.;
+        r.y = b2.y + (b1.y - b2.y) / 2.;
+        
+        return r;
+    }
+    
 	NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
 	NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
 	
 	NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
 	NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);
-	
-	NSPoint r = NSMakePoint( 0, 0);
 	
 	[DCMView intersectionBetweenTwoLinesA1: a1 A2: a2 B1: b1 B2: b2 result: &r];
 	
@@ -1173,7 +1223,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	if( [[NSUserDefaults standardUserDefaults] integerForKey: @"ANNOTATIONS"] == annotNone)
 		return 0;
 	
-	if( displayCrossLines == NO)
+	if( displayCrossLines == NO || frameZoomed)
 		return 0;
 	
 	if( LOD == 0)
@@ -1200,20 +1250,25 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 		}
 		else
 		{
-			float distance1, distance2;
+			float distance1 = 1000, distance2 = 1000;
 			
-			NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
-			NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
+            if( crossLinesA[ 0][ 0] != HUGE_VALF)
+            {
+                NSPoint a1 = NSMakePoint( crossLinesA[ 0][ 0], crossLinesA[ 0][ 1]);
+                NSPoint a2 = NSMakePoint( crossLinesA[ 1][ 0], crossLinesA[ 1][ 1]);
+                [DCMView DistancePointLine:mouseLocation :a1 :a2 :&distance1];
+                distance1 /= curDCM.pixelSpacingX;
+            }
+            
+            if( crossLinesB[ 0][ 0] != HUGE_VALF)
+            {
+                NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
+                NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);			
 			
-			NSPoint b1 = NSMakePoint( crossLinesB[ 0][ 0], crossLinesB[ 0][ 1]);
-			NSPoint b2 = NSMakePoint( crossLinesB[ 1][ 0], crossLinesB[ 1][ 1]);			
-			
-			[DCMView DistancePointLine:mouseLocation :a1 :a2 :&distance1];
-			[DCMView DistancePointLine:mouseLocation :b1 :b2 :&distance2];
-			
-			distance1 /= curDCM.pixelSpacingX;
-			distance2 /= curDCM.pixelSpacingX;
-			
+                [DCMView DistancePointLine:mouseLocation :b1 :b2 :&distance2];
+                distance2 /= curDCM.pixelSpacingX;
+			}
+            
 			if( distance1 * scaleValue < 10 || distance2 * scaleValue < 10)
 			{
 				return 1;
@@ -1423,6 +1478,20 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 				[windowController.verticalSplit setPosition: splitPosition[ 0] ofDividerAtIndex: 0];
 				[windowController.horizontalSplit1 setPosition: splitPosition[ 1] ofDividerAtIndex: 0];
 				[windowController.horizontalSplit2 setPosition: splitPosition[ 2] ofDividerAtIndex: 0];
+                
+                [windowController.mprView1 restoreCamera];
+                windowController.mprView1.camera.forceUpdate = YES;
+                [windowController.mprView1 updateViewMPR];
+                
+                [windowController.mprView2 restoreCamera];
+                windowController.mprView2.camera.forceUpdate = YES;
+                [windowController.mprView2 updateViewMPR];
+                
+                [windowController.mprView3 restoreCamera];
+                windowController.mprView3.camera.forceUpdate = YES;
+                [windowController.mprView3 updateViewMPR];
+                
+                [windowController.cprView setScaleValue: 0.8];
 			}
 			
 			[self restoreCamera];
@@ -1539,14 +1608,26 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 						}
 						else
 						{
+                            N3AffineTransform viewToDicomTransform = N3AffineTransformConcat([self viewToPixTransform], [self pixToDicomTransform]);
+                            N3Vector newCrossCenter = N3VectorApplyTransform(N3VectorMakeFromNSPoint(mouseLocation), viewToDicomTransform);
+                            
 							[self sendWillEditCurvedPath];
-							[curvedPath addNode:mouseLocation transform:N3AffineTransformConcat([self viewToPixTransform], [self pixToDicomTransform])];
+                            
+                            // if the shift key is down, place the point at the same level as the previous point
+                            if ([curvedPath.nodes count] > 0 && [theEvent modifierFlags] & NSControlKeyMask)
+							{
+                                N3Vector lastPoint = [[curvedPath.nodes lastObject] N3VectorValue];
+                                viewToDicomTransform = N3AffineTransformConcat(N3AffineTransformMakeTranslation(0, 0,
+                                                             N3VectorApplyTransform(lastPoint, N3AffineTransformInvert(viewToDicomTransform)).z), viewToDicomTransform);
+                            }
+                            
+							[curvedPath addNode:mouseLocation transform:viewToDicomTransform];
 							[self sendDidUpdateCurvedPath];
 							[self sendDidEditCurvedPath];
 							[self setNeedsDisplay:YES];
 							
 							// Center the views to the last point
-							[windowController CPRView:self setCrossCenter:[[curvedPath.nodes lastObject] N3VectorValue]];
+							[windowController CPRView:self setCrossCenter:newCrossCenter];
 						}
 					}
 					else
@@ -1882,10 +1963,14 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 		return;
     
 	NSView* view = [[[theEvent window] contentView] hitTest:[theEvent locationInWindow]];
+	
 	viewPoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-    
+    	
 	if( view == self)
 	{
+		if( NSPointInRect( viewPoint, [self bounds]) == NO)
+			return;
+		
 		[super mouseMoved: theEvent];
 		
 		long tool = [self getTool: theEvent];
@@ -1929,7 +2014,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 			if ([CPRCurvedPath controlTokenIsNode:curveToken])
 			{
 				[cursor release];
-				if( [theEvent type] == NSLeftMouseDragged)
+				if( [theEvent type] == NSLeftMouseDragged || [theEvent type] == NSLeftMouseDown)
 					cursor = [[NSCursor closedHandCursor]retain];
 				else
 					cursor = [[NSCursor openHandCursor]retain];
@@ -1940,7 +2025,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 			else if (curveToken != CPRCurvedPathControlTokenNone)
 			{
 				[cursor release];
-				if( [theEvent type] == NSLeftMouseDragged)
+				if( [theEvent type] == NSLeftMouseDragged || [theEvent type] == NSLeftMouseDown)
 					cursor = [[NSCursor closedHandCursor]retain];
 				else
 					cursor = [[NSCursor openHandCursor]retain];
@@ -1969,7 +2054,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 		int mouseOnLines = [self mouseOnLines:viewPoint];
 		if( mouseOnLines==2)
 		{
-			if( [theEvent type] == NSLeftMouseDragged) [[NSCursor closedHandCursor] set];
+			if( [theEvent type] == NSLeftMouseDragged || [theEvent type] == NSLeftMouseDown) [[NSCursor closedHandCursor] set];
 			else [[NSCursor openHandCursor] set];
 		}
 		else if( mouseOnLines==1)
@@ -2084,6 +2169,58 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	LOD = windowController.LOD;
 }
 
+- (void)_debugDrawDebugPoints
+{
+    // first off find the points like the operation would and draw a point at each of the nodes
+    N3Vector vectors[40];
+    N3Vector normals[40];
+    NSInteger numVectors = 40;
+    N3Vector directionVector;
+    N3Vector projectionDirection;
+    N3Vector baseNormal;
+    N3BezierPath *flattenedBezierPath;
+    N3BezierPath *projectedBezierPath;
+    CGFloat projectedLength;
+    CGFloat sampleSpacing;
+    NSInteger i;
+    N3AffineTransform transform;
+    CGLContextObj cgl_ctx;
+    cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
+
+    if ([curvedPath.bezierPath elementCount] < 3) {
+        return;
+    }
+    
+    transform = N3AffineTransformConcat(N3AffineTransformInvert([self pixToDicomTransform]), [self pixToSubDrawRectTransform]);
+    
+    directionVector = N3VectorNormalize(N3VectorSubtract([curvedPath.bezierPath vectorAtEnd], [curvedPath.bezierPath vectorAtStart]));
+    baseNormal = N3VectorNormalize(N3VectorCrossProduct(curvedPath.baseDirection, directionVector));
+    projectionDirection = N3VectorApplyTransform(baseNormal, N3AffineTransformMakeRotationAroundVector(curvedPath.angle, directionVector));
+
+    flattenedBezierPath = [curvedPath.bezierPath bezierPathByFlattening:N3BezierDefaultFlatness];
+    projectedBezierPath = [flattenedBezierPath bezierPathByProjectingToPlane:N3PlaneMake(N3VectorZero, projectionDirection)];
+    
+    projectedLength = [projectedBezierPath length];
+    sampleSpacing = projectedLength / numVectors;
+    
+    numVectors = N3BezierCoreGetProjectedVectorInfo([flattenedBezierPath N3BezierCore], sampleSpacing, 0, projectionDirection, vectors, NULL, normals, NULL, numVectors);
+
+    for (i = 0; i < numVectors; i++) {
+        normals[i] = N3VectorApplyTransform(N3VectorAdd(vectors[i], N3VectorScalarMultiply(normals[i], 10)), transform);
+        vectors[i] = N3VectorApplyTransform(vectors[i], transform);
+        
+		glColor4d(1.0, 1.0, 1.0, 1.0);
+        [self drawCircleAtPoint:NSPointFromN3Vector(vectors[i])];
+        
+		glColor4d(1.0, 0.0, 1.0, 1.0);
+        glBegin(GL_LINES);
+        glVertex2f(vectors[i].x, vectors[i].y);
+        glVertex2f(normals[i].x, normals[i].y);
+        glEnd();    
+    }
+    
+}
+
 - (void)drawCurvedPathInGL
 {
 	if( curvedPath.nodes.count == 0)
@@ -2104,7 +2241,6 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
     CGFloat spacing;
     CGFloat x;
     NSInteger i;
-    BOOL above;
     CGLContextObj cgl_ctx;
     cgl_ctx = [[NSOpenGLContext currentContext] CGLContextObj];
     
@@ -2115,8 +2251,10 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	
 	transform = N3AffineTransformConcat(N3AffineTransformInvert([self pixToDicomTransform]), [self pixToSubDrawRectTransform]);
 
-	if( N3AffineTransformIsAffine(transform) == NO)
+	if( N3AffineTransformIsAffine(transform) == NO) // Is this usefull?
+	{
 		return;
+	}
 	
 	bezierPath = curvedPath.bezierPath;
     flattenedBezierPath = [[bezierPath mutableCopy] autorelease];
@@ -2149,64 +2287,24 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	float pathGreen = [windowController.curvedPathColor greenComponent];
 	float pathBlue = [windowController.curvedPathColor blueComponent];
 	
-    glColor4d( pathRed, pathGreen, pathBlue, 1.0);
-    above = YES;
+    [flattenedBezierPath addEndpointsAtIntersectionsWithPlane:N3PlaneMake(N3VectorMake(0, 0, 1.0), N3VectorMake(0, 0, 1))];
+    [flattenedBezierPath addEndpointsAtIntersectionsWithPlane:N3PlaneMake(N3VectorMake(0, 0, 0.5), N3VectorMake(0, 0, 1))];
+    [flattenedBezierPath addEndpointsAtIntersectionsWithPlane:N3PlaneMake(N3VectorMake(0, 0, -0.5), N3VectorMake(0, 0, 1))];
+    [flattenedBezierPath addEndpointsAtIntersectionsWithPlane:N3PlaneMake(N3VectorMake(0, 0, -1.0), N3VectorMake(0, 0, 1))];
     
     glLineWidth(2.0);
     glBegin(GL_LINE_STRIP);
     for (i = 0; i < [flattenedBezierPath elementCount]; i++) { // draw the line segments
         [flattenedBezierPath elementAtIndex:i control1:NULL control2:NULL endpoint:&vector];
         
-		
-		if( fabs( vector.z) <= 0.5)
-		{
+        if(ABS(vector.z) <= 0.5) {
 			glColor4d( pathRed, pathGreen, pathBlue, 1.0);
-		} else {
+		} else if(ABS(vector.z) >= 1.0){
 			glColor4d( pathRed, pathGreen, pathBlue, 0.2);
-		}
-		
-		if( vector.z <= 0.000001 != above)
-		{
-            if (i > 0) {
-                [flattenedBezierPath elementAtIndex:i-1 control1:NULL control2:NULL endpoint:&prevVector];
-                
-                x = vector.z/(vector.z-prevVector.z);
-                middleVector = N3VectorAdd(N3VectorScalarMultiply(prevVector, x), N3VectorScalarMultiply(vector, 1.0-x));
-                glVertex2d(middleVector.x, middleVector.y);
-            }
-			
-            above = !above;
-           
-			
-            
-            if (i > 0) {
-                glVertex2d(middleVector.x, middleVector.y);
-            }
+		} else {
+            glColor4d( pathRed, pathGreen, pathBlue, ABS(vector.z)*-1.6 + 1.8);
         }
-		
-		
-//        if (vector.z <= 0.000001 != above)
-//		{
-//            if (i > 0) {
-//                [flattenedBezierPath elementAtIndex:i-1 control1:NULL control2:NULL endpoint:&prevVector];
-//                
-//                x = vector.z/(vector.z-prevVector.z);
-//                middleVector = CPRVectorAdd(CPRVectorScalarMultiply(prevVector, x), CPRVectorScalarMultiply(vector, 1.0-x));
-//                glVertex2d(middleVector.x, middleVector.y);
-//            }
-//			
-//            above = !above;
-//            if (above) {
-//                glColor4d( pathRed, pathGreen, pathBlue, 1.0);
-//            } else {
-//                glColor4d( pathRed, pathGreen, pathBlue, 0.3);
-//            }
-//            
-//            if (i > 0) {
-//                glVertex2d(middleVector.x, middleVector.y);
-//            }
-//        }
-        
+		        
         glVertex2d(vector.x, vector.y);
     }
     glEnd();
@@ -2215,7 +2313,11 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
     if ([bezierPath elementCount] >= 2 && curvedPath.thickness > 2.0 && length > 3.0)
 	{
         glLineWidth(1.0);
-        outlinePath = [[bezierPath outlineBezierPathAtDistance:curvedPath.thickness / 2.0 initialNormal:N3VectorCrossProduct(curvedPath.initialNormal, [flattenedBezierPath tangentAtStart]) spacing:1.0] mutableCopy];
+        if (_CPRType == CPRMPRDCMViewCPRStraightenedType) {
+            outlinePath = [[bezierPath outlineBezierPathAtDistance:curvedPath.thickness / 2.0 initialNormal:N3VectorCrossProduct(curvedPath.initialNormal, [flattenedBezierPath tangentAtStart]) spacing:1.0] mutableCopy];
+        } else {
+            outlinePath = [[bezierPath outlineBezierPathAtDistance:curvedPath.thickness / 2.0 projectionNormal:[curvedPath stretchedProjectionNormal] spacing:1.0] mutableCopy];
+        }
         [outlinePath applyAffineTransform:transform];
         glColor4d(0.0, 1.0, 0.0, 1.0); 
         glBegin(GL_LINE_STRIP);
@@ -2237,7 +2339,11 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	if( [[self windowController] exportSlabThickness] > 0)
 	{
 		glLineWidth(1.0);
-        outlinePath = [[bezierPath outlineBezierPathAtDistance: [[self windowController] exportSlabThickness] / 2.0 initialNormal:N3VectorCrossProduct(curvedPath.initialNormal, [flattenedBezierPath tangentAtStart]) spacing:1.0] mutableCopy];
+        if (_CPRType == CPRMPRDCMViewCPRStraightenedType) {
+            outlinePath = [[bezierPath outlineBezierPathAtDistance:curvedPath.thickness / 2.0 initialNormal:N3VectorCrossProduct(curvedPath.initialNormal, [flattenedBezierPath tangentAtStart]) spacing:1.0] mutableCopy];
+        } else {
+            outlinePath = [[bezierPath outlineBezierPathAtDistance:curvedPath.thickness / 2.0 projectionNormal:[curvedPath stretchedProjectionNormal] spacing:1.0] mutableCopy];
+        }
         [outlinePath applyAffineTransform:transform];
         glColor4d(0.0, 1.0, 0.0, 1.0); 
         glBegin(GL_LINE_STRIP);
@@ -2326,6 +2432,7 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
 	//            [self drawCircleAtPoint:NSMakePoint(control2.x, control2.y)];
 	//        }
 	//    }
+//    [self _debugDrawDebugPoints];
 }
 
 - (void)drawCircleAtPoint:(NSPoint)point pointSize:(CGFloat)pointSize
@@ -2476,6 +2583,11 @@ static CGFloat CPRMPRDCMViewCurveMouseTrackingDistance = 20.0;
     //    pixToSubDrawRectTransform = N3AffineTransformConcat(pixToSubDrawRectTransform, N3AffineTransformMakeScale(1.0/curDCM.pixelSpacingX, 1.0/curDCM.pixelSpacingY, 1));
     pixToSubDrawRectTransform = N3AffineTransformConcat(pixToSubDrawRectTransform, N3AffineTransformMakeTranslation(curDCM.pwidth * -0.5, curDCM.pheight * -0.5, 0));
     pixToSubDrawRectTransform = N3AffineTransformConcat(pixToSubDrawRectTransform, N3AffineTransformMakeScale(scaleValue, scaleValue, 1));
+    
+    pixToSubDrawRectTransform.m14 = 0.0;
+    pixToSubDrawRectTransform.m24 = 0.0;
+    pixToSubDrawRectTransform.m34 = 0.0;
+    pixToSubDrawRectTransform.m44 = 1.0;
     
     return pixToSubDrawRectTransform;
 }

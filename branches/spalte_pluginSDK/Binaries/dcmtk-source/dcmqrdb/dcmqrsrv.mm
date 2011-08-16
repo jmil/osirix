@@ -46,9 +46,109 @@
 #include "dcmqrcbg.h"    /* for class DcmQueryRetrieveGetContext */
 #include "dcmqrcbs.h"    /* for class DcmQueryRetrieveStoreContext */
 
-#import "dcmqrdbq.h";
+#import "dcmqrdbq.h"
+
+#include <signal.h>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@interface ContextCleaner : NSObject
+{
+
+}
+@end
+
+@implementation ContextCleaner
+
++ (void) waitUnlockFileWithPID: (NSDictionary*) dict
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	BOOL fileExist = YES;
+	int pid = [[dict valueForKey: @"pid"] intValue], inc = 0, rc = pid, state;
+	char dir[ 1024];
+	sprintf( dir, "%s-%d", "/tmp/lock_process", pid);
+	
+	do
+	{
+		FILE * pFile = fopen (dir,"r");
+		if( pFile)
+		{
+			rc = waitpid( pid, &state, WNOHANG);	// Check to see if this pid is still alive?
+			fclose (pFile);
+		}
+		else
+			fileExist = NO;
+            
+            usleep( 100000);
+            inc++;
+	}
+#define TIMEOUT 1200 // 1200*100000 = 120 secs
+	while( fileExist == YES && inc < TIMEOUT && rc >= 0);
+	
+	if( inc >= TIMEOUT)
+	{
+		kill( pid, 15);
+		NSLog( @"******* waitUnlockFile for %d sec", inc/10);
+	}
+	
+	if( rc < 0)
+	{
+        NSLog( @"******* waitUnlockFile : child process died... %d / %d", rc, errno);
+		kill( pid, 15);
+	}
+	
+	unlink( dir);
+	
+	if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/kill_all_storescu"] == NO)
+	{
+		NSString *str = [NSString stringWithContentsOfFile: @"/tmp/error_message"];
+		[[NSFileManager defaultManager] removeFileAtPath: @"/tmp/error_message" handler: nil];
+		
+		if( str && [str length] > 0)
+			[[AppController sharedAppController] performSelectorOnMainThread: @selector( displayListenerError:) withObject: str waitUntilDone: NO];
+	}
+    
+    // And finally release memory on the father side
+    [NSThread sleepForTimeInterval: 60 * 30]; //45 min....
+    
+    T_ASC_Association *assoc = (T_ASC_Association*) [[dict valueForKey: @"assoc"] pointerValue];
+    OFCondition cond = EC_Normal;
+    
+    /* the child will handle the association, we can drop it */
+    cond = ASC_dropAssociation(assoc);
+    if (cond.bad())
+    {
+        //DcmQueryRetrieveOptions::errmsg("Cannot Drop Association:");
+        DimseCondition::dump(cond);
+    }
+    
+    cond = ASC_destroyAssociation(&assoc);
+    if (cond.bad())
+    {
+        //DcmQueryRetrieveOptions::errmsg("Cannot Destroy Association:");
+        DimseCondition::dump(cond);
+    }
+    
+	[pool release];
+}
+@end
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+extern "C"
+{
+	void (*signal(int signum, void (*sighandler)(int)))(int);
+	
+	void silent_exit_on_sig(int sig_num)
+	{
+		printf ("\rSignal %d received in OsiriX child process - will quit silently.\r", sig_num);
+		_Exit(3);
+	}
+}
 
 NSManagedObjectContext *staticContext = nil;
+
 
 static char *last(char *p, int c)
 {
@@ -368,6 +468,12 @@ OFCondition DcmQueryRetrieveSCP::handleAssociation(T_ASC_Association * assoc, OF
     DIC_AE              peerAETitle;
     DIC_AE              myAETitle;
 	
+	if( assoc == nil)
+	{
+		cond = DUL_PEERABORTEDASSOCIATION;
+		return cond;
+	}
+	
     ASC_getPresentationAddresses(assoc->params, peerHostName, NULL);
     ASC_getAPTitles(assoc->params, peerAETitle, myAETitle, NULL);
 	
@@ -375,12 +481,19 @@ OFCondition DcmQueryRetrieveSCP::handleAssociation(T_ASC_Association * assoc, OF
     cond = dispatch(assoc, correctUIDPadding);
 	
  /* clean up on association termination */
-    if (cond == DUL_PEERREQUESTEDRELEASE) {
+    if (cond == DUL_PEERREQUESTEDRELEASE)
+	{
         if (options_.verbose_)
             printf("Association Release\n");
-        cond = ASC_acknowledgeRelease(assoc);
-        ASC_dropSCPAssociation(assoc);
-    } else if (cond == DUL_PEERABORTEDASSOCIATION) {
+		
+		if( assoc)
+		{
+			cond = ASC_acknowledgeRelease(assoc);
+			ASC_dropSCPAssociation(assoc);
+		}
+	}
+	else if (cond == DUL_PEERABORTEDASSOCIATION)
+	{
         if (options_.verbose_)
             printf("Association Aborted\n");
     }
@@ -1108,7 +1221,7 @@ OFCondition DcmQueryRetrieveSCP::negotiateAssociation(T_ASC_Association * assoc)
             queryRetrievePairs[i].findSyntax);
         if (findpid == 0) {
         if (options_.requireFindForMove_) {
-            //* refuse the move 
+            // refuse the move 
             ASC_refusePresentationContext(assoc->params,
                 movepid, ASC_P_USERREJECTION);
             } else {
@@ -1149,7 +1262,7 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 #ifdef HAVE_FORK
     int                 pid;
 #endif
-    T_ASC_Association  *assoc;
+    T_ASC_Association  *assoc = nil;
     char                buf[BUFSIZ];
     int timeout;
     OFBool go_cleanup = OFFalse;
@@ -1157,6 +1270,9 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 	Boolean singleProcess = options_.singleProcess_;
 	Boolean moveProcess = false;
 	
+//    if( secureConnection_)
+//        singleProcess = YES;
+    
     if (singleProcess) timeout = 30000;
     else
     {
@@ -1358,6 +1474,7 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 					{
 						/* don't spawn a sub-process to handle the association */
 						cond = handleAssociation(assoc, options_.correctUIDPadding_);
+						assoc = nil;
 					}
 					@catch( NSException *e)
 					{
@@ -1400,11 +1517,11 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 					
 					staticContext = [[BrowserController currentBrowser] defaultManagerObjectContextIndependentContext: YES];
 					[staticContext retain];
-					[staticContext lock]; //Try to avoid deadlock
+//					[staticContext lock]; //Try to avoid deadlock
 					
 					@try
 					{
-						[DCMNetServiceDelegate DICOMServersList];
+                        [DCMNetServiceDelegate DICOMServersList];
 						
 						/* spawn a sub-process to handle the association */
 						pid = (int)(fork());
@@ -1424,28 +1541,11 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 								t.status = [NSString stringWithFormat: NSLocalizedString( @"Address: %s", nil), assoc->params->DULparams.callingPresentationAddress];
 							[[ThreadsManager defaultManager] addThreadAndStart: t];
 							
-							/* the child will handle the association, we can drop it */
-							cond = ASC_dropAssociation(assoc);
-							if (cond.bad())
-							{
-								//DcmQueryRetrieveOptions::errmsg("Cannot Drop Association:");
-								DimseCondition::dump(cond);
-							}
-							
-							cond = ASC_destroyAssociation(&assoc);
-							if (cond.bad())
-							{
-								//DcmQueryRetrieveOptions::errmsg("Cannot Destroy Association:");
-								DimseCondition::dump(cond);
-							}
-							
 							// Father
 							[NSThread sleepForTimeInterval: 0.2]; // To allow the creation of lock_process file with corresponding pid
 							
-							[NSThread detachNewThreadSelector: @selector(waitUnlockFileWithPID:) toTarget: [AppController sharedAppController] withObject: [NSNumber numberWithInt: pid]];
+							[NSThread detachNewThreadSelector: @selector(waitUnlockFileWithPID:) toTarget: [ContextCleaner class] withObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: pid], @"pid", [NSValue valueWithPointer:assoc], @"assoc", nil]];
 							
-//							waitUnlockFileWithPID( pid);
-//							
 //							NSString *str = getErrorMessage();
 //							if( str)
 //								[[AppController sharedAppController] performSelectorOnMainThread: @selector( displayListenerError:) withObject: str waitUntilDone: NO];
@@ -1453,6 +1553,17 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 						else
 						{
 							lockFile();
+							
+							// We are not interested to see crash report for the child process.
+							// It can safely and silently crash (can occur with network broken pipe)
+							
+							signal(SIGINT , silent_exit_on_sig);
+							signal(SIGABRT , silent_exit_on_sig);
+							signal(SIGILL , silent_exit_on_sig);
+							signal(SIGFPE , silent_exit_on_sig);
+							signal(SIGSEGV, silent_exit_on_sig);
+							signal(SIGTERM , silent_exit_on_sig);
+							signal(SIGBUS , silent_exit_on_sig);
 							
 							// Child
 							@try
@@ -1487,7 +1598,7 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 						NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 					}
 					
-					[staticContext unlock];
+//					[staticContext unlock];
 					[staticContext release];
 					staticContext = nil;
 				}
@@ -1501,26 +1612,24 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
 		[p release];
 #endif
     }
-
-//    // cleanup code: this code is now done in dcmqrptb.cc
-//     OFCondition oldcond = cond;    /* store condition flag for later use */
-//    if (!singleProcess && (cond != ASC_SHUTDOWNAPPLICATION))
-//    {
-//        /* the child will handle the association, we can drop it */
-//        cond = ASC_dropAssociation(assoc);
-//        if (cond.bad())
-//        {
-//            DcmQueryRetrieveOptions::errmsg("Cannot Drop Association:");
-//            DimseCondition::dump(cond);
-//        }
-//        cond = ASC_destroyAssociation(&assoc);
-//        if (cond.bad())
-//        {
-//            DcmQueryRetrieveOptions::errmsg("Cannot Destroy Association:");
-//            DimseCondition::dump(cond);
-//        }
-//    }
-//   if (oldcond == ASC_SHUTDOWNAPPLICATION) cond = oldcond; /* abort flag is reported to top-level wait loop */
+	
+	if( go_cleanup)
+	{
+		cond = ASC_dropAssociation(assoc);
+		if (cond.bad())
+		{
+			//DcmQueryRetrieveOptions::errmsg("Cannot Drop Association:");
+			DimseCondition::dump(cond);
+		}
+		
+		cond = ASC_destroyAssociation(&assoc);
+		if (cond.bad())
+		{
+			//DcmQueryRetrieveOptions::errmsg("Cannot Destroy Association:");
+			DimseCondition::dump(cond);
+		}
+	}
+	
     return cond;
 }
 

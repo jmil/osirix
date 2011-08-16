@@ -16,14 +16,14 @@
 #import <SecurityInterface/SFCertificateView.h>
 
 #import "OSIWebSharingPreferencePanePref.h"
-#import <OsiriX Headers/DefaultsOsiriX.h>
-#import <OsiriX Headers/NSUserDefaults+OsiriX.h>
-#import <OsiriX Headers/BrowserController.h>
-#import <OsiriX Headers/AppController.h>
-#import <OsiriX Headers/NSFileManager+N2.h>
-#import <OsiriX Headers/WebPortal.h>
-#import <OsiriX Headers/WebPortalDatabase.h>
-#import <OsiriX Headers/DicomDatabase.h>
+#import <OsiriXAPI/DefaultsOsiriX.h>
+#import <OsiriXAPI/NSUserDefaults+OsiriX.h>
+#import <OsiriXAPI/BrowserController.h>
+#import <OsiriXAPI/AppController.h>
+#import <OsiriXAPI/NSFileManager+N2.h>
+#import <OsiriXAPI/WebPortal.h>
+#import <OsiriXAPI/WebPortalDatabase.h>
+#import <OsiriXAPI/DicomDatabase.h>
 
 #import "DDKeychain.h"
 
@@ -36,9 +36,26 @@
 
 @synthesize TLSAuthenticationCertificate;
 
--(void)awakeFromNib {
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSIWebSharingPreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
+
+-(void)awakeFromNib
+{
 	[addressTextField.cell setPlaceholderString:NSUserDefaults.defaultWebPortalAddress];
 	[portTextField.cell setPlaceholderString:[NSNumber numberWithInteger:NSUserDefaults.webPortalPortNumber].stringValue];
+	
+	[usersTable setSortDescriptors:[NSArray arrayWithObject:[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
 }
 
 - (NSString*) UniqueLabelForSelectedServer;
@@ -95,7 +112,7 @@
 
 		if(clickedButton==NSOKButton)
 		{
-			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://osirix.svn.sourceforge.net/viewvc/osirix/Documentation/Security/index.html"]];
+			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://osirix.svn.sourceforge.net/viewvc/osirix/Documentation/Guides/Security/index.html"]];
 		}
 		
 		return;
@@ -191,7 +208,20 @@
 }
 
 - (IBAction) copyMissingCustomizedFiles: (id) sender {
-	[[NSFileManager defaultManager] copyItemAtPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"WebServicesHTML"] toPath:@"~/Library/Application Support/OsiriX/WebServicesHTML" byReplacingExisting:NO error:NULL];
+	[[NSFileManager defaultManager] copyItemAtPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"WebServicesHTML"] toPath: [@"~/Library/Application Support/OsiriX/WebServicesHTML" stringByExpandingTildeInPath] byReplacingExisting:NO error:NULL];
+}
+
+- (IBAction) editUsers: (id) sender {
+	[NSApp beginSheet:usersPanel modalForWindow:self.mainView.window modalDelegate:self didEndSelector:@selector(editUsersSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+}
+
+-(IBAction)exitEditUsers:(NSButton*)sender {
+	[usersPanel makeFirstResponder: nil];
+	[NSApp endSheet:usersPanel];
+}
+
+- (void)editUsersSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	[sheet orderOut:NULL];
 }
 
 @end

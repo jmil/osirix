@@ -65,8 +65,14 @@ static NSString *DCM_Verification = @"1.2.840.10008.1.1";
 	static NSString *MultiframeTrueColorSecondaryCaptureImageStorage = @"1.2.840.10008.5.1.4.1.1.7.4";
 	/***/
 	static NSString *XrayAngiographicImageStorage = @"1.2.840.10008.5.1.4.1.1.12.1";
+	static NSString *EnhancedXAImageStorage = @"1.2.840.10008.5.1.4.1.1.12.1.1";
 	/***/
 	static NSString *XrayRadioFlouroscopicImageStorage = @"1.2.840.10008.5.1.4.1.1.12.2";
+	static NSString *EnhancedXRFImageStorage = @"1.2.840.10008.5.1.4.1.1.12.2.1";
+	/***/
+	static NSString *XRay3DAngiographicImageStorage = @"1.2.840.10008.5.1.4.1.1.13.1.1";
+	static NSString *XRay3DCraniofacialImageStorage = @"1.2.840.10008.5.1.4.1.1.13.1.2";
+	static NSString *PhilipsPrivateXRayMFStorage = @"1.3.46.670589.7.8.1618510091";
 	/***/
 	static NSString *XrayAngiographicBiplaneImageStorage = @"1.2.840.10008.5.1.4.1.1.12.3";
 	/***/
@@ -202,6 +208,7 @@ static NSString *DCM_Verification = @"1.2.840.10008.1.1";
 	static NSString *OphthalmicPhotography16BitImageStorage = @"1.2.840.10008.5.1.4.1.1.77.1.5.2";
 	static NSString *FujiPrivateCR = @"1.2.392.200036.9125.1.1.2";
 	static NSString *StereometricRelationshipStorage = @"1.2.840.10008.5.1.4.1.1.77.1.5.3";
+	static NSString *OphthalmicTomographyImageStorage = @"1.2.840.10008.5.1.4.1.1.77.1.5.4";
 	static NSString *InstanceAvailabilityNotification = @"1.2.840.10008.5.1.4.33";
 	static NSString *GeneralRelevantPatientInformationQuerySOP = @"1.2.840.10008.5.1.4.37.1"; 
 	static NSString *BreastImagingRelevantPatientInformationQuery = @"1.2.840.10008.5.1.4.37.2";
@@ -425,7 +432,13 @@ static NSString *DCM_Verification = @"1.2.840.10008.1.1";
 			PDFStorageClassUID ,
 			OphthalmicPhotography8BitImageStorage,
 			OphthalmicPhotography16BitImageStorage,
+			OphthalmicTomographyImageStorage,
 			FujiPrivateCR,
+			EnhancedXAImageStorage,
+			EnhancedXRFImageStorage,
+			XRay3DAngiographicImageStorage,
+			XRay3DCraniofacialImageStorage,
+			PhilipsPrivateXRayMFStorage,
 			nil];
 		
 		@try 

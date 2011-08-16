@@ -21,13 +21,14 @@
 @interface WebPortal (Databases)
 
 -(NSArray*)arrayByAddingSpecificStudiesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate toArray:(NSArray*)array;
-
+-(NSArray*)studiesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate sortBy:(NSString*)sortValue fetchLimit:(int) fetchLimit;
 -(NSArray*)studiesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate;
 -(NSArray*)studiesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate sortBy:(NSString*)sortValue;
 
 -(NSArray*)studiesForUser:(WebPortalUser*)user album:(NSString*)albumName;
 -(NSArray*)studiesForUser:(WebPortalUser*)user album:(NSString*)albumName sortBy:(NSString*)sortValue;
 
--(NSArray*)seriesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate;
+//-(NSArray*)seriesForUser:(WebPortalUser*)user predicate:(NSPredicate*)predicate;
 
 @end
+

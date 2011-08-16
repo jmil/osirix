@@ -19,7 +19,7 @@
 
 @class DRTrack;
 /** \brief Window Controller for DICOM disk burning */
-@interface BurnerWindowController : NSWindowController
+@interface BurnerWindowController : NSWindowController <NSWindowDelegate>
 {
 	volatile BOOL burning, isIrisAnimation;
 	NSMutableArray *nodeArray;
@@ -43,7 +43,7 @@
 	IBOutlet NSWindow *passwordWindow;
 	
 	BOOL buttonsDisabled;
-	BOOL burnSuppFolder, burnOsiriX, burnHtml;
+	BOOL burnSuppFolder, burnOsiriX, burnHtml, burnWeasis;
 }
 
 @property BOOL buttonsDisabled;

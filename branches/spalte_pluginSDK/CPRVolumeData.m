@@ -78,42 +78,48 @@
     N3Vector zero;
     CGFloat spacing;
     
-    if (self.rectilinear) {
-        return MIN(MIN(self.pixelSpacingX, self.pixelSpacingY), self.pixelSpacingZ);
-    } else {
-        zero = N3VectorApplyTransform(N3VectorZero, _volumeTransform);
-        
-        spacing = N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(1.0, 0.0, 0.0), _volumeTransform));
-        spacing = MAX(spacing, N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(0.0, 1.0, 0.0), _volumeTransform)));
-        spacing = MAX(spacing, N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(0.0, 0.0, 1.0), _volumeTransform)));
-        return 1.0/spacing;
-    }
+    return MIN(MIN(self.pixelSpacingX, self.pixelSpacingY), self.pixelSpacingZ);
 }
 
 - (CGFloat)pixelSpacingX
 {
+    N3Vector zero;
+    N3AffineTransform inverseTransform;
+
     if (self.rectilinear) {
         return 1.0/_volumeTransform.m11;
     } else {
-        return 0.0;
+        inverseTransform = N3AffineTransformInvert(_volumeTransform);
+        zero = N3VectorApplyTransform(N3VectorZero, inverseTransform);
+        return N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(1.0, 0.0, 0.0), inverseTransform));
     }
 }
 
 - (CGFloat)pixelSpacingY
 {
+    N3Vector zero;
+    N3AffineTransform inverseTransform;
+
     if (self.rectilinear) {
         return 1.0/_volumeTransform.m22;
     } else {
-        return 0.0;
+        inverseTransform = N3AffineTransformInvert(_volumeTransform);
+        zero = N3VectorApplyTransform(N3VectorZero, inverseTransform);
+        return N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(0.0, 1.0, 0.0), inverseTransform));
     }
 }
 
 - (CGFloat)pixelSpacingZ
 {
+    N3Vector zero;
+    N3AffineTransform inverseTransform;
+
     if (self.rectilinear) {
         return 1.0/_volumeTransform.m33;
     } else {
-        return 0.0;
+        inverseTransform = N3AffineTransformInvert(_volumeTransform);
+        zero = N3VectorApplyTransform(N3VectorZero, inverseTransform);
+        return N3VectorDistance(zero, N3VectorApplyTransform(N3VectorMake(0.0, 0.0, 1.0), inverseTransform));
     }
 }
 
@@ -183,6 +189,7 @@
         imageRep.pixelSpacingX = [self pixelSpacingX];
         imageRep.pixelSpacingY = [self pixelSpacingY];
         imageRep.sliceThickness = [self pixelSpacingZ];
+        imageRep.imageToDicomTransform = N3AffineTransformConcat(N3AffineTransformMakeTranslation(0.0, 0.0, (CGFloat)z), N3AffineTransformInvert(_volumeTransform));
         
         unsignedInt16Data = [imageRep unsignedInt16Data];
         
@@ -480,6 +487,60 @@
     self = [self initWithFloatBytesNoCopy:(const float *)[volume bytes] pixelsWide:[firstPix pwidth] pixelsHigh:[firstPix pheight] pixelsDeep:[pixList count]
                             volumeTransform:N3AffineTransformInvert(pixToDicomTransform) freeWhenDone:NO];
     return self;
+}
+
+- (void)getOrientation:(float[6])orientation
+{
+    double doubleOrientation[6];
+    NSInteger i;
+    
+    [self getOrientationDouble:doubleOrientation];
+    
+    for (i = 0; i < 6; i++) {
+        orientation[i] = doubleOrientation[i];
+    }
+}
+
+- (void)getOrientationDouble:(double[6])orientation
+{
+    N3AffineTransform pixelToDicomTransform;
+    N3Vector xBasis;
+    N3Vector yBasis;
+    
+    pixelToDicomTransform = N3AffineTransformInvert(_volumeTransform);
+    
+    xBasis = N3VectorNormalize(N3VectorMake(pixelToDicomTransform.m11, pixelToDicomTransform.m12, pixelToDicomTransform.m13));
+    yBasis = N3VectorNormalize(N3VectorMake(pixelToDicomTransform.m21, pixelToDicomTransform.m22, pixelToDicomTransform.m23));
+    
+    orientation[0] = xBasis.x; orientation[1] = xBasis.y; orientation[2] = xBasis.z;
+    orientation[3] = yBasis.x; orientation[4] = yBasis.y; orientation[5] = yBasis.z; 
+}
+
+- (float)originX
+{
+    N3AffineTransform pixelToDicomTransform;
+    
+    pixelToDicomTransform = N3AffineTransformInvert(_volumeTransform);
+    
+    return pixelToDicomTransform.m41;
+}
+
+- (float)originY
+{
+    N3AffineTransform pixelToDicomTransform;
+    
+    pixelToDicomTransform = N3AffineTransformInvert(_volumeTransform);
+    
+    return pixelToDicomTransform.m42;
+}
+
+- (float)originZ
+{
+    N3AffineTransform pixelToDicomTransform;
+    
+    pixelToDicomTransform = N3AffineTransformInvert(_volumeTransform);
+    
+    return pixelToDicomTransform.m43;
 }
 
 @end

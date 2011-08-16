@@ -15,12 +15,10 @@
 #import <PreferencePanes/PreferencePanes.h>
 #import <SecurityInterface/SFChooseIdentityPanel.h>
 #import <SecurityInterface/SFCertificateView.h>
-#import <OsiriX Headers/DNDArrayController.h>
+#import <OsiriXAPI/DNDArrayController.h>
 #import <WebKit/WebKit.h>
 
-#if defined(OSIRIX)
-#import <OsiriX Headers/DICOMTLS.h>
-#endif
+#import <OsiriXAPI/DICOMTLS.h>
 
 @interface OSILocationsPreferencePanePref : NSPreferencePane 
 {
@@ -46,9 +44,9 @@
 	NSArray							*TLSSupportedCipherSuite;
 	BOOL							TLSUseDHParameterFileURL;
 	NSURL							*TLSDHParameterFileURL;
-	#if defined(OSIRIX)
 	TLSCertificateVerificationType	TLSCertificateVerification;
-	#endif
+	
+	IBOutlet NSWindow						*mainWindow;
 }
 
 @property int WADOhttps, WADOPort, WADOTransferSyntax;
@@ -57,9 +55,7 @@
 @property BOOL TLSEnabled, TLSAuthenticated, TLSUseDHParameterFileURL;
 @property (retain) NSURL *TLSDHParameterFileURL;
 @property (retain) NSArray *TLSSupportedCipherSuite;
-#if defined(OSIRIX)
 @property TLSCertificateVerificationType TLSCertificateVerification;
-#endif
 
 @property (retain) NSString *TLSAuthenticationCertificate;
 

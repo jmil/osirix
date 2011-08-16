@@ -13,13 +13,27 @@
 =========================================================================*/
 
 #import "OSIDatabasePreferencePanePref.h"
-#import <OsiriX Headers/PluginManager.h>
-#import <OsiriX Headers/BrowserController.h>
-#import <OsiriX Headers/PreferencesWindowController+DCMTK.h>
+#import <OsiriXAPI/PluginManager.h>
+#import <OsiriXAPI/BrowserController.h>
+#import <OsiriXAPI/PreferencesWindowController+DCMTK.h>
 #import <OsiriX/DCMAbstractSyntaxUID.h>
-#import <OsiriX Headers/BrowserControllerDCMTKCategory.h>
+#import <OsiriXAPI/BrowserControllerDCMTKCategory.h>
 
 @implementation OSIDatabasePreferencePanePref
+
+- (id) initWithBundle:(NSBundle *)bundle
+{
+	if( self = [super init])
+	{
+		NSNib *nib = [[NSNib alloc] initWithNibNamed: @"OSIDatabasePreferencePanePref" bundle: nil];
+		[nib instantiateNibWithOwner:self topLevelObjects: nil];
+		
+		[self setMainView: [mainWindow contentView]];
+		[self mainViewDidLoad];
+	}
+	
+	return self;
+}
 
 - (NSArray*) ListOfMediaSOPClassUID
 {
