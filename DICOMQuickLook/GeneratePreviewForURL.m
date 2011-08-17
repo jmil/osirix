@@ -157,7 +157,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 			NSTask *aTask = [[[NSTask alloc] init] autorelease];		
 			[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle bundleForClass: [pix class]] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
 			[aTask setLaunchPath: [[[NSBundle bundleForClass: [pix class]] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
-			[aTask setArguments: [NSArray arrayWithObjects: [nsurl path], htmlpath, nil]];		
+			[aTask setArguments: [NSArray arrayWithObjects: @"--unknown-relationship", @"--ignore-constraints", @"--ignore-item-errors", @"--skip-invalid-items", [nsurl path], htmlpath, nil]];		
 			[aTask launch];
 			[aTask waitUntilExit];		
 			[aTask interrupt];
