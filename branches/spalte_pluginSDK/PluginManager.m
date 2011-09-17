@@ -383,7 +383,9 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 	@try
 	{
 		NSString	*appSupport = @"Library/Application Support/OsiriX/";
+        NSString	*appAppStoreSupport = @"Library/Application Support/OsiriX App/";
 		NSString	*appPath = [[NSBundle mainBundle] builtInPlugInsPath];
+        NSString	*userAppStorePath = [NSHomeDirectory() stringByAppendingPathComponent:appAppStoreSupport];
 		NSString	*userPath = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
 		NSString	*sysPath = [@"/" stringByAppendingPathComponent:appSupport];
 		
@@ -394,8 +396,10 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		#endif
 		
 		appSupport = [appSupport stringByAppendingPathComponent :@"Plugins/"];
+		appAppStoreSupport = [appAppStoreSupport stringByAppendingPathComponent :@"Plugins/"];
 		
 		userPath = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
+        userAppStorePath = [NSHomeDirectory() stringByAppendingPathComponent:appAppStoreSupport];
 		sysPath = [@"/" stringByAppendingPathComponent:appSupport];
 		
 		#ifndef MACAPPSTORE
@@ -403,7 +407,7 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		if ([[NSFileManager defaultManager] fileExistsAtPath:sysPath] == NO) [[NSFileManager defaultManager] createDirectoryAtPath:sysPath attributes:nil];
 		#endif
 		
-		NSArray* paths = [NSArray arrayWithObjects:appPath, userPath, sysPath, [NSNull null], nil]; // [NSNull null] is a placeholder for launch parameters load commands
+		NSArray* paths = [NSArray arrayWithObjects:appPath, userPath, userAppStorePath, sysPath, [NSNull null], nil]; // [NSNull null] is a placeholder for launch parameters load commands
 		
 		[plugins release];
 		[pluginsDict release];
@@ -426,8 +430,28 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		[fusionPluginsMenu insertItemWithTitle:NSLocalizedString(@"Select a fusion plug-in", nil) action:nil keyEquivalent:@"" atIndex:0];
 		
 		NSLog( @"|||||||||||||||||| Plugins loading START ||||||||||||||||||");
-		#ifndef OSIRIX_LIGHT
-		for (id path in paths)
+        #ifndef OSIRIX_LIGHT
+		
+        NSString *pluginCrash = [documentsDirectory() stringByAppendingPathComponent:@"/Plugin_Loading"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath: pluginCrash])
+        {
+            NSString *pluginCrashPath = [NSString stringWithContentsOfFile: pluginCrash encoding: NSUTF8StringEncoding error: nil];
+            
+            int result = NSRunInformationalAlertPanel(NSLocalizedString(@"OsiriX crashed during last startup", nil), [NSString stringWithFormat: NSLocalizedString(@"Previous crash is maybe related to a plugin.\r\rShould I remove this plugin (%@)?", nil), [pluginCrashPath lastPathComponent]], NSLocalizedString(@"Delete Plugin",nil), NSLocalizedString(@"Continue",nil), nil);
+            
+            if( result == NSAlertDefaultReturn) // Delete Plugin
+            {
+                NSError *error = nil;
+                [[NSFileManager defaultManager] removeItemAtPath: pluginCrashPath error: &error];
+                
+                if( error)
+                    NSLog( @"**** Cannot Delete File : Crashing Plugin Delete Error: %@", error);
+            }
+            
+            [[NSFileManager defaultManager] removeItemAtPath: pluginCrash error: nil];
+        }
+        
+        for (id path in paths)
 		{
             NSEnumerator* e = nil;
             if ([path isKindOfClass:[NSString class]])
@@ -463,7 +487,11 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 						
 						@try
 						{
-							NSBundle *plugin = [NSBundle bundleWithPath: [PluginManager pathResolved: [path stringByAppendingPathComponent:name]]];
+                            NSString *pathResolved = [PluginManager pathResolved: [path stringByAppendingPathComponent:name]];
+                            
+                            [pathResolved writeToFile: pluginCrash atomically: YES encoding: NSUTF8StringEncoding error: nil];
+                            
+							NSBundle *plugin = [NSBundle bundleWithPath: pathResolved];
 							
 							if( plugin == nil)
 								NSLog( @"**** Bundle opening failed for plugin: %@", [path stringByAppendingPathComponent:name]);
@@ -530,6 +558,8 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 									else NSLog( @"********* principal class not found for: %@ - %@", name, [plugin principalClass]);
 								}
 							}
+                            
+                            [[NSFileManager defaultManager] removeItemAtPath: pluginCrash error: nil];
 						}
 						@catch( NSException *e)
 						{
@@ -560,12 +590,20 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 
 + (NSString*)activePluginsDirectoryPath;
 {
-	return @"Library/Application Support/OsiriX/Plugins/";
+    #ifdef MACAPPSTORE
+	return @"Library/Application Support/OsiriX App/Plugins/";
+    #else
+    return @"Library/Application Support/OsiriX/Plugins/";
+    #endif
 }
 
 + (NSString*)inactivePluginsDirectoryPath;
 {
-	return @"Library/Application Support/OsiriX/Plugins Disabled/";
+    #ifdef MACAPPSTORE
+	return @"Library/Application Support/OsiriX App/Plugins Disabled/";
+    #else
+    return @"Library/Application Support/OsiriX/Plugins Disabled/";
+    #endif
 }
 
 + (NSString*)userActivePluginsDirectoryPath;
@@ -710,6 +748,15 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 
 + (void)changeAvailabilityOfPluginWithName:(NSString*)pluginName to:(NSString*)availability;
 {
+    NSArray *availabilities = [PluginManager availabilities];
+    
+#ifdef MACAPPSTORE
+    if([availability isEqualTo:[availabilities objectAtIndex:0]] == NO)
+    {
+        NSRunCriticalAlertPanel( NSLocalizedString(@"Plugin",nil),  NSLocalizedString( @"You cannot move the plugin to another location with this version of OsiriX.", nil), NSLocalizedString(@"OK",nil), nil, nil);
+    }
+#endif
+    
 	NSMutableArray *paths = [NSMutableArray array];
 	[paths addObjectsFromArray:[PluginManager activeDirectories]];
 	[paths addObjectsFromArray:[PluginManager inactiveDirectories]];
@@ -736,16 +783,16 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 	NSString *directory = [completePluginPath stringByDeletingLastPathComponent];
 	NSMutableString *newDirectory = [NSMutableString stringWithString:@""];
 	
-	NSArray *availabilities = [PluginManager availabilities];
+	
 	if([availability isEqualTo:[availabilities objectAtIndex:0]])
 	{
 		[newDirectory setString:[PluginManager userActivePluginsDirectoryPath]];
 	}
-	else if([availability isEqualTo:[availabilities objectAtIndex:1]])
+	else if(availabilities.count >= 1 && [availability isEqualTo:[availabilities objectAtIndex:1]])
 	{
 		[newDirectory setString:[PluginManager systemActivePluginsDirectoryPath]];
 	}
-	else if([availability isEqualTo:[availabilities objectAtIndex:2]])
+	else if(availabilities.count >= 2 && [availability isEqualTo:[availabilities objectAtIndex:2]])
 	{
 		[newDirectory setString:[PluginManager appActivePluginsDirectoryPath]];
 	}
@@ -797,14 +844,14 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		else
 			directory = [PluginManager userInactivePluginsDirectoryPath];
 	}
-	else if( [availability isEqualToString:[availabilities objectAtIndex:1]])
+	else if( availabilities.count >= 1 && [availability isEqualToString:[availabilities objectAtIndex:1]])
 	{
 		if(isActive)
 			directory = [PluginManager systemActivePluginsDirectoryPath];
 		else
 			directory = [PluginManager systemInactivePluginsDirectoryPath];
 	}
-	else if([availability isEqualToString:[availabilities objectAtIndex:2]])
+	else if( availabilities.count >= 2 && [availability isEqualToString:[availabilities objectAtIndex:2]])
 	{
 		if(isActive)
 			directory = [PluginManager appActivePluginsDirectoryPath];

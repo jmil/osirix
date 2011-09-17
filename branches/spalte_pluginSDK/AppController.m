@@ -391,7 +391,12 @@ NSString * documentsDirectoryFor( int mode, NSString *url)
 					path = [@"~/Library/Application Support/OsiriX/OsiriX Data/" stringByExpandingTildeInPath];
 				
 					if( [[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory] == NO || isDirectory == NO)
-						[[NSFileManager defaultManager] createDirectoryAtPath: path withIntermediateDirectories: YES attributes: nil error: nil];
+                    {
+                        path = [@"~/Library/Application Support/OsiriX App/OsiriX Data/" stringByExpandingTildeInPath];
+                        
+                        if( [[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory] == NO || isDirectory == NO)
+                            [[NSFileManager defaultManager] createDirectoryAtPath: path withIntermediateDirectories: YES attributes: nil error: nil];
+                    }
 				}
 			}
 			#else
@@ -889,6 +894,7 @@ static NSDate *lastWarningDate = nil;
 				else
 					destinationDirectory = [PluginManager userInactivePluginsDirectoryPath];
 			}
+#ifndef MACAPPSTORE
 			else if([availability isEqualToString:[pluginManagerAvailabilities objectAtIndex:1]])
 			{
 				if(isActive)
@@ -904,6 +910,7 @@ static NSDate *lastWarningDate = nil;
 					destinationDirectory = [PluginManager appInactivePluginsDirectoryPath];
 			}
 			else
+#endif
 			{
 				if(isActive)
 					destinationDirectory = [PluginManager userActivePluginsDirectoryPath];
@@ -935,11 +942,13 @@ static NSDate *lastWarningDate = nil;
 				
 				if( [[NSFileManager defaultManager] removeFileAtPath: pathToDelete handler: nil] == NO)			// Please leave this line! ANR
 				{
+                    #ifndef MACAPPSTORE
 					NSMutableArray *args = [NSMutableArray array];
 					[args addObject:@"-r"];
 					[args addObject:pathToDelete];
 					
 					[[BLAuthentication sharedInstance] executeCommand:@"/bin/rm" withArgs:args];
+                    #endif
 				}
 				
 				[[NSFileManager defaultManager] removeFileAtPath: pathToDelete handler: nil];			// Please leave this line! ANR
@@ -1215,7 +1224,7 @@ static NSDate *lastWarningDate = nil;
 		{
 			if( [[NSFileManager defaultManager] fileExistsAtPath: path] && [(NSString*) [NSString stringWithContentsOfFile: path] length] > 0)
 			{
-				[NSThread currentThread].status = [[NSThread currentThread].status stringByAppendingFormat: NSLocalizedString( @" Service: %@", nil), [NSString stringWithContentsOfFile: path]];
+				[NSThread currentThread].status = [[NSThread currentThread].status stringByAppendingFormat: NSLocalizedString( @" - %@", nil), [NSString stringWithContentsOfFile: path]];
 				[NSThread sleepForTimeInterval: 1];
 				threadStateChanged = YES;
 			}
@@ -2844,7 +2853,7 @@ static BOOL initialized = NO;
 				#ifdef MACAPPSTORE
 				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MACAPPSTORE"]; // Also modify in DefaultsOsiriX.m
 				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"AUTHENTICATION"];
-				[[NSUserDefaults standardUserDefaults] setObject:@"(~/Library/Application Support/OsiriX/)" forKey:@"DefaultDatabasePath"];
+				[[NSUserDefaults standardUserDefaults] setObject:@"(~/Library/Application Support/OsiriX App/)" forKey:@"DefaultDatabasePath"];
 				#else
 				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"MACAPPSTORE"]; // Also modify in DefaultsOsiriX.m
 				[[NSUserDefaults standardUserDefaults] setObject:@"(Current User Documents folder)" forKey:@"DefaultDatabasePath"];
@@ -3239,6 +3248,14 @@ static BOOL initialized = NO;
 	[NSThread detachNewThreadSelector: @selector(checkForUpdates:) toTarget:self withObject: self];
 	#endif
 	#endif
+    
+    // Remove PluginManager items...
+    #ifdef MACAPPSTORE
+    NSMenu *pluginsMenu = [filtersMenu supermenu];
+    
+    [pluginsMenu removeItemAtIndex: [pluginsMenu numberOfItems]-1];
+    [pluginsMenu removeItemAtIndex: [pluginsMenu numberOfItems]-1];
+    #endif
 	
 	if( [[NSUserDefaults standardUserDefaults] boolForKey: @"hideListenerError"]) // Server mode
 		[[[BrowserController currentBrowser] window] orderOut: self];

@@ -5961,32 +5961,96 @@ return YES;
 					
 					[[pixList[ x] objectAtIndex: 1] orientation: orientation];
 					
-					int pw = [[[fileList[ x] objectAtIndex: 0] valueForKey:@"width"] intValue];
-					int ph = [[[fileList[ x] objectAtIndex: 0] valueForKey:@"height"] intValue];
-					
+					int pw = [[[fileList[ x] objectAtIndex: [pixList[ x] count]/2] valueForKey: @"width"] intValue];
+					int ph = [[[fileList[ x] objectAtIndex: [pixList[ x] count]/2] valueForKey: @"height"] intValue];
+					int firstWrongImage = -1;
+                    int numberOfNonVolumicImages = 0;
+                    
+                    // Check for non continuous matrix
 					for( int j = 0 ; j < [pixList[ x] count]; j++)
 					{
-						if( pw != [[[fileList[ x] objectAtIndex: j] valueForKey:@"width"] intValue])
+						if( pw != [[[fileList[ x] objectAtIndex: j] valueForKey: @"width"] intValue] || ph != [[[fileList[ x] objectAtIndex: j] valueForKey: @"height"] intValue])
+                        {
 							volumicData = NO;
-						
-						if( ph != [[[fileList[ x] objectAtIndex: j] valueForKey:@"height"] intValue])
+                            numberOfNonVolumicImages++;
+                            
+                            if( firstWrongImage == -1)
+                                firstWrongImage = j;
+						}
+					}
+                    
+                    if( tryToCorrect && numberOfNonVolumicImages == 1 && (firstWrongImage == 0 || firstWrongImage == [pixList[ x] count]-1)) // First or last image with different matrix
+                    {
+                        NSMutableArray *newFileList = [NSMutableArray array];
+                        NSMutableArray *newPixList = [NSMutableArray array];
+                        
+                        long newSize = pw * ph * ([pixList[ x] count]-1) * sizeof( float);
+                        
+                        float *newPtr = (float*) malloc( newSize);
+                        if( newPtr)
+                        {
+                            NSData *newVolumeData = [NSData dataWithBytesNoCopy: newPtr length: newSize freeWhenDone: YES];
+                            
+                            for( int n = 0; n < [pixList[ x] count]; n++)
+                            {
+                                if( firstWrongImage != n)
+                                {
+                                    DCMPix *newPix = [[[pixList[ x] objectAtIndex: n] copy] autorelease];
+                                    
+                                    memcpy( newPtr, [newPix fImage], pw * ph * sizeof( float));
+                                    
+                                    [newPix setfImage: newPtr];
+                                    newPtr += pw * ph;
+                                    
+                                    [newPixList addObject: newPix];
+                                    [newFileList addObject: [fileList[ x] objectAtIndex: n]];
+                                }
+                            }
+                            
+                            [self changeImageData: newPixList :newFileList :newVolumeData :NO];
+                            
+                            loadingPercentage = 1;
+                            [self computeInterval];
+                            [self setWindowTitle:self];
+                            
+                            [imageView setIndex: 0];
+                            [imageView sendSyncMessage: 0];
+                            
+                            [self adjustSlider];
+                            
+                            postprocessed = YES;
+                        }
+                    }
+                    
+					[[pixList[ x] objectAtIndex: 1] orientation: orientation];
+					
+					pw = [[[fileList[ x] objectAtIndex: [pixList[ x] count]/2] valueForKey: @"width"] intValue];
+					ph = [[[fileList[ x] objectAtIndex: [pixList[ x] count]/2] valueForKey: @"height"] intValue];
+					firstWrongImage = -1;
+                    numberOfNonVolumicImages = 0;
+                    
+                     // Check for non same orientation
+                    for( int j = 0 ; j < [pixList[ x] count]; j++)
+					{
+						if( pw != [[[fileList[ x] objectAtIndex: j] valueForKey: @"width"] intValue] || ph != [[[fileList[ x] objectAtIndex: j] valueForKey: @"height"] intValue])
+                        {
 							volumicData = NO;
-						
+						}
+                        
 						if( volumicData)
 						{
 							float o[ 9];
 							[[pixList[ x] objectAtIndex: j] orientation: o];
 							for( int k = 0 ; k < 9; k++)
 							{
-								#define SENSIBILITY 0.05
-								
+                                #define SENSIBILITY 0.05
 								if( fabs( o[ k] - orientation[ k]) > SENSIBILITY)
 								{
 									volumicData = NO;
 									
 									if( j == 0)
 										firstImage = YES;
-								
+                                    
 									if( j == [pixList[ x] count] -1)
 										lastImage = YES;
 								}
@@ -7174,6 +7238,10 @@ return YES;
 		
 		[DicomFile isDICOMFile: [[pixList[ 0] objectAtIndex:0] sourceFile] compressed: &compressed];
 		
+        if( compressed)
+            if( [BrowserController isItCD: [[pixList[ 0] objectAtIndex:0] sourceFile]]) //Always Single thread for CD/DVD
+                compressed = NO;
+        
 		if( compressed)
 			NSLog( @"start loading multiple thread : compressed data");
 		else
@@ -7293,7 +7361,8 @@ return YES;
 				long moviePixWidth = [[pixList[ 0] objectAtIndex: 0] pwidth];
 				long moviePixHeight = [[pixList[ 0] objectAtIndex: 0] pheight];
 				
-				if (moviePixWidth == moviePixHeight) enableSubtraction = TRUE;
+                enableSubtraction = TRUE;
+                //if (moviePixWidth == moviePixHeight) enableSubtraction = TRUE;
 				
 				for( DCMPix *pix in pixList[ 0])
 				{
@@ -18037,7 +18106,8 @@ int i,j,l;
 			for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: x] count]; i++)
 			{
 				ROI	*curROI = [[roiList[curMovieIndex] objectAtIndex: x] objectAtIndex: i];
-				if( [[curROI name] isEqualToString: [selectedRoi name]])
+                
+				if( [[curROI name] isEqualToString: [selectedRoi name]] && [curROI isValidForVolume])
 				{
 					imageCount++;
 					
@@ -18094,7 +18164,7 @@ int i,j,l;
 		for( i = 0; i < [[roiList[curMovieIndex] objectAtIndex: x] count]; i++)
 		{
 			curROI = [[roiList[curMovieIndex] objectAtIndex: x] objectAtIndex: i];
-			if( [[curROI name] isEqualToString: [selectedRoi name]] == YES)		//&& [[curROI comments] isEqualToString:@"morphing generated"] == NO)
+			if( [[curROI name] isEqualToString: [selectedRoi name]] == YES  && [curROI isValidForVolume])		//&& [[curROI comments] isEqualToString:@"morphing generated"] == NO)
 			{
 				if( fROI == nil)
 				{

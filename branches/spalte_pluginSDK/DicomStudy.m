@@ -625,7 +625,7 @@ static NSRecursiveLock *dbModifyLock = nil;
 	
 	@try 
 	{
-		NSArray *seriesModalities = [[[self valueForKey:@"series"] allObjects] valueForKey:@"modality"];
+		NSArray *seriesModalities = [[[[self valueForKey:@"series"] allObjects] sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey:@"date" ascending: YES]]] valueForKey:@"modality"];
 		
 		NSMutableArray *r = [NSMutableArray array];
 		
@@ -1098,6 +1098,8 @@ static NSRecursiveLock *dbModifyLock = nil;
 	if( cachedRawNoFiles)
 		return cachedRawNoFiles;
 	
+    [[self managedObjectContext] lock];
+    
 	@try 
 	{
 		for( DicomSeries *s in [[self valueForKey:@"series"] allObjects])
@@ -1108,6 +1110,8 @@ static NSRecursiveLock *dbModifyLock = nil;
 		NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 	}
 	
+    [[self managedObjectContext] unlock];
+    
 	cachedRawNoFiles = [[NSNumber numberWithInt:sum] retain];
 	
 	return cachedRawNoFiles;

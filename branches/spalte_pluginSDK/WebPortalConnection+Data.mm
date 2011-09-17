@@ -248,7 +248,7 @@ static NSRecursiveLock *DCMPixLoadingLock = nil;
 										filesToSend:[todo valueForKey: @"Files"]
 									 transferSyntax:[[todo objectForKey:@"TransferSyntax"] intValue] 
 										compression:1.0
-									extraParameters:NULL] autorelease] run:self];
+									extraParameters:nil] autorelease] run:self];
 	} @catch (NSException* e) {
 		NSLog(@"Error: [WebServiceConnection sendImagesToDicomNodeThread:] %@", e);
 	} @finally {
@@ -1866,7 +1866,7 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 			NSTask* aTask = [[[NSTask alloc] init] autorelease];
 			[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"dicom.dic"] forKey:@"DCMDICTPATH"]];
 			[aTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"dsr2html"]];
-			[aTask setArguments:[NSArray arrayWithObjects: @"+X1", [series.images.anyObject valueForKey:@"completePath"], htmlpath, nil]];		
+			[aTask setArguments:[NSArray arrayWithObjects: @"+X1", @"--unknown-relationship", @"--ignore-constraints", @"--ignore-item-errors", @"--skip-invalid-items", [series.images.anyObject valueForKey:@"completePath"], htmlpath, nil]];		
 			[aTask launch];
 			[aTask waitUntilExit];		
 		}

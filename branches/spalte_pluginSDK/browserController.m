@@ -96,7 +96,11 @@
 #import "WebPortal+Email+Log.h"
 #import "WebPortalDatabase.h"
 
+#ifdef MACAPPSTORE
 #define DEFAULTUSERDATABASEPATH @"~/Library/Application Support/OsiriX/WebUsers.sql"
+#else
+#define DEFAULTUSERDATABASEPATH @"~/Library/Application Support/OsiriX App/WebUsers.sql"
+#endif
 //#define USERDATABASEVERSION @"1.0"
 #define DATABASEVERSION @"2.5"
 #define DATABASEPATH @"/DATABASE.noindex/"
@@ -251,7 +255,7 @@ static volatile BOOL computeNumberOfStudiesForAlbums = NO;
 		}
 		
 		[NSThread sleepForTimeInterval: 0.1];
-//		[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 0.2]];		
+        //		[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 0.2]];		
 	}
 	
 	NSLog( @"******* tryLockDuring failed for this lock: %@ (%f sec)", c, sec);
@@ -1012,7 +1016,7 @@ static NSConditionLock *threadLock = nil;
 						{
 							[study setValue:[curDict objectForKey: @"studyID"] forKey:@"studyInstanceUID"];
 							[study setValue:[curDict objectForKey: @"accessionNumber"] forKey:@"accessionNumber"];
-							[study setValue:[curDict objectForKey: @"modality"] forKey:@"modality"];
+							[study setValue:[study valueForKey: @"modalities"] forKey:@"modality"];
 							[study setValue:[curDict objectForKey: @"patientBirthDate"] forKey:@"dateOfBirth"];
 							[study setValue:[curDict objectForKey: @"patientSex"] forKey:@"patientSex"];
 							[study setValue:[curDict objectForKey: @"patientID"] forKey:@"patientID"];
@@ -1180,8 +1184,6 @@ static NSConditionLock *threadLock = nil;
 								if( DICOMSR == NO)
 									[seriesTable setValue:today forKey:@"dateAdded"];
 								
-								[image setValue: [curDict objectForKey: @"modality"] forKey:@"modality"];
-								
 								if( numberOfFrames > 1)
 								{
 									[image setValue: [NSNumber numberWithInt: f] forKey:@"frameID"];
@@ -1208,10 +1210,15 @@ static NSConditionLock *threadLock = nil;
 								[image setValue:[curDict objectForKey: @"studyDate"]  forKey:@"date"];
 								
 								[image setValue:[curDict objectForKey: [@"SOPUID" stringByAppendingString: SeriesNum]] forKey:@"sopInstanceUID"];
+                                
 								if( [[curDict objectForKey: @"sliceLocationArray"] count] > f)
 									[image setValue: [[curDict objectForKey: @"sliceLocationArray"] objectAtIndex: f] forKey:@"sliceLocation"];
 								else
 									[image setValue:[curDict objectForKey: @"sliceLocation"] forKey:@"sliceLocation"];
+                                
+                                if( [[curDict objectForKey: @"imageCommentPerFrame"] count] > f)
+									[image setValue: [[curDict objectForKey: @"imageCommentPerFrame"] objectAtIndex: f] forKey:@"comment"];
+                                
 								[image setValue:[[newFile pathExtension] lowercaseString] forKey:@"extension"];
 								[image setValue:[curDict objectForKey: @"fileType"] forKey:@"fileType"];
 								
@@ -1228,8 +1235,11 @@ static NSConditionLock *threadLock = nil;
 								else
 									[image setValue: 0L forKey: @"generatedByOsiriX"];
 								
+                                [image setValue: [curDict objectForKey: @"modality"]  forKey:@"modality"];
+                                
 								[seriesTable setValue:[NSNumber numberWithInt:0]  forKey:@"numberOfImages"];
 								[study setValue:[NSNumber numberWithInt:0]  forKey:@"numberOfImages"];
+                                [study setValue:[study valueForKey:@"modalities"] forKey:@"modality"];
 								[seriesTable setValue: nil forKey:@"thumbnail"];
 								
 								if( DICOMSR && [curDict objectForKey: @"numberOfROIs"] && [curDict objectForKey: @"referencedSOPInstanceUID"]) // OsiriX ROI SR
@@ -2295,7 +2305,7 @@ static NSConditionLock *threadLock = nil;
 																filesToSend: [samePatientArray valueForKey: @"completePath"]
 															 transferSyntax: [[server objectForKey:@"TransferSyntax"] intValue] 
 																compression: 1.0
-															extraParameters: nil];
+															extraParameters: server];
 		
 	@try
 	{
@@ -2570,7 +2580,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
 		album.name = NSLocalizedString( @"Just Added", nil);
-		album.predicateString = @"(dateAdded >= CAST($LASTHOUR, 'NSDate'))";
+		album.predicateString = @"(dateAdded >= $LASTHOUR)";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
 
@@ -2578,7 +2588,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
 		album.name = NSLocalizedString( @"Today MR", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'MR') AND (date >= CAST($TODAY, 'NSDate'))";
+		album.predicateString = @"(modality CONTAINS[cd] 'MR') AND (date >= $TODAY)";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
 
@@ -2586,7 +2596,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
 		album.name = NSLocalizedString( @"Today CT", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'CT') AND (date >= CAST($TODAY, 'NSDate'))";
+		album.predicateString = @"(modality CONTAINS[cd] 'CT') AND (date >= $TODAY)";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
 
@@ -2594,7 +2604,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
 		album.name = NSLocalizedString( @"Yesterday MR", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'MR') AND (date >= CAST($YESTERDAY, 'NSDate') AND date <= CAST($TODAY, 'NSDate'))";
+		album.predicateString = @"(modality CONTAINS[cd] 'MR') AND (date between{$YESTERDAY, $TODAY})";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
 
@@ -2602,7 +2612,7 @@ static NSConditionLock *threadLock = nil;
 	{
 		album = [NSEntityDescription insertNewObjectForEntityForName: @"Album" inManagedObjectContext: managedObjectContext];
 		album.name = NSLocalizedString( @"Yesterday CT", nil);
-		album.predicateString = @"(ANY series.modality CONTAINS[cd] 'CT') AND (date >= CAST($YESTERDAY, 'NSDate') AND date <= CAST($TODAY, 'NSDate'))";
+		album.predicateString = @"(modality CONTAINS[cd] 'CT') AND (date between{$YESTERDAY, $TODAY})";
 		album.smartAlbum = [NSNumber numberWithBool: YES];
 	}
 
@@ -2633,6 +2643,27 @@ static NSConditionLock *threadLock = nil;
 		{
 			if( [[album valueForKey: @"predicateString"] isEqualToString: @"(ANY series.comment != '' AND ANY series.comment != NIL) OR (comment != '' AND comment != NIL)"])
 				[album setValue: @"(comment != '' AND comment != NIL)" forKey: @"predicateString"];
+            
+            if( [album valueForKey: @"predicateString"])
+            {
+                if( [[album valueForKey: @"predicateString"] rangeOfString: @"ANY series.modality"].location != NSNotFound)
+                {
+                    NSString *previousString = [album valueForKey: @"predicateString"];
+                    [album setValue: [previousString stringByReplacingOccurrencesOfString:@"ANY series.modality" withString:@"modality"] forKey: @"predicateString"];
+                }
+                
+                NSArray *dates = [NSArray arrayWithObjects: @"LASTHOUR", @"LAST6HOURS", @"LAST12HOURS", @"TODAY", @"YESTERDAY", @"2DAYS", @"WEEK", @"MONTH", @"2MONTHS", @"3MONTHS", @"YEAR", nil];
+                
+                for( NSString *date in dates)
+                {
+                    if( [[album valueForKey: @"predicateString"] rangeOfString: [NSString stringWithFormat: @"CAST($%@, \"NSDate\")", date]].location != NSNotFound)
+                    {
+                        NSString *previousString = [album valueForKey: @"predicateString"];
+                        
+                        [album setValue: [previousString stringByReplacingOccurrencesOfString: [NSString stringWithFormat: @"CAST($%@, \"NSDate\")", date] withString: [NSString stringWithFormat: @"$%@", date]] forKey: @"predicateString"];
+                    }
+                }
+            }
 		}
 	}
 	@catch (NSException * e) 
@@ -2725,8 +2756,13 @@ static NSConditionLock *threadLock = nil;
 		
 		BOOL newDB = NO;
 		if( [[NSFileManager defaultManager] fileExistsAtPath: path] == NO)
-			newDB = YES;
-		
+        {
+			if( [[NSFileManager defaultManager] fileExistsAtPath: [path stringByDeletingLastPathComponent]] == NO)
+                [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent] withIntermediateDirectories: YES attributes: nil error: nil];
+            
+            newDB = YES;
+        }
+        
 		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
 		
 		if( [psc persistentStoreForURL: url] == nil)
@@ -3953,8 +3989,28 @@ static NSConditionLock *threadLock = nil;
 					
 					dstPath = [self getNewFileDatabasePath: extension];
 					
-					if( [[NSFileManager defaultManager] copyItemAtPath: srcPath toPath: dstPath error: nil])
-					{
+#define USECORESERVICESFORCOPY 1
+                    
+#ifdef USECORESERVICESFORCOPY
+                    char *targetPath = nil;
+                    OptionBits options = kFSFileOperationSkipSourcePermissionErrors + kFSFileOperationSkipPreflight;
+                    OSStatus err = FSPathCopyObjectSync( [srcPath UTF8String], [[dstPath stringByDeletingLastPathComponent] UTF8String], (CFStringRef) [dstPath lastPathComponent], &targetPath, options);
+                    
+                    if( err != 0)
+                    {
+                        NSLog( @"***** copyItemAtPath %@ failed : %d", srcPath, (int) err);
+                    }
+                    else
+                    {
+#else
+                        NSError* err = nil;
+                        if( [[NSFileManager defaultManager] copyItemAtPath: srcPath toPath: dstPath error:&err] == NO)
+                        {
+                            NSLog( @"***** copyItemAtPath %@ failed : %@", srcPath, err);
+                        }
+                        else
+                        {
+#endif
 						if( [extension isEqualToString: @"dcm"] == NO)
 						{
 							DicomFile *dcmFile = [[[DicomFile alloc] init: dstPath] autorelease];
@@ -3971,8 +4027,6 @@ static NSConditionLock *threadLock = nil;
 						
 						[copiedFiles addObject: dstPath];
 					}
-					else
-						NSLog( @"***** copyItemAtPath failed : srcPath");
 				}
 				else
 				{
@@ -5624,36 +5678,31 @@ static NSConditionLock *threadLock = nil;
 	
 	// Today:
 	NSCalendarDate	*now = [NSCalendarDate calendarDate];
-	NSCalendarDate	*start = [NSCalendarDate dateWithYear:[now yearOfCommonEra] month:[now monthOfYear] day:[now dayOfMonth] hour:0 minute:0 second:0 timeZone: [now timeZone]];
+	NSDate	*start = [NSDate dateWithTimeIntervalSinceReferenceDate: [[NSCalendarDate dateWithYear:[now yearOfCommonEra] month:[now monthOfYear] day:[now dayOfMonth] hour:0 minute:0 second:0 timeZone: [now timeZone]] timeIntervalSinceReferenceDate]];
 	
-	NSDictionary	*sub = [NSDictionary dictionaryWithObjectsAndKeys:	[NSString stringWithFormat:@"%lf", [[now addTimeInterval: -60*60*1] timeIntervalSinceReferenceDate]],			@"$LASTHOUR",
-							[NSString stringWithFormat:@"%lf", [[now addTimeInterval: -60*60*6] timeIntervalSinceReferenceDate]],			@"$LAST6HOURS",
-							[NSString stringWithFormat:@"%lf", [[now addTimeInterval: -60*60*12] timeIntervalSinceReferenceDate]],			@"$LAST12HOURS",
-							[NSString stringWithFormat:@"%lf", [start timeIntervalSinceReferenceDate]],										@"$TODAY",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24] timeIntervalSinceReferenceDate]],			@"$YESTERDAY",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*2] timeIntervalSinceReferenceDate]],		@"$2DAYS",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*7] timeIntervalSinceReferenceDate]],		@"$WEEK",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*31] timeIntervalSinceReferenceDate]],		@"$MONTH",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*31*2] timeIntervalSinceReferenceDate]],	@"$2MONTHS",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*31*3] timeIntervalSinceReferenceDate]],	@"$3MONTHS",
-							[NSString stringWithFormat:@"%lf", [[start addTimeInterval: -60*60*24*365] timeIntervalSinceReferenceDate]],		@"$YEAR",
+	NSDictionary	*sub = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [now dateByAddingTimeInterval: -60*60*1],			@"LASTHOUR",
+							[now dateByAddingTimeInterval: -60*60*6],			@"LAST6HOURS",
+							[now dateByAddingTimeInterval: -60*60*12],			@"LAST12HOURS",
+							start,										@"TODAY",
+							[start dateByAddingTimeInterval: -60*60*24],         @"YESTERDAY",
+							[start dateByAddingTimeInterval: -60*60*24*2],		@"2DAYS",
+							[start dateByAddingTimeInterval: -60*60*24*7],		@"WEEK",
+							[start dateByAddingTimeInterval: -60*60*24*31],		@"MONTH",
+							[start dateByAddingTimeInterval: -60*60*24*31*2],	@"2MONTHS",
+							[start dateByAddingTimeInterval: -60*60*24*31*3],	@"3MONTHS",
+							[start dateByAddingTimeInterval: -60*60*24*365],     @"YEAR",
 							nil];
-	
-	NSEnumerator *enumerator = [sub keyEnumerator];
-	NSString *key;
-	
-	while ((key = [enumerator nextObject]))
-	{
-		[pred replaceOccurrencesOfString:key withString: [sub valueForKey: key]	options: NSCaseInsensitiveSearch range:pred.range];
-	}
 	
 	NSPredicate *predicate;
 	
-	if( [string isEqualToString:@""]) predicate = [NSPredicate predicateWithValue: YES];
+	if( [string isEqualToString:@""])
+        predicate = [NSPredicate predicateWithValue: YES];
 	else
-	{
 		predicate = [NSPredicate predicateWithFormat: pred];
-	}
+    
+    predicate = [predicate predicateWithSubstitutionVariables: sub];
+    
 	return predicate;
 }
 
@@ -5716,7 +5765,7 @@ static NSConditionLock *threadLock = nil;
 	
 	[request setEntity: [[self.managedObjectModel entitiesByName] objectForKey:@"Study"]];
 	
-	predicate = [NSPredicate predicateWithValue:YES];
+	predicate = nil;
 	
 	if( displayEmptyDatabase)
 		predicate = [NSPredicate predicateWithValue:NO];
@@ -5750,7 +5799,7 @@ static NSConditionLock *threadLock = nil;
 			{
 				subPredicate = [self smartAlbumPredicate: album];
 				description = [description stringByAppendingFormat:NSLocalizedString(@"Smart Album selected: %@", nil), albumName];
-				predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: predicate, subPredicate, nil]];
+				predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: subPredicate, predicate, nil]];
 			}
 			else
 			{
@@ -5781,7 +5830,7 @@ static NSConditionLock *threadLock = nil;
 			
 			description = [description stringByAppendingFormat:NSLocalizedString(@" / Time Interval: since: %@", nil), [[NSUserDefaults dateTimeFormatter] stringFromDate: timeIntervalStart]];
 		}
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: predicate, subPredicate, nil]];
+		predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: subPredicate, predicate, nil]];
 		filtered = YES;
 	}
 	
@@ -5791,7 +5840,7 @@ static NSConditionLock *threadLock = nil;
 	
 	if( self.filterPredicate)
 	{
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: predicate, self.filterPredicate, nil]];
+		predicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: self.filterPredicate, predicate, nil]];
 		description = [description stringByAppendingString: self.filterPredicateDescription];
 		filtered = YES;
 	}
@@ -5799,6 +5848,9 @@ static NSConditionLock *threadLock = nil;
 	if( testPredicate)
 		predicate = testPredicate;
 	
+    if( predicate == nil)
+        predicate = [NSPredicate predicateWithValue: YES];
+    
 	[request setPredicate: predicate];
 	
 	NSManagedObjectContext *context = self.managedObjectContext;
@@ -6157,9 +6209,9 @@ static NSConditionLock *threadLock = nil;
 						{
 							[dbRequest setPredicate: predicate];
 							
-							NSArray *studiesArray = [context executeFetchRequest:dbRequest error:&error];
+							NSUInteger count = [context countForFetchRequest:dbRequest error:&error];
 							
-							[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:[studiesArray count]]]]];
+							[NoOfStudies addObject: [NSString stringWithFormat:@"%@", [decimalNumberFormatter stringForObjectValue:[NSNumber numberWithInt:count]]]];
 						}
 						else
 							[NoOfStudies addObject: @"err"];
@@ -7742,10 +7794,7 @@ static NSConditionLock *threadLock = nil;
 	
 	if( [[tableColumn identifier] isEqualToString:@"modality"])
 	{
-		if ([[item valueForKey:@"type"] isEqualToString:@"Study"])
-			return [item valueForKey:@"modalities"];
-		else
-			return [item valueForKey:@"modality"];
+        return [item valueForKey:@"modality"];
 	}
 	
 	if( [[tableColumn identifier] isEqualToString:@"name"])
@@ -8223,7 +8272,7 @@ static NSConditionLock *threadLock = nil;
 					NSTask *aTask = [[[NSTask alloc] init] autorelease];		
 					[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
 					[aTask setLaunchPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
-					[aTask setArguments: [NSArray arrayWithObjects: @"+X1", [im valueForKey: @"completePath"], htmlpath, nil]];		
+					[aTask setArguments: [NSArray arrayWithObjects: @"+X1", @"--unknown-relationship", @"--ignore-constraints", @"--ignore-item-errors", @"--skip-invalid-items", [im valueForKey: @"completePath"], htmlpath, nil]];		
 					[aTask launch];
 					[aTask waitUntilExit];		
 					[aTask interrupt];
@@ -8796,7 +8845,8 @@ static NSConditionLock *threadLock = nil;
 						}
 					}
 				}
-				else [browserWindow viewerDICOM: self]; // Study
+                else [browserWindow databaseOpenStudy: element];
+//				else [browserWindow viewerDICOM: self]; // Study
 			}
 		}
 	}
@@ -11611,46 +11661,6 @@ static BOOL needToRezoom;
 	}
 }
 
-- (void)sendDICOMFilesToOsiriXNode: (NSDictionary*)todo
-{
-	NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
-	
-	NSLog( @"sendDICOMFilesToOsiriXNode started");
-	
-	[autoroutingInProgress lock];
-	
-	DCMTKStoreSCU *storeSCU = [[DCMTKStoreSCU alloc]	initWithCallingAET: [NSUserDefaults defaultAETitle] 
-															  calledAET: [todo objectForKey:@"AETitle"] 
-															   hostname: [todo objectForKey:@"Address"] 
-																   port: [[todo objectForKey:@"Port"] intValue] 
-															filesToSend: [todo valueForKey: @"Files"]
-														 transferSyntax: [[todo objectForKey:@"TransferSyntax"] intValue] 
-															compression: 1.0
-														extraParameters: nil];
-	
-	@try
-	{
-		[storeSCU run:self];
-	}
-	
-	@catch (NSException *ne)
-	{
-		NSLog( @"Bonjour DICOM Send FAILED");
-		NSLog( @"%@", ne.name);
-		NSLog( @"%@", ne.reason);
-		[AppController printStackTrace: ne];
-	}
-	
-	[storeSCU release];
-	storeSCU = nil;
-	
-	[autoroutingInProgress unlock];
-	
-	NSLog( @"sendDICOMFilesToOsiriXNode ended");
-	
-	[pool release];
-}
-
 - (NSManagedObject*) findStudyUID: (NSString*) uid
 {
 	NSArray						*studyArray = nil;
@@ -12918,33 +12928,33 @@ static BOOL needToRezoom;
 				{
 					[[splittedSeries lastObject] addObject: [singleSeries objectAtIndex: 0]];
 					
-					if( [[[singleSeries lastObject] valueForKey: @"numberOfFrames"] intValue] > 1)
-					{
-						for( id o in singleSeries)	//We need to extract the *true* sliceLocation
-						{
-							DCMPix *p = [[DCMPix alloc] initWithPath:[o valueForKey:@"completePath"] :0 :1 :nil :[[o valueForKey:@"frameID"] intValue] :[[o valueForKeyPath:@"series.id"] intValue] isBonjour:isCurrentDatabaseBonjour imageObj: o];
-							
-							[intervalArray addObject: [NSNumber numberWithFloat: [p sliceLocation]]];
-							
-							[p release];
-						}
-					}
-					else
-					{
+//					if( [[[singleSeries lastObject] valueForKey: @"numberOfFrames"] intValue] > 1)
+//					{
+//						for( id o in singleSeries)	//We need to extract the *true* sliceLocation
+//						{
+//							DCMPix *p = [[DCMPix alloc] initWithPath:[o valueForKey:@"completePath"] :0 :1 :nil :[[o valueForKey:@"frameID"] intValue] :[[o valueForKeyPath:@"series.id"] intValue] isBonjour:isCurrentDatabaseBonjour imageObj: o];
+//							
+//							[intervalArray addObject: [NSNumber numberWithFloat: [p sliceLocation]]];
+//							
+//							[p release];
+//						}
+//					}
+//					else
+//					{
 						for( id o in singleSeries)
 							[intervalArray addObject: [NSNumber numberWithFloat: [[o valueForKey:@"sliceLocation"] floatValue]]];
-					}
+//					}
 					
 					interval = [[intervalArray objectAtIndex: 0] floatValue] - [[intervalArray objectAtIndex: 1] floatValue];
 					
 					if( interval == 0)
 					{ // 4D - 3D
 						int pos3Dindex = 1;
+						
 						for( int x = 1; x < [singleSeries count]; x++)
 						{
-							interval = [[intervalArray objectAtIndex: x -1] floatValue] - [[intervalArray objectAtIndex: x] floatValue];
-							
-							if( interval != 0) pos3Dindex = 0;
+							int interval4D = [[intervalArray objectAtIndex: x -1] floatValue] - [[intervalArray objectAtIndex: x] floatValue];
+							if( interval4D != 0) pos3Dindex = 0;
 							
 							if( [splittedSeries count] <= pos3Dindex) [splittedSeries addObject: [NSMutableArray array]];
 							
@@ -12955,10 +12965,27 @@ static BOOL needToRezoom;
 						
 						if( pos3Dindex == [singleSeries count]) // No 3D-4D.... Try something else...
 						{
+							[intervalArray removeAllObjects];
 							
+							// Let's try the comment field Cardiac Magnitude, Phase, Flow
+							for( id o in singleSeries)
+							{
+								[intervalArray addObject: [NSNumber numberWithFloat: [[o valueForKey:@"comment"] floatValue]]];
+								
+								if( [[o valueForKey:@"comment"] floatValue] != 0)
+									interval = 1; // To enter in the: if( interval != 0)
+							}
+							
+							if( interval)
+							{
+								splittedSeries = [NSMutableArray array];
+								[splittedSeries addObject: [NSMutableArray array]];
+								[[splittedSeries lastObject] addObject: [singleSeries objectAtIndex: 0]];
+							}
 						}
 					}
-					else
+					
+					if( interval != 0)
 					{	// 3D - 4D
 						BOOL	fixedRepetition = YES;
 						int		repetition = 0, previousPos = 0;
@@ -14741,7 +14768,7 @@ static NSArray*	openSubSeriesArray = nil;
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		// ----------
-		
+        
 		[BrowserController tryLock: checkIncomingLock during: 120];
 		[BrowserController tryLock: managedObjectContext during: 120];
 		[BrowserController tryLock: checkBonjourUpToDateThreadLock during: 60];
@@ -14755,13 +14782,11 @@ static NSArray*	openSubSeriesArray = nil;
 				[wait showWindow:self];
 		}
 		[BrowserController tryLock: decompressThreadRunning during: 120];
-		[BrowserController tryLock: deleteInProgress during: 600];
-		
-		[self emptyDeleteQueueThread];
-		
-		[BrowserController tryLock: deleteInProgress during: 600];
 		[BrowserController tryLock: autoroutingInProgress during: 120];
 		
+        //Something in the delete queue? Write it to the disk
+        [self saveDeleteQueue];
+            
 		[self emptyAutoroutingQueue:self];
 		
 		[BrowserController tryLock: autoroutingInProgress during: 120];
@@ -15222,6 +15247,35 @@ static NSArray*	openSubSeriesArray = nil;
 	IncomingTimer = [[NSTimer scheduledTimerWithTimeInterval:[[NSUserDefaults standardUserDefaults] integerForKey:@"LISTENERCHECKINTERVAL"] target:self selector:@selector(checkIncoming:) userInfo:self repeats:YES] retain];
 }
 
+- (void) saveDeleteQueue
+{
+    [deleteQueue lock];
+	NSArray	*copyArray = [NSArray arrayWithArray: deleteQueueArray];
+	[deleteQueueArray removeAllObjects];
+	
+    if( copyArray.count)
+	{
+        if( [[NSFileManager defaultManager] fileExistsAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]])
+        {
+            NSArray *oldQueue = [NSArray arrayWithContentsOfFile: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]];
+            
+            copyArray = [copyArray arrayByAddingObjectsFromArray: oldQueue];
+            
+            NSLog( @"---- old Delete Queue List found (%d files) add it to current queue.", [oldQueue count]);
+            
+            [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+        }
+	
+		NSMutableArray *folders = [NSMutableArray array];
+		
+		NSLog( @"---- save delete queue: %d objects", [copyArray count]);
+		
+        [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+        [copyArray writeToFile: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] atomically: YES];
+    }
+    [deleteQueue unlock];
+}
+
 - (void) emptyDeleteQueueThread
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -15230,14 +15284,29 @@ static NSArray*	openSubSeriesArray = nil;
 	[deleteQueue lock];
 	NSArray	*copyArray = [NSArray arrayWithArray: deleteQueueArray];
 	[deleteQueueArray removeAllObjects];
-	[deleteQueue unlock];
 	
+    if( [[NSFileManager defaultManager] fileExistsAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]])
+    {
+        NSArray *oldQueue = [NSArray arrayWithContentsOfFile: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]];
+        
+        copyArray = [copyArray arrayByAddingObjectsFromArray: oldQueue];
+        
+        NSLog( @"---- old Delete Queue List found (%d files) add it to current queue.", [oldQueue count]);
+        
+        [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+    }
+    
 	if( copyArray.count)
 	{
 		NSMutableArray *folders = [NSMutableArray array];
 		
-		NSLog(@"delete Queue start: %d objects", [copyArray count]);
+		NSLog( @"delete Queue start: %d objects", [copyArray count]);
 		
+        [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+        [copyArray writeToFile: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] atomically: YES];
+        
+        [deleteQueue unlock];
+        
 		int f = 0;
 		NSString *lastFolder = nil;
 		for( NSString *file in copyArray)
@@ -15252,53 +15321,66 @@ static NSArray*	openSubSeriesArray = nil;
 			
 			[NSThread currentThread].progress = (float) f++ / (float) [copyArray count];
 			[NSThread currentThread].status = [NSString stringWithFormat: NSLocalizedString( @"%d file(s)", nil), [copyArray count]-f];
+            
+            if( [NSThread currentThread].isCancelled) //The queue is saved as a plist, we can continue later...
+                break;
 		}
 		
+        if( [NSThread currentThread].isCancelled == NO)
+            [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+        
 		[deleteInProgress unlock];
 		
-		[folders removeDuplicatedStrings];
-		
-		[checkIncomingLock lock];
-		
-		@try 
-		{
-			for( NSString *f in folders)
-			{
-				NSDictionary *fileAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: f traverseLink: NO];
-				
-				if( [[fileAttributes objectForKey: NSFileType] isEqualToString: NSFileTypeDirectory]) 
-				{
-					if( [[fileAttributes objectForKey: NSFileReferenceCount] intValue] < 4)	// check if this folder is empty, and delete it if necessary
-					{
-						int numberOfValidFiles = 0;
-						for( NSString *s in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: f error: nil])
-						{
-							if( [[s lastPathComponent] characterAtIndex: 0] != '.')
-								numberOfValidFiles++;
-						}
-						
-						if( numberOfValidFiles == 0 && [[f lastPathComponent] isEqualToString: @"ROIs"] == NO)
-						{
-							NSLog( @"delete Queue: delete folder: %@", f);
-							[[NSFileManager defaultManager] removeFileAtPath: f handler: nil];
-							
-						}
-					}
-				}
-				
-			}
+        if( [NSThread currentThread].isCancelled == NO)
+        {
+            [folders removeDuplicatedStrings];
+            
+            [checkIncomingLock lock];
+            
+            @try 
+            {
+                for( NSString *f in folders)
+                {
+                    NSDictionary *fileAttributes = [[NSFileManager defaultManager] fileAttributesAtPath: f traverseLink: NO];
+                    
+                    if( [[fileAttributes objectForKey: NSFileType] isEqualToString: NSFileTypeDirectory]) 
+                    {
+                        if( [[fileAttributes objectForKey: NSFileReferenceCount] intValue] < 4)	// check if this folder is empty, and delete it if necessary
+                        {
+                            int numberOfValidFiles = 0;
+                            for( NSString *s in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: f error: nil])
+                            {
+                                if( [[s lastPathComponent] characterAtIndex: 0] != '.')
+                                    numberOfValidFiles++;
+                            }
+                            
+                            if( numberOfValidFiles == 0 && [[f lastPathComponent] isEqualToString: @"ROIs"] == NO)
+                            {
+                                NSLog( @"delete Queue: delete folder: %@", f);
+                                [[NSFileManager defaultManager] removeFileAtPath: f handler: nil];
+                                
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            @catch (NSException * e) 
+            {
+                NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+                [AppController printStackTrace: e];
+            }
+            
+            [checkIncomingLock unlock];
 		}
-		@catch (NSException * e) 
-		{
-			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
-			[AppController printStackTrace: e];
-		}
-		
-		[checkIncomingLock unlock];
-		
+        
 		NSLog(@"delete Queue end");
 	}
-	else [deleteInProgress unlock];
+	else
+    {
+        [deleteQueue unlock];
+        [deleteInProgress unlock];
+    }
 	
 	[pool release];
 }
@@ -15343,22 +15425,49 @@ static NSArray*	openSubSeriesArray = nil;
 	
 	//////////////////////////////////////////////////
 	
-	if( deleteQueueArray != nil && deleteQueue != nil)
-	{
-		if( [deleteQueueArray count] > 0)
-		{
-			if( [deleteInProgress tryLock])
-			{
-				[deleteInProgress unlock];
-				
-				NSThread *t = [[[NSThread alloc] initWithTarget:self selector:@selector( emptyDeleteQueueThread) object:  nil] autorelease];
-				t.name = NSLocalizedString( @"Deleting files...", nil);
-				t.status = [NSString stringWithFormat: NSLocalizedString( @"%d file(s)", nil), [deleteQueueArray count]];
-				t.progress = 0;
-				[[ThreadsManager defaultManager] addThreadAndStart: t];
-			}
-		}
-	}
+    if( deleteQueueArray == nil) deleteQueueArray = [[NSMutableArray array] retain];
+	if( deleteQueue == nil) deleteQueue = [[NSLock alloc] init];
+	if( deleteInProgress == nil) deleteInProgress = [[NSLock alloc] init];
+    
+     if( [deleteInProgress tryLock])
+     {
+         if( [[NSFileManager defaultManager] fileExistsAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]])
+         {
+             NSArray *oldQueue = [NSArray arrayWithContentsOfFile: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"]];
+             
+             NSLog( @"---- old Delete Queue List found (%d files) add it to current queue.", [oldQueue count]);
+             [[NSFileManager defaultManager] removeItemAtPath: [[self documentsDirectory] stringByAppendingPathComponent: @"DeleteQueueFile.plist"] error: nil];
+             
+             [deleteQueue lock];
+             
+             @try
+             {
+                 [deleteQueueArray addObjectsFromArray: oldQueue];
+             }
+             @catch (NSException *e)
+             {
+                 NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
+             }
+             
+             [deleteQueue unlock];
+         }
+         [deleteInProgress unlock];
+    }
+    
+    if( [deleteQueueArray count] > 0)
+    {
+        if( [deleteInProgress tryLock])
+        {
+            [deleteInProgress unlock];
+            
+            NSThread *t = [[[NSThread alloc] initWithTarget:self selector:@selector( emptyDeleteQueueThread) object:  nil] autorelease];
+            t.name = NSLocalizedString( @"Deleting files...", nil);
+            t.status = [NSString stringWithFormat: NSLocalizedString( @"%d file(s)", nil), [deleteQueueArray count]];
+            t.progress = 0;
+            t.supportsCancel = YES;
+            [[ThreadsManager defaultManager] addThreadAndStart: t];
+        }
+    }
 }
 
 - (void)addFileToDeleteQueue: (NSString*)file
@@ -16038,7 +16147,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 	
 	for( NSDictionary *dict in array)
 	{
-		if( [[dict valueForKey: @"modality"] isEqualToString: mod])
+		if( [mod rangeOfString: [dict valueForKey: @"modality"]].location != NSNotFound)
 		{
 			int compression = compression_none;
 			if( [[dict valueForKey: @"compression"] intValue] == compression_sameAsDefault)
@@ -17137,7 +17246,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 					NSTask *aTask = [[[NSTask alloc] init] autorelease];		
 					[aTask setEnvironment:[NSDictionary dictionaryWithObject:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"/dicom.dic"] forKey:@"DCMDICTPATH"]];
 					[aTask setLaunchPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"/dsr2html"]];
-					[aTask setArguments: [NSArray arrayWithObjects: @"+X1", [curImage valueForKey: @"completePath"], htmlpath, nil]];		
+					[aTask setArguments: [NSArray arrayWithObjects: @"+X1", @"--unknown-relationship", @"--ignore-constraints", @"--ignore-item-errors", @"--skip-invalid-items", [curImage valueForKey: @"completePath"], htmlpath, nil]];		
 					[aTask launch];
 					[aTask waitUntilExit];		
 					[aTask interrupt];
@@ -21233,17 +21342,17 @@ static volatile int numberOfThreadsForJPEG = 0;
 
 - (void)setSearchString: (NSString *)searchString
 {
-	if( searchType == 0 && [[NSUserDefaults standardUserDefaults] boolForKey: @"HIDEPATIENTNAME"])
-		[searchField setTextColor: [NSColor whiteColor]];
-	else
-		[searchField setTextColor: [NSColor blackColor]];
-	
-	[_searchString release];
-	_searchString = [searchString retain];
-	
-	[self setFilterPredicate:[self createFilterPredicate] description:[self createFilterDescription]];
-	[self outlineViewRefresh];
-	[databaseOutline scrollRowToVisible: [databaseOutline selectedRow]];
+    if( searchType == 0 && [[NSUserDefaults standardUserDefaults] boolForKey: @"HIDEPATIENTNAME"])
+        [searchField setTextColor: [NSColor whiteColor]];
+    else
+        [searchField setTextColor: [NSColor blackColor]];
+    
+    [_searchString release];
+    _searchString = [searchString retain];
+    
+    [self setFilterPredicate:[self createFilterPredicate] description:[self createFilterDescription]];
+    [self outlineViewRefresh];
+    [databaseOutline scrollRowToVisible: [databaseOutline selectedRow]];
 }
 
 - (IBAction)searchForCurrentPatient: (id)sender
@@ -21345,9 +21454,9 @@ static volatile int numberOfThreadsForJPEG = 0;
 				s = [NSString stringWithFormat:@"%@", _searchString];
 				
 				if( [[NSUserDefaults standardUserDefaults] boolForKey: @"useSoundexForName"] && [s length] > 0) 
-					predicate = [NSPredicate predicateWithFormat: @"(soundex CONTAINS[cd] %@) OR (name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", [DicomStudy soundex: s], s, s, s, s, s, s, s, s, s, s];
+					predicate = [NSPredicate predicateWithFormat: @"(soundex CONTAINS[cd] %@) OR (name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", [DicomStudy soundex: s], s, s, s, s, s, s, s, s, s, s];
 				else
-					predicate = [NSPredicate predicateWithFormat: @"(name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (ANY series.modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", s, s, s, s, s, s, s, s, s, s];
+					predicate = [NSPredicate predicateWithFormat: @"(name CONTAINS[cd] %@) OR (patientID CONTAINS[cd] %@) OR (id CONTAINS[cd] %@) OR (comment CONTAINS[cd] %@) OR (comment2 CONTAINS[cd] %@) OR (comment3 CONTAINS[cd] %@) OR (comment4 CONTAINS[cd] %@) OR (studyName CONTAINS[cd] %@) OR (modality CONTAINS[cd] %@) OR (accessionNumber CONTAINS[cd] %@)", s, s, s, s, s, s, s, s, s, s];
 			break;
 			
 			case 0:			// Patient Name
@@ -21374,7 +21483,7 @@ static volatile int numberOfThreadsForJPEG = 0;
 			break;
 			
 			case 5:			// Modality
-				predicate = [NSPredicate predicateWithFormat: @"ANY series.modality CONTAINS[cd] %@", _searchString];
+				predicate = [NSPredicate predicateWithFormat: @"modality CONTAINS[cd] %@", _searchString];
 			break;
 			
 			case 6:			// Accession Number 
