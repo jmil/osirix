@@ -235,15 +235,17 @@ NSString* const OSIROIManagerROIsDidUpdateNotification = @"OSIROIManagerROIsDidU
 //    slab.plane.point = N3VectorAdd(slab.plane.point, N3VectorScalarMultiply(N3VectorNormalize(slab.plane.normal), thickness/2.0));
 	
     for (roi in [self ROIs]) {
-        if ([roi respondsToSelector:@selector(drawSlab:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
-			glMatrixMode(GL_MODELVIEW);
-			glPushMatrix();
-			glMultMatrixd(pixToSubdrawRectOpenGLTransform);
-            
-			[roi drawSlab:slab inCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
-			
-			glMatrixMode(GL_MODELVIEW);
-			glPopMatrix();
+        if ([[roi osiriXROIs] count] == 0) { //if this OSIROI is backed by old style ROI, don't draw it
+            if ([roi respondsToSelector:@selector(drawSlab:inCGLContext:pixelFormat:dicomToPixTransform:)]) {
+                glMatrixMode(GL_MODELVIEW);
+                glPushMatrix();
+                glMultMatrixd(pixToSubdrawRectOpenGLTransform);
+                
+                [roi drawSlab:slab inCGLContext:cgl_ctx pixelFormat:pixelFormatObj dicomToPixTransform:dicomToPixTransform];
+                
+                glMatrixMode(GL_MODELVIEW);
+                glPopMatrix();
+            }
         }
     }
     
