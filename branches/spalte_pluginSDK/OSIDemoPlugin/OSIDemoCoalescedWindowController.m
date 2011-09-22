@@ -9,6 +9,7 @@
 #import "OSIDemoCoalescedWindowController.h"
 #import "OSIVolumeWindow.h"
 #import "OSIROIManager.h"
+#import "OSIROI.h"
 
 @interface OSIDemoCoalescedWindowController ()
 
@@ -19,6 +20,7 @@
 @implementation OSIDemoCoalescedWindowController
 
 @synthesize outlineView = _outlineView;
+@synthesize volumeWindow = _volumeWindow;
 
 - (id)initWithVolumeWindow:(OSIVolumeWindow *)volumeWindow;
 {

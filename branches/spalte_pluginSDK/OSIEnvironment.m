@@ -30,7 +30,7 @@ static OSIEnvironment *sharedEnvironment = nil;
 		return NO;
 	}
 	
-	return YES;
+	return [super automaticallyNotifiesObserversForKey:key];
 }
 
 + (OSIEnvironment*)sharedEnvironment
@@ -63,7 +63,7 @@ static OSIEnvironment *sharedEnvironment = nil;
     return NSUIntegerMax;  //denotes an object that cannot be released
 }
 
-- (void)release
+- (oneway void)release
 {
     //do nothing
 }
