@@ -21,49 +21,6 @@
 		A92CCDD50CA7DA6600800211 /* altivecFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = A92CCDD40CA7DA6600800211 /* altivecFunctions.c */; };
 		ABEEBB3D1021D40C009D04D4 /* jpeg_memdest.h in Headers */ = {isa = PBXBuildFile; fileRef = ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */; };
 		C86B05270671AA6E00DD9006 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C86B05260671AA6E00DD9006 /* CoreServices.framework */; };
-		CE0A90571332AED200C0B2A6 /* bio.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A902C1332AED100C0B2A6 /* bio.c */; };
-		CE0A90581332AED200C0B2A6 /* bio.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A902D1332AED100C0B2A6 /* bio.h */; };
-		CE0A90591332AED200C0B2A6 /* cio.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A902E1332AED100C0B2A6 /* cio.c */; };
-		CE0A905A1332AED200C0B2A6 /* cio.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A902F1332AED100C0B2A6 /* cio.h */; };
-		CE0A905B1332AED200C0B2A6 /* dwt.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90301332AED100C0B2A6 /* dwt.c */; };
-		CE0A905C1332AED200C0B2A6 /* dwt.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90311332AED100C0B2A6 /* dwt.h */; };
-		CE0A905D1332AED200C0B2A6 /* event.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90321332AED100C0B2A6 /* event.c */; };
-		CE0A905E1332AED200C0B2A6 /* event.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90331332AED100C0B2A6 /* event.h */; };
-		CE0A905F1332AED200C0B2A6 /* fix.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90341332AED100C0B2A6 /* fix.h */; };
-		CE0A90601332AED200C0B2A6 /* image.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90351332AED100C0B2A6 /* image.c */; };
-		CE0A90611332AED200C0B2A6 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90361332AED100C0B2A6 /* image.h */; };
-		CE0A90621332AED200C0B2A6 /* int.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90371332AED100C0B2A6 /* int.h */; };
-		CE0A90631332AED200C0B2A6 /* j2k_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90381332AED100C0B2A6 /* j2k_lib.c */; };
-		CE0A90641332AED200C0B2A6 /* j2k_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90391332AED100C0B2A6 /* j2k_lib.h */; };
-		CE0A90651332AED200C0B2A6 /* j2k.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A903A1332AED100C0B2A6 /* j2k.c */; };
-		CE0A90661332AED200C0B2A6 /* j2k.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A903B1332AED100C0B2A6 /* j2k.h */; };
-		CE0A90671332AED200C0B2A6 /* jp2.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A903C1332AED100C0B2A6 /* jp2.c */; };
-		CE0A90681332AED200C0B2A6 /* jp2-opj.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A903D1332AED100C0B2A6 /* jp2-opj.h */; };
-		CE0A90691332AED200C0B2A6 /* jpt.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A903E1332AED100C0B2A6 /* jpt.c */; };
-		CE0A906A1332AED200C0B2A6 /* jpt.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A903F1332AED100C0B2A6 /* jpt.h */; };
-		CE0A906B1332AED200C0B2A6 /* mct.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90401332AED100C0B2A6 /* mct.c */; };
-		CE0A906C1332AED200C0B2A6 /* mct.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90411332AED100C0B2A6 /* mct.h */; };
-		CE0A906D1332AED200C0B2A6 /* mqc.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90421332AED100C0B2A6 /* mqc.c */; };
-		CE0A906E1332AED200C0B2A6 /* mqc.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90431332AED100C0B2A6 /* mqc.h */; };
-		CE0A906F1332AED200C0B2A6 /* openjpeg.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90441332AED100C0B2A6 /* openjpeg.c */; };
-		CE0A90701332AED200C0B2A6 /* openjpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90451332AED100C0B2A6 /* openjpeg.h */; };
-		CE0A90711332AED200C0B2A6 /* opj_convert.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90461332AED100C0B2A6 /* opj_convert.c */; };
-		CE0A90721332AED200C0B2A6 /* opj_convert.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90471332AED100C0B2A6 /* opj_convert.h */; };
-		CE0A90731332AED200C0B2A6 /* opj_includes.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90481332AED100C0B2A6 /* opj_includes.h */; };
-		CE0A90741332AED200C0B2A6 /* opj_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90491332AED100C0B2A6 /* opj_malloc.h */; };
-		CE0A90751332AED200C0B2A6 /* pi.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A904A1332AED100C0B2A6 /* pi.c */; };
-		CE0A90761332AED200C0B2A6 /* pi.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A904B1332AED100C0B2A6 /* pi.h */; };
-		CE0A90771332AED200C0B2A6 /* raw.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A904C1332AED100C0B2A6 /* raw.c */; };
-		CE0A90781332AED200C0B2A6 /* raw.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A904D1332AED100C0B2A6 /* raw.h */; };
-		CE0A90791332AED200C0B2A6 /* t1_luts.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A904E1332AED100C0B2A6 /* t1_luts.h */; };
-		CE0A907A1332AED200C0B2A6 /* t1.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A904F1332AED100C0B2A6 /* t1.c */; };
-		CE0A907B1332AED200C0B2A6 /* t1.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90501332AED100C0B2A6 /* t1.h */; };
-		CE0A907C1332AED200C0B2A6 /* t2.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90511332AED100C0B2A6 /* t2.c */; };
-		CE0A907D1332AED200C0B2A6 /* t2.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90521332AED200C0B2A6 /* t2.h */; };
-		CE0A907E1332AED200C0B2A6 /* tcd.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90531332AED200C0B2A6 /* tcd.c */; };
-		CE0A907F1332AED200C0B2A6 /* tcd.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90541332AED200C0B2A6 /* tcd.h */; };
-		CE0A90801332AED200C0B2A6 /* tgt.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0A90551332AED200C0B2A6 /* tgt.c */; };
-		CE0A90811332AED200C0B2A6 /* tgt.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90561332AED200C0B2A6 /* tgt.h */; };
 		CE0A90881332AEEB00C0B2A6 /* kdu_OsiriXSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A90861332AEEB00C0B2A6 /* kdu_OsiriXSupport.h */; };
 		CE0A986D1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0A986B1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.h */; };
 		CE0A986E1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE0A986C1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.mm */; };
@@ -926,8 +883,6 @@
 		CE8CF4170C2EA56200537400 /* jas_tvp.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3D70C2EA56200537400 /* jas_tvp.h */; };
 		CE8CF4180C2EA56200537400 /* jas_types.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3D80C2EA56200537400 /* jas_types.h */; };
 		CE8CF4190C2EA56200537400 /* jas_version.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3D90C2EA56200537400 /* jas_version.h */; };
-		CE8CF41A0C2EA56200537400 /* jasper.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3DA0C2EA56200537400 /* jasper.h */; };
-		CE8CF42B0C2EA56200537400 /* jasper.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3EC0C2EA56200537400 /* jasper.h */; };
 		CE8CF4310C2EA56200537400 /* PapyVars3.c in Sources */ = {isa = PBXBuildFile; fileRef = CE8CF3F20C2EA56200537400 /* PapyVars3.c */; };
 		CE8CF4350C2EA56200537400 /* PapyGlobalVar3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */; };
 		CE8CF4360C2EA56200537400 /* PapyFileSystem3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */; };
@@ -971,7 +926,6 @@
 		CED87C0211EA6ACF00875C55 /* dicom.dic in Resources */ = {isa = PBXBuildFile; fileRef = CED87C0111EA6ACF00875C55 /* dicom.dic */; };
 		CED87C3411EA734F00875C55 /* dicomsricon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CED87C3311EA734F00875C55 /* dicomsricon.jpg */; };
 		CEE52DBA0C7474320044205E /* DICOMQuickLook_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */; };
-		CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE52DC20C7474520044205E /* libjasper2.a */; };
 		F28CFBFD0A3EC0AF000ABFF5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */; };
 		F28CFC030A3EC0C6000ABFF5 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */; };
 /* End PBXBuildFile section */
@@ -1014,49 +968,6 @@
 		A92CCDD40CA7DA6600800211 /* altivecFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = altivecFunctions.c; path = ../osirix/altivecFunctions.c; sourceTree = SOURCE_ROOT; };
 		ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeg_memdest.h; path = ../osirix/Papyrus3/jpeg_memdest.h; sourceTree = SOURCE_ROOT; };
 		C86B05260671AA6E00DD9006 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
-		CE0A902C1332AED100C0B2A6 /* bio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bio.c; path = ../osirix/Binaries/openjpeg/bio.c; sourceTree = SOURCE_ROOT; };
-		CE0A902D1332AED100C0B2A6 /* bio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bio.h; path = ../osirix/Binaries/openjpeg/bio.h; sourceTree = SOURCE_ROOT; };
-		CE0A902E1332AED100C0B2A6 /* cio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cio.c; path = ../osirix/Binaries/openjpeg/cio.c; sourceTree = SOURCE_ROOT; };
-		CE0A902F1332AED100C0B2A6 /* cio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cio.h; path = ../osirix/Binaries/openjpeg/cio.h; sourceTree = SOURCE_ROOT; };
-		CE0A90301332AED100C0B2A6 /* dwt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dwt.c; path = ../osirix/Binaries/openjpeg/dwt.c; sourceTree = SOURCE_ROOT; };
-		CE0A90311332AED100C0B2A6 /* dwt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dwt.h; path = ../osirix/Binaries/openjpeg/dwt.h; sourceTree = SOURCE_ROOT; };
-		CE0A90321332AED100C0B2A6 /* event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = event.c; path = ../osirix/Binaries/openjpeg/event.c; sourceTree = SOURCE_ROOT; };
-		CE0A90331332AED100C0B2A6 /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = event.h; path = ../osirix/Binaries/openjpeg/event.h; sourceTree = SOURCE_ROOT; };
-		CE0A90341332AED100C0B2A6 /* fix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fix.h; path = ../osirix/Binaries/openjpeg/fix.h; sourceTree = SOURCE_ROOT; };
-		CE0A90351332AED100C0B2A6 /* image.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image.c; path = ../osirix/Binaries/openjpeg/image.c; sourceTree = SOURCE_ROOT; };
-		CE0A90361332AED100C0B2A6 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image.h; path = ../osirix/Binaries/openjpeg/image.h; sourceTree = SOURCE_ROOT; };
-		CE0A90371332AED100C0B2A6 /* int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = int.h; path = ../osirix/Binaries/openjpeg/int.h; sourceTree = SOURCE_ROOT; };
-		CE0A90381332AED100C0B2A6 /* j2k_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = j2k_lib.c; path = ../osirix/Binaries/openjpeg/j2k_lib.c; sourceTree = SOURCE_ROOT; };
-		CE0A90391332AED100C0B2A6 /* j2k_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = j2k_lib.h; path = ../osirix/Binaries/openjpeg/j2k_lib.h; sourceTree = SOURCE_ROOT; };
-		CE0A903A1332AED100C0B2A6 /* j2k.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = j2k.c; path = ../osirix/Binaries/openjpeg/j2k.c; sourceTree = SOURCE_ROOT; };
-		CE0A903B1332AED100C0B2A6 /* j2k.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = j2k.h; path = ../osirix/Binaries/openjpeg/j2k.h; sourceTree = SOURCE_ROOT; };
-		CE0A903C1332AED100C0B2A6 /* jp2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jp2.c; path = ../osirix/Binaries/openjpeg/jp2.c; sourceTree = SOURCE_ROOT; };
-		CE0A903D1332AED100C0B2A6 /* jp2-opj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "jp2-opj.h"; path = "../osirix/Binaries/openjpeg/jp2-opj.h"; sourceTree = SOURCE_ROOT; };
-		CE0A903E1332AED100C0B2A6 /* jpt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jpt.c; path = ../osirix/Binaries/openjpeg/jpt.c; sourceTree = SOURCE_ROOT; };
-		CE0A903F1332AED100C0B2A6 /* jpt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpt.h; path = ../osirix/Binaries/openjpeg/jpt.h; sourceTree = SOURCE_ROOT; };
-		CE0A90401332AED100C0B2A6 /* mct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mct.c; path = ../osirix/Binaries/openjpeg/mct.c; sourceTree = SOURCE_ROOT; };
-		CE0A90411332AED100C0B2A6 /* mct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mct.h; path = ../osirix/Binaries/openjpeg/mct.h; sourceTree = SOURCE_ROOT; };
-		CE0A90421332AED100C0B2A6 /* mqc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mqc.c; path = ../osirix/Binaries/openjpeg/mqc.c; sourceTree = SOURCE_ROOT; };
-		CE0A90431332AED100C0B2A6 /* mqc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mqc.h; path = ../osirix/Binaries/openjpeg/mqc.h; sourceTree = SOURCE_ROOT; };
-		CE0A90441332AED100C0B2A6 /* openjpeg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = openjpeg.c; path = ../osirix/Binaries/openjpeg/openjpeg.c; sourceTree = SOURCE_ROOT; };
-		CE0A90451332AED100C0B2A6 /* openjpeg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openjpeg.h; path = ../osirix/Binaries/openjpeg/openjpeg.h; sourceTree = SOURCE_ROOT; };
-		CE0A90461332AED100C0B2A6 /* opj_convert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = opj_convert.c; path = ../osirix/Binaries/openjpeg/opj_convert.c; sourceTree = SOURCE_ROOT; };
-		CE0A90471332AED100C0B2A6 /* opj_convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = opj_convert.h; path = ../osirix/Binaries/openjpeg/opj_convert.h; sourceTree = SOURCE_ROOT; };
-		CE0A90481332AED100C0B2A6 /* opj_includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = opj_includes.h; path = ../osirix/Binaries/openjpeg/opj_includes.h; sourceTree = SOURCE_ROOT; };
-		CE0A90491332AED100C0B2A6 /* opj_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = opj_malloc.h; path = ../osirix/Binaries/openjpeg/opj_malloc.h; sourceTree = SOURCE_ROOT; };
-		CE0A904A1332AED100C0B2A6 /* pi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pi.c; path = ../osirix/Binaries/openjpeg/pi.c; sourceTree = SOURCE_ROOT; };
-		CE0A904B1332AED100C0B2A6 /* pi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pi.h; path = ../osirix/Binaries/openjpeg/pi.h; sourceTree = SOURCE_ROOT; };
-		CE0A904C1332AED100C0B2A6 /* raw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = raw.c; path = ../osirix/Binaries/openjpeg/raw.c; sourceTree = SOURCE_ROOT; };
-		CE0A904D1332AED100C0B2A6 /* raw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = raw.h; path = ../osirix/Binaries/openjpeg/raw.h; sourceTree = SOURCE_ROOT; };
-		CE0A904E1332AED100C0B2A6 /* t1_luts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = t1_luts.h; path = ../osirix/Binaries/openjpeg/t1_luts.h; sourceTree = SOURCE_ROOT; };
-		CE0A904F1332AED100C0B2A6 /* t1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = t1.c; path = ../osirix/Binaries/openjpeg/t1.c; sourceTree = SOURCE_ROOT; };
-		CE0A90501332AED100C0B2A6 /* t1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = t1.h; path = ../osirix/Binaries/openjpeg/t1.h; sourceTree = SOURCE_ROOT; };
-		CE0A90511332AED100C0B2A6 /* t2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = t2.c; path = ../osirix/Binaries/openjpeg/t2.c; sourceTree = SOURCE_ROOT; };
-		CE0A90521332AED200C0B2A6 /* t2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = t2.h; path = ../osirix/Binaries/openjpeg/t2.h; sourceTree = SOURCE_ROOT; };
-		CE0A90531332AED200C0B2A6 /* tcd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tcd.c; path = ../osirix/Binaries/openjpeg/tcd.c; sourceTree = SOURCE_ROOT; };
-		CE0A90541332AED200C0B2A6 /* tcd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tcd.h; path = ../osirix/Binaries/openjpeg/tcd.h; sourceTree = SOURCE_ROOT; };
-		CE0A90551332AED200C0B2A6 /* tgt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tgt.c; path = ../osirix/Binaries/openjpeg/tgt.c; sourceTree = SOURCE_ROOT; };
-		CE0A90561332AED200C0B2A6 /* tgt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tgt.h; path = ../osirix/Binaries/openjpeg/tgt.h; sourceTree = SOURCE_ROOT; };
 		CE0A90861332AEEB00C0B2A6 /* kdu_OsiriXSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdu_OsiriXSupport.h; path = "../osirix/Binaries/KDU SDK/kdu_OsiriXSupport.h"; sourceTree = SOURCE_ROOT; };
 		CE0A986B1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+OsiriX.h"; path = "../osirix/NSUserDefaults+OsiriX.h"; sourceTree = SOURCE_ROOT; };
 		CE0A986C1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSUserDefaults+OsiriX.mm"; path = "../osirix/NSUserDefaults+OsiriX.mm"; sourceTree = SOURCE_ROOT; };
@@ -1934,8 +1845,6 @@
 		CE8CF3D70C2EA56200537400 /* jas_tvp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jas_tvp.h; sourceTree = "<group>"; };
 		CE8CF3D80C2EA56200537400 /* jas_types.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jas_types.h; sourceTree = "<group>"; };
 		CE8CF3D90C2EA56200537400 /* jas_version.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jas_version.h; sourceTree = "<group>"; };
-		CE8CF3DA0C2EA56200537400 /* jasper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = jasper.h; sourceTree = "<group>"; };
-		CE8CF3EC0C2EA56200537400 /* jasper.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = jasper.h; path = ../osirix/Binaries/Jasper/Headers/jasper.h; sourceTree = SOURCE_ROOT; };
 		CE8CF3F20C2EA56200537400 /* PapyVars3.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = PapyVars3.c; path = ../osirix/Papyrus3/PapyVars3.c; sourceTree = SOURCE_ROOT; };
 		CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyGlobalVar3.h; path = ../osirix/Papyrus3/PapyGlobalVar3.h; sourceTree = SOURCE_ROOT; };
 		CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PapyFileSystem3.h; path = ../osirix/Papyrus3/PapyFileSystem3.h; sourceTree = SOURCE_ROOT; };
@@ -1965,7 +1874,6 @@
 		CED87C0111EA6ACF00875C55 /* dicom.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicom.dic; path = ../osirix/Binaries/DCMTK/dicom.dic; sourceTree = SOURCE_ROOT; };
 		CED87C3311EA734F00875C55 /* dicomsricon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dicomsricon.jpg; sourceTree = "<group>"; };
 		CEE52DB90C7474320044205E /* DICOMQuickLook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DICOMQuickLook_Prefix.pch; sourceTree = "<group>"; };
-		CEE52DC20C7474520044205E /* libjasper2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper2.a; path = ../osirix/Binaries/Jasper/libjasper2.a; sourceTree = SOURCE_ROOT; };
 		F28CFBFC0A3EC0AF000ABFF5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		F28CFC020A3EC0C6000ABFF5 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = /System/Library/Frameworks/QuickLook.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -1988,7 +1896,6 @@
 				CE8C06CC0C2EAB5E00537400 /* Accelerate.framework in Frameworks */,
 				CE8C075F0C2EB03E00537400 /* IOKit.framework in Frameworks */,
 				CE689C050C33DE3400FA47B4 /* vecLib.framework in Frameworks */,
-				CEE52DC30C7474520044205E /* libjasper2.a in Frameworks */,
 				CEB9A42E0C80E1BA00DC1331 /* QTKit.framework in Frameworks */,
 				CEB9A4510C80E20900DC1331 /* libDCM StaticLibrary.a in Frameworks */,
 				846A53611248B1C4007D5988 /* libPapyrusToolkit.a in Frameworks */,
@@ -2003,7 +1910,6 @@
 			isa = PBXGroup;
 			children = (
 				CE0A90851332AEEB00C0B2A6 /* KDU SDK */,
-				CE0A902B1332AED100C0B2A6 /* OpenJPEG */,
 				CE0A98E01332B0DE00C0B2A6 /* dcmtk */,
 				08FB77AFFE84173DC02AAC07 /* Source */,
 				CE8CF3C70C2EA56200537400 /* Papyrus */,
@@ -2025,7 +1931,6 @@
 				CE9CEF770C75C0B600752D4B /* nameDictionary.plist */,
 				CE9CEF780C75C0B600752D4B /* tagDictionary.plist */,
 				CEB9A4500C80E20900DC1331 /* libDCM StaticLibrary.a */,
-				CEE52DC20C7474520044205E /* libjasper2.a */,
 				846A53601248B1C4007D5988 /* libPapyrusToolkit.a */,
 				CE8C061D0C2EAAA700537400 /* libz.dylib */,
 				CE8C06C70C2EAB3200537400 /* libcrypto.dylib */,
@@ -2095,56 +2000,6 @@
 				8D576316048677EA00EA77CD /* DICOMQuickLook.qlgenerator */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		CE0A902B1332AED100C0B2A6 /* OpenJPEG */ = {
-			isa = PBXGroup;
-			children = (
-				CE0A902C1332AED100C0B2A6 /* bio.c */,
-				CE0A902D1332AED100C0B2A6 /* bio.h */,
-				CE0A902E1332AED100C0B2A6 /* cio.c */,
-				CE0A902F1332AED100C0B2A6 /* cio.h */,
-				CE0A90301332AED100C0B2A6 /* dwt.c */,
-				CE0A90311332AED100C0B2A6 /* dwt.h */,
-				CE0A90321332AED100C0B2A6 /* event.c */,
-				CE0A90331332AED100C0B2A6 /* event.h */,
-				CE0A90341332AED100C0B2A6 /* fix.h */,
-				CE0A90351332AED100C0B2A6 /* image.c */,
-				CE0A90361332AED100C0B2A6 /* image.h */,
-				CE0A90371332AED100C0B2A6 /* int.h */,
-				CE0A90381332AED100C0B2A6 /* j2k_lib.c */,
-				CE0A90391332AED100C0B2A6 /* j2k_lib.h */,
-				CE0A903A1332AED100C0B2A6 /* j2k.c */,
-				CE0A903B1332AED100C0B2A6 /* j2k.h */,
-				CE0A903C1332AED100C0B2A6 /* jp2.c */,
-				CE0A903D1332AED100C0B2A6 /* jp2-opj.h */,
-				CE0A903E1332AED100C0B2A6 /* jpt.c */,
-				CE0A903F1332AED100C0B2A6 /* jpt.h */,
-				CE0A90401332AED100C0B2A6 /* mct.c */,
-				CE0A90411332AED100C0B2A6 /* mct.h */,
-				CE0A90421332AED100C0B2A6 /* mqc.c */,
-				CE0A90431332AED100C0B2A6 /* mqc.h */,
-				CE0A90441332AED100C0B2A6 /* openjpeg.c */,
-				CE0A90451332AED100C0B2A6 /* openjpeg.h */,
-				CE0A90461332AED100C0B2A6 /* opj_convert.c */,
-				CE0A90471332AED100C0B2A6 /* opj_convert.h */,
-				CE0A90481332AED100C0B2A6 /* opj_includes.h */,
-				CE0A90491332AED100C0B2A6 /* opj_malloc.h */,
-				CE0A904A1332AED100C0B2A6 /* pi.c */,
-				CE0A904B1332AED100C0B2A6 /* pi.h */,
-				CE0A904C1332AED100C0B2A6 /* raw.c */,
-				CE0A904D1332AED100C0B2A6 /* raw.h */,
-				CE0A904E1332AED100C0B2A6 /* t1_luts.h */,
-				CE0A904F1332AED100C0B2A6 /* t1.c */,
-				CE0A90501332AED100C0B2A6 /* t1.h */,
-				CE0A90511332AED100C0B2A6 /* t2.c */,
-				CE0A90521332AED200C0B2A6 /* t2.h */,
-				CE0A90531332AED200C0B2A6 /* tcd.c */,
-				CE0A90541332AED200C0B2A6 /* tcd.h */,
-				CE0A90551332AED200C0B2A6 /* tgt.c */,
-				CE0A90561332AED200C0B2A6 /* tgt.h */,
-			);
-			name = OpenJPEG;
 			sourceTree = "<group>";
 		};
 		CE0A90851332AEEB00C0B2A6 /* KDU SDK */ = {
@@ -3139,7 +2994,6 @@
 			isa = PBXGroup;
 			children = (
 				ABEEBB3B1021D40C009D04D4 /* jpeg_memdest.h */,
-				CE8CF3EC0C2EA56200537400 /* jasper.h */,
 				CE8CF3F20C2EA56200537400 /* PapyVars3.c */,
 				CE8CF3F60C2EA56200537400 /* PapyGlobalVar3.h */,
 				CE8CF3F70C2EA56200537400 /* PapyFileSystem3.h */,
@@ -3184,7 +3038,6 @@
 				CE8CF3D70C2EA56200537400 /* jas_tvp.h */,
 				CE8CF3D80C2EA56200537400 /* jas_types.h */,
 				CE8CF3D90C2EA56200537400 /* jas_version.h */,
-				CE8CF3DA0C2EA56200537400 /* jasper.h */,
 			);
 			name = Headers;
 			path = ../osirix/Binaries/Jasper/Headers;
@@ -3218,8 +3071,6 @@
 				CE8CF4170C2EA56200537400 /* jas_tvp.h in Headers */,
 				CE8CF4180C2EA56200537400 /* jas_types.h in Headers */,
 				CE8CF4190C2EA56200537400 /* jas_version.h in Headers */,
-				CE8CF41A0C2EA56200537400 /* jasper.h in Headers */,
-				CE8CF42B0C2EA56200537400 /* jasper.h in Headers */,
 				CE8CF4350C2EA56200537400 /* PapyGlobalVar3.h in Headers */,
 				CE8CF4360C2EA56200537400 /* PapyFileSystem3.h in Headers */,
 				CE8CF4370C2EA56200537400 /* PapyErrorMacros3.h in Headers */,
@@ -3261,30 +3112,6 @@
 				846A5B0D1248B218007D5988 /* NSString+N2.h in Headers */,
 				846A5B521248B2A1007D5988 /* NSUserDefaultsController+N2.h in Headers */,
 				846A5B541248B2A1007D5988 /* NSUserDefaultsController+OsiriX.h in Headers */,
-				CE0A90581332AED200C0B2A6 /* bio.h in Headers */,
-				CE0A905A1332AED200C0B2A6 /* cio.h in Headers */,
-				CE0A905C1332AED200C0B2A6 /* dwt.h in Headers */,
-				CE0A905E1332AED200C0B2A6 /* event.h in Headers */,
-				CE0A905F1332AED200C0B2A6 /* fix.h in Headers */,
-				CE0A90611332AED200C0B2A6 /* image.h in Headers */,
-				CE0A90621332AED200C0B2A6 /* int.h in Headers */,
-				CE0A90641332AED200C0B2A6 /* j2k_lib.h in Headers */,
-				CE0A90661332AED200C0B2A6 /* j2k.h in Headers */,
-				CE0A90681332AED200C0B2A6 /* jp2-opj.h in Headers */,
-				CE0A906A1332AED200C0B2A6 /* jpt.h in Headers */,
-				CE0A906C1332AED200C0B2A6 /* mct.h in Headers */,
-				CE0A906E1332AED200C0B2A6 /* mqc.h in Headers */,
-				CE0A90701332AED200C0B2A6 /* openjpeg.h in Headers */,
-				CE0A90721332AED200C0B2A6 /* opj_convert.h in Headers */,
-				CE0A90731332AED200C0B2A6 /* opj_includes.h in Headers */,
-				CE0A90741332AED200C0B2A6 /* opj_malloc.h in Headers */,
-				CE0A90761332AED200C0B2A6 /* pi.h in Headers */,
-				CE0A90781332AED200C0B2A6 /* raw.h in Headers */,
-				CE0A90791332AED200C0B2A6 /* t1_luts.h in Headers */,
-				CE0A907B1332AED200C0B2A6 /* t1.h in Headers */,
-				CE0A907D1332AED200C0B2A6 /* t2.h in Headers */,
-				CE0A907F1332AED200C0B2A6 /* tcd.h in Headers */,
-				CE0A90811332AED200C0B2A6 /* tgt.h in Headers */,
 				CE0A90881332AEEB00C0B2A6 /* kdu_OsiriXSupport.h in Headers */,
 				CE0A986D1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.h in Headers */,
 				CE0A98A81332AFBA00C0B2A6 /* N2Shell.h in Headers */,
@@ -3748,25 +3575,6 @@
 				846A5B0E1248B218007D5988 /* NSString+N2.mm in Sources */,
 				846A5B531248B2A1007D5988 /* NSUserDefaultsController+N2.mm in Sources */,
 				846A5B551248B2A1007D5988 /* NSUserDefaultsController+OsiriX.mm in Sources */,
-				CE0A90571332AED200C0B2A6 /* bio.c in Sources */,
-				CE0A90591332AED200C0B2A6 /* cio.c in Sources */,
-				CE0A905B1332AED200C0B2A6 /* dwt.c in Sources */,
-				CE0A905D1332AED200C0B2A6 /* event.c in Sources */,
-				CE0A90601332AED200C0B2A6 /* image.c in Sources */,
-				CE0A90631332AED200C0B2A6 /* j2k_lib.c in Sources */,
-				CE0A90651332AED200C0B2A6 /* j2k.c in Sources */,
-				CE0A90671332AED200C0B2A6 /* jp2.c in Sources */,
-				CE0A90691332AED200C0B2A6 /* jpt.c in Sources */,
-				CE0A906B1332AED200C0B2A6 /* mct.c in Sources */,
-				CE0A906D1332AED200C0B2A6 /* mqc.c in Sources */,
-				CE0A906F1332AED200C0B2A6 /* openjpeg.c in Sources */,
-				CE0A90711332AED200C0B2A6 /* opj_convert.c in Sources */,
-				CE0A90751332AED200C0B2A6 /* pi.c in Sources */,
-				CE0A90771332AED200C0B2A6 /* raw.c in Sources */,
-				CE0A907A1332AED200C0B2A6 /* t1.c in Sources */,
-				CE0A907C1332AED200C0B2A6 /* t2.c in Sources */,
-				CE0A907E1332AED200C0B2A6 /* tcd.c in Sources */,
-				CE0A90801332AED200C0B2A6 /* tgt.c in Sources */,
 				CE0A986E1332AF9800C0B2A6 /* NSUserDefaults+OsiriX.mm in Sources */,
 				CE0A98A91332AFBA00C0B2A6 /* N2Shell.mm in Sources */,
 				CE0A9C3C1332B0DE00C0B2A6 /* cmdlnarg.cc in Sources */,
