@@ -148,7 +148,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 	if( [DCMAbstractSyntaxUID isStructuredReport: pix.SOPClassUID])
 	{
 		if( [[NSFileManager defaultManager] fileExistsAtPath: @"/tmp/dicomsr_osirix/"] == NO)
-			[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/dicomsr_osirix/" attributes: nil];
+			[[NSFileManager defaultManager] createDirectoryAtPath: @"/tmp/dicomsr_osirix/" withIntermediateDirectories: YES attributes: nil error:nil];
 				
 		NSString *htmlpath = [[@"/tmp/dicomsr_osirix/" stringByAppendingPathComponent: [[nsurl path] lastPathComponent]] stringByAppendingPathExtension: @"html"];
 		
