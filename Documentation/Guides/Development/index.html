@@ -56,22 +56,6 @@
 
 			<p>The development environment is Xcode. Xcode is a really powerful development environment, based on the open-source GCC compiler. Writing a plugin for OsiriX is much easier than developing in IDL or in ImageJ...</p>
 			
-			<h3>Xcode Macros</h3>
-			<p>In Xcode you can personalise Text Macros (<a href="http://developer.apple.com/documentation/DeveloperTools/Conceptual/XcodeUserGuide/Contents/Resources/en.lproj/03_03_editing_editor_window/chapter_22_section_7.html">See here</a> for documentation) and add your own. Here is a file containing OsiriX specific code Macros for Xcode: <a href="http://osirix.svn.sourceforge.net/viewvc/*checkout*/osirix/OsiriX.xctxtmacro">OsiriX.xctxtmacro</a>. Copy this file to <code>~/Library/Application Support/Developer/3.2/Xcode/Specifications/</code> (replace 3.2 by the version of Xcode you are using) and restart Xcode.</p>
-			<p>For Example, you can type <code>roiadd</code> and hit Esc to get this snippet:</p>	
-				
-				<p>
-				<code>ROI *roi = [[ROI alloc] initWithType:&lt;#ROI Type#> :&lt;#pixelSpacingX#> :&lt;#pixelSpacingY#> :&lt;#origin#>];</code><br />
-				<code>roi.name = &lt;#ROI name#>;</code><br />
-				<code>roi.comments = &lt;#ROI comments#>;</code><br />
-				<code>roi.points = &lt;#ROI points#>;</code><br />
-				<code>[[&lt;#viewer controller#> imageView] roiSet:roi];</code><br />
-				<code>[[&lt;#viewer controller#> roiList] addObject:roi];</code><br />
-				<code>[[NSNotificationCenter defaultCenter] postNotificationName:@"roiChange" object:roi userInfo:nil];</code><br />
-				<code>[roi release];</code><br />
-				</p>
-			<p>This file being under version control, you will have all the new snippets with <code>svn update</code>...</p>
-			
 			<p class="top"><a href="#top"><img src="../images/top.png" border="0"/></a></p>
 			
 	<a name="Getting_OsiriX_Source_Code"><h2>Getting OsiriX Source Code</h2></a>
