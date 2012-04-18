@@ -93,13 +93,7 @@
 {
 	if( startTime == nil) return;	// NOT STARTED
 	
-	[[self window] orderOut:self];
-	
-	if( session != nil)
-	{
-		[NSApp endModalSession:session];
-		session = nil;
-	}
+	[self close];
 	
 	if( aborted == NO && supportCancel == YES)
 	{
