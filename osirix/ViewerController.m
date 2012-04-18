@@ -18661,7 +18661,7 @@ int i,j,l;
 			
 			gdev = 0;
 			gmin = totalPtr[ 0];
-			gmin = totalPtr[ 0];
+			gmax = totalPtr[ 0];
 			for( i = 0; i < memSize; i++)
 			{
 				float	val = totalPtr[ i];
