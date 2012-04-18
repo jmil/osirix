@@ -2446,7 +2446,7 @@ static volatile int numberOfThreadsForRelisce = 0;
 - (void) endWaitWindow:(id) waitWindow
 {
 	[waitWindow close];
-	[waitWindow release];
+	[waitWindow autorelease];
 }
 
 -(IBAction) updateImage:(id) sender

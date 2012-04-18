@@ -80,13 +80,13 @@
 	while( [NSDate timeIntervalSinceReferenceDate] - displayedTime < 0.5)
 		[NSThread sleepForTimeInterval: 0.5];
 	
+    [[self window] orderOut:self];
+    
     if( session != nil)
 	{
 		[NSApp endModalSession:session];
 		session = nil;
 	}
-    
-	[super close];
 }
 
 -(void) end
@@ -198,7 +198,20 @@
 
 - (void) dealloc
 {
+    [[self window] orderOut:self];
+    
 	[string release];
+    string = nil;
+    
+    [startTime release];
+	startTime = nil;
+    
+    if( session != nil)
+	{
+		[NSApp endModalSession: session];
+		session = nil;
+	}
+    
 	[super dealloc];
 }
 
