@@ -12498,8 +12498,6 @@ END_CREATE_ROIS:
 	if( group)
 		inGrOrModP = [self getPapyGroup: group];
 	
-    inGrOrModP = nil;
-    
 	#ifndef OSIRIX_LIGHT
 	if( inGrOrModP == nil) // Papyrus failed... unknown group? Try DCM Framework
 	{
