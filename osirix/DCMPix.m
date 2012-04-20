@@ -9215,6 +9215,7 @@ END_CREATE_ROIS:
 				{
 					success = [self loadDICOMPapyrus];
 					
+                    #ifdef OSIRIX_VIEWER
 					#ifndef OSIRIX_LIGHT
                     
                     // It failed with Papyrus : potential crash with DCMFramework with a corrupted file
@@ -9242,6 +9243,7 @@ END_CREATE_ROIS:
                     }
                     
 					#endif
+                    #endif
 				}
 				#ifndef OSIRIX_LIGHT
 				else
