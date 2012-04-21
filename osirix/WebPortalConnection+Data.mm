@@ -1360,7 +1360,7 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 -(NSMutableDictionary*)wadoCache {
 	const NSString* const WadoCacheKey = @"WADO Cache";
     NSMutableDictionary* dict = nil;
-    @synchronized( self)
+    @synchronized( self.portal.cache)
     {
         dict = [self.portal.cache objectForKey:WadoCacheKey];
         if (!dict || ![dict isKindOfClass: [NSMutableDictionary class]])
@@ -1374,7 +1374,7 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 -(NSMutableDictionary*)wadoSOPInstanceUIDCache {
 	const NSString* const WadoSOPInstanceUIDCacheKey = @"WADO SOPInstanceUID Cache";
     NSMutableDictionary* dict = nil;
-    @synchronized( self)
+    @synchronized( self.portal.cache)
     {
         dict = [self.portal.cache objectForKey:WadoSOPInstanceUIDCacheKey];
         if (!dict || ![dict isKindOfClass:[NSMutableDictionary class]])
@@ -1501,11 +1501,14 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 		NSMutableDictionary *imageCache = nil;
 		NSArray *images = nil;
 		
-        @synchronized( self)
+        @synchronized( self.wadoCache)
         {
             if (self.wadoCache.count > WadoCacheSize)
                 [self.wadoCache removeAllObjects];
-            
+        }
+        
+        @synchronized( self.wadoSOPInstanceUIDCache)
+        {
             if( self.wadoSOPInstanceUIDCache.count > WadoSOPInstanceUIDCacheSize)
                 [self.wadoSOPInstanceUIDCache removeAllObjects];
 		}
@@ -1514,14 +1517,14 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 		
 		if (contentType.length == 0 || [contentType isEqualToString:@"image/jpeg"] || [contentType isEqualToString:@"image/png"] || [contentType isEqualToString:@"image/gif"] || [contentType isEqualToString:@"image/jp2"])
         {
-			@synchronized( self)
+			@synchronized( self.wadoCache)
             {
                 imageCache = [self.wadoCache objectForKey:[objectUID stringByAppendingFormat:@"%d", frameNumber]];
             }
         }
 		else if( [contentType isEqualToString: @"application/dicom"])
         {
-			@synchronized( self)
+			@synchronized( self.wadoSOPInstanceUIDCache)
             {
                 cachedPathForSOPInstanceUID = [self.wadoSOPInstanceUIDCache objectForKey: objectUID];
             }
@@ -1556,7 +1559,7 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 			
 			//We will cache all the paths for these sopInstanceUIDs
             
-            @synchronized( self)
+            @synchronized( self.wadoSOPInstanceUIDCache)
             {
                 for( DicomImage *image in allImages)
                     [self.wadoSOPInstanceUIDCache setObject: image.completePath forKey: image.sopInstanceUID];
@@ -1697,7 +1700,7 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 					
 					imageCache = [NSMutableDictionary dictionaryWithObject: dcmPix forKey: @"dcmPix"];
 					
-                    @synchronized( self)
+                    @synchronized( self.wadoCache)
                     {
                         [self.wadoCache setObject: imageCache forKey: [objectUID stringByAppendingFormat: @"%d", frameNumber]];
                     }
