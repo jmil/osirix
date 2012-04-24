@@ -7195,13 +7195,17 @@ static NSConditionLock *threadLock = nil;
 	
 	[context lock];
 	
+    displayEmptyDatabase = YES;
+    [self outlineViewRefresh];
+    [self refreshMatrix: self];
+    
 	@try
 	{
 		NSManagedObject	*study = nil, *series = nil;
 		
 		NSLog(@"objects to delete : %d", (int) [objectsToDelete count]);
 		
-		for ( NSManagedObject *obj in objectsToDelete)
+		for( NSManagedObject *obj in objectsToDelete)
 		{
 			if( [obj valueForKey:@"series"] != series)
 			{
@@ -7242,9 +7246,10 @@ static NSConditionLock *threadLock = nil;
 					}
 				}
 			}
-			
+        }
+        
+        for( NSManagedObject *obj in objectsToDelete)
 			[context deleteObject: obj];
-		}
 	}
 	@catch ( NSException *e)
 	{
@@ -7322,6 +7327,7 @@ static NSConditionLock *threadLock = nil;
 		
 		[self saveDatabase];
 		
+        displayEmptyDatabase = NO;
 		[self outlineViewRefresh];
 		[self refreshAlbums];
 	}
