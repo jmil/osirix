@@ -7189,7 +7189,6 @@ static NSConditionLock *threadLock = nil;
 - (void) proceedDeleteObjects: (NSArray*) objectsToDelete
 {
 	NSManagedObjectContext *context = self.managedObjectContext;
-	NSMutableArray *viewersList = [ViewerController getDisplayed2DViewers];
 	NSMutableArray *seriesArray = [NSMutableArray array], *studiesArray = [NSMutableArray array];
 	
 	[reportFilesToCheck removeAllObjects];
@@ -7216,7 +7215,7 @@ static NSConditionLock *threadLock = nil;
 						[seriesArray addObject: series];
 					
 					// Is a viewer containing this series opened? -> close it
-					for( ViewerController *vc in viewersList)
+					for( ViewerController *vc in [ViewerController getDisplayed2DViewers])
 					{
 						if( series == [[[vc fileList] objectAtIndex: 0] valueForKey:@"series"])
 							[[vc window] close];
@@ -7235,7 +7234,7 @@ static NSConditionLock *threadLock = nil;
 							[studiesArray addObject: study];
 						
 						// Is a viewer containing this series opened? -> close it
-						for( ViewerController *vc in viewersList)
+						for( ViewerController *vc in [ViewerController getDisplayed2DViewers])
 						{
 							if( study == [[[vc fileList] objectAtIndex: 0] valueForKeyPath:@"series.study"])
 								[vc buildMatrixPreview];
@@ -7408,6 +7407,7 @@ static NSConditionLock *threadLock = nil;
             
             [wait close];
             [wait release];
+            wait = nil;
             
             NSLog(@"non-local images : %d", (int) [nonLocalImagesPath count]);
             
@@ -7459,6 +7459,7 @@ static NSConditionLock *threadLock = nil;
             @catch (NSException * e) { NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e); }
             [wait close];
             [wait release];
+            wait = nil;
         }
     }
     
