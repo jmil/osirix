@@ -172,6 +172,9 @@
     NSString *activePath = [[NSBundle mainBundle] resourcePath];
     NSString *inactivePath = [[activePath stringByDeletingLastPathComponent] stringByAppendingPathComponent: @"Resources Disabled"];
     
+    if( [[NSFileManager defaultManager] fileExistsAtPath: inactivePath] == NO)
+        [[NSFileManager defaultManager] createDirectoryAtPath: inactivePath withIntermediateDirectories: NO attributes: nil error: nil];
+    
     for( NSDictionary *d in languages)
     {
         NSString *language = [[d valueForKey: @"language"] stringByAppendingPathExtension: @"lproj"];
