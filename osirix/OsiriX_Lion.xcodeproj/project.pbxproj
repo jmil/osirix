@@ -27154,7 +27154,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Resources Disabled/\"\nexit 0";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Resources Disabled/\"\nexit 0";
 		};
 		AB0F3A3F1046BE51004129DD /* Copy Headers and Create OsiriX.h */ = {
 			isa = PBXShellScriptBuildPhase;
