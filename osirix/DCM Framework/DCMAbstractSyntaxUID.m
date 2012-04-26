@@ -547,6 +547,7 @@ static NSString *DCM_Verification = @"1.2.840.10008.1.1";
 			EnhancedXRFImageStorage,
 			XRay3DAngiographicImageStorage,
 			XRay3DCraniofacialImageStorage,
+            PhilipsPrivateXRayMFStorage,
             PhilipsCTSyntheticImageStorage,
             PhilipsCXImageStorage,
             PhilipsCXSyntheticImageStorage,
