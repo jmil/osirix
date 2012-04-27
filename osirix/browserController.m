@@ -84,6 +84,7 @@
 #import "NSFileManager+N2.h"
 #import "WADODownload.h"
 #import "DICOMExport.h"
+#import "NSNotificationCenter+N2.h"
 
 #ifndef OSIRIX_LIGHT
 #import "Anonymization.h"
