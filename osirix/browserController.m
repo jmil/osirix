@@ -1480,10 +1480,10 @@ static NSConditionLock *threadLock = nil;
 				@try
 				{
 					NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedImagesArray forKey:OsirixAddToDBNotificationImagesArray];
-					[[NSNotificationCenter defaultCenter] postNotificationName:OsirixAddToDBNotification object:nil userInfo:userInfo];
+					[[NSNotificationCenter defaultCenter] postNotificationOnMainThreadName:OsirixAddToDBNotification object:nil userInfo:userInfo];
 					
 					userInfo = [NSDictionary dictionaryWithObject:completeImagesArray forKey:OsirixAddToDBCompleteNotificationImagesArray];
-					[[NSNotificationCenter defaultCenter] postNotificationName:OsirixAddToDBCompleteNotification object:nil userInfo:userInfo];
+					[[NSNotificationCenter defaultCenter] postNotificationOnMainThreadName:OsirixAddToDBCompleteNotification object:nil userInfo:userInfo];
 				}
 				@catch( NSException *ne)
 				{
