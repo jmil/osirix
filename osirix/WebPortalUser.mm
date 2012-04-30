@@ -22,6 +22,7 @@
 #import "NSError+OsiriX.h"
 #import "DDData.h"
 #import "NSData+N2.h"
+#import "DicomStudy.h"
 
 static PSGenerator *generator = nil;
 static NSMutableDictionary *studiesForUserCache = nil;
@@ -308,13 +309,23 @@ static NSMutableDictionary *studiesForUserCache = nil;
             }
             else
             {
-                 NSArray* studiesArray = nil;
+                NSArray* studiesArray = nil;
                 
-                // Find studies
-                NSFetchRequest* req = [[[NSFetchRequest alloc] init] autorelease];
-                req.entity = [NSEntityDescription entityForName:@"Study" inManagedObjectContext:WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext];
-                req.predicate = [NSPredicate predicateWithValue: YES];
-                studiesArray = [WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext executeFetchRequest:req error:NULL];
+                if( [studiesForUserCache objectForKey: @"all DB studies"])
+                {
+                    studiesArray = [studiesForUserCache objectForKey: @"all DB studies"];
+                }
+                else
+                {
+                    // Find studies
+                    NSFetchRequest* req = [[[NSFetchRequest alloc] init] autorelease];
+                    req.entity = [NSEntityDescription entityForName: @"Study" inManagedObjectContext:WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext];
+                    req.predicate = [NSPredicate predicateWithValue: YES];
+                    studiesArray = [WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext executeFetchRequest:req error:NULL];
+                    
+                    if( studiesArray)
+                        [studiesForUserCache setObject: studiesArray forKey: @"all DB studies"];
+                }
                 
                 for (WebPortalStudy* study in userStudies)
                 {
@@ -404,8 +415,7 @@ static NSMutableDictionary *studiesForUserCache = nil;
             if( studiesForUserCache == nil && user)
             {
                 studiesForUserCache = [[NSMutableDictionary alloc] init];
-                [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext];
-                [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: user.managedObjectContext];
+                [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: nil];
             }
             
             @synchronized( studiesForUserCache)
@@ -517,7 +527,25 @@ static NSMutableDictionary *studiesForUserCache = nil;
 {
     @synchronized( studiesForUserCache)
     {
-        [studiesForUserCache removeAllObjects];
+        NSMutableSet *set = [NSMutableSet set];
+        
+        if( [n.userInfo objectForKey: NSInsertedObjectsKey])
+            [set unionSet: [n.userInfo objectForKey: NSInsertedObjectsKey]];
+        
+        if( [n.userInfo objectForKey: NSUpdatedObjectsKey])
+            [set unionSet: [n.userInfo objectForKey: NSUpdatedObjectsKey]];
+        
+        if( [n.userInfo objectForKey: NSDeletedObjectsKey])
+            [set unionSet: [n.userInfo objectForKey: NSDeletedObjectsKey]];
+        
+        for( NSManagedObject *object in set)
+        {
+            if( [object isKindOfClass: [DicomStudy class]] || [object isKindOfClass: [WebPortalUser class]])
+            {
+                [studiesForUserCache removeAllObjects];
+                break;
+            }
+        }
     }
 }
 
@@ -529,8 +557,7 @@ static NSMutableDictionary *studiesForUserCache = nil;
     if( studiesForUserCache == nil && user)
     {
         studiesForUserCache = [[NSMutableDictionary alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext];
-        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: user.managedObjectContext];
+        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(managedObjectChangedNotificationReceived:) name: NSManagedObjectContextObjectsDidChangeNotification object: nil];
     }
     
     @synchronized( studiesForUserCache)
