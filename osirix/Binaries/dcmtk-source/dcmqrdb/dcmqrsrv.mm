@@ -273,7 +273,7 @@ DcmQueryRetrieveSCP::DcmQueryRetrieveSCP(
 
 DcmQueryRetrieveSCP::~DcmQueryRetrieveSCP()
 {
-
+    printf("\rdealloc\r");
 }
 
 void DcmQueryRetrieveSCP::lockFile(void)
