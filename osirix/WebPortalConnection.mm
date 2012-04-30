@@ -519,14 +519,15 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 		response.statusCode = 404;
 		#endif
 	}
-	else if ([requestedPath rangeOfString:@".pvt."].length) {
+	else if ([requestedPath rangeOfString:@".pvt."].length)
+    {
 		response.statusCode = 404;
 	}
 	else
 	{
 		[self.portal.dicomDatabase.managedObjectContext lock];
-		BOOL lockReleased = NO;
-		@try {
+		@try
+        {
 			if ([requestedPath isEqual:@"/"] || [requestedPath isEqual: @"/index"])
 				[self processIndexHtml];
 			else
@@ -600,12 +601,14 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
 			
 			if (!response.data.length && !response.statusCode)
 				response.statusCode = 404;
-			
-		} @catch (NSException* e) {
+		}
+        @catch (NSException* e)
+        {
 			response.statusCode = 500;
 			NSLog(@"Error: [WebPortalConnection httpResponseForMethod:URI:] %@", e);
-		} @finally {
-			if (!lockReleased)
+		}
+        @finally
+        {
 				[self.portal.dicomDatabase.managedObjectContext unlock];
 		}
 	}

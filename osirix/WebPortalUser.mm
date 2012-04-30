@@ -532,9 +532,6 @@ static NSMutableDictionary *studiesForUserCache = nil;
         if( [n.userInfo objectForKey: NSInsertedObjectsKey])
             [set unionSet: [n.userInfo objectForKey: NSInsertedObjectsKey]];
         
-        if( [n.userInfo objectForKey: NSUpdatedObjectsKey])
-            [set unionSet: [n.userInfo objectForKey: NSUpdatedObjectsKey]];
-        
         if( [n.userInfo objectForKey: NSDeletedObjectsKey])
             [set unionSet: [n.userInfo objectForKey: NSDeletedObjectsKey]];
         

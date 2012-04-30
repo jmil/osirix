@@ -4848,8 +4848,6 @@ static NSConditionLock *threadLock = nil;
 		
 		[self dumpSQLFile];
 		
- 		[self updateDatabaseModel: currentDatabasePath :DATABASEVERSION];
-		
 		[self loadDatabase: currentDatabasePath];
 		
 		[self checkReportsDICOMSRConsistency];

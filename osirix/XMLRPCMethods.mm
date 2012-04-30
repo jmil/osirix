@@ -240,7 +240,7 @@
                 
                 while( found == NO && [NSDate timeIntervalSinceReferenceDate] - started < 300 && [[NSThread currentThread] isCancelled] == NO)
                 {
-                    [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
+                    [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 4.0]];
                     
                     NSManagedObjectContext *context = [[BrowserController currentBrowser] managedObjectContext];
                     
