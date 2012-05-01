@@ -3055,10 +3055,7 @@ static volatile int numberOfThreadsForRelisce = 0;
 			else
             {
                 if( [[toolbarPanel[ i] window] isVisible])
-                {
-//                    [[toolbarPanel[ i] window] setAnimationBehavior: NSWindowAnimationBehaviorNone];
                     [[toolbarPanel[ i] window] orderOut:self];
-                }
             }
 		}
 		if( found == NO) NSLog( @"Toolbar NOT found");
