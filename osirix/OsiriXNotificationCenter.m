@@ -78,10 +78,10 @@ const static void *namesKey = &namesKey;
                         if( notificationSender)
                         {
                             if( notificationSender == [observerNotification objectForKey: @"sender"])
-                                [set removeObject: notificationObserver];
+                                [set removeObject: observerNotification];
                         }
                         else
-                            [set removeObject: notificationObserver];
+                            [set removeObject: observerNotification];
                     }
                 }
             }
@@ -92,7 +92,7 @@ const static void *namesKey = &namesKey;
                     for( NSDictionary *observerNotification in set)
                     {
                         if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
-                            [set removeObject: notificationObserver];
+                            [set removeObject: observerNotification];
                     }
                 }
             }
@@ -106,33 +106,8 @@ const static void *namesKey = &namesKey;
 	return [names objectForKey:notificationName] ?: [NSSet set];
 }
 
-- (void) my_postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
+- (void) postExtraNotification:(NSNotification *)notification
 {
-    [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
-    
-    for( NSDictionary *observerDictionary in [self my_observersForNotificationName: aName])
-    {
-        SEL selector = [[observerDictionary objectForKey: @"selector"] pointerValue];
-        id observer = [[observerDictionary objectForKey: @"observer"] pointerValue];
-        
-        [PluginManager startProtectForCrashWithPath: [[NSBundle bundleForClass: [observer class]] bundlePath]];
-        
-        if( [observerDictionary objectForKey: @"sender"])
-        {
-            if( [observerDictionary objectForKey: @"sender"] == anObject)
-                [observer performSelector: selector withObject: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
-        }
-        else
-            [observer performSelector: selector withObject: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
-        
-        [PluginManager endProtectForCrash];
-    }
-}
-
-- (void) my_postNotification:(NSNotification *)notification
-{
-    [self my_postNotification: notification];
-    
     for( NSDictionary *observerDictionary in [self my_observersForNotificationName: notification.name])
     {
         SEL selector = [[observerDictionary objectForKey: @"selector"] pointerValue];
@@ -148,8 +123,22 @@ const static void *namesKey = &namesKey;
         else
             [observer performSelector: selector withObject: notification];
         
-       [PluginManager endProtectForCrash];
+        [PluginManager endProtectForCrash];
     }
+}
+
+- (void) my_postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
+{
+    [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
+    
+    [self postExtraNotification: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
+}
+
+- (void) my_postNotification:(NSNotification *)notification
+{
+    [self my_postNotification: notification];
+    
+    [self postExtraNotification: notification];
 }
 @end
 
