@@ -1,0 +1,156 @@
+#import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+
+#import "Notifications.h"
+#import "PluginManager.h"
+
+#ifdef NDEBUG
+#else
+
+@implementation NSNotificationCenter (AllObservers)
+
+const static void *namesKey = &namesKey;
+
++ (void) load
+{
+	method_exchangeImplementations(class_getInstanceMethod(self, @selector(addObserver:selector:name:object:)),
+	                               class_getInstanceMethod(self, @selector(my_addObserver:selector:name:object:)));
+    
+    method_exchangeImplementations(class_getInstanceMethod(self, @selector(postNotificationName:object:userInfo:)),
+	                               class_getInstanceMethod(self, @selector(my_postNotificationName:object:userInfo:)));
+    
+    method_exchangeImplementations(class_getInstanceMethod(self, @selector(postNotification:)),
+	                               class_getInstanceMethod(self, @selector(my_postNotification:)));
+    
+    method_exchangeImplementations(class_getInstanceMethod(self, @selector(removeObserver:name:object:)),
+	                               class_getInstanceMethod(self, @selector(my_removeObserver:name:object:)));
+}
+
+- (void) my_addObserver:(id)notificationObserver selector:(SEL)notificationSelector name:(NSString *)notificationName object:(id)notificationSender
+{
+    NSString *bundleIdentifier = [[NSBundle bundleForClass: [notificationObserver class]] bundleIdentifier];
+    
+    if( [bundleIdentifier hasPrefix: @"com.rossetantoine"] == NO && [bundleIdentifier hasPrefix: @"com.apple"] == NO)
+    {
+        NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+        if (!names)
+        {
+            names = [NSMutableDictionary dictionary];
+            objc_setAssociatedObject(self, (void*) namesKey, names, OBJC_ASSOCIATION_RETAIN);
+        }
+        
+        NSDictionary *observerDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithPointer: notificationObserver] , @"observer", [NSValue valueWithPointer: notificationSelector], @"selector", notificationSender, @"sender", nil];
+        
+        NSMutableSet *observers = [names objectForKey:notificationName];
+        if (!observers)
+        {
+            observers = [NSMutableSet setWithObject: observerDictionary];
+            [names setObject:observers forKey:notificationName];
+        }
+        else
+        {
+            [observers addObject: observerDictionary];
+        }
+    }
+    else
+        [self my_addObserver:notificationObserver selector:notificationSelector name:notificationName object:notificationSender];
+}
+
+- (void) my_removeObserver:(id)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
+{
+    NSString *bundleIdentifier = [[NSBundle bundleForClass: [notificationObserver class]] bundleIdentifier];
+    
+    [self my_removeObserver: notificationObserver name: notificationName object: notificationSender];
+    
+    if( [bundleIdentifier hasPrefix: @"com.rossetantoine"] == NO && [bundleIdentifier hasPrefix: @"com.apple"] == NO)
+    {
+        NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+        if (names)
+        {
+            if( notificationName)
+            {
+                NSMutableSet *set = [names objectForKey: notificationName];
+                
+                for( NSDictionary *observerNotification in set)
+                {
+                    if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
+                    {
+                        if( notificationSender)
+                        {
+                            if( notificationSender == [observerNotification objectForKey: @"sender"])
+                                [set removeObject: notificationObserver];
+                        }
+                        else
+                            [set removeObject: notificationObserver];
+                    }
+                }
+            }
+            else
+            {
+                for( NSMutableSet *set in [names allValues])
+                {
+                    for( NSDictionary *observerNotification in set)
+                    {
+                        if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
+                            [set removeObject: notificationObserver];
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (NSSet *) my_observersForNotificationName:(NSString *)notificationName
+{
+	NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+	return [names objectForKey:notificationName] ?: [NSSet set];
+}
+
+- (void) my_postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
+{
+    [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
+    
+    for( NSDictionary *observerDictionary in [self my_observersForNotificationName: aName])
+    {
+        SEL selector = [[observerDictionary objectForKey: @"selector"] pointerValue];
+        id observer = [[observerDictionary objectForKey: @"observer"] pointerValue];
+        
+        [PluginManager startProtectForCrashWithPath: [[NSBundle bundleForClass: [observer class]] bundlePath]];
+        
+        if( [observerDictionary objectForKey: @"sender"])
+        {
+            if( [observerDictionary objectForKey: @"sender"] == anObject)
+                [observer performSelector: selector withObject: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
+        }
+        else
+            [observer performSelector: selector withObject: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
+        
+        [PluginManager endProtectForCrash];
+    }
+}
+
+- (void) my_postNotification:(NSNotification *)notification
+{
+    [self my_postNotification: notification];
+    
+    for( NSDictionary *observerDictionary in [self my_observersForNotificationName: notification.name])
+    {
+        SEL selector = [[observerDictionary objectForKey: @"selector"] pointerValue];
+        id observer = [[observerDictionary objectForKey: @"observer"] pointerValue];
+        
+        [PluginManager startProtectForCrashWithPath: [[NSBundle bundleForClass: [observer class]] bundlePath]];
+        
+        if( [observerDictionary objectForKey: @"sender"])
+        {
+            if( [observerDictionary objectForKey: @"sender"] == notification.object)
+                [observer performSelector: selector withObject: notification];
+        }
+        else
+            [observer performSelector: selector withObject: notification];
+        
+       [PluginManager endProtectForCrash];
+    }
+}
+@end
+
+#endif
