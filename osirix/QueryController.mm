@@ -1048,7 +1048,7 @@ extern "C"
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	@synchronized( studyArrayInstanceUIDLock)
+	@synchronized( kStudyArrayInstanceUIDLock)
 	{
 		[studyArrayInstanceUID release];
 		[studyArrayCache release];
