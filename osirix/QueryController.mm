@@ -60,6 +60,8 @@ static NSString *InstitutionName = @"InstitutionName";
 static QueryController *currentQueryController = nil;
 static QueryController *currentAutoQueryController = nil;
 static NSArray *studyArrayInstanceUID = nil, *studyArrayCache = nil;
+static NSString *kStudyArrayInstanceUIDLock = @"studyArrayInstanceUIDLock";
+static NSString *kComputeStudyArrayInstanceUIDLock = @"computeStudyArrayInstanceUID";
 static BOOL afterDelayRefresh = NO;
 
 static int inc = 0;
@@ -1046,7 +1048,7 @@ extern "C"
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	@synchronized( studyArrayInstanceUID)
+	@synchronized( studyArrayInstanceUIDLock)
 	{
 		[studyArrayInstanceUID release];
 		[studyArrayCache release];
@@ -1071,7 +1073,6 @@ extern "C"
 	NSArray *local_studyArrayCache = nil;
 	NSArray *local_studyArrayInstanceUID = nil;
 	
-    static NSString *kComputeStudyArrayInstanceUIDLock = @"computeStudyArrayInstanceUID";
     @synchronized( kComputeStudyArrayInstanceUIDLock)
     {
         @try
@@ -1140,7 +1141,7 @@ extern "C"
 			
 			if( studyArrayInstanceUID)
 			{
-				@synchronized( studyArrayInstanceUID)
+				@synchronized( kStudyArrayInstanceUIDLock)
 				{
 					NSUInteger index = [studyArrayInstanceUID indexOfObject:[item valueForKey: @"uid"]];
 					
@@ -1156,7 +1157,7 @@ extern "C"
 		}
 		@catch (NSException * e)
 		{
-			@synchronized( studyArrayInstanceUID)
+			@synchronized( kStudyArrayInstanceUIDLock)
 			{
 				[studyArrayInstanceUID release];
 				studyArrayInstanceUID = nil;
