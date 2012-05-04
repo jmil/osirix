@@ -15541,7 +15541,9 @@ static NSArray*	openSubSeriesArray = nil;
             NSString *parentFolder = [file stringByDeletingLastPathComponent];
 			if( [lastFolder isEqualToString: parentFolder] == NO)
 			{
-				[folders addObject: parentFolder];
+				if( [folders containsString: parentFolder] == NO)
+                    [folders addObject: parentFolder];
+                
                 [lastFolder release];
 				lastFolder = [[NSString alloc] initWithString: parentFolder];
 			}
@@ -15568,8 +15570,6 @@ static NSArray*	openSubSeriesArray = nil;
 		
         if( [NSThread currentThread].isCancelled == NO)
         {
-            [folders removeDuplicatedStrings];
-            
             [checkIncomingLock lock];
             
             @try 
