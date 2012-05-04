@@ -180,7 +180,7 @@ static BOOL						ComPACSTested = NO, isComPACS = NO;
 		NSString	*pluginType = [[plugin infoDictionary] objectForKey:@"pluginType"];
 		NSArray		*menuTitles = [[plugin infoDictionary] objectForKey:@"MenuTitles"];
 		
-        [PluginManager startProtectForCrashWithFilter: [plugin bundlePath]];
+        [PluginManager startProtectForCrashWithPath: [plugin bundlePath]];
         
 		if( menuTitles)
 		{
