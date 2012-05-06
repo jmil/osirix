@@ -4,8 +4,8 @@
 #import "Notifications.h"
 #import "PluginManager.h"
 
-#ifdef NDEBUG
-#else
+//#ifdef NDEBUG
+//#else
 
 @implementation NSNotificationCenter (AllObservers)
 
@@ -30,85 +30,96 @@ const static void *namesKey = &namesKey;
 {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
     
-    NSString *bundleIdentifier = [[NSBundle bundleForClass: [notificationObserver class]] bundleIdentifier];
-    
-    if( [bundleIdentifier hasPrefix: @"com.rossetantoine"] == NO && [bundleIdentifier hasPrefix: @"com.apple"] == NO)
+    @synchronized (self)
     {
-        NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
-        if (!names)
-        {
-            names = [NSMutableDictionary dictionary];
-            objc_setAssociatedObject(self, (void*) namesKey, names, OBJC_ASSOCIATION_RETAIN);
-        }
+        NSString *bundleIdentifier = [[NSBundle bundleForClass: [notificationObserver class]] bundleIdentifier];
         
-        NSDictionary *observerDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithPointer: notificationObserver] , @"observer", [NSValue valueWithPointer: notificationSelector], @"selector", notificationSender, @"sender", nil];
-        
-        NSMutableSet *observers = [names objectForKey:notificationName];
-        if (!observers)
+        if( [bundleIdentifier hasPrefix: @"com.rossetantoine"] == NO && [bundleIdentifier hasPrefix: @"com.apple"] == NO)
         {
-            observers = [NSMutableSet setWithObject: observerDictionary];
-            [names setObject:observers forKey:notificationName];
+            NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+            if (!names)
+            {
+                names = [NSMutableDictionary dictionary];
+                objc_setAssociatedObject(self, (void*) namesKey, names, OBJC_ASSOCIATION_RETAIN);
+            }
+            
+            NSDictionary *observerDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithPointer: notificationObserver] , @"observer", [NSValue valueWithPointer: notificationSelector], @"selector", notificationSender, @"sender", nil];
+            
+            NSMutableSet *observers = [names objectForKey:notificationName];
+            if (!observers)
+            {
+                observers = [NSMutableSet setWithObject: observerDictionary];
+                [names setObject:observers forKey:notificationName];
+            }
+            else
+            {
+                [observers addObject: observerDictionary];
+            }
+            
+            NSLog( @"---- catch notifications: %@", [notificationObserver class]);
         }
         else
-        {
-            [observers addObject: observerDictionary];
-        }
-        
-        NSLog( @"---- catch notifications: %@", bundleIdentifier);
+            [self my_addObserver:notificationObserver selector:notificationSelector name:notificationName object:notificationSender];
     }
-    else
-        [self my_addObserver:notificationObserver selector:notificationSelector name:notificationName object:notificationSender];
     
     [pool release];
 }
 
 - (void) my_removeObserver:(id)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
 {
-    [self my_removeObserver: notificationObserver name: notificationName object: notificationSender];
-    
-    NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
-    if (names)
+    @synchronized (self)
     {
-        NSAutoreleasePool *pool = [NSAutoreleasePool new];
+        [self my_removeObserver: notificationObserver name: notificationName object: notificationSender];
         
-        if( notificationName)
+        NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+        if (names)
         {
-            NSMutableSet *set = [names objectForKey: notificationName];
+            NSAutoreleasePool *pool = [NSAutoreleasePool new];
             
-            for( NSDictionary *observerNotification in set)
+            if( notificationName)
             {
-                if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
-                {
-                    if( notificationSender)
-                    {
-                        if( notificationSender == [observerNotification objectForKey: @"sender"])
-                            [set removeObject: observerNotification];
-                    }
-                    else
-                        [set removeObject: observerNotification];
-                }
-            }
-        }
-        else
-        {
-            for( NSMutableSet *set in [names allValues])
-            {
+                NSMutableSet *set = [names objectForKey: notificationName];
+                
                 for( NSDictionary *observerNotification in set)
                 {
                     if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
-                        [set removeObject: observerNotification];
+                    {
+                        if( notificationSender)
+                        {
+                            if( notificationSender == [observerNotification objectForKey: @"sender"])
+                                [set removeObject: observerNotification];
+                        }
+                        else
+                            [set removeObject: observerNotification];
+                    }
                 }
             }
+            else
+            {
+                for( NSMutableSet *set in [names allValues])
+                {
+                    for( NSDictionary *observerNotification in set)
+                    {
+                        if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
+                            [set removeObject: observerNotification];
+                    }
+                }
+            }
+            
+            [pool release];
         }
-        
-        [pool release];
     }
 }
 
 - (NSSet *) my_observersForNotificationName:(NSString *)notificationName
 {
-	NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
-	return [names objectForKey:notificationName] ?: [NSSet set];
+    @synchronized (self)
+    {
+        NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
+        return [names objectForKey:notificationName] ?: [NSSet set];
+    }
+    
+    return [NSSet set];
 }
 
 - (void) postExtraNotification:(NSNotification *)notification
@@ -134,25 +145,31 @@ const static void *namesKey = &namesKey;
 
 - (void) my_postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo
 {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    @synchronized (self)
+    {
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
     
-    [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
-    
-    [self postExtraNotification: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
-    
-    [pool release];
+        [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
+        
+        [self postExtraNotification: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
+        
+        [pool release];
+    }
 }
 
 - (void) my_postNotification:(NSNotification *)notification
 {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    
-    [self my_postNotification: notification];
-    
-    [self postExtraNotification: notification];
-    
-    [pool release];
+    @synchronized (self)
+    {
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
+        
+        [self my_postNotification: notification];
+        
+        [self postExtraNotification: notification];
+        
+        [pool release];
+    }
 }
 @end
 
-#endif
+//#endif
