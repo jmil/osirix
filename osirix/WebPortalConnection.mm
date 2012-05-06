@@ -1051,9 +1051,7 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
             NSString* sha1 = [params objectForKey:@"sha1"];
             
             if (username.length && sha1.length)
-            {
-                [NSThread sleepForTimeInterval: 2]; // To avoid brute-force attacks
-                
+            {                
                 NSString *userInternalPassword = [self passwordForUser: username];
                 
                 [self.user convertPasswordToHashIfNeeded];
@@ -1068,6 +1066,8 @@ NSString* const SessionDicomCStorePortKey = @"DicomCStorePort"; // NSNumber (int
                 }
                 else
                 {
+                    [NSThread sleepForTimeInterval: 2]; // To avoid brute-force attacks
+                    
                     [self.portal updateLogEntryForStudy:NULL withMessage:[NSString stringWithFormat: @"Unsuccessful login attempt with invalid password for user name: %@", username] forUser:NULL ip:asyncSocket.connectedHost];
                 }
             }

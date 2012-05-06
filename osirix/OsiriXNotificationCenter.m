@@ -69,8 +69,6 @@ const static void *namesKey = &namesKey;
 {
     @synchronized (self)
     {
-        [self my_removeObserver: notificationObserver name: notificationName object: notificationSender];
-        
         NSMutableDictionary *names = objc_getAssociatedObject(self, (void*) namesKey);
         if (names)
         {
@@ -108,6 +106,8 @@ const static void *namesKey = &namesKey;
             
             [pool release];
         }
+        
+        [self my_removeObserver: notificationObserver name: notificationName object: notificationSender];
     }
 }
 
@@ -148,10 +148,10 @@ const static void *namesKey = &namesKey;
     @synchronized (self)
     {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    
-        [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
         
         [self postExtraNotification: [NSNotification notificationWithName: aName object: anObject userInfo: aUserInfo]];
+        
+        [self my_postNotificationName: aName object: anObject userInfo: aUserInfo];
         
         [pool release];
     }
@@ -163,9 +163,9 @@ const static void *namesKey = &namesKey;
     {
         NSAutoreleasePool *pool = [NSAutoreleasePool new];
         
-        [self my_postNotification: notification];
-        
         [self postExtraNotification: notification];
+        
+        [self my_postNotification: notification];
         
         [pool release];
     }

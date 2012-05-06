@@ -18727,63 +18727,66 @@ static volatile int numberOfThreadsForJPEG = 0;
 	if( destFile)
 		[[NSFileManager defaultManager] removeItemAtPath: destFile error: nil];
 	
-	WaitRendering *wait = nil;
-	if( [NSThread isMainThread])
-	{
-		wait = [[WaitRendering alloc] init: NSLocalizedString(@"Compressing the files...", nil)];
-		[wait showWindow:self];
-	}
-	
-	@try
-	{
-		#define CHUNKZIP 1000
-		
-		int total = [srcFiles count];
-		
-		for( int i = 0; i < total;)
-		{
-			int no;
-			
-			if( i + CHUNKZIP >= total) no = total - i; 
-			else no = CHUNKZIP;
-			
-			NSRange range = NSMakeRange( i, no);
-			
-			id *objs = (id*) malloc( no * sizeof( id));
-			if( objs)
-			{
-				[srcFiles getObjects: objs range: range];
-				
-				NSArray *subArray = [NSArray arrayWithObjects: objs count: no];
-				
-				t = [[[NSTask alloc] init] autorelease];
-				[t setLaunchPath: @"/usr/bin/zip"];
-				
-				if( [password length] > 0)
-					args = [NSArray arrayWithObjects: @"-q", @"-j", @"-e", @"-P", password, destFile, nil];
-				else
-					args = [NSArray arrayWithObjects: @"-q", @"-j", destFile, nil];
-					
-				args = [args arrayByAddingObjectsFromArray: subArray];
-				
-				[t setArguments: args];
-				[t launch];
-				while( [t isRunning]) [NSThread sleepForTimeInterval: 0.01];
-				
-				free( objs);
-			}
-			
-			i += no;
-		}
-	}
-	@catch (NSException *e)
-	{
-		NSLog( @"**** encryptFileOrFolder exception: %@", e);
-		[AppController printStackTrace: e];
-	}
-	
-	[wait close];
-	[wait release];
+    @synchronized( destFile)
+    {
+        WaitRendering *wait = nil;
+        if( [NSThread isMainThread])
+        {
+            wait = [[WaitRendering alloc] init: NSLocalizedString(@"Compressing the files...", nil)];
+            [wait showWindow:self];
+        }
+        
+        @try
+        {
+            #define CHUNKZIP 1000
+            
+            int total = [srcFiles count];
+            
+            for( int i = 0; i < total;)
+            {
+                int no;
+                
+                if( i + CHUNKZIP >= total) no = total - i; 
+                else no = CHUNKZIP;
+                
+                NSRange range = NSMakeRange( i, no);
+                
+                id *objs = (id*) malloc( no * sizeof( id));
+                if( objs)
+                {
+                    [srcFiles getObjects: objs range: range];
+                    
+                    NSArray *subArray = [NSArray arrayWithObjects: objs count: no];
+                    
+                    t = [[[NSTask alloc] init] autorelease];
+                    [t setLaunchPath: @"/usr/bin/zip"];
+                    
+                    if( [password length] > 0)
+                        args = [NSArray arrayWithObjects: @"-q", @"-j", @"-e", @"-P", password, destFile, nil];
+                    else
+                        args = [NSArray arrayWithObjects: @"-q", @"-j", destFile, nil];
+                        
+                    args = [args arrayByAddingObjectsFromArray: subArray];
+                    
+                    [t setArguments: args];
+                    [t launch];
+                    while( [t isRunning]) [NSThread sleepForTimeInterval: 0.01];
+                    
+                    free( objs);
+                }
+                
+                i += no;
+            }
+        }
+        @catch (NSException *e)
+        {
+            NSLog( @"**** encryptFileOrFolder exception: %@", e);
+            [AppController printStackTrace: e];
+        }
+        
+        [wait close];
+        [wait release];
+    }
 }
 
 + (void) encryptFileOrFolder: (NSString*) srcFolder inZIPFile: (NSString*) destFile password: (NSString*) password 
