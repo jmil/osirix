@@ -80,7 +80,7 @@ const static void *namesKey = &namesKey;
             {
                 NSMutableSet *set = [names objectForKey: notificationName];
                 
-                for( NSDictionary *observerNotification in set)
+                for( NSDictionary *observerNotification in [NSMutableSet setWithSet: set])
                 {
                     if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
                     {
@@ -98,7 +98,7 @@ const static void *namesKey = &namesKey;
             {
                 for( NSMutableSet *set in [names allValues])
                 {
-                    for( NSDictionary *observerNotification in set)
+                    for( NSDictionary *observerNotification in [NSMutableSet setWithSet: set])
                     {
                         if( [[observerNotification objectForKey: @"observer"] pointerValue] == notificationObserver)
                             [set removeObject: observerNotification];
