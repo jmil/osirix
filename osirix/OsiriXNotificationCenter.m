@@ -49,7 +49,7 @@ const static void *namesKey = &namesKey;
             if (!observers)
             {
                 observers = [NSMutableSet setWithObject: observerDictionary];
-                [names setObject:observers forKey:notificationName];
+                [names setObject:observers forKey: [NSString stringWithUTF8String: notificationName.UTF8String]];
             }
             else
             {
