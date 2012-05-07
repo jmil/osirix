@@ -56,5 +56,6 @@ Added features:
 - Password DB in keychain
 - Preferences for Status menu in DB
 - Is it possible to place keyed images into a report automatically when generating a report?
+- HTML5 for Web Portal movies
 
 ------------------------------------------------------------------------------------------------------------------------
