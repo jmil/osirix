@@ -239,7 +239,14 @@ void errmsg(const char* msg, ...)
 
 	//timeout
 	OFCmdSignedInt opt_timeout = [[NSUserDefaults standardUserDefaults] integerForKey:@"DICOMTimeout"];
-	dcmConnectionTimeout.set((Sint32) opt_timeout);
+    
+    if( [[NSUserDefaults standardUserDefaults] integerForKey:@"DICOMConnectionTimeout"] > 0)
+    {
+        NSLog( @"--- DICOMConnectionTimeout: %d", [[NSUserDefaults standardUserDefaults] integerForKey:@"DICOMConnectionTimeout"]);
+        dcmConnectionTimeout.set( (Sint32) [[NSUserDefaults standardUserDefaults] integerForKey:@"DICOMConnectionTimeout"]);
+    }
+    else
+        dcmConnectionTimeout.set( (Sint32) opt_timeout);
 	
 	//acse-timeout
 	opt_timeout = [[NSUserDefaults standardUserDefaults] integerForKey:@"DICOMTimeout"];
