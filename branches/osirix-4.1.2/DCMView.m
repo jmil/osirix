@@ -10638,9 +10638,10 @@ NSInteger studyCompare(ViewerController *v1, ViewerController *v2, void *context
 {
 	blendingMode = f;
 	
-	[blendingView setBlendingMode: blendingMode];
+    if( [blendingView blendingMode] != blendingMode)
+        [blendingView setBlendingMode: blendingMode];
 	
-	[blendingView setAlpha: blendingFactor];
+    [blendingView setAlpha: blendingFactor];
 	
 	[self loadTextures];
 	[self setNeedsDisplay: YES];
