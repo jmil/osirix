@@ -3452,6 +3452,11 @@ static BOOL initialized = NO;
 	#endif
     
     [ROI loadDefaultSettings];
+
+#ifndef OSIRIX_LIGHT
+    #import "PFMoveApplication.h"
+    PFMoveToApplicationsFolderIfNecessary();
+#endif
 }
 
 - (void) checkForOsirixMimeType
