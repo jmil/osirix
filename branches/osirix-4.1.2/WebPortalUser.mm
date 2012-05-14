@@ -303,17 +303,17 @@ static NSMutableDictionary *studiesForUserCache = nil;
         {
             NSString *userID = [self.name stringByAppendingString: @" specificStudies"];
             
-            if( [studiesForUserCache objectForKey: userID])
+            if( [studiesForUserCache objectForKey: userID] && [[[studiesForUserCache objectForKey: userID] objectForKey: @"date"] timeIntervalSinceNow] > -60*60) // one hour
             {
-                specificArray = [studiesForUserCache objectForKey: userID];
+                specificArray = [[studiesForUserCache objectForKey: userID] objectForKey: @"array"];
             }
             else
             {
                 NSArray* studiesArray = nil;
                 
-                if( [studiesForUserCache objectForKey: @"all DB studies"])
+                if( [studiesForUserCache objectForKey: @"all DB studies"] && [[[studiesForUserCache objectForKey: @"all DB studies"] objectForKey: @"date"] timeIntervalSinceNow] > -60*60)
                 {
-                    studiesArray = [studiesForUserCache objectForKey: @"all DB studies"];
+                    studiesArray = [[studiesForUserCache objectForKey: @"all DB studies"] objectForKey: @"array"];
                 }
                 else
                 {
@@ -324,7 +324,7 @@ static NSMutableDictionary *studiesForUserCache = nil;
                     studiesArray = [WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext executeFetchRequest:req error:NULL];
                     
                     if( studiesArray)
-                        [studiesForUserCache setObject: studiesArray forKey: @"all DB studies"];
+                        [studiesForUserCache setObject: [NSDictionary dictionaryWithObjectsAndKeys: studiesArray, @"array", [NSDate date], @"date", nil] forKey: @"all DB studies"];
                 }
                 
                 for (WebPortalStudy* study in userStudies)
@@ -352,7 +352,7 @@ static NSMutableDictionary *studiesForUserCache = nil;
                     }
                 }
                 
-                [studiesForUserCache setObject: specificArray forKey: userID];
+                [studiesForUserCache setObject: [NSDictionary dictionaryWithObjectsAndKeys: specificArray, @"array", [NSDate date], @"date", nil] forKey: userID];
             }
         }
 	}
@@ -422,14 +422,14 @@ static NSMutableDictionary *studiesForUserCache = nil;
             {
                 NSString *userID = user.name;
                 
-                if( user && [studiesForUserCache objectForKey: userID])
-                    studiesArray = [studiesForUserCache objectForKey: userID];
+                if( user && [studiesForUserCache objectForKey: userID] && [[[studiesForUserCache objectForKey: userID] objectForKey: @"date"] timeIntervalSinceNow] > -60*60)
+                    studiesArray = [[studiesForUserCache objectForKey: userID] objectForKey: @"array"];
                 else
                 {
                     studiesArray = [WebPortal.defaultWebPortal.dicomDatabase.managedObjectContext executeFetchRequest:req error:NULL];
                     
                     if( studiesArray)
-                        [studiesForUserCache setObject: studiesArray forKey: userID];
+                        [studiesForUserCache setObject: [NSDictionary dictionaryWithObjectsAndKeys: studiesArray, @"array", [NSDate date], @"date", nil] forKey: userID];
                 }
             }
             
@@ -561,9 +561,9 @@ static NSMutableDictionary *studiesForUserCache = nil;
     {
         NSString *userID = [user.name stringByAppendingFormat:@" %@", albumName];
         
-        if( user && [studiesForUserCache objectForKey: userID])
+        if( user && [studiesForUserCache objectForKey: userID] && [[[studiesForUserCache objectForKey: userID] objectForKey: @"date"] timeIntervalSinceNow] > -60*60)
         {
-            studiesArray = [studiesForUserCache objectForKey: userID];
+            studiesArray = [[studiesForUserCache objectForKey: userID] objectForKey: @"array"];
             
             if ([sortValue length] && [sortValue isEqualToString: @"date"] == NO)
                 studiesArray = [studiesArray sortedArrayUsingDescriptors: [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: sortValue ascending: YES selector: @selector( caseInsensitiveCompare:)] autorelease]]];
@@ -631,7 +631,7 @@ static NSMutableDictionary *studiesForUserCache = nil;
             }
             
             if( studiesArray)
-                [studiesForUserCache setObject: studiesArray forKey: userID];
+                [studiesForUserCache setObject: [NSDictionary dictionaryWithObjectsAndKeys: studiesArray, @"array", [NSDate date], @"date", nil] forKey: userID];
         }
         
         if( numberOfStudies)
