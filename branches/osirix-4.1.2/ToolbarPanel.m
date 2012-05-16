@@ -236,7 +236,7 @@ static int increment = 0, previousNumberOfScreens = 0;
 	 if ([itemIdent isEqualToString: @"emptyItem"])
 	 {
 		#define HEIGHT 53
-		[toolbarItem setLabel: @"Aqpghil"];
+		[toolbarItem setLabel: @"    "];
 		[toolbarItem setView: [[[NSView alloc] initWithFrame: NSMakeRect( 0, 0, HEIGHT, HEIGHT)] autorelease]];
 		[toolbarItem setMinSize: NSMakeSize( HEIGHT, HEIGHT)];
 		[toolbarItem setMaxSize: NSMakeSize( HEIGHT, HEIGHT)];
