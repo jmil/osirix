@@ -18770,7 +18770,7 @@ static volatile int numberOfThreadsForJPEG = 0;
                     
                     [t setArguments: args];
                     [t launch];
-                    while( [t isRunning]) [NSThread sleepForTimeInterval: 0.01];
+                    [t waitUntilExit];
                     
                     free( objs);
                 }
