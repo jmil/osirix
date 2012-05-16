@@ -1452,8 +1452,10 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 			
 			[NSFileManager.defaultManager confirmDirectoryAtPath:srcFolder];
 			
+            NSArray *completePaths = [allImages valueForKey:@"completePath"];
+            
 			[self.portal.dicomDatabase.managedObjectContext unlock];
-			[BrowserController encryptFiles: [allImages valueForKey:@"completePath"] inZIPFile:destFile password: user.encryptedZIP.boolValue? user.password : NULL ];
+			[BrowserController encryptFiles: completePaths inZIPFile:destFile password: user.encryptedZIP.boolValue? user.password : NULL ];
 			[self.portal.dicomDatabase.managedObjectContext lock];
 
 			self.response.data = [NSData dataWithContentsOfFile:destFile];
@@ -2102,8 +2104,10 @@ const NSString* const GenerateMovieDicomImagesParamKey = @"dicomImageArray";
 		
 		[NSFileManager.defaultManager confirmDirectoryAtPath:srcFolder];
 		
+        NSArray *completePaths = [images valueForKey:@"completePath"];
+        
 		[self.portal.dicomDatabase.managedObjectContext unlock];
-		[BrowserController encryptFiles:[images valueForKey:@"completePath"] inZIPFile:destFile password: user.encryptedZIP.boolValue? user.password : NULL ];
+		[BrowserController encryptFiles: completePaths inZIPFile:destFile password: user.encryptedZIP.boolValue? user.password : NULL ];
 		[self.portal.dicomDatabase.managedObjectContext lock];
 
 		response.data = [NSData dataWithContentsOfFile:destFile];
