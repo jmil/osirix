@@ -4990,7 +4990,7 @@ NSInteger studyCompare(ViewerController *v1, ViewerController *v2, void *context
 {
 	BOOL haveHit = NO;
 
-	for( ROI *r in curRoiList)
+	for( ROI *r in [NSArray arrayWithArray: curRoiList])
 	{
 		if( [r mouseRoiDragged: point :[event modifierFlags] :scaleValue] != NO)
 		{
