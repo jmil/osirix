@@ -12815,64 +12815,80 @@ END_CREATE_ROIS:
 							}
 							else if([type isEqualToString:@"DB"])
 							{
-								NSString *fieldName = [field objectForKey:@"field"];
-								NSString *level = [field objectForKey:@"level"];
-								if([level isEqualToString:@"image"])
-								{
-									value = [imageObj valueForKey:fieldName];
-								}
-								else if([level isEqualToString:@"series"])
-								{
-									value = [imageObj valueForKeyPath:[NSString stringWithFormat:@"series.%@", fieldName]];
-								}
-								else if([level isEqualToString:@"study"])
-								{
-									value = [imageObj valueForKeyPath:[NSString stringWithFormat:@"series.study.%@", fieldName]];
-									
-									if( [fieldName isEqualToString:@"name"]) value = @"PatientName";
-								}
-								
-								if(value==nil) value = @"-";
-								else contentForLine = YES;
-								
-								if( [value isKindOfClass: [NSDate class]])
-								{
-//									value = [value description];
-									
-									if([fieldName isEqualToString:@"dateOfBirth"])
-										value = [[NSUserDefaults dateFormatter] stringFromDate:(NSDate*)value];
-									else
-										value = [BrowserController DateTimeWithSecondsFormat: (NSDate *) value];
-								}
-								else
-								{
-									value = [value description];
-									if( [value length] == 0) value = @"-";
-								}
+                                @try
+                                {
+                                    NSString *fieldName = [field objectForKey:@"field"];
+                                    NSString *level = [field objectForKey:@"level"];
+                                    if([level isEqualToString:@"image"])
+                                    {
+                                        value = [imageObj valueForKey:fieldName];
+                                    }
+                                    else if([level isEqualToString:@"series"])
+                                    {
+                                        value = [imageObj valueForKeyPath:[NSString stringWithFormat:@"series.%@", fieldName]];
+                                    }
+                                    else if([level isEqualToString:@"study"])
+                                    {
+                                        value = [imageObj valueForKeyPath:[NSString stringWithFormat:@"series.study.%@", fieldName]];
+                                        
+                                        if( [fieldName isEqualToString:@"name"]) value = @"PatientName";
+                                    }
+                                    
+                                    if(value==nil) value = @"-";
+                                    else contentForLine = YES;
+                                    
+                                    if( [value isKindOfClass: [NSDate class]])
+                                    {
+    //									value = [value description];
+                                        
+                                        if([fieldName isEqualToString:@"dateOfBirth"])
+                                            value = [[NSUserDefaults dateFormatter] stringFromDate:(NSDate*)value];
+                                        else
+                                            value = [BrowserController DateTimeWithSecondsFormat: (NSDate *) value];
+                                    }
+                                    else
+                                    {
+                                        value = [value description];
+                                        if( [value length] == 0) value = @"-";
+                                    }
+                                }
+                                @catch (NSException *e)
+                                {
+                                    NSLog(@"CustomImageAnnotations DB Exception: %@", e);
+                                    value = @"ERROR IN ANNOTATIONS - See Preferences->Annotations";
+                                }
 							}
 							else if([type isEqualToString:@"Special"])
 							{
-								value = [field objectForKey:@"field"];
-								if ([value isEqualToString: NSLocalizedString(@"Patient's Actual Age", nil)] || [value isEqualToString: (@"Patient's Actual Age")])
-								{
-									if( [imageObj valueForKeyPath: @"series.study.dateOfBirth"])
-									{
-										value = [imageObj valueForKeyPath: @"series.study.yearOld"];
-									}
-									else value = nil;
-								}
-								
-								if ([value isEqualToString: NSLocalizedString(@"Patient's Age At Acquisition", nil)] || [value isEqualToString: (@"Patient's Age At Acquisition")])
-								{
-									if( [imageObj valueForKeyPath: @"series.study.dateOfBirth"] && [imageObj valueForKeyPath: @"series.study.date"])
-									{
-										value = [imageObj valueForKeyPath: @"series.study.yearOldAcquisition"];
-									}
-									else value = nil;
-								}
-								
-								if(value==nil || [value length] == 0) value = @"-";
-								else contentForLine = YES;
+                                @try
+                                {
+                                    value = [field objectForKey:@"field"];
+                                    if ([value isEqualToString: NSLocalizedString(@"Patient's Actual Age", nil)] || [value isEqualToString: (@"Patient's Actual Age")])
+                                    {
+                                        if( [imageObj valueForKeyPath: @"series.study.dateOfBirth"])
+                                        {
+                                            value = [imageObj valueForKeyPath: @"series.study.yearOld"];
+                                        }
+                                        else value = nil;
+                                    }
+                                    
+                                    if ([value isEqualToString: NSLocalizedString(@"Patient's Age At Acquisition", nil)] || [value isEqualToString: (@"Patient's Age At Acquisition")])
+                                    {
+                                        if( [imageObj valueForKeyPath: @"series.study.dateOfBirth"] && [imageObj valueForKeyPath: @"series.study.date"])
+                                        {
+                                            value = [imageObj valueForKeyPath: @"series.study.yearOldAcquisition"];
+                                        }
+                                        else value = nil;
+                                    }
+                                    
+                                    if(value==nil || [value length] == 0) value = @"-";
+                                    else contentForLine = YES;
+                                }
+                                @catch (NSException *e)
+                                {
+                                    NSLog(@"CustomImageAnnotations Special Exception: %@", e);
+                                    value = @"ERROR IN ANNOTATIONS - See Preferences->Annotations";
+                                }
 							}
 							else if([type isEqualToString:@"Manual"])
 							{
@@ -12884,7 +12900,6 @@ END_CREATE_ROIS:
 							
 							if( value) [contentOUT addObject:value];
 						}
-						
 						@catch (NSException *e)
 						{
 							NSLog(@"CustomImageAnnotations Exception: %@", e);
