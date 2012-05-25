@@ -57,6 +57,9 @@ extern int delayedTileWindows;
 - (void)setWindowFrame:(NSRect)rect showWindow:(BOOL) showWindow animate: (BOOL) animate
 {
 	[AppController resizeWindowWithAnimation: [self window] newSize: rect];
+    
+    if( showWindow)
+        [[self window] orderFront:self];
 }
 
 - (NSArray*) fileList
