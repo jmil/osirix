@@ -327,6 +327,9 @@ enum dbObjectSelection {oAny,oMiddle,oFirstForFirst};
 - (NSString*) getNewFileDatabasePath: (NSString*) extension dbFolder: (NSString*) dbFolder;
 - (NSManagedObjectModel *) managedObjectModel;
 
+- (NSManagedObject*) findStudyUID: (NSString*) uid;
+- (NSManagedObject*) findSeriesUID: (NSString*) uid;
+
 - (NSManagedObjectContext *) localManagedObjectContext;
 - (NSManagedObjectContext *) localManagedObjectContextIndependentContext: (BOOL) independentContext;
 
