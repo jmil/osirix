@@ -1729,9 +1729,6 @@ extern "C"
                             
                             if ([filterValue length] > 0)
                             {
-                                if( tag.getVR().isaString())
-                                    filterValue = [filterValue stringByAppendingString:@"*"];
-                                
                                 [queryManager addFilter: filterValue forDescription: currentQueryKey];
                                 queryItem = YES;
                             }
