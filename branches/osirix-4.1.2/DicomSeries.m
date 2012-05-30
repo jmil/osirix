@@ -267,6 +267,8 @@
 	{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
+        [self.managedObjectContext lock];
+        
 		@try
 		{
 			NSArray* files = [self sortedImages];
@@ -352,6 +354,9 @@
 		{
 			NSLog( @"***** exception in %s: %@", __PRETTY_FUNCTION__, e);
 		}
+        
+        [self.managedObjectContext unlock];
+        
 		[pool release];
 	}
 	
