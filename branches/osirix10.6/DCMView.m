@@ -6608,8 +6608,7 @@ NSInteger studyCompare(ViewerController *v1, ViewerController *v2, void *context
 				{
 					if( volumicSeries == YES && [otherView volumicSeries] == YES)
 					{
-                        // even if the orthogonalOrientation isn't the same, sync should be possible
-						//if( [[self windowController] orthogonalOrientation] == [[otherView windowController] orthogonalOrientation])
+						if( [[self windowController] orthogonalOrientation] == [[otherView windowController] orthogonalOrientation])
 						{
                             // we need to avoid the situations where a localizer blocks two series from synchronizing
                             // if( (sliceVector[0] == 0 && sliceVector[1] == 0 && sliceVector[2] == 0) || syncSeriesIndex != -1)  // Planes are parallel !
